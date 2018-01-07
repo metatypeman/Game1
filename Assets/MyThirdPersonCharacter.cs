@@ -47,7 +47,10 @@ public class MyThirdPersonCharacter : MonoBehaviour {
         // convert the world relative moveInput vector into a local-relative
         // turn amount and forward amount required to head in the desired
         // direction.
-        if (move.magnitude > 1f) { move.Normalize(); }
+        if (move.magnitude > 1f)
+        {
+            move.Normalize();
+        }
         move = transform.InverseTransformDirection(move);
         CheckGroundStatus();
         move = Vector3.ProjectOnPlane(move, m_GroundNormal);
@@ -77,7 +80,10 @@ public class MyThirdPersonCharacter : MonoBehaviour {
     {
         if (m_IsGrounded && crouch)
         {
-            if (m_Crouching) { return; }
+            if (m_Crouching)
+            {
+                return;
+            }
             m_Capsule.height = m_Capsule.height / 2f;
             m_Capsule.center = m_Capsule.center / 2f;
             m_Crouching = true;
