@@ -11,19 +11,17 @@ public class EnemyIK : MonoBehaviour
     public bool isIkActive;
 
     Animator mAnim;
-    GameObject mTargetCube;
-
+    
     // Use this for initialization
     void Start () {
         mAnim = GetComponent<Animator>();
-        mTargetCube = GameObject.Find("Cube_1");
         //transform.LookAt(mTargetCube.transform);
         //transform.
     }
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.LogWarning("Update Update");
+        Debug.Log("Update Update");
         
     }
 
@@ -31,7 +29,7 @@ public class EnemyIK : MonoBehaviour
     {
         if (isIkActive)
         {
-            Debug.LogWarning("EnemyIK OnAnimatorIK isIkActive");
+            Debug.Log("EnemyIK OnAnimatorIK isIkActive");
         }        
     }
 }
