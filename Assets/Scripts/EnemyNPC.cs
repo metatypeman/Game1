@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 [RequireComponent(typeof(EnemyController))]
 public class EnemyNPC : MonoBehaviour {
@@ -9,24 +10,72 @@ public class EnemyNPC : MonoBehaviour {
     private Transform m_Cam;                  // A reference to the main camera in the scenes transform
     private Vector3 m_CamForward;             // The current forward direction of the camera
     private Vector3 m_Move;
+    public float surfaceOffset = 1.5f;
+    public GameObject setTargetOn;
 
     // Use this for initialization
     void Start () {
         mEnemyController = GetComponent<EnemyController>();
+        m_Cam = Camera.main.transform;
         mTargetCube = GameObject.Find("Cube_1");
     }
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log("EnemyController Update");
+        //Debug.Log("EnemyController Update");
     }
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
     {
-        Debug.Log("EnemyController FixedUpdate");
+        //Debug.Log("EnemyController FixedUpdate");
 
         //var crouch = Input.GetKey(KeyCode.C);
+
+        var h = CrossPlatformInputManager.GetAxis("Horizontal");
+        var v = CrossPlatformInputManager.GetAxis("Vertical");
+
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    RaycastHit hit;
+        //    if (Physics.Raycast(ray, out hit))
+        //    {
+        //        transform.position = hit.point + hit.normal * surfaceOffset;
+        //        if (setTargetOn != null)
+        //        {
+        //            setTargetOn.SendMessage("SetTarget", transform);
+        //        }
+        //    }
+        //}
+
+        if (h > 0.1 || h < -0.1 || v > 0.1 || v < -0.1)
+        {
+            Debug.Log("EnemyController FixedUpdate h = " + h + " v = " + v);
+
+            //var m_Move = v * Vector3.forward + h * Vector3.right;
+            var m_CamForward = Vector3.Scale(m_Cam.forward, new Vector3(1, 0, 1)).normalized;
+            m_Move = v * m_CamForward + h * m_Cam.right;
+            //m_Move *= 0.5f;
+
+            Debug.Log("EnemyController FixedUpdate m_Move = " + m_Move);
+
+            var transformGlobalPosition = transform.position;
+
+            Debug.Log("EnemyController FixedUpdate (2) transformGlobalPosition = " + transformGlobalPosition);
+
+            var newPosition = transformGlobalPosition + m_Move;
+
+            Debug.Log("EnemyController FixedUpdate newPosition = " + newPosition);
+
+            mEnemyController.Move(m_Move);
+        }
+
+        //var mMove = transform.TransformDirection(transform.position) + m_Move;
+
+        //Debug.Log("EnemyController FixedUpdate (2) m_Move = " + m_Move);
+
+        //mEnemyController.Move(m_Move);
 
         var goAhead = Input.GetKey(KeyCode.W);
 
@@ -45,7 +94,16 @@ public class EnemyNPC : MonoBehaviour {
             }
             else
             {
-                mEnemyController.HState = EnemyHState.Stop;
+                var gth = Input.GetKey(KeyCode.T);
+               
+                if(gth)
+                {
+                    mEnemyController.Stop();
+                }
+                else
+                {
+                    mEnemyController.HState = EnemyHState.Stop;
+                }            
             }
         }   
     }

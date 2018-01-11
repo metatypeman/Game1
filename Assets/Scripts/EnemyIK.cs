@@ -21,7 +21,7 @@ public class EnemyIK : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log("Update Update");
+        //Debug.Log("Update Update");
         
     }
 
@@ -29,7 +29,7 @@ public class EnemyIK : MonoBehaviour
     {
         if (isIkActive)
         {
-            Debug.Log("EnemyIK OnAnimatorIK isIkActive");
+            //Debug.Log("EnemyIK OnAnimatorIK isIkActive");
         }        
     }
 }
