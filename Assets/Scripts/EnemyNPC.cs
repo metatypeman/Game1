@@ -20,10 +20,13 @@ public class EnemyNPC : MonoBehaviour {
         mTargetCube = GameObject.Find("Cube_1");
     }
 	
+
 	// Update is called once per frame
 	void Update () {
         //Debug.Log("EnemyController Update");
     }
+
+    private bool mIsPPressed;
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
@@ -49,27 +52,27 @@ public class EnemyNPC : MonoBehaviour {
         //    }
         //}
 
-        if (h > 0.1 || h < -0.1 || v > 0.1 || v < -0.1)
-        {
-            Debug.Log("EnemyController FixedUpdate h = " + h + " v = " + v);
+        //if (h > 0.1 || h < -0.1 || v > 0.1 || v < -0.1)
+        //{
+        //    Debug.Log("EnemyController FixedUpdate h = " + h + " v = " + v);
 
-            //var m_Move = v * Vector3.forward + h * Vector3.right;
-            var m_CamForward = Vector3.Scale(m_Cam.forward, new Vector3(1, 0, 1)).normalized;
-            m_Move = v * m_CamForward + h * m_Cam.right;
-            //m_Move *= 0.5f;
+        //    //var m_Move = v * Vector3.forward + h * Vector3.right;
+        //    var m_CamForward = Vector3.Scale(m_Cam.forward, new Vector3(1, 0, 1)).normalized;
+        //    m_Move = v * m_CamForward + h * m_Cam.right;
+        //    //m_Move *= 0.5f;
 
-            Debug.Log("EnemyController FixedUpdate m_Move = " + m_Move);
+        //    Debug.Log("EnemyController FixedUpdate m_Move = " + m_Move);
 
-            var transformGlobalPosition = transform.position;
+        //    var transformGlobalPosition = transform.position;
 
-            Debug.Log("EnemyController FixedUpdate (2) transformGlobalPosition = " + transformGlobalPosition);
+        //    Debug.Log("EnemyController FixedUpdate (2) transformGlobalPosition = " + transformGlobalPosition);
 
-            var newPosition = transformGlobalPosition + m_Move;
+        //    var newPosition = transformGlobalPosition + m_Move;
 
-            Debug.Log("EnemyController FixedUpdate newPosition = " + newPosition);
+        //    Debug.Log("EnemyController FixedUpdate newPosition = " + newPosition);
 
-            mEnemyController.Move(m_Move);
-        }
+        //    mEnemyController.Move(m_Move);
+        //}
 
         //var mMove = transform.TransformDirection(transform.position) + m_Move;
 
@@ -81,7 +84,7 @@ public class EnemyNPC : MonoBehaviour {
 
         if(goAhead)
         {
-            mEnemyController.HState = EnemyHState.Walk;
+            //mEnemyController.HState = HumanoidHState.Walk;
         }
         else
         {
@@ -89,8 +92,19 @@ public class EnemyNPC : MonoBehaviour {
 
             if(goToTarget)
             {
-                mEnemyController.HState = EnemyHState.Walk;
-                mEnemyController.Move(mTargetCube.transform.position);
+                //mEnemyController.HState = HumanoidHState.Walk;
+                //mEnemyController.Move(mTargetCube.transform.position);
+
+                if(!mIsPPressed)
+                {
+                    mIsPPressed = true;
+
+                    var moveCommand = new HumanoidHStateCommand();
+                    moveCommand.State = HumanoidHState.Walk;
+                    moveCommand.TargetPosition = mTargetCube.transform.position;
+
+                    mEnemyController.Execute(moveCommand);
+                }
             }
             else
             {
@@ -98,11 +112,11 @@ public class EnemyNPC : MonoBehaviour {
                
                 if(gth)
                 {
-                    mEnemyController.Stop();
+                    //mEnemyController.Stop();
                 }
                 else
                 {
-                    mEnemyController.HState = EnemyHState.Stop;
+                    //mEnemyController.HState = HumanoidHState.Stop;
                 }            
             }
         }   

@@ -1,29 +1,412 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum EnemyHState
+public static class StringHelper
+{
+    public static string Spaces(int n)
+    {
+        var sb = new StringBuilder();
+
+        for (var i = 0; i < n; i++)
+        {
+            sb.Append(" ");
+        }
+
+        return sb.ToString();
+    }
+}
+
+public enum HumanoidHState
 {
     Stop,
     Walk,
     Run
 }
 
-public enum EnemyVState
+public enum HumanoidVState
 {
     Ground,
     Jump,
     Crouch
 }
 
-public enum EnemyHandsState
+public enum HumanoidHandsState
 {
     FreeHands,
     HasRifle
 }
 
-public class EnemyController : MonoBehaviour {
+public enum HumanoidHandsActionState
+{
+    Empty
+}
+
+public enum MoveHumanoidCommandKind
+{
+    HState,
+    VState,
+    HandsState,
+    HandsActionState
+}
+
+public interface IObjectToString
+{
+    string ToString(int n);
+    string PropertiesToSting(int n);
+}
+
+public interface IMoveHumanoidCommand: IObjectToString
+{
+    MoveHumanoidCommandKind Kind { get; }
+}
+
+public interface IMoveHumanoidCommandsPackage: IObjectToString
+{
+    List<IMoveHumanoidCommand> Commands { get; }
+}
+
+public interface IHumanoidHStateCommand: IMoveHumanoidCommand
+{
+    HumanoidHState State { get; }
+    Vector3? TargetPosition { get; }
+}
+
+public interface IHumanoidVStateCommand : IMoveHumanoidCommand
+{
+    HumanoidVState State { get; }
+}
+
+public interface IHumanoidHandsStateCommand : IMoveHumanoidCommand
+{
+    HumanoidHandsState State { get; }
+}
+
+public interface IHumanoidHandsActionStateCommand : IMoveHumanoidCommand
+{
+    HumanoidHandsActionState State { get; }
+}
+//----
+public class MoveHumanoidCommandsPackage: IMoveHumanoidCommandsPackage
+{
+    public MoveHumanoidCommandsPackage()
+    {
+        Commands = new List<IMoveHumanoidCommand>();
+    }
+
+    public List<IMoveHumanoidCommand> Commands { get; set; }
+
+    public override string ToString()
+    {
+        return ToString(0);
+    }
+
+    public string ToString(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.Append(spaces);
+        sb.AppendLine("Begin MoveHumanoidCommandsPackage");
+        sb.Append(PropertiesToSting(n));
+        sb.Append(spaces);
+        sb.AppendLine("End MoveHumanoidCommandsPackage");
+        return sb.ToString();
+    }
+
+    public string PropertiesToSting(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var nextN = n + 4;
+        var sb = new StringBuilder();
+        if(Commands == null)
+        {
+            sb.Append(spaces);
+            sb.AppendLine("Commands == null");
+        }
+        else
+        {
+            sb.Append(spaces);
+            sb.Append("Commands.Count = ");
+            sb.AppendLine(Commands.Count.ToString());
+            sb.Append(spaces);
+            sb.AppendLine("Begin Commands");
+            foreach(var command in Commands)
+            {
+                sb.Append(command.ToString(nextN));
+            }
+            sb.Append(spaces);
+            sb.AppendLine("End Commands");
+        }
+        return sb.ToString();
+    }
+}
+
+public abstract class MoveHumanoidCommand: IMoveHumanoidCommand
+{
+    public abstract MoveHumanoidCommandKind Kind { get; }
+    public abstract string ToString(int n);
+    public virtual string PropertiesToSting(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.Append(spaces);
+        sb.Append("Kind = ");
+        sb.AppendLine(Kind.ToString());
+
+        return sb.ToString();
+    }
+}
+
+public class HumanoidHStateCommand: MoveHumanoidCommand, IHumanoidHStateCommand
+{
+    public override MoveHumanoidCommandKind Kind
+    {
+        get
+        {
+            return MoveHumanoidCommandKind.HState;
+        }
+    }
+
+    public HumanoidHState State { get; set; }
+    public Vector3? TargetPosition { get; set; }
+
+    public override string ToString()
+    {
+        return ToString(0);
+    }
+
+    public override string ToString(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.Append(spaces);
+        sb.AppendLine("Begin HumanoidHStateCommand");
+        sb.Append(PropertiesToSting(n));
+        sb.Append(spaces);
+        sb.AppendLine("End HumanoidHStateCommand");
+        return sb.ToString();
+    }
+
+    public override string PropertiesToSting(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.Append(base.PropertiesToSting(n));
+        sb.Append(spaces);
+        sb.Append("State = ");
+        sb.AppendLine(State.ToString());
+        if(TargetPosition.HasValue)
+        {
+            var targetPosition = TargetPosition.Value;
+
+            sb.Append(spaces);
+            sb.Append("TargetPosition = ");
+            sb.AppendLine(TargetPosition.ToString());
+        }
+        else
+        {
+            sb.Append(spaces);
+            sb.AppendLine("TargetPosition = null");
+        }
+        return sb.ToString();
+    }
+}
+
+public class HumanoidVStateCommand: MoveHumanoidCommand, IHumanoidVStateCommand
+{
+    public override MoveHumanoidCommandKind Kind
+    {
+        get
+        {
+            return MoveHumanoidCommandKind.VState;
+        }
+    }
+
+    public HumanoidVState State { get; set; }
+
+    public override string ToString()
+    {
+        return ToString(0);
+    }
+
+    public override string ToString(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.Append(spaces);
+        sb.AppendLine("Begin HumanoidVStateCommand");
+        sb.Append(PropertiesToSting(n));
+        sb.Append(spaces);
+        sb.AppendLine("End HumanoidVStateCommand");
+        return sb.ToString();
+    }
+
+    public override string PropertiesToSting(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.Append(base.PropertiesToSting(n));
+        sb.Append(spaces);
+        sb.Append("State = ");
+        sb.AppendLine(State.ToString());
+        return sb.ToString();
+    }
+}
+
+public class HumanoidHandsStateCommand: MoveHumanoidCommand, IHumanoidHandsStateCommand
+{
+    public override MoveHumanoidCommandKind Kind
+    {
+        get
+        {
+            return MoveHumanoidCommandKind.HandsState;
+        }
+    }
+
+    public HumanoidHandsState State { get; set; }
+
+    public override string ToString()
+    {
+        return ToString(0);
+    }
+
+    public override string ToString(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.Append(spaces);
+        sb.AppendLine("Begin HumanoidHandsStateCommand");
+        sb.Append(PropertiesToSting(n));
+        sb.Append(spaces);
+        sb.AppendLine("End HumanoidHandsStateCommand");
+        return sb.ToString();
+    }
+
+    public override string PropertiesToSting(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.Append(base.PropertiesToSting(n));
+        sb.Append(spaces);
+        sb.Append("State = ");
+        sb.AppendLine(State.ToString());
+        return sb.ToString();
+    }
+}
+
+public class HumanoidHandsActionStateCommand: MoveHumanoidCommand, IHumanoidHandsActionStateCommand
+{
+    public override MoveHumanoidCommandKind Kind
+    {
+        get
+        {
+            return MoveHumanoidCommandKind.HandsActionState;
+        }
+    }
+
+    public HumanoidHandsActionState State { get; set; }
+
+    public override string ToString()
+    {
+        return ToString(0);
+    }
+
+    public override string ToString(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.Append(spaces);
+        sb.AppendLine("Begin HumanoidHandsActionStateCommand");
+        sb.Append(PropertiesToSting(n));
+        sb.Append(spaces);
+        sb.AppendLine("End HumanoidHandsActionStateCommand");
+        return sb.ToString();
+    }
+
+    public override string PropertiesToSting(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.Append(base.PropertiesToSting(n));
+        sb.Append(spaces);
+        sb.Append("State = ");
+        sb.AppendLine(State.ToString());
+        return sb.ToString();
+    }
+}
+//----
+
+public interface IMoveHumanoidController
+{
+    void Execute(IMoveHumanoidCommand command);
+    void Execute(IMoveHumanoidCommandsPackage package);
+}
+
+public class EnemyController : MonoBehaviour, IMoveHumanoidController
+{
+    private class NewState : IObjectToString
+    {
+        public HumanoidHState? HState { get; set; }
+        public Vector3? TargetPosition { get; set; }
+        public HumanoidVState? VState { get; set; }
+        public HumanoidHandsState? HandsState { get; set; }
+        public HumanoidHandsActionState? HandsActionState { get; set; }
+
+        public override string ToString()
+        {
+            return ToString(0);
+        }
+
+        public string ToString(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.Append(spaces);
+            sb.AppendLine("Begin HumanoidHandsActionStateCommand");
+            sb.Append(PropertiesToSting(n));
+            sb.Append(spaces);
+            sb.AppendLine("End HumanoidHandsActionStateCommand");
+            return sb.ToString();
+        }
+
+        public string PropertiesToSting(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.Append(spaces);
+            sb.Append("State = ");
+            sb.AppendLine(State.ToString());
+            if (TargetPosition.HasValue)
+            {
+                var targetPosition = TargetPosition.Value;
+
+                sb.Append(spaces);
+                sb.Append("TargetPosition = ");
+                sb.AppendLine(TargetPosition.ToString());
+            }
+            else
+            {
+                sb.Append(spaces);
+                sb.AppendLine("TargetPosition = null");
+            }
+            sb.Append(spaces);
+            sb.Append("State = ");
+            sb.AppendLine(State.ToString());
+
+            sb.Append(spaces);
+            sb.Append("State = ");
+            sb.AppendLine(State.ToString());
+
+            sb.Append(spaces);
+            sb.Append("State = ");
+            sb.AppendLine(State.ToString());
+            return sb.ToString();
+        }
+    }
+
     [SerializeField] float m_MoveSpeedMultiplier = 1f;
     [SerializeField] float m_GroundCheckDistance = 0.3f;
     [SerializeField] float m_MovingTurnSpeed = 360;
@@ -59,120 +442,152 @@ public class EnemyController : MonoBehaviour {
         UpdateAnimator();
     }
 
-    private EnemyHState mHState = EnemyHState.Stop;
+    private HumanoidHState mHState = HumanoidHState.Stop;
 
-    public EnemyHState HState
+    public HumanoidHState HState
     {
         get
         {
             return mHState;
         }
+    }
 
-        set
+    private Vector3? mTargetPosition;
+
+    public Vector3? TargetPosition
+    {
+        get
         {
-            if(mHState == value)
-            {
-                return;
-            }
-
-            mHState = value;
-
-            UpdateAnimator();
+            return mTargetPosition;
         }
     }
 
-    private EnemyVState mVState = EnemyVState.Ground;
+    private HumanoidVState mVState = HumanoidVState.Ground;
 
-    public EnemyVState VState
+    public HumanoidVState VState
     {
         get
         {
             return mVState;
         }
-
-        set
-        {
-            if(mVState == value)
-            {
-                return;
-            }
-
-            mVState = value;
-
-            UpdateAnimator();
-        }
     }
 
 
-    private EnemyHandsState mHandsState = EnemyHandsState.HasRifle;
+    private HumanoidHandsState mHandsState = HumanoidHandsState.HasRifle;
 
-    public EnemyHandsState HandsState
+    public HumanoidHandsState HandsState
     {
         get
         {
             return mHandsState;
         }
+    }
 
-        set
+    private HumanoidHandsActionState mHandsActionState = HumanoidHandsActionState.Empty;
+
+    public HumanoidHandsActionState HandsActionState
+    {
+        get
         {
-            if(mHandsState == value)
-            {
-                return;
-            }
-
-            mHandsState = value;
-
-            UpdateAnimator();
+            return mHandsActionState;
         }
     }
 
-    public void Move(Vector3 targetPosition)
+    public void Execute(IMoveHumanoidCommand command)
+    {
+        var commandsList = new MoveHumanoidCommandsPackage();
+        commandsList.Commands.Add(command);
+        Execute(commandsList);
+    }
+
+    public void Execute(IMoveHumanoidCommandsPackage package)
     {
 #if UNITY_EDITOR
-        Debug.Log("EnemyController Move targetPosition = " + targetPosition);
+        Debug.Log("EnemyController Execute package = " + package);
 #endif
-        // convert the world relative moveInput vector into a local-relative
-        // turn amount and forward amount required to head in the desired
-        // direction.
-        //        if (targetPosition.magnitude > 1f)
-        //        {
-        //            targetPosition.Normalize();
-        //        }
 
-        //#if UNITY_EDITOR
-        //        Debug.Log("EnemyController Move NEXT targetPosition = " + targetPosition);
-        //#endif
+        var commandsList = package.Commands;
 
-        //        targetPosition = transform.InverseTransformDirection(targetPosition);
+        var hStateCommandsList = new List<IHumanoidHStateCommand>();
+        var vStateCommandsList = new List<IHumanoidVStateCommand>();
+        var handsStateCommandsList = new List<IHumanoidHandsStateCommand>();
+        var handsActionStateCommandsList = new List<IHumanoidHandsActionStateCommand>();
 
-        //#if UNITY_EDITOR
-        //        Debug.Log("EnemyController Move NEXT (1) targetPosition = " + targetPosition);
-        //#endif
+        foreach(var command in commandsList)
+        {
+            var kind = command.Kind;
 
-        //        CheckGroundStatus();
-        //        targetPosition = Vector3.ProjectOnPlane(targetPosition, m_GroundNormal);
+            switch(kind)
+            {
+                case MoveHumanoidCommandKind.HState:
+                    hStateCommandsList.Add(command as IHumanoidHStateCommand);
+                    break;
 
-        //#if UNITY_EDITOR
-        //        Debug.Log("EnemyController Move NEXT (2) targetPosition = " + targetPosition);
-        //#endif
+                case MoveHumanoidCommandKind.VState:
+                    vStateCommandsList.Add(command as IHumanoidVStateCommand);
+                    break;
 
-        //        m_TurnAmount = Mathf.Atan2(targetPosition.x, targetPosition.z);
-        //        m_ForwardAmount = targetPosition.z;
+                case MoveHumanoidCommandKind.HandsState:
+                    handsStateCommandsList.Add(command as IHumanoidHandsStateCommand);
+                    break;
 
-        //ApplyExtraTurnRotation();
+                case MoveHumanoidCommandKind.HandsActionState:
+                    handsActionStateCommandsList.Add(command as IHumanoidHandsActionStateCommand);
+                    break;
 
-        mHState = EnemyHState.Walk;
+                default: throw new ArgumentOutOfRangeException("kind", kind, null);
+            }
+        }
 
-        UpdateAnimator();
+#if UNITY_EDITOR
+        Debug.Log("EnemyController Execute hStateCommandsList.Count = " + hStateCommandsList.Count);
+        Debug.Log("EnemyController Execute vStateCommandsList.Count = " + vStateCommandsList.Count);
+        Debug.Log("EnemyController Execute handsStateCommandsList.Count = " + handsStateCommandsList.Count);
+        Debug.Log("EnemyController Execute handsActionStateCommandsList.Count = " + handsActionStateCommandsList.Count);
+#endif
 
-        //_navMeshAgent.Move(targetPosition);
-        _navMeshAgent.SetDestination(targetPosition);
+        //throw new NotImplementedException();
     }
 
-    public void Stop()
+    /*
+    public interface IHumanoidHStateCommand: IMoveHumanoidCommand
     {
-        _navMeshAgent.ResetPath();
+        HumanoidHState State { get; }
+        Vector3? TargetPosition { get; }
     }
+
+    public interface IHumanoidVStateCommand : IMoveHumanoidCommand
+    {
+        HumanoidVState State { get; }
+    }
+
+    public interface IHumanoidHandsStateCommand : IMoveHumanoidCommand
+    {
+        HumanoidHandsState State { get; }
+    }
+
+    public interface IHumanoidHandsActionStateCommand : IMoveHumanoidCommand
+    {
+        HumanoidHandsActionState State { get; }
+    } 
+    */
+    //    public void Move(Vector3 targetPosition)
+    //    {
+    //#if UNITY_EDITOR
+    //        Debug.Log("EnemyController Move targetPosition = " + targetPosition);
+    //#endif
+
+    //        mHState = HumanoidHState.Walk;
+
+    //        UpdateAnimator();
+
+    //        _navMeshAgent.SetDestination(targetPosition);
+    //    }
+
+    //    public void Stop()
+    //    {
+    //        _navMeshAgent.ResetPath();
+    //    }
 
     private void UpdateAnimator()
     {
@@ -184,22 +599,22 @@ public class EnemyController : MonoBehaviour {
 
         switch (mHandsState)
         {
-            case EnemyHandsState.FreeHands:
+            case HumanoidHandsState.FreeHands:
                 hasRifle = false;
                 break;
 
-            case EnemyHandsState.HasRifle:
+            case HumanoidHandsState.HasRifle:
                 hasRifle = true;
                 break;
         }
 
         switch(mHState)
         {
-            case EnemyHState.Stop:
+            case HumanoidHState.Stop:
                 walk = false;
                 break;
 
-            case EnemyHState.Walk:
+            case HumanoidHState.Walk:
                 walk = true;
                 break;
         }
@@ -207,50 +622,6 @@ public class EnemyController : MonoBehaviour {
         m_Animator.SetBool("hasRifle", hasRifle);
         m_Animator.SetBool("walk", walk);
     }
-
-    //void ApplyExtraTurnRotation()
-    //{
-    //    // help the character turn faster (this is in addition to root rotation in the animation)
-    //    var turnSpeed = Mathf.Lerp(m_StationaryTurnSpeed, m_MovingTurnSpeed, m_ForwardAmount);
-    //    transform.Rotate(0, m_TurnAmount * turnSpeed * Time.deltaTime, 0);
-    //}
-
-//    void CheckGroundStatus()
-//    {
-//        RaycastHit hitInfo;
-//#if UNITY_EDITOR
-//        // helper to visualise the ground check ray in the scene view
-//        Debug.DrawLine(transform.position + (Vector3.up * 0.1f), transform.position + (Vector3.up * 0.1f) + (Vector3.down * m_GroundCheckDistance));
-//#endif
-//        // 0.1f is a small offset to start the ray from inside the character
-//        // it is also good to note that the transform position in the sample assets is at the base of the character
-//        if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
-//        {
-//            m_GroundNormal = hitInfo.normal;
-//            m_IsGrounded = true;
-//            m_Animator.applyRootMotion = true;
-//        }
-//        else
-//        {
-//            m_IsGrounded = false;
-//            m_GroundNormal = Vector3.up;
-//            m_Animator.applyRootMotion = false;
-//        }
-//    }
-
-    //public void OnAnimatorMove()
-    //{
-    //    // we implement this function to override the default root motion.
-    //    // this allows us to modify the positional speed before it's applied.
-    //    if (m_IsGrounded && Time.deltaTime > 0)
-    //    {
-    //        var v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
-
-    //        // we preserve the existing y part of the current velocity.
-    //        v.y = m_Rigidbody.velocity.y;
-    //        m_Rigidbody.velocity = v;
-    //    }
-    //}
 
     // Update is called once per frame
     void Update () {
