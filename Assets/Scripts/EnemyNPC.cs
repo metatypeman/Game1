@@ -6,21 +6,35 @@ using UnityStandardAssets.CrossPlatformInput;
 [RequireComponent(typeof(EnemyController))]
 public class EnemyNPC : MonoBehaviour {
     private EnemyController mEnemyController;
-    GameObject mTargetCube;
+    //GameObject mTargetCube;
     private Transform m_Cam;                  // A reference to the main camera in the scenes transform
     private Vector3 m_CamForward;             // The current forward direction of the camera
     private Vector3 m_Move;
     public float surfaceOffset = 1.5f;
     public GameObject setTargetOn;
+    private int n = 0;
+    private int maxN = 3;
+    private GameObject Cube_1;
+    private GameObject Cube_2;
+    private GameObject Cube_3;
 
     // Use this for initialization
     void Start () {
         mEnemyController = GetComponent<EnemyController>();
+        mEnemyController.OnAchieveDestinationOfMoving += () => {
+            if(n < maxN)
+            {
+                Debug.Log($"EnemyController Start goal {n} had achieved!!!!");
+                RunToTarget();
+            }
+        };
         m_Cam = Camera.main.transform;
-        mTargetCube = GameObject.Find("Cube_1");
+        //mTargetCube = GameObject.Find("Cube_1");
+        Cube_1 = GameObject.Find("Cube_1");
+        Cube_2 = GameObject.Find("Cube_2");
+        Cube_3 = GameObject.Find("Cube_2");
     }
 	
-
 	// Update is called once per frame
 	void Update () {
         //Debug.Log("EnemyController Update");
@@ -99,11 +113,14 @@ public class EnemyNPC : MonoBehaviour {
                 {
                     mIsPPressed = true;
 
-                    var moveCommand = new HumanoidHStateCommand();
-                    moveCommand.State = HumanoidHState.Walk;
-                    moveCommand.TargetPosition = mTargetCube.transform.position;
+                    n = 0;
+                    RunToTarget();
 
-                    mEnemyController.Execute(moveCommand);
+                    //var moveCommand = new HumanoidHStateCommand();
+                    //moveCommand.State = HumanoidHState.Walk;
+                    //moveCommand.TargetPosition = mTargetCube.transform.position;
+
+                    //mEnemyController.Execute(moveCommand);
                 }
             }
             else
@@ -120,5 +137,45 @@ public class EnemyNPC : MonoBehaviour {
                 }            
             }
         }   
+    }
+
+    private void RunToTarget()
+    {
+        if(n >= maxN)
+        {
+            return;
+        }
+
+        n++;
+
+        var targetName = $"Cube_{n}";
+
+        Debug.Log($"EnemyController RunToTarget targetName = {targetName}");
+
+        GameObject target = null;
+
+        switch(n)
+        {
+            case 1:
+                target = Cube_1;
+                break;
+
+            case 2:
+                target = Cube_2;
+                break;
+
+            case 3:
+                target = Cube_3;
+                break;
+
+            default:
+                return;
+        }
+
+        var moveCommand = new HumanoidHStateCommand();
+        moveCommand.State = HumanoidHState.Walk;
+        moveCommand.TargetPosition = target.transform.position;
+
+        mEnemyController.Execute(moveCommand);
     }
 }
