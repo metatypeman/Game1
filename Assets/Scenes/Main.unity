@@ -406,13 +406,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 763419340}
-  m_LocalRotation: {x: 0.49539155, y: -0.49752337, z: 0.5010092, w: 0.50601137}
-  m_LocalPosition: {x: 0.000000032240322, y: -0.0000005691916, z: 0.00000613827}
+  m_LocalRotation: {x: -0.010815155, y: 0.31292418, z: 0.0019175212, w: 0.9497146}
+  m_LocalPosition: {x: 222.96, y: 1.81, z: 79.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1160415926}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 89.094, y: -26.746002, z: 63.090004}
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: -1.246, y: 36.475002, z: -0.179}
 --- !u!4 &838379114 stripped
 Transform:
   m_PrefabParentObject: {fileID: 401960, guid: 7737647c22c1fc64a88d5cd030c352ce, type: 2}
@@ -584,10 +584,6 @@ Transform:
   m_Father: {fileID: 254981519}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1160415926 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 400002, guid: 71dc0d4e139eab246a88243a38200afd, type: 3}
-  m_PrefabInternal: {fileID: 1427371210}
 --- !u!1 &1170055801 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100086, guid: 71dc0d4e139eab246a88243a38200afd, type: 3}
@@ -618,6 +614,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c999664f41c3344d92bc0abb3917439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  surfaceOffset: 1.5
+  setTargetOn: {fileID: 0}
 --- !u!136 &1170055804
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -657,7 +655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c292cc434c8a1ad47932dde0400bb701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MoveSpeedMultiplier: 3
+  m_MoveSpeedMultiplier: 1
   m_GroundCheckDistance: 0.3
   m_MovingTurnSpeed: 360
   m_StationaryTurnSpeed: 180
@@ -1154,7 +1152,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1827129432}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
