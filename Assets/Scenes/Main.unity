@@ -767,10 +767,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e67e57b2910a9374b94902d8c7190d16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Head: {fileID: 0}
-  Left: {fileID: 0}
-  Right: {fileID: 0}
-  isIkActive: 0
+  Head: {fileID: 553276081}
+  Left: {fileID: 2036041608}
+  Right: {fileID: 882258603}
+  isIkActive: 1
 --- !u!114 &1170055803
 MonoBehaviour:
   m_ObjectHideFlags: 0

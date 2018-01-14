@@ -154,4 +154,8 @@ public class EnemyNPC : MonoBehaviour {
 
         mEnemyController.Execute(moveCommand);
     }
+
+    void OnAnimatorIK(int layerIndex)
+    {
+    }
 }

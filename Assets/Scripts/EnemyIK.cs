@@ -27,9 +27,31 @@ public class EnemyIK : MonoBehaviour
 
     void OnAnimatorIK(int layerIndex)
     {
+        if (!mAnim)
+            return;
+
         if (isIkActive)
         {
-            //Debug.Log("EnemyIK OnAnimatorIK isIkActive");
-        }        
+            if (!Head)
+                return;
+
+            //mAnim.SetLookAtWeight(1);
+            //mAnim.SetLookAtPosition(Target.position);
+            //Head.LookAt(Target);
+
+            if (!Left)
+                return;
+            mAnim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+            mAnim.SetIKPosition(AvatarIKGoal.RightHand, Right.position);
+
+            mAnim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0.3f);
+            mAnim.SetIKPosition(AvatarIKGoal.LeftHand, Left.position);
+        }
+
+        //if (isGroup)
+        //{
+        //    Left.SetParent(Head);
+        //    Right.SetParent(Head);
+        //}
     }
 }
