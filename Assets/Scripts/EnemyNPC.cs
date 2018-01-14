@@ -14,9 +14,6 @@ public class EnemyNPC : MonoBehaviour {
     public GameObject setTargetOn;
     private int n = 0;
     private int maxN = 3;
-    private GameObject Cube_1;
-    private GameObject Cube_2;
-    private GameObject Cube_3;
 
     // Use this for initialization
     void Start () {
@@ -30,9 +27,6 @@ public class EnemyNPC : MonoBehaviour {
         };
         m_Cam = Camera.main.transform;
         //mTargetCube = GameObject.Find("Cube_1");
-        Cube_1 = GameObject.Find("Cube_1");
-        Cube_2 = GameObject.Find("Cube_2");
-        Cube_3 = GameObject.Find("Cube_2");
     }
 	
 	// Update is called once per frame
@@ -152,25 +146,7 @@ public class EnemyNPC : MonoBehaviour {
 
         Debug.Log($"EnemyController RunToTarget targetName = {targetName}");
 
-        GameObject target = null;
-
-        switch(n)
-        {
-            case 1:
-                target = Cube_1;
-                break;
-
-            case 2:
-                target = Cube_2;
-                break;
-
-            case 3:
-                target = Cube_3;
-                break;
-
-            default:
-                return;
-        }
+        var target = GameObject.Find(targetName);
 
         var moveCommand = new HumanoidHStateCommand();
         moveCommand.State = HumanoidHState.Walk;

@@ -118,22 +118,17 @@ public class MoveHumanoidCommandsPackage: IMoveHumanoidCommandsPackage
         var sb = new StringBuilder();
         if(Commands == null)
         {
-            sb.Append(spaces);
-            sb.AppendLine($"Commands == null");
+            sb.AppendLine($"{spaces}{nameof(Commands)} == null");
         }
         else
         {
-            sb.Append(spaces);
-            sb.Append("Commands.Count = ");
-            sb.AppendLine(Commands.Count.ToString());
-            sb.Append(spaces);
-            sb.AppendLine("Begin Commands");
+            sb.AppendLine($"{spaces}{nameof(Commands)}.Count = {Commands.Count}" .ToString());
+            sb.AppendLine($"{spaces}Begin {nameof(Commands)}");
             foreach(var command in Commands)
             {
                 sb.Append(command.ToString(nextN));
             }
-            sb.Append(spaces);
-            sb.AppendLine("End Commands");
+            sb.AppendLine($"{spaces}End {nameof(Commands)}");
         }
         return sb.ToString();
     }
@@ -147,9 +142,7 @@ public abstract class MoveHumanoidCommand: IMoveHumanoidCommand
     {
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
-        sb.Append(spaces);
-        sb.Append("Kind = ");
-        sb.AppendLine(Kind.ToString());
+        sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
 
         return sb.ToString();
     }
@@ -170,11 +163,9 @@ public class HumanoidHStateCommand: MoveHumanoidCommand, IHumanoidHStateCommand
     {
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
-        sb.Append(spaces);
-        sb.AppendLine("Begin HumanoidHStateCommand");
+        sb.AppendLine($"{spaces}Begin {nameof(HumanoidHStateCommand)}");
         sb.Append(PropertiesToSting(n));
-        sb.Append(spaces);
-        sb.AppendLine("End HumanoidHStateCommand");
+        sb.AppendLine($"{spaces}End {nameof(HumanoidHStateCommand)}");
         return sb.ToString();
     }
 
@@ -183,21 +174,16 @@ public class HumanoidHStateCommand: MoveHumanoidCommand, IHumanoidHStateCommand
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
         sb.Append(base.PropertiesToSting(n));
-        sb.Append(spaces);
-        sb.Append("State = ");
-        sb.AppendLine(State.ToString());
+        sb.AppendLine($"{spaces}{nameof(State)} = {State}");
+
         if(TargetPosition.HasValue)
         {
             var targetPosition = TargetPosition.Value;
-
-            sb.Append(spaces);
-            sb.Append("TargetPosition = ");
-            sb.AppendLine(TargetPosition.ToString());
+            sb.AppendLine($"{spaces}{nameof(TargetPosition)} = {TargetPosition}");
         }
         else
         {
-            sb.Append(spaces);
-            sb.AppendLine("TargetPosition = null");
+            sb.AppendLine($"{spaces}{nameof(TargetPosition)} = null");
         }
         return sb.ToString();
     }
@@ -205,14 +191,7 @@ public class HumanoidHStateCommand: MoveHumanoidCommand, IHumanoidHStateCommand
 
 public class HumanoidVStateCommand: MoveHumanoidCommand, IHumanoidVStateCommand
 {
-    public override MoveHumanoidCommandKind Kind
-    {
-        get
-        {
-            return MoveHumanoidCommandKind.VState;
-        }
-    }
-
+    public override MoveHumanoidCommandKind Kind => MoveHumanoidCommandKind.VState;
     public HumanoidVState State { get; set; }
 
     public override string ToString()
@@ -224,11 +203,9 @@ public class HumanoidVStateCommand: MoveHumanoidCommand, IHumanoidVStateCommand
     {
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
-        sb.Append(spaces);
-        sb.AppendLine("Begin HumanoidVStateCommand");
+        sb.AppendLine($"{spaces}Begin {nameof(HumanoidVStateCommand)}");
         sb.Append(PropertiesToSting(n));
-        sb.Append(spaces);
-        sb.AppendLine("End HumanoidVStateCommand");
+        sb.AppendLine($"{spaces}End {nameof(HumanoidVStateCommand)}");
         return sb.ToString();
     }
 
@@ -237,23 +214,14 @@ public class HumanoidVStateCommand: MoveHumanoidCommand, IHumanoidVStateCommand
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
         sb.Append(base.PropertiesToSting(n));
-        sb.Append(spaces);
-        sb.Append("State = ");
-        sb.AppendLine(State.ToString());
+        sb.AppendLine($"{spaces}{nameof(State)} = {State}");
         return sb.ToString();
     }
 }
 
 public class HumanoidHandsStateCommand: MoveHumanoidCommand, IHumanoidHandsStateCommand
 {
-    public override MoveHumanoidCommandKind Kind
-    {
-        get
-        {
-            return MoveHumanoidCommandKind.HandsState;
-        }
-    }
-
+    public override MoveHumanoidCommandKind Kind => MoveHumanoidCommandKind.HandsState;
     public HumanoidHandsState State { get; set; }
 
     public override string ToString()
@@ -265,11 +233,9 @@ public class HumanoidHandsStateCommand: MoveHumanoidCommand, IHumanoidHandsState
     {
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
-        sb.Append(spaces);
-        sb.AppendLine("Begin HumanoidHandsStateCommand");
+        sb.AppendLine($"{spaces}Begin {nameof(HumanoidHandsStateCommand)}");
         sb.Append(PropertiesToSting(n));
-        sb.Append(spaces);
-        sb.AppendLine("End HumanoidHandsStateCommand");
+        sb.AppendLine($"{spaces}End {nameof(HumanoidHandsStateCommand)}");
         return sb.ToString();
     }
 
@@ -278,22 +244,14 @@ public class HumanoidHandsStateCommand: MoveHumanoidCommand, IHumanoidHandsState
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
         sb.Append(base.PropertiesToSting(n));
-        sb.Append(spaces);
-        sb.Append("State = ");
-        sb.AppendLine(State.ToString());
+        sb.AppendLine($"{spaces}{nameof(State)} = {State}");
         return sb.ToString();
     }
 }
 
 public class HumanoidHandsActionStateCommand: MoveHumanoidCommand, IHumanoidHandsActionStateCommand
 {
-    public override MoveHumanoidCommandKind Kind
-    {
-        get
-        {
-            return MoveHumanoidCommandKind.HandsActionState;
-        }
-    }
+    public override MoveHumanoidCommandKind Kind => MoveHumanoidCommandKind.HandsActionState;
 
     public HumanoidHandsActionState State { get; set; }
 
@@ -306,11 +264,9 @@ public class HumanoidHandsActionStateCommand: MoveHumanoidCommand, IHumanoidHand
     {
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
-        sb.Append(spaces);
-        sb.AppendLine("Begin HumanoidHandsActionStateCommand");
+        sb.AppendLine($"{spaces}Begin {nameof(HumanoidHandsActionStateCommand)}");
         sb.Append(PropertiesToSting(n));
-        sb.Append(spaces);
-        sb.AppendLine("End HumanoidHandsActionStateCommand");
+        sb.AppendLine($"{spaces}End {nameof(HumanoidHandsActionStateCommand)}");
         return sb.ToString();
     }
 
@@ -319,9 +275,7 @@ public class HumanoidHandsActionStateCommand: MoveHumanoidCommand, IHumanoidHand
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
         sb.Append(base.PropertiesToSting(n));
-        sb.Append(spaces);
-        sb.Append("State = ");
-        sb.AppendLine(State.ToString());
+        sb.AppendLine($"{spaces}{nameof(State)} = {State}");
         return sb.ToString();
     }
 }
@@ -350,11 +304,9 @@ public class TargetStateOfHumanoidController : IObjectToString
     {
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
-        sb.Append(spaces);
-        sb.AppendLine("Begin TargetStateOfHumanoidController");
+        sb.AppendLine($"{spaces}Begin {nameof(TargetStateOfHumanoidController)}");
         sb.Append(PropertiesToSting(n));
-        sb.Append(spaces);
-        sb.AppendLine("End TargetStateOfHumanoidController");
+        sb.AppendLine($"{spaces}End {nameof(TargetStateOfHumanoidController)}");
         return sb.ToString();
     }
 
@@ -365,71 +317,51 @@ public class TargetStateOfHumanoidController : IObjectToString
         if (HState.HasValue)
         {
             var state = HState.Value;
-
-            sb.Append(spaces);
-            sb.Append("HState = ");
-            sb.AppendLine(state.ToString());
+            sb.AppendLine($"{spaces}{nameof(HState)} = {state}");
         }
         else
         {
-            sb.Append(spaces);
-            sb.AppendLine("HState = null");
+            sb.AppendLine($"{spaces}{nameof(HState)} = null");
         }
 
         if (TargetPosition.HasValue)
         {
             var targetPosition = TargetPosition.Value;
-
-            sb.Append(spaces);
-            sb.Append("TargetPosition = ");
-            sb.AppendLine(TargetPosition.ToString());
+            sb.AppendLine($"{spaces}{nameof(TargetPosition)} = {TargetPosition}");
         }
         else
         {
-            sb.Append(spaces);
-            sb.AppendLine("TargetPosition = null");
+            sb.AppendLine($"{spaces}{nameof(TargetPosition)} = null");
         }
 
         if (VState.HasValue)
         {
             var state = VState.Value;
-
-            sb.Append(spaces);
-            sb.Append("VState = ");
-            sb.AppendLine(state.ToString());
+            sb.AppendLine($"{spaces}{nameof(VState)} = {state}");
         }
         else
         {
-            sb.Append(spaces);
-            sb.AppendLine("VState = null");
+            sb.AppendLine($"{spaces}{nameof(VState)} = null");
         }
 
         if (HandsState.HasValue)
         {
             var state = HandsState.Value;
-
-            sb.Append(spaces);
-            sb.Append("HandsState = ");
-            sb.AppendLine(state.ToString());
+            sb.AppendLine($"{spaces}{nameof(HandsState)} = {state}");
         }
         else
         {
-            sb.Append(spaces);
-            sb.AppendLine("HandsState = null");
+            sb.AppendLine($"{spaces}{nameof(HandsState)} = null");
         }
 
         if (HandsActionState.HasValue)
         {
             var state = HandsActionState.Value;
-
-            sb.Append(spaces);
-            sb.Append("HandsActionState = ");
-            sb.AppendLine(state.ToString());
+            sb.AppendLine($"{spaces}{nameof(HandsActionState)} = {state}");
         }
         else
         {
-            sb.Append(spaces);
-            sb.AppendLine("HandsActionState = null");
+            sb.AppendLine($"{spaces}{nameof(HandsActionState)} = null");
         }
         return sb.ToString();
     }
@@ -472,11 +404,9 @@ public class StatesOfHumanoidController : IObjectToString
     {
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
-        sb.Append(spaces);
-        sb.AppendLine("Begin StatesOfHumanoidController");
+        sb.AppendLine($"{spaces}Begin {nameof(StatesOfHumanoidController)}");
         sb.Append(PropertiesToSting(n));
-        sb.Append(spaces);
-        sb.AppendLine("End StatesOfHumanoidController");
+        sb.AppendLine($"{spaces}End {nameof(StatesOfHumanoidController)}");
         return sb.ToString();
     }
 
@@ -485,35 +415,21 @@ public class StatesOfHumanoidController : IObjectToString
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
 
-        sb.Append(spaces);
-        sb.Append("HState = ");
-        sb.AppendLine(HState.ToString());
+        sb.AppendLine($"{spaces}{nameof(HState)} = {HState}");
 
         if (TargetPosition.HasValue)
         {
             var targetPosition = TargetPosition.Value;
-
-            sb.Append(spaces);
-            sb.Append("TargetPosition = ");
-            sb.AppendLine(TargetPosition.ToString());
+            sb.AppendLine($"{spaces}{nameof(TargetPosition)} = {TargetPosition}");
         }
         else
         {
-            sb.Append(spaces);
-            sb.AppendLine("TargetPosition = null");
+            sb.AppendLine($"{spaces}{nameof(TargetPosition)} = null");
         }
 
-        sb.Append(spaces);
-        sb.Append("VState = ");
-        sb.AppendLine(VState.ToString());
-
-        sb.Append(spaces);
-        sb.Append("HandsState = ");
-        sb.AppendLine(HandsState.ToString());
-
-        sb.Append(spaces);
-        sb.Append("HandsActionState = ");
-        sb.AppendLine(HandsActionState.ToString());
+        sb.AppendLine($"{spaces}{nameof(VState)} = {VState}");
+        sb.AppendLine($"{spaces}{nameof(HandsState)} = {HandsState}");
+        sb.AppendLine($"{spaces}{nameof(HandsActionState)} = {HandsActionState}");
 
         return sb.ToString();
     }
@@ -543,11 +459,9 @@ public class BehaviourFlagsOfHumanoidController : IObjectToString
     {
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
-        sb.Append(spaces);
-        sb.AppendLine("Begin BehaviourFlagsOfHumanoidController");
+        sb.AppendLine($"{spaces}Begin {nameof(BehaviourFlagsOfHumanoidController)}");
         sb.Append(PropertiesToSting(n));
-        sb.Append(spaces);
-        sb.AppendLine("End BehaviourFlagsOfHumanoidController");
+        sb.AppendLine($"{spaces}End {nameof(BehaviourFlagsOfHumanoidController)}");
         return sb.ToString();
     }
 
@@ -556,21 +470,10 @@ public class BehaviourFlagsOfHumanoidController : IObjectToString
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
 
-        sb.Append(spaces);
-        sb.Append("HasRifle = ");
-        sb.AppendLine(HasRifle.ToString());
-
-        sb.Append(spaces);
-        sb.Append("Walk = ");
-        sb.AppendLine(Walk.ToString());
-
-        sb.Append(spaces);
-        sb.Append("IsAim = ");
-        sb.AppendLine(IsAim.ToString());
-
-        sb.Append(spaces);
-        sb.Append("IsDead = ");
-        sb.AppendLine(IsDead.ToString());
+        sb.AppendLine($"{spaces}{nameof(HasRifle)} = {HasRifle}");
+        sb.AppendLine($"{spaces}{nameof(Walk)} = {Walk}");
+        sb.AppendLine($"{spaces}{nameof(IsAim)} = {IsAim}");
+        sb.AppendLine($"{spaces}{nameof(IsDead)} = {IsDead}");
 
         return sb.ToString();
     }
@@ -583,9 +486,9 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     [SerializeField] float m_MovingTurnSpeed = 360;
     [SerializeField] float m_StationaryTurnSpeed = 180;
 
-    private Rigidbody m_Rigidbody;
-    private Animator m_Animator;
-    private CapsuleCollider m_Capsule;
+    private Rigidbody mRigidbody;
+    private Animator mAnimator;
+    private CapsuleCollider mCapsule;
 
     private float m_CapsuleHeight;
     private Vector3 m_CapsuleCenter;
@@ -602,15 +505,15 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         mStates = new StatesOfHumanoidController();
         mBehaviourFlags = new BehaviourFlagsOfHumanoidController();
 
-        m_Animator = GetComponent<Animator>();
-        m_Rigidbody = GetComponent<Rigidbody>();
-        m_Capsule = GetComponent<CapsuleCollider>();
+        mAnimator = GetComponent<Animator>();
+        mRigidbody = GetComponent<Rigidbody>();
+        mCapsule = GetComponent<CapsuleCollider>();
         mNavMeshAgent = GetComponent<NavMeshAgent>();
 
-        m_CapsuleHeight = m_Capsule.height;
-        m_CapsuleCenter = m_Capsule.center;
+        m_CapsuleHeight = mCapsule.height;
+        m_CapsuleCenter = mCapsule.center;
 
-        m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        mRigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
         m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
         ApplyCurrentStates();
@@ -619,46 +522,12 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     private StatesOfHumanoidController mStates;
     private BehaviourFlagsOfHumanoidController mBehaviourFlags;
 
-    public HumanoidHState HState
-    {
-        get
-        {
-            return mStates.HState;
-        }
-    }
-
-    public Vector3? TargetPosition
-    {
-        get
-        {
-            return mStates.TargetPosition;
-        }
-    }
-
-    public HumanoidVState VState
-    {
-        get
-        {
-            return mStates.VState;
-        }
-    }
-
-    public HumanoidHandsState HandsState
-    {
-        get
-        {
-            return mStates.HandsState;
-        }
-    }
-
-    public HumanoidHandsActionState HandsActionState
-    {
-        get
-        {
-            return mStates.HandsActionState;
-        }
-    }
-
+    public HumanoidHState HState => mStates.HState;
+    public Vector3? TargetPosition => mStates.TargetPosition;
+    public HumanoidVState VState => mStates.VState;
+    public HumanoidHandsState HandsState => mStates.HandsState;
+    public HumanoidHandsActionState HandsActionState => mStates.HandsActionState;
+ 
     private void ApplyCurrentStates()
     {
         mBehaviourFlags.Append(CreateBehaviourFlags(mStates));
@@ -913,30 +782,30 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 #if UNITY_EDITOR
         //Debug.Log("EnemyController UpdateAnimator");
 #endif
-        m_Animator.SetBool("hasRifle", mBehaviourFlags.HasRifle);
-        m_Animator.SetBool("walk", mBehaviourFlags.Walk);
-        m_Animator.SetBool("isAim", mBehaviourFlags.IsAim);
-        m_Animator.SetBool("isDead", mBehaviourFlags.IsDead);
+        mAnimator.SetBool("hasRifle", mBehaviourFlags.HasRifle);
+        mAnimator.SetBool("walk", mBehaviourFlags.Walk);
+        mAnimator.SetBool("isAim", mBehaviourFlags.IsAim);
+        mAnimator.SetBool("isDead", mBehaviourFlags.IsDead);
     }
 
     public void ApplyAchieveDestinationOfMoving()
     {
         mStates.HState = HumanoidHState.Stop;
         mStates.TargetPosition = null;
-
         ApplyCurrentStates();
+        StartCoroutine(OnAchieveDestinationOfMovingCoroutine());
+    }
 
-        Task.Run(() => {
-            OnAchieveDestinationOfMoving?.Invoke();
-        });
+    private IEnumerator OnAchieveDestinationOfMovingCoroutine()
+    {
+        OnAchieveDestinationOfMoving?.Invoke();
+        yield return null;
     }
 
     // Update is called once per frame
     void Update () {
 #if UNITY_EDITOR
         //Debug.Log("EnemyController Update mNavMeshAgent.pathStatus = " + mNavMeshAgent.pathStatus + " mNavMeshAgent.isOnOffMeshLink = " + mNavMeshAgent.isOnOffMeshLink + " mNavMeshAgent.isStopped = " + mNavMeshAgent.isStopped + " mNavMeshAgent.nextPosition = " + mNavMeshAgent.nextPosition);
-        //Debug.Log("EnemyController Update = " + mNavMeshAgent);
-        //Debug.Log("EnemyController Update = " + mNavMeshAgent);
 #endif
         
         if(mStates.HState != HumanoidHState.Stop)
