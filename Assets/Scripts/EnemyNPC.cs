@@ -43,8 +43,8 @@ public class EnemyNPC : MonoBehaviour {
 
         //var crouch = Input.GetKey(KeyCode.C);
 
-        var h = CrossPlatformInputManager.GetAxis("Horizontal");
-        var v = CrossPlatformInputManager.GetAxis("Vertical");
+        //var h = CrossPlatformInputManager.GetAxis("Horizontal");
+        //var v = CrossPlatformInputManager.GetAxis("Vertical");
 
         //if (Input.GetMouseButtonDown(0))
         //{
