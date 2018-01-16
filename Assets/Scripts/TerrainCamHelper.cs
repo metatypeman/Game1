@@ -9,27 +9,44 @@ public class TerrainCamHelper : MonoBehaviour {
     public float YSensitivity = 2f;
 
     // Use this for initialization
-    void Start () {
-		
+    void Start () {      
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        var camera = Camera.current.transform;
+        //var camera = Camera.current;
 
-        var h = Input.GetAxis("Horizontal");
-        var v = Input.GetAxis("Vertical");
-        var yRot = Input.GetAxis("Mouse X") * XSensitivity;
-        var xRot = Input.GetAxis("Mouse Y") * YSensitivity;
+        //if(camera == null)
+        //{
+        //    return;
+        //}
 
-        var m_CameraTargetRot = camera.localRotation;
-        m_CameraTargetRot *= Quaternion.Euler(0f, yRot, 0f);//Quaternion.Euler(-xRot, yRot, 0f);
-        camera.localRotation = m_CameraTargetRot;
+        //var transformOfCamera = camera.transform;
 
-        Debug.Log($"Update h = {h} v = {v}");
+        //var h = Input.GetAxis("Horizontal");
+        //var v = Input.GetAxis("Vertical");
+        //var yRot = Input.GetAxis("Mouse X") * XSensitivity;
+        //var xRot = Input.GetAxis("Mouse Y") * YSensitivity;
 
-        var newPosition = new Vector3(camera.position.x + h, camera.position.y, camera.position.z + v);
-        camera.position = newPosition;
+        //var m_CameraTargetRot = transformOfCamera.localRotation;
+        //m_CameraTargetRot *= Quaternion.Euler(-xRot, yRot, 0f);//Quaternion.Euler(0f, yRot, 0f);//Quaternion.Euler(-xRot, yRot, 0f);
+        //transformOfCamera.localRotation = m_CameraTargetRot;
+
+        //Debug.Log($"Update h = {h} v = {v}");
+
+        //if(h != 0 || v != 0)
+        //{
+        //    var targetH = 100 * h;
+        //    var targetV = 100 * v;
+
+        //    Debug.Log($"Update targetH = {targetH} targetV = {targetV} camera.nearClipPlane = {camera.nearClipPlane}");
+
+        //    var targetPosition = camera.ScreenToWorldPoint(new Vector3(targetH, targetV, camera.nearClipPlane));
+
+        //    Debug.Log($"Update targetPosition = {targetPosition}");
+
+        //    transformOfCamera.position = new Vector3(targetPosition.x, 2, targetPosition.z);
+        //}
     }
 
     // Fixed update is called in sync with physics
