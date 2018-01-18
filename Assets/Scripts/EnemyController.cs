@@ -481,18 +481,18 @@ public class BehaviourFlagsOfHumanoidController : IObjectToString
 
 public class EnemyController : MonoBehaviour, IMoveHumanoidController
 {
-    [SerializeField] float m_MoveSpeedMultiplier = 1f;
-    [SerializeField] float m_GroundCheckDistance = 0.3f;
-    [SerializeField] float m_MovingTurnSpeed = 360;
-    [SerializeField] float m_StationaryTurnSpeed = 180;
+    //[SerializeField] float m_MoveSpeedMultiplier = 1f;
+    //[SerializeField] float m_GroundCheckDistance = 0.3f;
+    //[SerializeField] float m_MovingTurnSpeed = 360;
+    //[SerializeField] float m_StationaryTurnSpeed = 180;
 
     private Rigidbody mRigidbody;
     private Animator mAnimator;
-    private CapsuleCollider mCapsule;
+    //private CapsuleCollider mCapsule;
 
-    private float m_CapsuleHeight;
-    private Vector3 m_CapsuleCenter;
-    private float m_OrigGroundCheckDistance;
+    //private float m_CapsuleHeight;
+    //private Vector3 m_CapsuleCenter;
+    //private float m_OrigGroundCheckDistance;
     Vector3 m_GroundNormal;
     bool m_IsGrounded;
     float m_TurnAmount;
@@ -507,14 +507,14 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
         mAnimator = GetComponent<Animator>();
         mRigidbody = GetComponent<Rigidbody>();
-        mCapsule = GetComponent<CapsuleCollider>();
+        //mCapsule = GetComponent<CapsuleCollider>();
         mNavMeshAgent = GetComponent<NavMeshAgent>();
 
-        m_CapsuleHeight = mCapsule.height;
-        m_CapsuleCenter = mCapsule.center;
+        //m_CapsuleHeight = mCapsule.height;
+        //m_CapsuleCenter = mCapsule.center;
 
         mRigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-        m_OrigGroundCheckDistance = m_GroundCheckDistance;
+        //m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
         ApplyCurrentStates();
     }
@@ -550,19 +550,19 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     public void Execute(IMoveHumanoidCommandsPackage package)
     {
 #if UNITY_EDITOR
-        Debug.Log("EnemyController Execute package = " + package);
+        //Debug.Log("EnemyController Execute package = " + package);
 #endif
 
         var targetState = CreateTargetState(package);
 
 #if UNITY_EDITOR
-        Debug.Log("EnemyController Execute targetState = " + targetState);
+        //Debug.Log("EnemyController Execute targetState = " + targetState);
 #endif
 
         var newState = CreateTargetState(mStates, targetState);
 
 #if UNITY_EDITOR
-        Debug.Log("EnemyController Execute newState = " + newState);
+        //Debug.Log("EnemyController Execute newState = " + newState);
 #endif
 
         ApplyTargetState(newState);
@@ -571,7 +571,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     private TargetStateOfHumanoidController CreateTargetState(IMoveHumanoidCommandsPackage package)
     {
 #if UNITY_EDITOR
-        Debug.Log("EnemyController CreateTargetState package = " + package);
+        //Debug.Log("EnemyController CreateTargetState package = " + package);
 #endif
 
         var result = new TargetStateOfHumanoidController();
@@ -615,10 +615,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         }
 
 #if UNITY_EDITOR
-        Debug.Log("EnemyController Execute hStateCommandsList.Count = " + hStateCommandsList.Count);
-        Debug.Log("EnemyController Execute vStateCommandsList.Count = " + vStateCommandsList.Count);
-        Debug.Log("EnemyController Execute handsStateCommandsList.Count = " + handsStateCommandsList.Count);
-        Debug.Log("EnemyController Execute handsActionStateCommandsList.Count = " + handsActionStateCommandsList.Count);
+        //Debug.Log("EnemyController Execute hStateCommandsList.Count = " + hStateCommandsList.Count);
+        //Debug.Log("EnemyController Execute vStateCommandsList.Count = " + vStateCommandsList.Count);
+        //Debug.Log("EnemyController Execute handsStateCommandsList.Count = " + handsStateCommandsList.Count);
+        //Debug.Log("EnemyController Execute handsActionStateCommandsList.Count = " + handsActionStateCommandsList.Count);
 #endif
 
         if(hStateCommandsList.Count > 0)
@@ -626,7 +626,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
             var targetCommand = hStateCommandsList.First();
 
 #if UNITY_EDITOR
-            Debug.Log("EnemyController CreateTargetState targetCommand = " + targetCommand);
+            //Debug.Log("EnemyController CreateTargetState targetCommand = " + targetCommand);
 #endif
 
             result.HState = targetCommand.State;
@@ -638,7 +638,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
             var targetCommand = vStateCommandsList.First();
 
 #if UNITY_EDITOR
-            Debug.Log("EnemyController CreateTargetState targetCommand = " + targetCommand);
+            //Debug.Log("EnemyController CreateTargetState targetCommand = " + targetCommand);
 #endif
 
             result.VState = targetCommand.State;
@@ -649,7 +649,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
             var targetCommand = handsStateCommandsList.First();
 
 #if UNITY_EDITOR
-            Debug.Log("EnemyController CreateTargetState targetCommand = " + targetCommand);
+            //Debug.Log("EnemyController CreateTargetState targetCommand = " + targetCommand);
 #endif
 
             result.HandsState = targetCommand.State;
@@ -660,7 +660,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
             var targetCommand = handsActionStateCommandsList.First();
 
 #if UNITY_EDITOR
-            Debug.Log("EnemyController CreateTargetState targetCommand = " + targetCommand);
+            //Debug.Log("EnemyController CreateTargetState targetCommand = " + targetCommand);
 #endif
 
             result.HandsActionState = targetCommand.State;
@@ -672,8 +672,8 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     private StatesOfHumanoidController CreateTargetState(StatesOfHumanoidController sourceState, TargetStateOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
-        Debug.Log("EnemyController CreateTargetState sourceState = " + sourceState);
-        Debug.Log("EnemyController CreateTargetState targetState = " + targetState);
+        //Debug.Log("EnemyController CreateTargetState sourceState = " + sourceState);
+        //Debug.Log("EnemyController CreateTargetState targetState = " + targetState);
 #endif
 
         var result = sourceState.Clone();
@@ -756,13 +756,13 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     private void ApplyTargetState(StatesOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
-        Debug.Log("EnemyController ApplyTargetState targetState = " + targetState);
+        //Debug.Log("EnemyController ApplyTargetState targetState = " + targetState);
 #endif
 
         var targetBehaviourFlags = CreateBehaviourFlags(targetState);
 
 #if UNITY_EDITOR
-        Debug.Log("EnemyController ApplyTargetState targetBehaviourFlags = " + targetBehaviourFlags);
+        //Debug.Log("EnemyController ApplyTargetState targetBehaviourFlags = " + targetBehaviourFlags);
 #endif
 
         mStates.Append(targetState);

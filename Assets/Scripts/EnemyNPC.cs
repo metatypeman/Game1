@@ -7,7 +7,7 @@ using UnityStandardAssets.CrossPlatformInput;
 public class EnemyNPC : MonoBehaviour {
     private EnemyController mEnemyController;
     //GameObject mTargetCube;
-    private Transform m_Cam;                  // A reference to the main camera in the scenes transform
+    //private Transform m_Cam;                  // A reference to the main camera in the scenes transform
     private Vector3 m_CamForward;             // The current forward direction of the camera
     private Vector3 m_Move;
     public float surfaceOffset = 1.5f;
@@ -25,13 +25,19 @@ public class EnemyNPC : MonoBehaviour {
                 RunToTarget();
             }
         };
-        m_Cam = Camera.main.transform;
+        //m_Cam = Camera.main.transform;
         //mTargetCube = GameObject.Find("Cube_1");
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         //Debug.Log("EnemyController Update");
+    }
+
+    void OnWillRenderObject()
+    {
+        Debug.Log("EnemyController OnWillRenderObject");
     }
 
     private bool mIsPPressed;
