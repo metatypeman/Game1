@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyRayScaner : MonoBehaviour {
-    public int rays = 6;
     public int distance = 15;
-    public float angle = 20;
     public Vector3 Offset = new Vector3(0, 1.6f, 0);
 
     public int HRaysCount = 6;
@@ -13,10 +11,50 @@ public class EnemyRayScaner : MonoBehaviour {
     public int Distance = 20;
     public int Angle = 20;
 
+    private List<Vector3> mRayDirectionsList = new List<Vector3>();
+
 	// Use this for initialization
 	void Start () {
-		
-	}
+        var dz = 0f;
+
+        for (var n = 0; n < VRaysCount; n++)
+        {
+            var j = 0f;
+
+            var z = Mathf.Sin(dz);
+
+            dz += Angle * Mathf.Deg2Rad / VRaysCount;
+
+            for (var i = 0; i < HRaysCount; i++)
+            {
+                var x = Mathf.Sin(j);
+                var y = Mathf.Cos(j);
+
+                j += Angle * Mathf.Deg2Rad / HRaysCount;
+
+                var targetDirection = new Vector3(x, z, y);
+                mRayDirectionsList.Add(targetDirection);
+
+                if (z != 0)
+                {
+                    targetDirection = new Vector3(x, -z, y);
+                    mRayDirectionsList.Add(targetDirection);
+                }
+
+                if (x != 0)
+                {
+                    targetDirection = new Vector3(-x, z, y);
+                    mRayDirectionsList.Add(targetDirection);
+
+                    if (z != 0)
+                    {
+                        targetDirection = new Vector3(-x, -z, y);
+                        mRayDirectionsList.Add(targetDirection);
+                    }
+                }
+            }
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -25,49 +63,10 @@ public class EnemyRayScaner : MonoBehaviour {
 
     private void RayToScan()
     {
-        Debug.Log("EnemyRayScaner RayToScan");
-
-        var dz = 0f;
-
-        for(var n = 0; n < rays; n++)
+        foreach(var vector in mRayDirectionsList)
         {
-            float j = 0;
-
-            var z = Mathf.Sin(dz);
-
-            dz += angle * Mathf.Deg2Rad / rays;
-
-            for (int i = 0; i < rays; i++)
-            {
-                var x = Mathf.Sin(j);
-                var y = Mathf.Cos(j);
-
-                Debug.Log($"EnemyRayScaner RayToScan j = {j} x = {x} y = {y} z = {z}");
-
-                j += angle * Mathf.Deg2Rad / rays;
-
-                var dir = transform.TransformDirection(new Vector3(x, z, y));
-
-                GetRaycast(dir);
-
-                if(z != 0)
-                {
-                    dir = transform.TransformDirection(new Vector3(x, -z, y));
-                    GetRaycast(dir);
-                }
-
-                if (x != 0)
-                {
-                    dir = transform.TransformDirection(new Vector3(-x, z, y));
-                    GetRaycast(dir);
-
-                    if(z != 0)
-                    {
-                        dir = transform.TransformDirection(new Vector3(-x, -z, y));
-                        GetRaycast(dir);
-                    }
-                }
-            }
+            var dir = transform.TransformDirection(vector);
+            GetRaycast(dir);
         }
     }
 
