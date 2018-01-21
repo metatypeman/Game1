@@ -1192,9 +1192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d87711b46d77e8443af1ac6aaa5989be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rays: 6
   distance: 15
-  angle: 20
   Offset: {x: 0, y: 1.6, z: 0}
   HRaysCount: 6
   VRaysCount: 6
@@ -1650,6 +1648,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1632200049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1632200041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1ea29732aaedce47be24993caf86df9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1654263421
 Prefab:
   m_ObjectHideFlags: 0
@@ -1829,7 +1838,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_Extents: {x: 0.55, y: 0.55, z: 0.55}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1

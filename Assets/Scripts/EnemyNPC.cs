@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
 [RequireComponent(typeof(EnemyController))]
+[RequireComponent(typeof(EnemyRayScaner))]
 public class EnemyNPC : MonoBehaviour {
     private EnemyController mEnemyController;
+    private EnemyRayScaner mEnemyRayScaner;
     //GameObject mTargetCube;
     //private Transform m_Cam;                  // A reference to the main camera in the scenes transform
     private Vector3 m_CamForward;             // The current forward direction of the camera
@@ -25,6 +28,8 @@ public class EnemyNPC : MonoBehaviour {
                 RunToTarget();
             }
         };
+
+        mEnemyRayScaner = GetComponent<EnemyRayScaner>();
         //m_Cam = Camera.main.transform;
         //mTargetCube = GameObject.Find("Cube_1");
     }
@@ -32,15 +37,11 @@ public class EnemyNPC : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        //Debug.Log("EnemyController Update");
-    }
-
-    void OnWillRenderObject()
-    {
-        Debug.Log("EnemyController OnWillRenderObject");
+        //Debug.Log("EnemyNPC Update");
     }
 
     private bool mIsPPressed;
+    private bool mIsTPressed;
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
@@ -129,6 +130,13 @@ public class EnemyNPC : MonoBehaviour {
                
                 if(gth)
                 {
+                    if(!mIsTPressed)
+                    {
+                        mIsTPressed = true;
+
+                        DisplayVisibleItems();
+                    }
+
                     //mEnemyController.Stop();
                 }
                 else
@@ -139,10 +147,35 @@ public class EnemyNPC : MonoBehaviour {
         }   
     }
 
+    public void DisplayVisibleItems()
+    {
+        var visibleItemsList = mEnemyRayScaner.VisibleItems;
+
+        if(visibleItemsList.Count == 0)
+        {
+            Debug.Log("EnemyNPC DisplayVisibleItems visibleItemsList.Count == 0");
+            mIsTPressed = false;
+            return;
+        }
+
+        foreach(var visibleItem in visibleItemsList)
+        {
+            Debug.Log($"EnemyNPC DisplayVisibleItems visibleItem = {visibleItem}");
+
+            var gameInfo = MyGameObjectsBus.GetObject(visibleItem.InstanceID);
+
+            Debug.Log($"EnemyNPC DisplayVisibleItems gameInfo = {gameInfo}");
+        }
+
+        mIsTPressed = false;
+    }
+
     private void RunToTarget()
     {
         if(n >= maxN)
         {
+            mIsPPressed = false;
+            n = 0;
             return;
         }
 
@@ -150,7 +183,7 @@ public class EnemyNPC : MonoBehaviour {
 
         var targetName = $"Cube_{n}";
 
-        Debug.Log($"EnemyController RunToTarget targetName = {targetName}");
+        Debug.Log($"EnemyNPC RunToTarget targetName = {targetName}");
 
         var target = GameObject.Find(targetName);
 
