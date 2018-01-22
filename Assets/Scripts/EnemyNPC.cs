@@ -22,6 +22,12 @@ public class EnemyNPC : MonoBehaviour {
     void Start () {
         mEnemyController = GetComponent<EnemyController>();
         mEnemyController.OnAchieveDestinationOfMoving += () => {
+            if(mIsQPressed)
+            {
+                mIsQPressed = false;
+                return;
+            }
+
             if(n < maxN)
             {
                 Debug.Log($"EnemyController Start goal {n} had achieved!!!!");
@@ -42,6 +48,7 @@ public class EnemyNPC : MonoBehaviour {
 
     private bool mIsPPressed;
     private bool mIsTPressed;
+    private bool mIsQPressed;
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
@@ -141,13 +148,38 @@ public class EnemyNPC : MonoBehaviour {
                 }
                 else
                 {
+                    var isQKey = Input.GetKey(KeyCode.Q);
+
+                    if(isQKey)
+                    {
+                        if(!mIsQPressed)
+                        {
+                            mIsQPressed = true;
+
+                            GoToFarWaypoint();
+                        }
+                    }
                     //mEnemyController.HState = HumanoidHState.Stop;
                 }            
             }
         }   
     }
 
-    public void DisplayVisibleItems()
+    private void GoToFarWaypoint()
+    {
+        var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
+
+        if(targetWayPoint != null)
+        {
+            var moveCommand = new HumanoidHStateCommand();
+            moveCommand.State = HumanoidHState.Walk;
+            moveCommand.TargetPosition = targetWayPoint.Position;
+
+            mEnemyController.Execute(moveCommand);
+        }
+    }
+
+    private void DisplayVisibleItems()
     {
         var visibleItemsList = mEnemyRayScaner.VisibleItems;
 

@@ -58,7 +58,6 @@ namespace Assets.Scripts
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
-            //sb.AppendLine($"{nameof(LocalDirection)} = {LocalDirection}");
             sb.AppendLine($"{nameof(InstanceID)} = {InstanceID}");
             sb.AppendLine($"{nameof(Name)} = {Name}");
             sb.AppendLine($"{nameof(Tag)} = {Tag}");
