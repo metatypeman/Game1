@@ -49,6 +49,7 @@ public class EnemyNPC : MonoBehaviour {
     private bool mIsPPressed;
     private bool mIsTPressed;
     private bool mIsQPressed;
+    private bool mIsUPressed;
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
@@ -157,6 +158,21 @@ public class EnemyNPC : MonoBehaviour {
                             mIsQPressed = true;
 
                             GoToFarWaypoint();
+                        }
+                    }
+                    else
+                    {
+                        var isUPressed = Input.GetKey(KeyCode.U);
+
+                        if(isUPressed)
+                        {
+                            if(!mIsUPressed)
+                            {
+                                mIsUPressed = true;
+
+                                var tmpTstRootProcess = new TstRootProcess(mEnemyController);
+                                tmpTstRootProcess.RunAsync();
+                            }
                         }
                     }
                     //mEnemyController.HState = HumanoidHState.Stop;
