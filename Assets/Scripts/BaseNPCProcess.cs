@@ -7,23 +7,6 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public static class NPCProcessesBus
-    {
-        private static object mLockObj = new object();
-        private static List<BaseNPCProcess> mProcessesList = new List<BaseNPCProcess>();
-
-        public static void AddProcess(BaseNPCProcess process)
-        {
-            lock(mLockObj)
-            {
-                if(!mProcessesList.Contains(process))
-                {
-                    mProcessesList.Add(process);
-                }
-            }
-        }
-    }
-
     public enum NPCProcessStatus
     {
         WaitingToRun,
@@ -38,6 +21,35 @@ namespace Assets.Scripts
 
     public abstract class BaseNPCProcess
     {
+        protected BaseNPCProcess()
+        {
+        }
+
+        protected BaseNPCProcess(NPCProcessesContext context)
+        {
+            Context = context;
+        }
+
+        private NPCProcessesContext mContext;
+
+        public NPCProcessesContext Context
+        {
+            get
+            {
+                return mContext;
+            }
+
+            set
+            {
+                if(mContext == value)
+                {
+                    return;
+                }
+
+
+            }
+        }
+
         private NPCProcessStatus mStatus = NPCProcessStatus.WaitingToRun;
 
         public NPCProcessStatus Status => mStatus;

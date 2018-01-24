@@ -64,7 +64,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
 #endif
         }
 
-
         [Serializable]
         public class AdvancedSettings
         {
@@ -76,19 +75,16 @@ namespace UnityStandardAssets.Characters.FirstPerson
             public float shellOffset; //reduce the radius by that ratio to avoid getting stuck in wall (a value of 0.1f is nice)
         }
 
-
         public Camera cam;
         public MovementSettings movementSettings = new MovementSettings();
         public MouseLook mouseLook = new MouseLook();
         public AdvancedSettings advancedSettings = new AdvancedSettings();
-
 
         private Rigidbody m_RigidBody;
         private CapsuleCollider m_Capsule;
         private float m_YRotation;
         private Vector3 m_GroundContactNormal;
         private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
-
 
         public Vector3 Velocity
         {
@@ -117,14 +113,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
-
         private void Start()
         {
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init (transform, cam.transform);
         }
-
 
         private void Update()
         {
@@ -135,7 +129,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_Jump = true;
             }
         }
-
 
         private void FixedUpdate()
         {

@@ -9,7 +9,8 @@ namespace Assets.Scripts
 {
     public class TstRootProcess: BaseNPCProcess
     {
-        public TstRootProcess(EnemyController enemyController)
+        public TstRootProcess(EnemyController enemyController, NPCProcessesContext context)
+            : base(context)
         {
             mEnemyController = enemyController;
         }
@@ -21,11 +22,11 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log($"Begin TstRootProcess OnRun Status = {Status}");
 #endif
-            BaseNPCProcess tmpChildProcess = new TstInspectingProcess(mEnemyController);
+            BaseNPCProcess tmpChildProcess = new TstInspectingProcess(mEnemyController, Context);
             mChildProcesses.Add(tmpChildProcess);
             tmpChildProcess.RunAsync();
 
-            tmpChildProcess = new TstGoToEnemyBaseProcess(mEnemyController);
+            tmpChildProcess = new TstGoToEnemyBaseProcess(mEnemyController, Context);
             mChildProcesses.Add(tmpChildProcess);
             tmpChildProcess.RunAsync();
 
@@ -41,7 +42,8 @@ namespace Assets.Scripts
 
     public class TstInspectingProcess : BaseNPCProcess
     {
-        public TstInspectingProcess(EnemyController enemyController)
+        public TstInspectingProcess(EnemyController enemyController, NPCProcessesContext context)
+            : base(context)
         {
             mEnemyController = enemyController;
         }
@@ -62,7 +64,8 @@ namespace Assets.Scripts
 
     public class TstGoToEnemyBaseProcess : BaseNPCProcess
     {
-        public TstGoToEnemyBaseProcess(EnemyController enemyController)
+        public TstGoToEnemyBaseProcess(EnemyController enemyController, NPCProcessesContext context)
+            : base(context)
         {
             mEnemyController = enemyController;
         }
@@ -98,7 +101,8 @@ namespace Assets.Scripts
 
     public class TstRunAwayProcess : BaseNPCProcess
     {
-        public TstRunAwayProcess(EnemyController enemyController)
+        public TstRunAwayProcess(EnemyController enemyController, NPCProcessesContext context)
+            : base(context)
         {
             mEnemyController = enemyController;
         }

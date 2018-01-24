@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,10 +65,12 @@ public interface IObjectToString
 public interface IMoveHumanoidCommand: IObjectToString
 {
     MoveHumanoidCommandKind Kind { get; }
+    int TaskId { get; }
 }
 
 public interface IMoveHumanoidCommandsPackage: IObjectToString
 {
+    int TaskId { get; }
     List<IMoveHumanoidCommand> Commands { get; }
 }
 
@@ -94,6 +97,7 @@ public interface IHumanoidHandsActionStateCommand : IMoveHumanoidCommand
 //----
 public class MoveHumanoidCommandsPackage: IMoveHumanoidCommandsPackage
 {
+    public int TaskId { get; set; }
     public List<IMoveHumanoidCommand> Commands { get; set; } = new List<IMoveHumanoidCommand>();
 
     public override string ToString()
@@ -116,13 +120,14 @@ public class MoveHumanoidCommandsPackage: IMoveHumanoidCommandsPackage
         var spaces = StringHelper.Spaces(n);
         var nextN = n + 4;
         var sb = new StringBuilder();
-        if(Commands == null)
+        sb.AppendLine($"{spaces}{nameof(TaskId)} = {TaskId}");
+        if (Commands == null)
         {
             sb.AppendLine($"{spaces}{nameof(Commands)} == null");
         }
         else
         {
-            sb.AppendLine($"{spaces}{nameof(Commands)}.Count = {Commands.Count}" .ToString());
+            sb.AppendLine($"{spaces}{nameof(Commands)}.Count = {Commands.Count}");
             sb.AppendLine($"{spaces}Begin {nameof(Commands)}");
             foreach(var command in Commands)
             {
@@ -136,14 +141,15 @@ public class MoveHumanoidCommandsPackage: IMoveHumanoidCommandsPackage
 
 public abstract class MoveHumanoidCommand: IMoveHumanoidCommand
 {
+    public int TaskId { get; set; }
     public abstract MoveHumanoidCommandKind Kind { get; }
     public abstract string ToString(int n);
     public virtual string PropertiesToSting(int n)
     {
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
+        sb.AppendLine($"{spaces}{nameof(TaskId)} = {TaskId}");
         sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
-
         return sb.ToString();
     }
 }
@@ -252,7 +258,6 @@ public class HumanoidHandsStateCommand: MoveHumanoidCommand, IHumanoidHandsState
 public class HumanoidHandsActionStateCommand: MoveHumanoidCommand, IHumanoidHandsActionStateCommand
 {
     public override MoveHumanoidCommandKind Kind => MoveHumanoidCommandKind.HandsActionState;
-
     public HumanoidHandsActionState State { get; set; }
 
     public override string ToString()
@@ -283,6 +288,7 @@ public class HumanoidHandsActionStateCommand: MoveHumanoidCommand, IHumanoidHand
 
 public interface IMoveHumanoidController
 {
+    void ExecuteAsync(IMoveHumanoidCommandsPackage package);
     void Execute(IMoveHumanoidCommand command);
     void Execute(IMoveHumanoidCommandsPackage package);
 }
@@ -479,6 +485,47 @@ public class BehaviourFlagsOfHumanoidController : IObjectToString
     }
 }
 
+public enum DeviceKind
+{
+    Head,
+    LeftHand,
+    RightHand,
+    LeftLeg,
+    RightLeg
+}
+
+public class DeviceState : IObjectToString
+{
+    public int DeviceId { get; set; }
+    public int TaskId { get; set; }
+    public int Priority { get; set; }
+
+    public override string ToString()
+    {
+        return ToString(0);
+    }
+
+    public string ToString(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.AppendLine($"{spaces}Begin {nameof(DeviceState)}");
+        sb.Append(PropertiesToSting(n));
+        sb.AppendLine($"{spaces}End {nameof(DeviceState)}");
+        return sb.ToString();
+    }
+
+    public string PropertiesToSting(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.AppendLine($"{spaces}{nameof(DeviceId)} = {DeviceId}");
+        sb.AppendLine($"{spaces}{nameof(TaskId)} = {TaskId}");
+        sb.AppendLine($"{spaces}{nameof(Priority)} = {Priority}");
+        return sb.ToString();
+    }
+}
+
 public class EnemyController : MonoBehaviour, IMoveHumanoidController
 {
     //[SerializeField] float m_MoveSpeedMultiplier = 1f;
@@ -517,6 +564,8 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         //m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
         ApplyCurrentStates();
+
+        StartCoroutine(Timer());
     }
 
     private StatesOfHumanoidController mStates;
@@ -538,6 +587,41 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         {
             mNavMeshAgent.SetDestination(mStates.TargetPosition.Value);
         }
+    }
+
+    private object mLockObj = new object();
+    private Queue<IMoveHumanoidCommandsPackage> mPackagesQueue = new Queue<IMoveHumanoidCommandsPackage>();
+
+    public void ExecuteAsync(IMoveHumanoidCommandsPackage package)
+    {
+#if UNITY_EDITOR
+        Debug.Log($"EnemyController ExecuteAsync package = {package}");
+#endif
+
+        lock(mLockObj)
+        {
+            mPackagesQueue.Enqueue(package);
+
+#if UNITY_EDITOR
+            Debug.Log($"EnemyController ExecuteAsync mPackagesQueue.Count = {mPackagesQueue.Count}");
+#endif
+        }
+    }
+
+    private IEnumerator Timer()
+    {
+        lock(mLockObj)
+        {
+            if(mPackagesQueue.Count > 0)
+            {
+                var targetPackage = mPackagesQueue.Dequeue();
+
+                Execute(targetPackage);
+            }
+        }
+
+        yield return new WaitForSeconds(5);
+        StartCoroutine(Timer());
     }
 
     public void Execute(IMoveHumanoidCommand command)

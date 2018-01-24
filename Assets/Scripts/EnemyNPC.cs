@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -22,17 +23,17 @@ public class EnemyNPC : MonoBehaviour {
     void Start () {
         mEnemyController = GetComponent<EnemyController>();
         mEnemyController.OnAchieveDestinationOfMoving += () => {
-            if(mIsQPressed)
-            {
-                mIsQPressed = false;
-                return;
-            }
+            //if(mIsQPressed)
+            //{
+            //    mIsQPressed = false;
+            //    return;
+            //}
 
-            if(n < maxN)
-            {
-                Debug.Log($"EnemyController Start goal {n} had achieved!!!!");
-                RunToTarget();
-            }
+            //if(n < maxN)
+            //{
+            //    Debug.Log($"EnemyController Start goal {n} had achieved!!!!");
+            //    RunToTarget();
+            //}
         };
 
         mEnemyRayScaner = GetComponent<EnemyRayScaner>();
@@ -170,8 +171,61 @@ public class EnemyNPC : MonoBehaviour {
                             {
                                 mIsUPressed = true;
 
-                                var tmpTstRootProcess = new TstRootProcess(mEnemyController);
-                                tmpTstRootProcess.RunAsync();
+                                var tmpNPCThreadSafeMeshController = new NPCThreadSafeMeshController(mEnemyController);
+
+                                var target = GameObject.Find("Cube_1");
+
+                                var targetPoint = target.transform.position;
+
+                                var moveCommand = new HumanoidHStateCommand()
+                                {
+                                    TaskId = 12,
+                                    State = HumanoidHState.Walk,
+                                    //TargetPosition = targetWayPoint.Position
+                                    TargetPosition = targetPoint
+                                };
+
+#if UNITY_EDITOR
+                                Debug.Log($"TstGoToEnemyBaseProcess moveCommand = {moveCommand}");
+#endif
+                                Task.Run(() =>
+                                {
+                                    var tmpTask = tmpNPCThreadSafeMeshController.Execute(moveCommand);
+
+#if UNITY_EDITOR
+                                    Debug.Log($"TstGoToEnemyBaseProcess tmpTask = {tmpTask}");
+#endif
+                                });
+
+
+                                //var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
+
+
+
+                                //                                if (targetWayPoint != null)
+                                //                                {
+                                //                                    var moveCommand = new HumanoidHStateCommand()
+                                //                                    {
+                                //                                        TaskId = 12,
+                                //                                        State = HumanoidHState.Walk,
+                                //                                        TargetPosition = targetWayPoint.Position
+                                //                                    };
+
+                                //#if UNITY_EDITOR
+                                //                                    Debug.Log($"TstGoToEnemyBaseProcess moveCommand = {moveCommand}");
+                                //#endif
+                                //                                    Task.Run(() => {
+                                //                                        var tmpTask = tmpNPCThreadSafeMeshController.Execute(moveCommand);
+
+                                //#if UNITY_EDITOR
+                                //                                        Debug.Log($"TstGoToEnemyBaseProcess tmpTask = {tmpTask}");
+                                //#endif
+                                //                                    });
+                                //                                }
+
+                                //var tmpNPCProcessesContext = new NPCProcessesContext();
+                                //var tmpTstRootProcess = new TstRootProcess(mEnemyController, tmpNPCProcessesContext);
+                                //tmpTstRootProcess.RunAsync();
                             }
                         }
                     }
