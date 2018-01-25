@@ -65,12 +65,10 @@ public interface IObjectToString
 public interface IMoveHumanoidCommand: IObjectToString
 {
     MoveHumanoidCommandKind Kind { get; }
-    int TaskId { get; }
 }
 
 public interface IMoveHumanoidCommandsPackage: IObjectToString
 {
-    int TaskId { get; }
     List<IMoveHumanoidCommand> Commands { get; }
 }
 
@@ -97,7 +95,6 @@ public interface IHumanoidHandsActionStateCommand : IMoveHumanoidCommand
 //----
 public class MoveHumanoidCommandsPackage: IMoveHumanoidCommandsPackage
 {
-    public int TaskId { get; set; }
     public List<IMoveHumanoidCommand> Commands { get; set; } = new List<IMoveHumanoidCommand>();
 
     public override string ToString()
@@ -120,7 +117,6 @@ public class MoveHumanoidCommandsPackage: IMoveHumanoidCommandsPackage
         var spaces = StringHelper.Spaces(n);
         var nextN = n + 4;
         var sb = new StringBuilder();
-        sb.AppendLine($"{spaces}{nameof(TaskId)} = {TaskId}");
         if (Commands == null)
         {
             sb.AppendLine($"{spaces}{nameof(Commands)} == null");
@@ -141,14 +137,12 @@ public class MoveHumanoidCommandsPackage: IMoveHumanoidCommandsPackage
 
 public abstract class MoveHumanoidCommand: IMoveHumanoidCommand
 {
-    public int TaskId { get; set; }
     public abstract MoveHumanoidCommandKind Kind { get; }
     public abstract string ToString(int n);
     public virtual string PropertiesToSting(int n)
     {
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
-        sb.AppendLine($"{spaces}{nameof(TaskId)} = {TaskId}");
         sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
         return sb.ToString();
     }
@@ -291,6 +285,7 @@ public interface IMoveHumanoidController
     void ExecuteAsync(IMoveHumanoidCommandsPackage package);
     void Execute(IMoveHumanoidCommand command);
     void Execute(IMoveHumanoidCommandsPackage package);
+    StatesOfHumanoidController States { get; }
 }
 
 public class TargetStateOfHumanoidController : IObjectToString
@@ -494,38 +489,6 @@ public enum DeviceKind
     RightLeg
 }
 
-public class DeviceState : IObjectToString
-{
-    public int DeviceId { get; set; }
-    public int TaskId { get; set; }
-    public int Priority { get; set; }
-
-    public override string ToString()
-    {
-        return ToString(0);
-    }
-
-    public string ToString(int n)
-    {
-        var spaces = StringHelper.Spaces(n);
-        var sb = new StringBuilder();
-        sb.AppendLine($"{spaces}Begin {nameof(DeviceState)}");
-        sb.Append(PropertiesToSting(n));
-        sb.AppendLine($"{spaces}End {nameof(DeviceState)}");
-        return sb.ToString();
-    }
-
-    public string PropertiesToSting(int n)
-    {
-        var spaces = StringHelper.Spaces(n);
-        var sb = new StringBuilder();
-        sb.AppendLine($"{spaces}{nameof(DeviceId)} = {DeviceId}");
-        sb.AppendLine($"{spaces}{nameof(TaskId)} = {TaskId}");
-        sb.AppendLine($"{spaces}{nameof(Priority)} = {Priority}");
-        return sb.ToString();
-    }
-}
-
 public class EnemyController : MonoBehaviour, IMoveHumanoidController
 {
     //[SerializeField] float m_MoveSpeedMultiplier = 1f;
@@ -569,6 +532,9 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     }
 
     private StatesOfHumanoidController mStates;
+
+    public StatesOfHumanoidController States => mStates;
+
     private BehaviourFlagsOfHumanoidController mBehaviourFlags;
 
     public HumanoidHState HState => mStates.HState;

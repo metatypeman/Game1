@@ -171,31 +171,35 @@ public class EnemyNPC : MonoBehaviour {
                             {
                                 mIsUPressed = true;
 
-                                var tmpNPCThreadSafeMeshController = new NPCThreadSafeMeshController(mEnemyController);
+                                //var tmpNPCThreadSafeMeshController = new NPCThreadSafeMeshController(mEnemyController);
 
                                 var target = GameObject.Find("Cube_1");
 
                                 var targetPoint = target.transform.position;
 
-                                var moveCommand = new HumanoidHStateCommand()
-                                {
-                                    TaskId = 12,
-                                    State = HumanoidHState.Walk,
-                                    //TargetPosition = targetWayPoint.Position
-                                    TargetPosition = targetPoint
-                                };
+                                var tmpNPCProcessesContext = new NPCProcessesContext(mEnemyController);
+                                var tmpProcess = new TstGoToEnemyBaseProcess(tmpNPCProcessesContext);
+                                tmpProcess.RunAsync();
 
-#if UNITY_EDITOR
-                                Debug.Log($"TstGoToEnemyBaseProcess moveCommand = {moveCommand}");
-#endif
-                                Task.Run(() =>
-                                {
-                                    var tmpTask = tmpNPCThreadSafeMeshController.Execute(moveCommand);
+                                //                                var moveCommand = new HumanoidHStateCommand()
+                                //                                {
+                                //                                    TaskId = 12,
+                                //                                    State = HumanoidHState.Walk,
+                                //                                    //TargetPosition = targetWayPoint.Position
+                                //                                    TargetPosition = targetPoint
+                                //                                };
 
-#if UNITY_EDITOR
-                                    Debug.Log($"TstGoToEnemyBaseProcess tmpTask = {tmpTask}");
-#endif
-                                });
+                                //#if UNITY_EDITOR
+                                //                                Debug.Log($"TstGoToEnemyBaseProcess moveCommand = {moveCommand}");
+                                //#endif
+                                //                                Task.Run(() =>
+                                //                                {
+                                //                                    var tmpTask = tmpNPCThreadSafeMeshController.Execute(moveCommand);
+
+                                //#if UNITY_EDITOR
+                                //                                    Debug.Log($"TstGoToEnemyBaseProcess tmpTask = {tmpTask}");
+                                //#endif
+                                //                                });
 
 
                                 //var targetWayPoint = WaypointsBus.GetByTag("enemy military base");

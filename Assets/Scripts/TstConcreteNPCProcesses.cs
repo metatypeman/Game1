@@ -9,24 +9,21 @@ namespace Assets.Scripts
 {
     public class TstRootProcess: BaseNPCProcess
     {
-        public TstRootProcess(EnemyController enemyController, NPCProcessesContext context)
+        public TstRootProcess(NPCProcessesContext context)
             : base(context)
         {
-            mEnemyController = enemyController;
         }
-
-        private EnemyController mEnemyController;
 
         protected override void OnRun()
         {
 #if UNITY_EDITOR
             Debug.Log($"Begin TstRootProcess OnRun Status = {Status}");
 #endif
-            BaseNPCProcess tmpChildProcess = new TstInspectingProcess(mEnemyController, Context);
+            BaseNPCProcess tmpChildProcess = new TstInspectingProcess(Context);
             mChildProcesses.Add(tmpChildProcess);
             tmpChildProcess.RunAsync();
 
-            tmpChildProcess = new TstGoToEnemyBaseProcess(mEnemyController, Context);
+            tmpChildProcess = new TstGoToEnemyBaseProcess(Context);
             mChildProcesses.Add(tmpChildProcess);
             tmpChildProcess.RunAsync();
 
@@ -42,13 +39,10 @@ namespace Assets.Scripts
 
     public class TstInspectingProcess : BaseNPCProcess
     {
-        public TstInspectingProcess(EnemyController enemyController, NPCProcessesContext context)
+        public TstInspectingProcess(NPCProcessesContext context)
             : base(context)
         {
-            mEnemyController = enemyController;
         }
-
-        private EnemyController mEnemyController;
 
         protected override void OnRun()
         {
@@ -64,13 +58,10 @@ namespace Assets.Scripts
 
     public class TstGoToEnemyBaseProcess : BaseNPCProcess
     {
-        public TstGoToEnemyBaseProcess(EnemyController enemyController, NPCProcessesContext context)
+        public TstGoToEnemyBaseProcess(NPCProcessesContext context)
             : base(context)
         {
-            mEnemyController = enemyController;
         }
-
-        private EnemyController mEnemyController;
 
         protected override void OnRun()
         {
@@ -89,8 +80,12 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
                 Debug.Log($"TstGoToEnemyBaseProcess moveCommand = {moveCommand}");
 #endif
+                var tmpTask = Execute(moveCommand);
 
-                mEnemyController.Execute(moveCommand);
+#if UNITY_EDITOR
+                Debug.Log($"TstGoToEnemyBaseProcess tmpTask = {tmpTask}");
+#endif
+                //mEnemyController.Execute(moveCommand);
             }
 
 #if UNITY_EDITOR
@@ -101,13 +96,10 @@ namespace Assets.Scripts
 
     public class TstRunAwayProcess : BaseNPCProcess
     {
-        public TstRunAwayProcess(EnemyController enemyController, NPCProcessesContext context)
+        public TstRunAwayProcess(NPCProcessesContext context)
             : base(context)
         {
-            mEnemyController = enemyController;
         }
-
-        private EnemyController mEnemyController;
 
         protected override void OnRun()
         {

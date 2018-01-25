@@ -46,9 +46,26 @@ namespace Assets.Scripts
                     return;
                 }
 
+                var oldContext = mContext;
+                mContext = value;
 
+                oldContext?.RemoveChild(this);
+
+                if(mContext == null)
+                {
+                    return;
+                }
+                mContext.AddChild(this);
+
+                mCurrentId = mContext.GetNewProcessId();
+
+#if UNITY_EDITOR
+                Debug.Log($"BaseNPCProcess Context mCurrentId = {mCurrentId}");
+#endif
             }
         }
+
+        private int mCurrentId;
 
         private NPCProcessStatus mStatus = NPCProcessStatus.WaitingToRun;
 
@@ -140,6 +157,16 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log("End WaitProsesses");
 #endif
+        }
+
+        protected NPCMeshTask Execute(IMoveHumanoidCommand command)
+        {
+            return Context.Execute(command, mCurrentId);
+        }
+
+        protected NPCMeshTask Execute(IMoveHumanoidCommandsPackage package)
+        {
+            return Context.Execute(package, mCurrentId);
         }
     }
 }
