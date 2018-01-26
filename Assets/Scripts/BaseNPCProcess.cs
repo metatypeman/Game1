@@ -31,51 +31,102 @@ namespace Assets.Scripts
         }
 
         private NPCProcessesContext mContext;
+        private object mContextLockObj = new object();
 
         public NPCProcessesContext Context
         {
             get
             {
-                return mContext;
+                lock(mContextLockObj)
+                {
+                    return mContext;
+                }
             }
 
             set
             {
-                if(mContext == value)
+                lock (mContextLockObj)
                 {
-                    return;
-                }
+                    if (mContext == value)
+                    {
+                        return;
+                    }
 
-                var oldContext = mContext;
-                mContext = value;
+                    if(Status != NPCProcessStatus.WaitingToRun)
+                    {
+                        return;
+                    }
 
-                oldContext?.RemoveChild(this);
+                    var oldContext = mContext;
+                    mContext = value;
 
-                if(mContext == null)
-                {
-                    return;
-                }
-                mContext.AddChild(this);
+                    oldContext?.RemoveChild(this);
 
-                mCurrentId = mContext.GetNewProcessId();
+                    if (mContext == null)
+                    {
+                        return;
+                    }
+
+                    mContext.AddChild(this);
+
+                    CurrentId = mContext.GetNewProcessId();
 
 #if UNITY_EDITOR
-                Debug.Log($"BaseNPCProcess Context mCurrentId = {mCurrentId}");
+                    Debug.Log($"BaseNPCProcess Context mCurrentId = {mCurrentId}");
 #endif
+                }
             }
         }
 
         private int mCurrentId;
+        private object mCurrentIdLockObj = new object();
+
+        protected int CurrentId
+        {
+            get
+            {
+                lock(mCurrentIdLockObj)
+                {
+                    return mCurrentId;
+                }
+            }
+
+            set
+            {
+                lock (mCurrentIdLockObj)
+                {
+                    mCurrentId = value;
+                }
+            }
+        }
 
         private NPCProcessStatus mStatus = NPCProcessStatus.WaitingToRun;
+        private object mStatusLockObj = new object();
 
-        public NPCProcessStatus Status => mStatus;
+        public NPCProcessStatus Status
+        {
+            get
+            {
+                lock(mStatusLockObj)
+                {
+                    return mStatus;
+                }
+            }
+
+            protected set
+            {
+                lock (mStatusLockObj)
+                {
+                    mStatus = value;
+                }
+            }
+        }
 
         public bool IsExecuting
         {
             get
             {
-                switch(mStatus)
+                switch(Status)
                 {
                     case NPCProcessStatus.RanToCompletion:
                     case NPCProcessStatus.Canceled:
@@ -121,11 +172,11 @@ namespace Assets.Scripts
             Debug.Log("Begin NRun");
 #endif
 
-            mStatus = NPCProcessStatus.Running;
+            Status = NPCProcessStatus.Running;
 
             OnRun();
 
-            mStatus = NPCProcessStatus.RanToCompletion;
+            Status = NPCProcessStatus.RanToCompletion;
 
 #if UNITY_EDITOR
             Debug.Log("End NRun");
@@ -140,7 +191,7 @@ namespace Assets.Scripts
             Debug.Log("Begin WaitProsesses");
 #endif
 
-            var oldStatus = mStatus;
+            var oldStatus = Status;
 
             while(true)
             {
@@ -152,7 +203,7 @@ namespace Assets.Scripts
                 break;
             }
 
-            mStatus = oldStatus;
+            Status = oldStatus;
 
 #if UNITY_EDITOR
             Debug.Log("End WaitProsesses");
@@ -161,12 +212,12 @@ namespace Assets.Scripts
 
         protected NPCMeshTask Execute(IMoveHumanoidCommand command)
         {
-            return Context.Execute(command, mCurrentId);
+            return Context.Execute(command, CurrentId);
         }
 
         protected NPCMeshTask Execute(IMoveHumanoidCommandsPackage package)
         {
-            return Context.Execute(package, mCurrentId);
+            return Context.Execute(package, CurrentId);
         }
     }
 }

@@ -503,10 +503,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     //private float m_CapsuleHeight;
     //private Vector3 m_CapsuleCenter;
     //private float m_OrigGroundCheckDistance;
-    Vector3 m_GroundNormal;
-    bool m_IsGrounded;
-    float m_TurnAmount;
-    float m_ForwardAmount;
+    //Vector3 m_GroundNormal;
+    //bool m_IsGrounded;
+    //float m_TurnAmount;
+    //float m_ForwardAmount;
 
     private NavMeshAgent mNavMeshAgent;
 

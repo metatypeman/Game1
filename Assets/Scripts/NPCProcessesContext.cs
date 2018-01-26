@@ -17,38 +17,45 @@ namespace Assets.Scripts
         private NPCSimpleDI mSimpleDI = new NPCSimpleDI();
         private NPCThreadSafeMeshController mMeshController;
 
+        private object mChildProcessesListLockObj = new object();
         private List<BaseNPCProcess> mChildProcessesList = new List<BaseNPCProcess>();
 
         public void AddChild(BaseNPCProcess process)
         {
-            if(process == null)
+            lock(mChildProcessesListLockObj)
             {
-                return;
-            }
-
-            if(!mChildProcessesList.Contains(process))
-            {
-                mChildProcessesList.Add(process);
-                if (process.Context != this)
+                if (process == null)
                 {
-                    process.Context = this;
-                }           
+                    return;
+                }
+
+                if (!mChildProcessesList.Contains(process))
+                {
+                    mChildProcessesList.Add(process);
+                    if (process.Context != this)
+                    {
+                        process.Context = this;
+                    }
+                }
             }
         }
 
         public void RemoveChild(BaseNPCProcess process)
         {
-            if (process == null)
+            lock (mChildProcessesListLockObj)
             {
-                return;
-            }
-
-            if(mChildProcessesList.Contains(process))
-            {
-                mChildProcessesList.Remove(process);
-                if(process.Context == this)
+                if (process == null)
                 {
-                    process.Context = null;
+                    return;
+                }
+
+                if (mChildProcessesList.Contains(process))
+                {
+                    mChildProcessesList.Remove(process);
+                    if (process.Context == this)
+                    {
+                        process.Context = null;
+                    }
                 }
             }
         }
@@ -78,7 +85,7 @@ namespace Assets.Scripts
             Debug.Log($"NPCProcessesContext Execute package = {package} processId = {processId}");
 #endif
 
-            return mMeshController.Execute(package);
+            return mMeshController.Execute(package, processId);
         }
     }
 }
