@@ -370,44 +370,147 @@ namespace Assets.Scripts
         private List<int> mVState = new List<int>();
         private List<int> mHandsState = new List<int>();
         private List<int> mHandsActionState = new List<int>();
+        private Dictionary<int, NPCMeshTask> mTasksDict = new Dictionary<int, NPCMeshTask>();
 
-        private void ProcessAllow(TargetStateOfHumanoidController targetState, int processId)
+        private void ProcessAllow(TargetStateOfHumanoidController targetState, int processId, NPCMeshTask npcMeshTask, NPCMeshTaskResulutionKind resolutionKind)
         {
 #if UNITY_EDITOR
             Debug.Log($"NPCThreadSafeMeshController ProcessAllow targetState = {targetState}");
             Debug.Log($"NPCThreadSafeMeshController ProcessAllow processId = {processId}");
 #endif
 
-            RegProcessId(targetState, processId);
+            RegProcessId(targetState, processId, npcMeshTask, resolutionKind);
 
             mMoveHumanoidController.ExecuteAsync(targetState);
         }
 
-        private void RegProcessId(TargetStateOfHumanoidController targetState, int processId)
+        private void RegProcessId(TargetStateOfHumanoidController targetState, int processId, NPCMeshTask npcMeshTask, NPCMeshTaskResulutionKind resolutionKind)
         {
+            var displacedProcessesIdList = new List<int>();
+
             if (targetState.HState.HasValue)
             {
+                switch(resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mHState);
+                        mHState.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
                 mHState.Add(processId);
             }
 
             if (targetState.TargetPosition.HasValue)
             {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mTargetPosition);
+                        mTargetPosition.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
                 mTargetPosition.Add(processId);
             }
 
             if (targetState.VState.HasValue)
             {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mVState);
+                        mVState.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
                 mVState.Add(processId);
             }
 
             if (targetState.HandsState.HasValue)
             {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mHandsState);
+                        mHandsState.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
                 mHandsState.Add(processId);
             }
 
             if (targetState.HandsActionState.HasValue)
             {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mHandsActionState);
+                        mHandsActionState.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
                 mHandsActionState.Add(processId);
+            }
+
+            if(displacedProcessesIdList.Count > 0)
+            {
+                foreach(var displacedProcessId in displacedProcessesIdList)
+                {
+#if UNITY_EDITOR
+                    Debug.Log($"NPCThreadSafeMeshController CreateTargetState displacedProcessId = {displacedProcessId}");
+#endif
+
+                    if(mHState.Contains(displacedProcessId))
+                    {
+                        mHState.Remove(displacedProcessId);
+                    }
+
+                    if (mTargetPosition.Contains(displacedProcessId))
+                    {
+                        mTargetPosition.Remove(displacedProcessId);
+                    }
+
+                    if (mVState.Contains(displacedProcessId))
+                    {
+                        mVState.Remove(displacedProcessId);
+                    }
+
+                    if (mHandsState.Contains(displacedProcessId))
+                    {
+                        mHandsState.Remove(displacedProcessId);
+                    }
+
+                    if (mHandsActionState.Contains(displacedProcessId))
+                    {
+                        mHandsActionState.Remove(displacedProcessId);
+                    }
+                }
             }
         }
 
