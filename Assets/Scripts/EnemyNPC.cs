@@ -19,6 +19,7 @@ public class EnemyNPC : MonoBehaviour
     public GameObject setTargetOn;
     private int n = 0;
     private int maxN = 3;
+    private NPCProcessesContext mNPCProcessesContext;
 
     // Use this for initialization
     void Start()
@@ -41,6 +42,8 @@ public class EnemyNPC : MonoBehaviour
         mEnemyRayScaner = GetComponent<EnemyRayScaner>();
         //m_Cam = Camera.main.transform;
         //mTargetCube = GameObject.Find("Cube_1");
+
+        mNPCProcessesContext = new NPCProcessesContext(mEnemyController);
     }
 
     // Update is called once per frame
@@ -53,8 +56,6 @@ public class EnemyNPC : MonoBehaviour
     private bool mIsTPressed;
     private bool mIsQPressed;
     private bool mIsUPressed;
-
-    private NPCProcessesContext mTmpContext;
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
@@ -127,8 +128,11 @@ public class EnemyNPC : MonoBehaviour
                 {
                     mIsPPressed = true;
 
-                    n = 0;
-                    RunToTarget();
+                    var tmpProcess = new TstRunAtOurBaseProcess(mNPCProcessesContext);
+                    tmpProcess.RunAsync();
+
+                    //n = 0;
+                    //RunToTarget();
 
                     //var moveCommand = new HumanoidHStateCommand();
                     //moveCommand.State = HumanoidHState.Walk;
@@ -181,10 +185,7 @@ public class EnemyNPC : MonoBehaviour
 
                                 var targetPoint = target.transform.position;
 
-                                var tmpNPCProcessesContext = new NPCProcessesContext(mEnemyController);
-                                mTmpContext = tmpNPCProcessesContext;
-
-                                var tmpProcess = new TstGoToEnemyBaseProcess(tmpNPCProcessesContext);
+                                var tmpProcess = new TstRootProcess(mNPCProcessesContext);
                                 tmpProcess.RunAsync();
 
                                 //                                var moveCommand = new HumanoidHStateCommand()
@@ -313,6 +314,6 @@ public class EnemyNPC : MonoBehaviour
     void OnDestroy()
     {
         Debug.Log("OnDestroy");
-        mTmpContext?.Dispose();
+        mNPCProcessesContext?.Dispose();
     }
 }

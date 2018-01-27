@@ -11,9 +11,8 @@ namespace Assets.Scripts
     {
         WaitingToRun,
         Running,
-        ActiveRunning,
-        WaitingForActivation,
-        WaitingForChildrenToComplete,
+        WaitingForNPCMeshActivation,
+        NPCMeshRunning,
         RanToCompletion,
         Canceled,
         Faulted
@@ -231,8 +230,6 @@ namespace Assets.Scripts
                 }
             }
 
-            var oldStatus = Status;
-
             while (true)
             {
                 lock (mDisposeLockObj)
@@ -251,10 +248,45 @@ namespace Assets.Scripts
                 break;
             }
 
-            Status = oldStatus;
-
 #if UNITY_EDITOR
             Debug.Log("BaseNPCProcess End WaitProsesses");
+#endif
+        }
+
+        protected void WaitNPCMeshTask(NPCMeshTask task)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"BaseNPCProcess Begin WaitNPCMeshTask task = {task}");
+#endif
+
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return;
+                }
+            }
+
+            while (true)
+            {
+                lock (mDisposeLockObj)
+                {
+                    if (mIsDisposed)
+                    {
+                        return;
+                    }
+                }
+
+                if (task.IsExecuting)
+                {
+                    continue;
+                }
+
+                break;
+            }
+
+#if UNITY_EDITOR
+            Debug.Log("BaseNPCProcess End WaitNPCMeshTask");
 #endif
         }
 
@@ -268,7 +300,9 @@ namespace Assets.Scripts
                 }
             }
 
-            return Context.Execute(command, CurrentId);
+            var task = Context.Execute(command, CurrentId);
+            PostProcessExecutedTask(task);
+            return task;
         }
 
         protected NPCMeshTask Execute(IMoveHumanoidCommandsPackage package)
@@ -281,7 +315,52 @@ namespace Assets.Scripts
                 }
             }
 
-            return Context.Execute(package, CurrentId);
+            var task = Context.Execute(package, CurrentId);
+            PostProcessExecutedTask(task);
+            return task;
+        }
+
+        private void PostProcessExecutedTask(NPCMeshTask task)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"BaseNPCProcess PostProcessExecutedTask task = {task}");
+#endif
+
+            Status = ConvertNPCMeshTaskStateToActiveNPCProcessStatus(task.State);
+
+            task.OnStateChanged += (NPCMeshTaskState state) => {
+#if UNITY_EDITOR
+                Debug.Log($"BaseNPCProcess PostProcessExecutedTask OnStateChanged state = {state}");
+#endif
+                Status = ConvertNPCMeshTaskStateToActiveNPCProcessStatus(state);
+            };
+        }
+
+        private NPCProcessStatus ConvertNPCMeshTaskStateToActiveNPCProcessStatus(NPCMeshTaskState npcMeshTaskState)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"BaseNPCProcess PostProcessExecutedTask ConvertNPCMeshTaskStateToActiveNPCProcessStatus npcMeshTaskState = {npcMeshTaskState}");
+#endif
+
+            switch(npcMeshTaskState)
+            {
+                case NPCMeshTaskState.WaitWaitingToRun:
+                    return NPCProcessStatus.WaitingForNPCMeshActivation;
+
+                case NPCMeshTaskState.Running:
+                    return NPCProcessStatus.NPCMeshRunning;
+
+                case NPCMeshTaskState.RanToCompletion:
+                    return NPCProcessStatus.Running;
+
+                case NPCMeshTaskState.Canceled:
+                    return NPCProcessStatus.Running;
+
+                case NPCMeshTaskState.Faulted:
+                    return NPCProcessStatus.Running;
+
+                default: throw new ArgumentOutOfRangeException(nameof(npcMeshTaskState), npcMeshTaskState, null);
+            }
         }
 
         private object mDisposeLockObj = new object();

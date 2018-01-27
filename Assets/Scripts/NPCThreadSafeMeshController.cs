@@ -16,11 +16,89 @@ namespace Assets.Scripts
         Faulted
     }
 
+    public delegate void NPCMeshTaskStateChanged(NPCMeshTaskState state);
+
     public class NPCMeshTask : IObjectToString
     {
         public int TaskId { get; set; }
         public int ProcessId { get; set; }
-        public NPCMeshTaskState State { get; set; } = NPCMeshTaskState.WaitWaitingToRun;
+
+        private object mStateLockObj = new object();
+        private NPCMeshTaskState mState = NPCMeshTaskState.WaitWaitingToRun;
+        public NPCMeshTaskState State
+        {
+            get
+            {
+                lock(mStateLockObj)
+                {
+                    return mState;
+                }
+            }
+
+            set
+            {
+                lock (mStateLockObj)
+                {
+                    if(mState == value)
+                    {
+                        return;
+                    }
+
+                    mState = value;
+
+                    Task.Run(() => {
+                        OnStateChanged?.Invoke(mState);
+                        switch(mState)
+                        {
+                            case NPCMeshTaskState.WaitWaitingToRun:
+                                break;
+
+                            case NPCMeshTaskState.Running:
+                                OnStateChangedToRunning?.Invoke();
+                                break;
+
+                            case NPCMeshTaskState.RanToCompletion:
+                                OnStateChangedToRanToCompletion?.Invoke();
+                                break;
+
+                            case NPCMeshTaskState.Canceled:
+                                OnStateChangedToCanceled?.Invoke();
+                                break;
+
+                            case NPCMeshTaskState.Faulted:
+                                OnStateChangedToFaulted?.Invoke();
+                                break;
+
+                            default: throw new ArgumentOutOfRangeException(nameof(State), mState, null);
+                        }
+                    });
+                }
+            }
+        }
+
+        public bool IsExecuting
+        {
+            get
+            {
+                lock (mStateLockObj)
+                {
+                    switch (mState)
+                    {
+                        case NPCMeshTaskState.WaitWaitingToRun:
+                        case NPCMeshTaskState.Running:
+                            return true;
+                    }
+
+                    return false;
+                }
+            }
+        }
+
+        public event NPCMeshTaskStateChanged OnStateChanged;
+        public event Action OnStateChangedToRunning;
+        public event Action OnStateChangedToRanToCompletion;
+        public event Action OnStateChangedToCanceled;
+        public event Action OnStateChangedToFaulted;
 
         public override string ToString()
         {
@@ -96,15 +174,6 @@ namespace Assets.Scripts
 
         private void OnHumanoidStatesChanged(List<HumanoidStateKind> changedStates)
         {
-#if UNITY_EDITOR
-            Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged Begin changedStates");
-            foreach(var changedState in changedStates)
-            {
-                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged changedState = {changedState}");
-            }
-            Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged End changedStates");
-#endif
-
             lock (mDisposeLockObj)
             {
                 if (mIsDisposed)
@@ -112,6 +181,74 @@ namespace Assets.Scripts
                     return;
                 }
             }
+
+            Task.Run(() => {
+#if UNITY_EDITOR
+                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged Begin changedStates");
+                foreach (var changedState in changedStates)
+                {
+                    Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged changedState = {changedState}");
+                }
+                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged End changedStates");
+#endif
+
+                var displacedProcessesIdList = new List<int>();
+
+                foreach (var changedState in changedStates)
+                {
+                    switch (changedState)
+                    {
+                        case HumanoidStateKind.HState:
+                            displacedProcessesIdList.AddRange(mHState);
+                            mHState.Clear();
+                            break;
+
+                        case HumanoidStateKind.TargetPosition:
+                            displacedProcessesIdList.AddRange(mTargetPosition);
+                            mTargetPosition.Clear();
+                            break;
+
+                        case HumanoidStateKind.VState:
+                            displacedProcessesIdList.AddRange(mVState);
+                            mVState.Clear();
+                            break;
+
+                        case HumanoidStateKind.HandsState:
+                            displacedProcessesIdList.AddRange(mHandsState);
+                            mHandsState.Clear();
+                            break;
+
+                        case HumanoidStateKind.HandsActionState:
+                            displacedProcessesIdList.AddRange(mHandsActionState);
+                            mHandsActionState.Clear();
+                            break;
+
+                        default: throw new ArgumentOutOfRangeException(nameof(changedState), changedState, null);
+                    }
+                }
+
+                displacedProcessesIdList = displacedProcessesIdList.Distinct().ToList();
+
+#if UNITY_EDITOR
+                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessesIdList.Count = {displacedProcessesIdList.Count}");
+                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
+#endif
+
+                foreach (var displacedProcessId in displacedProcessesIdList)
+                {
+#if UNITY_EDITOR
+                    Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessId = {displacedProcessId}");
+#endif
+
+                    var targetTask = mTasksDict[displacedProcessId];
+                    mTasksDict.Remove(displacedProcessId);
+                    targetTask.State = NPCMeshTaskState.RanToCompletion;
+                }
+
+#if UNITY_EDITOR
+                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
+#endif
+            });
         }
 
         private IMoveHumanoidController mMoveHumanoidController;
@@ -153,13 +290,11 @@ namespace Assets.Scripts
             {
                 case NPCMeshTaskResulutionKind.Allow:
                 case NPCMeshTaskResulutionKind.AllowAdd:
-                    ProcessAllow(targetState, processId);
+                    ProcessAllow(targetState, processId, result, kindOfResolution);
                     break;
 
                 default: throw new ArgumentOutOfRangeException(nameof(kindOfResolution), kindOfResolution, null);
             }
-
-            //mMoveHumanoidController.ExecuteAsync(package);
 
             return result;
         }
@@ -382,6 +517,8 @@ namespace Assets.Scripts
             RegProcessId(targetState, processId, npcMeshTask, resolutionKind);
 
             mMoveHumanoidController.ExecuteAsync(targetState);
+
+            npcMeshTask.State = NPCMeshTaskState.Running;
         }
 
         private void RegProcessId(TargetStateOfHumanoidController targetState, int processId, NPCMeshTask npcMeshTask, NPCMeshTaskResulutionKind resolutionKind)
@@ -480,7 +617,9 @@ namespace Assets.Scripts
 
             if(displacedProcessesIdList.Count > 0)
             {
-                foreach(var displacedProcessId in displacedProcessesIdList)
+                displacedProcessesIdList = displacedProcessesIdList.Distinct().ToList();
+
+                foreach (var displacedProcessId in displacedProcessesIdList)
                 {
 #if UNITY_EDITOR
                     Debug.Log($"NPCThreadSafeMeshController CreateTargetState displacedProcessId = {displacedProcessId}");
@@ -510,8 +649,20 @@ namespace Assets.Scripts
                     {
                         mHandsActionState.Remove(displacedProcessId);
                     }
+
+                    mTasksDict.Remove(displacedProcessId);
                 }
             }
+
+#if UNITY_EDITOR
+            Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
+#endif
+
+            mTasksDict[processId] = npcMeshTask;
+
+#if UNITY_EDITOR
+            Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
+#endif
         }
 
         private object mDisposeLockObj = new object();

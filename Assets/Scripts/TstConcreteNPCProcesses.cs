@@ -76,9 +76,8 @@ namespace Assets.Scripts
             Debug.Log("Begin TstGoToEnemyBaseProcess OnRun");
 #endif
 
-            //var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
-            var targetWayPoint = WaypointsBus.GetByName("Cube_1");
-
+            var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
+            
             if (targetWayPoint != null)
             {
                 var moveCommand = new HumanoidHStateCommand();
@@ -86,14 +85,15 @@ namespace Assets.Scripts
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
-                Debug.Log($"TstGoToEnemyBaseProcess moveCommand = {moveCommand}");
+                Debug.Log($"TstGoToEnemyBaseProcess OnRun moveCommand = {moveCommand}");
 #endif
                 var tmpTask = Execute(moveCommand);
                 mTmpTask = tmpTask;
 #if UNITY_EDITOR
-                Debug.Log($"TstGoToEnemyBaseProcess tmpTask = {tmpTask}");
+                Debug.Log($"TstGoToEnemyBaseProcess OnRun tmpTask = {tmpTask}");
 #endif
-                //mEnemyController.Execute(moveCommand);
+
+                WaitNPCMeshTask(tmpTask);
             }
 
 #if UNITY_EDITOR
@@ -109,8 +109,8 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log($"TstGoToEnemyBaseProcess TimerCallback mTmpTask = {mTmpTask}");
-#endif         
+            Debug.Log($"TstGoToEnemyBaseProcess TimerCallback mTmpTask = {mTmpTask} Status = {Status}");
+#endif          
         }
 
         protected override void OnDispose()
@@ -136,6 +136,96 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log("End TstRunAwayProcess OnRun");
 #endif
+        }
+    }
+
+    public class TstRunAtOurBaseProcess: BaseNPCProcess
+    {
+        public TstRunAtOurBaseProcess(NPCProcessesContext context)
+            : base(context)
+        {
+            var tmpTimerInterval = new TimeSpan(0, 0, 1);
+            mTimer = new Timer(TimerCallback, null, tmpTimerInterval, tmpTimerInterval);
+        }
+
+        private Timer mTimer;
+
+        private NPCMeshTask mTmpTask;
+
+        protected override void OnRun()
+        {
+#if UNITY_EDITOR
+            Debug.Log("Begin TstRunAtOurBaseProcess OnRun");
+#endif
+
+            for(var n = 1; n <= 3; n++)
+            {
+                var targetName = $"Cube_{n}";
+
+#if UNITY_EDITOR
+                Debug.Log($"TstRunAtOurBaseProcess OnRun targetName = {targetName}");
+#endif
+
+                GoToTargetWayPoint(targetName);
+
+#if UNITY_EDITOR
+                Debug.Log($"TstRunAtOurBaseProcess OnRun goal '{targetName}' had achieved!!!!");
+#endif
+            }
+
+            //"Cube_1"
+
+#if UNITY_EDITOR
+            Debug.Log("End TstRunAtOurBaseProcess OnRun");
+#endif
+        }
+
+        private void GoToTargetWayPoint(string nameOfThisWaypoint)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"TstRunAtOurBaseProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint}");
+#endif
+
+            var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
+
+            if (targetWayPoint != null)
+            {
+                var moveCommand = new HumanoidHStateCommand();
+                moveCommand.State = HumanoidHState.Walk;
+                moveCommand.TargetPosition = targetWayPoint.Position;
+
+#if UNITY_EDITOR
+                Debug.Log($"TstRunAtOurBaseProcess GoToTargetWayPoint moveCommand = {moveCommand}");
+#endif
+                var tmpTask = Execute(moveCommand);
+                mTmpTask = tmpTask;
+#if UNITY_EDITOR
+                Debug.Log($"TstRunAtOurBaseProcess GoToTargetWayPoint tmpTask = {tmpTask}");
+#endif
+
+                WaitNPCMeshTask(tmpTask);
+            }
+
+#if UNITY_EDITOR
+            Debug.Log("End TstRunAtOurBaseProcess GoToTargetWayPoint");
+#endif
+        }
+
+        private void TimerCallback(object state)
+        {
+            if (mTmpTask == null)
+            {
+                return;
+            }
+
+#if UNITY_EDITOR
+            Debug.Log($"TstRunAtOurBaseProcess TimerCallback mTmpTask = {mTmpTask} Status = {Status}");
+#endif          
+        }
+
+        protected override void OnDispose()
+        {
+            mTimer.Dispose();
         }
     }
 }
