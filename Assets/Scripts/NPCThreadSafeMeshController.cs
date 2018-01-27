@@ -7,10 +7,20 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
+    public enum NPCMeshTaskState
+    {
+        WaitWaitingToRun,
+        Running,
+        RanToCompletion,
+        Canceled,
+        Faulted
+    }
+
     public class NPCMeshTask : IObjectToString
     {
         public int TaskId { get; set; }
         public int ProcessId { get; set; }
+        public NPCMeshTaskState State { get; set; } = NPCMeshTaskState.WaitWaitingToRun;
 
         public override string ToString()
         {
@@ -33,6 +43,7 @@ namespace Assets.Scripts
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(TaskId)} = {TaskId}");
             sb.AppendLine($"{spaces}{nameof(ProcessId)} = {ProcessId}");
+            sb.AppendLine($"{spaces}{nameof(State)} = {State}");
             return sb.ToString();
         }
     }
@@ -74,12 +85,33 @@ namespace Assets.Scripts
         }
     }
 
-    public class NPCThreadSafeMeshController
+    public class NPCThreadSafeMeshController : IDisposable
     {
         public NPCThreadSafeMeshController(IMoveHumanoidController movehumanoidController, NPCProcessesContext context)
         {
             mMoveHumanoidController = movehumanoidController;
             mContext = context;
+            mMoveHumanoidController.OnHumanoidStatesChanged += OnHumanoidStatesChanged;
+        }
+
+        private void OnHumanoidStatesChanged(List<HumanoidStateKind> changedStates)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged Begin changedStates");
+            foreach(var changedState in changedStates)
+            {
+                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged changedState = {changedState}");
+            }
+            Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged End changedStates");
+#endif
+
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return;
+                }
+            }
         }
 
         private IMoveHumanoidController mMoveHumanoidController;
@@ -87,6 +119,14 @@ namespace Assets.Scripts
 
         public NPCMeshTask Execute(IMoveHumanoidCommandsPackage package, int processId)
         {
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return null;
+                }
+            }
+
             var result = new NPCMeshTask();
             result.ProcessId = processId;
             //result.TaskId = package.TaskId;
@@ -340,7 +380,7 @@ namespace Assets.Scripts
 
             RegProcessId(targetState, processId);
 
-
+            mMoveHumanoidController.ExecuteAsync(targetState);
         }
 
         private void RegProcessId(TargetStateOfHumanoidController targetState, int processId)
@@ -369,6 +409,26 @@ namespace Assets.Scripts
             {
                 mHandsActionState.Add(processId);
             }
+        }
+
+        private object mDisposeLockObj = new object();
+        private bool mIsDisposed;
+
+        public void Dispose()
+        {
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return;
+                }
+
+                mIsDisposed = true;
+            }
+
+#if UNITY_EDITOR
+            Debug.Log("NPCThreadSafeMeshController Dispose");
+#endif
         }
     }
 }

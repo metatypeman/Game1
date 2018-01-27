@@ -1685,6 +1685,10 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100086, guid: 71dc0d4e139eab246a88243a38200afd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 71dc0d4e139eab246a88243a38200afd, type: 3}
   m_IsPrefabParent: 0
@@ -2032,6 +2036,7 @@ GameObject:
   - component: {fileID: 1827129435}
   - component: {fileID: 1827129434}
   - component: {fileID: 1827129433}
+  - component: {fileID: 1827129437}
   m_Layer: 0
   m_Name: Cube_1
   m_TagString: Untagged
@@ -2105,6 +2110,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1827129437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1827129432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feafb2f537409b342bcb0315b59993b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1957686127
 Prefab:
   m_ObjectHideFlags: 0

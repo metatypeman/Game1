@@ -56,6 +56,15 @@ public enum MoveHumanoidCommandKind
     HandsActionState
 }
 
+public enum HumanoidStateKind
+{
+    HState,
+    TargetPosition,
+    VState,
+    HandsState,
+    HandsActionState
+}
+
 public interface IObjectToString
 {
     string ToString(int n);
@@ -279,13 +288,13 @@ public class HumanoidHandsActionStateCommand: MoveHumanoidCommand, IHumanoidHand
     }
 }
 //----
+public delegate void HumanoidStatesChangedAction(List<HumanoidStateKind> changedStates);
 
 public interface IMoveHumanoidController
 {
-    void ExecuteAsync(IMoveHumanoidCommandsPackage package);
-    void Execute(IMoveHumanoidCommand command);
-    void Execute(IMoveHumanoidCommandsPackage package);
+    void ExecuteAsync(TargetStateOfHumanoidController targetState);
     StatesOfHumanoidController States { get; }
+    event HumanoidStatesChangedAction OnHumanoidStatesChanged;
 }
 
 public class TargetStateOfHumanoidController : IObjectToString
@@ -491,22 +500,8 @@ public enum DeviceKind
 
 public class EnemyController : MonoBehaviour, IMoveHumanoidController
 {
-    //[SerializeField] float m_MoveSpeedMultiplier = 1f;
-    //[SerializeField] float m_GroundCheckDistance = 0.3f;
-    //[SerializeField] float m_MovingTurnSpeed = 360;
-    //[SerializeField] float m_StationaryTurnSpeed = 180;
-
     private Rigidbody mRigidbody;
     private Animator mAnimator;
-    //private CapsuleCollider mCapsule;
-
-    //private float m_CapsuleHeight;
-    //private Vector3 m_CapsuleCenter;
-    //private float m_OrigGroundCheckDistance;
-    //Vector3 m_GroundNormal;
-    //bool m_IsGrounded;
-    //float m_TurnAmount;
-    //float m_ForwardAmount;
 
     private NavMeshAgent mNavMeshAgent;
 
@@ -517,14 +512,9 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
         mAnimator = GetComponent<Animator>();
         mRigidbody = GetComponent<Rigidbody>();
-        //mCapsule = GetComponent<CapsuleCollider>();
         mNavMeshAgent = GetComponent<NavMeshAgent>();
 
-        //m_CapsuleHeight = mCapsule.height;
-        //m_CapsuleCenter = mCapsule.center;
-
         mRigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-        //m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
         ApplyCurrentStates();
 
@@ -542,7 +532,15 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     public HumanoidVState VState => mStates.VState;
     public HumanoidHandsState HandsState => mStates.HandsState;
     public HumanoidHandsActionState HandsActionState => mStates.HandsActionState;
- 
+    public event HumanoidStatesChangedAction OnHumanoidStatesChanged;
+
+    private void EmitOnHumanoidStatesChanged(params HumanoidStateKind[] changedStates)
+    {
+        Task.Run(()=> {
+            OnHumanoidStatesChanged?.Invoke(changedStates.ToList());
+        });
+    }
+
     private void ApplyCurrentStates()
     {
         mBehaviourFlags.Append(CreateBehaviourFlags(mStates));
@@ -556,20 +554,20 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     }
 
     private object mLockObj = new object();
-    private Queue<IMoveHumanoidCommandsPackage> mPackagesQueue = new Queue<IMoveHumanoidCommandsPackage>();
+    private Queue<TargetStateOfHumanoidController> mTargetStateQueue = new Queue<TargetStateOfHumanoidController>();
 
-    public void ExecuteAsync(IMoveHumanoidCommandsPackage package)
+    public void ExecuteAsync(TargetStateOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
-        Debug.Log($"EnemyController ExecuteAsync package = {package}");
+        Debug.Log($"EnemyController ExecuteAsync targetState = {targetState}");
 #endif
 
         lock(mLockObj)
         {
-            mPackagesQueue.Enqueue(package);
+            mTargetStateQueue.Enqueue(targetState);
 
 #if UNITY_EDITOR
-            Debug.Log($"EnemyController ExecuteAsync mPackagesQueue.Count = {mPackagesQueue.Count}");
+            Debug.Log($"EnemyController ExecuteAsync mTargetStateQueue.Count = {mTargetStateQueue.Count}");
 #endif
         }
     }
@@ -578,11 +576,11 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     {
         lock(mLockObj)
         {
-            if(mPackagesQueue.Count > 0)
+            if (mTargetStateQueue.Count > 0)
             {
-                var targetPackage = mPackagesQueue.Dequeue();
+                var targetState = mTargetStateQueue.Dequeue();
 
-                Execute(targetPackage);
+                Execute(targetState);
             }
         }
 
@@ -590,133 +588,19 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         StartCoroutine(Timer());
     }
 
-    public void Execute(IMoveHumanoidCommand command)
-    {
-        var commandsList = new MoveHumanoidCommandsPackage();
-        commandsList.Commands.Add(command);
-        Execute(commandsList);
-    }
-
-    public void Execute(IMoveHumanoidCommandsPackage package)
+    private void Execute(TargetStateOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
-        //Debug.Log("EnemyController Execute package = " + package);
-#endif
-
-        var targetState = CreateTargetState(package);
-
-#if UNITY_EDITOR
-        //Debug.Log("EnemyController Execute targetState = " + targetState);
+        Debug.Log($"EnemyController Execute targetState = {targetState}");
 #endif
 
         var newState = CreateTargetState(mStates, targetState);
 
 #if UNITY_EDITOR
-        //Debug.Log("EnemyController Execute newState = " + newState);
+        Debug.Log($"EnemyController Execute newState = {newState}");
 #endif
 
         ApplyTargetState(newState);
-    }
-
-    private TargetStateOfHumanoidController CreateTargetState(IMoveHumanoidCommandsPackage package)
-    {
-#if UNITY_EDITOR
-        //Debug.Log("EnemyController CreateTargetState package = " + package);
-#endif
-
-        var result = new TargetStateOfHumanoidController();
-
-        var commandsList = package.Commands;
-
-        if(commandsList.Count == 0)
-        {
-            return result;
-        }
-
-        var hStateCommandsList = new List<IHumanoidHStateCommand>();
-        var vStateCommandsList = new List<IHumanoidVStateCommand>();
-        var handsStateCommandsList = new List<IHumanoidHandsStateCommand>();
-        var handsActionStateCommandsList = new List<IHumanoidHandsActionStateCommand>();
-
-        foreach (var command in commandsList)
-        {
-            var kind = command.Kind;
-
-            switch (kind)
-            {
-                case MoveHumanoidCommandKind.HState:
-                    hStateCommandsList.Add(command as IHumanoidHStateCommand);
-                    break;
-
-                case MoveHumanoidCommandKind.VState:
-                    vStateCommandsList.Add(command as IHumanoidVStateCommand);
-                    break;
-
-                case MoveHumanoidCommandKind.HandsState:
-                    handsStateCommandsList.Add(command as IHumanoidHandsStateCommand);
-                    break;
-
-                case MoveHumanoidCommandKind.HandsActionState:
-                    handsActionStateCommandsList.Add(command as IHumanoidHandsActionStateCommand);
-                    break;
-
-                default: throw new ArgumentOutOfRangeException("kind", kind, null);
-            }
-        }
-
-#if UNITY_EDITOR
-        //Debug.Log("EnemyController Execute hStateCommandsList.Count = " + hStateCommandsList.Count);
-        //Debug.Log("EnemyController Execute vStateCommandsList.Count = " + vStateCommandsList.Count);
-        //Debug.Log("EnemyController Execute handsStateCommandsList.Count = " + handsStateCommandsList.Count);
-        //Debug.Log("EnemyController Execute handsActionStateCommandsList.Count = " + handsActionStateCommandsList.Count);
-#endif
-
-        if(hStateCommandsList.Count > 0)
-        {
-            var targetCommand = hStateCommandsList.First();
-
-#if UNITY_EDITOR
-            //Debug.Log("EnemyController CreateTargetState targetCommand = " + targetCommand);
-#endif
-
-            result.HState = targetCommand.State;
-            result.TargetPosition = targetCommand.TargetPosition;
-        }
-
-        if (vStateCommandsList.Count > 0)
-        {
-            var targetCommand = vStateCommandsList.First();
-
-#if UNITY_EDITOR
-            //Debug.Log("EnemyController CreateTargetState targetCommand = " + targetCommand);
-#endif
-
-            result.VState = targetCommand.State;
-        }
-
-        if (handsStateCommandsList.Count > 0)
-        {
-            var targetCommand = handsStateCommandsList.First();
-
-#if UNITY_EDITOR
-            //Debug.Log("EnemyController CreateTargetState targetCommand = " + targetCommand);
-#endif
-
-            result.HandsState = targetCommand.State;
-        }
-
-        if (handsActionStateCommandsList.Count > 0)
-        {
-            var targetCommand = handsActionStateCommandsList.First();
-
-#if UNITY_EDITOR
-            //Debug.Log("EnemyController CreateTargetState targetCommand = " + targetCommand);
-#endif
-
-            result.HandsActionState = targetCommand.State;
-        }
-
-        return result;
     }
 
     private StatesOfHumanoidController CreateTargetState(StatesOfHumanoidController sourceState, TargetStateOfHumanoidController targetState)
@@ -843,13 +727,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         mStates.HState = HumanoidHState.Stop;
         mStates.TargetPosition = null;
         ApplyCurrentStates();
-        StartCoroutine(OnAchieveDestinationOfMovingCoroutine());
-    }
-
-    private IEnumerator OnAchieveDestinationOfMovingCoroutine()
-    {
-        OnAchieveDestinationOfMoving?.Invoke();
-        yield return null;
+        EmitOnHumanoidStatesChanged(HumanoidStateKind.HState, HumanoidStateKind.TargetPosition);
     }
 
     // Update is called once per frame
@@ -868,6 +746,4 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
             }
         }
     }
-
-    public Action OnAchieveDestinationOfMoving;
 }

@@ -7,42 +7,44 @@ using UnityStandardAssets.CrossPlatformInput;
 
 [RequireComponent(typeof(EnemyController))]
 [RequireComponent(typeof(EnemyRayScaner))]
-public class EnemyNPC : MonoBehaviour {
+public class EnemyNPC : MonoBehaviour
+{
     private EnemyController mEnemyController;
     private EnemyRayScaner mEnemyRayScaner;
     //GameObject mTargetCube;
     //private Transform m_Cam;                  // A reference to the main camera in the scenes transform
-    private Vector3 m_CamForward;             // The current forward direction of the camera
-    private Vector3 m_Move;
+    //private Vector3 m_CamForward;             // The current forward direction of the camera
+    //private Vector3 m_Move;
     public float surfaceOffset = 1.5f;
     public GameObject setTargetOn;
     private int n = 0;
     private int maxN = 3;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         mEnemyController = GetComponent<EnemyController>();
-        mEnemyController.OnAchieveDestinationOfMoving += () => {
-            //if(mIsQPressed)
-            //{
-            //    mIsQPressed = false;
-            //    return;
-            //}
+        //mEnemyController.OnAchieveDestinationOfMoving += () => {
+        //if(mIsQPressed)
+        //{
+        //    mIsQPressed = false;
+        //    return;
+        //}
 
-            //if(n < maxN)
-            //{
-            //    Debug.Log($"EnemyController Start goal {n} had achieved!!!!");
-            //    RunToTarget();
-            //}
-        };
+        //if(n < maxN)
+        //{
+        //    Debug.Log($"EnemyController Start goal {n} had achieved!!!!");
+        //    RunToTarget();
+        //}
+        //};
 
         mEnemyRayScaner = GetComponent<EnemyRayScaner>();
         //m_Cam = Camera.main.transform;
         //mTargetCube = GameObject.Find("Cube_1");
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         //Debug.Log("EnemyNPC Update");
     }
@@ -51,6 +53,8 @@ public class EnemyNPC : MonoBehaviour {
     private bool mIsTPressed;
     private bool mIsQPressed;
     private bool mIsUPressed;
+
+    private NPCProcessesContext mTmpContext;
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
@@ -106,7 +110,7 @@ public class EnemyNPC : MonoBehaviour {
 
         var goAhead = Input.GetKey(KeyCode.W);
 
-        if(goAhead)
+        if (goAhead)
         {
             //mEnemyController.HState = HumanoidHState.Walk;
         }
@@ -114,12 +118,12 @@ public class EnemyNPC : MonoBehaviour {
         {
             var goToTarget = Input.GetKey(KeyCode.P);
 
-            if(goToTarget)
+            if (goToTarget)
             {
                 //mEnemyController.HState = HumanoidHState.Walk;
                 //mEnemyController.Move(mTargetCube.transform.position);
 
-                if(!mIsPPressed)
+                if (!mIsPPressed)
                 {
                     mIsPPressed = true;
 
@@ -136,10 +140,10 @@ public class EnemyNPC : MonoBehaviour {
             else
             {
                 var gth = Input.GetKey(KeyCode.T);
-               
-                if(gth)
+
+                if (gth)
                 {
-                    if(!mIsTPressed)
+                    if (!mIsTPressed)
                     {
                         mIsTPressed = true;
 
@@ -152,9 +156,9 @@ public class EnemyNPC : MonoBehaviour {
                 {
                     var isQKey = Input.GetKey(KeyCode.Q);
 
-                    if(isQKey)
+                    if (isQKey)
                     {
-                        if(!mIsQPressed)
+                        if (!mIsQPressed)
                         {
                             mIsQPressed = true;
 
@@ -165,9 +169,9 @@ public class EnemyNPC : MonoBehaviour {
                     {
                         var isUPressed = Input.GetKey(KeyCode.U);
 
-                        if(isUPressed)
+                        if (isUPressed)
                         {
-                            if(!mIsUPressed)
+                            if (!mIsUPressed)
                             {
                                 mIsUPressed = true;
 
@@ -178,6 +182,8 @@ public class EnemyNPC : MonoBehaviour {
                                 var targetPoint = target.transform.position;
 
                                 var tmpNPCProcessesContext = new NPCProcessesContext(mEnemyController);
+                                mTmpContext = tmpNPCProcessesContext;
+
                                 var tmpProcess = new TstGoToEnemyBaseProcess(tmpNPCProcessesContext);
                                 tmpProcess.RunAsync();
 
@@ -234,22 +240,22 @@ public class EnemyNPC : MonoBehaviour {
                         }
                     }
                     //mEnemyController.HState = HumanoidHState.Stop;
-                }            
+                }
             }
-        }   
+        }
     }
 
     private void GoToFarWaypoint()
     {
         var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
 
-        if(targetWayPoint != null)
+        if (targetWayPoint != null)
         {
             var moveCommand = new HumanoidHStateCommand();
             moveCommand.State = HumanoidHState.Walk;
             moveCommand.TargetPosition = targetWayPoint.Position;
 
-            mEnemyController.Execute(moveCommand);
+            //mEnemyController.Execute(moveCommand);
         }
     }
 
@@ -257,14 +263,14 @@ public class EnemyNPC : MonoBehaviour {
     {
         var visibleItemsList = mEnemyRayScaner.VisibleItems;
 
-        if(visibleItemsList.Count == 0)
+        if (visibleItemsList.Count == 0)
         {
             Debug.Log("EnemyNPC DisplayVisibleItems visibleItemsList.Count == 0");
             mIsTPressed = false;
             return;
         }
 
-        foreach(var visibleItem in visibleItemsList)
+        foreach (var visibleItem in visibleItemsList)
         {
             Debug.Log($"EnemyNPC DisplayVisibleItems visibleItem = {visibleItem}");
 
@@ -278,7 +284,7 @@ public class EnemyNPC : MonoBehaviour {
 
     private void RunToTarget()
     {
-        if(n >= maxN)
+        if (n >= maxN)
         {
             mIsPPressed = false;
             n = 0;
@@ -297,10 +303,16 @@ public class EnemyNPC : MonoBehaviour {
         moveCommand.State = HumanoidHState.Walk;
         moveCommand.TargetPosition = target.transform.position;
 
-        mEnemyController.Execute(moveCommand);
+        //mEnemyController.Execute(moveCommand);
     }
 
     void OnAnimatorIK(int layerIndex)
     {
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log("OnDestroy");
+        mTmpContext?.Dispose();
     }
 }

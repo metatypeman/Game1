@@ -26,7 +26,7 @@ namespace Assets.Scripts
 
         public string PropertiesToSting(int n)
         {
-            var spaces = StringHelper.Spaces(n);
+            //var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
             return sb.ToString();
         }
@@ -35,6 +35,7 @@ namespace Assets.Scripts
     public class WaypointInfo : IObjectToString
     {
         public Vector3 Position { get; set; }
+        public string Name { get; set; }
         public List<string> Tags { get; set; } = new List<string>();
 
         public override string ToString()
@@ -55,7 +56,25 @@ namespace Assets.Scripts
         public string PropertiesToSting(int n)
         {
             var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Position)} = {Position}");
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            if (Tags == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Tags)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Tags)}");
+                foreach(var tag in Tags)
+                {
+                    sb.AppendLine($"{nextSpaces}{nameof(tag)} = {tag}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(Tags)}");          
+            }
+            
             return sb.ToString();
         }
     }
@@ -66,6 +85,7 @@ namespace Assets.Scripts
 
         private static List<WaypointInfo> mWaypointsList = new List<WaypointInfo>();
         private static Dictionary<string, List<WaypointInfo>> mTagsDict = new Dictionary<string, List<WaypointInfo>>();
+        private static Dictionary<string, WaypointInfo> mNamesDict = new Dictionary<string, WaypointInfo>();
 
         public static void RegisterWaypoint(WaypointInfo waypoint)
         {
@@ -107,6 +127,13 @@ namespace Assets.Scripts
                         }
                     }
                 }
+
+                var name = waypoint.Name;
+
+                if(!string.IsNullOrWhiteSpace(name))
+                {
+                    mNamesDict[name] = waypoint;
+                }          
             }
         }
 
@@ -122,6 +149,24 @@ namespace Assets.Scripts
                 if(mTagsDict.ContainsKey(tag))
                 {
                     return mTagsDict[tag].FirstOrDefault();
+                }
+
+                return null;
+            }
+        }
+
+        public static WaypointInfo GetByName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return null;
+            }
+
+            lock (mLockObj)
+            {
+                if (mNamesDict.ContainsKey(name))
+                {
+                    return mNamesDict[name];
                 }
 
                 return null;

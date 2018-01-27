@@ -19,7 +19,7 @@ namespace Assets.Scripts
         Faulted
     }
 
-    public abstract class BaseNPCProcess
+    public abstract class BaseNPCProcess : IDisposable
     {
         protected BaseNPCProcess()
         {
@@ -37,7 +37,7 @@ namespace Assets.Scripts
         {
             get
             {
-                lock(mContextLockObj)
+                lock (mContextLockObj)
                 {
                     return mContext;
                 }
@@ -45,6 +45,14 @@ namespace Assets.Scripts
 
             set
             {
+                lock (mDisposeLockObj)
+                {
+                    if (mIsDisposed)
+                    {
+                        return;
+                    }
+                }
+
                 lock (mContextLockObj)
                 {
                     if (mContext == value)
@@ -52,7 +60,7 @@ namespace Assets.Scripts
                         return;
                     }
 
-                    if(Status != NPCProcessStatus.WaitingToRun)
+                    if (Status != NPCProcessStatus.WaitingToRun)
                     {
                         return;
                     }
@@ -85,7 +93,7 @@ namespace Assets.Scripts
         {
             get
             {
-                lock(mCurrentIdLockObj)
+                lock (mCurrentIdLockObj)
                 {
                     return mCurrentId;
                 }
@@ -107,7 +115,7 @@ namespace Assets.Scripts
         {
             get
             {
-                lock(mStatusLockObj)
+                lock (mStatusLockObj)
                 {
                     return mStatus;
                 }
@@ -115,6 +123,14 @@ namespace Assets.Scripts
 
             protected set
             {
+                lock (mDisposeLockObj)
+                {
+                    if (mIsDisposed)
+                    {
+                        return;
+                    }
+                }
+
                 lock (mStatusLockObj)
                 {
                     mStatus = value;
@@ -126,7 +142,7 @@ namespace Assets.Scripts
         {
             get
             {
-                switch(Status)
+                switch (Status)
                 {
                     case NPCProcessStatus.RanToCompletion:
                     case NPCProcessStatus.Canceled:
@@ -141,26 +157,42 @@ namespace Assets.Scripts
         public void Run()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin Run");
+            Debug.Log("BaseNPCProcess Begin Run");
 #endif
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return;
+                }
+            }
+
             NRun();
 
 #if UNITY_EDITOR
-            Debug.Log("End Run");
+            Debug.Log("BaseNPCProcess End Run");
 #endif
         }
 
         public void RunAsync()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin RunAsync");
+            Debug.Log("BaseNPCProcess Begin RunAsync");
 #endif
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return;
+                }
+            }
+
             mTask = Task.Run(() => {
                 NRun();
             });
 
 #if UNITY_EDITOR
-            Debug.Log("End RunAsync");
+            Debug.Log("BaseNPCProcess End RunAsync");
 #endif
         }
 
@@ -169,7 +201,7 @@ namespace Assets.Scripts
         private void NRun()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin NRun");
+            Debug.Log("BaseNPCProcess Begin NRun");
 #endif
 
             Status = NPCProcessStatus.Running;
@@ -179,23 +211,39 @@ namespace Assets.Scripts
             Status = NPCProcessStatus.RanToCompletion;
 
 #if UNITY_EDITOR
-            Debug.Log("End NRun");
+            Debug.Log("BaseNPCProcess End NRun");
 #endif
         }
 
         protected abstract void OnRun();
 
-        public void WaitProsesses(List<BaseNPCProcess> processesList)
+        protected void WaitProsesses(List<BaseNPCProcess> processesList)
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin WaitProsesses");
+            Debug.Log("BaseNPCProcess Begin WaitProsesses");
 #endif
+
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return;
+                }
+            }
 
             var oldStatus = Status;
 
-            while(true)
+            while (true)
             {
-                if(processesList.All(p => p.IsExecuting))
+                lock (mDisposeLockObj)
+                {
+                    if (mIsDisposed)
+                    {
+                        return;
+                    }
+                }
+
+                if (processesList.All(p => p.IsExecuting))
                 {
                     continue;
                 }
@@ -206,18 +254,70 @@ namespace Assets.Scripts
             Status = oldStatus;
 
 #if UNITY_EDITOR
-            Debug.Log("End WaitProsesses");
+            Debug.Log("BaseNPCProcess End WaitProsesses");
 #endif
         }
 
         protected NPCMeshTask Execute(IMoveHumanoidCommand command)
         {
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return null;
+                }
+            }
+
             return Context.Execute(command, CurrentId);
         }
 
         protected NPCMeshTask Execute(IMoveHumanoidCommandsPackage package)
         {
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return null;
+                }
+            }
+
             return Context.Execute(package, CurrentId);
+        }
+
+        private object mDisposeLockObj = new object();
+        private bool mIsDisposed;
+
+        protected bool IsDisposed
+        {
+            get
+            {
+                lock (mDisposeLockObj)
+                {
+                    return mIsDisposed;
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return;
+                }
+
+                mIsDisposed = true;
+            }
+
+#if UNITY_EDITOR
+            Debug.Log("BaseNPCProcess Dispose");
+#endif
+            OnDispose();
+        }
+
+        protected virtual void OnDispose()
+        {
         }
     }
 }

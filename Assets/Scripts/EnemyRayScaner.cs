@@ -31,10 +31,10 @@ public class VisionItem : IObjectToString
     {
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
-        sb.AppendLine($"{nameof(LocalDirection)} = {LocalDirection}");
-        sb.AppendLine($"{nameof(Point)} = {Point}");
-        sb.AppendLine($"{nameof(Distance)} = {Distance}");
-        sb.AppendLine($"{nameof(InstanceID)} = {InstanceID}");
+        sb.AppendLine($"{spaces}{nameof(LocalDirection)} = {LocalDirection}");
+        sb.AppendLine($"{spaces}{nameof(Point)} = {Point}");
+        sb.AppendLine($"{spaces}{nameof(Distance)} = {Distance}");
+        sb.AppendLine($"{spaces}{nameof(InstanceID)} = {InstanceID}");
         return sb.ToString();
     }
 }

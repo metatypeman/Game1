@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -61,7 +62,13 @@ namespace Assets.Scripts
         public TstGoToEnemyBaseProcess(NPCProcessesContext context)
             : base(context)
         {
+            var tmpTimerInterval = new TimeSpan(0, 0, 1);
+            mTimer = new Timer(TimerCallback, null, tmpTimerInterval, tmpTimerInterval);
         }
+
+        private Timer mTimer;
+
+        private NPCMeshTask mTmpTask;
 
         protected override void OnRun()
         {
@@ -69,7 +76,8 @@ namespace Assets.Scripts
             Debug.Log("Begin TstGoToEnemyBaseProcess OnRun");
 #endif
 
-            var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
+            //var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
+            var targetWayPoint = WaypointsBus.GetByName("Cube_1");
 
             if (targetWayPoint != null)
             {
@@ -81,7 +89,7 @@ namespace Assets.Scripts
                 Debug.Log($"TstGoToEnemyBaseProcess moveCommand = {moveCommand}");
 #endif
                 var tmpTask = Execute(moveCommand);
-
+                mTmpTask = tmpTask;
 #if UNITY_EDITOR
                 Debug.Log($"TstGoToEnemyBaseProcess tmpTask = {tmpTask}");
 #endif
@@ -91,6 +99,23 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log("End TstGoToEnemyBaseProcess OnRun");
 #endif
+        }
+
+        private void TimerCallback(object state)
+        {
+            if(mTmpTask == null)
+            {
+                return;
+            }
+
+#if UNITY_EDITOR
+            Debug.Log($"TstGoToEnemyBaseProcess TimerCallback mTmpTask = {mTmpTask}");
+#endif         
+        }
+
+        protected override void OnDispose()
+        {
+            mTimer.Dispose();
         }
     }
 

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class NPCProcessesContext
+    public class NPCProcessesContext: IDisposable
     {
         public NPCProcessesContext(IMoveHumanoidController movehumanoidController)
         {
@@ -22,6 +22,14 @@ namespace Assets.Scripts
 
         public void AddChild(BaseNPCProcess process)
         {
+            lock(mDisposeLockObj)
+            {
+                if(mIsDisposed)
+                {
+                    return;
+                }
+            }
+
             lock(mChildProcessesListLockObj)
             {
                 if (process == null)
@@ -42,6 +50,14 @@ namespace Assets.Scripts
 
         public void RemoveChild(BaseNPCProcess process)
         {
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return;
+                }
+            }
+
             lock (mChildProcessesListLockObj)
             {
                 if (process == null)
@@ -65,7 +81,15 @@ namespace Assets.Scripts
 
         public int GetNewProcessId()
         {
-            lock(mCountLockObj)
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return 0;
+                }
+            }
+
+            lock (mCountLockObj)
             {
                 mCount++;
                 return mCount;
@@ -74,6 +98,14 @@ namespace Assets.Scripts
 
         public NPCMeshTask Execute(IMoveHumanoidCommand command, int processId)
         {
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return null;
+                }
+            }
+
             var commandsPackage = new MoveHumanoidCommandsPackage();
             commandsPackage.Commands.Add(command);
             return Execute(commandsPackage, processId);
@@ -84,8 +116,42 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log($"NPCProcessesContext Execute package = {package} processId = {processId}");
 #endif
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return null;
+                }
+            }
 
             return mMeshController.Execute(package, processId);
+        }
+
+        private object mDisposeLockObj = new object();
+        private bool mIsDisposed;
+
+        public void Dispose()
+        {
+            lock(mDisposeLockObj)
+            {
+                if(mIsDisposed)
+                {
+                    return;
+                }
+
+                mIsDisposed = true;
+            }
+
+#if UNITY_EDITOR
+            Debug.Log("NPCProcessesContext Dispose");
+#endif
+
+            mMeshController?.Dispose();
+
+            foreach(var childProcess in mChildProcessesList)
+            {
+                childProcess.Dispose();
+            }
         }
     }
 }

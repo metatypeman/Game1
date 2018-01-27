@@ -58,9 +58,9 @@ namespace Assets.Scripts
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
-            sb.AppendLine($"{nameof(InstanceID)} = {InstanceID}");
-            sb.AppendLine($"{nameof(Name)} = {Name}");
-            sb.AppendLine($"{nameof(Tag)} = {Tag}");
+            sb.AppendLine($"{spaces}{nameof(InstanceID)} = {InstanceID}");
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.AppendLine($"{spaces}{nameof(Tag)} = {Tag}");
             return sb.ToString();
         }
     }
