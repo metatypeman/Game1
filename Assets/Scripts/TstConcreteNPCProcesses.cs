@@ -173,6 +173,15 @@ namespace Assets.Scripts
 #endif
             }
 
+            var targetName1 = "Cube_1";
+            var targetName2 = "Cube_2";
+
+            GoToTargetWayPoint(targetName1, false);
+
+            Thread.Sleep(1000);
+
+            GoToTargetWayPoint(targetName2);
+
             //"Cube_1"
 
 #if UNITY_EDITOR
@@ -180,10 +189,10 @@ namespace Assets.Scripts
 #endif
         }
 
-        private void GoToTargetWayPoint(string nameOfThisWaypoint)
+        private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TstRunAtOurBaseProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint}");
+            Debug.Log($"TstRunAtOurBaseProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
 #endif
 
             var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
@@ -203,7 +212,10 @@ namespace Assets.Scripts
                 Debug.Log($"TstRunAtOurBaseProcess GoToTargetWayPoint tmpTask = {tmpTask}");
 #endif
 
-                WaitNPCMeshTask(tmpTask);
+                if(withWaiting)
+                {
+                    WaitNPCMeshTask(tmpTask);
+                }        
             }
 
 #if UNITY_EDITOR

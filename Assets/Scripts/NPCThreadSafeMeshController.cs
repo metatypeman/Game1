@@ -134,9 +134,267 @@ namespace Assets.Scripts
         Forbiden
     }
 
+    public class DisagreementByHStateInfo : IObjectToString
+    {
+        public HumanoidStateKind Kind => HumanoidStateKind.HState;
+        public List<int> CurrentProcessesId { get; set; }
+        public HumanoidHState CurrentValue { get; set; } = HumanoidHState.Stop;
+        public int TargetProcessId { get; set; }
+        public HumanoidHState TargetValue { get; set; } = HumanoidHState.Stop;
+
+        public override string ToString()
+        {
+            return ToString(0);
+        }
+
+        public string ToString(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}Begin {nameof(DisagreementByHStateInfo)}");
+            sb.Append(PropertiesToSting(n));
+            sb.AppendLine($"{spaces}End {nameof(DisagreementByHStateInfo)}");
+            return sb.ToString();
+        }
+
+        public string PropertiesToSting(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextSpaces = StringHelper.Spaces(nextN);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            if(CurrentProcessesId == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(CurrentProcessesId)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(CurrentProcessesId)}");
+                foreach(var currentProcessId in CurrentProcessesId)
+                {
+                    sb.AppendLine($"{nextSpaces}{nameof(currentProcessId)} = {currentProcessId}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(CurrentProcessesId)}");
+            }
+            
+            sb.AppendLine($"{spaces}{nameof(CurrentValue)} = {CurrentValue}");
+            sb.AppendLine($"{spaces}{nameof(TargetProcessId)} = {TargetProcessId}");
+            sb.AppendLine($"{spaces}{nameof(TargetValue)} = {TargetValue}");
+            return sb.ToString();
+        }
+    }
+
+    public class DisagreementByTargetPositionInfo : IObjectToString
+    {
+        public HumanoidStateKind Kind => HumanoidStateKind.TargetPosition;
+        public List<int> CurrentProcessesId { get; set; }
+        public Vector3? CurrentValue {get; set;}
+        public int TargetProcessId { get; set; }
+        public Vector3? TargetValue { get; set; }
+
+        public override string ToString()
+        {
+            return ToString(0);
+        }
+
+        public string ToString(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}Begin {nameof(DisagreementByTargetPositionInfo)}");
+            sb.Append(PropertiesToSting(n));
+            sb.AppendLine($"{spaces}End {nameof(DisagreementByTargetPositionInfo)}");
+            return sb.ToString();
+        }
+
+        public string PropertiesToSting(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextSpaces = StringHelper.Spaces(nextN);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            if (CurrentProcessesId == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(CurrentProcessesId)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(CurrentProcessesId)}");
+                foreach (var currentProcessId in CurrentProcessesId)
+                {
+                    sb.AppendLine($"{nextSpaces}{nameof(currentProcessId)} = {currentProcessId}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(CurrentProcessesId)}");
+            }
+            sb.AppendLine($"{spaces}{nameof(CurrentValue)} = {CurrentValue}");
+            sb.AppendLine($"{spaces}{nameof(TargetProcessId)} = {TargetProcessId}");
+            sb.AppendLine($"{spaces}{nameof(TargetValue)} = {TargetValue}");
+            return sb.ToString();
+        }
+    }
+
+    public class DisagreementByVStateInfo : IObjectToString
+    {
+        public HumanoidStateKind Kind => HumanoidStateKind.VState;
+        public List<int> CurrentProcessesId { get; set; }
+        public HumanoidVState CurrentValue { get; set; } = HumanoidVState.Ground;
+        public int TargetProcessId { get; set; }
+        public HumanoidVState TargetValue { get; set; } = HumanoidVState.Ground;
+
+        public override string ToString()
+        {
+            return ToString(0);
+        }
+
+        public string ToString(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}Begin {nameof(DisagreementByVStateInfo)}");
+            sb.Append(PropertiesToSting(n));
+            sb.AppendLine($"{spaces}End {nameof(DisagreementByVStateInfo)}");
+            return sb.ToString();
+        }
+
+        public string PropertiesToSting(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextSpaces = StringHelper.Spaces(nextN);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            if (CurrentProcessesId == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(CurrentProcessesId)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(CurrentProcessesId)}");
+                foreach (var currentProcessId in CurrentProcessesId)
+                {
+                    sb.AppendLine($"{nextSpaces}{nameof(currentProcessId)} = {currentProcessId}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(CurrentProcessesId)}");
+            }
+            sb.AppendLine($"{spaces}{nameof(CurrentValue)} = {CurrentValue}");
+            sb.AppendLine($"{spaces}{nameof(TargetProcessId)} = {TargetProcessId}");
+            sb.AppendLine($"{spaces}{nameof(TargetValue)} = {TargetValue}");
+            return sb.ToString();
+        }
+    }
+
+    public class DisagreementByHandsStateInfo : IObjectToString
+    {
+        public HumanoidStateKind Kind => HumanoidStateKind.HandsState;
+        public List<int> CurrentProcessesId { get; set; }
+        public HumanoidHandsState CurrentValue { get; set; } = HumanoidHandsState.FreeHands;
+        public int TargetProcessId { get; set; }
+        public HumanoidHandsState TargetValue { get; set; } = HumanoidHandsState.FreeHands;
+
+        public override string ToString()
+        {
+            return ToString(0);
+        }
+
+        public string ToString(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}Begin {nameof(DisagreementByHandsStateInfo)}");
+            sb.Append(PropertiesToSting(n));
+            sb.AppendLine($"{spaces}End {nameof(DisagreementByHandsStateInfo)}");
+            return sb.ToString();
+        }
+
+        public string PropertiesToSting(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextSpaces = StringHelper.Spaces(nextN);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            if (CurrentProcessesId == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(CurrentProcessesId)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(CurrentProcessesId)}");
+                foreach (var currentProcessId in CurrentProcessesId)
+                {
+                    sb.AppendLine($"{nextSpaces}{nameof(currentProcessId)} = {currentProcessId}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(CurrentProcessesId)}");
+            }
+            sb.AppendLine($"{spaces}{nameof(CurrentValue)} = {CurrentValue}");
+            sb.AppendLine($"{spaces}{nameof(TargetProcessId)} = {TargetProcessId}");
+            sb.AppendLine($"{spaces}{nameof(TargetValue)} = {TargetValue}");
+            return sb.ToString();
+        }
+    }
+
+    public class DisagreementByHandsActionStateInfo : IObjectToString
+    {
+        public HumanoidStateKind Kind => HumanoidStateKind.HandsActionState;
+        public List<int> CurrentProcessesId { get; set; }
+        public HumanoidHandsActionState CurrentValue { get; set; } = HumanoidHandsActionState.Empty;
+        public int TargetProcessId { get; set; }
+        public HumanoidHandsActionState TargetValue { get; set; } = HumanoidHandsActionState.Empty;
+
+        public override string ToString()
+        {
+            return ToString(0);
+        }
+
+        public string ToString(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}Begin {nameof(DisagreementByHandsActionStateInfo)}");
+            sb.Append(PropertiesToSting(n));
+            sb.AppendLine($"{spaces}End {nameof(DisagreementByHandsActionStateInfo)}");
+            return sb.ToString();
+        }
+
+        public string PropertiesToSting(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextSpaces = StringHelper.Spaces(nextN);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            if (CurrentProcessesId == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(CurrentProcessesId)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(CurrentProcessesId)}");
+                foreach (var currentProcessId in CurrentProcessesId)
+                {
+                    sb.AppendLine($"{nextSpaces}{nameof(currentProcessId)} = {currentProcessId}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(CurrentProcessesId)}");
+            }
+            sb.AppendLine($"{spaces}{nameof(CurrentValue)} = {CurrentValue}");
+            sb.AppendLine($"{spaces}{nameof(TargetProcessId)} = {TargetProcessId}");
+            sb.AppendLine($"{spaces}{nameof(TargetValue)} = {TargetValue}");
+            return sb.ToString();
+        }
+    }
+
     public class NPCMeshTaskResulution : IObjectToString
     {
         public NPCMeshTaskResulutionKind Kind { get; set; } = NPCMeshTaskResulutionKind.Unknow;
+        public int TargetProcessId { get; set; }
+        public TargetStateOfHumanoidController TargetState { get; set; }
+        public DisagreementByHStateInfo DisagreementByHState { get; set; }
+        public DisagreementByTargetPositionInfo DisagreementByTargetPosition { get; set; }
+        public DisagreementByVStateInfo DisagreementByVState { get; set; }
+        public DisagreementByHandsStateInfo DisagreementByHandsState { get; set; }
+        public DisagreementByHandsActionStateInfo DisagreementByHandsActionState { get; set; }
 
         public override string ToString()
         {
@@ -156,9 +414,65 @@ namespace Assets.Scripts
         public string PropertiesToSting(int n)
         {
             var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
-            //sb.AppendLine($"{spaces}{nameof(ProcessId)} = {ProcessId}");
+            sb.AppendLine($"{spaces}{nameof(TargetProcessId)} = {TargetProcessId}");
+
+            if(TargetState == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(TargetState)} = null");
+            }
+            else
+            {
+                sb.Append(TargetState.ToString(nextN));
+            }
+
+            if (DisagreementByHState == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DisagreementByHState)} = null");
+            }
+            else
+            {
+                sb.Append(DisagreementByHState.ToString(nextN));
+            }
+
+            if (DisagreementByTargetPosition == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DisagreementByTargetPosition)} = null");
+            }
+            else
+            {
+                sb.Append(DisagreementByTargetPosition.ToString(nextN));
+            }
+
+            if (DisagreementByVState == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DisagreementByVState)} = null");
+            }
+            else
+            {
+                sb.Append(DisagreementByVState.ToString(nextN));
+            }
+
+            if (DisagreementByHandsState == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DisagreementByHandsState)} = null");
+            }
+            else
+            {
+                sb.Append(DisagreementByHandsState.ToString(nextN));
+            }
+
+            if (DisagreementByHandsActionState == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DisagreementByHandsActionState)} = null");
+            }
+            else
+            {
+                sb.Append(DisagreementByHandsActionState.ToString(nextN));
+            }
+
             return sb.ToString();
         }
     }
@@ -436,9 +750,12 @@ namespace Assets.Scripts
             Debug.Log($"NPCThreadSafeMeshController CreateTargetState sourceState = {sourceState}");
             Debug.Log($"NPCThreadSafeMeshController CreateTargetState targetState = {targetState}");
             Debug.Log($"NPCThreadSafeMeshController CreateTargetState processId = {processId}");
+            DumpProcesses();
 #endif
 
             var result = new NPCMeshTaskResulution();
+            result.TargetProcessId = processId;
+            result.TargetState = targetState;
 
             var theSame = true;
 
@@ -450,39 +767,100 @@ namespace Assets.Scripts
                 {
                     theSame = false;
                 }
-                else { 
+                else
+                { 
                     if(!mHState.Contains(processId))
                     {
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+
+
                     }
                 }
             }
 
             if (targetState.TargetPosition.HasValue)
             {
+                var targetPosition = targetState.TargetPosition.Value;
 
+                if(mTargetPosition.Count == 0)
+                {
+                    theSame = false;
+                }
+                else
+                {
+                    if(!mTargetPosition.Contains(processId))
+                    {
+                        theSame = false;
+                        result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+
+                    }
+                }
             }
 
             if (targetState.VState.HasValue)
             {
                 var targetVState = targetState.VState.Value;
 
-                //result.VState = targetState.VState.Value;
+                if (mVState.Count == 0)
+                {
+                    theSame = false;
+                }
+                else
+                {
+                    if (!mVState.Contains(processId))
+                    {
+                        theSame = false;
+                        result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+
+                    }
+                }
             }
+
+            /*
+        public DisagreementByHStateInfo DisagreementByHState { get; set; }
+        public DisagreementByTargetPositionInfo DisagreementByTargetPosition { get; set; }
+        public DisagreementByVStateInfo DisagreementByVState { get; set; }
+        public DisagreementByHandsStateInfo DisagreementByHandsState { get; set; }
+        public DisagreementByHandsActionStateInfo DisagreementByHandsActionState { get; set; }
+             */
 
             if (targetState.HandsState.HasValue)
             {
                 var targetHandsState = targetState.HandsState.Value;
 
-                //result.HandsState = targetState.HandsState.Value;
+                if (mHandsState.Count == 0)
+                {
+                    theSame = false;
+                }
+                else
+                {
+                    if (!mHandsState.Contains(processId))
+                    {
+                        theSame = false;
+                        result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+
+                    }
+                }
             }
 
             if (targetState.HandsActionState.HasValue)
             {
                 var targetHandsActionState = targetState.HandsActionState.Value;
 
-                //result.HandsActionState = targetState.HandsActionState.Value;
+                if (mHandsActionState.Count == 0)
+                {
+                    theSame = false;
+                }
+                else
+                {
+                    if (!mHandsActionState.Contains(processId))
+                    {
+                        theSame = false;
+                        result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+
+                    }
+                }
             }
 
             if(result.Kind == NPCMeshTaskResulutionKind.Unknow)
@@ -497,6 +875,10 @@ namespace Assets.Scripts
                 }
             }
 
+#if UNITY_EDITOR
+            Debug.Log("NPCThreadSafeMeshController CreateTargetState NEXT");
+            Debug.Log("End NPCThreadSafeMeshController CreateTargetState");
+#endif
             return result;
         }
 
@@ -506,6 +888,56 @@ namespace Assets.Scripts
         private List<int> mHandsState = new List<int>();
         private List<int> mHandsActionState = new List<int>();
         private Dictionary<int, NPCMeshTask> mTasksDict = new Dictionary<int, NPCMeshTask>();
+
+#if UNITY_EDITOR
+        private void DumpProcesses()
+        {
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow Begin mHState");
+            foreach(var item in mHState)
+            {
+                Debug.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow End mHState");
+
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow Begin mTargetPosition");
+            foreach (var item in mTargetPosition)
+            {
+                Debug.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow End mTargetPosition");
+
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow Begin mVState");
+            foreach (var item in mVState)
+            {
+                Debug.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow End mVState");
+
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow Begin mHandsState");
+            foreach (var item in mHandsState)
+            {
+                Debug.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow End mHandsState");
+
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow Begin mHandsActionState");
+            foreach (var item in mHandsActionState)
+            {
+                Debug.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow End mHandsActionState");
+
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow Begin mTasksDict");
+            foreach(var kvpItem in mTasksDict)
+            {
+                var productId = kvpItem.Key;
+                var task = kvpItem.Value;
+
+                Debug.Log($"NPCThreadSafeMeshController ProcessAllow productId = {productId} task = {task}");
+            }
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow End mTasksDict");
+        }
+#endif
 
         private void ProcessAllow(TargetStateOfHumanoidController targetState, int processId, NPCMeshTask npcMeshTask, NPCMeshTaskResulutionKind resolutionKind)
         {
