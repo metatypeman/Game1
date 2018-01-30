@@ -1145,6 +1145,8 @@ namespace Assets.Scripts
                         mHandsActionState.Remove(displacedProcessId);
                     }
 
+                    var displacedTask = mTasksDict[displacedProcessId];
+                    displacedTask.
                     mTasksDict.Remove(displacedProcessId);
                 }
             }
