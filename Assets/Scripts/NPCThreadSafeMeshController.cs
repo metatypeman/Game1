@@ -776,8 +776,8 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-                        var disagreement = new ();
-                        result. = disagreement;
+                        var disagreement = new DisagreementByHStateInfo();
+                        result.DisagreementByHState = disagreement;
                         disagreement.CurrentProcessesId = .ToList();
                         disagreement.CurrentValue = currentStates.;
                         disagreement.TargetProcessId = processId;
@@ -837,7 +837,7 @@ namespace Assets.Scripts
             }
 
             /*
-        public DisagreementByHStateInfo DisagreementByHState { get; set; }
+        
         public DisagreementByTargetPositionInfo DisagreementByTargetPosition { get; set; }
         public DisagreementByVStateInfo DisagreementByVState { get; set; }
         public DisagreementByHandsStateInfo DisagreementByHandsState { get; set; }
