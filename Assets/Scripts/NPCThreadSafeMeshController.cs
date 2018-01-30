@@ -581,7 +581,7 @@ namespace Assets.Scripts
 
             var result = new NPCMeshTask();
             result.ProcessId = processId;
-            //result.TaskId = package.TaskId;
+            result.TaskId = mContext.GetNewTaskId();
 
 #if UNITY_EDITOR
             Debug.Log($"NPCThreadSafeMeshController Execute package = {package} processId = {processId}");
