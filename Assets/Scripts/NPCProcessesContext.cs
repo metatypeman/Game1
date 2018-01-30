@@ -76,8 +76,8 @@ namespace Assets.Scripts
             }
         }
 
-        private int mCount;
-        private object mCountLockObj = new object();
+        private int mProcessIdCount;
+        private object mProcessIdCountLockObj = new object();
 
         public int GetNewProcessId()
         {
@@ -89,13 +89,33 @@ namespace Assets.Scripts
                 }
             }
 
-            lock (mCountLockObj)
+            lock (mProcessIdCountLockObj)
             {
-                mCount++;
-                return mCount;
+                mProcessIdCount++;
+                return mProcessIdCount;
             }
         }
 
+        private int mTaskIdCount;
+        private object mTaskIdCountLockObj = new object();
+        
+        public int GetNewTaskId()
+        {
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return 0;
+                }
+            }
+            
+            lock(mTaskIdCountLockObj)
+            {
+                mTaskIdCount++;
+                return mTaskIdCount;
+            }
+        }
+        
         public NPCMeshTask Execute(IMoveHumanoidCommand command, int processId)
         {
             lock (mDisposeLockObj)
