@@ -12,7 +12,8 @@ namespace Assets.Scripts
         WaitWaitingToRun,
         Running,
         RanToCompletion,
-        Canceled,
+        CanceledByOwner,
+        CanceledByHost,
         Faulted
     }
 
@@ -1146,7 +1147,7 @@ namespace Assets.Scripts
                     }
 
                     var displacedTask = mTasksDict[displacedProcessId];
-                    displacedTask.
+                    displacedTask.State = CanceledByHost;
                     mTasksDict.Remove(displacedProcessId);
                 }
             }
