@@ -998,15 +998,14 @@ namespace Assets.Scripts
                     default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
                 }
 
-                if(!.Contains(processId))
+                if(!mTargetPosition.Contains(processId))
                 {
-                    .Add(processId);
+                    mTargetPosition.Add(processId);
                 }  
-                mTargetPosition.Add(processId);
             }else{
-                if(.Contains(processId))
+                if(mTargetPosition.Contains(processId))
                 {
-                    .Remove(processId);
+                    mTargetPosition.Remove(processId);
                 }
             }
 
@@ -1025,15 +1024,14 @@ namespace Assets.Scripts
                     default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
                 }
 
-                if(!.Contains(processId))
+                if(!mVState.Contains(processId))
                 {
-                    .Add(processId);
+                    mVState.Add(processId);
                 }  
-                mVState.Add(processId);
             }else{
-                if(.Contains(processId))
+                if(mVState.Contains(processId))
                 {
-                    .Remove(processId);
+                    mVState.Remove(processId);
                 }
             }
 
@@ -1052,15 +1050,14 @@ namespace Assets.Scripts
                     default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
                 }
 
-                if(!.Contains(processId))
+                if(!mHandsState.Contains(processId))
                 {
-                    .Add(processId);
-                }  
-                mHandsState.Add(processId);
+                    mHandsState.Add(processId);
+                }     
             }else{
-                if(.Contains(processId))
+                if(mHandsState.Contains(processId))
                 {
-                    .Remove(processId);
+                    mHandsState.Remove(processId);
                 }
             }
 
@@ -1079,15 +1076,14 @@ namespace Assets.Scripts
                     default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
                 }
 
-                if(!.Contains(processId))
+                if(!mHandsActionState.Contains(processId))
                 {
-                    .Add(processId);
-                }  
-                mHandsActionState.Add(processId);
+                    mHandsActionState.Add(processId);
+                }               
             }else{
-                if(.Contains(processId))
+                if(mHandsActionState.Contains(processId))
                 {
-                    .Remove(processId);
+                    mHandsActionState.Remove(processId);
                 }
             }
 
