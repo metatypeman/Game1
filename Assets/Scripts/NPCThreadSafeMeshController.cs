@@ -759,6 +759,8 @@ namespace Assets.Scripts
 
             var theSame = true;
 
+            var currentStates = mMoveHumanoidController.
+
             if (targetState.HState.HasValue)
             {
                 var targetHState = targetState.HState.Value;
@@ -774,7 +776,12 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-
+                        var disagreement = new ();
+                        result. = disagreement;
+                        disagreement.CurrentProcessesId = .ToList();
+                        disagreement.CurrentValue = currentStates.;
+                        disagreement.TargetProcessId = processId;
+                        disagreement.TargetValue = ;
                     }
                 }
             }
@@ -794,6 +801,12 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
+                        var disagreement = new ();
+                        result. = disagreement;
+                        disagreement.CurrentProcessesId = .ToList();
+                        disagreement.CurrentValue = currentStates.;
+                        disagreement.TargetProcessId = processId;
+                        disagreement.TargetValue = ;
                     }
                 }
             }
@@ -813,6 +826,12 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
+                        var disagreement = new ();
+                        result. = disagreement;
+                        disagreement.CurrentProcessesId = .ToList();
+                        disagreement.CurrentValue = currentStates.;
+                        disagreement.TargetProcessId = processId;
+                        disagreement.TargetValue = ;
                     }
                 }
             }
@@ -824,7 +843,7 @@ namespace Assets.Scripts
         public DisagreementByHandsStateInfo DisagreementByHandsState { get; set; }
         public DisagreementByHandsActionStateInfo DisagreementByHandsActionState { get; set; }
              */
-
+             
             if (targetState.HandsState.HasValue)
             {
                 var targetHandsState = targetState.HandsState.Value;
@@ -840,6 +859,12 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
+                        var disagreement = new ();
+                        result. = disagreement;
+                        disagreement.CurrentProcessesId = .ToList();
+                        disagreement.CurrentValue = currentStates.;
+                        disagreement.TargetProcessId = processId;
+                        disagreement.TargetValue = ;
                     }
                 }
             }
@@ -859,6 +884,12 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
+                        var disagreement = new ();
+                        result. = disagreement;
+                        disagreement.CurrentProcessesId = .ToList();
+                        disagreement.CurrentValue = currentStates.;
+                        disagreement.TargetProcessId = processId;
+                        disagreement.TargetValue = ;
                     }
                 }
             }
