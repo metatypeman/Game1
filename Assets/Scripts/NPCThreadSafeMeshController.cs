@@ -778,10 +778,10 @@ namespace Assets.Scripts
 
                         var disagreement = new DisagreementByHStateInfo();
                         result.DisagreementByHState = disagreement;
-                        disagreement.CurrentProcessesId = .ToList();
+                        disagreement.CurrentProcessesId = mHState.ToList();
                         disagreement.CurrentValue = currentStates.;
                         disagreement.TargetProcessId = processId;
-                        disagreement.TargetValue = ;
+                        disagreement.TargetValue = targetHState;
                     }
                 }
             }
@@ -801,12 +801,12 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-                        var disagreement = new ();
-                        result. = disagreement;
-                        disagreement.CurrentProcessesId = .ToList();
+                        var disagreement = new DisagreementByTargetPositionInfo();
+                        result.DisagreementByTargetPosition = disagreement;
+                        disagreement.CurrentProcessesId = mTargetPosition.ToList();
                         disagreement.CurrentValue = currentStates.;
                         disagreement.TargetProcessId = processId;
-                        disagreement.TargetValue = ;
+                        disagreement.TargetValue = targetPosition;
                     }
                 }
             }
@@ -826,23 +826,15 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-                        var disagreement = new ();
-                        result. = disagreement;
-                        disagreement.CurrentProcessesId = .ToList();
+                        var disagreement = new DisagreementByVStateInfo();
+                        result.DisagreementByVState = disagreement;
+                        disagreement.CurrentProcessesId = mVState.ToList();
                         disagreement.CurrentValue = currentStates.;
                         disagreement.TargetProcessId = processId;
-                        disagreement.TargetValue = ;
+                        disagreement.TargetValue = targetVState;
                     }
                 }
             }
-
-            /*
-        
-        public DisagreementByTargetPositionInfo DisagreementByTargetPosition { get; set; }
-        public DisagreementByVStateInfo DisagreementByVState { get; set; }
-        public DisagreementByHandsStateInfo DisagreementByHandsState { get; set; }
-        public DisagreementByHandsActionStateInfo DisagreementByHandsActionState { get; set; }
-             */
              
             if (targetState.HandsState.HasValue)
             {
@@ -859,12 +851,12 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-                        var disagreement = new ();
-                        result. = disagreement;
-                        disagreement.CurrentProcessesId = .ToList();
+                        var disagreement = new DisagreementByHandsStateInfo();
+                        result.DisagreementByHandsState = disagreement;
+                        disagreement.CurrentProcessesId = mHandsState.ToList();
                         disagreement.CurrentValue = currentStates.;
                         disagreement.TargetProcessId = processId;
-                        disagreement.TargetValue = ;
+                        disagreement.TargetValue = targetHandsState;
                     }
                 }
             }
@@ -884,12 +876,12 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-                        var disagreement = new ();
-                        result. = disagreement;
-                        disagreement.CurrentProcessesId = .ToList();
+                        var disagreement = new DisagreementByHandsActionState();
+                        result.DisagreementByHandsActionStateInfo = disagreement;
+                        disagreement.CurrentProcessesId = mHandsActionState.ToList();
                         disagreement.CurrentValue = currentStates.;
                         disagreement.TargetProcessId = processId;
-                        disagreement.TargetValue = ;
+                        disagreement.TargetValue = targetHandsActionState;
                     }
                 }
             }
