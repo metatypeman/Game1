@@ -998,7 +998,16 @@ namespace Assets.Scripts
                     default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
                 }
 
+                if(!.Contains(processId))
+                {
+                    .Add(processId);
+                }  
                 mTargetPosition.Add(processId);
+            }else{
+                if(.Contains(processId))
+                {
+                    .Remove(processId);
+                }
             }
 
             if (targetState.VState.HasValue)
@@ -1016,7 +1025,16 @@ namespace Assets.Scripts
                     default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
                 }
 
+                if(!.Contains(processId))
+                {
+                    .Add(processId);
+                }  
                 mVState.Add(processId);
+            }else{
+                if(.Contains(processId))
+                {
+                    .Remove(processId);
+                }
             }
 
             if (targetState.HandsState.HasValue)
@@ -1034,7 +1052,16 @@ namespace Assets.Scripts
                     default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
                 }
 
+                if(!.Contains(processId))
+                {
+                    .Add(processId);
+                }  
                 mHandsState.Add(processId);
+            }else{
+                if(.Contains(processId))
+                {
+                    .Remove(processId);
+                }
             }
 
             if (targetState.HandsActionState.HasValue)
@@ -1052,7 +1079,16 @@ namespace Assets.Scripts
                     default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
                 }
 
+                if(!.Contains(processId))
+                {
+                    .Add(processId);
+                }  
                 mHandsActionState.Add(processId);
+            }else{
+                if(.Contains(processId))
+                {
+                    .Remove(processId);
+                }
             }
 
             if(displacedProcessesIdList.Count > 0)
