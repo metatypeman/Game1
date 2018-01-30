@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,66 @@ public class VisionItem : IObjectToString
     }
 }
 
-public class EnemyRayScaner : MonoBehaviour {
+public class VisionObject : IObjectToString
+{
+    public int InstanceID { get; set; }
+    public MyGameObject GameObject { get; set; }
+    public List<VisionItem> VisionItems { get; set; }
+
+    public override string ToString()
+    {
+        return ToString(0);
+    }
+
+    public string ToString(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.AppendLine($"{spaces}Begin {nameof(VisionObject)}");
+        sb.Append(PropertiesToSting(n));
+        sb.AppendLine($"{spaces}End {nameof(VisionObject)}");
+        return sb.ToString();
+    }
+
+    public string PropertiesToSting(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var nextN = n + 4;
+        var sb = new StringBuilder();
+        sb.AppendLine($"{spaces}{nameof(InstanceID)} = {InstanceID}");
+        if(GameObject == null)
+        {
+            sb.AppendLine($"{spaces}{nameof(GameObject)} = null");
+        }
+        else
+        {
+            sb.Append($"{spaces}{nameof(GameObject)} = {GameObject.ToString(nextN)}");
+        }
+
+        if(VisionItems == null)
+        {
+            sb.AppendLine($"{spaces}{nameof(VisionItems)} = null");
+        }
+        else
+        {
+            sb.AppendLine($"{spaces}Begin {nameof(VisionItems)}");
+            foreach(var visionItem in VisionItems)
+            {
+                sb.Append(visionItem.ToString(nextN));
+            }
+            sb.AppendLine($"{spaces}End {nameof(VisionItems)}");
+        }
+        return sb.ToString();
+    }
+}
+
+public interface INPCRayScaner
+{
+    List<VisionObject> VisibleObjects { get; }
+}
+
+public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
+{
     public int distance = 15;
     public Vector3 Offset = new Vector3(0, 1.6f, 0);
 
@@ -100,20 +160,37 @@ public class EnemyRayScaner : MonoBehaviour {
 
     private void RayToScan()
     {
-        mNewVisileItems = new List<VisionItem>();
+        var tmpVisibleItems = new List<VisionItem>();
 
         foreach(var localDirection in mRayDirectionsList)
         {
-            GetRaycast(localDirection);
+            GetRaycast(localDirection, tmpVisibleItems);
+        }
+
+        var newVisibleObjects = new List<VisionObject>();
+
+        if(tmpVisibleItems.Count > 0)
+        {
+            var tmpGroupedVisibleItems = tmpVisibleItems.GroupBy(p => p.InstanceID).ToDictionary(p => p.Key, p => p.ToList());
+
+            foreach(var tmpGroupedVisibleKVPItems in tmpGroupedVisibleItems)
+            {
+                var item = new VisionObject();
+                var instanceID = tmpGroupedVisibleKVPItems.Key;
+                item.InstanceID = instanceID;
+                item.GameObject = MyGameObjectsBus.GetObject(instanceID);
+                item.VisionItems = tmpGroupedVisibleKVPItems.Value;
+                newVisibleObjects.Add(item);
+            }
         }
 
         lock (mVisibleItemsLockObj)
         {
-            mVisibleItems = mNewVisileItems;
+            mVisibleObjects = newVisibleObjects;
         }
     }
 
-    private void GetRaycast(Vector3 localDirection)
+    private void GetRaycast(Vector3 localDirection, List<VisionItem> visibleItems)
     {
         var globalDirection = transform.TransformDirection(localDirection);
 
@@ -131,7 +208,7 @@ public class EnemyRayScaner : MonoBehaviour {
             visibleItem.Point = hit.point;
             visibleItem.Distance = hit.distance;
             visibleItem.InstanceID = hit.transform.GetInstanceID();
-            mNewVisileItems.Add(visibleItem);
+            visibleItems.Add(visibleItem);
         }
 #if UNITY_EDITOR
         else
@@ -141,17 +218,16 @@ public class EnemyRayScaner : MonoBehaviour {
 #endif
     }
 
-    private List<VisionItem> mVisibleItems = new List<VisionItem>();
-    private List<VisionItem> mNewVisileItems;
+    private List<VisionObject> mVisibleObjects = new List<VisionObject>();
     private object mVisibleItemsLockObj = new object();
 
-    public List<VisionItem> VisibleItems
+    public List<VisionObject> VisibleObjects
     {
         get
         {
-            lock(mVisibleItemsLockObj)
+            lock (mVisibleItemsLockObj)
             {
-                return mVisibleItems.ToList();
+                return mVisibleObjects.ToList();
             }
         }
     }

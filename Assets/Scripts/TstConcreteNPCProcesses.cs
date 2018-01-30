@@ -43,13 +43,44 @@ namespace Assets.Scripts
         public TstInspectingProcess(NPCProcessesContext context)
             : base(context)
         {
+            mRayScaner = context.GetInstance<INPCRayScaner>();
         }
+
+        private INPCRayScaner mRayScaner;
 
         protected override void OnRun()
         {
 #if UNITY_EDITOR
             Debug.Log("Begin TstInspectingProcess OnRun");
 #endif
+
+            while(true)
+            {
+                var items = mRayScaner.VisibleObjects;
+
+                if(items.Count == 0)
+                {
+                    return;
+                }
+
+#if UNITY_EDITOR
+                Debug.Log($"TstInspectingProcess OnRun items.Count = {items.Count}");
+#endif
+
+                var tmpItemsWithGameObjectsList = items.Where(p => p.GameObject != null).ToList();
+
+#if UNITY_EDITOR
+                Debug.Log($"TstInspectingProcess OnRun tmpItemsWithGameObjectsList.Count = {tmpItemsWithGameObjectsList.Count}");
+                foreach(var item in tmpItemsWithGameObjectsList)
+                {
+                    var gameObject = item.GameObject;
+
+                    Debug.Log($"TstInspectingProcess OnRun gameObject.Name = {gameObject.Name}");
+                }
+#endif
+
+                Thread.Sleep(1000);
+            }
 
 #if UNITY_EDITOR
             Debug.Log("End TstInspectingProcess OnRun");

@@ -15,6 +15,22 @@ namespace Assets.Scripts
         }
 
         private NPCSimpleDI mSimpleDI = new NPCSimpleDI();
+
+        public void RegisterInstance<T>(object instance) where T : class
+        {
+            mSimpleDI.RegisterInstance<T>(instance);
+        }
+
+        public void RemoveInstance<T>() where T : class
+        {
+            mSimpleDI.RemoveInstance<T>();
+        }
+
+        public T GetInstance<T>() where T : class
+        {
+            return mSimpleDI.GetInstance<T>();
+        }
+
         private NPCThreadSafeMeshController mMeshController;
 
         private object mChildProcessesListLockObj = new object();

@@ -44,6 +44,7 @@ public class EnemyNPC : MonoBehaviour
         //mTargetCube = GameObject.Find("Cube_1");
 
         mNPCProcessesContext = new NPCProcessesContext(mEnemyController);
+        mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
     }
 
     // Update is called once per frame
@@ -181,9 +182,9 @@ public class EnemyNPC : MonoBehaviour
 
                                 //var tmpNPCThreadSafeMeshController = new NPCThreadSafeMeshController(mEnemyController);
 
-                                var target = GameObject.Find("Cube_1");
+                                //var target = GameObject.Find("Cube_1");
 
-                                var targetPoint = target.transform.position;
+                                //var targetPoint = target.transform.position;
 
                                 var tmpProcess = new TstRootProcess(mNPCProcessesContext);
                                 tmpProcess.RunAsync();
@@ -262,25 +263,25 @@ public class EnemyNPC : MonoBehaviour
 
     private void DisplayVisibleItems()
     {
-        var visibleItemsList = mEnemyRayScaner.VisibleItems;
+        ////var visibleItemsList = mEnemyRayScaner.VisibleItems;
 
-        if (visibleItemsList.Count == 0)
-        {
-            Debug.Log("EnemyNPC DisplayVisibleItems visibleItemsList.Count == 0");
-            mIsTPressed = false;
-            return;
-        }
+        //if (visibleItemsList.Count == 0)
+        //{
+        //    Debug.Log("EnemyNPC DisplayVisibleItems visibleItemsList.Count == 0");
+        //    mIsTPressed = false;
+        //    return;
+        //}
 
-        foreach (var visibleItem in visibleItemsList)
-        {
-            Debug.Log($"EnemyNPC DisplayVisibleItems visibleItem = {visibleItem}");
+        //foreach (var visibleItem in visibleItemsList)
+        //{
+        //    Debug.Log($"EnemyNPC DisplayVisibleItems visibleItem = {visibleItem}");
 
-            var gameInfo = MyGameObjectsBus.GetObject(visibleItem.InstanceID);
+        //    var gameInfo = MyGameObjectsBus.GetObject(visibleItem.InstanceID);
 
-            Debug.Log($"EnemyNPC DisplayVisibleItems gameInfo = {gameInfo}");
-        }
+        //    Debug.Log($"EnemyNPC DisplayVisibleItems gameInfo = {gameInfo}");
+        //}
 
-        mIsTPressed = false;
+        //mIsTPressed = false;
     }
 
     private void RunToTarget()

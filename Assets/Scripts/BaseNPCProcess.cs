@@ -353,7 +353,10 @@ namespace Assets.Scripts
                 case NPCMeshTaskState.RanToCompletion:
                     return NPCProcessStatus.Running;
 
-                case NPCMeshTaskState.Canceled:
+                case NPCMeshTaskState.CanceledByHost:
+                    return NPCProcessStatus.Running;
+
+                case NPCMeshTaskState.CanceledByOwner:
                     return NPCProcessStatus.Running;
 
                 case NPCMeshTaskState.Faulted:
