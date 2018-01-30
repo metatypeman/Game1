@@ -972,7 +972,15 @@ namespace Assets.Scripts
                     default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
                 }
 
-                mHState.Add(processId);
+                if(!mHState.Contains(processId))
+                {
+                    mHState.Add(processId);
+                }     
+            }else{
+                if(mHState.Contains(processId))
+                {
+                    mHState.Remove(processId);
+                }
             }
 
             if (targetState.TargetPosition.HasValue)
