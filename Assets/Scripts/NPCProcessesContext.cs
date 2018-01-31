@@ -163,6 +163,15 @@ namespace Assets.Scripts
             return mMeshController.Execute(package, processId);
         }
 
+        public NPCMeshTaskResulutionKind ApproveNPCMeshTaskExecute(NPCMeshTaskResulution existingsNPCMeshTaskResulution)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingsNPCMeshTaskResulution = {existingsNPCMeshTaskResulution}");
+#endif        
+        
+            return NPCMeshTaskResulutionKind.Allow;//tmp
+        }
+
         private object mDisposeLockObj = new object();
         private bool mIsDisposed;
 
