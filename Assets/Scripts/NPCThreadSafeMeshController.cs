@@ -612,6 +612,8 @@ namespace Assets.Scripts
                 case NPCMeshTaskResulutionKind.AllowAdd:
                     ProcessAllow(targetState, processId, result, kindOfResolution);
                     break;
+                    
+                case NPCMeshTaskResulutionKind.
 
                 default: throw new ArgumentOutOfRangeException(nameof(kindOfResolution), kindOfResolution, null);
             }
