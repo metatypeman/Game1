@@ -613,7 +613,24 @@ namespace Assets.Scripts
                     ProcessAllow(targetState, processId, result, kindOfResolution);
                     break;
                     
-                case NPCMeshTaskResulutionKind.
+                case NPCMeshTaskResulutionKind.Forbiden:
+                    {
+                        var kindOfResolutionOfContext = mContext.ApproveNPCMeshTaskExecute(resolution);
+                        switch(kindOfResolutionOfContext)
+                        {
+                            case NPCMeshTaskResulutionKind.Allow:
+                            case NPCMeshTaskResulutionKind.Allow:
+                                ProcessAllow(targetState, processId, result, kindOfResolutionOfContext);
+                                break;
+                        
+                            case NPCMeshTaskResulutionKind.Forbiden:
+                                ProcessForbiden(result);
+                                break;
+                                
+                            default: throw new ArgumentOutOfRangeException(nameof(kindOfResolutionOfContext), kindOfResolutionOfContext, null);
+                        }
+                    }
+                    break;
 
                 default: throw new ArgumentOutOfRangeException(nameof(kindOfResolution), kindOfResolution, null);
             }
@@ -1170,6 +1187,15 @@ namespace Assets.Scripts
 #endif
         }
 
+        private void ProcessForbiden(NPCMeshTask npcMeshTask)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"NPCThreadSafeMeshController ProcessForbiden npcMeshTask = {npcMeshTask}");
+#endif
+
+            npcMeshTask.State = NPCMeshTaskState.CanceledByHost;
+        }
+        
         private object mDisposeLockObj = new object();
         private bool mIsDisposed;
 
