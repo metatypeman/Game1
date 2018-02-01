@@ -94,6 +94,64 @@ namespace Assets.Scripts
             }
         }
 
+        private BaseNPCProcess mParentProcess;
+        private List<BaseNPCProcess> mChildrenProcesses = new List<BaseNPCProcess>();
+        private object mChildrenProcessesLockObj = new object();
+        
+        public BaseNPCProcess ParentProcess
+        {
+            get
+            {
+                lock(mChildrenProcessesLockObj)
+                {
+                
+                }
+            }
+            
+            set
+            {
+                lock (mDisposeLockObj)
+                {
+                    if (mIsDisposed)
+                    {
+                        return;
+                    }
+                }
+                
+                lock(mChildrenProcessesLockObj)
+                {
+                
+                }
+            }
+        }
+        
+        public List<BaseNPCProcess> ChildrenProcesses
+        {
+            get
+            {
+                lock(mChildrenProcessesLockObj)
+                {
+                
+                }
+            }
+            
+            set
+            {
+                lock (mDisposeLockObj)
+                {
+                    if (mIsDisposed)
+                    {
+                        return;
+                    }
+                }
+                
+                lock(mChildrenProcessesLockObj)
+                {
+                
+                }
+            }
+        }
+
         private float mLocalPriority = BaseNPCProcessPriorities.Normal;
         private object mPriorityLockObj = new object();
         
