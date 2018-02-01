@@ -18,6 +18,11 @@ namespace Assets.Scripts
         Faulted
     }
 
+    public static class BaseNPCProcessPriorities
+    {
+        public const float
+    }
+    
     public abstract class BaseNPCProcess : IDisposable
     {
         protected BaseNPCProcess()
