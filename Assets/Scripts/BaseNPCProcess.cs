@@ -94,7 +94,7 @@ namespace Assets.Scripts
             }
         }
 
-        private float mLocalPriority;
+        private float mLocalPriority = BaseNPCProcessPriorities.Normal;
         private object mPriorityLockObj = new object();
         
         public float LocalPriority
