@@ -85,6 +85,47 @@ namespace Assets.Scripts
             }
         }
 
+        private float mLocalPriority;
+        private object mPriorityLockObj = new object();
+        
+        public float LocalPriority
+        {
+            get
+            {
+                lock(mPriorityLockObj)
+                {
+                    return mLocalPriority;
+                }
+            }
+            
+            set
+            {
+                lock (mDisposeLockObj)
+                {
+                    if (mIsDisposed)
+                    {
+                        return;
+                    }
+                }
+                
+                lock(mPriorityLockObj)
+                {
+                    mLocalPriority = value;
+                }
+            }
+        }
+        
+        pulic float GlobalPriority
+        {
+            get
+            {
+                lock(mPriorityLockObj)
+                {
+                    
+                }
+            }
+        }
+        
         private int mCurrentId;
         private object mCurrentIdLockObj = new object();
 
