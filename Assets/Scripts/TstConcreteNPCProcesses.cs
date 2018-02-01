@@ -48,14 +48,21 @@ namespace Assets.Scripts
 
         private INPCRayScaner mRayScaner;
 
+        private bool ISawTrafficBarrierRed;
+
         protected override void OnRun()
         {
 #if UNITY_EDITOR
             Debug.Log("Begin TstInspectingProcess OnRun");
 #endif
 
-            while(true)
+            while(InfinityCycleCondition)
             {
+                if(ISawTrafficBarrierRed)
+                {
+                    break;
+                }
+
                 var items = mRayScaner.VisibleObjects;
 
                 if(items.Count == 0)
@@ -76,6 +83,15 @@ namespace Assets.Scripts
                     var gameObject = item.GameObject;
 
                     Debug.Log($"TstInspectingProcess OnRun gameObject.Name = {gameObject.Name}");
+
+                    if(gameObject.Name == "TrafficBarrierRed")
+                    {
+                        ISawTrafficBarrierRed = true;
+
+                        var newProcess = new TstRunAwayProcess(Context);
+                        newProcess.LocalPriority = BaseNPCProcessPriorities.BelowNormal;
+                        newProcess.RunAsync();
+                    }
                 }
 #endif
 
@@ -163,9 +179,46 @@ namespace Assets.Scripts
             Debug.Log("Begin TstRunAwayProcess OnRun");
 #endif
 
+            var targetName = "Cube_1";
+
+            GoToTargetWayPoint(targetName);
 
 #if UNITY_EDITOR
             Debug.Log("End TstRunAwayProcess OnRun");
+#endif
+        }
+
+        private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"TstRunAwayProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
+#endif
+
+            var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
+
+            if (targetWayPoint != null)
+            {
+                var moveCommand = new HumanoidHStateCommand();
+                moveCommand.State = HumanoidHState.Walk;
+                moveCommand.TargetPosition = targetWayPoint.Position;
+
+#if UNITY_EDITOR
+                Debug.Log($"TstRunAwayProcess GoToTargetWayPoint moveCommand = {moveCommand}");
+#endif
+                var tmpTask = Execute(moveCommand);
+                //mTmpTask = tmpTask;
+#if UNITY_EDITOR
+                Debug.Log($"TstRunAwayProcess GoToTargetWayPoint tmpTask = {tmpTask}");
+#endif
+
+                if (withWaiting)
+                {
+                    WaitNPCMeshTask(tmpTask);
+                }
+            }
+
+#if UNITY_EDITOR
+            Debug.Log("End TstRunAwayProcess GoToTargetWayPoint");
 #endif
         }
     }

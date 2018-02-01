@@ -616,10 +616,15 @@ namespace Assets.Scripts
                 case NPCMeshTaskResulutionKind.Forbiden:
                     {
                         var kindOfResolutionOfContext = mContext.ApproveNPCMeshTaskExecute(resolution);
-                        switch(kindOfResolutionOfContext)
+
+#if UNITY_EDITOR
+                        Debug.Log($"NPCThreadSafeMeshController Execute kindOfResolutionOfContext = {kindOfResolutionOfContext}");
+#endif
+
+                        switch (kindOfResolutionOfContext)
                         {
                             case NPCMeshTaskResulutionKind.Allow:
-                            case NPCMeshTaskResulutionKind.Allow:
+                            case NPCMeshTaskResulutionKind.AllowAdd:
                                 ProcessAllow(targetState, processId, result, kindOfResolutionOfContext);
                                 break;
                         

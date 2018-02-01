@@ -167,8 +167,75 @@ namespace Assets.Scripts
         {
 #if UNITY_EDITOR
             Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingsNPCMeshTaskResulution = {existingsNPCMeshTaskResulution}");
-#endif        
-        
+#endif
+
+            var targetProcessId = existingsNPCMeshTaskResulution.TargetProcessId;
+
+            var tmpExistingProcessesIdList = new List<int>();
+
+            var disagreementByHState = existingsNPCMeshTaskResulution.DisagreementByHState;
+
+            if(disagreementByHState != null)
+            {
+                tmpExistingProcessesIdList.AddRange(disagreementByHState.CurrentProcessesId);
+            }
+
+            var disagreementByTargetPosition = existingsNPCMeshTaskResulution.DisagreementByTargetPosition;
+
+            if (disagreementByTargetPosition != null)
+            {
+                tmpExistingProcessesIdList.AddRange(disagreementByTargetPosition.CurrentProcessesId);
+            }
+
+            var disagreementByVState = existingsNPCMeshTaskResulution.DisagreementByVState;
+
+            if (disagreementByVState != null)
+            {
+                tmpExistingProcessesIdList.AddRange(disagreementByVState.CurrentProcessesId);
+            }
+
+            var disagreementByHandsState = existingsNPCMeshTaskResulution.DisagreementByHandsState;
+
+            if (disagreementByHandsState != null)
+            {
+                tmpExistingProcessesIdList.AddRange(disagreementByHandsState.CurrentProcessesId);
+            }
+
+            var disagreementByHandsActionState = existingsNPCMeshTaskResulution.DisagreementByHandsActionState;
+
+            if (disagreementByHandsActionState != null)
+            {
+                tmpExistingProcessesIdList.AddRange(disagreementByHandsActionState.CurrentProcessesId);
+            }
+
+            tmpExistingProcessesIdList = tmpExistingProcessesIdList.Distinct().ToList();
+
+            var targetProcessInfo = mChildProcessesList.FirstOrDefault(p => p.CurrentId == targetProcessId);
+
+            var targetPriority = targetProcessInfo.GlobalPriority;
+
+
+#if UNITY_EDITOR
+            Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute targetPriority = {targetPriority}");
+#endif
+            foreach (var existingProcessesId in tmpExistingProcessesIdList)
+            {
+#if UNITY_EDITOR
+                Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingProcessesId = {existingProcessesId}");
+#endif
+
+                var currentProicessInfo = mChildProcessesList.FirstOrDefault(p => p.CurrentId == existingProcessesId);
+
+#if UNITY_EDITOR
+                Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute currentProicessInfo.GlobalPriority = {currentProicessInfo.GlobalPriority}");
+#endif
+
+                if (currentProicessInfo.GlobalPriority > targetPriority)
+                {
+                    return NPCMeshTaskResulutionKind.Forbiden;
+                }
+            }
+
             return NPCMeshTaskResulutionKind.Allow;//tmp
         }
 

@@ -104,7 +104,7 @@ namespace Assets.Scripts
             {
                 lock(mChildrenProcessesLockObj)
                 {
-                
+                    return mParentProcess;
                 }
             }
             
@@ -117,37 +117,95 @@ namespace Assets.Scripts
                         return;
                     }
                 }
-                
-                lock(mChildrenProcessesLockObj)
+
+                lock (mChildrenProcessesLockObj)
                 {
-                
+                    if (mParentProcess == value)
+                    {
+                        return;
+                    }
+
+                    if (mParentProcess == this)
+                    {
+                        return;
+                    }
+
+                    if (Status != NPCProcessStatus.WaitingToRun)
+                    {
+                        return;
+                    }
+
+                    var oldParent = mParentProcess;
+
+                    mParentProcess = value;
+                    oldParent?.RemoveChild(this);
+                    mParentProcess?.AddChild(this);
                 }
             }
         }
-        
-        public List<BaseNPCProcess> ChildrenProcesses
+
+        public void AddChild(BaseNPCProcess process)
         {
-            get
+            lock (mDisposeLockObj)
             {
-                lock(mChildrenProcessesLockObj)
+                if (mIsDisposed)
                 {
-                
+                    return;
                 }
             }
-            
-            set
+
+            lock (mChildrenProcessesLockObj)
             {
-                lock (mDisposeLockObj)
+                if (process == null)
                 {
-                    if (mIsDisposed)
+                    return;
+                }
+
+                if (process == this)
+                {
+                    return;
+                }
+
+                if(!mChildrenProcesses.Contains(process))
+                {
+                    mChildrenProcesses.Add(process);
+                    if(process.ParentProcess != this)
                     {
-                        return;
+                        process.ParentProcess = this;
                     }
                 }
-                
-                lock(mChildrenProcessesLockObj)
+            }
+        }
+
+        public void RemoveChild(BaseNPCProcess process)
+        {
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
                 {
-                
+                    return;
+                }
+            }
+
+            lock (mChildrenProcessesLockObj)
+            {
+                if (process == null)
+                {
+                    return;
+                }
+
+                if (process == this)
+                {
+                    return;
+                }
+
+                if (mChildrenProcesses.Contains(process))
+                {
+                    mChildrenProcesses.Remove(process);
+                    if(process.ParentProcess == this)
+                    {
+                        process.ParentProcess = null;
+                    }
                 }
             }
         }
@@ -182,13 +240,20 @@ namespace Assets.Scripts
             }
         }
         
-        pulic float GlobalPriority
+        public float GlobalPriority
         {
             get
             {
                 lock(mPriorityLockObj)
                 {
-                    
+                    var result = mLocalPriority;
+
+                    if(ParentProcess != null)
+                    {
+                        result *= ParentProcess.GlobalPriority;
+                    }
+
+                    return result;
                 }
             }
         }
@@ -196,7 +261,7 @@ namespace Assets.Scripts
         private int mCurrentId;
         private object mCurrentIdLockObj = new object();
 
-        protected int CurrentId
+        public int CurrentId
         {
             get
             {
@@ -206,7 +271,7 @@ namespace Assets.Scripts
                 }
             }
 
-            set
+            protected set
             {
                 lock (mCurrentIdLockObj)
                 {
@@ -471,6 +536,14 @@ namespace Assets.Scripts
                     return NPCProcessStatus.Running;
 
                 default: throw new ArgumentOutOfRangeException(nameof(npcMeshTaskState), npcMeshTaskState, null);
+            }
+        }
+
+        protected bool InfinityCycleCondition
+        {
+            get
+            {
+                return !IsDisposed;
             }
         }
 
