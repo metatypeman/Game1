@@ -10,9 +10,13 @@ public class PlayerShooting : MonoBehaviour {
     AudioSource gunAudio;                           // Звук выстрела
     Light gunLight;
     public Light faceLight;
+    float effectsDisplayTime = 0.4f;
 
+    float timer;
     Ray shootRay;
 
+    public int damagePerShot = 20;                  // Уорона за выстрел
+    public float timeBetweenBullets = 0.5f;
     public float range = 100f;
     RaycastHit shootHit;
 
@@ -23,28 +27,54 @@ public class PlayerShooting : MonoBehaviour {
         gunAudio = GetComponent<AudioSource>();
         gunLight = GetComponent<Light>();
 
-        Shoot();
+        //StartShoot();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        gunLine.SetPosition(0, transform.position);
-        // Настройка луча
-        shootRay.origin = transform.position;
-        shootRay.direction = transform.forward;
+        timer += Time.deltaTime;
 
-        if (Physics.Raycast(shootRay, out shootHit, range))
+        // If the timer has exceeded the proportion of timeBetweenBullets that the effects should be displayed for...
+        if (timer >= timeBetweenBullets * effectsDisplayTime)
         {
-            gunLine.SetPosition(1, shootHit.point);
+            DisableEffects();
         }
-        else
+        //gunLine.SetPosition(0, transform.position);
+        //// Настройка луча
+        //shootRay.origin = transform.position;
+        //shootRay.direction = transform.forward;
+
+        //if (Physics.Raycast(shootRay, out shootHit, range))
+        //{
+        //    gunLine.SetPosition(1, shootHit.point);
+        //}
+        //else
+        //{
+        //    gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+        //}
+    }
+
+    public void DisableEffects()
+    {
+        // Disable the line renderer and the light.
+        gunLine.enabled = false;
+        faceLight.enabled = false;
+        gunLight.enabled = false;
+    }
+
+    public void StartShoot()
+    {
+        if (timer >= timeBetweenBullets && Time.timeScale != 0)
         {
-            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+            Shoot();
         }
     }
 
     public void Shoot()
     {
+        timer = 0f;
+
+        gunAudio.Stop();
         gunAudio.Play();
 
         // Включаем всвет
@@ -61,6 +91,17 @@ public class PlayerShooting : MonoBehaviour {
         shootRay.origin = transform.position;
         shootRay.direction = transform.forward;
 
-        gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+        if (Physics.Raycast(shootRay, out shootHit, range))
+        {
+#if UNITY_EDITOR
+            Debug.Log("PlayerShooting Shoot");
+#endif
+
+            gunLine.SetPosition(1, shootHit.point);
+        }
+        else
+        {
+            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+        }
     }
 }
