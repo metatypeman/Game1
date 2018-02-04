@@ -122,7 +122,7 @@ public class EnemyNPC : MonoBehaviour
             if (!mIsEnter)
             {
                 mIsEnter = true;
-                _gun.StartShoot();
+                _gun.TurnState = TurnState.On;
             }
         }
 

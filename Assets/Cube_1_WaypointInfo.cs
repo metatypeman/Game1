@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using Assets.Scripts;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts;
 
 public class Cube_1_WaypointInfo : MonoBehaviour {
 

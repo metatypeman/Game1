@@ -584,7 +584,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
             }
         }
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(1);
         StartCoroutine(Timer());
     }
 
