@@ -114,6 +114,8 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
 
     public event Action OnFire;
 
+    private InternalStateOfRapidFireGun mInternalState = InternalStateOfRapidFireGun.TurnedOf;
+    
     private IEnumerator Timer()
     {
         yield return new WaitForSeconds(1);
