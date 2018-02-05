@@ -158,10 +158,17 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
                 
             case FireMode.Multiple:
                 {
-                    switch(TurnState)
+                    var turnState = TurnState;
+                    switch(turnState)
                     {
-                        case :
+                        case TurnState.On:
+                            
                             break;
+                            
+                        case TurnState.Off:
+                            break;
+                            
+                        default: throw new ArgumentOutOfRangeException(nameof(TurnState), turnState, null);
                     }
                 }
                 break;
