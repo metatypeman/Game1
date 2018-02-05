@@ -15,6 +15,13 @@ public enum TurnState
     Off
 }
 
+public enum InternalStateOfRapidFireGun
+{
+    TurnedOf,
+    TurnedOnWillShot,
+    TurnedOnWasShot
+}
+
 public interface IRapidFireGun
 {
     FireMode FireMode { get; set; }
