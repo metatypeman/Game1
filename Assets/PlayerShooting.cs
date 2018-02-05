@@ -108,28 +108,6 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
                 }
 
                 mTurnState = value;
-                
-                switch(mTurnState)
-                {
-                    case TurnState.On:
-                        {
-                            switch(mInternalState)
-                            {
-                                case InternalStateOfRapidFireGun.TurnedOf:
-                                    {
-                                        mInternalState = InternalStateOfRapidFireGun.TurnedOnShot;
-                                        Shoot();
-                                        StartCoroutine(EndShotCoroutine);
-                                    }
-                                    break;
-                            
-                                default: throw new ArgumentOutOfRangeException(nameof(TurnState), mTurnState, null);
-                            }
-                        }
-                        break;
-                
-                    default: throw new ArgumentOutOfRangeException(nameof(TurnState), mTurnState, null);
-                }
             }
         }
     }
@@ -138,47 +116,9 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
 
     private InternalStateOfRapidFireGun mInternalState = InternalStateOfRapidFireGun.TurnedOf;
     
-    private IEnumerator ShotCoroutine()
-    {
-        yield return new WaitForSeconds(1);
-    }
-    
-    private IEnumerator EndShotCoroutine()
-    {
-        yield return new WaitForSeconds(effectsDisplayTime);
-        DisableEffects();
-        var fireMode = FireMode;
-        switch(fireMode)
-        {
-            case FireMode.Single:
-                {
-                    
-                }
-                break;
-                
-            case FireMode.Multiple:
-                {
-                    var turnState = TurnState;
-                    switch(turnState)
-                    {
-                        case TurnState.On:
-                            
-                            break;
-                            
-                        case TurnState.Off:
-                            break;
-                            
-                        default: throw new ArgumentOutOfRangeException(nameof(TurnState), turnState, null);
-                    }
-                }
-                break;
-                
-            default: throw new ArgumentOutOfRangeException(nameof(fireMode), fireMode, null);
-        }
-    }
-    
     // Update is called once per frame
     void Update () {
+        var 
         //timer += Time.deltaTime;
 
         // If the timer has exceeded the proportion of timeBetweenBullets that the effects should be displayed for...
