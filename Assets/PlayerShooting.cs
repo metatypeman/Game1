@@ -147,7 +147,27 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
     {
         yield return new WaitForSeconds(effectsDisplayTime);
         DisableEffects();
-        
+        var fireMode = FireMode;
+        switch(fireMode)
+        {
+            case FireMode.Single:
+                {
+                    
+                }
+                break;
+                
+            case FireMode.Multiple:
+                {
+                    switch(TurnState)
+                    {
+                        case :
+                            break;
+                    }
+                }
+                break;
+                
+            default: throw new ArgumentOutOfRangeException(nameof(fireMode), fireMode, null);
+        }
     }
     
     // Update is called once per frame
