@@ -49,6 +49,7 @@ public class EnemyNPC : MonoBehaviour
         mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
 
         _gun = GetComponentInChildren<PlayerShooting>();
+        _gun.FireMode = FireMode.Single;
     }
 
     // Update is called once per frame
@@ -62,6 +63,8 @@ public class EnemyNPC : MonoBehaviour
     private bool mIsQPressed;
     private bool mIsUPressed;
     private bool mIsEnter;
+    private bool mIsH;
+    private bool mIsL;
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
@@ -122,7 +125,31 @@ public class EnemyNPC : MonoBehaviour
             if (!mIsEnter)
             {
                 mIsEnter = true;
+                mIsH = false;
                 _gun.TurnState = TurnState.On;
+            }
+        }
+
+        var isH = Input.GetKey(KeyCode.H);
+
+        if(isH)
+        {
+            if(!mIsH)
+            {
+                mIsH = true;
+                mIsEnter = false;
+                _gun.TurnState = TurnState.Off;
+            }
+        }
+
+        var isL = Input.GetKey(KeyCode.L);
+
+        if (isL)
+        {
+            if(!mIsL)
+            {
+                mIsL = true;
+                mEnemyController.TmpAim();
             }
         }
 

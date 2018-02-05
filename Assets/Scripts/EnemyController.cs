@@ -711,6 +711,16 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         }
     }
 
+    public void TmpAim()
+    {
+        if (mBehaviourFlags.HasRifle)
+        {
+            mBehaviourFlags.IsAim = true;
+        }
+
+        UpdateAnimator();
+    }
+
     private void UpdateAnimator()
     {
 #if UNITY_EDITOR

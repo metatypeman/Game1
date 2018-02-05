@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public enum FireMode
@@ -19,7 +20,8 @@ public enum InternalStateOfRapidFireGun
 {
     TurnedOf,
     TurnedOnShot,
-    TurnedOnWasShot
+    TurnedOnWasShot,
+    BeforeOffIfSingle
 }
 
 public interface IRapidFireGun
@@ -38,13 +40,13 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
     AudioSource gunAudio;                           
     Light gunLight;
     public Light faceLight;
-    float effectsDisplayTime = 0.4f;
+    float effectsDisplayTime = 0.1f;
 
     float timer;
     Ray shootRay;
 
     public int damagePerShot = 20;                  
-    public float timeBetweenBullets = 0.5f;
+    public float timeBetweenBullets = 0.1f;
     public float range = 100f;
     RaycastHit shootHit;
 
@@ -54,8 +56,6 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
         gunLine = GetComponent<LineRenderer>();
         gunAudio = GetComponent<AudioSource>();
         gunLight = GetComponent<Light>();
-
-        //StartCoroutine(Timer());
     }
 
     private object mFireModeLockObj = new object();
@@ -118,38 +118,102 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
     
     // Update is called once per frame
     void Update () {
-        var 
-        //timer += Time.deltaTime;
+        var fireMode = FireMode;
+        var turnState = TurnState;
 
-        // If the timer has exceeded the proportion of timeBetweenBullets that the effects should be displayed for...
-        //if (timer >= timeBetweenBullets * effectsDisplayTime)
-        //{
-        //    DisableEffects();
-        //}
+        switch(turnState)
+        {
+            case TurnState.On:
+                switch(mInternalState)
+                {
+                    case InternalStateOfRapidFireGun.TurnedOf:
+                        ProcessShoot();
+                        break;
+
+                    case InternalStateOfRapidFireGun.TurnedOnShot:
+                        timer += Time.deltaTime;
+                        if(timer >= effectsDisplayTime)
+                        {
+                            ProcessEndShoot();
+                        }
+                        break;
+
+                    case InternalStateOfRapidFireGun.TurnedOnWasShot:
+                        switch(fireMode)
+                        {
+                            case FireMode.Multiple:
+                                timer += Time.deltaTime;
+                                if (timer >= timeBetweenBullets)
+                                {
+                                    ProcessShoot();
+                                }
+                                break;
+
+                            case FireMode.Single:
+                                mInternalState = InternalStateOfRapidFireGun.BeforeOffIfSingle;
+                                DisableEffects();
+                                break;
+
+                            default: throw new ArgumentOutOfRangeException(nameof(turnState), turnState, null);
+                        }
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(mInternalState), mInternalState, null);
+                }
+                break;
+
+            case TurnState.Off:
+                switch (mInternalState)
+                {
+                    case InternalStateOfRapidFireGun.BeforeOffIfSingle:
+                        mInternalState = InternalStateOfRapidFireGun.TurnedOf;
+                        break;
+
+                    case InternalStateOfRapidFireGun.TurnedOnShot:
+                    case InternalStateOfRapidFireGun.TurnedOnWasShot:
+                        mInternalState = InternalStateOfRapidFireGun.TurnedOf;
+                        DisableEffects();
+                        break;
+                }
+                break;
+
+            default: throw new ArgumentOutOfRangeException(nameof(turnState), turnState, null);
+        }
+    }
+
+    private void NotifyAboutFire()
+    {
+        Task.Run(() => {
+            OnFire?.Invoke();
+        });
+    }
+
+    private void ProcessShoot()
+    {
+        timer = 0f;
+        mInternalState = InternalStateOfRapidFireGun.TurnedOnShot;
+        Shoot();
+        NotifyAboutFire();
+    }
+
+    private void ProcessEndShoot()
+    {
+        timer = 0f;
+        mInternalState = InternalStateOfRapidFireGun.TurnedOnWasShot;
+        DisableEffects();
     }
 
     public void DisableEffects()
     {
+        
         // Disable the line renderer and the light.
         gunLine.enabled = false;
         faceLight.enabled = false;
         gunLight.enabled = false;
-        gunAudio.Stop();
     }
-
-    //public void StartShoot()
-    //{
-    //    if (timer >= timeBetweenBullets && Time.timeScale != 0)
-    //    {
-    //        Shoot();
-    //    }
-    //}
 
     public void Shoot()
     {
-        timer = 0f;
-
-        gunAudio.Stop();
         gunAudio.Play();
 
         // Включаем всвет
