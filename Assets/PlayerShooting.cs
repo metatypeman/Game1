@@ -55,7 +55,7 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
         gunAudio = GetComponent<AudioSource>();
         gunLight = GetComponent<Light>();
 
-        StartCoroutine(Timer());
+        //StartCoroutine(Timer());
     }
 
     private object mFireModeLockObj = new object();
@@ -108,6 +108,11 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
                 }
 
                 mTurnState = value;
+                
+                if(mTurnState == TurnState.On)
+                {
+                    
+                }
             }
         }
     }
@@ -116,20 +121,25 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
 
     private InternalStateOfRapidFireGun mInternalState = InternalStateOfRapidFireGun.TurnedOf;
     
-    private IEnumerator Timer()
+    private IEnumerator ShotCoroutine()
     {
         yield return new WaitForSeconds(1);
     }
-
+    
+    private IEnumerator EndShotCoroutine()
+    {
+        yield return new WaitForSeconds(1);
+    }
+    
     // Update is called once per frame
     void Update () {
-        timer += Time.deltaTime;
+        //timer += Time.deltaTime;
 
         // If the timer has exceeded the proportion of timeBetweenBullets that the effects should be displayed for...
-        if (timer >= timeBetweenBullets * effectsDisplayTime)
-        {
-            DisableEffects();
-        }
+        //if (timer >= timeBetweenBullets * effectsDisplayTime)
+        //{
+        //    DisableEffects();
+        //}
     }
 
     public void DisableEffects()
