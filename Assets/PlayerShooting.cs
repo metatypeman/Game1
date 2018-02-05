@@ -18,7 +18,7 @@ public enum TurnState
 public enum InternalStateOfRapidFireGun
 {
     TurnedOf,
-    TurnedOnWillShot,
+    TurnedOnShot,
     TurnedOnWasShot
 }
 
@@ -109,9 +109,26 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
 
                 mTurnState = value;
                 
-                if(mTurnState == TurnState.On)
+                switch(mTurnState)
                 {
-                    
+                    case TurnState.On:
+                        {
+                            switch(mInternalState)
+                            {
+                                case InternalStateOfRapidFireGun.TurnedOf:
+                                    {
+                                        mInternalState = InternalStateOfRapidFireGun.TurnedOnShot;
+                                        Shoot();
+                                        StartCoroutine(EndShotCoroutine);
+                                    }
+                                    break;
+                            
+                                default: throw new ArgumentOutOfRangeException(nameof(TurnState), mTurnState, null);
+                            }
+                        }
+                        break;
+                
+                    default: throw new ArgumentOutOfRangeException(nameof(TurnState), mTurnState, null);
                 }
             }
         }
@@ -128,7 +145,9 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
     
     private IEnumerator EndShotCoroutine()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(effectsDisplayTime);
+        DisableEffects();
+        
     }
     
     // Update is called once per frame
