@@ -242,7 +242,7 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
 #endif
             var targetOfShoot = shootHit.collider.GetComponentInParent<ITargetOfShoot>();
 
-            if(targetOfShoot)
+            if(targetOfShoot != null)
             {
                 targetOfShoot.SetHit(shootHit, damagePerShot);
             }
