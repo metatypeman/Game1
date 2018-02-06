@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
+public interface ITargetOfShoot
+{
+    void SetHit(RaycastHit shootHit, int damagePerShot);
+}
+
 public enum FireMode
 {
     Single,
