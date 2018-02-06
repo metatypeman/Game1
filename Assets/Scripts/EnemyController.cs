@@ -45,7 +45,8 @@ public enum HumanoidHandsState
 
 public enum HumanoidHandsActionState
 {
-    Empty
+    Empty,
+    StrongAim
 }
 
 public enum MoveHumanoidCommandKind
@@ -670,6 +671,17 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
             case HumanoidHandsState.HasRifle:
                 result.HasRifle = true;
+                break;
+        }
+
+        switch (sourceState.HandsActionState)
+        {
+            case HumanoidHandsActionState.Empty:
+                result.IsAim = false;
+                break;
+
+            case HumanoidHandsActionState.StrongAim:
+                result.IsAim = true;
                 break;
         }
 

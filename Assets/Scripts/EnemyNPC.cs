@@ -49,7 +49,8 @@ public class EnemyNPC : MonoBehaviour
         mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
 
         _gun = GetComponentInChildren<PlayerShooting>();
-        _gun.FireMode = FireMode.Single;
+        _gun.UseDebugLine = true;
+        //_gun.FireMode = FireMode.Single;
     }
 
     // Update is called once per frame
@@ -149,7 +150,9 @@ public class EnemyNPC : MonoBehaviour
             if(!mIsL)
             {
                 mIsL = true;
-                mEnemyController.TmpAim();
+
+                var tmpSimpleAimProcess = new TstSimpleAimProcess(mNPCProcessesContext);
+                tmpSimpleAimProcess.RunAsync();
             }
         }
 

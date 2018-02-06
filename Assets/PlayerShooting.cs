@@ -31,6 +31,7 @@ public enum InternalStateOfRapidFireGun
 
 public interface IRapidFireGun
 {
+    bool UseDebugLine { get; set; }
     FireMode FireMode { get; set; }
     TurnState TurnState { get; set; }
     event Action OnFire;
@@ -55,12 +56,36 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
     public float range = 100f;
     RaycastHit shootHit;
 
+    private bool mUseDebugLine;
+
+    public bool UseDebugLine
+    {
+        get
+        {
+            return mUseDebugLine;
+        }
+
+        set
+        {
+            mUseDebugLine = value;
+
+            if(mUseDebugLine)
+            {
+                gunLine.enabled = true;
+            }
+            else
+            {
+                gunLine.enabled = false;
+            }
+        }
+    }
+
     // Use this for initialization
     void Start () {
         gunParticles = GetComponent<ParticleSystem>();
         gunLine = GetComponent<LineRenderer>();
         gunAudio = GetComponent<AudioSource>();
-        gunLight = GetComponent<Light>();
+        gunLight = GetComponent<Light>();     
     }
 
     private object mFireModeLockObj = new object();
@@ -123,6 +148,14 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
     
     // Update is called once per frame
     void Update () {
+        if(mUseDebugLine)
+        {
+            gunLine.SetPosition(0, transform.position);
+            shootRay.origin = transform.position;
+            shootRay.direction = transform.forward;
+            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+        }
+
         var fireMode = FireMode;
         var turnState = TurnState;
 
@@ -162,8 +195,6 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
                             default: throw new ArgumentOutOfRangeException(nameof(turnState), turnState, null);
                         }
                         break;
-
-                    default: throw new ArgumentOutOfRangeException(nameof(mInternalState), mInternalState, null);
                 }
                 break;
 
@@ -209,10 +240,13 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
     }
 
     public void DisableEffects()
-    {
-        
+    {       
         // Disable the line renderer and the light.
-        gunLine.enabled = false;
+        if(!mUseDebugLine)
+        {
+            gunLine.enabled = false;
+        }
+       
         faceLight.enabled = false;
         gunLight.enabled = false;
     }

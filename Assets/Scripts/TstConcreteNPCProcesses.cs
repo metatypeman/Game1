@@ -324,4 +324,62 @@ namespace Assets.Scripts
             mTimer.Dispose();
         }
     }
+
+    public class TstSimpleAimProcess : BaseNPCProcess
+    {
+        public TstSimpleAimProcess(NPCProcessesContext context)
+            : base(context)
+        {
+        }
+
+        protected override void OnRun()
+        {
+#if UNITY_EDITOR
+            Debug.Log("Begin TstSimpleAimProcess OnRun");
+#endif
+
+            var tmpCommand = new HumanoidHandsActionStateCommand();
+            tmpCommand.State = HumanoidHandsActionState.StrongAim;
+
+            var tmpTask = Execute(tmpCommand);
+
+#if UNITY_EDITOR
+            Debug.Log("End TstSimpleAimProcess OnRun");
+#endif
+        }
+
+        private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"TstRunAwayProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
+#endif
+
+            var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
+
+            if (targetWayPoint != null)
+            {
+                var moveCommand = new HumanoidHStateCommand();
+                moveCommand.State = HumanoidHState.Walk;
+                moveCommand.TargetPosition = targetWayPoint.Position;
+
+#if UNITY_EDITOR
+                Debug.Log($"TstRunAwayProcess GoToTargetWayPoint moveCommand = {moveCommand}");
+#endif
+                var tmpTask = Execute(moveCommand);
+                //mTmpTask = tmpTask;
+#if UNITY_EDITOR
+                Debug.Log($"TstRunAwayProcess GoToTargetWayPoint tmpTask = {tmpTask}");
+#endif
+
+                if (withWaiting)
+                {
+                    WaitNPCMeshTask(tmpTask);
+                }
+            }
+
+#if UNITY_EDITOR
+            Debug.Log("End TstRunAwayProcess GoToTargetWayPoint");
+#endif
+        }
+    }
 }
