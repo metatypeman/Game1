@@ -240,7 +240,13 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
 #if UNITY_EDITOR
             Debug.Log("PlayerShooting Shoot");
 #endif
+            var targetOfShoot = shootHit.collider.GetComponentInParent<ITargetOfShoot>();
 
+            if(targetOfShoot)
+            {
+                targetOfShoot.SetHit(shootHit, damagePerShot);
+            }
+            
             gunLine.SetPosition(1, shootHit.point);
         }
         else
