@@ -699,6 +699,12 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         return result;
     }
 
+    public void Die()
+    {
+        mBehaviourFlags.IsDead = true;
+        UpdateAnimator();
+    }
+
     private void ApplyTargetState(StatesOfHumanoidController targetState)
     {
 #if UNITY_EDITOR

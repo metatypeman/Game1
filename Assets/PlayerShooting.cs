@@ -272,9 +272,6 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
 
         if (Physics.Raycast(shootRay, out shootHit, range))
         {
-#if UNITY_EDITOR
-            Debug.Log("PlayerShooting Shoot");
-#endif
             var targetOfShoot = shootHit.collider.GetComponentInParent<ITargetOfShoot>();
 
             if(targetOfShoot != null)
