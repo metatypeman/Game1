@@ -150,6 +150,7 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
     void Update () {
         if(mUseDebugLine)
         {
+            gunLine.enabled = true;
             gunLine.SetPosition(0, transform.position);
             shootRay.origin = transform.position;
             shootRay.direction = transform.forward;
