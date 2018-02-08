@@ -71,7 +71,10 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
 
             if(mUseDebugLine)
             {
-                gunLine.enabled = true;
+                if(gunLine != null)
+                {
+                    gunLine.enabled = true;
+                }      
             }
             else
             {

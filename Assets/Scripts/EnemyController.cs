@@ -705,6 +705,11 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         UpdateAnimator();
     }
 
+    public void tmpLookAt(Vector3 targetPosition)
+    {
+        //mNavMeshAgent.Lookat
+    }
+
     private void ApplyTargetState(StatesOfHumanoidController targetState)
     {
 #if UNITY_EDITOR

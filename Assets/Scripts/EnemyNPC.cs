@@ -66,6 +66,7 @@ public class EnemyNPC : MonoBehaviour
     private bool mIsEnter;
     private bool mIsH;
     private bool mIsL;
+    private bool mIsI;
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
@@ -153,6 +154,33 @@ public class EnemyNPC : MonoBehaviour
 
                 var tmpSimpleAimProcess = new TstSimpleAimProcess(mNPCProcessesContext);
                 tmpSimpleAimProcess.RunAsync();
+            }
+        }
+
+        var isI = Input.GetKey(KeyCode.I);
+
+        if (isI)
+        {
+            if(!mIsI)
+            {
+                mIsI = true;
+
+                var _target = GameObject.Find("Ethan");
+                var targetPos = new Vector3(_target.transform.position.x, 0, _target.transform.position.z);
+                //targetPos = Quaternion.Euler(0, -70, 0) * targetPos;
+                targetPos =  (transform.localRotation - _gun.Body.transform.localRotation) *targetPos;
+                transform.LookAt(targetPos);
+                var height = _target.GetComponent<CapsuleCollider>().height;
+                var firePosition = new Vector3(_target.transform.position.x, height, _target.transform.position.z);
+
+#if UNITY_EDITOR
+                //Debug.Log($"FixedUpdate firePosition = {firePosition}");
+#endif
+
+                //firePosition = _gun.Body.transform.localRotation * firePosition;
+                //var randomeSph = Random.insideUnitSphere * 1.5f;
+
+                //_gun.Body.transform.LookAt(firePosition/* + randomeSph*/);
             }
         }
 
