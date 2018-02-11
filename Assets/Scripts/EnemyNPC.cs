@@ -168,7 +168,7 @@ public class EnemyNPC : MonoBehaviour
                 var _target = GameObject.Find("Ethan");
                 var targetPos = new Vector3(_target.transform.position.x, 0, _target.transform.position.z);
                 //targetPos = Quaternion.Euler(0, -70, 0) * targetPos;
-                targetPos =  (transform.localRotation - _gun.Body.transform.localRotation) *targetPos;
+                //targetPos =  (transform.localRotation - _gun.Body.transform.localRotation) *targetPos;
                 transform.LookAt(targetPos);
                 var height = _target.GetComponent<CapsuleCollider>().height;
                 var firePosition = new Vector3(_target.transform.position.x, height, _target.transform.position.z);
