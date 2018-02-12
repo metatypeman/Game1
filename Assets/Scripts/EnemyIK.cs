@@ -35,9 +35,9 @@ public class EnemyIK : MonoBehaviour
             if (!Head)
                 return;
 
-            mAnim.SetLookAtWeight(1);
-            mAnim.SetLookAtPosition(Target.position);
-            Head.LookAt(Target);
+            //mAnim.SetLookAtWeight(1);
+            //mAnim.SetLookAtPosition(Target.position);
+            //Head.LookAt(Target);
 
             if (!Left)
                 return;

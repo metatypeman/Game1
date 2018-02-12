@@ -2365,7 +2365,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 656795664}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e67e57b2910a9374b94902d8c7190d16, type: 3}
   m_Name: 
@@ -2373,7 +2373,7 @@ MonoBehaviour:
   Head: {fileID: 1679634769}
   Left: {fileID: 468210036}
   Right: {fileID: 276206055}
-  isIkActive: 1
+  isIkActive: 0
 --- !u!136 &656795670
 CapsuleCollider:
   m_ObjectHideFlags: 0
