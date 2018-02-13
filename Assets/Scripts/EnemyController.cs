@@ -27,7 +27,9 @@ public enum HumanoidHState
 {
     Stop,
     Walk,
-    Run
+    Run,
+    LookAt,
+    AimAt
 }
 
 public enum HumanoidVState
