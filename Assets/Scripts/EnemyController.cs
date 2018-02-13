@@ -548,12 +548,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     {
         mBehaviourFlags.Append(CreateBehaviourFlags(mStates));
 
-        UpdateAnimator();
-
-        if(mStates.TargetPosition.HasValue)
-        {
-            mNavMeshAgent.SetDestination(mStates.TargetPosition.Value);
-        }
+        ApplyInternalStates();
     }
 
     private object mLockObj = new object();
@@ -711,7 +706,14 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     public void Die()
     {
         mBehaviourFlags.IsDead = true;
-        f
+        var hState = mStates.HState;
+        switch(hState)
+        {
+            case HumanoidHState.Walk:
+            case HumanoidHState.Run:
+                mNavMeshAgent.ResetPath();
+                break;
+        }
         UpdateAnimator();
     }
 
@@ -735,19 +737,29 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         mStates.Append(targetState);
         mBehaviourFlags.Append(targetBehaviourFlags);
 
+        ApplyInternalStates();
+    }
+
+    private void ApplyInternalStates()
+    {
         UpdateAnimator();
 
         var hState = mStates.HState;
-        switch()
+        switch(hState)
         {
-        }
-        if(targetState.TargetPosition.HasValue)
-        {
-            mNavMeshAgent.ResetPath();
-            mNavMeshAgent.SetDestination(targetState.TargetPosition.Value);
+            case HumanoidHState.Walk:
+            case HumanoidHState.Run:
+                {
+                    if(targetState.TargetPosition.HasValue)
+                    {
+                        mNavMeshAgent.ResetPath();
+                        mNavMeshAgent.SetDestination(targetState.TargetPosition.Value);
+                    }
+                }
+                break;
         }
     }
-
+    
     public void TmpAim()
     {
         if (mBehaviourFlags.HasRifle)
@@ -782,15 +794,20 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 #if UNITY_EDITOR
         //Debug.Log("EnemyController Update mNavMeshAgent.pathStatus = " + mNavMeshAgent.pathStatus + " mNavMeshAgent.isOnOffMeshLink = " + mNavMeshAgent.isOnOffMeshLink + " mNavMeshAgent.isStopped = " + mNavMeshAgent.isStopped + " mNavMeshAgent.nextPosition = " + mNavMeshAgent.nextPosition);
 #endif
-        
-        if(mStates.HState != HumanoidHState.Stop)
+        var hState = mStates.HState;
+        switch(hState)
         {
-            var targetPosition = mStates.TargetPosition.Value;
-            var nextPosition = mNavMeshAgent.nextPosition;
-            if (targetPosition.x == nextPosition.x && targetPosition.z == nextPosition.z)
-            {
-                ApplyAchieveDestinationOfMoving();
-            }
+            case HumanoidHState.Walk:
+            case HumanoidHState.Run:
+                {
+                    var targetPosition = mStates.TargetPosition.Value;
+                    var nextPosition = mNavMeshAgent.nextPosition;
+                    if (targetPosition.x == nextPosition.x && targetPosition.z == nextPosition.z)
+                    {
+                        ApplyAchieveDestinationOfMoving();
+                    }
+                }
+                break;
         }
     }
 }
