@@ -643,15 +643,19 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
             case HumanoidHState.Walk:
             case HumanoidHState.Run:
-                LookAt,
-    
+            case HumanoidHState.LookAt:
                 if (!result.TargetPosition.HasValue)
                 {
                     result.HState = HumanoidHState.Stop;
                 }
                 break;
                 
-                AimAt
+            case HumanoidHState.AimAt:
+                if(result.HandsState != HumanoidHandsState.HasRifle || result.HandsActionState != HumanoidHandsActionState.StrongAim || !result.TargetPosition.HasValue)
+                {
+                    result.HState = HumanoidHState.Stop;
+                }
+                break;
         }
 
         switch (result.HandsState)
