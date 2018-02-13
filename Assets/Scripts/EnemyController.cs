@@ -711,6 +711,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     public void Die()
     {
         mBehaviourFlags.IsDead = true;
+        f
         UpdateAnimator();
     }
 
@@ -736,6 +737,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
         UpdateAnimator();
 
+        var hState = mStates.HState;
+        switch()
+        {
+        }
         if(targetState.TargetPosition.HasValue)
         {
             mNavMeshAgent.ResetPath();
