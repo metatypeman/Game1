@@ -582,7 +582,6 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
             if (mTargetStateQueue.Count > 0)
             {
                 var targetState = mTargetStateQueue.Dequeue();
-
                 Execute(targetState);
             }
         }
@@ -644,11 +643,15 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
             case HumanoidHState.Walk:
             case HumanoidHState.Run:
+                LookAt,
+    
                 if (!result.TargetPosition.HasValue)
                 {
                     result.HState = HumanoidHState.Stop;
                 }
                 break;
+                
+                AimAt
         }
 
         switch (result.HandsState)
