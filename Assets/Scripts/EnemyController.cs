@@ -298,6 +298,7 @@ public interface IMoveHumanoidController
     void ExecuteAsync(TargetStateOfHumanoidController targetState);
     StatesOfHumanoidController States { get; }
     event HumanoidStatesChangedAction OnHumanoidStatesChanged;
+    void Die();
 }
 
 public class TargetStateOfHumanoidController : IObjectToString
