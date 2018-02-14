@@ -239,6 +239,20 @@ namespace Assets.Scripts
             return NPCMeshTaskResulutionKind.Allow;//tmp
         }
 
+        public void Die()
+        {
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    return;
+                }
+            }
+            
+            mMeshController.Die();
+            Dispose();
+        }
+        
         private object mDisposeLockObj = new object();
         private bool mIsDisposed;
 
