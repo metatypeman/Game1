@@ -492,15 +492,6 @@ public class BehaviourFlagsOfHumanoidController : IObjectToString
     }
 }
 
-public enum DeviceKind
-{
-    Head,
-    LeftHand,
-    RightHand,
-    LeftLeg,
-    RightLeg
-}
-
 public class EnemyController : MonoBehaviour, IMoveHumanoidController
 {
     private Rigidbody mRigidbody;
@@ -754,6 +745,27 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                     {
                         mNavMeshAgent.ResetPath();
                         mNavMeshAgent.SetDestination(targetState.TargetPosition.Value);
+                    }
+                }
+                break;
+                
+            case HumanoidHState.LookAt:
+                {
+                    if(targetState.TargetPosition.HasValue)
+                    {
+                        transform.LookAt(targetState.TargetPosition.Value);
+                    }
+                }              
+                break;
+                
+            case HumanoidHState.AimAt:
+                {
+                    if(targetState.TargetPosition.HasValue)
+                    {
+                        var targetPositionValue = targetState.TargetPosition.Value;
+                        var targetPos = new Vector3(targetPositionValue.x, 0, targetPositionValue.z);
+                        targetPos = Quaternion.Euler(0, -0.8f, 0) * targetPos;
+                        transform.LookAt(targetPos);
                     }
                 }
                 break;
