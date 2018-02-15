@@ -382,4 +382,34 @@ namespace Assets.Scripts
 #endif
         }
     }
+
+    public class TSTFireToEthanProcess : BaseNPCProcess
+    {
+        public TSTFireToEthanProcess(NPCProcessesContext context, Vector3 targetPosition)
+            : base(context)
+        {
+            mTargetPosition = targetPosition;
+        }
+
+        private Vector3 mTargetPosition;
+
+        protected override void OnRun()
+        {
+#if UNITY_EDITOR
+            Debug.Log($"Begin TSTFireToEthanProcess OnRun mTargetPosition = {mTargetPosition}");
+#endif
+
+            var tmpCommand = new HumanoidHStateCommand();
+            tmpCommand.State = HumanoidHState.AimAt;
+            tmpCommand.TargetPosition = mTargetPosition;
+            //var tmpCommand = new HumanoidHandsActionStateCommand();
+            //tmpCommand.State = HumanoidHandsActionState.StrongAim;
+
+            var tmpTask = Execute(tmpCommand);
+
+#if UNITY_EDITOR
+            Debug.Log("End TSTFireToEthanProcess OnRun");
+#endif
+        }
+    }
 }

@@ -742,28 +742,28 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
             case HumanoidHState.Walk:
             case HumanoidHState.Run:
                 {
-                    if(targetState.TargetPosition.HasValue)
+                    if(mStates.TargetPosition.HasValue)
                     {
                         mNavMeshAgent.ResetPath();
-                        mNavMeshAgent.SetDestination(targetState.TargetPosition.Value);
+                        mNavMeshAgent.SetDestination(mStates.TargetPosition.Value);
                     }
                 }
                 break;
                 
             case HumanoidHState.LookAt:
                 {
-                    if(targetState.TargetPosition.HasValue)
+                    if(mStates.TargetPosition.HasValue)
                     {
-                        transform.LookAt(targetState.TargetPosition.Value);
+                        transform.LookAt(mStates.TargetPosition.Value);
                     }
                 }              
                 break;
                 
             case HumanoidHState.AimAt:
                 {
-                    if(targetState.TargetPosition.HasValue)
+                    if(mStates.TargetPosition.HasValue)
                     {
-                        var targetPositionValue = targetState.TargetPosition.Value;
+                        var targetPositionValue = mStates.TargetPosition.Value;
                         var targetPos = new Vector3(targetPositionValue.x, 0, targetPositionValue.z);
                         targetPos = Quaternion.Euler(0, -0.8f, 0) * targetPos;
                         transform.LookAt(targetPos);

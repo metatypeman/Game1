@@ -23,6 +23,8 @@ public class EnemyNPC : MonoBehaviour
 
     PlayerShooting _gun;
 
+    private InputKeyHelper mInputKeyHelper;
+
     // Use this for initialization
     void Start()
     {
@@ -51,22 +53,57 @@ public class EnemyNPC : MonoBehaviour
         _gun = GetComponentInChildren<PlayerShooting>();
         _gun.UseDebugLine = true;
         //_gun.FireMode = FireMode.Single;
+
+        mInputKeyHelper = new InputKeyHelper();
+        mInputKeyHelper.AddListener(KeyCode.K, OnKPressAction);
+        mInputKeyHelper.AddListener(KeyCode.N, OnNPressAction);
+        mInputKeyHelper.AddListener(KeyCode.H, OnHPressAction);
     }
 
     // Update is called once per frame
     void Update()
     {
         //Debug.Log("EnemyNPC Update");
+        mInputKeyHelper.Update();
     }
 
-    private bool mIsPPressed;
-    private bool mIsTPressed;
-    private bool mIsQPressed;
-    private bool mIsUPressed;
-    private bool mIsEnter;
-    private bool mIsH;
-    private bool mIsL;
-    private bool mIsI;
+    private void OnKPressAction(KeyCode key)
+    {
+        Debug.Log($"EnemyNPC OnKPressAction key = {key}");
+    }
+
+    private void OnNPressAction(KeyCode key)
+    {
+        Debug.Log($"EnemyNPC OnNPressAction key = {key}");
+
+        _gun.TurnState = TurnState.On;
+    }
+
+    private void OnHPressAction(KeyCode key)
+    {
+        Debug.Log($"EnemyNPC OnHPressAction key = {key}");
+
+        _gun.TurnState = TurnState.Off;
+    }
+
+    private void OnPressAction(KeyCode key)
+    {
+        Debug.Log($"EnemyNPC  key = {key}");
+    }
+
+    private void OnPressAction(KeyCode key)
+    {
+        Debug.Log($"EnemyNPC  key = {key}");
+    }
+
+    private bool mIsPPressed { get; set; }
+    private bool mIsTPressed { get; set; }
+    private bool mIsQPressed { get; set; }
+    private bool mIsUPressed { get; set; }
+    private bool mIsEnter { get; set; }
+    private bool mIsH { get; set; }
+    private bool mIsL { get; set; }
+    private bool mIsI { get; set; }
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
@@ -128,7 +165,7 @@ public class EnemyNPC : MonoBehaviour
             {
                 mIsEnter = true;
                 mIsH = false;
-                _gun.TurnState = TurnState.On;
+                
             }
         }
 
@@ -140,7 +177,7 @@ public class EnemyNPC : MonoBehaviour
             {
                 mIsH = true;
                 mIsEnter = false;
-                _gun.TurnState = TurnState.Off;
+               
             }
         }
 
@@ -166,12 +203,15 @@ public class EnemyNPC : MonoBehaviour
                 mIsI = true;
 
                 var _target = GameObject.Find("Ethan");
+                var tmpTSTFireToEthanProcess = new TSTFireToEthanProcess(mNPCProcessesContext, _target.transform.position);
+                tmpTSTFireToEthanProcess.RunAsync();
+                /*
                 var targetPos = new Vector3(_target.transform.position.x, 0, _target.transform.position.z);
                 targetPos = Quaternion.Euler(0, -0.8f, 0) * targetPos;
                 //targetPos =  (transform.localRotation - _gun.Body.transform.localRotation) *targetPos;
-                transform.LookAt(targetPos);
+                transform.LookAt(targetPos);*/
                 //targetPos = Quaternion.Euler(0, -10, 0) * targetPos;
-                var height = _target.GetComponent<CapsuleCollider>().height;
+                //var height = _target.GetComponent<CapsuleCollider>().height;
                 //var firePosition = new Vector3(_target.transform.position.x, height, _target.transform.position.z);
                 //firePosition = Quaternion.Euler(0, 5, 0) * firePosition;
 #if UNITY_EDITOR

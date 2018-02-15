@@ -1200,7 +1200,12 @@ namespace Assets.Scripts
 
             npcMeshTask.State = NPCMeshTaskState.CanceledByHost;
         }
-        
+
+        public void Die()
+        {
+            mMoveHumanoidController.Die();
+        }
+
         private object mDisposeLockObj = new object();
         private bool mIsDisposed;
 
