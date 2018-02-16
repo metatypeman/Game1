@@ -39,10 +39,10 @@ public class EnemyNPC : MonoBehaviour
         mInputKeyHelper.AddListener(KeyCode.K, OnKPressAction);
         mInputKeyHelper.AddListener(KeyCode.N, OnNPressAction);
         mInputKeyHelper.AddListener(KeyCode.H, OnHPressAction);
-        mInputKeyHelper.AddListener(KeyCode. ,);
-        mInputKeyHelper.AddListener(KeyCode. ,);
-        mInputKeyHelper.AddListener(KeyCode. ,);
-        mInputKeyHelper.AddListener(KeyCode. ,);
+        mInputKeyHelper.AddListener(KeyCode.L, OnLPressAction);
+        mInputKeyHelper.AddListener(KeyCode.I, OnIPressAction);
+        mInputKeyHelper.AddListener(KeyCode.P, OnPPressAction);
+        mInputKeyHelper.AddListener(KeyCode.U, OnUPressAction);
     }
 
     // Update is called once per frame
@@ -60,110 +60,44 @@ public class EnemyNPC : MonoBehaviour
     private void OnNPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnNPressAction key = {key}");
-
         _gun.TurnState = TurnState.On;
     }
 
     private void OnHPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnHPressAction key = {key}");
-
         _gun.TurnState = TurnState.Off;
     }
 
-    private void OnPressAction(KeyCode key)
+    private void OnLPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC  key = {key}");
+        Debug.Log($"EnemyNPC OnLPressAction key = {key}");        
+        var tmpSimpleAimProcess = new TstSimpleAimProcess(mNPCProcessesContext);
+        tmpSimpleAimProcess.RunAsync();
     }
 
-    private void OnPressAction(KeyCode key)
+    private void OnIPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC  key = {key}");
+        Debug.Log($"EnemyNPC OnIPressAction key = {key}");        
+        var _target = GameObject.Find("Ethan");
+        var tmpTSTFireToEthanProcess = new TSTFireToEthanProcess(mNPCProcessesContext, _target.transform.position);
+        tmpTSTFireToEthanProcess.RunAsync();
     }
 
-    private void OnPressAction(KeyCode key)
+    private void OnPPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC  key = {key}");
+        Debug.Log($"EnemyNPC OnPPressAction key = {key}");       
+        var tmpProcess = new TstRunAtOurBaseProcess(mNPCProcessesContext);
+        tmpProcess.RunAsync();
     }
     
-    private void OnPressAction(KeyCode key)
+    private void OnUPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC  key = {key}");
+        Debug.Log($"EnemyNPC OnUPressAction key = {key}");
+        var tmpProcess = new TstRootProcess(mNPCProcessesContext);
+        tmpProcess.RunAsync();
     }
     
-    // Fixed update is called in sync with physics
-    private void FixedUpdate()
-    {
-        //Debug.Log("EnemyController FixedUpdate");
-
-        var isL = Input.GetKey(KeyCode.L);
-
-        if (isL)
-        {
-            if(!mIsL)
-            {
-                mIsL = true;
-
-                var tmpSimpleAimProcess = new TstSimpleAimProcess(mNPCProcessesContext);
-                tmpSimpleAimProcess.RunAsync();
-            }
-        }
-
-        var isI = Input.GetKey(KeyCode.I);
-
-        if (isI)
-        {
-            if(!mIsI)
-            {
-                mIsI = true;
-
-                var _target = GameObject.Find("Ethan");
-                var tmpTSTFireToEthanProcess = new TSTFireToEthanProcess(mNPCProcessesContext, _target.transform.position);
-                tmpTSTFireToEthanProcess.RunAsync();
-            }
-        }
-        
-        {
-            var goToTarget = Input.GetKey(KeyCode.P);
-
-            if (goToTarget)
-            {
-                if (!mIsPPressed)
-                {
-                    mIsPPressed = true;
-
-                    var tmpProcess = new TstRunAtOurBaseProcess(mNPCProcessesContext);
-                    tmpProcess.RunAsync();
-                }
-            }
-            else
-            {
-
-                    var isQKey = Input.GetKey(KeyCode.Q);
-
-                    if (isQKey)
-                    {
-                    }
-                    else
-                    {
-                        var isUPressed = Input.GetKey(KeyCode.U);
-
-                        if (isUPressed)
-                        {
-                            if (!mIsUPressed)
-                            {
-                                mIsUPressed = true;
-
-                                var tmpProcess = new TstRootProcess(mNPCProcessesContext);
-                                tmpProcess.RunAsync();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     void OnDestroy()
     {
         Debug.Log("OnDestroy");
