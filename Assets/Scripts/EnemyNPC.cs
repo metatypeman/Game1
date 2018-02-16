@@ -50,11 +50,46 @@ public class EnemyNPC : MonoBehaviour
     {
         //Debug.Log("EnemyNPC Update");
         mInputKeyHelper.Update();
+
+        if(TargetAngle.HasValue)
+        {
+            if(InitAngle.HasValue)
+            {
+                //TargetAngle = TargetAngle + AngleSpeed;
+
+                transform.rotation = Quaternion.Euler(0, AngleSpeed, 0) * transform.rotation;
+
+                //var diff = Vector3.Angle(transform.rotation.eulerAngles, InitRotation.Value.eulerAngles);
+
+                var currY = transform.rotation.eulerAngles.y;
+
+                Debug.Log($"EnemyNPC Update currY = {currY} InitAngle = {InitAngle}");
+
+                var diff = System.Math.Abs(currY - InitAngle.Value);
+
+                Debug.Log($"EnemyNPC Update diff = {diff}");
+
+                if(System.Math.Abs(TargetAngle.Value) <= diff)
+                {
+                    TargetAngle = null;
+                }
+            }
+            else
+            {
+                InitAngle = transform.rotation.eulerAngles.y;
+            }
+        }
     }
+
+    private float? TargetAngle = null;
+    private float AngleSpeed = 1f;
+    private float? InitAngle = null;
 
     private void OnKPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnKPressAction key = {key}");
+
+        TargetAngle = 30f;
     }
 
     private void OnNPressAction(KeyCode key)
