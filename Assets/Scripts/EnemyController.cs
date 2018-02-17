@@ -75,7 +75,9 @@ public enum HumanoidStateKind
     TargetPosition,
     VState,
     HandsState,
-    HandsActionState
+    HandsActionState,
+    HeadState,
+    TargetHeadPosition
 }
 
 public interface IObjectToString
