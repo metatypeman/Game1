@@ -488,7 +488,9 @@ public class StatesOfHumanoidController : IObjectToString
         result.VState = VState;
         result.HandsState = HandsState;
         result.HandsActionState = HandsActionState;
-        return result;g
+        result.HeadState = HeadState;
+        result.TargetHeadPosition = TargetHeadPosition;
+        return result;
     }
 
     public void Append(StatesOfHumanoidController source)
@@ -497,7 +499,9 @@ public class StatesOfHumanoidController : IObjectToString
         TargetPosition = source.TargetPosition;
         VState = source.VState;
         HandsState = source.HandsState;
-        HandsActionState = source.HandsActionState;g
+        HandsActionState = source.HandsActionState;
+        HeadState = source.HeadState;
+        TargetHeadPosition = source.TargetHeadPosition;
     }
 
     public override string ToString()
