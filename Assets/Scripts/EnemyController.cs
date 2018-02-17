@@ -100,6 +100,7 @@ public interface IHumanoidHStateCommand: IMoveHumanoidCommand
 {
     HumanoidHState State { get; }
     Vector3? TargetPosition { get; }
+    float Speed { get; }
 }
 
 public interface IHumanoidVStateCommand : IMoveHumanoidCommand
@@ -115,6 +116,13 @@ public interface IHumanoidHandsStateCommand : IMoveHumanoidCommand
 public interface IHumanoidHandsActionStateCommand : IMoveHumanoidCommand
 {
     HumanoidHandsActionState State { get; }
+}
+
+public interface IHeadStateCommand : IMoveHumanoidCommand
+{
+    HeadState State { get; }
+    Vector3? TargetPosition { get; }
+    float Speed { get; }
 }
 //----
 public class MoveHumanoidCommandsPackage: IMoveHumanoidCommandsPackage
