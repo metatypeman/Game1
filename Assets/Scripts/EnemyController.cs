@@ -185,6 +185,7 @@ public class HumanoidHStateCommand: MoveHumanoidCommand, IHumanoidHStateCommand
     public override MoveHumanoidCommandKind Kind => MoveHumanoidCommandKind.HState;
     public HumanoidHState State { get; set; }
     public Vector3? TargetPosition { get; set; }
+    public float Speed { get; set; }
 
     public override string ToString()
     {
@@ -217,6 +218,7 @@ public class HumanoidHStateCommand: MoveHumanoidCommand, IHumanoidHStateCommand
         {
             sb.AppendLine($"{spaces}{nameof(TargetPosition)} = null");
         }
+        sb.AppendLine($"{spaces}{nameof(Speed)} = {Speed}");
         return sb.ToString();
     }
 }
@@ -310,6 +312,15 @@ public class HumanoidHandsActionStateCommand: MoveHumanoidCommand, IHumanoidHand
         return sb.ToString();
     }
 }
+
+public class HeadStateCommand: MoveHumanoidCommand, IHeadStateCommand
+{
+    public override MoveHumanoidCommandKind Kind => MoveHumanoidCommandKind.HeadState;
+    HeadState State { get; }
+    Vector3? TargetPosition { get; }
+    float Speed { get; }
+}
+
 //----
 public delegate void HumanoidStatesChangedAction(List<HumanoidStateKind> changedStates);
 
