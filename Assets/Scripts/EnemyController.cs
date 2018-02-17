@@ -29,7 +29,9 @@ public enum HumanoidHState
     Walk,
     Run,
     LookAt,
-    AimAt
+    AimAt,
+    Rotate,
+    Move
 }
 
 public enum HumanoidVState
@@ -51,12 +53,20 @@ public enum HumanoidHandsActionState
     StrongAim
 }
 
+public enum HeadState
+{
+    LookingForward,
+    LookAt,
+    Rotate
+}
+
 public enum MoveHumanoidCommandKind
 {
     HState,
     VState,
     HandsState,
-    HandsActionState
+    HandsActionState,
+    HeadState
 }
 
 public enum HumanoidStateKind
