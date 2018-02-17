@@ -316,9 +316,11 @@ public class HumanoidHandsActionStateCommand: MoveHumanoidCommand, IHumanoidHand
 public class HeadStateCommand: MoveHumanoidCommand, IHeadStateCommand
 {
     public override MoveHumanoidCommandKind Kind => MoveHumanoidCommandKind.HeadState;
-    HeadState State { get; }
-    Vector3? TargetPosition { get; }
-    float Speed { get; }
+    public HeadState State { get; set; }
+    public Vector3? TargetPosition { get; set; }
+    public float Speed { get; set; }
+    
+    
 }
 
 //----
