@@ -446,24 +446,24 @@ public class TargetStateOfHumanoidController : IObjectToString
             sb.AppendLine($"{spaces}{nameof(HandsActionState)} = null");
         }
         
-        if (.HasValue)
+        if (HeadState.HasValue)
         {
-            var state = .Value;
-            sb.AppendLine($"{spaces}{nameof()} = {state}");
+            var state = HeadState.Value;
+            sb.AppendLine($"{spaces}{nameof(HeadState)} = {state}");
         }
         else
         {
-            sb.AppendLine($"{spaces}{nameof()} = null");
+            sb.AppendLine($"{spaces}{nameof(HeadState)} = null");
         }
         
-        if (.HasValue)
+        if (TargetHeadPosition.HasValue)
         {
-            var state = .Value;
-            sb.AppendLine($"{spaces}{nameof()} = {state}");
+            var state = TargetHeadPosition.Value;
+            sb.AppendLine($"{spaces}{nameof(TargetHeadPosition)} = {state}");
         }
         else
         {
-            sb.AppendLine($"{spaces}{nameof()} = null");
+            sb.AppendLine($"{spaces}{nameof(TargetHeadPosition)} = null");
         }
         
         return sb.ToString();
@@ -535,15 +535,15 @@ public class StatesOfHumanoidController : IObjectToString
         sb.AppendLine($"{spaces}{nameof(VState)} = {VState}");
         sb.AppendLine($"{spaces}{nameof(HandsState)} = {HandsState}");
         sb.AppendLine($"{spaces}{nameof(HandsActionState)} = {HandsActionState}");
-        sb.AppendLine($"{spaces}{nameof()} = {}");r
-        if (.HasValue)
+        sb.AppendLine($"{spaces}{nameof(HeadState)} = {HeadState}");
+        if (TargetHeadPosition.HasValue)
         {
-            var targetPosition = .Value;
-            sb.AppendLine($"{spaces}{nameof()} = {targetPosition}");
+            var targetPosition = TargetHeadPosition.Value;
+            sb.AppendLine($"{spaces}{nameof(TargetHeadPosition)} = {targetPosition}");
         }
         else
         {
-            sb.AppendLine($"{spaces}{nameof()} = null");
+            sb.AppendLine($"{spaces}{nameof(TargetHeadPosition)} = null");
         }
         
         return sb.ToString();
