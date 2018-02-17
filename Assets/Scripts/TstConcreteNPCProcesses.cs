@@ -412,4 +412,34 @@ namespace Assets.Scripts
 #endif
         }
     }
+
+    public class TSTRotateProcess : BaseNPCProcess
+    {
+        public TSTRotateProcess(NPCProcessesContext context, float angle)
+            : base(context)
+        {
+            mAngle = angle;
+        }
+
+        private float mAngle;
+
+        protected override void OnRun()
+        {
+#if UNITY_EDITOR
+            Debug.Log($"Begin TSTRotateProcess OnRun mAngle = {mAngle}");
+#endif
+
+            var tmpCommand = new HumanoidHStateCommand();
+            tmpCommand.State = HumanoidHState.Rotate;
+            tmpCommand.TargetPosition = new Vector3(0, mAngle, 0);
+            //var tmpCommand = new HumanoidHandsActionStateCommand();
+            //tmpCommand.State = HumanoidHandsActionState.StrongAim;
+
+            var tmpTask = Execute(tmpCommand);
+
+#if UNITY_EDITOR
+            Debug.Log("End TSTFireToEthanProcess OnRun");
+#endif
+        }
+    }
 }

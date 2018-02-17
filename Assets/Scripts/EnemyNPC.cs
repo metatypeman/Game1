@@ -82,7 +82,7 @@ public class EnemyNPC : MonoBehaviour
     }
 
     private float? TargetAngle = null;
-    private float AngleSpeed = 1f;
+    private float AngleSpeed = 0.5f;
     private float? InitAngle = null;
 
     private void OnKPressAction(KeyCode key)
@@ -90,6 +90,9 @@ public class EnemyNPC : MonoBehaviour
         Debug.Log($"EnemyNPC OnKPressAction key = {key}");
 
         TargetAngle = 30f;
+
+        var tmpProcess = new TSTRotateProcess(mNPCProcessesContext, TargetAngle.Value);
+        tmpProcess.RunAsync();
     }
 
     private void OnNPressAction(KeyCode key)

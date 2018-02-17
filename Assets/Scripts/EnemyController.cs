@@ -736,6 +736,8 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
             case HumanoidHState.Walk:
             case HumanoidHState.Run:
             case HumanoidHState.LookAt:
+            case HumanoidHState.Move:
+            case HumanoidHState.Rotate:
                 if (!result.TargetPosition.HasValue)
                 {
                     result.HState = HumanoidHState.Stop;
@@ -789,6 +791,9 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         switch (sourceState.HState)
         {
             case HumanoidHState.Stop:
+            case HumanoidHState.AimAt:
+            case HumanoidHState.LookAt:
+            case HumanoidHState.Rotate:
                 result.Walk = false;
                 break;
 
@@ -859,6 +864,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 {
                     if(mStates.TargetPosition.HasValue)
                     {
+                        mNavMeshAgent.ResetPath();
                         transform.LookAt(mStates.TargetPosition.Value);
                     }
                 }              
@@ -868,6 +874,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 {
                     if(mStates.TargetPosition.HasValue)
                     {
+                        mNavMeshAgent.ResetPath();
                         var targetPositionValue = mStates.TargetPosition.Value;
                         var targetPos = new Vector3(targetPositionValue.x, 0, targetPositionValue.z);
                         targetPos = Quaternion.Euler(0, -0.8f, 0) * targetPos;
@@ -875,19 +882,19 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                     }
                 }
                 break;
+
+            case HumanoidHState.Rotate:
+                if (mStates.TargetPosition.HasValue)
+                {
+                    mNavMeshAgent.ResetPath();
+#if UNITY_EDITOR
+                    Debug.Log("EnemyController ApplyInternalStates case HumanoidHState.Rotate");g
+#endif
+                }
+                break;
         }
     }
     
-    public void TmpAim()
-    {
-        if (mBehaviourFlags.HasRifle)
-        {
-            mBehaviourFlags.IsAim = true;
-        }
-
-        UpdateAnimator();
-    }
-
     private void UpdateAnimator()
     {
 #if UNITY_EDITOR

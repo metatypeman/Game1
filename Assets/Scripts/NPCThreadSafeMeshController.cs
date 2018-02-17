@@ -391,6 +391,107 @@ namespace Assets.Scripts
         }
     }
 
+    public class DisagreementByHeadStateInfo : IObjectToString
+    {
+        public HumanoidStateKind Kind => HumanoidStateKind.HeadState;
+        public List<int> CurrentProcessesId { get; set; }
+        public HumanoidHeadState CurrentValue { get; set; } = HumanoidHeadState.LookingForward;
+        public int TargetProcessId { get; set; }
+        public HumanoidHeadState TargetValue { get; set; } = HumanoidHeadState.LookingForward;
+
+        public override string ToString()
+        {
+            return ToString(0);
+        }
+
+        public string ToString(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}Begin {nameof(DisagreementByHeadStateInfo)}");
+            sb.Append(PropertiesToSting(n));
+            sb.AppendLine($"{spaces}End {nameof(DisagreementByHeadStateInfo)}");
+            return sb.ToString();
+        }
+
+        public string PropertiesToSting(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextSpaces = StringHelper.Spaces(nextN);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            if (CurrentProcessesId == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(CurrentProcessesId)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(CurrentProcessesId)}");
+                foreach (var currentProcessId in CurrentProcessesId)
+                {
+                    sb.AppendLine($"{nextSpaces}{nameof(currentProcessId)} = {currentProcessId}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(CurrentProcessesId)}");
+            }
+
+            sb.AppendLine($"{spaces}{nameof(CurrentValue)} = {CurrentValue}");
+            sb.AppendLine($"{spaces}{nameof(TargetProcessId)} = {TargetProcessId}");
+            sb.AppendLine($"{spaces}{nameof(TargetValue)} = {TargetValue}");
+            return sb.ToString();
+        }
+    }
+
+    public class DisagreementByTargetHeadPositionInfo : IObjectToString
+    {
+        public HumanoidStateKind Kind => HumanoidStateKind.TargetHeadPosition;
+        public List<int> CurrentProcessesId { get; set; }
+        public Vector3? CurrentValue { get; set; }
+        public int TargetProcessId { get; set; }
+        public Vector3? TargetValue { get; set; }
+
+        public override string ToString()
+        {
+            return ToString(0);
+        }
+
+        public string ToString(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}Begin {nameof(DisagreementByTargetHeadPositionInfo)}");
+            sb.Append(PropertiesToSting(n));
+            sb.AppendLine($"{spaces}End {nameof(DisagreementByTargetHeadPositionInfo)}");
+            return sb.ToString();
+        }
+
+        public string PropertiesToSting(int n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextSpaces = StringHelper.Spaces(nextN);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            if (CurrentProcessesId == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(CurrentProcessesId)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(CurrentProcessesId)}");
+                foreach (var currentProcessId in CurrentProcessesId)
+                {
+                    sb.AppendLine($"{nextSpaces}{nameof(currentProcessId)} = {currentProcessId}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(CurrentProcessesId)}");
+            }
+            sb.AppendLine($"{spaces}{nameof(CurrentValue)} = {CurrentValue}");
+            sb.AppendLine($"{spaces}{nameof(TargetProcessId)} = {TargetProcessId}");
+            sb.AppendLine($"{spaces}{nameof(TargetValue)} = {TargetValue}");
+            return sb.ToString();
+        }
+    }
+
     public class NPCMeshTaskResulution : IObjectToString
     {
         public NPCMeshTaskResulutionKind Kind { get; set; } = NPCMeshTaskResulutionKind.Unknow;
@@ -401,6 +502,8 @@ namespace Assets.Scripts
         public DisagreementByVStateInfo DisagreementByVState { get; set; }
         public DisagreementByHandsStateInfo DisagreementByHandsState { get; set; }
         public DisagreementByHandsActionStateInfo DisagreementByHandsActionState { get; set; }
+        public DisagreementByHeadStateInfo DisagreementByHeadState { get; set; }
+        public DisagreementByTargetHeadPositionInfo DisagreementByTargetHeadPosition { get; set; }
 
         public override string ToString()
         {
@@ -477,6 +580,24 @@ namespace Assets.Scripts
             else
             {
                 sb.Append(DisagreementByHandsActionState.ToString(nextN));
+            }
+
+            if (DisagreementByHeadState == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DisagreementByHeadState)} = null");
+            }
+            else
+            {
+                sb.Append(DisagreementByHeadState.ToString(nextN));
+            }
+
+            if (DisagreementByTargetHeadPosition == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DisagreementByTargetHeadPosition)} = null");
+            }
+            else
+            {
+                sb.Append(DisagreementByTargetHeadPosition.ToString(nextN));
             }
 
             return sb.ToString();
