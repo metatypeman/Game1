@@ -320,7 +320,40 @@ public class HeadStateCommand: MoveHumanoidCommand, IHeadStateCommand
     public Vector3? TargetPosition { get; set; }
     public float Speed { get; set; }
     
-    
+    public override string ToString()
+    {
+        return ToString(0);
+    }
+
+    public override string ToString(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.AppendLine($"{spaces}Begin {nameof(HeadStateCommand)}");
+        sb.Append(PropertiesToSting(n));
+        sb.AppendLine($"{spaces}End {nameof(HeadStateCommand)}");
+        return sb.ToString();
+    }
+
+    public override string PropertiesToSting(int n)
+    {
+        var spaces = StringHelper.Spaces(n);
+        var sb = new StringBuilder();
+        sb.Append(base.PropertiesToSting(n));
+        sb.AppendLine($"{spaces}{nameof(State)} = {State}");
+
+        if(TargetPosition.HasValue)
+        {
+            var targetPosition = TargetPosition.Value;
+            sb.AppendLine($"{spaces}{nameof(TargetPosition)} = {TargetPosition}");
+        }
+        else
+        {
+            sb.AppendLine($"{spaces}{nameof(TargetPosition)} = null");
+        }
+        sb.AppendLine($"{spaces}{nameof(Speed)} = {Speed}");
+        return sb.ToString();
+    }   
 }
 
 //----
