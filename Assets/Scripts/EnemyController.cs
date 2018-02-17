@@ -602,8 +602,9 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 {
     private Rigidbody mRigidbody;
     private Animator mAnimator;
-
     private NavMeshAgent mNavMeshAgent;
+
+    public float DefaultAngleSpeed = 0.5f;
 
     // Use this for initialization
     void Start () {
@@ -819,11 +820,6 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         UpdateAnimator();
     }
 
-    public void tmpLookAt(Vector3 targetPosition)
-    {
-        //mNavMeshAgent.Lookat
-    }
-
     private void ApplyTargetState(StatesOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
@@ -841,6 +837,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
         ApplyInternalStates();
     }
+
+    private float mInitAngle;
+    private float mTargetRotateAngle;
+    private float mCurrentAngleSpeed;
 
     private void ApplyInternalStates()
     {
@@ -865,6 +865,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                     if(mStates.TargetPosition.HasValue)
                     {
                         mNavMeshAgent.ResetPath();
+                        transform.rotation = Quaternion.Euler(0, 0, 0);
                         transform.LookAt(mStates.TargetPosition.Value);
                     }
                 }              
@@ -874,10 +875,12 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 {
                     if(mStates.TargetPosition.HasValue)
                     {
-                        mNavMeshAgent.ResetPath();
-                        var targetPositionValue = mStates.TargetPosition.Value;
+                        mNavMeshAgent.isStopped = true;
+                        //transform.localRotation = Quaternion.Euler(0, 0, 0);
+                        //mNavMeshAgent.ResetPath();                      
+                        var targetPositionValue = mStates.TargetPosition.Value;                    
                         var targetPos = new Vector3(targetPositionValue.x, 0, targetPositionValue.z);
-                        targetPos = Quaternion.Euler(0, -0.8f, 0) * targetPos;
+                        //targetPos = Quaternion.Euler(0, -0.8f, 0) * targetPos;
                         transform.LookAt(targetPos);
                     }
                 }
@@ -887,9 +890,23 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 if (mStates.TargetPosition.HasValue)
                 {
                     mNavMeshAgent.ResetPath();
+
+                    mTargetRotateAngle = mStates.TargetPosition.Value.y;
+
+                    if(mTargetRotateAngle != 0f)
+                    {
+                        mInitAngle = transform.rotation.eulerAngles.y;
+                        mCurrentAngleSpeed = DefaultAngleSpeed;
+
+                        if (mTargetRotateAngle < 0f)
+                        {
+                            mCurrentAngleSpeed *= -1;
+                        }
+
 #if UNITY_EDITOR
-                    Debug.Log("EnemyController ApplyInternalStates case HumanoidHState.Rotate");g
+                        Debug.Log("EnemyController ApplyInternalStates case HumanoidHState.Rotate");
 #endif
+                    }
                 }
                 break;
         }
@@ -919,6 +936,11 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 #if UNITY_EDITOR
         //Debug.Log("EnemyController Update mNavMeshAgent.pathStatus = " + mNavMeshAgent.pathStatus + " mNavMeshAgent.isOnOffMeshLink = " + mNavMeshAgent.isOnOffMeshLink + " mNavMeshAgent.isStopped = " + mNavMeshAgent.isStopped + " mNavMeshAgent.nextPosition = " + mNavMeshAgent.nextPosition);
 #endif
+        if(mBehaviourFlags.IsDead)
+        {
+            return;
+        }
+
         var hState = mStates.HState;
         switch(hState)
         {
@@ -928,6 +950,26 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                     var targetPosition = mStates.TargetPosition.Value;
                     var nextPosition = mNavMeshAgent.nextPosition;
                     if (targetPosition.x == nextPosition.x && targetPosition.z == nextPosition.z)
+                    {
+                        ApplyAchieveDestinationOfMoving();
+                    }
+                }
+                break;
+
+            case HumanoidHState.Rotate:
+                {
+                    transform.rotation = Quaternion.Euler(0, mCurrentAngleSpeed, 0) * transform.rotation;
+                    var currY = transform.rotation.eulerAngles.y;
+#if UNITY_EDITOR
+                    Debug.Log($"EnemyController Update currY = {currY} mInitAngle = {mInitAngle}");
+#endif
+                    var diff = System.Math.Abs(currY - mInitAngle);
+
+#if UNITY_EDITOR
+                    Debug.Log($"EnemyController Update diff = {diff}");
+#endif
+
+                    if (Math.Abs(mTargetRotateAngle) <= diff)
                     {
                         ApplyAchieveDestinationOfMoving();
                     }

@@ -51,9 +51,9 @@ public class EnemyNPC : MonoBehaviour
         //Debug.Log("EnemyNPC Update");
         mInputKeyHelper.Update();
 
-        if(TargetAngle.HasValue)
+        if (TargetAngle.HasValue)
         {
-            if(InitAngle.HasValue)
+            if (InitAngle.HasValue)
             {
                 //TargetAngle = TargetAngle + AngleSpeed;
 
@@ -69,7 +69,7 @@ public class EnemyNPC : MonoBehaviour
 
                 Debug.Log($"EnemyNPC Update diff = {diff}");
 
-                if(System.Math.Abs(TargetAngle.Value) <= diff)
+                if (System.Math.Abs(TargetAngle.Value) <= diff)
                 {
                     TargetAngle = null;
                 }
