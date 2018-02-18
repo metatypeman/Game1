@@ -108,6 +108,8 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
     public int Distance = 20;
     public int Angle = 20;
 
+    public Transform Head;
+
     private List<Vector3> mRayDirectionsList = new List<Vector3>();
 
 	// Use this for initialization
@@ -155,16 +157,23 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 	
 	// Update is called once per frame
 	void Update () {
-        RayToScan();
+        if(Head == null)
+        {
+            RayToScan(transform);
+        }
+        else
+        {
+            RayToScan(Head);
+        }   
 	}
 
-    private void RayToScan()
+    private void RayToScan(Transform targetTransform)
     {
         var tmpVisibleItems = new List<VisionItem>();
 
         foreach(var localDirection in mRayDirectionsList)
         {
-            GetRaycast(localDirection, tmpVisibleItems);
+            GetRaycast(targetTransform, localDirection, tmpVisibleItems);
         }
 
         var newVisibleObjects = new List<VisionObject>();
@@ -190,9 +199,9 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
         }
     }
 
-    private void GetRaycast(Vector3 localDirection, List<VisionItem> visibleItems)
+    private void GetRaycast(Transform targetTransform, Vector3 localDirection, List<VisionItem> visibleItems)
     {
-        var globalDirection = transform.TransformDirection(localDirection);
+        var globalDirection = targetTransform.TransformDirection(localDirection);
 
         var hit = new RaycastHit();
 

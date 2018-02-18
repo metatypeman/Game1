@@ -604,7 +604,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     private Animator mAnimator;
     private NavMeshAgent mNavMeshAgent;
 
+    public Transform Head;
+
     public float DefaultAngleSpeed = 0.5f;
+    private bool mUseIkAnimation;
 
     // Use this for initialization
     void Start () {
@@ -616,6 +619,9 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         mNavMeshAgent = GetComponent<NavMeshAgent>();
 
         mRigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+
+        //mNavMeshAgent.SetDestination(Vector3.zero);
+        //mNavMeshAgent.ResetPath();
 
         ApplyCurrentStates();
 
@@ -842,6 +848,8 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     private float mTargetRotateAngle;
     private float mCurrentAngleSpeed;
 
+    //private 
+
     private void ApplyInternalStates()
     {
         UpdateAnimator();
@@ -864,8 +872,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 {
                     if(mStates.TargetPosition.HasValue)
                     {
-                        mNavMeshAgent.ResetPath();
-                        transform.rotation = Quaternion.Euler(0, 0, 0);
+                        mNavMeshAgent.isStopped = true;
                         transform.LookAt(mStates.TargetPosition.Value);
                     }
                 }              
@@ -875,12 +882,9 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 {
                     if(mStates.TargetPosition.HasValue)
                     {
-                        mNavMeshAgent.isStopped = true;
-                        //transform.localRotation = Quaternion.Euler(0, 0, 0);
-                        //mNavMeshAgent.ResetPath();                      
+                        mNavMeshAgent.isStopped = true;                   
                         var targetPositionValue = mStates.TargetPosition.Value;                    
                         var targetPos = new Vector3(targetPositionValue.x, 0, targetPositionValue.z);
-                        //targetPos = Quaternion.Euler(0, -0.8f, 0) * targetPos;
                         transform.LookAt(targetPos);
                     }
                 }
@@ -889,7 +893,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
             case HumanoidHState.Rotate:
                 if (mStates.TargetPosition.HasValue)
                 {
-                    mNavMeshAgent.ResetPath();
+                    mNavMeshAgent.isStopped = true;
 
                     mTargetRotateAngle = mStates.TargetPosition.Value.y;
 
@@ -976,5 +980,15 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 }
                 break;
         }
+    }
+
+    void OnAnimatorIK(int layerIndex)
+    {
+        if(mUseIkAnimation)
+        {
+            return;
+        }
+
+
     }
 }

@@ -783,6 +783,7 @@ namespace Assets.Scripts
             var vStateCommandsList = new List<IHumanoidVStateCommand>();
             var handsStateCommandsList = new List<IHumanoidHandsStateCommand>();
             var handsActionStateCommandsList = new List<IHumanoidHandsActionStateCommand>();
+            var 
 
             foreach (var command in commandsList)
             {
@@ -811,10 +812,10 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            //Debug.Log("NPCThreadSafeMeshController Execute hStateCommandsList.Count = " + hStateCommandsList.Count);
-            //Debug.Log("NPCThreadSafeMeshController Execute vStateCommandsList.Count = " + vStateCommandsList.Count);
-            //Debug.Log("NPCThreadSafeMeshController Execute handsStateCommandsList.Count = " + handsStateCommandsList.Count);
-            //Debug.Log("NPCThreadSafeMeshController Execute handsActionStateCommandsList.Count = " + handsActionStateCommandsList.Count);
+            Debug.Log("NPCThreadSafeMeshController Execute hStateCommandsList.Count = " + hStateCommandsList.Count);
+            Debug.Log("NPCThreadSafeMeshController Execute vStateCommandsList.Count = " + vStateCommandsList.Count);
+            Debug.Log("NPCThreadSafeMeshController Execute handsStateCommandsList.Count = " + handsStateCommandsList.Count);
+            Debug.Log("NPCThreadSafeMeshController Execute handsActionStateCommandsList.Count = " + handsActionStateCommandsList.Count);
 #endif
 
             if (hStateCommandsList.Count > 0)

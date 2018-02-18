@@ -21,9 +21,14 @@ public class EnemyNPC : MonoBehaviour
 
     private InputKeyHelper mInputKeyHelper;
 
+    public Transform Head;
+    public Animator mAnim;
+
     // Use this for initialization
     void Start()
     {
+        mAnim = GetComponent<Animator>();
+
         mEnemyController = GetComponent<EnemyController>();
 
         mEnemyRayScaner = GetComponent<EnemyRayScaner>();
@@ -36,6 +41,8 @@ public class EnemyNPC : MonoBehaviour
         //_gun.FireMode = FireMode.Single;
 
         mInputKeyHelper = new InputKeyHelper();
+        mInputKeyHelper.AddListener(KeyCode.F, OnFPressAction);
+        mInputKeyHelper.AddListener(KeyCode.G, OnGPressAction);
         mInputKeyHelper.AddListener(KeyCode.K, OnKPressAction);
         mInputKeyHelper.AddListener(KeyCode.N, OnNPressAction);
         mInputKeyHelper.AddListener(KeyCode.H, OnHPressAction);
@@ -51,39 +58,57 @@ public class EnemyNPC : MonoBehaviour
         //Debug.Log("EnemyNPC Update");
         mInputKeyHelper.Update();
 
-        if (TargetAngle.HasValue)
-        {
-            if (InitAngle.HasValue)
-            {
-                //TargetAngle = TargetAngle + AngleSpeed;
+        //if (TargetAngle.HasValue)
+        //{
+        //    if (InitAngle.HasValue)
+        //    {
+        //        //TargetAngle = TargetAngle + AngleSpeed;
 
-                transform.rotation = Quaternion.Euler(0, AngleSpeed, 0) * transform.rotation;
+        //        transform.rotation = Quaternion.Euler(0, AngleSpeed, 0) * transform.rotation;
 
-                //var diff = Vector3.Angle(transform.rotation.eulerAngles, InitRotation.Value.eulerAngles);
+        //        //var diff = Vector3.Angle(transform.rotation.eulerAngles, InitRotation.Value.eulerAngles);
 
-                var currY = transform.rotation.eulerAngles.y;
+        //        var currY = transform.rotation.eulerAngles.y;
 
-                Debug.Log($"EnemyNPC Update currY = {currY} InitAngle = {InitAngle}");
+        //        Debug.Log($"EnemyNPC Update currY = {currY} InitAngle = {InitAngle}");
 
-                var diff = System.Math.Abs(currY - InitAngle.Value);
+        //        var diff = System.Math.Abs(currY - InitAngle.Value);
 
-                Debug.Log($"EnemyNPC Update diff = {diff}");
+        //        Debug.Log($"EnemyNPC Update diff = {diff}");
 
-                if (System.Math.Abs(TargetAngle.Value) <= diff)
-                {
-                    TargetAngle = null;
-                }
-            }
-            else
-            {
-                InitAngle = transform.rotation.eulerAngles.y;
-            }
-        }
+        //        if (System.Math.Abs(TargetAngle.Value) <= diff)
+        //        {
+        //            TargetAngle = null;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        InitAngle = transform.rotation.eulerAngles.y;
+        //    }
+        //}
     }
 
     private float? TargetAngle = null;
     private float AngleSpeed = 0.5f;
     private float? InitAngle = null;
+
+    public bool isIkActive;
+
+    private void OnFPressAction(KeyCode key)
+    {
+        Debug.Log($"EnemyNPC OnFPressAction key = {key}");
+
+        isIkActive = false;
+    }
+
+    private void OnGPressAction(KeyCode key)
+    {
+        Debug.Log($"EnemyNPC OnGPressAction key = {key}");
+
+        var currHeadRotation = Head.rotation;
+        isIkActive = true;
+        //Head.rotation = Quaternion.Euler(0, 12f, 0) * currHeadRotation;
+    }
 
     private void OnKPressAction(KeyCode key)
     {
@@ -135,7 +160,17 @@ public class EnemyNPC : MonoBehaviour
         var tmpProcess = new TstRootProcess(mNPCProcessesContext);
         tmpProcess.RunAsync();
     }
-    
+
+    void OnAnimatorIK(int layerIndex)
+    {
+        if (isIkActive)
+        {
+            mAnim.SetLookAtWeight(1);
+            mAnim.SetLookAtPosition(new Vector3(226.15f, 0, 98.96f));
+            Head.LookAt(new Vector3(226.15f, 0, 98.96f));
+        }    
+    }
+
     void OnDestroy()
     {
         Debug.Log("OnDestroy");

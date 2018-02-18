@@ -2492,6 +2492,7 @@ MonoBehaviour:
   VRaysCount: 6
   Distance: 20
   Angle: 20
+  Head: {fileID: 1679634769}
 --- !u!195 &656795666
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2512,7 +2513,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
 --- !u!114 &656795667
 MonoBehaviour:
@@ -2526,6 +2527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c292cc434c8a1ad47932dde0400bb701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Head: {fileID: 1679634769}
   DefaultAngleSpeed: 0.5
 --- !u!114 &656795668
 MonoBehaviour:
@@ -2541,6 +2543,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   surfaceOffset: 1.5
   setTargetOn: {fileID: 0}
+  Head: {fileID: 1679634769}
+  mAnim: {fileID: 0}
+  isIkActive: 0
 --- !u!114 &656795669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2612,7 +2617,7 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 656795664}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.17364816, z: 0, w: 0.9848078}
   m_LocalPosition: {x: 218.47, y: -0.01, z: 89.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2620,7 +2625,7 @@ Transform:
   - {fileID: 92128980}
   m_Father: {fileID: 0}
   m_RootOrder: 61
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 20, z: 0}
 --- !u!1001 &676274917
 Prefab:
   m_ObjectHideFlags: 0
@@ -2788,6 +2793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c292cc434c8a1ad47932dde0400bb701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Head: {fileID: 0}
   DefaultAngleSpeed: 0.5
 --- !u!114 &719648040
 MonoBehaviour:

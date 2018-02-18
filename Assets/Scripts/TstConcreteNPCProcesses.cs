@@ -442,4 +442,35 @@ namespace Assets.Scripts
 #endif
         }
     }
+
+    public class TSTRotateHeadProcess : BaseNPCProcess
+    {
+        public TSTRotateHeadProcess(NPCProcessesContext context, float angle)
+        {
+            mAngle = angle;
+        }
+
+        private float mAngle;
+
+        protected override void OnRun()
+        {
+#if UNITY_EDITOR
+            Debug.Log($"Begin TSTRotateProcess OnRun mAngle = {mAngle}");
+#endif
+            var nameOfThisWaypoint = "Cube_1";
+            var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
+
+            var tmpCommand = new HumanoidHeadStateCommand();
+            tmpCommand.State = HumanoidHeadState.LookAt;
+            tmpCommand.TargetPosition = targetWayPoint.Position; // new Vector3(0, mAngle, 0);
+            //var tmpCommand = new HumanoidHandsActionStateCommand();
+            //tmpCommand.State = HumanoidHandsActionState.StrongAim;
+
+            var tmpTask = Execute(tmpCommand);
+
+#if UNITY_EDITOR
+            Debug.Log("End TSTFireToEthanProcess OnRun");
+#endif
+        }
+    }
 }
