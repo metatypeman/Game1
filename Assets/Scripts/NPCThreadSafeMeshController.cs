@@ -783,7 +783,7 @@ namespace Assets.Scripts
             var vStateCommandsList = new List<IHumanoidVStateCommand>();
             var handsStateCommandsList = new List<IHumanoidHandsStateCommand>();
             var handsActionStateCommandsList = new List<IHumanoidHandsActionStateCommand>();
-            var 
+            var headStateCommandsList = new List<IHumanoidHeadStateCommand>();
 
             foreach (var command in commandsList)
             {
@@ -805,6 +805,10 @@ namespace Assets.Scripts
 
                     case MoveHumanoidCommandKind.HandsActionState:
                         handsActionStateCommandsList.Add(command as IHumanoidHandsActionStateCommand);
+                        break;
+
+                    case MoveHumanoidCommandKind.HeadState:
+                        headStateCommandsList.Add(command as IHumanoidHeadStateCommand);
                         break;
 
                     default: throw new ArgumentOutOfRangeException("kind", kind, null);
@@ -879,6 +883,13 @@ namespace Assets.Scripts
 #endif
 
                 result.HandsActionState = targetCommand.State;
+            }
+
+            if(headStateCommandsList.Count > 0)
+            {
+                var targetCommand = headStateCommandsList.First();
+
+                result.HeadState = targetCommand.State;
             }
 
             if(result.HandsState.HasValue)
@@ -1038,6 +1049,26 @@ namespace Assets.Scripts
                 }
             }
 
+            if(targetState.HeadState.HasValue)
+            {
+                var targetHeadState = targetState.HeadState.Value;
+
+                if(mHeadState.Count == 0)
+                {
+                    theSame = false;
+                }
+                else
+                {
+                    if(!mHeadState.Contains(processId))
+                    {
+                        theSame = false;
+                        result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+
+
+                    }
+                }
+            }
+
             if(result.Kind == NPCMeshTaskResulutionKind.Unknow)
             {
                 if(theSame)
@@ -1062,6 +1093,7 @@ namespace Assets.Scripts
         private List<int> mVState = new List<int>();
         private List<int> mHandsState = new List<int>();
         private List<int> mHandsActionState = new List<int>();
+        private List<int> mHeadState = new List<int>();
         private Dictionary<int, NPCMeshTask> mTasksDict = new Dictionary<int, NPCMeshTask>();
 
 #if UNITY_EDITOR
@@ -1101,6 +1133,13 @@ namespace Assets.Scripts
                 Debug.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
             }
             Debug.Log("NPCThreadSafeMeshController ProcessAllow End mHandsActionState");
+
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow Begin mHeadState");
+            foreach (var item in mHeadState)
+            {
+                Debug.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow End mHeadState");
 
             Debug.Log("NPCThreadSafeMeshController ProcessAllow Begin mTasksDict");
             foreach(var kvpItem in mTasksDict)
