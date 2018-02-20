@@ -38,6 +38,7 @@ namespace Assets.Scripts
         public int InstanceID { get; set; }
         public string Name { get; set; }
         public string Tag { get; set; }
+        public dynamic DynamicData { get; set; } = new ExpandoObject();
 
         public override string ToString()
         {
@@ -57,10 +58,24 @@ namespace Assets.Scripts
         public string PropertiesToSting(int n)
         {
             var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(InstanceID)} = {InstanceID}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Tag)} = {Tag}");
+            if(DynamicData == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DynamicData)} = null");
+            }else{
+                var dynamicDict = DynamicData as IDictionary<string, object>;
+                sb.AppendLine($"{spaces}Begin {nameof(DynamicData)}");
+                foreach(var dynamicKVPItem in dynamicDict)
+                {
+                    sb.AppendLine($"{nextSpaces}DinamicPropName = {dynamicKVPItem.Key}; DinamicPropValue = {dynamicKVPItem.Value}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(DynamicData)}");
+            }
             return sb.ToString();
         }
     }
