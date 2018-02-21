@@ -106,8 +106,11 @@ public class EnemyNPC : MonoBehaviour
         Debug.Log($"EnemyNPC OnGPressAction key = {key}");
 
         var currHeadRotation = Head.rotation;
-        isIkActive = true;
+        //isIkActive = true;
         //Head.rotation = Quaternion.Euler(0, 12f, 0) * currHeadRotation;
+
+        var tmpProcess = new TSTRotateHeadProcess(mNPCProcessesContext, 5f);
+        tmpProcess.RunAsync();
     }
 
     private void OnKPressAction(KeyCode key)
@@ -161,15 +164,15 @@ public class EnemyNPC : MonoBehaviour
         tmpProcess.RunAsync();
     }
 
-    void OnAnimatorIK(int layerIndex)
-    {
-        if (isIkActive)
-        {
-            mAnim.SetLookAtWeight(1);
-            mAnim.SetLookAtPosition(new Vector3(226.15f, 0, 98.96f));
-            Head.LookAt(new Vector3(226.15f, 0, 98.96f));
-        }    
-    }
+    //void OnAnimatorIK(int layerIndex)
+    //{
+    //    if (isIkActive)
+    //    {
+    //        mAnim.SetLookAtWeight(1);
+    //        mAnim.SetLookAtPosition(new Vector3(226.15f, 0, 98.96f));
+    //        Head.LookAt(new Vector3(226.15f, 0, 98.96f));
+    //    }    
+    //}
 
     void OnDestroy()
     {

@@ -734,6 +734,12 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
             result.HandsActionState = targetState.HandsActionState.Value;
         }
 
+        if(targetState.HeadState.HasValue)
+        {
+            result.HeadState = targetState.HeadState.Value;
+            result.TargetHeadPosition = targetState.TargetHeadPosition.Value;
+        }
+
         switch (result.HState)
         {
             case HumanoidHState.Stop:
@@ -829,13 +835,13 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     private void ApplyTargetState(StatesOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
-        //Debug.Log("EnemyController ApplyTargetState targetState = " + targetState);
+        Debug.Log($"EnemyController ApplyTargetState targetState = {targetState}");
 #endif
 
         var targetBehaviourFlags = CreateBehaviourFlags(targetState);
 
 #if UNITY_EDITOR
-        //Debug.Log("EnemyController ApplyTargetState targetBehaviourFlags = " + targetBehaviourFlags);
+        //Debug.Log($"EnemyController ApplyTargetState targetBehaviourFlags = {targetBehaviourFlags}");
 #endif
 
         mStates.Append(targetState);
@@ -848,11 +854,13 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     private float mTargetRotateAngle;
     private float mCurrentAngleSpeed;
 
-    //private 
-
     private void ApplyInternalStates()
     {
         UpdateAnimator();
+
+#if UNITY_EDITOR
+        Debug.Log($"EnemyController ApplyInternalStates mStates = {mStates}");
+#endif
 
         var hState = mStates.HState;
         switch(hState)
@@ -912,6 +920,23 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 #endif
                     }
                 }
+                break;
+        }
+
+        var headState = mStates.HeadState;
+
+        switch(headState)
+        {
+            case HumanoidHeadState.LookingForward:
+                mUseIkAnimation = false;
+                break;
+
+            case HumanoidHeadState.LookAt:
+                mUseIkAnimation = true;
+                break;
+
+            case HumanoidHeadState.Rotate:
+                mUseIkAnimation = true;
                 break;
         }
     }
@@ -984,11 +1009,26 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
     void OnAnimatorIK(int layerIndex)
     {
-        if(mUseIkAnimation)
+        if(!mUseIkAnimation)
         {
             return;
         }
 
+        var headState = mStates.HeadState;
 
+        switch (headState)
+        {
+            case HumanoidHeadState.LookingForward:
+                break;
+
+            case HumanoidHeadState.LookAt:
+                mAnimator.SetLookAtWeight(1);
+                mAnimator.SetLookAtPosition(mStates.TargetHeadPosition.Value);
+                Head.LookAt(mStates.TargetHeadPosition.Value);
+                break;
+
+            case HumanoidHeadState.Rotate:
+                break;
+        }
     }
 }

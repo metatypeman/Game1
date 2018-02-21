@@ -890,6 +890,7 @@ namespace Assets.Scripts
                 var targetCommand = headStateCommandsList.First();
 
                 result.HeadState = targetCommand.State;
+                result.TargetHeadPosition = targetCommand.TargetPosition;
             }
 
             if(result.HandsState.HasValue)
@@ -903,6 +904,10 @@ namespace Assets.Scripts
                         break;
                 }
             }
+
+#if UNITY_EDITOR
+            Debug.Log($"NPCThreadSafeMeshController CreateTargetState result = {result}");
+#endif
 
             return result;
         }
@@ -1064,12 +1069,42 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-
+                        var disagreement = new DisagreementByHeadStateInfo();
+                        result.DisagreementByHeadState = disagreement;
+                        disagreement.CurrentProcessesId = mHeadState.ToList();
+                        disagreement.CurrentValue = currentStates.HeadState;
+                        disagreement.TargetProcessId = processId;
+                        disagreement.TargetValue = targetHeadState;
                     }
                 }
             }
 
-            if(result.Kind == NPCMeshTaskResulutionKind.Unknow)
+            if(targetState.TargetHeadPosition.HasValue)
+            {
+                var targetHeadPosition = targetState.TargetHeadPosition.Value;
+
+                if(mTargetHeadPosition.Count == 0)
+                {
+                    theSame = false;
+                }
+                else
+                {
+                    if(!mTargetHeadPosition.Contains(processId))
+                    {
+                        theSame = false;
+                        result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+
+                        var disagreement = new DisagreementByTargetHeadPositionInfo();
+                        result.DisagreementByTargetHeadPosition = disagreement;
+                        disagreement.CurrentProcessesId = mTargetHeadPosition.ToList();
+                        disagreement.CurrentValue = currentStates.TargetHeadPosition;
+                        disagreement.TargetProcessId = processId;
+                        disagreement.TargetValue = targetHeadPosition;
+                    }
+                }
+            }
+
+            if (result.Kind == NPCMeshTaskResulutionKind.Unknow)
             {
                 if(theSame)
                 {
@@ -1094,6 +1129,7 @@ namespace Assets.Scripts
         private List<int> mHandsState = new List<int>();
         private List<int> mHandsActionState = new List<int>();
         private List<int> mHeadState = new List<int>();
+        private List<int> mTargetHeadPosition = new List<int>();
         private Dictionary<int, NPCMeshTask> mTasksDict = new Dictionary<int, NPCMeshTask>();
 
 #if UNITY_EDITOR
@@ -1140,6 +1176,13 @@ namespace Assets.Scripts
                 Debug.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
             }
             Debug.Log("NPCThreadSafeMeshController ProcessAllow End mHeadState");
+
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow Begin mTargetHeadPosition");
+            foreach (var item in mTargetHeadPosition)
+            {
+                Debug.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow End mTargetHeadPosition");
 
             Debug.Log("NPCThreadSafeMeshController ProcessAllow Begin mTasksDict");
             foreach(var kvpItem in mTasksDict)
@@ -1300,8 +1343,64 @@ namespace Assets.Scripts
                     mHandsActionState.Remove(processId);
                 }
             }
+            
+            if (targetState.HeadState.HasValue)
+            {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mHeadState);
+                        mHeadState.Clear();
+                        break;
 
-            if(displacedProcessesIdList.Count > 0)
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
+                if(!mHeadState.Contains(processId))
+                {
+                    mHeadState.Add(processId);
+                }
+            }
+            else
+            {
+                if (mHeadState.Contains(processId))
+                {
+                    mHeadState.Remove(processId);
+                }
+            }
+
+            if (targetState.TargetHeadPosition.HasValue)
+            {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mTargetHeadPosition);
+                        mTargetHeadPosition.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
+                if (!mTargetHeadPosition.Contains(processId))
+                {
+                    mTargetHeadPosition.Add(processId);
+                }
+            }
+            else
+            {
+                if (mTargetHeadPosition.Contains(processId))
+                {
+                    mTargetHeadPosition.Remove(processId);
+                }
+            }
+
+            if (displacedProcessesIdList.Count > 0)
             {
                 displacedProcessesIdList = displacedProcessesIdList.Distinct().ToList();
 
@@ -1334,6 +1433,16 @@ namespace Assets.Scripts
                     if (mHandsActionState.Contains(displacedProcessId))
                     {
                         mHandsActionState.Remove(displacedProcessId);
+                    }
+
+                    if (mHeadState.Contains(displacedProcessId))
+                    {
+                        mHeadState.Remove(displacedProcessId);
+                    }
+
+                    if (mTargetHeadPosition.Contains(displacedProcessId))
+                    {
+                        mTargetHeadPosition.Remove(displacedProcessId);
                     }
 
                     var displacedTask = mTasksDict[displacedProcessId];

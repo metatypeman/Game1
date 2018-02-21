@@ -446,6 +446,7 @@ namespace Assets.Scripts
     public class TSTRotateHeadProcess : BaseNPCProcess
     {
         public TSTRotateHeadProcess(NPCProcessesContext context, float angle)
+            : base(context)
         {
             mAngle = angle;
         }
@@ -455,7 +456,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TSTRotateProcess OnRun mAngle = {mAngle}");
+            Debug.Log($"Begin TSTRotateHeadProcess OnRun mAngle = {mAngle}");
 #endif
             var nameOfThisWaypoint = "Cube_1";
             var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
@@ -469,7 +470,7 @@ namespace Assets.Scripts
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            Debug.Log("End TSTFireToEthanProcess OnRun");
+            Debug.Log("End TSTRotateHeadProcess OnRun");
 #endif
         }
     }
