@@ -854,6 +854,12 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     private float mTargetRotateAngle;
     private float mCurrentAngleSpeed;
 
+    private float mInitHeadAngle;
+    private float mTargetHeadRotateAngle;
+    private float mCurrentHeadAngle;
+    private Vector3 mCurrentHeadPosition;
+    private bool mIsAchivedTargetHeadRotateAngle;
+
     private void ApplyInternalStates()
     {
         UpdateAnimator();
@@ -932,11 +938,34 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 break;
 
             case HumanoidHeadState.LookAt:
+                mCurrentHeadPosition = mStates.TargetHeadPosition.Value;
                 mUseIkAnimation = true;
                 break;
 
             case HumanoidHeadState.Rotate:
                 mUseIkAnimation = true;
+                mTargetHeadRotateAngle = mStates.TargetHeadPosition.Value.y;
+                var radAngle = mTargetHeadRotateAngle * Mathf.Deg2Rad;
+                var x = Mathf.Sin(radAngle);
+                var y = Mathf.Cos(radAngle);
+                var localDirection = new Vector3(x, 0f, y);
+                var globalDirection = transform.TransformDirection(localDirection);
+                //var distance = 20;
+                var oldY = Head.position.y;
+                var newPosition = globalDirection + transform.position;
+                mCurrentHeadPosition = new Vector3(newPosition.x, oldY, newPosition.z);
+#if UNITY_EDITOR
+                Debug.Log($"EnemyController ApplyInternalStates mTargetHeadRotateAngle = {mTargetHeadRotateAngle}");
+                Debug.Log($"EnemyController ApplyInternalStates radAngle = {radAngle}");
+                Debug.Log($"EnemyController ApplyInternalStates x = {x}");
+                Debug.Log($"EnemyController ApplyInternalStates y = {y}");
+                Debug.Log($"EnemyController ApplyInternalStates localDirection = {localDirection}");
+                Debug.Log($"EnemyController ApplyInternalStates globalDirection = {globalDirection}");
+                Debug.Log($"EnemyController ApplyInternalStates mCurrentHeadPosition = {mCurrentHeadPosition}");
+                //var Offset = new Vector3(0, 1.6f, 0);
+                //var pos = transform.position + Offset;
+                //Debug.DrawRay(pos, globalDirection * distance, Color.green);
+#endif
                 break;
         }
     }
@@ -1005,6 +1034,15 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 }
                 break;
         }
+
+        var headState = mStates.HeadState;
+
+        switch (headState)
+        {
+            case HumanoidHeadState.Rotate:
+                
+                break;
+        }
     }
 
     void OnAnimatorIK(int layerIndex)
@@ -1023,11 +1061,23 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
             case HumanoidHeadState.LookAt:
                 mAnimator.SetLookAtWeight(1);
-                mAnimator.SetLookAtPosition(mStates.TargetHeadPosition.Value);
-                Head.LookAt(mStates.TargetHeadPosition.Value);
+                mAnimator.SetLookAtPosition(mCurrentHeadPosition);
+                Head.LookAt(mCurrentHeadPosition);
                 break;
 
             case HumanoidHeadState.Rotate:
+                //var radAngle = mTargetHeadRotateAngle * Mathf.Deg2Rad;
+                //var x = Mathf.Sin(radAngle);
+                //var y = Mathf.Cos(radAngle);
+                //var localDirection = new Vector3(x, 0f, y);
+                //var globalDirection = transform.TransformDirection(localDirection);
+                //mCurrentHeadPosition = globalDirection * 20;
+                mAnimator.SetLookAtWeight(1);
+                mAnimator.SetLookAtPosition(mCurrentHeadPosition);
+                //Head.LookAt(mCurrentHeadPosition);
+                //var Offset = new Vector3(0, 1.6f, 0);
+                //var pos = transform.position + Offset;
+                //Debug.DrawRay(pos, mCurrentHeadPosition, Color.green);
                 break;
         }
     }

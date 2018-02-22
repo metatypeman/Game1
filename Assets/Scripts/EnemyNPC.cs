@@ -109,7 +109,7 @@ public class EnemyNPC : MonoBehaviour
         //isIkActive = true;
         //Head.rotation = Quaternion.Euler(0, 12f, 0) * currHeadRotation;
 
-        var tmpProcess = new TSTRotateHeadProcess(mNPCProcessesContext, 5f);
+        var tmpProcess = new TSTRotateHeadProcess(mNPCProcessesContext, 12f);
         tmpProcess.RunAsync();
     }
 

@@ -461,9 +461,15 @@ namespace Assets.Scripts
             var nameOfThisWaypoint = "Cube_1";
             var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
 
+#if UNITY_EDITOR
+            Debug.Log($"Begin TSTRotateHeadProcess OnRun targetWayPoint.Position = {targetWayPoint.Position}");
+#endif
+
             var tmpCommand = new HumanoidHeadStateCommand();
-            tmpCommand.State = HumanoidHeadState.LookAt;
-            tmpCommand.TargetPosition = targetWayPoint.Position; // new Vector3(0, mAngle, 0);
+            //tmpCommand.State = HumanoidHeadState.LookAt;
+            tmpCommand.State = HumanoidHeadState.Rotate;
+            //tmpCommand.TargetPosition = targetWayPoint.Position; // new Vector3(0, mAngle, 0);
+            tmpCommand.TargetPosition = new Vector3(0, mAngle, 0);
             //var tmpCommand = new HumanoidHandsActionStateCommand();
             //tmpCommand.State = HumanoidHandsActionState.StrongAim;
 
