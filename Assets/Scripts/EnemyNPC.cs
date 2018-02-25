@@ -50,6 +50,7 @@ public class EnemyNPC : MonoBehaviour
         mInputKeyHelper.AddListener(KeyCode.I, OnIPressAction);
         mInputKeyHelper.AddListener(KeyCode.P, OnPPressAction);
         mInputKeyHelper.AddListener(KeyCode.U, OnUPressAction);
+        mInputKeyHelper.AddListener(KeyCode.M, OnMPressAction);
     }
 
     // Update is called once per frame
@@ -88,6 +89,14 @@ public class EnemyNPC : MonoBehaviour
         //}
     }
 
+    private void OnMPressAction(KeyCode key)
+    {
+        Debug.Log($"EnemyNPC OnMPressAction key = {key}");
+
+        var tmpProcess = new TSTMoveProcess(mNPCProcessesContext);
+        tmpProcess.RunAsync();
+    }
+
     private float? TargetAngle = null;
     private float AngleSpeed = 0.5f;
     private float? InitAngle = null;
@@ -99,6 +108,9 @@ public class EnemyNPC : MonoBehaviour
         Debug.Log($"EnemyNPC OnFPressAction key = {key}");
 
         isIkActive = false;
+
+        var tmpProcess = new TSTHeadToForvardProcess(mNPCProcessesContext);
+        tmpProcess.RunAsync();
     }
 
     private void OnGPressAction(KeyCode key)
@@ -176,7 +188,7 @@ public class EnemyNPC : MonoBehaviour
 
     void OnDestroy()
     {
-        Debug.Log("OnDestroy");
+        //Debug.Log("OnDestroy");
         mNPCProcessesContext?.Dispose();
     }
 }

@@ -760,7 +760,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         if(targetState.HeadState.HasValue)
         {
             result.HeadState = targetState.HeadState.Value;
-            result.TargetHeadPosition = targetState.TargetHeadPosition.Value;
+            if(targetState.TargetHeadPosition.HasValue)
+            {
+                result.TargetHeadPosition = targetState.TargetHeadPosition.Value;
+            }       
         }
 
         switch (result.HState)
@@ -834,6 +837,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 break;
 
             case HumanoidHState.Walk:
+            case HumanoidHState.Move:
                 result.Walk = true;
                 break;
         }
@@ -896,7 +900,26 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 break;
 
             case HumanoidHState.Move:
-                throw new NotImplementedException();
+                {
+                    if (mStates.TargetPosition.HasValue)
+                    {
+                        mNavMeshAgent.ResetPath();
+
+#if DEBUG
+                        Debug.Log($"EnemyController ApplyInternalStates mStates.TargetPosition = {mStates.TargetPosition}");
+#endif
+                        var direction = transform.TransformDirection(mStates.TargetPosition.Value);
+                        mStates.TargetPosition = transform.position + direction;
+
+#if DEBUG
+                        Debug.Log($"EnemyController ApplyInternalStates transform.position = {transform.position}");
+                        Debug.Log($"EnemyController ApplyInternalStates after mStates.TargetPosition = {mStates.TargetPosition}");
+#endif
+
+                        mNavMeshAgent.SetDestination(mStates.TargetPosition.Value);
+                    }
+                }
+                break;
 
             case HumanoidHState.LookAt:
                 {
@@ -1018,6 +1041,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         {
             case HumanoidHState.Walk:
             case HumanoidHState.Run:
+            case HumanoidHState.Move:
                 {
                     var targetPosition = mStates.TargetPosition.Value;
                     var nextPosition = mNavMeshAgent.nextPosition;

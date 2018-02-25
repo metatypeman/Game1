@@ -481,5 +481,49 @@ namespace Assets.Scripts
         }
     }
 
+    public class TSTHeadToForvardProcess: BaseNPCProcess
+    {
+        public TSTHeadToForvardProcess(NPCProcessesContext context)
+            : base(context)
+        {
+        }
 
+        protected override void OnRun()
+        {
+#if UNITY_EDITOR
+            Debug.Log("Begin TSTHeadToForvardProcess OnRun");
+#endif
+            var tmpCommand = new HumanoidHeadStateCommand();
+            tmpCommand.State = HumanoidHeadState.LookingForward;
+            var tmpTask = Execute(tmpCommand);
+
+#if UNITY_EDITOR
+            Debug.Log("End TSTHeadToForvardProcess OnRun");
+#endif
+        }
+    }
+
+    public class TSTMoveProcess : BaseNPCProcess
+    {
+        public TSTMoveProcess(NPCProcessesContext context)
+            : base(context)
+        {
+        }
+
+        protected override void OnRun()
+        {
+#if UNITY_EDITOR
+            Debug.Log("Begin TSTMoveProcess OnRun");
+#endif
+
+            var tmpCommand = new HumanoidHStateCommand();
+            tmpCommand.State = HumanoidHState.Move;
+            tmpCommand.TargetPosition = new Vector3(0, 0, 1);
+            var tmpTask = Execute(tmpCommand);
+
+#if UNITY_EDITOR
+            Debug.Log("End TSTMoveProcess OnRun");
+#endif
+        }
+    }
 }

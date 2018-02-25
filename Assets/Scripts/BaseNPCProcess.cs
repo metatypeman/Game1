@@ -88,7 +88,7 @@ namespace Assets.Scripts
                     CurrentId = mContext.GetNewProcessId();
 
 #if UNITY_EDITOR
-                    Debug.Log($"BaseNPCProcess Context mCurrentId = {mCurrentId}");
+                    //Debug.Log($"BaseNPCProcess Context mCurrentId = {mCurrentId}");
 #endif
                 }
             }
@@ -329,7 +329,7 @@ namespace Assets.Scripts
         public void Run()
         {
 #if UNITY_EDITOR
-            Debug.Log("BaseNPCProcess Begin Run");
+            //Debug.Log("BaseNPCProcess Begin Run");
 #endif
             lock (mDisposeLockObj)
             {
@@ -342,14 +342,14 @@ namespace Assets.Scripts
             NRun();
 
 #if UNITY_EDITOR
-            Debug.Log("BaseNPCProcess End Run");
+            //Debug.Log("BaseNPCProcess End Run");
 #endif
         }
 
         public void RunAsync()
         {
 #if UNITY_EDITOR
-            Debug.Log("BaseNPCProcess Begin RunAsync");
+            //Debug.Log("BaseNPCProcess Begin RunAsync");
 #endif
             lock (mDisposeLockObj)
             {
@@ -364,7 +364,7 @@ namespace Assets.Scripts
             });
 
 #if UNITY_EDITOR
-            Debug.Log("BaseNPCProcess End RunAsync");
+            //Debug.Log("BaseNPCProcess End RunAsync");
 #endif
         }
 
@@ -373,7 +373,7 @@ namespace Assets.Scripts
         private void NRun()
         {
 #if UNITY_EDITOR
-            Debug.Log("BaseNPCProcess Begin NRun");
+            //Debug.Log("BaseNPCProcess Begin NRun");
 #endif
 
             Status = NPCProcessStatus.Running;
@@ -383,7 +383,7 @@ namespace Assets.Scripts
             Status = NPCProcessStatus.RanToCompletion;
 
 #if UNITY_EDITOR
-            Debug.Log("BaseNPCProcess End NRun");
+            //Debug.Log("BaseNPCProcess End NRun");
 #endif
         }
 
@@ -392,7 +392,7 @@ namespace Assets.Scripts
         protected void WaitProsesses(List<BaseNPCProcess> processesList)
         {
 #if UNITY_EDITOR
-            Debug.Log("BaseNPCProcess Begin WaitProsesses");
+            //Debug.Log("BaseNPCProcess Begin WaitProsesses");
 #endif
 
             lock (mDisposeLockObj)
@@ -422,14 +422,14 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("BaseNPCProcess End WaitProsesses");
+            //Debug.Log("BaseNPCProcess End WaitProsesses");
 #endif
         }
 
         protected void WaitNPCMeshTask(NPCMeshTask task)
         {
 #if UNITY_EDITOR
-            Debug.Log($"BaseNPCProcess Begin WaitNPCMeshTask task = {task}");
+            //Debug.Log($"BaseNPCProcess Begin WaitNPCMeshTask task = {task}");
 #endif
 
             lock (mDisposeLockObj)
@@ -459,7 +459,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("BaseNPCProcess End WaitNPCMeshTask");
+            //Debug.Log("BaseNPCProcess End WaitNPCMeshTask");
 #endif
         }
 
@@ -496,14 +496,14 @@ namespace Assets.Scripts
         private void PostProcessExecutedTask(NPCMeshTask task)
         {
 #if UNITY_EDITOR
-            Debug.Log($"BaseNPCProcess PostProcessExecutedTask task = {task}");
+            //Debug.Log($"BaseNPCProcess PostProcessExecutedTask task = {task}");
 #endif
 
             Status = ConvertNPCMeshTaskStateToActiveNPCProcessStatus(task.State);
 
             task.OnStateChanged += (NPCMeshTaskState state) => {
 #if UNITY_EDITOR
-                Debug.Log($"BaseNPCProcess PostProcessExecutedTask OnStateChanged state = {state}");
+                //Debug.Log($"BaseNPCProcess PostProcessExecutedTask OnStateChanged state = {state}");
 #endif
                 Status = ConvertNPCMeshTaskStateToActiveNPCProcessStatus(state);
             };
@@ -512,7 +512,7 @@ namespace Assets.Scripts
         private NPCProcessStatus ConvertNPCMeshTaskStateToActiveNPCProcessStatus(NPCMeshTaskState npcMeshTaskState)
         {
 #if UNITY_EDITOR
-            Debug.Log($"BaseNPCProcess PostProcessExecutedTask ConvertNPCMeshTaskStateToActiveNPCProcessStatus npcMeshTaskState = {npcMeshTaskState}");
+            //Debug.Log($"BaseNPCProcess PostProcessExecutedTask ConvertNPCMeshTaskStateToActiveNPCProcessStatus npcMeshTaskState = {npcMeshTaskState}");
 #endif
 
             switch(npcMeshTaskState)
@@ -574,7 +574,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("BaseNPCProcess Dispose");
+            //Debug.Log("BaseNPCProcess Dispose");
 #endif
             OnDispose();
         }
