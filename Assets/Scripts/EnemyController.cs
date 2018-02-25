@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
+#region Common Types
 public static class StringHelper
 {
     public static string Spaces(int n)
@@ -597,6 +598,7 @@ public class BehaviourFlagsOfHumanoidController : IObjectToString
         return sb.ToString();
     }
 }
+#endregion
 
 public class EnemyController : MonoBehaviour, IMoveHumanoidController
 {
@@ -606,7 +608,29 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
     public Transform Head;
 
-    public float DefaultAngleSpeed = 0.5f;
+    #region body rotation
+    public float DefaultBodyAngleSpeed = 0.5f;
+    private float mCurrentBodyAngle;
+    private float mBodyAngleSpeed;
+    private float mTargetBodyAngle;
+    private float mBodyAngleDelta;
+    private float mAbsBodyAngleDelta;
+
+    private bool mNeedBodyChanges;
+    #endregion
+
+    #region head rotation
+    public float DefaultHeadAngleSpeed = 0.5f;
+    private float mCurrentHeadAngle;
+    private float mHeadAngleSpeed;
+    private float mTargetHeadAngle;
+    private float mHeadAngleDelta;
+    private float mAbsHeadAngleDelta;
+    private Vector3 mCurrentHeadPosition;
+
+    private bool mNeedHeadChanges;
+    #endregion
+
     private bool mUseIkAnimation;
 
     // Use this for initialization
@@ -620,8 +644,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
         mRigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 
-        //mNavMeshAgent.SetDestination(Vector3.zero);
-        //mNavMeshAgent.ResetPath();
+        mCurrentHeadAngle = 0f;
 
         ApplyCurrentStates();
 
@@ -850,16 +873,6 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         ApplyInternalStates();
     }
 
-    private float mInitAngle;
-    private float mTargetRotateAngle;
-    private float mCurrentAngleSpeed;
-
-    private float mInitHeadAngle;
-    private float mTargetHeadRotateAngle;
-    private float mCurrentHeadAngle;
-    private Vector3 mCurrentHeadPosition;
-    private bool mIsAchivedTargetHeadRotateAngle;
-
     private void ApplyInternalStates()
     {
         UpdateAnimator();
@@ -881,7 +894,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                     }
                 }
                 break;
-                
+
+            case HumanoidHState.Move:
+                throw new NotImplementedException();
+
             case HumanoidHState.LookAt:
                 {
                     if(mStates.TargetPosition.HasValue)
@@ -909,22 +925,24 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 {
                     mNavMeshAgent.isStopped = true;
 
-                    mTargetRotateAngle = mStates.TargetPosition.Value.y;
+                    mCurrentBodyAngle = 0f;
+                    mTargetBodyAngle = mStates.TargetPosition.Value.y;
 
-                    if(mTargetRotateAngle != 0f)
+                    mNeedBodyChanges = true;
+                    mBodyAngleSpeed = DefaultBodyAngleSpeed;
+                    if (mTargetBodyAngle > mCurrentBodyAngle)
                     {
-                        mInitAngle = transform.rotation.eulerAngles.y;
-                        mCurrentAngleSpeed = DefaultAngleSpeed;
-
-                        if (mTargetRotateAngle < 0f)
-                        {
-                            mCurrentAngleSpeed *= -1;
-                        }
+                        mBodyAngleDelta = mBodyAngleSpeed;
+                    }
+                    else
+                    {
+                        mBodyAngleDelta = -1 * mBodyAngleSpeed;
+                    }
+                    mAbsBodyAngleDelta = Math.Abs(mBodyAngleDelta);
 
 #if UNITY_EDITOR
-                        Debug.Log("EnemyController ApplyInternalStates case HumanoidHState.Rotate");
+                    Debug.Log("EnemyController ApplyInternalStates case HumanoidHState.Rotate");
 #endif
-                    }
                 }
                 break;
         }
@@ -935,6 +953,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         {
             case HumanoidHeadState.LookingForward:
                 mUseIkAnimation = false;
+                mCurrentHeadAngle = 0f;
                 break;
 
             case HumanoidHeadState.LookAt:
@@ -944,32 +963,27 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
             case HumanoidHeadState.Rotate:
                 mUseIkAnimation = true;
-                mTargetHeadRotateAngle = mStates.TargetHeadPosition.Value.y;
-                var radAngle = mTargetHeadRotateAngle * Mathf.Deg2Rad;
-                var x = Mathf.Sin(radAngle);
-                var y = Mathf.Cos(radAngle);
-                var localDirection = new Vector3(x, 0f, y);
-                var globalDirection = transform.TransformDirection(localDirection);
-                //var distance = 20;
-                var oldY = Head.position.y;
-                var newPosition = globalDirection + transform.position;
-                mCurrentHeadPosition = new Vector3(newPosition.x, oldY, newPosition.z);
-#if UNITY_EDITOR
-                Debug.Log($"EnemyController ApplyInternalStates mTargetHeadRotateAngle = {mTargetHeadRotateAngle}");
-                Debug.Log($"EnemyController ApplyInternalStates radAngle = {radAngle}");
-                Debug.Log($"EnemyController ApplyInternalStates x = {x}");
-                Debug.Log($"EnemyController ApplyInternalStates y = {y}");
-                Debug.Log($"EnemyController ApplyInternalStates localDirection = {localDirection}");
-                Debug.Log($"EnemyController ApplyInternalStates globalDirection = {globalDirection}");
-                Debug.Log($"EnemyController ApplyInternalStates mCurrentHeadPosition = {mCurrentHeadPosition}");
-                //var Offset = new Vector3(0, 1.6f, 0);
-                //var pos = transform.position + Offset;
-                //Debug.DrawRay(pos, globalDirection * distance, Color.green);
-#endif
+
+                mTargetHeadAngle = mStates.TargetHeadPosition.Value.y;
+
+                if(mTargetHeadAngle != mCurrentHeadAngle)
+                {
+                    mNeedHeadChanges = true;
+                    mHeadAngleSpeed = DefaultHeadAngleSpeed;
+                    if (mTargetHeadAngle > mCurrentHeadAngle)
+                    {
+                        mHeadAngleDelta = mHeadAngleSpeed;
+                    }
+                    else
+                    {
+                        mHeadAngleDelta = -1 * mHeadAngleSpeed;
+                    }
+                    mAbsHeadAngleDelta = Math.Abs(mHeadAngleDelta);
+                }
                 break;
         }
     }
-    
+
     private void UpdateAnimator()
     {
 #if UNITY_EDITOR
@@ -1015,19 +1029,51 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 break;
 
             case HumanoidHState.Rotate:
+                if(mNeedBodyChanges)
                 {
-                    transform.rotation = Quaternion.Euler(0, mCurrentAngleSpeed, 0) * transform.rotation;
-                    var currY = transform.rotation.eulerAngles.y;
-#if UNITY_EDITOR
-                    Debug.Log($"EnemyController Update currY = {currY} mInitAngle = {mInitAngle}");
-#endif
-                    var diff = System.Math.Abs(currY - mInitAngle);
+                    var newAngle = mCurrentBodyAngle + mBodyAngleDelta;
 
 #if UNITY_EDITOR
-                    Debug.Log($"EnemyController Update diff = {diff}");
+                    Debug.Log($"EnemyController Update newAngle = {newAngle}");
+#endif
+                    var tmpDelta = mTargetBodyAngle - newAngle;
+
+#if UNITY_EDITOR
+                    Debug.Log($"EnemyController Update mBodyAngleDelta = {mBodyAngleDelta}");
+                    Debug.Log($"EnemyController Update tmpDelta = {tmpDelta}");
 #endif
 
-                    if (Math.Abs(mTargetRotateAngle) <= diff)
+                    var tmpAbsDelta = Math.Abs(tmpDelta);
+
+#if UNITY_EDITOR
+                    Debug.Log($"EnemyController Update tmpAbsDelta = {tmpAbsDelta}");
+#endif
+
+                    if (tmpAbsDelta >= mAbsBodyAngleDelta)
+                    {
+#if UNITY_EDITOR
+                        Debug.Log("EnemyController Update tmpAbsDelta >= mAbsBodyAngleDelta");
+#endif
+                        transform.rotation = Quaternion.Euler(0, mBodyAngleDelta, 0) * transform.rotation;
+                        mCurrentBodyAngle = newAngle;
+                    }
+                    else
+                    {
+#if UNITY_EDITOR
+                        Debug.Log("EnemyController Update tmpAbsDelta < mAbsBodyAngleDelta");
+#endif
+                        transform.rotation = Quaternion.Euler(0, tmpDelta, 0) * transform.rotation;
+                        mCurrentBodyAngle = mTargetBodyAngle;
+
+                        mNeedBodyChanges = false;
+                    }
+
+#if UNITY_EDITOR
+                    Debug.Log($"EnemyController Update mCurrentBodyAngle = {mCurrentBodyAngle}");
+                    Debug.Log($"EnemyController Update mNeedBodyChanges = {mNeedBodyChanges}");
+#endif
+
+                    if(!mNeedBodyChanges)
                     {
                         ApplyAchieveDestinationOfMoving();
                     }
@@ -1040,7 +1086,30 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         switch (headState)
         {
             case HumanoidHeadState.Rotate:
-                
+                if(mNeedHeadChanges)
+                {
+                    var newAngle = mCurrentHeadAngle + mHeadAngleDelta;
+                    var tmpAbsDelta = Math.Abs(mTargetHeadAngle - newAngle);
+                    if (tmpAbsDelta >= mAbsHeadAngleDelta)
+                    {
+                        mCurrentHeadAngle = newAngle;
+                    }
+                    else
+                    {
+                        mCurrentHeadAngle = mTargetHeadAngle;
+
+                        mNeedHeadChanges = false;
+                    }
+
+                    var radAngle = mCurrentHeadAngle * Mathf.Deg2Rad;
+                    var x = Mathf.Sin(radAngle);
+                    var y = Mathf.Cos(radAngle);
+                    var localDirection = new Vector3(x, 0f, y);
+                    var globalDirection = transform.TransformDirection(localDirection);
+                    var oldY = Head.position.y;
+                    var newPosition = globalDirection + transform.position;
+                    mCurrentHeadPosition = new Vector3(newPosition.x, oldY, newPosition.z);
+                }
                 break;
         }
     }
@@ -1060,25 +1129,160 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                 break;
 
             case HumanoidHeadState.LookAt:
+            case HumanoidHeadState.Rotate:
                 mAnimator.SetLookAtWeight(1);
                 mAnimator.SetLookAtPosition(mCurrentHeadPosition);
                 Head.LookAt(mCurrentHeadPosition);
                 break;
-
-            case HumanoidHeadState.Rotate:
-                //var radAngle = mTargetHeadRotateAngle * Mathf.Deg2Rad;
-                //var x = Mathf.Sin(radAngle);
-                //var y = Mathf.Cos(radAngle);
-                //var localDirection = new Vector3(x, 0f, y);
-                //var globalDirection = transform.TransformDirection(localDirection);
-                //mCurrentHeadPosition = globalDirection * 20;
-                mAnimator.SetLookAtWeight(1);
-                mAnimator.SetLookAtPosition(mCurrentHeadPosition);
-                //Head.LookAt(mCurrentHeadPosition);
-                //var Offset = new Vector3(0, 1.6f, 0);
-                //var pos = transform.position + Offset;
-                //Debug.DrawRay(pos, mCurrentHeadPosition, Color.green);
-                break;
         }
     }
 }
+
+/*
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //var tmpVar = new TmpClass();
+            //tmpVar.DynamicData.Color = "red";
+            //tmpVar.DynamicData.State = "Filed";
+
+            //NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpVar.DynamicData.Color = {tmpVar.DynamicData.Color}");
+            //NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpVar.DynamicData.State = {tmpVar.DynamicData.State}");
+
+            //var dynamicDict = tmpVar.DynamicData as IDictionary<string, object>;
+
+            //foreach (var item in dynamicDict)
+            //{
+            //    NLog.LogManager.GetCurrentClassLogger().Info($"Main item.Value = {item.Value} item.Key = {item.Key}");
+            //}
+
+            //try
+            //{
+            //    Console.WriteLine("Input target PID:");
+            //    var targetPIDStr = Console.ReadLine();
+
+            //    NLog.LogManager.GetCurrentClassLogger().Info($"Main targetPIDStr = '{targetPIDStr}'");
+            //    var targetPID = int.Parse(targetPIDStr);
+            //    NLog.LogManager.GetCurrentClassLogger().Info($"Main targetPID = {targetPID}");
+            //    var killedProcess = Process.GetProcessById(targetPID);
+            //    killedProcess.Kill();
+            //}
+            //catch(Exception e)
+            //{
+            //    NLog.LogManager.GetCurrentClassLogger().Info($"Main e = {e}");
+            //}
+
+            TSTRotate(15f);
+            NLog.LogManager.GetCurrentClassLogger().Info("Main-------------------------------");
+            TSTRotate(-12f);
+            NLog.LogManager.GetCurrentClassLogger().Info("Main-------------------------------");
+            TSTRotate(6f);
+        }
+
+        private static float mCurrentAngle = 0f;
+        private static float mAngleSpeed = 2f;
+        private static float mTargetAngle;
+        private static float mAngleDelta;
+        private static float mAbsAngleDelta;
+
+        private static bool mNeedStopChanges;
+
+        private static void TSTRotate(float targetAngle)
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTRotate");
+
+            if(targetAngle == mCurrentAngle)
+            {
+                return;
+            }
+
+            mTargetAngle = targetAngle;
+            mNeedStopChanges = false;
+
+            InitRotate();
+
+            if(mNeedStopChanges)
+            {
+                return;
+            }
+
+            var n = 0;
+
+            while(true)
+            {
+                Update();
+
+                if(mNeedStopChanges)
+                {
+                    break;
+                }
+
+                n++;
+
+                if(n == 100)
+                {
+                    break;
+                }
+            }
+
+            NLog.LogManager.GetCurrentClassLogger().Info("End TSTRotate");
+        }
+
+        private static void InitRotate()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Begin InitRotate");
+            NLog.LogManager.GetCurrentClassLogger().Info($"InitRotate mCurrentAngle = {mCurrentAngle}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"InitRotate mAngleSpeed = {mAngleSpeed}");
+
+            if(mTargetAngle > mCurrentAngle)
+            {
+                mAngleDelta = mAngleSpeed;
+            }
+            else
+            {
+                mAngleDelta = -1 * mAngleSpeed;
+            }
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"InitRotate mAngleDelta = {mAngleDelta}");
+
+            mAbsAngleDelta = Math.Abs(mAngleDelta);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"InitRotate mAbsAngleDelta = {mAbsAngleDelta}");
+
+            NLog.LogManager.GetCurrentClassLogger().Info("End InitRotate");
+        }
+
+        private static void Update()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Begin Update");
+            NLog.LogManager.GetCurrentClassLogger().Info($"Update before mCurrentAngle = {mCurrentAngle}");
+
+            var newAngle = mCurrentAngle + mAngleDelta;
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"Update newAngle = {newAngle}");
+
+            var tmpAbsDelta = Math.Abs(mTargetAngle - newAngle);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"Update tmpAbsDelta = {tmpAbsDelta}");
+
+            if(tmpAbsDelta >= mAbsAngleDelta)
+            {
+                mCurrentAngle = newAngle;
+            }
+            else
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info("Update tmpAbsDelta < mAbsAngleDelta");
+
+                mCurrentAngle = mTargetAngle;
+
+                mNeedStopChanges = true;
+            }
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"Update after mCurrentAngle = {mCurrentAngle}");
+            NLog.LogManager.GetCurrentClassLogger().Info("End Update");
+        }
+    }
+
+ 
+*/
