@@ -18,7 +18,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TstRootProcess OnRun Status = {Status}");
+            //Debug.Log($"Begin TstRootProcess OnRun Status = {Status}");
 #endif
             BaseNPCProcess tmpChildProcess = new TstInspectingProcess(Context);
             mChildProcesses.Add(tmpChildProcess);
@@ -31,7 +31,7 @@ namespace Assets.Scripts
             WaitProsesses(mChildProcesses);
 
 #if UNITY_EDITOR
-            Debug.Log("End TstRootProcess OnRun");
+            //Debug.Log("End TstRootProcess OnRun");
 #endif
         }
 
@@ -53,7 +53,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TstInspectingProcess OnRun");
+            //Debug.Log("Begin TstInspectingProcess OnRun");
 #endif
 
             while(InfinityCycleCondition)
@@ -71,18 +71,18 @@ namespace Assets.Scripts
                 }
 
 #if UNITY_EDITOR
-                Debug.Log($"TstInspectingProcess OnRun items.Count = {items.Count}");
+                //Debug.Log($"TstInspectingProcess OnRun items.Count = {items.Count}");
 #endif
 
                 var tmpItemsWithGameObjectsList = items.Where(p => p.GameObject != null).ToList();
 
 #if UNITY_EDITOR
-                Debug.Log($"TstInspectingProcess OnRun tmpItemsWithGameObjectsList.Count = {tmpItemsWithGameObjectsList.Count}");
+                //Debug.Log($"TstInspectingProcess OnRun tmpItemsWithGameObjectsList.Count = {tmpItemsWithGameObjectsList.Count}");
                 foreach(var item in tmpItemsWithGameObjectsList)
                 {
                     var gameObject = item.GameObject;
 
-                    Debug.Log($"TstInspectingProcess OnRun gameObject.Name = {gameObject.Name}");
+                    //Debug.Log($"TstInspectingProcess OnRun gameObject.Name = {gameObject.Name}");
 
                     if(gameObject.Name == "TrafficBarrierRed")
                     {
@@ -99,7 +99,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("End TstInspectingProcess OnRun");
+            //Debug.Log("End TstInspectingProcess OnRun");
 #endif
         }
     }
@@ -110,7 +110,7 @@ namespace Assets.Scripts
             : base(context)
         {
             var tmpTimerInterval = new TimeSpan(0, 0, 1);
-            mTimer = new Timer(TimerCallback, null, tmpTimerInterval, tmpTimerInterval);
+            //mTimer = new Timer(TimerCallback, null, tmpTimerInterval, tmpTimerInterval);
         }
 
         private Timer mTimer;
@@ -120,7 +120,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TstGoToEnemyBaseProcess OnRun");
+            //Debug.Log("Begin TstGoToEnemyBaseProcess OnRun");
 #endif
 
             var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
@@ -132,19 +132,19 @@ namespace Assets.Scripts
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
-                Debug.Log($"TstGoToEnemyBaseProcess OnRun moveCommand = {moveCommand}");
+                //Debug.Log($"TstGoToEnemyBaseProcess OnRun moveCommand = {moveCommand}");
 #endif
                 var tmpTask = Execute(moveCommand);
                 mTmpTask = tmpTask;
 #if UNITY_EDITOR
-                Debug.Log($"TstGoToEnemyBaseProcess OnRun tmpTask = {tmpTask}");
+                //Debug.Log($"TstGoToEnemyBaseProcess OnRun tmpTask = {tmpTask}");
 #endif
 
                 WaitNPCMeshTask(tmpTask);
             }
 
 #if UNITY_EDITOR
-            Debug.Log("End TstGoToEnemyBaseProcess OnRun");
+            //Debug.Log("End TstGoToEnemyBaseProcess OnRun");
 #endif
         }
 
@@ -156,13 +156,13 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log($"TstGoToEnemyBaseProcess TimerCallback mTmpTask = {mTmpTask} Status = {Status}");
+            //Debug.Log($"TstGoToEnemyBaseProcess TimerCallback mTmpTask = {mTmpTask} Status = {Status}");
 #endif          
         }
 
         protected override void OnDispose()
         {
-            mTimer.Dispose();
+            mTimer?.Dispose();
         }
     }
 
@@ -176,7 +176,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TstRunAwayProcess OnRun");
+            //Debug.Log("Begin TstRunAwayProcess OnRun");
 #endif
 
             var targetName = "Cube_1";
@@ -184,14 +184,14 @@ namespace Assets.Scripts
             GoToTargetWayPoint(targetName);
 
 #if UNITY_EDITOR
-            Debug.Log("End TstRunAwayProcess OnRun");
+            //Debug.Log("End TstRunAwayProcess OnRun");
 #endif
         }
 
         private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TstRunAwayProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
+            //Debug.Log($"TstRunAwayProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
 #endif
 
             var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
@@ -203,12 +203,12 @@ namespace Assets.Scripts
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
-                Debug.Log($"TstRunAwayProcess GoToTargetWayPoint moveCommand = {moveCommand}");
+                //Debug.Log($"TstRunAwayProcess GoToTargetWayPoint moveCommand = {moveCommand}");
 #endif
                 var tmpTask = Execute(moveCommand);
                 //mTmpTask = tmpTask;
 #if UNITY_EDITOR
-                Debug.Log($"TstRunAwayProcess GoToTargetWayPoint tmpTask = {tmpTask}");
+                //Debug.Log($"TstRunAwayProcess GoToTargetWayPoint tmpTask = {tmpTask}");
 #endif
 
                 if (withWaiting)
@@ -218,7 +218,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("End TstRunAwayProcess GoToTargetWayPoint");
+            //Debug.Log("End TstRunAwayProcess GoToTargetWayPoint");
 #endif
         }
     }
@@ -229,7 +229,7 @@ namespace Assets.Scripts
             : base(context)
         {
             var tmpTimerInterval = new TimeSpan(0, 0, 1);
-            mTimer = new Timer(TimerCallback, null, tmpTimerInterval, tmpTimerInterval);
+            //mTimer = new Timer(TimerCallback, null, tmpTimerInterval, tmpTimerInterval);
         }
 
         private Timer mTimer;
@@ -239,7 +239,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TstRunAtOurBaseProcess OnRun");
+            //Debug.Log("Begin TstRunAtOurBaseProcess OnRun");
 #endif
 
             for(var n = 1; n <= 3; n++)
@@ -247,13 +247,13 @@ namespace Assets.Scripts
                 var targetName = $"Cube_{n}";
 
 #if UNITY_EDITOR
-                Debug.Log($"TstRunAtOurBaseProcess OnRun targetName = {targetName}");
+                //Debug.Log($"TstRunAtOurBaseProcess OnRun targetName = {targetName}");
 #endif
 
                 GoToTargetWayPoint(targetName);
 
 #if UNITY_EDITOR
-                Debug.Log($"TstRunAtOurBaseProcess OnRun goal '{targetName}' had achieved!!!!");
+                //Debug.Log($"TstRunAtOurBaseProcess OnRun goal '{targetName}' had achieved!!!!");
 #endif
             }
 
@@ -269,14 +269,14 @@ namespace Assets.Scripts
             //"Cube_1"
 
 #if UNITY_EDITOR
-            Debug.Log("End TstRunAtOurBaseProcess OnRun");
+            //Debug.Log("End TstRunAtOurBaseProcess OnRun");
 #endif
         }
 
         private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TstRunAtOurBaseProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
+            //Debug.Log($"TstRunAtOurBaseProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
 #endif
 
             var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
@@ -288,12 +288,12 @@ namespace Assets.Scripts
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
-                Debug.Log($"TstRunAtOurBaseProcess GoToTargetWayPoint moveCommand = {moveCommand}");
+                //Debug.Log($"TstRunAtOurBaseProcess GoToTargetWayPoint moveCommand = {moveCommand}");
 #endif
                 var tmpTask = Execute(moveCommand);
                 mTmpTask = tmpTask;
 #if UNITY_EDITOR
-                Debug.Log($"TstRunAtOurBaseProcess GoToTargetWayPoint tmpTask = {tmpTask}");
+                //Debug.Log($"TstRunAtOurBaseProcess GoToTargetWayPoint tmpTask = {tmpTask}");
 #endif
 
                 if(withWaiting)
@@ -303,7 +303,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("End TstRunAtOurBaseProcess GoToTargetWayPoint");
+            //Debug.Log("End TstRunAtOurBaseProcess GoToTargetWayPoint");
 #endif
         }
 
@@ -315,13 +315,13 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log($"TstRunAtOurBaseProcess TimerCallback mTmpTask = {mTmpTask} Status = {Status}");
+            //Debug.Log($"TstRunAtOurBaseProcess TimerCallback mTmpTask = {mTmpTask} Status = {Status}");
 #endif          
         }
 
         protected override void OnDispose()
         {
-            mTimer.Dispose();
+            mTimer?.Dispose();
         }
     }
 
@@ -335,7 +335,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TstSimpleAimProcess OnRun");
+            //Debug.Log("Begin TstSimpleAimProcess OnRun");
 #endif
 
             var tmpCommand = new HumanoidHandsActionStateCommand();
@@ -344,14 +344,14 @@ namespace Assets.Scripts
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            Debug.Log("End TstSimpleAimProcess OnRun");
+            //Debug.Log("End TstSimpleAimProcess OnRun");
 #endif
         }
 
         private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TstRunAwayProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
+            //Debug.Log($"TstRunAwayProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
 #endif
 
             var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
@@ -363,12 +363,12 @@ namespace Assets.Scripts
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
-                Debug.Log($"TstRunAwayProcess GoToTargetWayPoint moveCommand = {moveCommand}");
+                //Debug.Log($"TstRunAwayProcess GoToTargetWayPoint moveCommand = {moveCommand}");
 #endif
                 var tmpTask = Execute(moveCommand);
                 //mTmpTask = tmpTask;
 #if UNITY_EDITOR
-                Debug.Log($"TstRunAwayProcess GoToTargetWayPoint tmpTask = {tmpTask}");
+                //Debug.Log($"TstRunAwayProcess GoToTargetWayPoint tmpTask = {tmpTask}");
 #endif
 
                 if (withWaiting)
@@ -378,7 +378,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("End TstRunAwayProcess GoToTargetWayPoint");
+            //Debug.Log("End TstRunAwayProcess GoToTargetWayPoint");
 #endif
         }
     }
@@ -396,7 +396,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TSTFireToEthanProcess OnRun mTargetPosition = {mTargetPosition}");
+            //Debug.Log($"Begin TSTFireToEthanProcess OnRun mTargetPosition = {mTargetPosition}");
 #endif
 
             var tmpCommand = new HumanoidHStateCommand();
@@ -408,7 +408,7 @@ namespace Assets.Scripts
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            Debug.Log("End TSTFireToEthanProcess OnRun");
+            //Debug.Log("End TSTFireToEthanProcess OnRun");
 #endif
         }
     }
@@ -426,7 +426,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TSTRotateProcess OnRun mAngle = {mAngle}");
+            //Debug.Log($"Begin TSTRotateProcess OnRun mAngle = {mAngle}");
 #endif
 
             var tmpCommand = new HumanoidHStateCommand();
@@ -438,7 +438,7 @@ namespace Assets.Scripts
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            Debug.Log("End TSTFireToEthanProcess OnRun");
+            //Debug.Log("End TSTFireToEthanProcess OnRun");
 #endif
         }
     }
@@ -456,13 +456,13 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TSTRotateHeadProcess OnRun mAngle = {mAngle}");
+            //Debug.Log($"Begin TSTRotateHeadProcess OnRun mAngle = {mAngle}");
 #endif
             var nameOfThisWaypoint = "Cube_1";
             var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
 
 #if UNITY_EDITOR
-            Debug.Log($"Begin TSTRotateHeadProcess OnRun targetWayPoint.Position = {targetWayPoint.Position}");
+            //Debug.Log($"Begin TSTRotateHeadProcess OnRun targetWayPoint.Position = {targetWayPoint.Position}");
 #endif
 
             var tmpCommand = new HumanoidHeadStateCommand();
@@ -476,7 +476,7 @@ namespace Assets.Scripts
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            Debug.Log("End TSTRotateHeadProcess OnRun");
+            //Debug.Log("End TSTRotateHeadProcess OnRun");
 #endif
         }
     }
@@ -491,14 +491,14 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TSTHeadToForvardProcess OnRun");
+            //Debug.Log("Begin TSTHeadToForvardProcess OnRun");
 #endif
             var tmpCommand = new HumanoidHeadStateCommand();
             tmpCommand.State = HumanoidHeadState.LookingForward;
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            Debug.Log("End TSTHeadToForvardProcess OnRun");
+            //Debug.Log("End TSTHeadToForvardProcess OnRun");
 #endif
         }
     }
@@ -513,7 +513,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TSTMoveProcess OnRun");
+            //Debug.Log("Begin TSTMoveProcess OnRun");
 #endif
 
             var tmpCommand = new HumanoidHStateCommand();
@@ -522,7 +522,7 @@ namespace Assets.Scripts
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            Debug.Log("End TSTMoveProcess OnRun");
+            //Debug.Log("End TSTMoveProcess OnRun");
 #endif
         }
     }

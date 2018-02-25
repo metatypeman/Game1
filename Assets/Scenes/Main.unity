@@ -2544,7 +2544,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Head: {fileID: 1679634769}
-  DefaultAngleSpeed: 0.5
+  DefaultBodyAngleSpeed: 0.5
+  DefaultHeadAngleSpeed: 0.5
 --- !u!114 &656795668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2561,6 +2562,7 @@ MonoBehaviour:
   setTargetOn: {fileID: 0}
   Head: {fileID: 1679634769}
   mAnim: {fileID: 0}
+  GunEnd: {fileID: 995142507}
   isIkActive: 0
 --- !u!114 &656795669
 MonoBehaviour:
@@ -2810,7 +2812,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Head: {fileID: 0}
-  DefaultAngleSpeed: 0.5
+  DefaultBodyAngleSpeed: 0.5
+  DefaultHeadAngleSpeed: 0.5
 --- !u!114 &719648040
 MonoBehaviour:
   m_ObjectHideFlags: 0

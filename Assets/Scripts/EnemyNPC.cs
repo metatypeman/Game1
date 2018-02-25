@@ -24,6 +24,8 @@ public class EnemyNPC : MonoBehaviour
     public Transform Head;
     public Animator mAnim;
 
+    public Transform GunEnd;
+
     // Use this for initialization
     void Start()
     {
@@ -51,6 +53,8 @@ public class EnemyNPC : MonoBehaviour
         mInputKeyHelper.AddListener(KeyCode.P, OnPPressAction);
         mInputKeyHelper.AddListener(KeyCode.U, OnUPressAction);
         mInputKeyHelper.AddListener(KeyCode.M, OnMPressAction);
+        mInputKeyHelper.AddListener(KeyCode.B, OnBPressAction);
+        mInputKeyHelper.AddListener(KeyCode.J, OnJPressAction);
     }
 
     // Update is called once per frame
@@ -87,6 +91,56 @@ public class EnemyNPC : MonoBehaviour
         //        InitAngle = transform.rotation.eulerAngles.y;
         //    }
         //}
+    }
+
+    private void OnJPressAction(KeyCode key)
+    {
+        Debug.Log($"EnemyNPC OnJPressAction key = {key}");
+
+        Debug.Log($"EnemyNPC OnJPressAction GunEnd.forward = {GunEnd.forward}");
+        Debug.Log($"EnemyNPC OnJPressAction transform.forward = {transform.forward}");
+
+        var diff = Vector3.Angle(GunEnd.forward, transform.forward);
+
+        Debug.Log($"EnemyNPC OnJPressAction diff = {diff}");
+
+        var targetObj = GameObject.Find("Ethan");
+        var target = targetObj.transform;
+
+        var targetDir = target.position - GunEnd.position;
+        Debug.Log($"EnemyNPC OnBPressAction targetDir = {targetDir}");
+
+        var forward = GunEnd.forward;
+
+        var angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
+
+        Debug.Log($"EnemyNPC OnJPressAction angle = {angle}");
+
+        if(Mathf.Abs(angle) > 8)
+        {
+            transform.rotation = Quaternion.Euler(0, -1 * angle * 0.9f , 0) * transform.rotation;
+        }      
+    }
+
+    private void OnBPressAction(KeyCode key)
+    {
+        Debug.Log($"EnemyNPC OnBPressAction key = {key}");
+
+        Debug.Log($"EnemyNPC OnBPressAction GunEnd.forward = {GunEnd.forward}");
+        Debug.Log($"EnemyNPC OnBPressAction transform.forward = {transform.forward}");
+        Debug.Log($"EnemyNPC OnBPressAction Vector3.Angle(GunEnd.forward, transform.forward) = {Vector3.Angle(GunEnd.forward, transform.forward)}");
+
+        var targetObj = GameObject.Find("Ethan");
+        var target = targetObj.transform;
+
+        var targetDir = target.position - GunEnd.position;
+        Debug.Log($"EnemyNPC OnBPressAction targetDir = {targetDir}");
+
+        var forward = GunEnd.forward;
+
+        var angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
+
+        Debug.Log($"EnemyNPC OnBPressAction angle = {angle}");
     }
 
     private void OnMPressAction(KeyCode key)
