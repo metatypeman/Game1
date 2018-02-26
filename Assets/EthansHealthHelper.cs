@@ -15,20 +15,20 @@ public class EthansHealthHelper : MonoBehaviour, ITargetOfShoot
     }
 	
 	// Update is called once per frame
-	void Update () {
+	//void Update () {
 		
-	}
+	//}
 
     public void SetHit(RaycastHit shootHit, int damagePerShot)
     {
 #if UNITY_EDITOR
-        Debug.Log($"EthansHelthsHelper SetHit damagePerShot = {damagePerShot}");
+        //Debug.Log($"EthansHelthsHelper SetHit damagePerShot = {damagePerShot}");
 #endif
 
         Health -= damagePerShot;
 
 #if UNITY_EDITOR
-        Debug.Log($"EthansHelthsHelper SetHit Health = {Health}");
+        //Debug.Log($"EthansHelthsHelper SetHit Health = {Health}");
 #endif
 
         if(Health <= 0)

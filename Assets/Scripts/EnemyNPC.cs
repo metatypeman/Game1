@@ -32,6 +32,7 @@ public class EnemyNPC : MonoBehaviour
         mAnim = GetComponent<Animator>();
 
         mEnemyController = GetComponent<EnemyController>();
+        
 
         mEnemyRayScaner = GetComponent<EnemyRayScaner>();
 
@@ -39,6 +40,7 @@ public class EnemyNPC : MonoBehaviour
         mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
 
         _gun = GetComponentInChildren<PlayerShooting>();
+        mEnemyController.SetAimCorrector(_gun);
         _gun.UseDebugLine = true;
         //_gun.FireMode = FireMode.Single;
 

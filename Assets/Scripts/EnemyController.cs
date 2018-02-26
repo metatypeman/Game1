@@ -366,6 +366,7 @@ public interface IMoveHumanoidController
     StatesOfHumanoidController States { get; }
     event HumanoidStatesChangedAction OnHumanoidStatesChanged;
     void Die();
+    void SetAimCorrector(IAimCorrector corrector);
 }
 
 public class TargetStateOfHumanoidController : IObjectToString
@@ -633,6 +634,13 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
 
     private bool mUseIkAnimation;
 
+    private IAimCorrector mAimCorrector;
+
+    public void SetAimCorrector(IAimCorrector corrector)
+    {
+        mAimCorrector = corrector;
+    }
+
     // Use this for initialization
     void Start () {
         mStates = new StatesOfHumanoidController();
@@ -862,7 +870,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
     private void ApplyTargetState(StatesOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
-        Debug.Log($"EnemyController ApplyTargetState targetState = {targetState}");
+        //Debug.Log($"EnemyController ApplyTargetState targetState = {targetState}");
 #endif
 
         var targetBehaviourFlags = CreateBehaviourFlags(targetState);
@@ -926,7 +934,8 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                     if(mStates.TargetPosition.HasValue)
                     {
                         mNavMeshAgent.isStopped = true;
-                        transform.LookAt(mStates.TargetPosition.Value);
+                        var targetPosition = mStates.TargetPosition.Value;
+                        transform.LookAt(targetPosition);
                     }
                 }              
                 break;
@@ -939,6 +948,22 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                         var targetPositionValue = mStates.TargetPosition.Value;                    
                         var targetPos = new Vector3(targetPositionValue.x, 0, targetPositionValue.z);
                         transform.LookAt(targetPos);
+
+                        StartCoroutine(CorrectAim(targetPos));
+
+//                        if (mAimCorrector != null)
+//                        {
+//                            var correctingAngle = mAimCorrector.GetCorrectingAngle(targetPos);
+
+//#if UNITY_EDITOR
+//                            Debug.Log($"EnemyController ApplyInternalStates correctingAngle = {correctingAngle}");
+//#endif
+
+//                            if (Mathf.Abs(correctingAngle) > 8)
+//                            {
+//                                transform.rotation = Quaternion.Euler(0, -1 * correctingAngle * 0.8f, 0) * transform.rotation;
+//                            }
+//                        }
                     }
                 }
                 break;
@@ -1004,6 +1029,25 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                     mAbsHeadAngleDelta = Math.Abs(mHeadAngleDelta);
                 }
                 break;
+        }
+    }
+
+    private IEnumerator CorrectAim(Vector3 targetPos)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        if (mAimCorrector != null)
+        {
+            var correctingAngle = mAimCorrector.GetCorrectingAngle(targetPos);
+
+#if UNITY_EDITOR
+            //Debug.Log($"EnemyController ApplyInternalStates correctingAngle = {correctingAngle}");
+#endif
+
+            if (Mathf.Abs(correctingAngle) > 8)
+            {
+                transform.rotation = Quaternion.Euler(0, -1 * correctingAngle * 0.8f, 0) * transform.rotation;
+            }
         }
     }
 

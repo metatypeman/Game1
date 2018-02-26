@@ -150,7 +150,7 @@ namespace Assets.Scripts
         public NPCMeshTask Execute(IMoveHumanoidCommandsPackage package, int processId)
         {
 #if UNITY_EDITOR
-            Debug.Log($"NPCProcessesContext Execute package = {package} processId = {processId}");
+            //Debug.Log($"NPCProcessesContext Execute package = {package} processId = {processId}");
 #endif
             lock (mDisposeLockObj)
             {
@@ -166,7 +166,7 @@ namespace Assets.Scripts
         public NPCMeshTaskResulutionKind ApproveNPCMeshTaskExecute(NPCMeshTaskResulution existingsNPCMeshTaskResulution)
         {
 #if UNITY_EDITOR
-            Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingsNPCMeshTaskResulution = {existingsNPCMeshTaskResulution}");
+            //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingsNPCMeshTaskResulution = {existingsNPCMeshTaskResulution}");
 #endif
 
             var targetProcessId = existingsNPCMeshTaskResulution.TargetProcessId;
@@ -216,18 +216,18 @@ namespace Assets.Scripts
 
 
 #if UNITY_EDITOR
-            Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute targetPriority = {targetPriority}");
+            //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute targetPriority = {targetPriority}");
 #endif
             foreach (var existingProcessesId in tmpExistingProcessesIdList)
             {
 #if UNITY_EDITOR
-                Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingProcessesId = {existingProcessesId}");
+                //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingProcessesId = {existingProcessesId}");
 #endif
 
                 var currentProicessInfo = mChildProcessesList.FirstOrDefault(p => p.CurrentId == existingProcessesId);
 
 #if UNITY_EDITOR
-                Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute currentProicessInfo.GlobalPriority = {currentProicessInfo.GlobalPriority}");
+                //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute currentProicessInfo.GlobalPriority = {currentProicessInfo.GlobalPriority}");
 #endif
 
                 if (currentProicessInfo.GlobalPriority > targetPriority)
@@ -269,7 +269,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("NPCProcessesContext Dispose");
+            //Debug.Log("NPCProcessesContext Dispose");
 #endif
 
             mMeshController?.Dispose();

@@ -625,12 +625,12 @@ namespace Assets.Scripts
 
             Task.Run(() => {
 #if UNITY_EDITOR
-                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged Begin changedStates");
-                foreach (var changedState in changedStates)
-                {
-                    Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged changedState = {changedState}");
-                }
-                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged End changedStates");
+                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged Begin changedStates");
+                //foreach (var changedState in changedStates)
+                //{
+                //    Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged changedState = {changedState}");
+                //}
+                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged End changedStates");
 #endif
 
                 var displacedProcessesIdList = new List<int>();
@@ -671,14 +671,14 @@ namespace Assets.Scripts
                 displacedProcessesIdList = displacedProcessesIdList.Distinct().ToList();
 
 #if UNITY_EDITOR
-                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessesIdList.Count = {displacedProcessesIdList.Count}");
-                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
+                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessesIdList.Count = {displacedProcessesIdList.Count}");
+                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
 #endif
 
                 foreach (var displacedProcessId in displacedProcessesIdList)
                 {
 #if UNITY_EDITOR
-                    Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessId = {displacedProcessId}");
+                    //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessId = {displacedProcessId}");
 #endif
 
                     var targetTask = mTasksDict[displacedProcessId];
@@ -687,7 +687,7 @@ namespace Assets.Scripts
                 }
 
 #if UNITY_EDITOR
-                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
+                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
 #endif
             });
         }
@@ -710,19 +710,19 @@ namespace Assets.Scripts
             result.TaskId = mContext.GetNewTaskId();
 
 #if UNITY_EDITOR
-            Debug.Log($"NPCThreadSafeMeshController Execute package = {package} processId = {processId}");
+            //Debug.Log($"NPCThreadSafeMeshController Execute package = {package} processId = {processId}");
 #endif
 
             var targetState = CreateTargetState(package);
 
 #if UNITY_EDITOR
-            Debug.Log($"NPCThreadSafeMeshController Execute targetState = {targetState}");
+            //Debug.Log($"NPCThreadSafeMeshController Execute targetState = {targetState}");
 #endif
 
             var resolution = CreateResolution(mMoveHumanoidController.States, targetState, processId);
 
 #if UNITY_EDITOR
-            Debug.Log($"NPCThreadSafeMeshController Execute resolution = {resolution}");
+            //Debug.Log($"NPCThreadSafeMeshController Execute resolution = {resolution}");
 #endif
 
             var kindOfResolution = resolution.Kind;
@@ -739,7 +739,7 @@ namespace Assets.Scripts
                         var kindOfResolutionOfContext = mContext.ApproveNPCMeshTaskExecute(resolution);
 
 #if UNITY_EDITOR
-                        Debug.Log($"NPCThreadSafeMeshController Execute kindOfResolutionOfContext = {kindOfResolutionOfContext}");
+                        //Debug.Log($"NPCThreadSafeMeshController Execute kindOfResolutionOfContext = {kindOfResolutionOfContext}");
 #endif
 
                         switch (kindOfResolutionOfContext)
@@ -816,10 +816,10 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("NPCThreadSafeMeshController Execute hStateCommandsList.Count = " + hStateCommandsList.Count);
-            Debug.Log("NPCThreadSafeMeshController Execute vStateCommandsList.Count = " + vStateCommandsList.Count);
-            Debug.Log("NPCThreadSafeMeshController Execute handsStateCommandsList.Count = " + handsStateCommandsList.Count);
-            Debug.Log("NPCThreadSafeMeshController Execute handsActionStateCommandsList.Count = " + handsActionStateCommandsList.Count);
+            //Debug.Log("NPCThreadSafeMeshController Execute hStateCommandsList.Count = " + hStateCommandsList.Count);
+            //Debug.Log("NPCThreadSafeMeshController Execute vStateCommandsList.Count = " + vStateCommandsList.Count);
+            //Debug.Log("NPCThreadSafeMeshController Execute handsStateCommandsList.Count = " + handsStateCommandsList.Count);
+            //Debug.Log("NPCThreadSafeMeshController Execute handsActionStateCommandsList.Count = " + handsActionStateCommandsList.Count);
 #endif
 
             if (hStateCommandsList.Count > 0)
@@ -906,7 +906,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log($"NPCThreadSafeMeshController CreateTargetState result = {result}");
+            //Debug.Log($"NPCThreadSafeMeshController CreateTargetState result = {result}");
 #endif
 
             return result;
@@ -915,10 +915,10 @@ namespace Assets.Scripts
         private NPCMeshTaskResulution CreateResolution(StatesOfHumanoidController sourceState, TargetStateOfHumanoidController targetState, int processId)
         {
 #if UNITY_EDITOR
-            Debug.Log($"NPCThreadSafeMeshController CreateTargetState sourceState = {sourceState}");
-            Debug.Log($"NPCThreadSafeMeshController CreateTargetState targetState = {targetState}");
-            Debug.Log($"NPCThreadSafeMeshController CreateTargetState processId = {processId}");
-            DumpProcesses();
+            //Debug.Log($"NPCThreadSafeMeshController CreateTargetState sourceState = {sourceState}");
+            //Debug.Log($"NPCThreadSafeMeshController CreateTargetState targetState = {targetState}");
+            //Debug.Log($"NPCThreadSafeMeshController CreateTargetState processId = {processId}");
+            //DumpProcesses();
 #endif
 
             var result = new NPCMeshTaskResulution();
@@ -1117,8 +1117,8 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("NPCThreadSafeMeshController CreateTargetState NEXT");
-            Debug.Log("End NPCThreadSafeMeshController CreateTargetState");
+            //Debug.Log("NPCThreadSafeMeshController CreateTargetState NEXT");
+            //Debug.Log("End NPCThreadSafeMeshController CreateTargetState");
 #endif
             return result;
         }
@@ -1199,8 +1199,8 @@ namespace Assets.Scripts
         private void ProcessAllow(TargetStateOfHumanoidController targetState, int processId, NPCMeshTask npcMeshTask, NPCMeshTaskResulutionKind resolutionKind)
         {
 #if UNITY_EDITOR
-            Debug.Log($"NPCThreadSafeMeshController ProcessAllow targetState = {targetState}");
-            Debug.Log($"NPCThreadSafeMeshController ProcessAllow processId = {processId}");
+            //Debug.Log($"NPCThreadSafeMeshController ProcessAllow targetState = {targetState}");
+            //Debug.Log($"NPCThreadSafeMeshController ProcessAllow processId = {processId}");
 #endif
 
             RegProcessId(targetState, processId, npcMeshTask, resolutionKind);
@@ -1407,7 +1407,7 @@ namespace Assets.Scripts
                 foreach (var displacedProcessId in displacedProcessesIdList)
                 {
 #if UNITY_EDITOR
-                    Debug.Log($"NPCThreadSafeMeshController CreateTargetState displacedProcessId = {displacedProcessId}");
+                    //Debug.Log($"NPCThreadSafeMeshController CreateTargetState displacedProcessId = {displacedProcessId}");
 #endif
 
                     if(mHState.Contains(displacedProcessId))
@@ -1452,20 +1452,20 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
+            //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
 #endif
 
             mTasksDict[processId] = npcMeshTask;
 
 #if UNITY_EDITOR
-            Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
+            //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
 #endif
         }
 
         private void ProcessForbiden(NPCMeshTask npcMeshTask)
         {
 #if UNITY_EDITOR
-            Debug.Log($"NPCThreadSafeMeshController ProcessForbiden npcMeshTask = {npcMeshTask}");
+            //Debug.Log($"NPCThreadSafeMeshController ProcessForbiden npcMeshTask = {npcMeshTask}");
 #endif
 
             npcMeshTask.State = NPCMeshTaskState.CanceledByHost;
@@ -1492,7 +1492,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("NPCThreadSafeMeshController Dispose");
+            //Debug.Log("NPCThreadSafeMeshController Dispose");
 #endif
         }
     }

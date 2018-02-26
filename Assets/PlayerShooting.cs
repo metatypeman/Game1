@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
+public interface IAimCorrector
+{
+    float GetCorrectingAngle(Vector3 targetPos);
+}
+
 public interface ITargetOfShoot
 {
     void SetHit(RaycastHit shootHit, int damagePerShot);
@@ -29,7 +34,7 @@ public enum InternalStateOfRapidFireGun
     BeforeOffIfSingle
 }
 
-public interface IRapidFireGun
+public interface IRapidFireGun: IAimCorrector
 {
     bool UseDebugLine { get; set; }
     FireMode FireMode { get; set; }
@@ -288,5 +293,16 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
         {
             gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
         }
+    }
+
+    public float GetCorrectingAngle(Vector3 targetPos)
+    {
+        var targetDir = targetPos - transform.position;
+
+        var forward = transform.forward;
+
+        var angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
+
+        return angle;
     }
 }
