@@ -949,21 +949,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
                         var targetPos = new Vector3(targetPositionValue.x, 0, targetPositionValue.z);
                         transform.LookAt(targetPos);
 
-                        StartCoroutine(CorrectAim(targetPos));
-
-//                        if (mAimCorrector != null)
-//                        {
-//                            var correctingAngle = mAimCorrector.GetCorrectingAngle(targetPos);
-
-//#if UNITY_EDITOR
-//                            Debug.Log($"EnemyController ApplyInternalStates correctingAngle = {correctingAngle}");
-//#endif
-
-//                            if (Mathf.Abs(correctingAngle) > 8)
-//                            {
-//                                transform.rotation = Quaternion.Euler(0, -1 * correctingAngle * 0.8f, 0) * transform.rotation;
-//                            }
-//                        }
+                        if (mAimCorrector != null)
+                        {
+                            StartCoroutine(CorrectAim(targetPos));
+                        }
                     }
                 }
                 break;
@@ -1048,6 +1037,8 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
             {
                 transform.rotation = Quaternion.Euler(0, -1 * correctingAngle * 0.8f, 0) * transform.rotation;
             }
+
+            ApplyAchieveDestinationOfMoving();
         }
     }
 
@@ -1068,6 +1059,18 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController
         mStates.TargetPosition = null;
         ApplyCurrentStates();
         EmitOnHumanoidStatesChanged(HumanoidStateKind.HState, HumanoidStateKind.TargetPosition);
+    }
+
+    private void ApplyAchiveDestinationOfHead()
+    {
+        if(mStates.TargetHeadPosition.HasValue)
+        {
+            EmitOnHumanoidStatesChanged(HumanoidStateKind.HeadState, HumanoidStateKind.TargetHeadPosition);
+        }
+        else
+        {
+            EmitOnHumanoidStatesChanged(HumanoidStateKind.HeadState);
+        }  
     }
 
     // Update is called once per frame
