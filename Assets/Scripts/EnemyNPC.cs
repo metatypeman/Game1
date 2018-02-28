@@ -78,7 +78,7 @@ public class EnemyNPC : MonoBehaviour
 
         //render.enabled = false;
 
-        //mGunBody.SetActive(false);
+        mGunBody.SetActive(false);
 
         //Debug.Log($"EnemyNPC OnJPressAction GunEnd.forward = {GunEnd.forward}");
         //Debug.Log($"EnemyNPC OnJPressAction transform.forward = {transform.forward}");

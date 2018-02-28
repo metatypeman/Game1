@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ public enum InternalStateOfRapidFireGun
     BeforeOffIfSingle
 }
 
-public interface IRapidFireGun: IAimCorrector
+public interface IRapidFireGun: IAimCorrector, IHandThing
 {
     bool UseDebugLine { get; set; }
     FireMode FireMode { get; set; }
