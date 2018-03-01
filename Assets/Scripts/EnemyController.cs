@@ -477,7 +477,7 @@ public class StatesOfHumanoidController : IObjectToString
     public HumanoidHState HState = HumanoidHState.Stop;
     public Vector3? TargetPosition;
     public HumanoidVState VState = HumanoidVState.Ground;
-    public HumanoidHandsState HandsState = HumanoidHandsState.HasRifle;
+    public HumanoidHandsState HandsState = HumanoidHandsState.FreeHands;
     public HumanoidHandsActionState HandsActionState = HumanoidHandsActionState.Empty;
     public HumanoidHeadState HeadState = HumanoidHeadState.LookingForward;
     public Vector3? TargetHeadPosition;

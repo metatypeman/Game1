@@ -41,9 +41,13 @@ public class EnemyNPC : MonoBehaviour
         mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
 
         _gun = GetComponentInChildren<RapidFireGun>();
-        mEnemyController.SetAimCorrector(_gun);
-        _gun.UseDebugLine = true;
-        //_gun.FireMode = FireMode.Single;
+
+        if(_gun != null)
+        {
+            mEnemyController.SetAimCorrector(_gun);
+            _gun.UseDebugLine = true;
+            //_gun.FireMode = FireMode.Single;
+        }
 
         mInputKeyHelper = new InputKeyHelper();
         mInputKeyHelper.AddListener(KeyCode.F, OnFPressAction);
@@ -175,13 +179,19 @@ public class EnemyNPC : MonoBehaviour
     private void OnNPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnNPressAction key = {key}");
-        _gun.TurnState = TurnState.On;
+        if (_gun != null)
+        {
+            _gun.TurnState = TurnState.On;
+        }      
     }
 
     private void OnHPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnHPressAction key = {key}");
-        _gun.TurnState = TurnState.Off;
+        if (_gun != null)
+        {
+            _gun.TurnState = TurnState.Off;
+        }      
     }
 
     private void OnLPressAction(KeyCode key)
