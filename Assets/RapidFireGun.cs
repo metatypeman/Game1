@@ -57,9 +57,9 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
 
     #region Private Fields
     private Transform mGunEndTransform;
-    private ParticleSystem gunParticles;
-    private LineRenderer gunLine;                           
-    private AudioSource gunAudio;                           
+    private ParticleSystem mGunParticles;
+    private LineRenderer mGunLine;                           
+    private AudioSource mGunAudio;                           
     private Light mGunLight;
     private float timer;
     private Ray shootRay;
@@ -80,24 +80,47 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
 
             if(mUseDebugLine)
             {
-                if(gunLine != null)
+                if(mGunLine != null)
                 {
-                    gunLine.enabled = true;
+                    mGunLine.enabled = true;
                 }      
             }
             else
             {
-                gunLine.enabled = false;
+                mGunLine.enabled = false;
             }
         }
     }
 
     // Use this for initialization
     void Start () {
-        gunParticles = GetComponent<ParticleSystem>();
-        gunLine = GetComponent<LineRenderer>();
-        gunAudio = GetComponent<AudioSource>();
+        mGunParticles = GetComponent<ParticleSystem>();
+
+        if(mGunParticles == null)
+        {
+            mGunParticles = GetComponentInChildren<ParticleSystem>();
+        }
+
+        mGunLine = GetComponent<LineRenderer>();
+
+        if(mGunLine == null)
+        {
+            mGunLine = GetComponentInChildren<LineRenderer>();
+        }
+
+        mGunAudio = GetComponent<AudioSource>();
+
+        if(mGunAudio == null)
+        {
+            mGunAudio = GetComponentInChildren<AudioSource>();
+        }
+
         mGunLight = GetComponent<Light>();
+
+        if(mGunLight == null)
+        {
+            mGunLight = GetComponentInChildren<Light>();
+        }
 
         mGunEndTransform = GunEnd.transform;
     }
@@ -164,11 +187,11 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     void Update () {
         if(mUseDebugLine)
         {
-            gunLine.enabled = true;
-            gunLine.SetPosition(0, transform.position);
-            shootRay.origin = transform.position;
-            shootRay.direction = transform.forward;
-            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * Range);
+            mGunLine.enabled = true;
+            mGunLine.SetPosition(0, mGunEndTransform.position);
+            shootRay.origin = mGunEndTransform.position;
+            shootRay.direction = mGunEndTransform.forward;
+            mGunLine.SetPosition(1, shootRay.origin + shootRay.direction * Range);
         }
 
         var fireMode = FireMode;
@@ -259,7 +282,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         // Disable the line renderer and the light.
         if(!mUseDebugLine)
         {
-            gunLine.enabled = false;
+            mGunLine.enabled = false;
         }
        
         FaceLight.enabled = false;
@@ -268,21 +291,21 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
 
     public void Shoot()
     {
-        gunAudio.Play();
+        mGunAudio.Play();
 
         // Включаем всвет
         mGunLight.enabled = true;
         FaceLight.enabled = true;
 
-        gunParticles.Stop();
-        gunParticles.Play();
+        mGunParticles.Stop();
+        mGunParticles.Play();
 
         // Линия выстрела
-        gunLine.enabled = true;
-        gunLine.SetPosition(0, transform.position);
+        mGunLine.enabled = true;
+        mGunLine.SetPosition(0, mGunEndTransform.position);
         // Настройка луча
-        shootRay.origin = transform.position;
-        shootRay.direction = transform.forward;
+        shootRay.origin = mGunEndTransform.position;
+        shootRay.direction = mGunEndTransform.forward;
 
         if (Physics.Raycast(shootRay, out shootHit, Range))
         {
@@ -293,18 +316,18 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
                 targetOfShoot.SetHit(shootHit, DamagePerShot);
             }
             
-            gunLine.SetPosition(1, shootHit.point);
+            mGunLine.SetPosition(1, shootHit.point);
         }
         else
         {
-            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * Range);
+            mGunLine.SetPosition(1, shootRay.origin + shootRay.direction * Range);
         }
     }
 
     public float GetCorrectingAngle(Vector3 targetPos)
     {
-        var targetDir = targetPos - transform.position;
-        var forward = transform.forward;
+        var targetDir = targetPos - mGunEndTransform.position;
+        var forward = mGunEndTransform.forward;
         var angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
         return angle;
     }

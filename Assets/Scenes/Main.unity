@@ -4010,7 +4010,6 @@ GameObject:
   - component: {fileID: 995142512}
   - component: {fileID: 995142511}
   - component: {fileID: 995142510}
-  - component: {fileID: 995142509}
   - component: {fileID: 995142508}
   m_Layer: 0
   m_Name: GunBarrelEnd
@@ -4123,25 +4122,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &995142509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114281248963143534, guid: 07f2d63023de7be488145ee5a69236e5,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 995142506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b8e1de90a14294b8ce804c6aa34c34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Body: {fileID: 1378564044}
-  GunEnd: {fileID: 995142506}
-  FaceLight: {fileID: 450287138}
-  EffectsDisplayTime: 0.1
-  DamagePerShot: 20
-  TimeBetweenBullets: 0.1
-  Range: 100
 --- !u!82 &995142510
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4424,7 +4404,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1700540967
+  randomSeed: 1105618159
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -9327,6 +9307,7 @@ GameObject:
   - component: {fileID: 1378564045}
   - component: {fileID: 1378564047}
   - component: {fileID: 1378564046}
+  - component: {fileID: 1378564048}
   m_Layer: 0
   m_Name: M4A1 Sopmod
   m_TagString: Untagged
@@ -9381,6 +9362,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1378564048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1378564044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b8e1de90a14294b8ce804c6aa34c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Body: {fileID: 1378564044}
+  GunEnd: {fileID: 995142506}
+  FaceLight: {fileID: 450287138}
+  EffectsDisplayTime: 0.1
+  DamagePerShot: 20
+  TimeBetweenBullets: 0.1
+  Range: 100
 --- !u!1001 &1380885336
 Prefab:
   m_ObjectHideFlags: 0
