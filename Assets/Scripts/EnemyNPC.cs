@@ -17,7 +17,7 @@ public class EnemyNPC : MonoBehaviour
 
     private NPCProcessesContext mNPCProcessesContext;
 
-    PlayerShooting _gun;
+    RapidFireGun _gun;
 
     private InputKeyHelper mInputKeyHelper;
 
@@ -40,7 +40,7 @@ public class EnemyNPC : MonoBehaviour
         mNPCProcessesContext = new NPCProcessesContext(mEnemyController);
         mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
 
-        _gun = GetComponentInChildren<PlayerShooting>();
+        _gun = GetComponentInChildren<RapidFireGun>();
         mEnemyController.SetAimCorrector(_gun);
         _gun.UseDebugLine = true;
         //_gun.FireMode = FireMode.Single;

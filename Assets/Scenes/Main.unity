@@ -4136,10 +4136,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Body: {fileID: 1378564044}
-  faceLight: {fileID: 450287138}
-  damagePerShot: 20
-  timeBetweenBullets: 0.1
-  range: 100
+  GunEnd: {fileID: 995142506}
+  FaceLight: {fileID: 450287138}
+  EffectsDisplayTime: 0.1
+  DamagePerShot: 20
+  TimeBetweenBullets: 0.1
+  Range: 100
 --- !u!82 &995142510
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4422,7 +4424,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1084142187
+  randomSeed: -1700540967
   InitialModule:
     serializedVersion: 3
     enabled: 1

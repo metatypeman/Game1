@@ -43,26 +43,29 @@ public interface IRapidFireGun: IAimCorrector, IHandThing
     event Action OnFire;
 }
 
-public class PlayerShooting : MonoBehaviour, IRapidFireGun
+public class RapidFireGun : MonoBehaviour, IRapidFireGun
 {
+    #region Public Fields
     public GameObject Body;
+    public GameObject GunEnd;
+    public Light FaceLight;
+    public float EffectsDisplayTime = 0.1f;
+    public int DamagePerShot = 20;
+    public float TimeBetweenBullets = 0.1f;
+    public float Range = 100f;
+    #endregion
 
-    ParticleSystem gunParticles;
-    LineRenderer gunLine;                           
-    AudioSource gunAudio;                           
-    Light gunLight;
-    public Light faceLight;
-    float effectsDisplayTime = 0.1f;
-
-    float timer;
-    Ray shootRay;
-
-    public int damagePerShot = 20;                  
-    public float timeBetweenBullets = 0.1f;
-    public float range = 100f;
-    RaycastHit shootHit;
-
+    #region Private Fields
+    private Transform mGunEndTransform;
+    private ParticleSystem gunParticles;
+    private LineRenderer gunLine;                           
+    private AudioSource gunAudio;                           
+    private Light mGunLight;
+    private float timer;
+    private Ray shootRay;
+    private RaycastHit shootHit;
     private bool mUseDebugLine;
+#endregion
 
     public bool UseDebugLine
     {
@@ -94,7 +97,9 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
         gunParticles = GetComponent<ParticleSystem>();
         gunLine = GetComponent<LineRenderer>();
         gunAudio = GetComponent<AudioSource>();
-        gunLight = GetComponent<Light>();     
+        mGunLight = GetComponent<Light>();
+
+        mGunEndTransform = GunEnd.transform;
     }
 
     private object mFireModeLockObj = new object();
@@ -163,7 +168,7 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
             gunLine.SetPosition(0, transform.position);
             shootRay.origin = transform.position;
             shootRay.direction = transform.forward;
-            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * Range);
         }
 
         var fireMode = FireMode;
@@ -180,7 +185,7 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
 
                     case InternalStateOfRapidFireGun.TurnedOnShot:
                         timer += Time.deltaTime;
-                        if(timer >= effectsDisplayTime)
+                        if(timer >= EffectsDisplayTime)
                         {
                             ProcessEndShoot();
                         }
@@ -191,7 +196,7 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
                         {
                             case FireMode.Multiple:
                                 timer += Time.deltaTime;
-                                if (timer >= timeBetweenBullets)
+                                if (timer >= TimeBetweenBullets)
                                 {
                                     ProcessShoot();
                                 }
@@ -257,8 +262,8 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
             gunLine.enabled = false;
         }
        
-        faceLight.enabled = false;
-        gunLight.enabled = false;
+        FaceLight.enabled = false;
+        mGunLight.enabled = false;
     }
 
     public void Shoot()
@@ -266,8 +271,8 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
         gunAudio.Play();
 
         // Включаем всвет
-        gunLight.enabled = true;
-        faceLight.enabled = true;
+        mGunLight.enabled = true;
+        FaceLight.enabled = true;
 
         gunParticles.Stop();
         gunParticles.Play();
@@ -279,31 +284,28 @@ public class PlayerShooting : MonoBehaviour, IRapidFireGun
         shootRay.origin = transform.position;
         shootRay.direction = transform.forward;
 
-        if (Physics.Raycast(shootRay, out shootHit, range))
+        if (Physics.Raycast(shootRay, out shootHit, Range))
         {
             var targetOfShoot = shootHit.collider.GetComponentInParent<ITargetOfShoot>();
 
             if(targetOfShoot != null)
             {
-                targetOfShoot.SetHit(shootHit, damagePerShot);
+                targetOfShoot.SetHit(shootHit, DamagePerShot);
             }
             
             gunLine.SetPosition(1, shootHit.point);
         }
         else
         {
-            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
+            gunLine.SetPosition(1, shootRay.origin + shootRay.direction * Range);
         }
     }
 
     public float GetCorrectingAngle(Vector3 targetPos)
     {
         var targetDir = targetPos - transform.position;
-
         var forward = transform.forward;
-
         var angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
-
         return angle;
     }
 }
