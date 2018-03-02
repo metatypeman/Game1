@@ -9,21 +9,6 @@ using UnityEngine;
 using UnityEngine.AI;
 
 #region Common Types
-public static class StringHelper
-{
-    public static string Spaces(int n)
-    {
-        var sb = new StringBuilder();
-
-        for (var i = 0; i < n; i++)
-        {
-            sb.Append(" ");
-        }
-
-        return sb.ToString();
-    }
-}
-
 public enum HumanoidHState
 {
     Stop,
@@ -79,12 +64,6 @@ public enum HumanoidStateKind
     HandsActionState,
     HeadState,
     TargetHeadPosition
-}
-
-public interface IObjectToString
-{
-    string ToString(int n);
-    string PropertiesToSting(int n);
 }
 
 public interface IMoveHumanoidCommand: IObjectToString
@@ -601,7 +580,7 @@ public class BehaviourFlagsOfHumanoidController : IObjectToString
 }
 #endregion
 
-public class EnemyController : MonoBehaviour, IMoveHumanoidController
+public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
 {
     private Rigidbody mRigidbody;
     private Animator mAnimator;

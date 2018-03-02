@@ -311,6 +311,7 @@
     <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
+    <Compile Include="Assets\Scripts\BaseGameObjectLocator.cs" />
     <Compile Include="Assets\Scripts\BaseNPCProcess.cs" />
     <Compile Include="Assets\Scripts\EnemyController.cs" />
     <Compile Include="Assets\Scripts\EnemyIK.cs" />
@@ -321,11 +322,17 @@
     <Compile Include="Assets\Scripts\IHumanoid.cs" />
     <Compile Include="Assets\Scripts\InputKeyHelper.cs" />
     <Compile Include="Assets\Scripts\IObject.cs" />
+    <Compile Include="Assets\Scripts\IObjectToString.cs" />
     <Compile Include="Assets\Scripts\IThing.cs" />
+    <Compile Include="Assets\Scripts\LeftHandLocator.cs" />
+    <Compile Include="Assets\Scripts\LeftHandWPLocator.cs" />
     <Compile Include="Assets\Scripts\MyGameObject.cs" />
     <Compile Include="Assets\Scripts\NPCProcessesContext.cs" />
     <Compile Include="Assets\Scripts\NPCSimpleDI.cs" />
     <Compile Include="Assets\Scripts\NPCThreadSafeMeshController.cs" />
+    <Compile Include="Assets\Scripts\RightHandLocator.cs" />
+    <Compile Include="Assets\Scripts\RightHandWPLocator.cs" />
+    <Compile Include="Assets\Scripts\StringHelper.cs" />
     <Compile Include="Assets\Scripts\TerrainCamHelper.cs" />
     <Compile Include="Assets\Scripts\TstConcreteNPCProcesses.cs" />
     <Compile Include="Assets\Scripts\WaypointsBus.cs" />

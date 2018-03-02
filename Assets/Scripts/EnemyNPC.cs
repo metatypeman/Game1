@@ -113,6 +113,10 @@ public class EnemyNPC : MonoBehaviour
     {
         Debug.Log($"EnemyNPC OnBPressAction key = {key}");
 
+        var rightHandWPLocator = GetComponentInChildren<RightHandWPLocator>();
+
+        Debug.Log($"EnemyNPC OnBPressAction (rightHandWPLocator == null) = {rightHandWPLocator == null}");
+
         //Debug.Log($"EnemyNPC OnBPressAction GunEnd.forward = {GunEnd.forward}");
         //Debug.Log($"EnemyNPC OnBPressAction transform.forward = {transform.forward}");
         //Debug.Log($"EnemyNPC OnBPressAction Vector3.Angle(GunEnd.forward, transform.forward) = {Vector3.Angle(GunEnd.forward, transform.forward)}");
