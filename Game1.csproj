@@ -329,10 +329,12 @@
     <Compile Include="Assets\Scripts\HumanoidHandsStateCommand.cs" />
     <Compile Include="Assets\Scripts\HumanoidHeadStateCommand.cs" />
     <Compile Include="Assets\Scripts\HumanoidHStateCommand.cs" />
+    <Compile Include="Assets\Scripts\HumanoidThingsCommand.cs" />
     <Compile Include="Assets\Scripts\HumanoidVStateCommand.cs" />
     <Compile Include="Assets\Scripts\IHandThing.cs" />
     <Compile Include="Assets\Scripts\IHumanoid.cs" />
     <Compile Include="Assets\Scripts\IHumanoidHandsActionStateCommand.cs" />
+    <Compile Include="Assets\Scripts\IHumanoidThingsCommand.cs" />
     <Compile Include="Assets\Scripts\IHumanoidHandsStateCommand.cs" />
     <Compile Include="Assets\Scripts\IHumanoidHeadStateCommand.cs" />
     <Compile Include="Assets\Scripts\IHumanoidHStateCommand.cs" />

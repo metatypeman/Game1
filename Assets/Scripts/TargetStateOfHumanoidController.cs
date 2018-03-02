@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -15,6 +16,8 @@ namespace Assets.Scripts
         public HumanoidHandsActionState? HandsActionState { get; set; }
         public HumanoidHeadState? HeadState { get; set; }
         public Vector3? TargetHeadPosition { get; set; }
+        public KindOfHumanoidThingsCommand? KindOfThingsCommand { get; set; }
+        public int? InstanceOfThingId { get; set; }
 
         public override string ToString()
         {
@@ -103,6 +106,26 @@ namespace Assets.Scripts
             else
             {
                 sb.AppendLine($"{spaces}{nameof(TargetHeadPosition)} = null");
+            }
+
+            if(KindOfThingsCommand.HasValue)
+            {
+                var state = KindOfThingsCommand.Value;
+                sb.AppendLine($"{spaces}{nameof(KindOfThingsCommand)} = {state}");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}{nameof(KindOfThingsCommand)} = null");
+            }
+
+            if (InstanceOfThingId.HasValue)
+            {
+                var state = InstanceOfThingId.Value;
+                sb.AppendLine($"{spaces}{nameof(InstanceOfThingId)} = {state}");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}{nameof(InstanceOfThingId)} = null");
             }
 
             return sb.ToString();

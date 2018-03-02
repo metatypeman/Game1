@@ -176,7 +176,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         var newState = CreateTargetState(mStates, targetState);
 
 #if UNITY_EDITOR
-        //Debug.Log($"EnemyController Execute newState = {newState}");
+        Debug.Log($"EnemyController Execute newState = {newState}");
 #endif
 
         ApplyTargetState(newState);
@@ -219,6 +219,15 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
             {
                 result.TargetHeadPosition = targetState.TargetHeadPosition.Value;
             }       
+        }
+
+        if(targetState.KindOfThingsCommand.HasValue)
+        {
+            result.KindOfThingsCommand = targetState.KindOfThingsCommand.Value;
+            if(targetState.InstanceOfThingId.HasValue)
+            {
+                result.InstanceOfThingId = targetState.InstanceOfThingId.Value;
+            }
         }
 
         switch (result.HState)

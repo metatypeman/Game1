@@ -118,11 +118,18 @@ public class EnemyNPC : MonoBehaviour
         Debug.Log($"EnemyNPC OnBPressAction (targetGun == null) = {targetGun == null}");
         if(targetGun != null)
         {
-            mEnemyController.TstTakeRifle(targetGun);
+            var instanceId = targetGun.GetInstanceID();
 
-            _gun = targetGun;
-            mEnemyController.SetAimCorrector(_gun);
-            _gun.UseDebugLine = true;
+            Debug.Log($"EnemyNPC OnBPressAction instanceId = {instanceId}");
+
+            var tmpProcess = new TSTTakeFromSurfaceProcess(mNPCProcessesContext, instanceId);
+            tmpProcess.RunAsync();
+
+            //mEnemyController.TstTakeRifle(targetGun);
+
+            //_gun = targetGun;
+            //mEnemyController.SetAimCorrector(_gun);
+            //_gun.UseDebugLine = true;         
         }
         
         //var rightHandWPLocator = GetComponentInChildren<RightHandWPLocator>();

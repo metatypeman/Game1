@@ -12,7 +12,8 @@ namespace Assets.Scripts
         VState,
         HandsState,
         HandsActionState,
-        HeadState
+        HeadState,
+        Things
     }
 
     public interface IMoveHumanoidCommand : IObjectToString

@@ -113,13 +113,13 @@ namespace Assets.Scripts
             result.TaskId = mContext.GetNewTaskId();
 
 #if UNITY_EDITOR
-            //Debug.Log($"NPCThreadSafeMeshController Execute package = {package} processId = {processId}");
+            Debug.Log($"NPCThreadSafeMeshController Execute package = {package} processId = {processId}");
 #endif
 
             var targetState = CreateTargetState(package);
 
 #if UNITY_EDITOR
-            //Debug.Log($"NPCThreadSafeMeshController Execute targetState = {targetState}");
+            Debug.Log($"NPCThreadSafeMeshController Execute targetState = {targetState}");
 #endif
 
             var resolution = CreateResolution(mMoveHumanoidController.States, targetState, processId);
@@ -170,7 +170,7 @@ namespace Assets.Scripts
         private TargetStateOfHumanoidController CreateTargetState(IMoveHumanoidCommandsPackage package)
         {
 #if UNITY_EDITOR
-            //Debug.Log("NPCThreadSafeMeshController CreateTargetState package = " + package);
+            Debug.Log($"NPCThreadSafeMeshController CreateTargetState package = {package}");
 #endif
 
             var result = new TargetStateOfHumanoidController();
@@ -187,6 +187,7 @@ namespace Assets.Scripts
             var handsStateCommandsList = new List<IHumanoidHandsStateCommand>();
             var handsActionStateCommandsList = new List<IHumanoidHandsActionStateCommand>();
             var headStateCommandsList = new List<IHumanoidHeadStateCommand>();
+            var thingCommandsList = new List<IHumanoidThingsCommand>();
 
             foreach (var command in commandsList)
             {
@@ -214,15 +215,20 @@ namespace Assets.Scripts
                         headStateCommandsList.Add(command as IHumanoidHeadStateCommand);
                         break;
 
+                    case MoveHumanoidCommandKind.Things:
+                        thingCommandsList.Add(command as IHumanoidThingsCommand);
+                        break;
+
                     default: throw new ArgumentOutOfRangeException("kind", kind, null);
                 }
             }
 
 #if UNITY_EDITOR
-            //Debug.Log("NPCThreadSafeMeshController Execute hStateCommandsList.Count = " + hStateCommandsList.Count);
-            //Debug.Log("NPCThreadSafeMeshController Execute vStateCommandsList.Count = " + vStateCommandsList.Count);
-            //Debug.Log("NPCThreadSafeMeshController Execute handsStateCommandsList.Count = " + handsStateCommandsList.Count);
-            //Debug.Log("NPCThreadSafeMeshController Execute handsActionStateCommandsList.Count = " + handsActionStateCommandsList.Count);
+            Debug.Log($"NPCThreadSafeMeshController Execute hStateCommandsList.Count = {hStateCommandsList.Count}");
+            Debug.Log($"NPCThreadSafeMeshController Execute vStateCommandsList.Count = {vStateCommandsList.Count}");
+            Debug.Log($"NPCThreadSafeMeshController Execute handsStateCommandsList.Count = {handsStateCommandsList.Count}");
+            Debug.Log($"NPCThreadSafeMeshController Execute handsActionStateCommandsList.Count = {handsActionStateCommandsList.Count}");
+            Debug.Log($"NPCThreadSafeMeshController Execute thingCommandsList.Count = {thingCommandsList.Count}");
 #endif
 
             if (hStateCommandsList.Count > 0)
@@ -296,7 +302,19 @@ namespace Assets.Scripts
                 result.TargetHeadPosition = targetCommand.TargetPosition;
             }
 
-            if(result.HandsState.HasValue)
+            if(thingCommandsList.Count > 0)
+            {
+                var targetCommand = thingCommandsList.First();
+
+#if UNITY_EDITOR
+                Debug.Log($"NPCThreadSafeMeshController CreateTargetState targetCommand = {targetCommand}");
+#endif
+
+                result.KindOfThingsCommand = targetCommand.State;
+                result.InstanceOfThingId = targetCommand.InstanceId;
+            }
+
+            if (result.HandsState.HasValue)
             {
                 var targeHandsState = result.HandsState.Value;
 
@@ -309,7 +327,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            //Debug.Log($"NPCThreadSafeMeshController CreateTargetState result = {result}");
+            Debug.Log($"NPCThreadSafeMeshController CreateTargetState result = {result}");
 #endif
 
             return result;

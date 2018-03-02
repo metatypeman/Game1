@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -15,6 +16,8 @@ namespace Assets.Scripts
         public HumanoidHandsActionState HandsActionState = HumanoidHandsActionState.Empty;
         public HumanoidHeadState HeadState = HumanoidHeadState.LookingForward;
         public Vector3? TargetHeadPosition;
+        public KindOfHumanoidThingsCommand KindOfThingsCommand = KindOfHumanoidThingsCommand.Undefined;
+        public int InstanceOfThingId;
 
         public StatesOfHumanoidController Clone()
         {
@@ -26,6 +29,8 @@ namespace Assets.Scripts
             result.HandsActionState = HandsActionState;
             result.HeadState = HeadState;
             result.TargetHeadPosition = TargetHeadPosition;
+            result.KindOfThingsCommand = KindOfThingsCommand;
+            result.InstanceOfThingId = InstanceOfThingId;
             return result;
         }
 
@@ -38,6 +43,8 @@ namespace Assets.Scripts
             HandsActionState = source.HandsActionState;
             HeadState = source.HeadState;
             TargetHeadPosition = source.TargetHeadPosition;
+            KindOfThingsCommand = source.KindOfThingsCommand;
+            InstanceOfThingId = source.InstanceOfThingId;
         }
 
         public override string ToString()
@@ -85,6 +92,9 @@ namespace Assets.Scripts
             {
                 sb.AppendLine($"{spaces}{nameof(TargetHeadPosition)} = null");
             }
+
+            sb.AppendLine($"{spaces}{nameof(KindOfThingsCommand)} = {KindOfThingsCommand}");
+            sb.AppendLine($"{spaces}{nameof(InstanceOfThingId)} = {InstanceOfThingId}");
 
             return sb.ToString();
         }

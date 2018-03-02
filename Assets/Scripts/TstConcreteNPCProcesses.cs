@@ -526,4 +526,31 @@ namespace Assets.Scripts
 #endif
         }
     }
+
+    public class TSTTakeFromSurfaceProcess : BaseNPCProcess
+    {
+        public TSTTakeFromSurfaceProcess(NPCProcessesContext context, int instanceId)
+            : base(context)
+        {
+            mInstanceId = instanceId;
+        }
+
+        private int mInstanceId;
+
+        protected override void OnRun()
+        {
+#if UNITY_EDITOR
+            //Debug.Log("Begin TSTMoveProcess OnRun");
+#endif
+
+            var tmpCommand = new HumanoidThingsCommand();
+            tmpCommand.State = KindOfHumanoidThingsCommand.TakeFromSurface;
+            tmpCommand.InstanceId = mInstanceId;
+            var tmpTask = Execute(tmpCommand);
+
+#if UNITY_EDITOR
+            //Debug.Log("End TSTMoveProcess OnRun");
+#endif
+        }
+    }
 }
