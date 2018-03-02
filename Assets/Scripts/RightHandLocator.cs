@@ -1,6 +1,8 @@
-﻿namespace Assets.Scripts
+﻿using UnityEngine;
+
+namespace Assets.Scripts
 {
-    public class RightHandLocator: BaseGameObjectLocator
+    public class RightHandLocator: MonoBehaviour
     {
     }
 }

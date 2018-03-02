@@ -210,7 +210,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
         if (Physics.Raycast(pos, globalDirection, out hit, distance))
         {
 #if UNITY_EDITOR
-            Debug.DrawLine(pos, hit.point, Color.blue);
+            //Debug.DrawLine(pos, hit.point, Color.blue);
 #endif
             var visibleItem = new VisionItem();
             visibleItem.LocalDirection = localDirection;
@@ -222,7 +222,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 #if UNITY_EDITOR
         else
         {
-            Debug.DrawRay(pos, globalDirection * distance, Color.red);
+            //Debug.DrawRay(pos, globalDirection * distance, Color.red);
         }
 #endif
     }

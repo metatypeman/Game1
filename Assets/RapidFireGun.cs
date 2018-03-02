@@ -331,4 +331,24 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         var angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
         return angle;
     }
+
+    public bool SetToHandsOfHumanoid(IHumanoid humanoid)
+    {
+#if UNITY_EDITOR
+        Debug.Log("Begin RapidFireGun SetToHandsOfHumanoid");
+#endif
+
+        Body.transform.SetParent(humanoid.RightHandWP.transform, false);
+        //Body.transform.rotation = Quaternion.Euler(0, -180.234f, 0);
+        Body.transform.localRotation = Quaternion.Euler(0, -180.234f, 0);
+        //Body.transform.rotation = new Quaternion(0, -180.234f, 0, 1);
+        Body.transform.localPosition = new Vector3(0, 0, 0.2f);
+
+
+#if UNITY_EDITOR
+        Debug.Log("End RapidFireGun SetToHandsOfHumanoid");
+#endif
+
+        return true;
+    }
 }

@@ -113,9 +113,21 @@ public class EnemyNPC : MonoBehaviour
     {
         Debug.Log($"EnemyNPC OnBPressAction key = {key}");
 
-        var rightHandWPLocator = GetComponentInChildren<RightHandWPLocator>();
+        var targetGun = FindObjectOfType<RapidFireGun>();
 
-        Debug.Log($"EnemyNPC OnBPressAction (rightHandWPLocator == null) = {rightHandWPLocator == null}");
+        Debug.Log($"EnemyNPC OnBPressAction (targetGun == null) = {targetGun == null}");
+        if(targetGun != null)
+        {
+            mEnemyController.TstTakeRifle(targetGun);
+
+            _gun = targetGun;
+            mEnemyController.SetAimCorrector(_gun);
+            _gun.UseDebugLine = true;
+        }
+        
+        //var rightHandWPLocator = GetComponentInChildren<RightHandWPLocator>();
+
+        //Debug.Log($"EnemyNPC OnBPressAction (rightHandWPLocator == null) = {rightHandWPLocator == null}");
 
         //Debug.Log($"EnemyNPC OnBPressAction GunEnd.forward = {GunEnd.forward}");
         //Debug.Log($"EnemyNPC OnBPressAction transform.forward = {transform.forward}");

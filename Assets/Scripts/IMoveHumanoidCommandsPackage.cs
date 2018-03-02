@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public abstract class BaseGameObjectLocator : MonoBehaviour
+    public interface IMoveHumanoidCommandsPackage : IObjectToString
     {
-        public GameObject GameObject => gameObject;
+        List<IMoveHumanoidCommand> Commands { get; }
     }
 }

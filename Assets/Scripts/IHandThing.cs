@@ -8,5 +8,6 @@ namespace Assets.Scripts
 {
     public interface IHandThing: IThing
     {
+        bool SetToHandsOfHumanoid(IHumanoid humanoid);
     }
 }
