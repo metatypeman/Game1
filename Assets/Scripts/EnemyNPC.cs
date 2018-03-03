@@ -15,7 +15,7 @@ public class EnemyNPC : MonoBehaviour
     public float surfaceOffset = 1.5f;
     public GameObject setTargetOn;
 
-    private NPCProcessesContext mNPCProcessesContext;
+    private TstConcreteNPCProcessesContextWithBlackBoard mNPCProcessesContext;
 
     RapidFireGun _gun;
 
@@ -37,7 +37,7 @@ public class EnemyNPC : MonoBehaviour
 
         mEnemyRayScaner = GetComponent<EnemyRayScaner>();
 
-        mNPCProcessesContext = new NPCProcessesContext(mEnemyController);
+        mNPCProcessesContext = new TstConcreteNPCProcessesContextWithBlackBoard(mEnemyController);
         mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
 
         _gun = GetComponentInChildren<RapidFireGun>();

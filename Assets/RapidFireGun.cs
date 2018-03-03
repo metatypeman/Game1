@@ -5,44 +5,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public interface IAimCorrector
-{
-    float GetCorrectingAngle(Vector3 targetPos);
-}
-
-public interface ITargetOfShoot
-{
-    void SetHit(RaycastHit shootHit, int damagePerShot);
-}
-
-public enum FireMode
-{
-    Single,
-    Multiple
-}
-
-public enum TurnState
-{
-    On,
-    Off
-}
-
-public enum InternalStateOfRapidFireGun
-{
-    TurnedOf,
-    TurnedOnShot,
-    TurnedOnWasShot,
-    BeforeOffIfSingle
-}
-
-public interface IRapidFireGun: IAimCorrector, IHandThing
-{
-    bool UseDebugLine { get; set; }
-    FireMode FireMode { get; set; }
-    TurnState TurnState { get; set; }
-    event Action OnFire;
-}
-
 public class RapidFireGun : MonoBehaviour, IRapidFireGun
 {
     #region Public Fields
@@ -96,8 +58,6 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     void Start () {
         var gameInfo = MyGameObjectFactory.CreateByComponent(this);
         MyGameObjectsBus.RegisterObject(gameInfo);
-
-
 
         mGunParticles = GetComponent<ParticleSystem>();
 

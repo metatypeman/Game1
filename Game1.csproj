@@ -312,6 +312,7 @@
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
     <Compile Include="Assets\Scripts\BaseNPCProcess.cs" />
+    <Compile Include="Assets\Scripts\BaseNPCProcessWithBlackBoard.cs" />
     <Compile Include="Assets\Scripts\BehaviourFlagsOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\DisagreementByHandsActionStateInfo.cs" />
     <Compile Include="Assets\Scripts\DisagreementByHandsStateInfo.cs" />
@@ -346,6 +347,7 @@
     <Compile Include="Assets\Scripts\InputKeyHelper.cs" />
     <Compile Include="Assets\Scripts\IObject.cs" />
     <Compile Include="Assets\Scripts\IObjectToString.cs" />
+    <Compile Include="Assets\Scripts\IRapidFireGun.cs" />
     <Compile Include="Assets\Scripts\IThing.cs" />
     <Compile Include="Assets\Scripts\LeftHandLocator.cs" />
     <Compile Include="Assets\Scripts\LeftHandWPLocator.cs" />
@@ -355,15 +357,20 @@
     <Compile Include="Assets\Scripts\NPCMeshTask.cs" />
     <Compile Include="Assets\Scripts\NPCMeshTaskResulution.cs" />
     <Compile Include="Assets\Scripts\NPCProcessesContext.cs" />
+    <Compile Include="Assets\Scripts\NPCProcessesContextWithBlackBoard.cs" />
     <Compile Include="Assets\Scripts\NPCSimpleDI.cs" />
     <Compile Include="Assets\Scripts\NPCThreadSafeMeshController.cs" />
+    <Compile Include="Assets\Scripts\RapidFireGunProxy.cs" />
     <Compile Include="Assets\Scripts\RightHandLocator.cs" />
     <Compile Include="Assets\Scripts\RightHandWPLocator.cs" />
     <Compile Include="Assets\Scripts\StatesOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\StringHelper.cs" />
     <Compile Include="Assets\Scripts\TargetStateOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\TerrainCamHelper.cs" />
+    <Compile Include="Assets\Scripts\TstBaseConcreteNPCProcessWithBlackBoard.cs" />
+    <Compile Include="Assets\Scripts\TstBlackBoard.cs" />
     <Compile Include="Assets\Scripts\TstConcreteNPCProcesses.cs" />
+    <Compile Include="Assets\Scripts\TstConcreteNPCProcessesContextWithBlackBoard.cs" />
     <Compile Include="Assets\Scripts\WaypointsBus.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
   </ItemGroup>

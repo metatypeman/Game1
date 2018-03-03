@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class TstRootProcess: BaseNPCProcess
+    public class TstRootProcess: TstBaseConcreteNPCProcessWithBlackBoard
     {
         public TstRootProcess(NPCProcessesContext context)
             : base(context)
@@ -38,7 +38,7 @@ namespace Assets.Scripts
         private List<BaseNPCProcess> mChildProcesses = new List<BaseNPCProcess>();
     }
 
-    public class TstInspectingProcess : BaseNPCProcess
+    public class TstInspectingProcess : TstBaseConcreteNPCProcessWithBlackBoard
     {
         public TstInspectingProcess(NPCProcessesContext context)
             : base(context)
@@ -104,7 +104,7 @@ namespace Assets.Scripts
         }
     }
 
-    public class TstGoToEnemyBaseProcess : BaseNPCProcess
+    public class TstGoToEnemyBaseProcess : TstBaseConcreteNPCProcessWithBlackBoard
     {
         public TstGoToEnemyBaseProcess(NPCProcessesContext context)
             : base(context)
@@ -166,7 +166,7 @@ namespace Assets.Scripts
         }
     }
 
-    public class TstRunAwayProcess : BaseNPCProcess
+    public class TstRunAwayProcess : TstBaseConcreteNPCProcessWithBlackBoard
     {
         public TstRunAwayProcess(NPCProcessesContext context)
             : base(context)
@@ -223,7 +223,7 @@ namespace Assets.Scripts
         }
     }
 
-    public class TstRunAtOurBaseProcess: BaseNPCProcess
+    public class TstRunAtOurBaseProcess: TstBaseConcreteNPCProcessWithBlackBoard
     {
         public TstRunAtOurBaseProcess(NPCProcessesContext context)
             : base(context)
@@ -325,7 +325,7 @@ namespace Assets.Scripts
         }
     }
 
-    public class TstSimpleAimProcess : BaseNPCProcess
+    public class TstSimpleAimProcess : TstBaseConcreteNPCProcessWithBlackBoard
     {
         public TstSimpleAimProcess(NPCProcessesContext context)
             : base(context)
@@ -383,7 +383,7 @@ namespace Assets.Scripts
         }
     }
 
-    public class TSTFireToEthanProcess : BaseNPCProcess
+    public class TSTFireToEthanProcess : TstBaseConcreteNPCProcessWithBlackBoard
     {
         public TSTFireToEthanProcess(NPCProcessesContext context, Vector3 targetPosition)
             : base(context)
@@ -413,7 +413,7 @@ namespace Assets.Scripts
         }
     }
 
-    public class TSTRotateProcess : BaseNPCProcess
+    public class TSTRotateProcess : TstBaseConcreteNPCProcessWithBlackBoard
     {
         public TSTRotateProcess(NPCProcessesContext context, float angle)
             : base(context)
@@ -443,7 +443,7 @@ namespace Assets.Scripts
         }
     }
 
-    public class TSTRotateHeadProcess : BaseNPCProcess
+    public class TSTRotateHeadProcess : TstBaseConcreteNPCProcessWithBlackBoard
     {
         public TSTRotateHeadProcess(NPCProcessesContext context, float angle)
             : base(context)
@@ -481,7 +481,7 @@ namespace Assets.Scripts
         }
     }
 
-    public class TSTHeadToForvardProcess: BaseNPCProcess
+    public class TSTHeadToForvardProcess: TstBaseConcreteNPCProcessWithBlackBoard
     {
         public TSTHeadToForvardProcess(NPCProcessesContext context)
             : base(context)
@@ -503,7 +503,7 @@ namespace Assets.Scripts
         }
     }
 
-    public class TSTMoveProcess : BaseNPCProcess
+    public class TSTMoveProcess : TstBaseConcreteNPCProcessWithBlackBoard
     {
         public TSTMoveProcess(NPCProcessesContext context)
             : base(context)
@@ -527,7 +527,7 @@ namespace Assets.Scripts
         }
     }
 
-    public class TSTTakeFromSurfaceProcess : BaseNPCProcess
+    public class TSTTakeFromSurfaceProcess : TstBaseConcreteNPCProcessWithBlackBoard
     {
         public TSTTakeFromSurfaceProcess(NPCProcessesContext context, int instanceId)
             : base(context)
@@ -542,6 +542,8 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             //Debug.Log("Begin TSTMoveProcess OnRun");
 #endif
+
+            BlackBoard.Tst();
 
             var tmpCommand = new HumanoidThingsCommand();
             tmpCommand.State = KindOfHumanoidThingsCommand.Take;

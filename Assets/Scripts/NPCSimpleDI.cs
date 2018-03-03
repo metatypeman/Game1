@@ -13,16 +13,22 @@ namespace Assets.Scripts
 
         public void RegisterInstance<T>(object instance) where T : class
         {
-            if(instance == null)
+            RegisterInstance(instance, typeof(T));
+        }
+
+        public void RegisterInstance(object instance, params Type[] types)
+        {
+            if (instance == null)
             {
                 return;
             }
 
-            lock(mLockObj)
+            lock (mLockObj)
             {
-                var type = typeof(T);
-
-                mInstancesDict[type] = instance;
+                foreach(var type in types)
+                {
+                    mInstancesDict[type] = instance;
+                }
             }
         }
 

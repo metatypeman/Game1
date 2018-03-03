@@ -86,12 +86,18 @@ namespace Assets.Scripts
                     mContext.AddChild(this);
 
                     CurrentId = mContext.GetNewProcessId();
-
+                    
 #if UNITY_EDITOR
                     //Debug.Log($"BaseNPCProcess Context mCurrentId = {mCurrentId}");
 #endif
                 }
+
+                OnChangeContext();
             }
+        }
+
+        protected virtual void OnChangeContext()
+        {
         }
 
         private BaseNPCProcess mParentProcess;
