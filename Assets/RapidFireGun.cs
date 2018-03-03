@@ -29,6 +29,8 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     private bool mUseDebugLine;
     #endregion
 
+    public bool IsReady => true;
+
     public bool UseDebugLine
     {
         get
@@ -56,7 +58,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
 
     // Use this for initialization
     void Start () {
-        var gameInfo = MyGameObjectFactory.CreateByComponent(this);
+        var gameInfo = MyGameObjectFactory.CreateByComponent(this, typeof(IRapidFireGun));
         MyGameObjectsBus.RegisterObject(gameInfo);
 
         mGunParticles = GetComponent<ParticleSystem>();

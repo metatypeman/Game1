@@ -221,13 +221,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         {
             case KindOfHumanoidThingsCommand.Take:
                 {
-#if UNITY_EDITOR
-                    Debug.Log($"EnemyController ExecuteThingsCommand case KindOfHumanoidThingsCommand.Take Not implemented yet!!!!!!");
-#endif
-
                     thing.SetToHandsOfHumanoid(this);
                     mStates.HandsState = HumanoidHandsState.HasRifle;
                     ApplyCurrentStates();
+                    EmitOnHumanoidStatesChanged(HumanoidStateKind.ThingsCommand);
                 }
                 break;
 

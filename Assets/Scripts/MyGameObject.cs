@@ -37,14 +37,39 @@ namespace Assets.Scripts
 
     public static class MyGameObjectFactory
     {
-        public static MyGameObject CreateByComponent(Component component)
+        public static MyGameObject CreateByComponent(Component component, params Type[] targetComponents)
         {
+#if UNITY_EDITOR
+            Debug.Log($"MyGameObjectFactory CreateByComponent targetComponents.Length = {targetComponents.Length}");
+#endif
+
             var result = new MyGameObject();
             var tmpTransform = component.transform;
             result.InstanceID = component.GetInstanceID();
             result.GameObject = component.gameObject;
             result.Name = tmpTransform.name;
             result.Tag = tmpTransform.tag;
+            foreach(var targetComponentType in targetComponents)
+            {
+                var targetComponent = component.GetComponent(targetComponentType);
+
+                if(targetComponent == null)
+                {
+                    targetComponent = component.GetComponentInChildren(targetComponentType);
+                }
+
+                if(targetComponent == null)
+                {
+                    continue;
+                }
+
+#if UNITY_EDITOR
+                Debug.Log($"MyGameObjectFactory CreateByComponent (targetComponent == null) = {targetComponent == null}");
+                Debug.Log($"MyGameObjectFactory CreateByComponent targetComponentType.FullName = {targetComponentType.FullName}");
+#endif
+
+                result.RegisterInstance(targetComponent, targetComponentType);
+            }
             return result;
         }
     }
@@ -56,6 +81,26 @@ namespace Assets.Scripts
         public string Tag { get; set; }
         public dynamic DynamicData { get; set; } = new ExpandoObject();
         public GameObject GameObject { get; set; }
+        private NPCSimpleDI mSimpleDI = new NPCSimpleDI();
+        public void RegisterInstance<T>(object instance) where T : class
+        {
+            RegisterInstance(instance, typeof(T));
+        }
+
+        public void RegisterInstance(object instance, params Type[] types)
+        {
+            mSimpleDI.RegisterInstance(instance, types);
+        }
+
+        public void RemoveInstance<T>() where T : class
+        {
+            mSimpleDI.RemoveInstance<T>();
+        }
+
+        public T GetInstance<T>() where T : class
+        {
+            return mSimpleDI.GetInstance<T>();
+        }
 
         public override string ToString()
         {

@@ -28,12 +28,12 @@ namespace Assets.Scripts
 
             Task.Run(() => {
 #if UNITY_EDITOR
-                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged Begin changedStates");
-                //foreach (var changedState in changedStates)
-                //{
-                //    Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged changedState = {changedState}");
-                //}
-                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged End changedStates");
+                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged Begin changedStates");
+                foreach (var changedState in changedStates)
+                {
+                    Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged changedState = {changedState}");
+                }
+                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged End changedStates");
 #endif
 
                 var displacedProcessesIdList = new List<int>();
@@ -58,6 +58,7 @@ namespace Assets.Scripts
                             break;
 
                         case HumanoidStateKind.HandsState:
+                        case HumanoidStateKind.ThingsCommand:
                             displacedProcessesIdList.AddRange(mHandsState);
                             mHandsState.Clear();
                             break;
@@ -74,14 +75,14 @@ namespace Assets.Scripts
                 displacedProcessesIdList = displacedProcessesIdList.Distinct().ToList();
 
 #if UNITY_EDITOR
-                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessesIdList.Count = {displacedProcessesIdList.Count}");
-                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
+                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessesIdList.Count = {displacedProcessesIdList.Count}");
+                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
 #endif
 
                 foreach (var displacedProcessId in displacedProcessesIdList)
                 {
 #if UNITY_EDITOR
-                    //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessId = {displacedProcessId}");
+                    Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessId = {displacedProcessId}");
 #endif
 
                     var targetTask = mTasksDict[displacedProcessId];
@@ -90,7 +91,7 @@ namespace Assets.Scripts
                 }
 
 #if UNITY_EDITOR
-                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
+                Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
 #endif
             });
         }
@@ -425,9 +426,34 @@ namespace Assets.Scripts
                 }
             }
              
-            if (targetState.HandsState.HasValue)
+            if (targetState.HandsState.HasValue || targetState.KindOfThingsCommand.HasValue)
             {
-                var targetHandsState = targetState.HandsState.Value;
+                var targetHandsState = HumanoidHandsState.FreeHands;
+
+                if(targetState.HandsState.HasValue)
+                {
+                    targetHandsState = targetState.HandsState.Value;
+                }
+                else
+                {
+                    var kindOfThingsCommand = targetState.KindOfThingsCommand.Value;
+
+                    switch(kindOfThingsCommand)
+                    {
+                        case KindOfHumanoidThingsCommand.Take:
+                            targetHandsState = HumanoidHandsState.HasRifle;
+                            break;
+
+                        case KindOfHumanoidThingsCommand.PutToBagpack:
+                        case KindOfHumanoidThingsCommand.PutToSurface:
+                            targetHandsState = HumanoidHandsState.FreeHands;
+                            break;
+                    }
+                }
+
+#if UNITY_EDITOR
+                Debug.Log($"NPCThreadSafeMeshController CreateTargetState targetHandsState = {targetHandsState}");
+#endif
 
                 if (mHandsState.Count == 0)
                 {
@@ -547,7 +573,7 @@ namespace Assets.Scripts
         private List<int> mHState = new List<int>();
         private List<int> mTargetPosition = new List<int>();
         private List<int> mVState = new List<int>();
-        private List<int> mHandsState = new List<int>();
+        private List<int> mHandsState { get; set; } = new List<int>();
         private List<int> mHandsActionState = new List<int>();
         private List<int> mHeadState = new List<int>();
         private List<int> mTargetHeadPosition = new List<int>();
@@ -725,7 +751,7 @@ namespace Assets.Scripts
                 }
             }
 
-            if (targetState.HandsState.HasValue)
+            if (targetState.HandsState.HasValue || targetState.KindOfThingsCommand.HasValue)
             {
                 switch (resolutionKind)
                 {

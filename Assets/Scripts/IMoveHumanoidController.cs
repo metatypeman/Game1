@@ -14,7 +14,8 @@ namespace Assets.Scripts
         HandsState,
         HandsActionState,
         HeadState,
-        TargetHeadPosition
+        TargetHeadPosition,
+        ThingsCommand
     }
 
     public delegate void HumanoidStatesChangedAction(List<HumanoidStateKind> changedStates);

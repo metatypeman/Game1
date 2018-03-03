@@ -543,12 +543,20 @@ namespace Assets.Scripts
             //Debug.Log("Begin TSTMoveProcess OnRun");
 #endif
 
-            BlackBoard.Tst();
-
             var tmpCommand = new HumanoidThingsCommand();
             tmpCommand.State = KindOfHumanoidThingsCommand.Take;
             tmpCommand.InstanceId = mInstanceId;
             var tmpTask = Execute(tmpCommand);
+
+            tmpTask.OnStateChangedToRanToCompletion += () => {
+#if UNITY_EDITOR
+                Debug.Log("TSTMoveProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
+#endif
+
+                var targetGameObj = MyGameObjectsBus.GetObject(mInstanceId);
+                var gun = targetGameObj.GetInstance<IRapidFireGun>();
+                BlackBoard.RapidFireGunProxy.Instance = gun;
+            };
 
 #if UNITY_EDITOR
             //Debug.Log("End TSTMoveProcess OnRun");

@@ -56,6 +56,22 @@ namespace Assets.Scripts
             }
         }
 
+        public bool IsReady
+        {
+            get
+            {
+                lock (mLockObj)
+                {
+                    if (mInstance != null)
+                    {
+                        return mInstance.IsReady;
+                    }
+
+                    return false;
+                }
+            }
+        }
+
         public bool UseDebugLine
         {
             get

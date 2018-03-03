@@ -9,6 +9,9 @@ namespace Assets.Scripts
 {
     public class TstBlackBoard
     {
+        public RapidFireGunProxy RapidFireGunProxy { get; set; } = new RapidFireGunProxy();
+        public event Action OnGunHasTaken;
+
         public void Tst()
         {
 #if UNITY_EDITOR
