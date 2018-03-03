@@ -626,7 +626,19 @@ namespace Assets.Scripts
 
             RegProcessId(targetState, processId, npcMeshTask, resolutionKind);
 
-            mMoveHumanoidController.ExecuteAsync(targetState);
+#if UNITY_EDITOR
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow before mMoveHumanoidController.ExecuteAsync");
+#endif
+
+            var targetStateForExecuting = mMoveHumanoidController.ExecuteAsync(targetState);
+
+            while(targetStateForExecuting.State == StateOfHumanoidTaskOfExecuting.Created)
+            {
+            }
+
+#if UNITY_EDITOR
+            Debug.Log("NPCThreadSafeMeshController ProcessAllow after mMoveHumanoidController.ExecuteAsync");
+#endif
 
             npcMeshTask.State = NPCMeshTaskState.Running;
         }

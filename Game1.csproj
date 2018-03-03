@@ -329,6 +329,7 @@
     <Compile Include="Assets\Scripts\HumanoidHandsStateCommand.cs" />
     <Compile Include="Assets\Scripts\HumanoidHeadStateCommand.cs" />
     <Compile Include="Assets\Scripts\HumanoidHStateCommand.cs" />
+    <Compile Include="Assets\Scripts\HumanoidTaskOfExecuting.cs" />
     <Compile Include="Assets\Scripts\HumanoidThingsCommand.cs" />
     <Compile Include="Assets\Scripts\HumanoidVStateCommand.cs" />
     <Compile Include="Assets\Scripts\IHandThing.cs" />

@@ -8,7 +8,6 @@ public class TrafficBarrierRedInfo : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         var gameInfo = MyGameObjectFactory.CreateByComponent(this);
-
         MyGameObjectsBus.RegisterObject(gameInfo);
     }
 }

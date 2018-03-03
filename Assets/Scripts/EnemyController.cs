@@ -134,9 +134,9 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
     }
 
     private object mLockObj = new object();
-    private Queue<TargetStateOfHumanoidController> mTargetStateQueue = new Queue<TargetStateOfHumanoidController>();
+    private HumanoidTaskOfExecuting mTargetStateForExecuting;
 
-    public void ExecuteAsync(TargetStateOfHumanoidController targetState)
+    public HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
         //Debug.Log($"EnemyController ExecuteAsync targetState = {targetState}");
@@ -144,11 +144,21 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
 
         lock(mLockObj)
         {
-            mTargetStateQueue.Enqueue(targetState);
+            if(mTargetStateForExecuting != null)
+            {
+                mTargetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Canceled;
+            }
+
+            var targetStateForExecuting = new HumanoidTaskOfExecuting();
+            targetStateForExecuting.ProcessedState = targetState;
+
+            mTargetStateForExecuting = targetStateForExecuting;
 
 #if UNITY_EDITOR
             //Debug.Log($"EnemyController ExecuteAsync mTargetStateQueue.Count = {mTargetStateQueue.Count}");
 #endif
+
+            return targetStateForExecuting;
         }
     }
 
@@ -156,10 +166,11 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
     {
         lock(mLockObj)
         {
-            if (mTargetStateQueue.Count > 0)
+            if(mTargetStateForExecuting != null)
             {
-                var targetState = mTargetStateQueue.Dequeue();
-                Execute(targetState);
+                var targetStateForExecuting = mTargetStateForExecuting;
+                mTargetStateForExecuting = null;
+                Execute(targetStateForExecuting);
             }
         }
 
@@ -167,8 +178,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         StartCoroutine(Timer());
     }
 
-    private void Execute(TargetStateOfHumanoidController targetState)
+    private void Execute(HumanoidTaskOfExecuting targetStateForExecuting)
     {
+        var targetState = targetStateForExecuting.ProcessedState;
+
 #if UNITY_EDITOR
         //Debug.Log($"EnemyController Execute targetState = {targetState}");
 #endif
@@ -186,7 +199,9 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         else
         {
             ApplyTargetState(newState);
-        }   
+        }
+
+        targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;
     }
 
     private void ExecuteThingsCommand(StatesOfHumanoidController targetState)
