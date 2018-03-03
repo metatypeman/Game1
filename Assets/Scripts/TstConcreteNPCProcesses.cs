@@ -544,7 +544,7 @@ namespace Assets.Scripts
 #endif
 
             var tmpCommand = new HumanoidThingsCommand();
-            tmpCommand.State = KindOfHumanoidThingsCommand.TakeFromSurface;
+            tmpCommand.State = KindOfHumanoidThingsCommand.Take;
             tmpCommand.InstanceId = mInstanceId;
             var tmpTask = Execute(tmpCommand);
 

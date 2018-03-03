@@ -65,7 +65,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     private Ray shootRay;
     private RaycastHit shootHit;
     private bool mUseDebugLine;
-#endregion
+    #endregion
 
     public bool UseDebugLine
     {
@@ -94,6 +94,11 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
 
     // Use this for initialization
     void Start () {
+        var gameInfo = MyGameObjectFactory.CreateByComponent(this);
+        MyGameObjectsBus.RegisterObject(gameInfo);
+
+
+
         mGunParticles = GetComponent<ParticleSystem>();
 
         if(mGunParticles == null)

@@ -179,7 +179,57 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         Debug.Log($"EnemyController Execute newState = {newState}");
 #endif
 
-        ApplyTargetState(newState);
+        if(newState.KindOfThingsCommand != KindOfHumanoidThingsCommand.Undefined && newState.InstanceOfThingId != 0)
+        {
+            ExecuteThingsCommand(newState);
+        }
+        else
+        {
+            ApplyTargetState(newState);
+        }   
+    }
+
+    private void ExecuteThingsCommand(StatesOfHumanoidController targetState)
+    {
+#if UNITY_EDITOR
+        Debug.Log($"EnemyController ExecuteThingsCommand targetState = {targetState}");
+#endif
+
+        var kindOfThingsCommand = targetState.KindOfThingsCommand;
+
+        var myGameObjectOfThing = MyGameObjectsBus.GetObject(targetState.InstanceOfThingId);
+        var gameObjectOfThing = myGameObjectOfThing.GameObject;
+
+        var thing = gameObjectOfThing.GetComponent<IHandThing>();
+
+        switch (kindOfThingsCommand)
+        {
+            case KindOfHumanoidThingsCommand.Take:
+                {
+#if UNITY_EDITOR
+                    Debug.Log($"EnemyController ExecuteThingsCommand case KindOfHumanoidThingsCommand.Take Not implemented yet!!!!!!");
+#endif
+
+                    thing.SetToHandsOfHumanoid(this);
+                    mStates.HandsState = HumanoidHandsState.HasRifle;
+                    ApplyCurrentStates();
+                }
+                break;
+
+            case KindOfHumanoidThingsCommand.PutToBagpack:
+#if UNITY_EDITOR
+                Debug.Log($"EnemyController ExecuteThingsCommand case KindOfHumanoidThingsCommand.PutToBagpack Not implemented yet!!!!!!");
+#endif
+                break;
+
+            case KindOfHumanoidThingsCommand.PutToSurface:
+#if UNITY_EDITOR
+                Debug.Log($"EnemyController ExecuteThingsCommand  Not implemented yet!!!!!!");
+#endif
+                break;
+
+            default: throw new ArgumentOutOfRangeException(nameof(kindOfThingsCommand), kindOfThingsCommand, null);
+        }
     }
 
     private StatesOfHumanoidController CreateTargetState(StatesOfHumanoidController sourceState, TargetStateOfHumanoidController targetState)

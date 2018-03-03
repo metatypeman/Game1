@@ -7,11 +7,7 @@ public class TrafficBarrierRedInfo : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        var gameInfo = new MyGameObject();
-        var tmpTransform = transform;
-        gameInfo.InstanceID = tmpTransform.GetInstanceID();
-        gameInfo.Name = tmpTransform.name;
-        gameInfo.Tag = tmpTransform.tag;
+        var gameInfo = MyGameObjectFactory.CreateByComponent(this);
 
         MyGameObjectsBus.RegisterObject(gameInfo);
     }

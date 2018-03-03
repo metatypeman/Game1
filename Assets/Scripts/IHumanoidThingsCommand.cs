@@ -9,9 +9,8 @@ namespace Assets.Scripts
     public enum KindOfHumanoidThingsCommand
     {
         Undefined,
-        TakeFromBagpack,
+        Take,
         PutToBagpack,
-        TakeFromSurface,
         PutToSurface
     }
 

@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -34,12 +35,27 @@ namespace Assets.Scripts
         }
     }
 
+    public static class MyGameObjectFactory
+    {
+        public static MyGameObject CreateByComponent(Component component)
+        {
+            var result = new MyGameObject();
+            var tmpTransform = component.transform;
+            result.InstanceID = component.GetInstanceID();
+            result.GameObject = component.gameObject;
+            result.Name = tmpTransform.name;
+            result.Tag = tmpTransform.tag;
+            return result;
+        }
+    }
+
     public class MyGameObject : IObjectToString
     {
         public int InstanceID { get; set; }
         public string Name { get; set; }
         public string Tag { get; set; }
         public dynamic DynamicData { get; set; } = new ExpandoObject();
+        public GameObject GameObject { get; set; }
 
         public override string ToString()
         {
