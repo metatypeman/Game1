@@ -13,5 +13,6 @@ namespace Assets.Scripts
         GameObject RightHandWP { get; }
         GameObject LeftHand { get; }
         GameObject LeftHandWP { get; }
+        void SetAimCorrector(IAimCorrector corrector);
     }
 }

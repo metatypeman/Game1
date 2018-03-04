@@ -310,7 +310,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         Body.transform.localRotation = Quaternion.Euler(0, -180.234f, 0);
         //Body.transform.rotation = new Quaternion(0, -180.234f, 0, 1);
         Body.transform.localPosition = new Vector3(0, 0, 0.2f);
-
+        humanoid.SetAimCorrector(this);
 
 #if UNITY_EDITOR
         Debug.Log("End RapidFireGun SetToHandsOfHumanoid");

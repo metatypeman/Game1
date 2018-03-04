@@ -13,6 +13,17 @@ namespace Assets.Scripts
         {
             var blackBoard = new T();
             RegisterInstance<T>(blackBoard);
+            mBlackBoard = blackBoard;
+        }
+
+        private T mBlackBoard = default(T);
+
+        public T BlackBoard
+        {
+            get
+            {
+                return mBlackBoard;
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Assets.Scripts
         private object mBlackBoardLockObj = new object();
         private T mBlackBoard = default(T);
 
-        protected T BlackBoard
+        public T BlackBoard
         {
             get
             {

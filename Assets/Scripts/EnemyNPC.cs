@@ -17,7 +17,7 @@ public class EnemyNPC : MonoBehaviour
 
     private TstConcreteNPCProcessesContextWithBlackBoard mNPCProcessesContext;
 
-    RapidFireGun _gun;
+    //RapidFireGun _gun;
 
     private InputKeyHelper mInputKeyHelper;
 
@@ -40,14 +40,14 @@ public class EnemyNPC : MonoBehaviour
         mNPCProcessesContext = new TstConcreteNPCProcessesContextWithBlackBoard(mEnemyController);
         mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
 
-        _gun = GetComponentInChildren<RapidFireGun>();
+        //_gun = GetComponentInChildren<RapidFireGun>();
 
-        if(_gun != null)
-        {
-            mEnemyController.SetAimCorrector(_gun);
-            _gun.UseDebugLine = true;
+        //if(_gun != null)
+        //{
+        //    mEnemyController.SetAimCorrector(_gun);
+        //    _gun.UseDebugLine = true;
             //_gun.FireMode = FireMode.Single;
-        }
+        //}
 
         mInputKeyHelper = new InputKeyHelper();
         mInputKeyHelper.AddListener(KeyCode.F, OnFPressAction);
@@ -116,6 +116,7 @@ public class EnemyNPC : MonoBehaviour
         var targetGun = FindObjectOfType<RapidFireGun>();
 
         Debug.Log($"EnemyNPC OnBPressAction (targetGun == null) = {targetGun == null}");
+
         if(targetGun != null)
         {
             var instanceId = targetGun.GetInstanceID();
@@ -202,8 +203,14 @@ public class EnemyNPC : MonoBehaviour
     private void OnNPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnNPressAction key = {key}");
-        if (_gun != null)
+
+        var _gun = mNPCProcessesContext.BlackBoard.RapidFireGunProxy;
+
+        Debug.Log($"EnemyNPC OnNPressAction _gun.IsReady = {_gun.IsReady}");
+
+        if (_gun != null && _gun.IsReady)
         {
+            _gun.UseDebugLine = true;
             _gun.TurnState = TurnState.On;
         }      
     }
@@ -211,6 +218,7 @@ public class EnemyNPC : MonoBehaviour
     private void OnHPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnHPressAction key = {key}");
+        var _gun = mNPCProcessesContext.BlackBoard.RapidFireGunProxy;
         if (_gun != null)
         {
             _gun.TurnState = TurnState.Off;
