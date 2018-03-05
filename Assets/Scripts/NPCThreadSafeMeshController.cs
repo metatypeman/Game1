@@ -57,13 +57,19 @@ namespace Assets.Scripts
                             mVState.Clear();
                             break;
 
-                        case HumanoidStateKind.HandsState:
-                        case HumanoidStateKind.ThingsCommand:
+                        case HumanoidStateKind.HandsState:              
                             displacedProcessesIdList.AddRange(mHandsState);
                             mHandsState.Clear();
                             break;
 
                         case HumanoidStateKind.HandsActionState:
+                            displacedProcessesIdList.AddRange(mHandsActionState);
+                            mHandsActionState.Clear();
+                            break;
+
+                        case HumanoidStateKind.ThingsCommand:
+                            displacedProcessesIdList.AddRange(mHandsState);
+                            mHandsState.Clear();
                             displacedProcessesIdList.AddRange(mHandsActionState);
                             mHandsActionState.Clear();
                             break;
