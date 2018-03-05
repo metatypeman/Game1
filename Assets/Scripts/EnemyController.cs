@@ -710,6 +710,12 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
                     var localDirection = new Vector3(x, 0f, y);
                     var globalDirection = transform.TransformDirection(localDirection);
                     var oldY = Head.position.y;
+
+#if UNITY_EDITOR
+                    Debug.Log($"EnemyController Update oldY = {oldY}");
+                    Debug.Log($"EnemyController Update Head.localPosition.y = {Head.localPosition.y}");
+#endif
+
                     var newPosition = globalDirection + transform.position;
                     mCurrentHeadPosition = new Vector3(newPosition.x, oldY, newPosition.z);
                 }
