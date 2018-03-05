@@ -229,15 +229,25 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
                 break;
 
             case KindOfHumanoidThingsCommand.PutToBagpack:
+                {
 #if UNITY_EDITOR
-                Debug.Log($"EnemyController ExecuteThingsCommand case KindOfHumanoidThingsCommand.PutToBagpack Not implemented yet!!!!!!");
+                    Debug.Log($"EnemyController ExecuteThingsCommand case KindOfHumanoidThingsCommand.PutToBagpack Not implemented yet!!!!!!");
 #endif
+
+                    thing.SetAsAloneAndHide();
+                    mStates.HandsState = HumanoidHandsState.FreeHands;
+                    mStates.HandsActionState = HumanoidHandsActionState.Empty;
+                    ApplyCurrentStates();
+                    EmitOnHumanoidStatesChanged(HumanoidStateKind.ThingsCommand);
+                }
                 break;
 
             case KindOfHumanoidThingsCommand.PutToSurface:
+                {
 #if UNITY_EDITOR
-                Debug.Log($"EnemyController ExecuteThingsCommand  Not implemented yet!!!!!!");
+                    Debug.Log($"EnemyController ExecuteThingsCommand  Not implemented yet!!!!!!");
 #endif
+                }
                 break;
 
             default: throw new ArgumentOutOfRangeException(nameof(kindOfThingsCommand), kindOfThingsCommand, null);

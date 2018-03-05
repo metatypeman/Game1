@@ -20,8 +20,8 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     #region Private Fields
     private Transform mGunEndTransform;
     private ParticleSystem mGunParticles;
-    private LineRenderer mGunLine;                           
-    private AudioSource mGunAudio;                           
+    private LineRenderer mGunLine;
+    private AudioSource mGunAudio;
     private Light mGunLight;
     private float timer;
     private Ray shootRay;
@@ -42,12 +42,12 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         {
             mUseDebugLine = value;
 
-            if(mUseDebugLine)
+            if (mUseDebugLine)
             {
-                if(mGunLine != null)
+                if (mGunLine != null)
                 {
                     mGunLine.enabled = true;
-                }      
+                }
             }
             else
             {
@@ -57,34 +57,34 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     }
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         var gameInfo = MyGameObjectFactory.CreateByComponent(this, typeof(IRapidFireGun));
         MyGameObjectsBus.RegisterObject(gameInfo);
 
         mGunParticles = GetComponent<ParticleSystem>();
 
-        if(mGunParticles == null)
+        if (mGunParticles == null)
         {
             mGunParticles = GetComponentInChildren<ParticleSystem>();
         }
 
         mGunLine = GetComponent<LineRenderer>();
 
-        if(mGunLine == null)
+        if (mGunLine == null)
         {
             mGunLine = GetComponentInChildren<LineRenderer>();
         }
 
         mGunAudio = GetComponent<AudioSource>();
 
-        if(mGunAudio == null)
+        if (mGunAudio == null)
         {
             mGunAudio = GetComponentInChildren<AudioSource>();
         }
 
         mGunLight = GetComponent<Light>();
 
-        if(mGunLight == null)
+        if (mGunLight == null)
         {
             mGunLight = GetComponentInChildren<Light>();
         }
@@ -99,7 +99,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     {
         get
         {
-            lock(mFireModeLockObj)
+            lock (mFireModeLockObj)
             {
                 return mFireMode;
             }
@@ -109,7 +109,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         {
             lock (mFireModeLockObj)
             {
-                if(mFireMode == value)
+                if (mFireMode == value)
                 {
                     return;
                 }
@@ -126,7 +126,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     {
         get
         {
-            lock(mTurnStateLockObj)
+            lock (mTurnStateLockObj)
             {
                 return mTurnState;
             }
@@ -136,7 +136,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         {
             lock (mTurnStateLockObj)
             {
-                if(mTurnState == value)
+                if (mTurnState == value)
                 {
                     return;
                 }
@@ -149,10 +149,10 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     public event Action OnFire;
 
     private InternalStateOfRapidFireGun mInternalState = InternalStateOfRapidFireGun.TurnedOf;
-    
+
     // Update is called once per frame
-    void Update () {
-        if(mUseDebugLine)
+    void Update() {
+        if (mUseDebugLine)
         {
             mGunLine.enabled = true;
             mGunLine.SetPosition(0, mGunEndTransform.position);
@@ -164,10 +164,10 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         var fireMode = FireMode;
         var turnState = TurnState;
 
-        switch(turnState)
+        switch (turnState)
         {
             case TurnState.On:
-                switch(mInternalState)
+                switch (mInternalState)
                 {
                     case InternalStateOfRapidFireGun.TurnedOf:
                         ProcessShoot();
@@ -175,14 +175,14 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
 
                     case InternalStateOfRapidFireGun.TurnedOnShot:
                         timer += Time.deltaTime;
-                        if(timer >= EffectsDisplayTime)
+                        if (timer >= EffectsDisplayTime)
                         {
                             ProcessEndShoot();
                         }
                         break;
 
                     case InternalStateOfRapidFireGun.TurnedOnWasShot:
-                        switch(fireMode)
+                        switch (fireMode)
                         {
                             case FireMode.Multiple:
                                 timer += Time.deltaTime;
@@ -245,13 +245,13 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     }
 
     public void DisableEffects()
-    {       
+    {
         // Disable the line renderer and the light.
-        if(!mUseDebugLine)
+        if (!mUseDebugLine)
         {
             mGunLine.enabled = false;
         }
-       
+
         FaceLight.enabled = false;
         mGunLight.enabled = false;
     }
@@ -278,11 +278,11 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         {
             var targetOfShoot = shootHit.collider.GetComponentInParent<ITargetOfShoot>();
 
-            if(targetOfShoot != null)
+            if (targetOfShoot != null)
             {
                 targetOfShoot.SetHit(shootHit, DamagePerShot);
             }
-            
+
             mGunLine.SetPosition(1, shootHit.point);
         }
         else
@@ -305,15 +305,43 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         Debug.Log("Begin RapidFireGun SetToHandsOfHumanoid");
 #endif
 
-        Body.transform.SetParent(humanoid.RightHandWP.transform, false);
+        var targetParent = humanoid.RightHandWP.transform;
+
+        if(Body.transform.parent == targetParent)
+        {
+#if UNITY_EDITOR
+            Debug.Log("RapidFireGun SetToHandsOfHumanoid Body.transform.parent == targetParent");
+#endif
+
+            return true;
+        }
+
+        Body.transform.SetParent(targetParent, false);
         //Body.transform.rotation = Quaternion.Euler(0, -180.234f, 0);
         Body.transform.localRotation = Quaternion.Euler(0, -180.234f, 0);
         //Body.transform.rotation = new Quaternion(0, -180.234f, 0, 1);
         Body.transform.localPosition = new Vector3(0, 0, 0.2f);
         humanoid.SetAimCorrector(this);
+        Body.gameObject.SetActive(true);
 
 #if UNITY_EDITOR
         Debug.Log("End RapidFireGun SetToHandsOfHumanoid");
+#endif
+
+        return true;
+    }
+
+    public bool SetAsAloneAndHide()
+    {
+#if UNITY_EDITOR
+        Debug.Log("Begin RapidFireGun SetAsAloneAndHide");
+#endif
+
+        Body.transform.SetParent(null);
+        Body.gameObject.SetActive(false);
+
+#if UNITY_EDITOR
+        Debug.Log("End RapidFireGun SetAsAloneAndHide");
 #endif
 
         return true;

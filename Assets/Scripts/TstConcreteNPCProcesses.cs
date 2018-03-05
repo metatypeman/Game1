@@ -540,7 +540,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log("Begin TSTMoveProcess OnRun");
+            //Debug.Log("Begin TSTTakeFromSurfaceProcess OnRun");
 #endif
 
             var tmpCommand = new HumanoidThingsCommand();
@@ -550,7 +550,7 @@ namespace Assets.Scripts
 
             tmpTask.OnStateChangedToRanToCompletion += () => {
 #if UNITY_EDITOR
-                Debug.Log("TSTMoveProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
+                Debug.Log("TSTTakeFromSurfaceProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
 #endif
 
                 var targetGameObj = MyGameObjectsBus.GetObject(mInstanceId);
@@ -559,7 +559,42 @@ namespace Assets.Scripts
             };
 
 #if UNITY_EDITOR
-            //Debug.Log("End TSTMoveProcess OnRun");
+            //Debug.Log("End TSTTakeFromSurfaceProcess OnRun");
+#endif
+        }
+    }
+
+    public class TstHideRifleToBagPackProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    {
+        public TstHideRifleToBagPackProcess(NPCProcessesContext context, int instanceId)
+            : base(context)
+        {
+            mInstanceId = instanceId;
+        }
+
+        private int mInstanceId;
+
+        protected override void OnRun()
+        {
+#if UNITY_EDITOR
+            Debug.Log("Begin TstHideRifleToBagPackProcess OnRun");
+#endif
+
+            BlackBoard.RapidFireGunProxy.Instance = null;
+            var tmpCommand = new HumanoidThingsCommand();
+            tmpCommand.State = KindOfHumanoidThingsCommand.PutToBagpack;
+            tmpCommand.InstanceId = mInstanceId;
+            var tmpTask = Execute(tmpCommand);
+
+            tmpTask.OnStateChangedToRanToCompletion += () => {
+#if UNITY_EDITOR
+                Debug.Log("TstHideRifleToBagPackProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
+#endif
+
+            };
+
+#if UNITY_EDITOR
+            Debug.Log("End TstHideRifleToBagPackProcess OnRun");
 #endif
         }
     }

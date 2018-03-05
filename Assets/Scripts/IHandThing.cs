@@ -10,5 +10,6 @@ namespace Assets.Scripts
     {
         bool IsReady { get; }
         bool SetToHandsOfHumanoid(IHumanoid humanoid);
+        bool SetAsAloneAndHide();
     }
 }

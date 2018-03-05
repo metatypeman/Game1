@@ -27,6 +27,8 @@ public class EnemyNPC : MonoBehaviour
     public Transform GunEnd;
     private GameObject mGunBody;
 
+    private int mInstanceIdOfRifle;
+
     // Use this for initialization
     void Start()
     {
@@ -77,12 +79,19 @@ public class EnemyNPC : MonoBehaviour
     private void OnJPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnJPressAction key = {key}");
+        Debug.Log($"EnemyNPC OnJPressAction mInstanceIdOfRifle = {mInstanceIdOfRifle}");
 
+        if (mInstanceIdOfRifle > 0)
+        {           
+            var tmpProcess = new TstHideRifleToBagPackProcess(mNPCProcessesContext, mInstanceIdOfRifle);
+            tmpProcess.RunAsync();
+        }
+            
         //var render = mGunBody.GetComponentInChildren<MeshRenderer>();
 
         //render.enabled = false;
 
-        mGunBody.SetActive(false);
+        //mGunBody.SetActive(false);
 
         //Debug.Log($"EnemyNPC OnJPressAction GunEnd.forward = {GunEnd.forward}");
         //Debug.Log($"EnemyNPC OnJPressAction transform.forward = {transform.forward}");
@@ -113,26 +122,33 @@ public class EnemyNPC : MonoBehaviour
     {
         Debug.Log($"EnemyNPC OnBPressAction key = {key}");
 
+        var instanceId = 0;
+
         var targetGun = FindObjectOfType<RapidFireGun>();
 
         Debug.Log($"EnemyNPC OnBPressAction (targetGun == null) = {targetGun == null}");
 
-        if(targetGun != null)
+        if (targetGun == null)
         {
-            var instanceId = targetGun.GetInstanceID();
+            if(mInstanceIdOfRifle > 0)
+            {
+                instanceId = mInstanceIdOfRifle;
+            }
+        }
+        else
+        { 
+            instanceId = targetGun.GetInstanceID();
+            mInstanceIdOfRifle = instanceId;        
+        }
 
-            Debug.Log($"EnemyNPC OnBPressAction instanceId = {instanceId}");
+        Debug.Log($"EnemyNPC OnBPressAction instanceId = {instanceId}");
 
+        if (instanceId > 0)
+        {
             var tmpProcess = new TSTTakeFromSurfaceProcess(mNPCProcessesContext, instanceId);
             tmpProcess.RunAsync();
-
-            //mEnemyController.TstTakeRifle(targetGun);
-
-            //_gun = targetGun;
-            //mEnemyController.SetAimCorrector(_gun);
-            //_gun.UseDebugLine = true;         
         }
-        
+
         //var rightHandWPLocator = GetComponentInChildren<RightHandWPLocator>();
 
         //Debug.Log($"EnemyNPC OnBPressAction (rightHandWPLocator == null) = {rightHandWPLocator == null}");

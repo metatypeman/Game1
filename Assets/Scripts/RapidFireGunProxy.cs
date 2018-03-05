@@ -184,5 +184,18 @@ namespace Assets.Scripts
                 return false;           
             }
         }
+
+        public bool SetAsAloneAndHide()
+        {
+            lock (mLockObj)
+            {
+                if (mInstance != null)
+                {
+                    return mInstance.SetAsAloneAndHide();
+                }
+
+                return false;
+            }
+        }
     }
 }
