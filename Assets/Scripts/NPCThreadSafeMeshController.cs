@@ -451,7 +451,7 @@ namespace Assets.Scripts
                             break;
 
                         case KindOfHumanoidThingsCommand.PutToBagpack:
-                        case KindOfHumanoidThingsCommand.PutToSurface:
+                        case KindOfHumanoidThingsCommand.ThrowOutToSurface:
                             targetHandsState = HumanoidHandsState.FreeHands;
                             break;
                     }

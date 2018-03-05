@@ -183,7 +183,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         var targetState = targetStateForExecuting.ProcessedState;
 
 #if UNITY_EDITOR
-        //Debug.Log($"EnemyController Execute targetState = {targetState}");
+        Debug.Log($"EnemyController Execute targetState = {targetState}");
 #endif
 
         var newState = CreateTargetState(mStates, targetState);
@@ -230,10 +230,6 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
 
             case KindOfHumanoidThingsCommand.PutToBagpack:
                 {
-#if UNITY_EDITOR
-                    Debug.Log($"EnemyController ExecuteThingsCommand case KindOfHumanoidThingsCommand.PutToBagpack Not implemented yet!!!!!!");
-#endif
-
                     thing.SetAsAloneAndHide();
                     mStates.HandsState = HumanoidHandsState.FreeHands;
                     mStates.HandsActionState = HumanoidHandsActionState.Empty;
@@ -242,11 +238,17 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
                 }
                 break;
 
-            case KindOfHumanoidThingsCommand.PutToSurface:
+            case KindOfHumanoidThingsCommand.ThrowOutToSurface:
                 {
 #if UNITY_EDITOR
-                    Debug.Log($"EnemyController ExecuteThingsCommand  Not implemented yet!!!!!!");
+                    Debug.Log($"EnemyController ExecuteThingsCommand case KindOfHumanoidThingsCommand.ThrowOutToSurface Not implemented yet!!!!!!");
 #endif
+
+                    thing.ThrowOutToSurface();
+                    mStates.HandsState = HumanoidHandsState.FreeHands;
+                    mStates.HandsActionState = HumanoidHandsActionState.Empty;
+                    ApplyCurrentStates();
+                    EmitOnHumanoidStatesChanged(HumanoidStateKind.ThingsCommand);
                 }
                 break;
 
@@ -519,11 +521,13 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
             case HumanoidHeadState.LookingForward:
                 mUseIkAnimation = false;
                 mCurrentHeadAngle = 0f;
+                EmitOnHumanoidStatesChanged(HumanoidStateKind.HeadState, HumanoidStateKind.TargetHeadPosition);
                 break;
 
             case HumanoidHeadState.LookAt:
                 mCurrentHeadPosition = mStates.TargetHeadPosition.Value;
                 mUseIkAnimation = true;
+                EmitOnHumanoidStatesChanged(HumanoidStateKind.HeadState, HumanoidStateKind.TargetHeadPosition);
                 break;
 
             case HumanoidHeadState.Rotate:
@@ -696,7 +700,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
                     else
                     {
                         mCurrentHeadAngle = mTargetHeadAngle;
-
+                        EmitOnHumanoidStatesChanged(HumanoidStateKind.HeadState, HumanoidStateKind.TargetHeadPosition);
                         mNeedHeadChanges = false;
                     }
 

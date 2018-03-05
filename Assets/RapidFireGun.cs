@@ -27,6 +27,8 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     private Ray shootRay;
     private RaycastHit shootHit;
     private bool mUseDebugLine;
+    private Collider mBodyCollider;
+    private Rigidbody mBodyRigidbody;
     #endregion
 
     public bool IsReady => true;
@@ -90,6 +92,9 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         }
 
         mGunEndTransform = GunEnd.transform;
+
+        mBodyCollider = Body.GetComponent<Collider>();
+        mBodyRigidbody = Body.GetComponent<Rigidbody>();
     }
 
     private object mFireModeLockObj = new object();
@@ -316,6 +321,16 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
             return true;
         }
 
+        if (mBodyCollider != null)
+        {
+            mBodyCollider.enabled = false;
+        }
+
+        if (mBodyRigidbody != null)
+        {
+            mBodyRigidbody.isKinematic = true;
+        }
+
         Body.transform.SetParent(targetParent, false);
         //Body.transform.rotation = Quaternion.Euler(0, -180.234f, 0);
         Body.transform.localRotation = Quaternion.Euler(0, -180.234f, 0);
@@ -337,11 +352,56 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         Debug.Log("Begin RapidFireGun SetAsAloneAndHide");
 #endif
 
+        if(Body.transform.parent == null && !Body.gameObject.activeSelf)
+        {
+#if UNITY_EDITOR
+            Debug.Log("RapidFireGun  SetAsAloneAndHide Body.transform.parent == null && !Body.gameObject.activeSelf");
+#endif
+
+            return true;
+        }
+
         Body.transform.SetParent(null);
         Body.gameObject.SetActive(false);
 
 #if UNITY_EDITOR
         Debug.Log("End RapidFireGun SetAsAloneAndHide");
+#endif
+
+        return true;
+    }
+
+    public bool ThrowOutToSurface()
+    {
+#if UNITY_EDITOR
+        Debug.Log("Begin RapidFireGun ThrowOutToSurface");
+#endif
+
+        if (Body.transform.parent == null && Body.gameObject.activeSelf)
+        {
+#if UNITY_EDITOR
+            Debug.Log("RapidFireGun ThrowOutToSurface Body.transform.parent == null && Body.gameObject.activeSelf");
+#endif
+
+            return true;
+        }
+
+        Body.transform.SetParent(null);
+        Body.gameObject.SetActive(true);
+
+        if(mBodyCollider != null)
+        {
+            mBodyCollider.enabled = true;
+        }
+        
+        if(mBodyRigidbody != null)
+        {
+            mBodyRigidbody.isKinematic = false;
+            mBodyRigidbody.AddForce(UnityEngine.Random.insideUnitSphere * 200);
+        }
+
+#if UNITY_EDITOR
+        Debug.Log("End RapidFireGun ThrowOutToSurface");
 #endif
 
         return true;

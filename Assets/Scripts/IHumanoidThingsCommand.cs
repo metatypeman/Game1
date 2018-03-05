@@ -11,7 +11,7 @@ namespace Assets.Scripts
         Undefined,
         Take,
         PutToBagpack,
-        PutToSurface
+        ThrowOutToSurface
     }
 
     public interface IHumanoidThingsCommand : IMoveHumanoidCommand

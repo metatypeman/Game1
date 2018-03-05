@@ -598,4 +598,38 @@ namespace Assets.Scripts
 #endif
         }
     }
+
+    public class TstThrowOutToSurfaceRifleToSurfaceProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    {
+        public TstThrowOutToSurfaceRifleToSurfaceProcess(NPCProcessesContext context, int instanceId)
+            : base(context)
+        {
+            mInstanceId = instanceId;
+        }
+
+        private int mInstanceId;
+
+        protected override void OnRun()
+        {
+#if UNITY_EDITOR
+            Debug.Log("Begin TstThrowOutToSurfaceRifleToSurfaceProcess OnRun");
+#endif
+
+            BlackBoard.RapidFireGunProxy.Instance = null;
+            var tmpCommand = new HumanoidThingsCommand();
+            tmpCommand.State = KindOfHumanoidThingsCommand.ThrowOutToSurface;
+            tmpCommand.InstanceId = mInstanceId;
+            var tmpTask = Execute(tmpCommand);
+
+            tmpTask.OnStateChangedToRanToCompletion += () => {
+#if UNITY_EDITOR
+                Debug.Log("TstThrowOutToSurfaceRifleToSurfaceProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
+#endif
+            };
+
+#if UNITY_EDITOR
+            Debug.Log("End TstThrowOutToSurfaceRifleToSurfaceProcess OnRun");
+#endif
+        }
+    }
 }

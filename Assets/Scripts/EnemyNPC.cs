@@ -64,6 +64,7 @@ public class EnemyNPC : MonoBehaviour
         mInputKeyHelper.AddListener(KeyCode.M, OnMPressAction);
         mInputKeyHelper.AddListener(KeyCode.B, OnBPressAction);
         mInputKeyHelper.AddListener(KeyCode.J, OnJPressAction);
+        mInputKeyHelper.AddListener(KeyCode.Q, OnQPressAction);
 
         mGunBody = GameObject.Find("M4A1 Sopmod");
     }
@@ -74,6 +75,18 @@ public class EnemyNPC : MonoBehaviour
         //Debug.Log("EnemyNPC Update");
         mInputKeyHelper.Update();
         //mGunBody.SetActive(false);
+    }
+
+    private void OnQPressAction(KeyCode key)
+    {
+        Debug.Log($"EnemyNPC OnQPressAction key = {key}");
+        Debug.Log($"EnemyNPC OnQPressAction mInstanceIdOfRifle = {mInstanceIdOfRifle}");
+
+        if (mInstanceIdOfRifle > 0)
+        {
+            var tmpProcess = new TstThrowOutToSurfaceRifleToSurfaceProcess(mNPCProcessesContext, mInstanceIdOfRifle);
+            tmpProcess.RunAsync();
+        }
     }
 
     private void OnJPressAction(KeyCode key)

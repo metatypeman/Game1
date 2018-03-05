@@ -197,5 +197,18 @@ namespace Assets.Scripts
                 return false;
             }
         }
+
+        public bool ThrowOutToSurface()
+        {
+            lock (mLockObj)
+            {
+                if (mInstance != null)
+                {
+                    return mInstance.ThrowOutToSurface();
+                }
+
+                return false;
+            }
+        }
     }
 }
