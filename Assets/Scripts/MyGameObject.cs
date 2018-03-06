@@ -40,7 +40,7 @@ namespace Assets.Scripts
         public static MyGameObject CreateByComponent(Component component, params Type[] targetComponents)
         {
 #if UNITY_EDITOR
-            Debug.Log($"MyGameObjectFactory CreateByComponent targetComponents.Length = {targetComponents.Length}");
+            //Debug.Log($"MyGameObjectFactory CreateByComponent targetComponents.Length = {targetComponents.Length}");
 #endif
 
             var result = new MyGameObject();
@@ -64,8 +64,8 @@ namespace Assets.Scripts
                 }
 
 #if UNITY_EDITOR
-                Debug.Log($"MyGameObjectFactory CreateByComponent (targetComponent == null) = {targetComponent == null}");
-                Debug.Log($"MyGameObjectFactory CreateByComponent targetComponentType.FullName = {targetComponentType.FullName}");
+                //Debug.Log($"MyGameObjectFactory CreateByComponent (targetComponent == null) = {targetComponent == null}");
+                //Debug.Log($"MyGameObjectFactory CreateByComponent targetComponentType.FullName = {targetComponentType.FullName}");
 #endif
 
                 result.RegisterInstance(targetComponent, targetComponentType);

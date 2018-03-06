@@ -17,14 +17,14 @@ namespace Assets.Scripts
             : base(context)
         {
 #if UNITY_EDITOR
-            Debug.Log("BaseNPCProcessWithBlackBoard constructor");
+            //Debug.Log("BaseNPCProcessWithBlackBoard constructor");
 #endif
         }
 
         protected override void OnChangeContext()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin BaseNPCProcessWithBlackBoard OnChangeContext");
+            //Debug.Log("Begin BaseNPCProcessWithBlackBoard OnChangeContext");
 #endif
 
             var blackBoard = Context.GetInstance<T>();
@@ -35,7 +35,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log($"End BaseNPCProcessWithBlackBoard OnChangeContext (blackBoard == null) = {blackBoard == null}");
+            //Debug.Log($"End BaseNPCProcessWithBlackBoard OnChangeContext (blackBoard == null) = {blackBoard == null}");
 #endif
         }
 

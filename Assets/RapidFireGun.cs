@@ -307,7 +307,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     public bool SetToHandsOfHumanoid(IHumanoid humanoid)
     {
 #if UNITY_EDITOR
-        Debug.Log("Begin RapidFireGun SetToHandsOfHumanoid");
+        //Debug.Log("Begin RapidFireGun SetToHandsOfHumanoid");
 #endif
 
         var targetParent = humanoid.RightHandWP.transform;
@@ -315,7 +315,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         if(Body.transform.parent == targetParent)
         {
 #if UNITY_EDITOR
-            Debug.Log("RapidFireGun SetToHandsOfHumanoid Body.transform.parent == targetParent");
+            //Debug.Log("RapidFireGun SetToHandsOfHumanoid Body.transform.parent == targetParent");
 #endif
 
             return true;
@@ -340,7 +340,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         Body.gameObject.SetActive(true);
 
 #if UNITY_EDITOR
-        Debug.Log("End RapidFireGun SetToHandsOfHumanoid");
+        //Debug.Log("End RapidFireGun SetToHandsOfHumanoid");
 #endif
 
         return true;
@@ -349,13 +349,13 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     public bool SetAsAloneAndHide()
     {
 #if UNITY_EDITOR
-        Debug.Log("Begin RapidFireGun SetAsAloneAndHide");
+        //Debug.Log("Begin RapidFireGun SetAsAloneAndHide");
 #endif
 
         if(Body.transform.parent == null && !Body.gameObject.activeSelf)
         {
 #if UNITY_EDITOR
-            Debug.Log("RapidFireGun  SetAsAloneAndHide Body.transform.parent == null && !Body.gameObject.activeSelf");
+            //Debug.Log("RapidFireGun  SetAsAloneAndHide Body.transform.parent == null && !Body.gameObject.activeSelf");
 #endif
 
             return true;
@@ -365,7 +365,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         Body.gameObject.SetActive(false);
 
 #if UNITY_EDITOR
-        Debug.Log("End RapidFireGun SetAsAloneAndHide");
+        //Debug.Log("End RapidFireGun SetAsAloneAndHide");
 #endif
 
         return true;
@@ -374,13 +374,13 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     public bool ThrowOutToSurface()
     {
 #if UNITY_EDITOR
-        Debug.Log("Begin RapidFireGun ThrowOutToSurface");
+        //Debug.Log("Begin RapidFireGun ThrowOutToSurface");
 #endif
 
         if (Body.transform.parent == null && Body.gameObject.activeSelf)
         {
 #if UNITY_EDITOR
-            Debug.Log("RapidFireGun ThrowOutToSurface Body.transform.parent == null && Body.gameObject.activeSelf");
+            //Debug.Log("RapidFireGun ThrowOutToSurface Body.transform.parent == null && Body.gameObject.activeSelf");
 #endif
 
             return true;
@@ -401,7 +401,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         }
 
 #if UNITY_EDITOR
-        Debug.Log("End RapidFireGun ThrowOutToSurface");
+        //Debug.Log("End RapidFireGun ThrowOutToSurface");
 #endif
 
         return true;

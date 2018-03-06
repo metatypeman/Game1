@@ -550,7 +550,7 @@ namespace Assets.Scripts
 
             tmpTask.OnStateChangedToRanToCompletion += () => {
 #if UNITY_EDITOR
-                Debug.Log("TSTTakeFromSurfaceProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
+                //Debug.Log("TSTTakeFromSurfaceProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
 #endif
 
                 var targetGameObj = MyGameObjectsBus.GetObject(mInstanceId);
@@ -577,7 +577,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TstHideRifleToBagPackProcess OnRun");
+            //Debug.Log("Begin TstHideRifleToBagPackProcess OnRun");
 #endif
 
             BlackBoard.RapidFireGunProxy.Instance = null;
@@ -588,13 +588,13 @@ namespace Assets.Scripts
 
             tmpTask.OnStateChangedToRanToCompletion += () => {
 #if UNITY_EDITOR
-                Debug.Log("TstHideRifleToBagPackProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
+                //Debug.Log("TstHideRifleToBagPackProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
 #endif
 
             };
 
 #if UNITY_EDITOR
-            Debug.Log("End TstHideRifleToBagPackProcess OnRun");
+            //Debug.Log("End TstHideRifleToBagPackProcess OnRun");
 #endif
         }
     }
@@ -612,7 +612,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TstThrowOutToSurfaceRifleToSurfaceProcess OnRun");
+            //Debug.Log("Begin TstThrowOutToSurfaceRifleToSurfaceProcess OnRun");
 #endif
 
             BlackBoard.RapidFireGunProxy.Instance = null;
@@ -623,12 +623,12 @@ namespace Assets.Scripts
 
             tmpTask.OnStateChangedToRanToCompletion += () => {
 #if UNITY_EDITOR
-                Debug.Log("TstThrowOutToSurfaceRifleToSurfaceProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
+                //Debug.Log("TstThrowOutToSurfaceRifleToSurfaceProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
 #endif
             };
 
 #if UNITY_EDITOR
-            Debug.Log("End TstThrowOutToSurfaceRifleToSurfaceProcess OnRun");
+            //Debug.Log("End TstThrowOutToSurfaceRifleToSurfaceProcess OnRun");
 #endif
         }
     }
