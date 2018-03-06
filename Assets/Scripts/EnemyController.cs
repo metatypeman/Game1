@@ -183,13 +183,13 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         var targetState = targetStateForExecuting.ProcessedState;
 
 #if UNITY_EDITOR
-        Debug.Log($"EnemyController Execute targetState = {targetState}");
+        //Debug.Log($"EnemyController Execute targetState = {targetState}");
 #endif
 
         var newState = CreateTargetState(mStates, targetState);
 
 #if UNITY_EDITOR
-        Debug.Log($"EnemyController Execute newState = {newState}");
+        //Debug.Log($"EnemyController Execute newState = {newState}");
 #endif
 
         if(newState.KindOfThingsCommand != KindOfHumanoidThingsCommand.Undefined && newState.InstanceOfThingId != 0)
@@ -207,7 +207,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
     private void ExecuteThingsCommand(StatesOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
-        Debug.Log($"EnemyController ExecuteThingsCommand targetState = {targetState}");
+        //Debug.Log($"EnemyController ExecuteThingsCommand targetState = {targetState}");
 #endif
 
         var kindOfThingsCommand = targetState.KindOfThingsCommand;
@@ -240,10 +240,6 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
 
             case KindOfHumanoidThingsCommand.ThrowOutToSurface:
                 {
-#if UNITY_EDITOR
-                    Debug.Log($"EnemyController ExecuteThingsCommand case KindOfHumanoidThingsCommand.ThrowOutToSurface Not implemented yet!!!!!!");
-#endif
-
                     thing.ThrowOutToSurface();
                     mStates.HandsState = HumanoidHandsState.FreeHands;
                     mStates.HandsActionState = HumanoidHandsActionState.Empty;
@@ -712,8 +708,8 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
                     var oldY = Head.position.y;
 
 #if UNITY_EDITOR
-                    Debug.Log($"EnemyController Update oldY = {oldY}");
-                    Debug.Log($"EnemyController Update Head.localPosition.y = {Head.localPosition.y}");
+                    //Debug.Log($"EnemyController Update oldY = {oldY}");
+                    //Debug.Log($"EnemyController Update Head.localPosition.y = {Head.localPosition.y}");
 #endif
 
                     var newPosition = globalDirection + transform.position;
@@ -746,152 +742,3 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         }
     }
 }
-
-/*
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            //var tmpVar = new TmpClass();
-            //tmpVar.DynamicData.Color = "red";
-            //tmpVar.DynamicData.State = "Filed";
-
-            //NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpVar.DynamicData.Color = {tmpVar.DynamicData.Color}");
-            //NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpVar.DynamicData.State = {tmpVar.DynamicData.State}");
-
-            //var dynamicDict = tmpVar.DynamicData as IDictionary<string, object>;
-
-            //foreach (var item in dynamicDict)
-            //{
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"Main item.Value = {item.Value} item.Key = {item.Key}");
-            //}
-
-            //try
-            //{
-            //    Console.WriteLine("Input target PID:");
-            //    var targetPIDStr = Console.ReadLine();
-
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"Main targetPIDStr = '{targetPIDStr}'");
-            //    var targetPID = int.Parse(targetPIDStr);
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"Main targetPID = {targetPID}");
-            //    var killedProcess = Process.GetProcessById(targetPID);
-            //    killedProcess.Kill();
-            //}
-            //catch(Exception e)
-            //{
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"Main e = {e}");
-            //}
-
-            TSTRotate(15f);
-            NLog.LogManager.GetCurrentClassLogger().Info("Main-------------------------------");
-            TSTRotate(-12f);
-            NLog.LogManager.GetCurrentClassLogger().Info("Main-------------------------------");
-            TSTRotate(6f);
-        }
-
-        private static float mCurrentAngle = 0f;
-        private static float mAngleSpeed = 2f;
-        private static float mTargetAngle;
-        private static float mAngleDelta;
-        private static float mAbsAngleDelta;
-
-        private static bool mNeedStopChanges;
-
-        private static void TSTRotate(float targetAngle)
-        {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTRotate");
-
-            if(targetAngle == mCurrentAngle)
-            {
-                return;
-            }
-
-            mTargetAngle = targetAngle;
-            mNeedStopChanges = false;
-
-            InitRotate();
-
-            if(mNeedStopChanges)
-            {
-                return;
-            }
-
-            var n = 0;
-
-            while(true)
-            {
-                Update();
-
-                if(mNeedStopChanges)
-                {
-                    break;
-                }
-
-                n++;
-
-                if(n == 100)
-                {
-                    break;
-                }
-            }
-
-            NLog.LogManager.GetCurrentClassLogger().Info("End TSTRotate");
-        }
-
-        private static void InitRotate()
-        {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin InitRotate");
-            NLog.LogManager.GetCurrentClassLogger().Info($"InitRotate mCurrentAngle = {mCurrentAngle}");
-            NLog.LogManager.GetCurrentClassLogger().Info($"InitRotate mAngleSpeed = {mAngleSpeed}");
-
-            if(mTargetAngle > mCurrentAngle)
-            {
-                mAngleDelta = mAngleSpeed;
-            }
-            else
-            {
-                mAngleDelta = -1 * mAngleSpeed;
-            }
-
-            NLog.LogManager.GetCurrentClassLogger().Info($"InitRotate mAngleDelta = {mAngleDelta}");
-
-            mAbsAngleDelta = Math.Abs(mAngleDelta);
-
-            NLog.LogManager.GetCurrentClassLogger().Info($"InitRotate mAbsAngleDelta = {mAbsAngleDelta}");
-
-            NLog.LogManager.GetCurrentClassLogger().Info("End InitRotate");
-        }
-
-        private static void Update()
-        {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin Update");
-            NLog.LogManager.GetCurrentClassLogger().Info($"Update before mCurrentAngle = {mCurrentAngle}");
-
-            var newAngle = mCurrentAngle + mAngleDelta;
-
-            NLog.LogManager.GetCurrentClassLogger().Info($"Update newAngle = {newAngle}");
-
-            var tmpAbsDelta = Math.Abs(mTargetAngle - newAngle);
-
-            NLog.LogManager.GetCurrentClassLogger().Info($"Update tmpAbsDelta = {tmpAbsDelta}");
-
-            if(tmpAbsDelta >= mAbsAngleDelta)
-            {
-                mCurrentAngle = newAngle;
-            }
-            else
-            {
-                NLog.LogManager.GetCurrentClassLogger().Info("Update tmpAbsDelta < mAbsAngleDelta");
-
-                mCurrentAngle = mTargetAngle;
-
-                mNeedStopChanges = true;
-            }
-
-            NLog.LogManager.GetCurrentClassLogger().Info($"Update after mCurrentAngle = {mCurrentAngle}");
-            NLog.LogManager.GetCurrentClassLogger().Info("End Update");
-        }
-    }
-
- 
-*/
