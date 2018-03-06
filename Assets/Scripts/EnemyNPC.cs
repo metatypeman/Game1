@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using MyNPCLib;
 
 [RequireComponent(typeof(EnemyController))]
 [RequireComponent(typeof(EnemyRayScaner))]
@@ -99,7 +100,7 @@ public class EnemyNPC : MonoBehaviour
             var tmpProcess = new TstHideRifleToBagPackProcess(mNPCProcessesContext, mInstanceIdOfRifle);
             tmpProcess.RunAsync();
         }
-            
+
         //var render = mGunBody.GetComponentInChildren<MeshRenderer>();
 
         //render.enabled = false;
@@ -128,7 +129,11 @@ public class EnemyNPC : MonoBehaviour
         //if(Mathf.Abs(angle) > 8)
         //{
         //    transform.rotation = Quaternion.Euler(0, -1 * angle * 0.9f , 0) * transform.rotation;
-        //}      
+        //} 
+
+        var cls = new Class1();
+        cls.Run();
+        cls.Tst();
     }
 
     private void OnBPressAction(KeyCode key)
