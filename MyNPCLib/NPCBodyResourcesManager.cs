@@ -6,6 +6,15 @@ namespace MyNPCLib
 {
     public class NPCBodyResourcesManager: INPCResourcesManager
     {
+        public NPCBodyResourcesManager(IIdFactory idFactory)
+        {
+            e
+        }
+
+#region private members
+        private IIdFactory mIdFactory;
+#endregion
+
         public INPCProcess Send(INPCCommand command)
         {
 #if DEBUG
