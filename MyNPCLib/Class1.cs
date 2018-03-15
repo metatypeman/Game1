@@ -14,7 +14,7 @@ namespace MyNPCLib
 
         public void Tst()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Tst");
+            LogInstance.Log("Tst");
         }
     }
 }

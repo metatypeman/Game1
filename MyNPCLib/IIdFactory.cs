@@ -4,8 +4,8 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    public interface INPCProcess
+    public interface IIdFactory
     {
-        StateOfNPCProcess State { get; }
+        ulong GetNewId();
     }
 }

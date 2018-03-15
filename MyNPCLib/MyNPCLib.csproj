@@ -5,8 +5,4 @@
     <PostBuildEvent>copy MyNPCLib.dll $(SolutionDir)Assets\MyNPCLib.dll</PostBuildEvent>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.0-rc07" />
-  </ItemGroup>
-
 </Project>
