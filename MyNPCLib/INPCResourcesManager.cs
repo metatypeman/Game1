@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    public interface INPCResourcesManager
+    public interface INPCResourcesManager : IDisposable
     {
         INPCProcess Send(INPCCommand command);
     }

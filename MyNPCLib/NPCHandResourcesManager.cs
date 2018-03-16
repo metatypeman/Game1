@@ -13,7 +13,26 @@ namespace MyNPCLib
 
 #region private members
         private IIdFactory mIdFactory;
-#endregion
+        private object mStateLockObj = new object();
+        private StateOfNPCContext mState = StateOfNPCContext.Created;
+        #endregion
+
+        public void Dispose()
+        {
+#if DEBUG
+            LogInstance.Log("NPCHandResourcesManager Dispose");
+#endif
+
+            lock (mStateLockObj)
+            {
+                if (mState == StateOfNPCContext.Destroyed)
+                {
+                    return;
+                }
+
+                mState = StateOfNPCContext.Destroyed;
+            }
+        }
 
         public INPCProcess Send(INPCCommand command)
         {
@@ -21,7 +40,15 @@ namespace MyNPCLib
             LogInstance.Log($"NPCBodyResourcesManager Send command = {command}");
 #endif
 
-            return null;
+            lock (mStateLockObj)
+            {
+                if (mState != StateOfNPCContext.Working)
+                {
+                    throw new ElementIsNotActiveException();
+                }
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

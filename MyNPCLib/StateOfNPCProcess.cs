@@ -6,5 +6,7 @@ namespace MyNPCLib
 {
     public enum StateOfNPCProcess
     {
+        Created,
+        Destroyed
     }
 }

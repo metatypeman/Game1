@@ -4,8 +4,10 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    public interface INPCProcess : IDisposable
+    public enum StateOfNPCContext
     {
-        StateOfNPCProcess State { get; }
+        Created,
+        Working,
+        Destroyed
     }
 }

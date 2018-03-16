@@ -7,5 +7,10 @@ namespace TmpSandBox
 {
     public class TmpConcreteNPCContext: BaseNPCContext
     {
+        public TmpConcreteNPCContext()
+        {
+            AddTypeOfProcess<TmpConcreteNPCProcess>();
+            Bootstrap<TmpConcreteNPCProcess>();
+        }
     }
 }

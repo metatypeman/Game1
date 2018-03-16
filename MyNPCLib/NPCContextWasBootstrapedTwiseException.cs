@@ -4,8 +4,7 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    public interface INPCProcess : IDisposable
+    public class NPCContextWasBootstrapedTwiseException : Exception
     {
-        StateOfNPCProcess State { get; }
     }
 }
