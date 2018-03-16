@@ -8,7 +8,7 @@ namespace MyNPCLib
     {
         public NPCBodyResourcesManager(IIdFactory idFactory)
         {
-            e
+            mIdFactory = idFactory;
         }
 
 #region private members

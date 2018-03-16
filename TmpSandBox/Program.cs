@@ -17,15 +17,9 @@ namespace TmpSandBox
         {
             NLog.LogManager.GetCurrentClassLogger().Info("Begin CreateContextAndProcessesCase1");
 
-            var idFactory = new IdFactory();
+            var tmpContext = new TmpConcreteNPCContext();
 
-            var i = idFactory.GetNewId();
-
-            NLog.LogManager.GetCurrentClassLogger().Info($"CreateContextAndProcessesCase1 i = {i}");
-
-            i = idFactory.GetNewId();
-
-            NLog.LogManager.GetCurrentClassLogger().Info($"CreateContextAndProcessesCase1 i = {i}");
+            NLog.LogManager.GetCurrentClassLogger().Info("End CreateContextAndProcessesCase1");
         }
     }
 }

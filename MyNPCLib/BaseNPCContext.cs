@@ -8,17 +8,23 @@ namespace MyNPCLib
     {
         public BaseNPCContext()
         {
-
+            mIdFactory = new IdFactory();
+            mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory);
+            mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory);
+            mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory);
         }
 
         #region private members
-        private IdFactory mIdFactory = new IdFactory();
+        private IdFactory mIdFactory;
+        private NPCBodyResourcesManager mBodyResourcesManager;
+        private NPCHandResourcesManager mLeftHandResourcesManager;
+        private NPCHandResourcesManager mRightHandResourcesManager;
         #endregion
 
-        public INPCResourcesManager Body { get; }
-        public INPCResourcesManager DefaultHand { get; }
-        public INPCResourcesManager LeftHand { get; }
-        public INPCResourcesManager RightHand { get; }
+        public INPCResourcesManager Body => mBodyResourcesManager;
+        public INPCResourcesManager DefaultHand => mRightHandResourcesManager;
+        public INPCResourcesManager LeftHand => mLeftHandResourcesManager;
+        public INPCResourcesManager RightHand => mRightHandResourcesManager;
 
         public INPCProcess Send(INPCCommand command)
         {

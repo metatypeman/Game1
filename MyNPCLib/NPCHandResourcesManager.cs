@@ -8,7 +8,7 @@ namespace MyNPCLib
     {
         public NPCHandResourcesManager(IIdFactory idFactory)
         {
-            d
+            mIdFactory = idFactory;
         }
 
 #region private members
