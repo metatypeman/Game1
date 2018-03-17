@@ -14,13 +14,13 @@ namespace XUnitTests
             IIdFactory idFactory = new IdFactory();
 
             var value1 = idFactory.GetNewId();
-            Assert.Equal<ulong>(1, value1);
+            Assert.Equal(1ul, value1);
 
             var value2 = idFactory.GetNewId();
-            Assert.Equal<ulong>(2, value2);
+            Assert.Equal(2ul, value2);
 
             var value3 = idFactory.GetNewId();
-            Assert.Equal<ulong>(3, value3);
+            Assert.Equal(3ul, value3);
         }
     }
 }

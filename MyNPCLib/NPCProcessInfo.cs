@@ -8,7 +8,8 @@ namespace MyNPCLib
     {
         public NPCProcessStartupMode StartupMode { get; set; } = NPCProcessStartupMode.Singleton;
         public string Name { get; set; }
-
+        public List<NPCProcessEntryPointInfo> EntryPointsInfoList { get; set; } = new List<NPCProcessEntryPointInfo>();
+        
         public override string ToString()
         {
             return ToString(0);
@@ -27,9 +28,23 @@ namespace MyNPCLib
         public string PropertiesToSting(int n)
         {
             var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(StartupMode)} = {StartupMode}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            if(EntryPointsInfoList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(EntryPointsInfoList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin{nameof(EntryPointsInfoList)}");
+                foreach(var entryPiontInfo in EntryPointsInfoList)
+                {
+                    sb.Append(entryPiontInfo.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End{nameof(EntryPointsInfoList)}");
+            }
             return sb.ToString();
         }
     }
