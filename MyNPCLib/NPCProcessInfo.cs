@@ -6,6 +6,9 @@ namespace MyNPCLib
 {
     public class NPCProcessInfo : IObjectToString
     {
+        public NPCProcessStartupMode StartupMode { get; set; } = NPCProcessStartupMode.Singleton;
+        public string Name { get; set; }
+
         public override string ToString()
         {
             return ToString(0);
@@ -25,6 +28,8 @@ namespace MyNPCLib
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(StartupMode)} = {StartupMode}");
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             return sb.ToString();
         }
     }

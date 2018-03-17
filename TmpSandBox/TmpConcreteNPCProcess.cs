@@ -5,13 +5,23 @@ using System.Text;
 
 namespace TmpSandBox
 {
+    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+    [NPCProcessName("test")]
     public class TmpConcreteNPCProcess: BaseNPCProcess
     {
-        protected override void FillProcessInfo(NPCProcessInfo processInfo)
+        public TmpConcreteNPCProcess()
         {
-#if DEBUG
-            NLog.LogManager.GetCurrentClassLogger().Info($"FillProcessInfo processInfo = {processInfo}");
-#endif
+            NLog.LogManager.GetCurrentClassLogger().Info("TmpConcreteNPCProcess");
+        }
+
+        private void Main()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Main");
+        }
+
+        private void Main(int arg)
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info($"Main arg = {arg}");
         }
     }
 }
