@@ -6,16 +6,26 @@ namespace MyNPCLib
 {
     public class BaseNPCContext: INPCContext
     {
-        public BaseNPCContext()
+        public BaseNPCContext(IEntityDictionary entityDictionary = null)
         {
+            if (entityDictionary == null)
+            {
+                mEntityDictionary = new EntityDictionary();
+            }
+            else
+            {
+                mEntityDictionary = entityDictionary;
+            }
+
             mIdFactory = new IdFactory();
-            mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory);
-            mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory);
-            mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory);
+            mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary);
+            mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary);
+            mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary);
         }
 
         #region private members
         private IdFactory mIdFactory;
+        private IEntityDictionary mEntityDictionary;
         private NPCBodyResourcesManager mBodyResourcesManager;
         private NPCHandResourcesManager mLeftHandResourcesManager;
         private NPCHandResourcesManager mRightHandResourcesManager;

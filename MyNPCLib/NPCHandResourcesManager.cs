@@ -13,6 +13,7 @@ namespace MyNPCLib
 
 #region private members
         private IIdFactory mIdFactory;
+        private IEntityDictionary mEntityDictionary;
         private object mStateLockObj = new object();
         private StateOfNPCContext mState = StateOfNPCContext.Created;
         #endregion
