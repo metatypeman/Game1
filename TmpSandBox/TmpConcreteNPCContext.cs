@@ -7,7 +7,8 @@ namespace TmpSandBox
 {
     public class TmpConcreteNPCContext: BaseNPCContext
     {
-        public TmpConcreteNPCContext()
+        public TmpConcreteNPCContext(IEntityDictionary entityDictionary = null)
+            : base(entityDictionary)
         {
             AddTypeOfProcess<TmpConcreteNPCProcess>();
             Bootstrap<TmpConcreteNPCProcess>();

@@ -6,9 +6,10 @@ namespace MyNPCLib
 {
     public class NPCBodyResourcesManager: INPCResourcesManager
     {
-        public NPCBodyResourcesManager(IIdFactory idFactory)
+        public NPCBodyResourcesManager(IIdFactory idFactory, IEntityDictionary entityDictionary)
         {
             mIdFactory = idFactory;
+            mEntityDictionary = entityDictionary;
         }
 
 #region private members

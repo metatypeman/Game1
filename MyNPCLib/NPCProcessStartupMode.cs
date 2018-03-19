@@ -6,8 +6,8 @@ namespace MyNPCLib
 {
     public enum NPCProcessStartupMode
     {
-        NewStandaloneInstance,
         NewInstance,
+        NewStandaloneInstance,       
         Singleton
     }
 }

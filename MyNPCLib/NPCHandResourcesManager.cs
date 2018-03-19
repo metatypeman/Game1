@@ -6,9 +6,10 @@ namespace MyNPCLib
 {
     public class NPCHandResourcesManager: INPCResourcesManager
     {
-        public NPCHandResourcesManager(IIdFactory idFactory)
+        public NPCHandResourcesManager(IIdFactory idFactory, IEntityDictionary entityDictionary)
         {
             mIdFactory = idFactory;
+            mEntityDictionary = entityDictionary;
         }
 
 #region private members

@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace MyNPCLib
 {
     public class NPCProcessInfo : IObjectToString
     {
-        public NPCProcessStartupMode StartupMode { get; set; } = NPCProcessStartupMode.Singleton;
+        public NPCProcessStartupMode StartupMode { get; set; } = NPCProcessStartupMode.NewInstance;
         public string Name { get; set; }
+        public ulong Key { get; set; }
+        public Type Type { get; set; }
+        public TypeInfo TypeInfo { get; set; }
         public List<NPCProcessEntryPointInfo> EntryPointsInfoList { get; set; } = new List<NPCProcessEntryPointInfo>();
         
         public override string ToString()
@@ -32,7 +36,9 @@ namespace MyNPCLib
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(StartupMode)} = {StartupMode}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
-            if(EntryPointsInfoList == null)
+            sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            sb.AppendLine($"{spaces}NameOfType = {Type.FullName}");
+            if (EntryPointsInfoList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(EntryPointsInfoList)} = null");
             }
