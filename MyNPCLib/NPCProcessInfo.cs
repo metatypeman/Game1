@@ -48,6 +48,7 @@ namespace MyNPCLib
                 foreach(var entryPiontInfo in EntryPointsInfoList)
                 {
                     sb.Append(entryPiontInfo.ToString(nextN));
+                    sb.AppendLine();
                 }
                 sb.AppendLine($"{spaces}End{nameof(EntryPointsInfoList)}");
             }

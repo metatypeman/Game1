@@ -20,9 +20,9 @@ namespace MyNPCLib
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}Begin {nameof(NPCProcessInfo)}");
+            sb.AppendLine($"{spaces}Begin {nameof(NPCProcessEntryPointInfo)}");
             sb.Append(PropertiesToSting(n));
-            sb.AppendLine($"{spaces}End {nameof(NPCProcessInfo)}");
+            sb.AppendLine($"{spaces}End {nameof(NPCProcessEntryPointInfo)}");
             return sb.ToString();
         }
 

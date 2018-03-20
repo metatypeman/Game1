@@ -23,5 +23,34 @@ namespace TmpSandBox
         {
             NLog.LogManager.GetCurrentClassLogger().Info($"Main arg = {arg}");
         }
+
+        public void Main(string arg)
+        {
+
+        }
+
+        protected void Main(bool arg)
+        {
+
+        }
+    }
+
+    public class TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess : BaseNPCProcess
+    {
+        public void Main()
+        {
+        }
+
+        public void Main(int someArgument)
+        {
+        }
+
+        public void Main(bool someArgument, int secondArgument)
+        {
+        }
+
+        public void Main(int someArgument, int secondArgument)
+        {
+        }
     }
 }
