@@ -237,6 +237,47 @@ namespace XUnitTests
             CommonAssertsForEachWithFourEntryPoints(npcProcessInfo, globalEntityDictionary);
         }
 
+        private void CommonAssertsForEachWithFiveEntryPoints(NPCProcessInfo npcProcessInfo, IEntityDictionary entityDictionary)
+        {
+            Assert.Equal(5, npcProcessInfo.EntryPointsInfoList.Count);
+
+            CommonAssertsForMainWithoutArgs(npcProcessInfo.EntryPointsInfoList);
+            CommonAssertsForMain_int(npcProcessInfo.EntryPointsInfoList, entityDictionary);
+            CommonAssertsForMain_bool(npcProcessInfo.EntryPointsInfoList, entityDictionary);
+            CommonAssertsForMain_bool_int(npcProcessInfo.EntryPointsInfoList, entityDictionary);
+            CommonAssertsForMain_int_int(npcProcessInfo.EntryPointsInfoList, entityDictionary);
+        }
+
+        private void CommonAssertsForMain_int_int(List<NPCProcessEntryPointInfo> entryPointsInfoList, IEntityDictionary entityDictionary)
+        {
+            var npcProcessInfoEntryPoint = entryPointsInfoList.SingleOrDefault(p => p.ParametersMap.Count == 2 && p.ParametersMap.Values.Count(x => x == typeof(int)) == 2);
+
+            CommonAssertsForEntryPoint(npcProcessInfoEntryPoint);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.ParametersMap);
+            Assert.Equal(2, npcProcessInfoEntryPoint.ParametersMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedParametersMap);
+            Assert.Equal(2, npcProcessInfoEntryPoint.IndexedParametersMap.Count);
+
+            var someArgument = npcProcessInfoEntryPoint.ParametersMap["someArgument"];
+            Assert.Equal(typeof(int), someArgument);
+
+            var someArgumentKey = entityDictionary.GetKey("someArgument");
+
+            var indexedSomeArgument = npcProcessInfoEntryPoint.IndexedParametersMap[someArgumentKey];
+            Assert.Equal(typeof(int), indexedSomeArgument);
+
+
+            var secondArgument = npcProcessInfoEntryPoint.ParametersMap["secondArgument"];
+            Assert.Equal(typeof(int), secondArgument);
+
+            var secondArgumentKey = entityDictionary.GetKey("secondArgument");
+
+            var indexedSecondArgument = npcProcessInfoEntryPoint.IndexedParametersMap[secondArgumentKey];
+            Assert.Equal(typeof(int), indexedSecondArgument);
+        }
+
         [Fact]
         public void CreateTestedNPCProcessInfoWithFiveEntryPointsAndWithoutAttributesNPCProcess()
         {
@@ -248,31 +289,8 @@ namespace XUnitTests
 
             CommonAssertsForEachCreatedNPCProcessInfo(npcProcessInfo, globalEntityDictionary, type);
             CommonAssertsForEachWithoutEntryPointsAndWithoutAttributesNPCProcess(npcProcessInfo, type);
-
-            throw new NotImplementedException();
+            CommonAssertsForEachWithFiveEntryPoints(npcProcessInfo, globalEntityDictionary);
         }
-        /*public class TestedNPCProcessInfoWithFiveEntryPointsAndWithoutAttributesNPCProcess : BaseNPCProcess
-        {
-            public void Main()
-            {
-            }
-
-            public void Main(int someArgument)
-            {
-            }
-
-            public void Main(bool someArgument)
-            {
-            }
-
-            public void Main(bool someArgument, int secondArgument)
-            {
-            }
-
-            public void Main(int someArgument, int secondArgument)
-            {
-            }
-        }*/
 
         private void CommonAssertsForEachWithNameAndWithoutStartupModeNPCProcess(NPCProcessInfo npcProcessInfo)
         {
@@ -361,32 +379,8 @@ namespace XUnitTests
 
             CommonAssertsForEachCreatedNPCProcessInfo(npcProcessInfo, globalEntityDictionary, type);
             CommonAssertsForEachWithNameAndWithoutStartupModeNPCProcess(npcProcessInfo);
-
-            throw new NotImplementedException();
+            CommonAssertsForEachWithFiveEntryPoints(npcProcessInfo, globalEntityDictionary);
         }
-        /*[NPCProcessName("SomeName")]
-        public class TestedNPCProcessInfoWithFiveEntryPointsAndWithNameAndWithoutStartupModeNPCProcess : BaseNPCProcess
-        {
-            public void Main()
-            {
-            }
-
-            public void Main(int someArgument)
-            {
-            }
-
-            public void Main(bool someArgument)
-            {
-            }
-
-            public void Main(bool someArgument, int secondArgument)
-            {
-            }
-
-            public void Main(int someArgument, int secondArgument)
-            {
-            }
-        }*/
 
         private void CommonAssertsForEachWithoutNameAndWithStartupModeNPCProcess(NPCProcessInfo npcProcessInfo, Type type)
         {
@@ -475,32 +469,8 @@ namespace XUnitTests
 
             CommonAssertsForEachCreatedNPCProcessInfo(npcProcessInfo, globalEntityDictionary, type);
             CommonAssertsForEachWithoutNameAndWithStartupModeNPCProcess(npcProcessInfo, type);
-
-            throw new NotImplementedException();
+            CommonAssertsForEachWithFiveEntryPoints(npcProcessInfo, globalEntityDictionary);
         }
-        /*[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        public class TestedNPCProcessInfoWithFiveEntryPointsAndWithoutNameAndWithStartupModeNPCProcess : BaseNPCProcess
-        {
-            public void Main()
-            {
-            }
-
-            public void Main(int someArgument)
-            {
-            }
-
-            public void Main(bool someArgument)
-            {
-            }
-
-            public void Main(bool someArgument, int secondArgument)
-            {
-            }
-
-            public void Main(int someArgument, int secondArgument)
-            {
-            }
-        }*/
 
         private void CommonAssertsForEachWithNameAndWithStartupModeNPCProcess(NPCProcessInfo npcProcessInfo)
         {
@@ -589,32 +559,7 @@ namespace XUnitTests
 
             CommonAssertsForEachCreatedNPCProcessInfo(npcProcessInfo, globalEntityDictionary, type);
             CommonAssertsForEachWithNameAndWithStartupModeNPCProcess(npcProcessInfo);
-
-            throw new NotImplementedException();
+            CommonAssertsForEachWithFiveEntryPoints(npcProcessInfo, globalEntityDictionary);
         }
-        /*[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        [NPCProcessName("SomeName")]
-        public class TestedNPCProcessInfoWithFiveEntryPointsAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
-        {
-            public void Main()
-            {
-            }
-
-            public void Main(int someArgument)
-            {
-            }
-
-            public void Main(bool someArgument)
-            {
-            }
-
-            public void Main(bool someArgument, int secondArgument)
-            {
-            }
-
-            public void Main(int someArgument, int secondArgument)
-            {
-            }
-        }*/
     }
 }

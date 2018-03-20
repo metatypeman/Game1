@@ -48,7 +48,7 @@ namespace XUnitTests
         {
         }
 
-        public void Main(int someArgument)
+        private void Main(int someArgument)
         {
         }
 
@@ -56,7 +56,7 @@ namespace XUnitTests
         {
         }
 
-        public void Main(bool someArgument, int secondArgument)
+        protected void Main(bool someArgument, int secondArgument)
         {
         }
     }
