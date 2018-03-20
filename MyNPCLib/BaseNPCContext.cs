@@ -6,7 +6,7 @@ namespace MyNPCLib
 {
     public class BaseNPCContext: INPCContext
     {
-        public BaseNPCContext(IEntityDictionary entityDictionary = null)
+        public BaseNPCContext(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null)
         {
             if (entityDictionary == null)
             {
@@ -21,6 +21,7 @@ namespace MyNPCLib
             mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary);
             mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary);
             mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary);
+            mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache);
         }
 
         #region private members
@@ -29,6 +30,7 @@ namespace MyNPCLib
         private NPCBodyResourcesManager mBodyResourcesManager;
         private NPCHandResourcesManager mLeftHandResourcesManager;
         private NPCHandResourcesManager mRightHandResourcesManager;
+        private StorageOfNPCProcesses mStorageOfNPCProcesses;
 
         private object mStateLockObj = new object();
         private StateOfNPCContext mState = StateOfNPCContext.Created;
@@ -101,6 +103,7 @@ namespace MyNPCLib
 
             mLeftHandResourcesManager.Dispose();
             mRightHandResourcesManager.Dispose();
+            mStorageOfNPCProcesses.Dispose();
         }
 
         public INPCProcess Send(INPCCommand command)
