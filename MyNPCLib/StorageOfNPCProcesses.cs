@@ -18,9 +18,17 @@ namespace MyNPCLib
         private IEntityDictionary mEntityDictionary;
         private NPCProcessInfoCache mNPCProcessInfoCache;
         private object mDisposeLockObj = new object();
+        private bool mIsDisposed;
         #endregion
 
-        private bool mIsDisposed;
+        public void AddTypeOfProcess(Type type)
+        {
+#if DEBUG
+            LogInstance.Log($"StorageOfNPCProcesses AddTypeOfProcess type = {type?.FullName}");
+#endif
+
+            throw new NotImplementedException();
+        }
 
         public void Dispose()
         {
