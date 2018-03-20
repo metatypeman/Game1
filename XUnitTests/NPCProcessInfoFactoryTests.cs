@@ -6,29 +6,18 @@ namespace XUnitTests
 {
     public class NPCProcessInfoFactoryTests
     {
-        public void CreateTestedNPCProcessInfoWithoutEntryPointsAndWithoutAttributes()
+        /*public class TestedNPCProcessInfoWithoutEntryPointsAndWithoutAttributes : BaseNPCProcess
         {
-        }
+        }*/
 
-        public void CreateTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributes
-        {
-            public void Main()
-            {
-            }
-        }
-
-        public void CreateTestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributes
+        /*public class TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributes : BaseNPCProcess
         {
             public void Main()
             {
             }
+        }*/
 
-            public void Main(int someArgument)
-            {
-            }
-        }
-
-        public void CreateTestedNPCProcessInfoWithThreeEntryPointsAndWithoutAttributes
+        /*public class TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributes : BaseNPCProcess
         {
             public void Main()
             {
@@ -37,81 +26,9 @@ namespace XUnitTests
             public void Main(int someArgument)
             {
             }
+        }*/
 
-            public void Main(bool someArgument)
-            {
-            }
-        }
-
-        public void CreateTestedNPCProcessInfoWithFourEntryPointsAndWithoutAttributes : BaseNPCProcess
-        {
-            public void Main()
-            {
-            }
-
-            public void Main(int someArgument)
-            {
-            }
-
-            public void Main(bool someArgument)
-            {
-            }
-
-            public void Main(bool someArgument, int secondArgument)
-            {
-            }
-        }
-
-        public void CreateTestedNPCProcessInfoWithFiveEntryPointsAndWithoutAttributes : BaseNPCProcess
-        {
-            public void Main()
-            {
-            }
-
-            public void Main(int someArgument)
-            {
-            }
-
-            public void Main(bool someArgument)
-            {
-            }
-
-            public void Main(bool someArgument, int secondArgument)
-            {
-            }
-
-            public void Main(int someArgument, int secondArgument)
-            {
-            }
-        }
-
-        //[NPCProcessName("SomeName")]
-        public void CreateTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupMode : BaseNPCProcess
-        {
-        }
-
-        //[NPCProcessName("SomeName")]
-        public void CreateTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupMode : BaseNPCProcess
-        {
-            public void Main()
-            {
-            }
-        }
-
-        //[NPCProcessName("SomeName")]
-        public void CreateTestedNPCProcessInfoWithTwoEntryPointsAndWithNameAndWithoutStartupMode : BaseNPCProcess
-        {
-            public void Main()
-            {
-            }
-
-            public void Main(int someArgument)
-            {
-            }
-        }
-
-        //[NPCProcessName("SomeName")]
-        public void CreateTestedNPCProcessInfoThreeEntryPointsAndWithNameAndWithoutStartupMode : BaseNPCProcess
+        public class TestedNPCProcessInfoWithThreeEntryPointsAndWithoutAttributes : BaseNPCProcess
         {
             public void Main()
             {
@@ -126,8 +43,7 @@ namespace XUnitTests
             }
         }
 
-        //[NPCProcessName("SomeName")]
-        public void CreateTestedNPCProcessInfoWithFourEntryPointsAndWithNameAndWithoutStartupMode : BaseNPCProcess
+        public class TestedNPCProcessInfoWithFourEntryPointsAndWithoutAttributes : BaseNPCProcess
         {
             public void Main()
             {
@@ -146,8 +62,7 @@ namespace XUnitTests
             }
         }
 
-        //[NPCProcessName("SomeName")]
-        public void CreateTestedNPCProcessInfoWithFiveEntryPointsAndWithNameAndWithoutStartupMode : BaseNPCProcess
+        public class TestedNPCProcessInfoWithFiveEntryPointsAndWithoutAttributes : BaseNPCProcess
         {
             public void Main()
             {
@@ -170,21 +85,21 @@ namespace XUnitTests
             }
         }
 
-        //[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        public void CreateTestedNPCProcessInfoWithoutEntryPointsAndWithoutNameAndWithStartupMode : BaseNPCProcess
+        [NPCProcessName("SomeName")]
+        public class TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupMode : BaseNPCProcess
         {
         }
 
-        //[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        public void CreateTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutNameAndWithStartupMode : BaseNPCProcess
+        [NPCProcessName("SomeName")]
+        public class TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupMode : BaseNPCProcess
         {
             public void Main()
             {
             }
         }
 
-        //[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        public void CreateTestedNPCProcessInfoWithTwoEntryPointsAndWithoutNameAndWithStartupMode : BaseNPCProcess
+        [NPCProcessName("SomeName")]
+        public class TestedNPCProcessInfoWithTwoEntryPointsAndWithNameAndWithoutStartupMode : BaseNPCProcess
         {
             public void Main()
             {
@@ -195,8 +110,8 @@ namespace XUnitTests
             }
         }
 
-        //[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        public void CreateTestedNPCProcessInfoThreeEntryPointsAndWithoutNameAndWithStartupMode : BaseNPCProcess
+        [NPCProcessName("SomeName")]
+        public class TestedNPCProcessInfoThreeEntryPointsAndWithNameAndWithoutStartupMode : BaseNPCProcess
         {
             public void Main()
             {
@@ -211,8 +126,8 @@ namespace XUnitTests
             }
         }
 
-        //[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        public void CreateTestedNPCProcessInfoWithFourEntryPointsAndWithoutNameAndWithStartupMode : BaseNPCProcess
+        [NPCProcessName("SomeName")]
+        public class TestedNPCProcessInfoWithFourEntryPointsAndWithNameAndWithoutStartupMode : BaseNPCProcess
         {
             public void Main()
             {
@@ -231,8 +146,8 @@ namespace XUnitTests
             }
         }
 
-        //[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        public void CreateTestedNPCProcessInfoWithFiveEntryPointsAndWithoutNameAndWithStartupMode : BaseNPCProcess
+        [NPCProcessName("SomeName")]
+        public class TestedNPCProcessInfoWithFiveEntryPointsAndWithNameAndWithoutStartupMode : BaseNPCProcess
         {
             public void Main()
             {
@@ -255,24 +170,21 @@ namespace XUnitTests
             }
         }
 
-        //[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        //[NPCProcessName("SomeName")]
-        public void CreateTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupMode : BaseNPCProcess
+        [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+        public class TestedNPCProcessInfoWithoutEntryPointsAndWithoutNameAndWithStartupMode : BaseNPCProcess
         {
         }
 
-        //[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        //[NPCProcessName("SomeName")]
-        public void CreateTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupMode : BaseNPCProcess
+        [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+        public class TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutNameAndWithStartupMode : BaseNPCProcess
         {
             public void Main()
             {
             }
         }
 
-        //[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        //[NPCProcessName("SomeName")]
-        public void CreateTestedNPCProcessInfoWithTwoEntryPointsAndWithNameAndWithStartupMode : BaseNPCProcess
+        [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+        public class TestedNPCProcessInfoWithTwoEntryPointsAndWithoutNameAndWithStartupMode : BaseNPCProcess
         {
             public void Main()
             {
@@ -283,22 +195,154 @@ namespace XUnitTests
             }
         }
 
-        //[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        //[NPCProcessName("SomeName")]
-        public void CreateTestedNPCProcessInfoThreeEntryPointsAndWithNameAndWithStartupMode : BaseNPCProcess
+        [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+        public class TestedNPCProcessInfoThreeEntryPointsAndWithoutNameAndWithStartupMode : BaseNPCProcess
+        {
+            public void Main()
+            {
+            }
+
+            public void Main(int someArgument)
+            {
+            }
+
+            public void Main(bool someArgument)
+            {
+            }
+        }
+
+        [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+        public class TestedNPCProcessInfoWithFourEntryPointsAndWithoutNameAndWithStartupMode : BaseNPCProcess
+        {
+            public void Main()
+            {
+            }
+
+            public void Main(int someArgument)
+            {
+            }
+
+            public void Main(bool someArgument)
+            {
+            }
+
+            public void Main(bool someArgument, int secondArgument)
+            {
+            }
+        }
+
+        [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+        public class TestedNPCProcessInfoWithFiveEntryPointsAndWithoutNameAndWithStartupMode : BaseNPCProcess
+        {
+            public void Main()
+            {
+            }
+
+            public void Main(int someArgument)
+            {
+            }
+
+            public void Main(bool someArgument)
+            {
+            }
+
+            public void Main(bool someArgument, int secondArgument)
+            {
+            }
+
+            public void Main(int someArgument, int secondArgument)
+            {
+            }
+        }
+
+        [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+        [NPCProcessName("SomeName")]
+        public class TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupMode : BaseNPCProcess
         {
         }
 
-        //[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        //[NPCProcessName("SomeName")]
-        public void CreateTestedNPCProcessInfoWithFourEntryPointsAndWithNameAndWithStartupMode : BaseNPCProcess
+        [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+        [NPCProcessName("SomeName")]
+        public class TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupMode : BaseNPCProcess
         {
+            public void Main()
+            {
+            }
         }
 
-        //[NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-        //[NPCProcessName("SomeName")]
-        public void CreateTestedNPCProcessInfoWithFiveEntryPointsAndWithNameAndWithStartupMode : BaseNPCProcess
+        [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+        [NPCProcessName("SomeName")]
+        public class TestedNPCProcessInfoWithTwoEntryPointsAndWithNameAndWithStartupMode : BaseNPCProcess
         {
+            public void Main()
+            {
+            }
+
+            public void Main(int someArgument)
+            {
+            }
         }
-    }
+
+        [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+        [NPCProcessName("SomeName")]
+        public class TestedNPCProcessInfoThreeEntryPointsAndWithNameAndWithStartupMode : BaseNPCProcess
+        {
+            public void Main()
+            {
+            }
+
+            public void Main(int someArgument)
+            {
+            }
+
+            public void Main(bool someArgument)
+            {
+            }
+        }
+
+        [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+        [NPCProcessName("SomeName")]
+        public class TestedNPCProcessInfoWithFourEntryPointsAndWithNameAndWithStartupMode : BaseNPCProcess
+        {
+            public void Main()
+            {
+            }
+
+            public void Main(int someArgument)
+            {
+            }
+
+            public void Main(bool someArgument)
+            {
+            }
+
+            public void Main(bool someArgument, int secondArgument)
+            {
+            }
+        }
+
+        [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+        [NPCProcessName("SomeName")]
+        public class TestedNPCProcessInfoWithFiveEntryPointsAndWithNameAndWithStartupMode : BaseNPCProcess
+        {
+            public void Main()
+            {
+            }
+
+            public void Main(int someArgument)
+            {
+            }
+
+            public void Main(bool someArgument)
+            {
+            }
+
+            public void Main(bool someArgument, int secondArgument)
+            {
+            }
+
+            public void Main(int someArgument, int secondArgument)
+            {
+            }
+        }
 }
