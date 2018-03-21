@@ -9,8 +9,22 @@ namespace XUnitTests
 {
     public class NPCProcessInfoFactoryTests
     {
+        [Fact]
+        public void TryCreateByNullGotArgumentNullException()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void TryCreateByTypeWhatIsNotBasedOnBaseNPCProcessGotTypeIsNotNPCProcessException()
+        {
+            throw new NotImplementedException();
+        }
+
         private void CommonAssertsForEachCreatedNPCProcessInfo(NPCProcessInfo npcProcessInfo, IEntityDictionary entityDictionary, Type type)
         {
+            
+
             Assert.NotEqual(null, npcProcessInfo);
             Assert.NotEqual(null, npcProcessInfo.Name);
             Assert.NotEqual(string.Empty, npcProcessInfo.Name.Trim());
