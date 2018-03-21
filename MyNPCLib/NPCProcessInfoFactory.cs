@@ -11,17 +11,29 @@ namespace MyNPCLib
         public NPCProcessInfoFactory(IEntityDictionary entityDictionary)
         {
             mEntityDictionary = entityDictionary;
+            mTypeInfoOfBaseNPCProcess = typeof(BaseNPCProcess).GetTypeInfo();
         }
 
         #region private members
         private IEntityDictionary mEntityDictionary;
+        private TypeInfo mTypeInfoOfBaseNPCProcess;
         #endregion
 
         public NPCProcessInfo CreateInfo(Type type)
         {
-            var result = new NPCProcessInfo();
+            if(type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            if(!mTypeInfoOfBaseNPCProcess.IsAssignableFrom(type))
+            {
+                throw new TypeIsNotNPCProcessException(type);
+            }
 
             var typeInfo = type.GetTypeInfo();
+
+            var result = new NPCProcessInfo();
 
             result.Type = type;
             result.TypeInfo = typeInfo;

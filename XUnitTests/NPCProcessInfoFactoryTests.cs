@@ -10,21 +10,35 @@ namespace XUnitTests
     public class NPCProcessInfoFactoryTests
     {
         [Fact]
-        public void TryCreateByNullGotArgumentNullException()
+        public void TryCreateByNull_GotArgumentNullException()
         {
-            throw new NotImplementedException();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+
+            var e = Assert.Throws<ArgumentNullException>(() => {
+                var npcProcessInfo = npcProcessInfoFactory.CreateInfo(null);
+            });
+
+            Assert.Equal("type", e.ParamName);
         }
 
         [Fact]
-        public void TryCreateByTypeWhatIsNotBasedOnBaseNPCProcessGotTypeIsNotNPCProcessException()
+        public void TryCreateByTypeWhatIsNotBasedOnBaseNPCProcess_GotTypeIsNotNPCProcessException()
         {
-            throw new NotImplementedException();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+
+            var type = typeof(NPCProcessInfoFactoryTests);
+            
+            var e = Assert.Throws<TypeIsNotNPCProcessException>(() => {
+                var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
+            });
+
+            Assert.Equal(type, e.WrongType);
         }
 
         private void CommonAssertsForEachCreatedNPCProcessInfo(NPCProcessInfo npcProcessInfo, IEntityDictionary entityDictionary, Type type)
         {
-            
-
             Assert.NotEqual(null, npcProcessInfo);
             Assert.NotEqual(null, npcProcessInfo.Name);
             Assert.NotEqual(string.Empty, npcProcessInfo.Name.Trim());
