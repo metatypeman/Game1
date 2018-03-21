@@ -37,7 +37,7 @@ namespace XUnitTests
             Assert.Equal(type, e.WrongType);
         }
 
-        private void CommonAssertsForEachCreatedNPCProcessInfo(NPCProcessInfo npcProcessInfo, IEntityDictionary entityDictionary, Type type)
+        private static void CommonAssertsForEachCreatedNPCProcessInfo(NPCProcessInfo npcProcessInfo, IEntityDictionary entityDictionary, Type type)
         {
             Assert.NotEqual(null, npcProcessInfo);
             Assert.NotEqual(null, npcProcessInfo.Name);
@@ -60,7 +60,7 @@ namespace XUnitTests
             Assert.Equal(NPCProcessStartupMode.NewInstance, npcProcessInfo.StartupMode);
         }
 
-        private void CommonAssertsForEachWithoutEntryPoints(NPCProcessInfo npcProcessInfo)
+        private static void CommonAssertsForEachWithoutEntryPoints(NPCProcessInfo npcProcessInfo)
         {
             Assert.Equal(0, npcProcessInfo.EntryPointsInfoList.Count);
         }
@@ -79,14 +79,14 @@ namespace XUnitTests
             CommonAssertsForEachWithoutEntryPoints(npcProcessInfo);
         }
 
-        private void CommonAssertsForEachWithOneEntryPointWithoutArgs(NPCProcessInfo npcProcessInfo)
+        private static void CommonAssertsForEachWithOneEntryPointWithoutArgs(NPCProcessInfo npcProcessInfo)
         {
             Assert.Equal(1, npcProcessInfo.EntryPointsInfoList.Count);
 
             CommonAssertsForMainWithoutArgs(npcProcessInfo.EntryPointsInfoList);
         }
 
-        private void CommonAssertsForMainWithoutArgs(List<NPCProcessEntryPointInfo> entryPointsInfoList)
+        private static void CommonAssertsForMainWithoutArgs(List<NPCProcessEntryPointInfo> entryPointsInfoList)
         {
             var npcProcessInfoEntryPoint = entryPointsInfoList.Single(p => p.ParametersMap.Count == 0);
 
@@ -99,7 +99,7 @@ namespace XUnitTests
             Assert.Equal(0, npcProcessInfoEntryPoint.IndexedParametersMap.Count);
         }
 
-        private void CommonAssertsForEntryPoint(NPCProcessEntryPointInfo npcProcessInfoEntryPoint)
+        private static void CommonAssertsForEntryPoint(NPCProcessEntryPointInfo npcProcessInfoEntryPoint)
         {
             Assert.NotEqual(null, npcProcessInfoEntryPoint.MethodInfo);
             Assert.Equal("Main", npcProcessInfoEntryPoint.MethodInfo.Name, true);
@@ -320,7 +320,7 @@ namespace XUnitTests
             CommonAssertsForEachWithFiveEntryPoints(npcProcessInfo, globalEntityDictionary);
         }
 
-        private void CommonAssertsForEachWithNameAndWithoutStartupModeNPCProcess(NPCProcessInfo npcProcessInfo)
+        private static void CommonAssertsForEachWithNameAndWithoutStartupModeNPCProcess(NPCProcessInfo npcProcessInfo)
         {
             Assert.Equal("SomeName", npcProcessInfo.Name);
             Assert.Equal(NPCProcessStartupMode.NewInstance, npcProcessInfo.StartupMode);
@@ -335,7 +335,12 @@ namespace XUnitTests
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
 
-            CommonAssertsForEachCreatedNPCProcessInfo(npcProcessInfo, globalEntityDictionary, type);
+            CheckTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfo, globalEntityDictionary, type);
+        }
+
+        public static void CheckTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess(NPCProcessInfo npcProcessInfo, IEntityDictionary entityDictionary, Type type)
+        {
+            CommonAssertsForEachCreatedNPCProcessInfo(npcProcessInfo, entityDictionary, type);
             CommonAssertsForEachWithNameAndWithoutStartupModeNPCProcess(npcProcessInfo);
             CommonAssertsForEachWithoutEntryPoints(npcProcessInfo);
         }
@@ -349,7 +354,12 @@ namespace XUnitTests
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
 
-            CommonAssertsForEachCreatedNPCProcessInfo(npcProcessInfo, globalEntityDictionary, type);
+            CheckTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfo, globalEntityDictionary, type);
+        }
+
+        public static void CheckTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess(NPCProcessInfo npcProcessInfo, IEntityDictionary entityDictionary, Type type)
+        {
+            CommonAssertsForEachCreatedNPCProcessInfo(npcProcessInfo, entityDictionary, type);
             CommonAssertsForEachWithNameAndWithoutStartupModeNPCProcess(npcProcessInfo);
             CommonAssertsForEachWithOneEntryPointWithoutArgs(npcProcessInfo);
         }

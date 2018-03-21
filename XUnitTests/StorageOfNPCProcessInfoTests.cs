@@ -132,27 +132,111 @@ namespace XUnitTests
             var globalNPCProcessInfoCache = new NPCProcessInfoCache();
             var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
 
-            throw new NotImplementedException();
+            var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            storage.AddTypeOfProcess(type);
+
+            var name = "SomeName";
+
+            var key = globalEntityDictionary.GetKey(name);
+
+            var npcProcessInfo = storage.GetNPCProcessInfo(type);
+
+            Assert.NotEqual(null, npcProcessInfo);
+
+            var npcProcessInfo_1 = storage.GetNPCProcessInfo(key);
+
+            Assert.NotEqual(null, npcProcessInfo_1);
+
+            Assert.Equal(npcProcessInfo, npcProcessInfo_1);
+
+            NPCProcessInfoFactoryTests.CheckTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfo, globalEntityDictionary, type);
         }
 
         [Fact]
-        public void TryGetInfoAboutPreviouslyAddedTypeByKey_IfPreviouslyWasAddedTwoDifferentTypesOfProcesesWithTheSameName_GotInfoAboutLastType()
+        public void TryGetInfoAboutPreviouslyAddedTypeByKey_IfPreviouslyWasAddedTwoDifferentTypesOfProcesesWithTheSameName_GotInfoAboutFirstType()
         {
             var globalEntityDictionary = new EntityDictionary();
             var globalNPCProcessInfoCache = new NPCProcessInfoCache();
             var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
 
-            throw new NotImplementedException();
+            var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            storage.AddTypeOfProcess(type);
+
+            var name = "SomeName";
+
+            var key = globalEntityDictionary.GetKey(name);
+
+            var type_2 = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            Assert.NotEqual(type, type_2);
+
+            storage.AddTypeOfProcess(type_2);
+
+            var npcProcessInfoByType = storage.GetNPCProcessInfo(type);
+
+            NPCProcessInfoFactoryTests.CheckTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfoByType, globalEntityDictionary, type);
+
+            var npcProcessInfoByType_2 = storage.GetNPCProcessInfo(type_2);
+
+            NPCProcessInfoFactoryTests.CheckTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfoByType_2, globalEntityDictionary, type);
+
+            Assert.NotEqual(npcProcessInfoByType, npcProcessInfoByType_2);
+
+            var npcProcessInfoByKey = storage.GetNPCProcessInfo(key);
+
+            Assert.NotEqual(null, npcProcessInfoByKey);
+
+            Assert.Equal(npcProcessInfoByType, npcProcessInfoByKey);
+
+            NPCProcessInfoFactoryTests.CheckTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfoByType, globalEntityDictionary, type);
         }
 
         [Fact]
-        public void TryGetInfoAboutPreviouslyAddedTypeToDisposed_GotElementIsNotActiveException()
+        public void TryGetInfoAboutPreviouslyAddedTypeByTypeToDisposed_GotElementIsNotActiveException()
         {
             var globalEntityDictionary = new EntityDictionary();
             var globalNPCProcessInfoCache = new NPCProcessInfoCache();
             var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
 
-            throw new NotImplementedException();
+            var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            storage.AddTypeOfProcess(type);
+
+            storage.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                var npcProcessInfo = storage.GetNPCProcessInfo(type);
+            });
+        }
+
+        [Fact]
+        public void TryGetInfoAboutPreviouslyAddedTypeByKeyToDisposed_GotElementIsNotActiveException()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var globalNPCProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
+
+            var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            storage.AddTypeOfProcess(type);
+
+            var name = "SomeName";
+
+            var key = globalEntityDictionary.GetKey(name);
+
+            var npcProcessInfo = storage.GetNPCProcessInfo(type);
+
+            Assert.NotEqual(null, npcProcessInfo);
+
+            NPCProcessInfoFactoryTests.CheckTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfo, globalEntityDictionary, type);
+
+            storage.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                var npcProcessInfo_1 = storage.GetNPCProcessInfo(key);
+            });
         }
 
         [Fact]
@@ -162,7 +246,35 @@ namespace XUnitTests
             var globalNPCProcessInfoCache = new NPCProcessInfoCache();
             var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
 
-            throw new NotImplementedException();
+            var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            storage.AddTypeOfProcess(type);
+
+            var name = "SomeName";
+
+            var key = globalEntityDictionary.GetKey(name);
+
+            var type_2 = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            Assert.NotEqual(type, type_2);
+
+            storage.AddTypeOfProcess(type_2);
+
+            var npcProcessInfoByType = storage.GetNPCProcessInfo(type);
+
+            NPCProcessInfoFactoryTests.CheckTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfoByType, globalEntityDictionary, type);
+
+            var npcProcessInfoByType_2 = storage.GetNPCProcessInfo(type_2);
+
+            NPCProcessInfoFactoryTests.CheckTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfoByType_2, globalEntityDictionary, type);
+
+            Assert.NotEqual(npcProcessInfoByType, npcProcessInfoByType_2);
+
+            storage.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                var npcProcessInfoByKey = storage.GetNPCProcessInfo(key);
+            });
         }
 
         [Fact]
@@ -172,7 +284,53 @@ namespace XUnitTests
             var globalNPCProcessInfoCache = new NPCProcessInfoCache();
             var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
 
-            throw new NotImplementedException();
+            var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            var name = "SomeName";
+
+            var key = globalEntityDictionary.GetKey(name);
+
+            var npcProcessInfoByType = storage.GetNPCProcessInfo(type);
+
+            Assert.Equal(null, npcProcessInfoByType);
+
+            var npcProcessInfoByKey = storage.GetNPCProcessInfo(key);
+
+            Assert.Equal(null, npcProcessInfoByKey);
+        }
+
+        [Fact]
+        public void TryGetInfoAboutOfNotRegisterType_OnDisposed_GotElementIsNotActiveException()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var globalNPCProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
+
+            var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            var name = "SomeName";
+
+            var key = globalEntityDictionary.GetKey(name);
+
+            storage.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                var npcProcessInfoByType = storage.GetNPCProcessInfo(type);
+            });
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                var npcProcessInfoByKey = storage.GetNPCProcessInfo(key);
+            });  
+        }
+
+        [Fact]
+        public void CallDisposeTwise_GotNothing()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var globalNPCProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
+            storage.Dispose();
+            storage.Dispose();
         }
     }
 }
