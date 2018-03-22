@@ -12,8 +12,8 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            //CreateContextAndProcessesCase1();
-            CreateInfoOfConcreteProcess();
+            CreateContextAndProcessesCase1();
+            //CreateInfoOfConcreteProcess();
         }
 
         private static void CreateContextAndProcessesCase1()
@@ -22,7 +22,25 @@ namespace TmpSandBox
 
             var npcProcessInfoCache = new NPCProcessInfoCache();
             var globalEntityDictionary = new EntityDictionary();
-            var tmpContext = new TmpConcreteNPCContext(globalEntityDictionary, npcProcessInfoCache);
+            //var tmpContext = new TmpConcreteNPCContext(globalEntityDictionary, npcProcessInfoCache);
+
+            try
+            {
+                npcProcessInfoCache.Set(null);
+            }
+            catch(Exception e)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"CreateContextAndProcessesCase1 e = {e}");
+            }
+
+            try
+            {
+                npcProcessInfoCache.Get(null);
+            }
+            catch (Exception e)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"CreateContextAndProcessesCase1 e = {e}");
+            }
 
             NLog.LogManager.GetCurrentClassLogger().Info("End CreateContextAndProcessesCase1");
         }
