@@ -8,14 +8,16 @@ namespace MyNPCLib
     {
         public StorageOfNPCProcessInfo(IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache)
         {
-            mEntityDictionary = entityDictionary;
+            mFactory = new NPCProcessInfoFactory(entityDictionary);
             mNPCProcessInfoCache = npcProcessInfoCache;
         }
 
         #region private members
         private object mLockObj = new object();
-        private IEntityDictionary mEntityDictionary;
         private NPCProcessInfoCache mNPCProcessInfoCache;
+        private NPCProcessInfoFactory mFactory;
+        private Dictionary<Type, NPCProcessInfo> mNPCProcessInfoDictByType = new Dictionary<Type, NPCProcessInfo>();
+        private Dictionary<ulong, NPCProcessInfo> mNPCProcessInfoDictByKey = new Dictionary<ulong, NPCProcessInfo>();
         private object mDisposeLockObj = new object();
         private bool mIsDisposed;
         #endregion
@@ -41,7 +43,36 @@ namespace MyNPCLib
 
             lock (mLockObj)
             {
-                throw new NotImplementedException();
+                NPCProcessInfo info = null;
+
+                if(mNPCProcessInfoCache != null)
+                {
+                    info = mNPCProcessInfoCache.Get(type);
+                }
+
+                if(info == null)
+                {
+                    info = mFactory.CreateInfo(type);
+
+                    if (mNPCProcessInfoCache != null)
+                    {
+                        var resultOfPutToCache = mNPCProcessInfoCache.Set(info);
+
+                        if(resultOfPutToCache == false)
+                        {
+                            info = mNPCProcessInfoCache.Get(type);
+                        }
+                    }             
+                }
+
+                if(info != null)
+                {
+                    mNPCProcessInfoDictByType[type] = info;
+
+                    var key = info.Key;
+
+                    mNPCProcessInfoDictByKey[key] = info;
+                }
             }         
         }
 
@@ -66,7 +97,12 @@ namespace MyNPCLib
 
             lock (mLockObj)
             {
-                throw new NotImplementedException();
+                if(mNPCProcessInfoDictByType.ContainsKey(type))
+                {
+                    return mNPCProcessInfoDictByType[type];
+                }
+
+                return null;
             }
         }
 
@@ -91,7 +127,12 @@ namespace MyNPCLib
 
             lock (mLockObj)
             {
-                throw new NotImplementedException();
+                if(mNPCProcessInfoDictByKey.ContainsKey(key))
+                {
+                    return mNPCProcessInfoDictByKey[key];
+                }
+
+                return null;
             }
         }
 
