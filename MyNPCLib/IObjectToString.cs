@@ -6,7 +6,7 @@ namespace MyNPCLib
 {
     public interface IObjectToString
     {
-        string ToString(int n);
-        string PropertiesToSting(int n);
+        string ToString(uint n);
+        string PropertiesToSting(uint n);
     }
 }

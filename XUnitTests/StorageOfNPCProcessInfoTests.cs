@@ -324,6 +324,62 @@ namespace XUnitTests
         }
 
         [Fact]
+        public void TryGetInfoByNull_GotArgumentNullException()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var globalNPCProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
+
+            var e = Assert.Throws<ArgumentNullException>(() => {
+                var npcProcessInfoByKey = storage.GetNPCProcessInfo(null);
+            });
+
+            Assert.Equal("info", e.ParamName);
+        }
+
+        [Fact]
+        public void TryGetInfoByNull_OnDisposed_GotElementIsNotActiveException()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var globalNPCProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
+
+            storage.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                var npcProcessInfoByKey = storage.GetNPCProcessInfo(null);
+            });
+        }
+
+        [Fact]
+        public void TryGetInfoByZero_GotArgumentNullException()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var globalNPCProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
+
+            var e = Assert.Throws<ArgumentNullException>(() => {
+                var npcProcessInfoByKey = storage.GetNPCProcessInfo(0u);
+            });
+
+            Assert.Equal("key", e.ParamName);
+        }
+
+        [Fact]
+        public void TryGetInfoByZero_OnDisposed_GotElementIsNotActiveException()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var globalNPCProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
+
+            storage.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                var npcProcessInfoByKey = storage.GetNPCProcessInfo(0);
+            });
+        }
+
+        [Fact]
         public void CallDisposeTwise_GotNothing()
         {
             var globalEntityDictionary = new EntityDictionary();

@@ -6,8 +6,13 @@ namespace MyNPCLib
 {
     public static class StringHelper
     {
-        public static string Spaces(int n)
+        public static string Spaces(uint n)
         {
+            if(n == 0)
+            {
+                return string.Empty;
+            }
+
             var sb = new StringBuilder();
 
             for (var i = 0; i < n; i++)

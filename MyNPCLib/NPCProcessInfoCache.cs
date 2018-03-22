@@ -11,6 +11,11 @@ namespace MyNPCLib
 
         public NPCProcessInfo Get(Type type)
         {
+            if(type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
             lock(mLockObj)
             {
                 if(mDict.ContainsKey(type))
@@ -24,6 +29,11 @@ namespace MyNPCLib
 
         public bool Set(NPCProcessInfo info)
         {
+            if (info == null)
+            {
+                throw new ArgumentNullException(nameof(info));
+            }
+
             lock (mLockObj)
             {
                 var type = info.Type;

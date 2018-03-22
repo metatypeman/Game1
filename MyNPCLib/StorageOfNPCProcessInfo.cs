@@ -13,6 +13,7 @@ namespace MyNPCLib
         }
 
         #region private members
+        private object mLockObj = new object();
         private IEntityDictionary mEntityDictionary;
         private NPCProcessInfoCache mNPCProcessInfoCache;
         private object mDisposeLockObj = new object();
@@ -25,7 +26,23 @@ namespace MyNPCLib
             LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess type = {type?.FullName}");
 #endif
 
-            throw new NotImplementedException();
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    throw new ElementIsNotActiveException();
+                }
+            }
+
+            if(type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            lock (mLockObj)
+            {
+                throw new NotImplementedException();
+            }         
         }
 
         public NPCProcessInfo GetNPCProcessInfo(Type type)
@@ -34,7 +51,23 @@ namespace MyNPCLib
             LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess type = {type?.FullName}");
 #endif
 
-            throw new NotImplementedException();
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    throw new ElementIsNotActiveException();
+                }
+            }
+
+            if(type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            lock (mLockObj)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public NPCProcessInfo GetNPCProcessInfo(ulong key)
@@ -43,7 +76,23 @@ namespace MyNPCLib
             LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess key = {key}");
 #endif
 
-            throw new NotImplementedException();
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    throw new ElementIsNotActiveException();
+                }
+            }
+
+            if (key == 0u)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            lock (mLockObj)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public void Dispose()
