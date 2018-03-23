@@ -10,8 +10,8 @@ namespace MyNPCLib
         public float GetRankByTypesOfParameters(Type typeOfArgument, Type typeOfParameter)
         {
 #if DEBUG
-            LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints typeOfArgument = {typeOfArgument.FullName}");
-            LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints typeOfParameter = {typeOfParameter.FullName}");
+            LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints typeOfArgument = {typeOfArgument?.FullName}");
+            LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints typeOfParameter = {typeOfParameter?.FullName}");
 #endif
 
             if(typeOfArgument == null)
@@ -29,7 +29,7 @@ namespace MyNPCLib
                 return 1f;
             }
 
-            if(typeOfParameter.GetTypeInfo().IsAssignableFrom(typeOfParameter))
+            if(typeOfArgument.GetTypeInfo().IsAssignableFrom(typeOfParameter))
             {
                 return 0.5f;
             }

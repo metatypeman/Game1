@@ -12,14 +12,18 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
+            TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
         }
 
-        //private static void TSTActivatorOfNPCProcessEntryPointInfo()
-        //{
+        private static void TSTActivatorOfNPCProcessEntryPointInfo()
+        {
+            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var rank = activator.GetRankByTypesOfParameters(typeof(int), typeof(string));
 
-        //}
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+        }
 
         private static void CreateContextAndProcessesCase1()
         {

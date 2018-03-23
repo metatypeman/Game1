@@ -63,23 +63,23 @@ namespace XUnitTests
         }
 
         [Fact]
-        public void GetRankByTypesOfParameters_PutTypeOfArgumentAsInt32_PutTypeOfParameterAsObject_Got05()
+        public void GetRankByTypesOfParameters_PutTypeOfArgumentAsInt32_PutTypeOfParameterAsObject_GotZero()
         {
             var activator = new ActivatorOfNPCProcessEntryPointInfo();
 
             var rank = activator.GetRankByTypesOfParameters(typeof(int), typeof(object));
 
-            Assert.Equal(0.5f, rank);
+            Assert.Equal(0f, rank);
         }
 
         [Fact]
-        public void GetRankByTypesOfParameters_PutTypeOfArgumentAsString_PutTypeOfParameterAsObject_Got05()
+        public void GetRankByTypesOfParameters_PutTypeOfArgumentAsString_PutTypeOfParameterAsObject_GotZero()
         {
             var activator = new ActivatorOfNPCProcessEntryPointInfo();
 
             var rank = activator.GetRankByTypesOfParameters(typeof(string), typeof(object));
 
-            Assert.Equal(0.5f, rank);
+            Assert.Equal(0f, rank);
         }
 
         [Fact]
@@ -93,13 +93,13 @@ namespace XUnitTests
         }
 
         [Fact]
-        public void GetRankByTypesOfParameters_PutTypeOfArgumentAsObject_PutTypeOfParameterAsString_GotZero()
+        public void GetRankByTypesOfParameters_PutTypeOfArgumentAsObject_PutTypeOfParameterAsString_Got05()
         {
             var activator = new ActivatorOfNPCProcessEntryPointInfo();
 
             var rank = activator.GetRankByTypesOfParameters(typeof(object), typeof(string));
 
-            Assert.Equal(0f, rank);
+            Assert.Equal(0.5f, rank);
         }
 
         [Fact]
