@@ -61,7 +61,40 @@ namespace MyNPCLib
                 throw new ArgumentNullException("npcProcessInfo.EntryPointsInfoList");
             }
 
-            throw new NotImplementedException();
+            var result = new List<RankedNPCProcessEntryPointInfo>();
+
+            if(entryPointsList.Count == 0)
+            {
+                return result;
+            }
+
+            foreach(var entryPoint in entryPointsList)
+            {
+                var indexedParametersMap = entryPoint.IndexedParametersMap;
+
+                if (indexedParametersMap.Count != paramsOfCommand.Count)
+                {
+                    continue;
+                }
+
+                var fetchedCount = 0;
+
+                foreach(var paramOfCommandKVPItem in paramsOfCommand)
+                {
+                    var key = paramOfCommandKVPItem.Key;
+
+                    if(!indexedParametersMap.ContainsKey(key))
+                    {
+                        continue;
+                    }
+
+                    throw new NotImplementedException();
+                }
+
+                throw new NotImplementedException();
+            }
+
+            return result;
         }
     }
 }

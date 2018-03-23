@@ -154,25 +154,51 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithoutAnyEntryPoints_AndPutCommand_GotEmptyList()
         {
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+
             var activator = new ActivatorOfNPCProcessEntryPointInfo();
 
-            throw new NotImplementedException();
+            var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithoutAttributesNPCProcess);
+            var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
+
+            var result = activator.GetRankedEntryPoints(npcProcessInfo, new Dictionary<ulong, object>());
+
+            Assert.NotEqual(null, result);
+            Assert.Equal(0, result.Count);
         }
 
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithoutArguments_AndPutCommandWithArguments_GotEmptyList()
         {
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
             var activator = new ActivatorOfNPCProcessEntryPointInfo();
 
-            throw new NotImplementedException();
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
+            var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
+
+            var paramsDict = new Dictionary<ulong, object>() { { 1ul, true } };
+            var result = activator.GetRankedEntryPoints(npcProcessInfo, paramsDict);
+
+            Assert.NotEqual(null, result);
+            Assert.Equal(0, result.Count);
         }
 
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithArguments_AndPutCommandWithoutArguments_GotEmptyList()
         {
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
             var activator = new ActivatorOfNPCProcessEntryPointInfo();
 
-            throw new NotImplementedException();
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithArgsAndWithoutAttributesNPCProcess);
+            var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
+
+            var result = activator.GetRankedEntryPoints(npcProcessInfo, new Dictionary<ulong, object>());
+
+            Assert.NotEqual(null, result);
+            Assert.Equal(0, result.Count);
         }
 
         [Fact]
@@ -186,17 +212,37 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgument_AndPutCommandWithoutArguments_GotEmptyList()
         {
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
             var activator = new ActivatorOfNPCProcessEntryPointInfo();
 
-            throw new NotImplementedException();
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithArgsAndWithoutAttributesNPCProcess);
+            var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
+
+            var result = activator.GetRankedEntryPoints(npcProcessInfo, new Dictionary<ulong, object>());
+
+            Assert.NotEqual(null, result);
+            Assert.Equal(0, result.Count);
+
+            Assert.NotEqual(null, result);
+            Assert.Equal(0, result.Count);
         }
 
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgument_AndPutCommandWithTwoArguments_GotEmptyList()
         {
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
             var activator = new ActivatorOfNPCProcessEntryPointInfo();
 
-            throw new NotImplementedException();
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithArgsAndWithoutAttributesNPCProcess);
+            var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
+
+            var paramsDict = new Dictionary<ulong, object>() { { 1ul, true }, { 2ul, 12 } };
+            var result = activator.GetRankedEntryPoints(npcProcessInfo, paramsDict);
+
+            Assert.NotEqual(null, result);
+            Assert.Equal(0, result.Count);
         }
 
         [Fact]

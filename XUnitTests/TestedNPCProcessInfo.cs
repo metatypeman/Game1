@@ -16,6 +16,13 @@ namespace XUnitTests
         }
     }
 
+    public class TestedNPCProcessInfoWithOneEntryPointWithArgsAndWithoutAttributesNPCProcess : BaseNPCProcess
+    {
+        public void Main(int someArgument)
+        {
+        }
+    }
+
     public class TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess : BaseNPCProcess
     {
         public void Main()
