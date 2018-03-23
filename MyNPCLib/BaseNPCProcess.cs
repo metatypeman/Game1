@@ -20,10 +20,6 @@ namespace MyNPCLib
             }
         }
 
-        protected virtual void FillProcessInfo(NPCProcessInfo processInfo)
-        {
-        }
-
         public void Dispose()
         {
 #if DEBUG

@@ -69,7 +69,7 @@ namespace XUnitTests
         }
 
         [Fact]
-        public void AddTypeOfProcess_AddNormalType_GotNothing()
+        public void AddTypeOfProcess_AddNormalType_GotTrue()
         {
             var globalEntityDictionary = new EntityDictionary();
             var globalNPCProcessInfoCache = new NPCProcessInfoCache();
@@ -77,11 +77,13 @@ namespace XUnitTests
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
 
-            storage.AddTypeOfProcess(type);
+            var result = storage.AddTypeOfProcess(type);
+
+            Assert.Equal(true, result);
         }
 
         [Fact]
-        public void AddTypeOfProcess_AddNormalTypeTwise_GotNothing()
+        public void AddTypeOfProcess_AddNormalTypeTwise_GotTrueFirstlyAndFalseSecondly()
         {
             var globalEntityDictionary = new EntityDictionary();
             var globalNPCProcessInfoCache = new NPCProcessInfoCache();
@@ -89,12 +91,17 @@ namespace XUnitTests
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
 
-            storage.AddTypeOfProcess(type);
-            storage.AddTypeOfProcess(type);
+            var result = storage.AddTypeOfProcess(type);
+
+            Assert.Equal(true, result);
+
+            var result_2 = storage.AddTypeOfProcess(type);
+
+            Assert.Equal(false, result_2);
         }
 
         [Fact]
-        public void AddTypeOfProcess_AddTwoDifferentTypesOfProcesesWithTheSameName_GotNothing()
+        public void AddTypeOfProcess_AddTwoDifferentTypesOfProcesesWithTheSameName_GotTrueFirstlyAndFalseSecondly()
         {
             var globalEntityDictionary = new EntityDictionary();
             var globalNPCProcessInfoCache = new NPCProcessInfoCache();
@@ -102,11 +109,15 @@ namespace XUnitTests
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
 
-            storage.AddTypeOfProcess(type);
+            var result = storage.AddTypeOfProcess(type);
+
+            Assert.Equal(true, result);
 
             var type_2 = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
-            storage.AddTypeOfProcess(type_2);
+            var result_2 = storage.AddTypeOfProcess(type_2);
+
+            Assert.Equal(false, result_2);
 
             Assert.NotEqual(type, type_2);
         }
@@ -183,7 +194,7 @@ namespace XUnitTests
 
             var npcProcessInfoByType_2 = storage.GetNPCProcessInfo(type_2);
 
-            NPCProcessInfoFactoryTests.CheckTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfoByType_2, globalEntityDictionary, type);
+            Assert.Equal(null, npcProcessInfoByType_2);
 
             Assert.NotEqual(npcProcessInfoByType, npcProcessInfoByType_2);
 
@@ -269,7 +280,7 @@ namespace XUnitTests
 
             var npcProcessInfoByType_2 = storage.GetNPCProcessInfo(type_2);
 
-            NPCProcessInfoFactoryTests.CheckTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfoByType_2, globalEntityDictionary, type);
+            Assert.Equal(null, npcProcessInfoByType_2);
 
             Assert.NotEqual(npcProcessInfoByType, npcProcessInfoByType_2);
 

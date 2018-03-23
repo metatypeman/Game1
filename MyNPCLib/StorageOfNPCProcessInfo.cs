@@ -22,7 +22,7 @@ namespace MyNPCLib
         private bool mIsDisposed;
         #endregion
 
-        public void AddTypeOfProcess(Type type)
+        public bool AddTypeOfProcess(Type type)
         {
 #if DEBUG
             LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess type = {type?.FullName}");
@@ -45,7 +45,7 @@ namespace MyNPCLib
             {
                 if(mNPCProcessInfoDictByType.ContainsKey(type))
                 {
-                    return;
+                    return false;
                 }
 
                 NPCProcessInfo info = null;
@@ -76,12 +76,14 @@ namespace MyNPCLib
 
                     if (mNPCProcessInfoDictByKey.ContainsKey(key))
                     {
-                        return;
+                        return false;
                     }
 
                     mNPCProcessInfoDictByType[type] = info;
                     mNPCProcessInfoDictByKey[key] = info;
                 }
+
+                return true;
             }         
         }
 
