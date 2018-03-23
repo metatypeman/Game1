@@ -117,7 +117,11 @@ namespace XUnitTests
         {
             var activator = new ActivatorOfNPCProcessEntryPointInfo();
 
-            throw new NotImplementedException();
+            var e = Assert.Throws<ArgumentNullException>(() => {
+                var result = activator.GetRankedEntryPoints(null, new Dictionary<ulong, object>());
+            });
+
+            Assert.Equal("npcProcessInfo", e.ParamName);
         }
 
         [Fact]
@@ -125,7 +129,11 @@ namespace XUnitTests
         {
             var activator = new ActivatorOfNPCProcessEntryPointInfo();
 
-            throw new NotImplementedException();
+            var e = Assert.Throws<ArgumentNullException>(() => {
+                var result = activator.GetRankedEntryPoints(new NPCProcessInfo(), null);
+            });
+
+            Assert.Equal("paramsOfCommand", e.ParamName);
         }
 
         [Fact]
@@ -133,15 +141,14 @@ namespace XUnitTests
         {
             var activator = new ActivatorOfNPCProcessEntryPointInfo();
 
-            throw new NotImplementedException();
-        }
+            var npcProcessInfo = new NPCProcessInfo();
+            npcProcessInfo.EntryPointsInfoList = null;
 
-        [Fact]
-        public void GetRankedEntryPoints_PutCommandWithIndexedArgumentsDictionaryAsNull_GotArgumentNullException()
-        {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var e = Assert.Throws<ArgumentNullException>(() => {
+                var result = activator.GetRankedEntryPoints(npcProcessInfo, new Dictionary<ulong, object>());
+            });
 
-            throw new NotImplementedException();
+            Assert.Equal("npcProcessInfo.EntryPointsInfoList", e.ParamName);
         }
 
         [Fact]

@@ -37,12 +37,30 @@ namespace MyNPCLib
             return 0f;
         }
 
-        public List<RankedNPCProcessEntryPointInfo> GetRankedEntryPoints(NPCProcessInfo npcProcessInfo, INPCCommand command)
+        public List<RankedNPCProcessEntryPointInfo> GetRankedEntryPoints(NPCProcessInfo npcProcessInfo, Dictionary<ulong, object> paramsOfCommand)
         {
 #if DEBUG
-            LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints npcProcessInfo = {npcProcessInfo}");
-            LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints command = {command}");
+            //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints npcProcessInfo = {npcProcessInfo}");
+            //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints paramsOfCommand = {paramsOfCommand?.Count}");
 #endif
+
+            if (npcProcessInfo == null)
+            {
+                throw new ArgumentNullException(nameof(npcProcessInfo));
+            }
+
+            if (paramsOfCommand == null)
+            {
+                throw new ArgumentNullException(nameof(paramsOfCommand));
+            }
+
+            var entryPointsList = npcProcessInfo.EntryPointsInfoList;
+            
+            if(entryPointsList == null)
+            {
+                throw new ArgumentNullException("npcProcessInfo.EntryPointsInfoList");
+            }
+
             throw new NotImplementedException();
         }
     }
