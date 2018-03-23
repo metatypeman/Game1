@@ -75,7 +75,9 @@ namespace XUnitTests
             var globalNPCProcessInfoCache = new NPCProcessInfoCache();
             var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
 
-            throw new NotImplementedException();
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
+
+            storage.AddTypeOfProcess(type);
         }
 
         [Fact]
@@ -87,6 +89,7 @@ namespace XUnitTests
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
 
+            storage.AddTypeOfProcess(type);
             storage.AddTypeOfProcess(type);
         }
 
@@ -334,7 +337,7 @@ namespace XUnitTests
                 var npcProcessInfoByKey = storage.GetNPCProcessInfo(null);
             });
 
-            Assert.Equal("info", e.ParamName);
+            Assert.Equal("type", e.ParamName);
         }
 
         [Fact]

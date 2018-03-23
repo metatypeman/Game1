@@ -43,6 +43,11 @@ namespace MyNPCLib
 
             lock (mLockObj)
             {
+                if(mNPCProcessInfoDictByType.ContainsKey(type))
+                {
+                    return;
+                }
+
                 NPCProcessInfo info = null;
 
                 if(mNPCProcessInfoCache != null)
@@ -67,10 +72,14 @@ namespace MyNPCLib
 
                 if(info != null)
                 {
-                    mNPCProcessInfoDictByType[type] = info;
-
                     var key = info.Key;
 
+                    if (mNPCProcessInfoDictByKey.ContainsKey(key))
+                    {
+                        return;
+                    }
+
+                    mNPCProcessInfoDictByType[type] = info;
                     mNPCProcessInfoDictByKey[key] = info;
                 }
             }         

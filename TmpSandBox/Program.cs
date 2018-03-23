@@ -16,6 +16,44 @@ namespace TmpSandBox
             //CreateInfoOfConcreteProcess();
         }
 
+        private void TryGetInfoAboutPreviouslyAddedTypeByKey_IfPreviouslyWasAddedTwoDifferentTypesOfProcesesWithTheSameName_OnDisposed_GotElementIsNotActiveException()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var globalNPCProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcessInfo(globalEntityDictionary, globalNPCProcessInfoCache);
+
+            var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            storage.AddTypeOfProcess(type);
+
+            var name = "SomeName";
+
+            var key = globalEntityDictionary.GetKey(name);
+
+            var type_2 = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            Assert.NotEqual(type, type_2);
+
+            storage.AddTypeOfProcess(type_2);
+
+            var npcProcessInfoByType = storage.GetNPCProcessInfo(type);
+
+            NPCProcessInfoFactoryTests.CheckTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfoByType, globalEntityDictionary, type);
+
+            var npcProcessInfoByType_2 = storage.GetNPCProcessInfo(type_2);
+
+            NPCProcessInfoFactoryTests.CheckTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfoByType_2, globalEntityDictionary, type);
+
+            Assert.NotEqual(npcProcessInfoByType, npcProcessInfoByType_2);
+
+            storage.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() =>
+            {
+                var npcProcessInfoByKey = storage.GetNPCProcessInfo(key);
+            });
+        }
+
         private static void CreateContextAndProcessesCase1()
         {
             NLog.LogManager.GetCurrentClassLogger().Info("Begin CreateContextAndProcessesCase1");
