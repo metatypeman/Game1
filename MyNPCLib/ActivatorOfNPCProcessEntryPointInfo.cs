@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -19,17 +20,32 @@ namespace MyNPCLib
                 throw new ArgumentNullException(nameof(typeOfArgument));
             }
 
-            if(typeOfParameter == null)
+            var typeInfoOfArgument = typeOfArgument.GetTypeInfo();
+
+            if (typeOfParameter == null)
             {
-                throw new ArgumentNullException(nameof(typeOfParameter));
+                if(typeInfoOfArgument.IsClass)
+                {
+                    return 0.5f;
+                }
+
+                if(typeInfoOfArgument.IsGenericType)
+                {
+                    if(typeInfoOfArgument.FullName.StartsWith("System.Nullable"))
+                    {
+                        return 0.5f;
+                    }
+                }
+
+                return 0f;
             }
 
-            if(typeOfArgument == typeOfParameter)
+            if (typeOfArgument == typeOfParameter)
             {
                 return 1f;
             }
 
-            if(typeOfArgument.GetTypeInfo().IsAssignableFrom(typeOfParameter))
+            if(typeInfoOfArgument.IsAssignableFrom(typeOfParameter))
             {
                 return 0.5f;
             }
@@ -70,31 +86,109 @@ namespace MyNPCLib
 
             foreach(var entryPoint in entryPointsList)
             {
-                var indexedParametersMap = entryPoint.IndexedParametersMap;
+#if DEBUG
+                //LogInstance.Log("ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints ------------------------------------------------------------------------");
+                //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints entryPoint = {entryPoint}");
+#endif
 
-                if (indexedParametersMap.Count != paramsOfCommand.Count)
+                var indexedParametersMap = entryPoint.IndexedParametersMap;
+                var indexedDefaultValuesMap = entryPoint.IndexedDefaultValuesMap;
+
+                var needContinue = false;
+
+                var rank = 1f;
+
+                var foundParameters = 0;
+
+                foreach(var argumentKVPItem in indexedParametersMap)
+                {
+#if DEBUG
+                    //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints argumentKVPItem.Key = {argumentKVPItem.Key} argumentKVPItem.Value = {argumentKVPItem.Value}");
+#endif
+
+                    var key = argumentKVPItem.Key;
+                    var argumentType = argumentKVPItem.Value;
+
+                    Type paramType = null;
+
+                    if(paramsOfCommand.ContainsKey(key))
+                    {
+                        var paramValue = paramsOfCommand[key];
+
+                        if(paramValue != null)
+                        {
+                            paramType = paramValue.GetType();
+                        }
+                    }
+                    else
+                    {
+                        if (indexedDefaultValuesMap.ContainsKey(key))
+                        {
+                            var paramValue = indexedDefaultValuesMap[key];
+
+                            if (paramValue != null)
+                            {
+                                paramType = paramValue.GetType();
+                            }
+                        }
+                        else
+                        {
+                            needContinue = true;
+                            break;
+                        }
+                    }
+                    
+#if DEBUG
+                    //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints paramType = {paramType?.FullName}");
+#endif
+
+                    var currentRank = GetRankByTypesOfParameters(argumentType, paramType);
+
+#if DEBUG
+                    //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints currentRank = {currentRank}");
+#endif
+
+                    if(currentRank == 0f)
+                    {
+                        needContinue = true;
+                        break;
+                    }
+
+                    foundParameters++;
+                    rank *= currentRank;
+                }
+
+                if (needContinue)
                 {
                     continue;
                 }
 
-                var fetchedCount = 0;
-
-                foreach(var paramOfCommandKVPItem in paramsOfCommand)
+                if (indexedParametersMap.Count != foundParameters)
                 {
-                    var key = paramOfCommandKVPItem.Key;
-
-                    if(!indexedParametersMap.ContainsKey(key))
-                    {
-                        continue;
-                    }
-
-                    throw new NotImplementedException();
+                    continue;
                 }
 
-                throw new NotImplementedException();
+                if(paramsOfCommand.Count > foundParameters)
+                {
+                    continue;
+                }
+#if DEBUG
+                //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints NEXT rank = {rank} indexedParametersMap.Count = {indexedParametersMap.Count} foundParameters = {foundParameters}");
+#endif
+
+                var item = new RankedNPCProcessEntryPointInfo();
+                item.Rank = rank;
+                item.EntryPoint = entryPoint;
+
+                result.Add(item);
             }
 
-            return result;
+            if(result.Count == 0)
+            {
+                return result;
+            }
+
+            return result.OrderByDescending(p => p.Rank).ToList();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace MyNPCLib
             sb.AppendLine($"{spaces}{nameof(StartupMode)} = {StartupMode}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
-            sb.AppendLine($"{spaces}NameOfType = {Type.FullName}");
+            sb.AppendLine($"{spaces}NameOfType = {Type?.FullName}");
             if (EntryPointsInfoList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(EntryPointsInfoList)} = null");

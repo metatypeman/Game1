@@ -105,7 +105,7 @@ namespace XUnitTests
             Assert.Equal(0, npcProcessInfoEntryPoint.IndexedDefaultValuesMap.Count);
         }
 
-        private static void CommonAssertsForEntryPoint(NPCProcessEntryPointInfo npcProcessInfoEntryPoint)
+        public static void CommonAssertsForEntryPoint(NPCProcessEntryPointInfo npcProcessInfoEntryPoint)
         {
             Assert.NotEqual(null, npcProcessInfoEntryPoint.MethodInfo);
             Assert.Equal("Main", npcProcessInfoEntryPoint.MethodInfo.Name, true);
@@ -142,6 +142,11 @@ namespace XUnitTests
         {
             var npcProcessInfoEntryPoint = entryPointsInfoList.Single(p => p.ParametersMap.Count == 1 && p.ParametersMap.ContainsValue(typeof(int)));
 
+            CommonAssertsForMain_int(npcProcessInfoEntryPoint, entityDictionary);
+        }
+
+        public static void CommonAssertsForMain_int(NPCProcessEntryPointInfo npcProcessInfoEntryPoint, IEntityDictionary entityDictionary)
+        {
             CommonAssertsForEntryPoint(npcProcessInfoEntryPoint);
 
             Assert.NotEqual(null, npcProcessInfoEntryPoint.ParametersMap);
@@ -157,6 +162,81 @@ namespace XUnitTests
 
             var indexedSomeArgument = npcProcessInfoEntryPoint.IndexedParametersMap[someArgumentKey];
             Assert.Equal(typeof(int), indexedSomeArgument);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.DefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.DefaultValuesMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedDefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.IndexedDefaultValuesMap.Count);
+        }
+
+        public static void CommonAssertsForMain_object(NPCProcessEntryPointInfo npcProcessInfoEntryPoint, IEntityDictionary entityDictionary)
+        {
+            CommonAssertsForEntryPoint(npcProcessInfoEntryPoint);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.ParametersMap);
+            Assert.Equal(1, npcProcessInfoEntryPoint.ParametersMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedParametersMap);
+            Assert.Equal(1, npcProcessInfoEntryPoint.IndexedParametersMap.Count);
+
+            var someArgument = npcProcessInfoEntryPoint.ParametersMap["someArgument"];
+            Assert.Equal(typeof(object), someArgument);
+
+            var someArgumentKey = entityDictionary.GetKey("someArgument");
+
+            var indexedSomeArgument = npcProcessInfoEntryPoint.IndexedParametersMap[someArgumentKey];
+            Assert.Equal(typeof(object), indexedSomeArgument);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.DefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.DefaultValuesMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedDefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.IndexedDefaultValuesMap.Count);
+        }
+
+        public static void CommonAssertsForMain_string(NPCProcessEntryPointInfo npcProcessInfoEntryPoint, IEntityDictionary entityDictionary)
+        {
+            CommonAssertsForEntryPoint(npcProcessInfoEntryPoint);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.ParametersMap);
+            Assert.Equal(1, npcProcessInfoEntryPoint.ParametersMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedParametersMap);
+            Assert.Equal(1, npcProcessInfoEntryPoint.IndexedParametersMap.Count);
+
+            var someArgument = npcProcessInfoEntryPoint.ParametersMap["someArgument"];
+            Assert.Equal(typeof(string), someArgument);
+
+            var someArgumentKey = entityDictionary.GetKey("someArgument");
+
+            var indexedSomeArgument = npcProcessInfoEntryPoint.IndexedParametersMap[someArgumentKey];
+            Assert.Equal(typeof(string), indexedSomeArgument);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.DefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.DefaultValuesMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedDefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.IndexedDefaultValuesMap.Count);
+        }
+
+        public static void CommonAssertsForMain_NullableInt(NPCProcessEntryPointInfo npcProcessInfoEntryPoint, IEntityDictionary entityDictionary)
+        {
+            CommonAssertsForEntryPoint(npcProcessInfoEntryPoint);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.ParametersMap);
+            Assert.Equal(1, npcProcessInfoEntryPoint.ParametersMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedParametersMap);
+            Assert.Equal(1, npcProcessInfoEntryPoint.IndexedParametersMap.Count);
+
+            var someArgument = npcProcessInfoEntryPoint.ParametersMap["someArgument"];
+            Assert.Equal(typeof(int?), someArgument);
+
+            var someArgumentKey = entityDictionary.GetKey("someArgument");
+
+            var indexedSomeArgument = npcProcessInfoEntryPoint.IndexedParametersMap[someArgumentKey];
+            Assert.Equal(typeof(int?), indexedSomeArgument);
 
             Assert.NotEqual(null, npcProcessInfoEntryPoint.DefaultValuesMap);
             Assert.Equal(0, npcProcessInfoEntryPoint.DefaultValuesMap.Count);

@@ -1,5 +1,6 @@
 ﻿using MyNPCLib;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -12,9 +13,9 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            //TSTActivatorOfNPCProcessEntryPointInfo();
+            TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
-            CreateInfoOfConcreteProcess();
+            //CreateInfoOfConcreteProcess();
         }
 
         private static void TSTActivatorOfNPCProcessEntryPointInfo()
@@ -23,6 +24,57 @@ namespace TmpSandBox
             var rank = activator.GetRankByTypesOfParameters(typeof(int), typeof(string));
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo typeof(int?).FullName = {typeof(int?).FullName}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo System.Nullable = {typeof(int?).FullName.StartsWith("System.Nullable")}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo typeof(int?).IsClass = {typeof(int?).IsClass}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo typeof(string).IsClass = {typeof(string).IsClass}");
+
+            rank = activator.GetRankByTypesOfParameters(typeof(int?), typeof(int));
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+
+            rank = activator.GetRankByTypesOfParameters(typeof(string), null);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+
+            rank = activator.GetRankByTypesOfParameters(typeof(int?), null);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+
+            rank = activator.GetRankByTypesOfParameters(typeof(int), null);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+
+            var type = typeof(TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess);
+            var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
+
+            var arg1Key = globalEntityDictionary.GetKey("someArgument");
+            var arg2Key = globalEntityDictionary.GetKey("secondArgument");
+
+            var paramsDict = new Dictionary<ulong, object>() { { arg1Key, true }, { arg2Key, 12 } };
+            var result = activator.GetRankedEntryPoints(npcProcessInfo, paramsDict);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo result.Count = {result.Count}");
+            foreach(var tmpItem in result)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo tmpItem = {tmpItem}");
+            }
+
+            type = typeof(TestedNPCProcessInfoWithOneEntryPointWithArgsAndWithoutAttributesNPCProcess);
+            npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
+
+            paramsDict = new Dictionary<ulong, object>() { { 1ul, true }, { 2ul, 12 } };
+            result = activator.GetRankedEntryPoints(npcProcessInfo, paramsDict);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo result.Count = {result.Count}");
+            foreach (var tmpItem in result)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo tmpItem = {tmpItem}");
+            }
         }
 
         private static void CreateContextAndProcessesCase1()

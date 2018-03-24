@@ -41,7 +41,15 @@ namespace TmpSandBox
         {
         }
 
-        public void Main(int someArgument)
+        public void Main(int someArgument, bool secondArgument = false)
+        {
+        }
+
+        public void Main(int? someArgument)
+        {
+        }
+
+        public void Main(object someArgument)
         {
         }
 
@@ -52,6 +60,14 @@ namespace TmpSandBox
         public void Main(int someArgument, int secondArgument)
         {
         }
+
+        public void Main(object someArgument, int secondArgument)
+        {
+        }
+
+        public void Main(bool? someArgument, int secondArgument)
+        {
+        }
     }
 
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
@@ -59,6 +75,13 @@ namespace TmpSandBox
     public class TestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
     {
         public void Main(int someArgument = 12)
+        {
+        }
+    }
+
+    public class TestedNPCProcessInfoWithOneEntryPointWithArgsAndWithoutAttributesNPCProcess : BaseNPCProcess
+    {
+        public void Main(int someArgument)
         {
         }
     }

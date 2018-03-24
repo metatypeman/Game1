@@ -287,6 +287,63 @@ namespace XUnitTests
 
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
     [NPCProcessName("SomeName")]
+    public class TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32AndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
+    {
+        public void Main(int someArgument)
+        {
+        }
+    }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+    [NPCProcessName("SomeName")]
+    public class TestedNPCProcessInfoWithOnlyMethodWithOneArgumentAndWithTypeObjectWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
+    {
+        public void Main(object someArgument)
+        {
+        }
+    }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+    [NPCProcessName("SomeName")]
+    public class TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeStringAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
+    {
+        public void Main(string someArgument)
+        {
+        }
+    }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+    [NPCProcessName("SomeName")]
+    public class TestedNpcProcessInfoWithSeveralEntryPointsWithOneArgumentAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
+    {
+        public void Main(object someArgument)
+        {
+        }
+
+        public void Main(int someArgument)
+        {
+        }
+
+        public void Main(int? someArgument)
+        {
+        }
+
+        public void Main(string someArgument)
+        {
+        }
+    }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+    [NPCProcessName("SomeName")]
+    public class TestedNPCProcessInfoWithOnlyMethodWithTwoArgumentsAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
+    {
+        public void Main(bool someArgument, int secondArgument)
+        {
+        }
+    }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+    [NPCProcessName("SomeName")]
     public class TestedNPCProcessInfoWithTwoEntryPointsAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
     {
         public void Main()
