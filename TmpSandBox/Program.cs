@@ -12,9 +12,9 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTActivatorOfNPCProcessEntryPointInfo();
+            //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
-            //CreateInfoOfConcreteProcess();
+            CreateInfoOfConcreteProcess();
         }
 
         private static void TSTActivatorOfNPCProcessEntryPointInfo()
@@ -79,14 +79,21 @@ namespace TmpSandBox
             var method_3 = npcProcessInfo.EntryPointsInfoList.SingleOrDefault(p => p.ParametersMap.Count == 2 && p.ParametersMap.Values.Count(x => x == typeof(int)) == 2);
             NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess method_3 = {method_3}");
 
-            type = typeof(Program);
+            //type = typeof(Program);
+            //NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
+
+            //npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
+
+            //NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess npcProcessInfo = {npcProcessInfo}");
+
+            NLog.LogManager.GetCurrentClassLogger().Info("End CreateInfoOfConcreteProcess");
+
+            type = typeof(TestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess);
             NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
 
             npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
 
             NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess npcProcessInfo = {npcProcessInfo}");
-
-            NLog.LogManager.GetCurrentClassLogger().Info("End CreateInfoOfConcreteProcess");
         }
     }
 }

@@ -53,4 +53,13 @@ namespace TmpSandBox
         {
         }
     }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+    [NPCProcessName("SomeName")]
+    public class TestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
+    {
+        public void Main(int someArgument = 12)
+        {
+        }
+    }
 }

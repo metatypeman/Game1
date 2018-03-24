@@ -9,7 +9,9 @@ namespace MyNPCLib
     {
         public MethodInfo MethodInfo { get; set; }
         public Dictionary<string, Type> ParametersMap { get; set; } = new Dictionary<string, Type>();
+        public Dictionary<string, object> DefaultValuesMap { get; set; } = new Dictionary<string, object>();
         public Dictionary<ulong, Type> IndexedParametersMap { get; set; } = new Dictionary<ulong, Type>();
+        public Dictionary<ulong, object> IndexedDefaultValuesMap { get; set; } = new Dictionary<ulong, object>();
 
         public override string ToString()
         {
@@ -45,7 +47,22 @@ namespace MyNPCLib
                 }
                 sb.AppendLine($"{spaces}End {nameof(ParametersMap)}");
             }
-            if(IndexedParametersMap == null)
+
+            if (DefaultValuesMap == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DefaultValuesMap)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(DefaultValuesMap)}");
+                foreach (var parameterItem in DefaultValuesMap)
+                {
+                    sb.AppendLine($"{nextSpaces} Key = {parameterItem.Key}; Value = {parameterItem.Value}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(DefaultValuesMap)}");
+            }
+
+            if (IndexedParametersMap == null)
             {
                 sb.AppendLine($"{spaces}{nameof(IndexedParametersMap)} = null");
             }
@@ -57,6 +74,20 @@ namespace MyNPCLib
                     sb.AppendLine($"{nextSpaces} Key = {parameterItem.Key}; Value = {parameterItem.Value}");
                 }
                 sb.AppendLine($"{spaces}End {nameof(IndexedParametersMap)}");
+            }
+
+            if (IndexedDefaultValuesMap == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(IndexedDefaultValuesMap)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(IndexedDefaultValuesMap)}");
+                foreach (var parameterItem in IndexedDefaultValuesMap)
+                {
+                    sb.AppendLine($"{nextSpaces} Key = {parameterItem.Key}; Value = {parameterItem.Value}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(IndexedDefaultValuesMap)}");
             }
             return sb.ToString();
         }

@@ -97,6 +97,12 @@ namespace XUnitTests
 
             Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedParametersMap);
             Assert.Equal(0, npcProcessInfoEntryPoint.IndexedParametersMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.DefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.DefaultValuesMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedDefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.IndexedDefaultValuesMap.Count);
         }
 
         private static void CommonAssertsForEntryPoint(NPCProcessEntryPointInfo npcProcessInfoEntryPoint)
@@ -151,6 +157,12 @@ namespace XUnitTests
 
             var indexedSomeArgument = npcProcessInfoEntryPoint.IndexedParametersMap[someArgumentKey];
             Assert.Equal(typeof(int), indexedSomeArgument);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.DefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.DefaultValuesMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedDefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.IndexedDefaultValuesMap.Count);
         }
 
         [Fact]
@@ -195,6 +207,12 @@ namespace XUnitTests
 
             var indexedSomeArgument = npcProcessInfoEntryPoint.IndexedParametersMap[someArgumentKey];
             Assert.Equal(typeof(bool), indexedSomeArgument);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.DefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.DefaultValuesMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedDefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.IndexedDefaultValuesMap.Count);
         }
 
         [Fact]
@@ -249,6 +267,12 @@ namespace XUnitTests
 
             var indexedSecondArgument = npcProcessInfoEntryPoint.IndexedParametersMap[secondArgumentKey];
             Assert.Equal(typeof(int), indexedSecondArgument);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.DefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.DefaultValuesMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedDefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.IndexedDefaultValuesMap.Count);
         }
 
         [Fact]
@@ -296,7 +320,6 @@ namespace XUnitTests
             var indexedSomeArgument = npcProcessInfoEntryPoint.IndexedParametersMap[someArgumentKey];
             Assert.Equal(typeof(int), indexedSomeArgument);
 
-
             var secondArgument = npcProcessInfoEntryPoint.ParametersMap["secondArgument"];
             Assert.Equal(typeof(int), secondArgument);
 
@@ -304,6 +327,12 @@ namespace XUnitTests
 
             var indexedSecondArgument = npcProcessInfoEntryPoint.IndexedParametersMap[secondArgumentKey];
             Assert.Equal(typeof(int), indexedSecondArgument);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.DefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.DefaultValuesMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedDefaultValuesMap);
+            Assert.Equal(0, npcProcessInfoEntryPoint.IndexedDefaultValuesMap.Count);
         }
 
         [Fact]
@@ -544,6 +573,64 @@ namespace XUnitTests
             CommonAssertsForEachWithOneEntryPointWithoutArgs(npcProcessInfo);
         }
 
+        private static void CommonAssertsForEachWithPointWithDefaultValueOfArgument(NPCProcessInfo npcProcessInfo, IEntityDictionary entityDictionary)
+        {
+            Assert.Equal(1, npcProcessInfo.EntryPointsInfoList.Count);
+
+            CommonAssertsForMain_int_WithDefaultValue(npcProcessInfo.EntryPointsInfoList, entityDictionary);
+        }
+
+        private static void CommonAssertsForMain_int_WithDefaultValue(List<NPCProcessEntryPointInfo> entryPointsInfoList, IEntityDictionary entityDictionary)
+        {
+            var npcProcessInfoEntryPoint = entryPointsInfoList.Single(p => p.ParametersMap.Count == 1 && p.ParametersMap.ContainsValue(typeof(int)));
+
+            CommonAssertsForEntryPoint(npcProcessInfoEntryPoint);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.ParametersMap);
+            Assert.Equal(1, npcProcessInfoEntryPoint.ParametersMap.Count);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedParametersMap);
+            Assert.Equal(1, npcProcessInfoEntryPoint.IndexedParametersMap.Count);
+
+            var someArgument = npcProcessInfoEntryPoint.ParametersMap["someArgument"];
+            Assert.Equal(typeof(int), someArgument);
+
+            var someArgumentKey = entityDictionary.GetKey("someArgument");
+
+            var indexedSomeArgument = npcProcessInfoEntryPoint.IndexedParametersMap[someArgumentKey];
+            Assert.Equal(typeof(int), indexedSomeArgument);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.DefaultValuesMap);
+            Assert.Equal(1, npcProcessInfoEntryPoint.DefaultValuesMap.Count);
+
+            var someDefaultValue = npcProcessInfoEntryPoint.DefaultValuesMap["someArgument"];
+
+            Assert.NotEqual(null, someDefaultValue);
+            Assert.Equal(12, (int)someDefaultValue);
+
+            Assert.NotEqual(null, npcProcessInfoEntryPoint.IndexedDefaultValuesMap);
+            Assert.Equal(1, npcProcessInfoEntryPoint.IndexedDefaultValuesMap.Count);
+
+            var indexedSomeDefaultValue = npcProcessInfoEntryPoint.IndexedDefaultValuesMap[someArgumentKey];
+
+            Assert.NotEqual(null, indexedSomeDefaultValue);
+            Assert.Equal(12, (int)indexedSomeDefaultValue);
+        }
+
+        [Fact]
+        public void CreateTestedTestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+
+            var type = typeof(TestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess);
+            var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
+
+            CommonAssertsForEachCreatedNPCProcessInfo(npcProcessInfo, globalEntityDictionary, type);
+            CommonAssertsForEachWithNameAndWithStartupModeNPCProcess(npcProcessInfo);
+            CommonAssertsForEachWithPointWithDefaultValueOfArgument(npcProcessInfo, globalEntityDictionary);
+        }
+
         [Fact]
         public void CreateTestedNPCProcessInfoWithTwoEntryPointsAndWithNameAndWithStartupModeNPCProcess()
         {
@@ -598,6 +685,6 @@ namespace XUnitTests
             CommonAssertsForEachCreatedNPCProcessInfo(npcProcessInfo, globalEntityDictionary, type);
             CommonAssertsForEachWithNameAndWithStartupModeNPCProcess(npcProcessInfo);
             CommonAssertsForEachWithFiveEntryPoints(npcProcessInfo, globalEntityDictionary);
-        }
+        } 
     }
 }

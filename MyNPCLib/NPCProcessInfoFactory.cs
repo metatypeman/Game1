@@ -89,13 +89,20 @@ namespace MyNPCLib
                 {
                     var parameterType = parameter.ParameterType;
                     var parameterName = parameter.Name;
-
+                    var defaultValue = parameter.DefaultValue;
+                    var parameterKey = mEntityDictionary.GetKey(parameterName);
 #if DEBUG
-                    LogInstance.Log($"CreateInfoOfConcreteProcess parameter.Name = {parameter.Name} parameter.ParameterType.FullName = {parameter.ParameterType.FullName}");
+                    LogInstance.Log($"CreateInfoOfConcreteProcess parameter.Name = {parameter.Name} parameter.ParameterType.FullName = {parameter.ParameterType.FullName} parameterKey = {parameterKey} defaultValue = {defaultValue} defaultValue.GetType().FullName = {defaultValue.GetType().FullName}");
 #endif
 
                     entryPointInfo.ParametersMap[parameterName] = parameterType;
-                    entryPointInfo.IndexedParametersMap[mEntityDictionary.GetKey(parameterName)] = parameterType;
+                    entryPointInfo.IndexedParametersMap[parameterKey] = parameterType;
+
+                    if(defaultValue != DBNull.Value)
+                    {
+                        entryPointInfo.DefaultValuesMap[parameterName] = defaultValue;
+                        entryPointInfo.IndexedDefaultValuesMap[parameterKey] = defaultValue;
+                    }
                 }
             }
 

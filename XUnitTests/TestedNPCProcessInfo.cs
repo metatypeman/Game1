@@ -278,6 +278,15 @@ namespace XUnitTests
 
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
     [NPCProcessName("SomeName")]
+    public class TestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
+    {
+        public void Main(int someArgument = 12)
+        {
+        }
+    }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+    [NPCProcessName("SomeName")]
     public class TestedNPCProcessInfoWithTwoEntryPointsAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
     {
         public void Main()
