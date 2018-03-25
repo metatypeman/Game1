@@ -10,13 +10,13 @@ namespace MyNPCLib
         {
             mIdFactory = idFactory;
             mEntityDictionary = entityDictionary;
-            mNPCProcessInfoCache = npcProcessInfoCache;
+            mStorageOfNPCProcessInfo = new StorageOfNPCProcessInfo(entityDictionary, npcProcessInfoCache);
         }
 
         #region private members
         private IIdFactory mIdFactory;
         private IEntityDictionary mEntityDictionary;
-        private NPCProcessInfoCache mNPCProcessInfoCache;
+        private StorageOfNPCProcessInfo mStorageOfNPCProcessInfo;
         private object mDisposeLockObj = new object();
         private bool mIsDisposed;
         #endregion
@@ -27,7 +27,32 @@ namespace MyNPCLib
             LogInstance.Log($"StorageOfNPCProcesses AddTypeOfProcess type = {type?.FullName}");
 #endif
 
-            throw new NotImplementedException();
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    throw new ElementIsNotActiveException();
+                }
+            }
+
+            mStorageOfNPCProcessInfo.AddTypeOfProcess(type);
+        }
+
+        public BaseNPCProcess GetProcess(INPCCommand command)
+        {
+#if DEBUG
+            LogInstance.Log($"StorageOfNPCProcesses GetProcess command = {command}");
+#endif
+
+            lock (mDisposeLockObj)
+            {
+                if (mIsDisposed)
+                {
+                    throw new ElementIsNotActiveException();
+                }
+            }
+
+
         }
 
         public void Dispose()
@@ -41,6 +66,8 @@ namespace MyNPCLib
 
                 mIsDisposed = true;
             }
+
+            mStorageOfNPCProcessInfo.Dispose();
         }
     }
 }
