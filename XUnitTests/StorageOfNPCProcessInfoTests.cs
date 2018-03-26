@@ -137,6 +137,13 @@ namespace XUnitTests
 
             storage.AddTypeOfProcess(type);
             storage_2.AddTypeOfProcess(type);
+
+            var npcProcessInfo = storage.GetNPCProcessInfo(type);
+            var npcProcessInfo_2 = storage_2.GetNPCProcessInfo(type);
+
+            Assert.NotEqual(null, npcProcessInfo);
+            Assert.NotEqual(null, npcProcessInfo_2);
+            Assert.Equal(true, ReferenceEquals(npcProcessInfo, npcProcessInfo_2));
         }
 
         [Fact]
@@ -163,6 +170,7 @@ namespace XUnitTests
             Assert.NotEqual(null, npcProcessInfo_1);
 
             Assert.Equal(npcProcessInfo, npcProcessInfo_1);
+            Assert.Equal(true, ReferenceEquals(npcProcessInfo, npcProcessInfo_1));
 
             NPCProcessInfoFactoryTests.CheckTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess(npcProcessInfo, globalEntityDictionary, type);
         }

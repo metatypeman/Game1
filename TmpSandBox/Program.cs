@@ -10,12 +10,47 @@ namespace TmpSandBox
     {
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException; 
+
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTActivatorOfNPCProcessEntryPointInfo();
+            TSTStorageOfNPCProcesses();
+            //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info($"CurrentDomain_UnhandledException e.ExceptionObject = {e.ExceptionObject}");
+        }
+
+        private static void TSTStorageOfNPCProcesses()
+        {
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            var type = typeof(TmpConcreteNPCProcess);
+
+            var result = storage.AddTypeOfProcess(type);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses result = {result}");
+
+            var command = new NPCCommand();
+            command.Name = "test";
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses command = {command}");
+
+            var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses internalCommand = {internalCommand}");
+
+            var process = storage.GetProcess(internalCommand);
+
+            NLog.LogManager.GetCurrentClassLogger().Info("End TSTStorageOfNPCProcesses");
         }
 
         private static void TSTActivatorOfNPCProcessEntryPointInfo()

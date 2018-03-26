@@ -17,11 +17,12 @@ namespace MyNPCLib
         private IIdFactory mIdFactory;
         private IEntityDictionary mEntityDictionary;
         private StorageOfNPCProcessInfo mStorageOfNPCProcessInfo;
+        private Dictionary<ulong, BaseNPCProcess> mSingletonsDict = new Dictionary<ulong, BaseNPCProcess>();
         private object mDisposeLockObj = new object();
         private bool mIsDisposed;
         #endregion
 
-        public void AddTypeOfProcess(Type type)
+        public bool AddTypeOfProcess(Type type)
         {
 #if DEBUG
             LogInstance.Log($"StorageOfNPCProcesses AddTypeOfProcess type = {type?.FullName}");
@@ -35,10 +36,10 @@ namespace MyNPCLib
                 }
             }
 
-            mStorageOfNPCProcessInfo.AddTypeOfProcess(type);
+            return mStorageOfNPCProcessInfo.AddTypeOfProcess(type);
         }
 
-        public BaseNPCProcess GetProcess(INPCCommand command)
+        public BaseNPCProcess GetProcess(NPCInternalCommand command)
         {
 #if DEBUG
             LogInstance.Log($"StorageOfNPCProcesses GetProcess command = {command}");
@@ -52,6 +53,41 @@ namespace MyNPCLib
                 }
             }
 
+            if(command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            var processInfo = mStorageOfNPCProcessInfo.GetNPCProcessInfo(command.Key);
+
+#if DEBUG
+            LogInstance.Log($"StorageOfNPCProcesses GetProcess processInfo = {processInfo}");
+#endif
+
+            if(processInfo == null)
+            {
+                return null;
+            }
+
+            var startupMode = processInfo.StartupMode;
+
+            switch (processInfo.StartupMode)
+            {
+                case NPCProcessStartupMode.Singleton:
+                    throw new NotImplementedException();
+
+                case NPCProcessStartupMode.NewInstance:
+                case NPCProcessStartupMode.NewStandaloneInstance:
+                    throw new NotImplementedException();
+
+                default: throw new ArgumentOutOfRangeException(nameof(startupMode), startupMode, null);
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private BaseNPCProcess CreateInstanceByProcessInfo(NPCProcessInfo npcProcessInfo)
+        {
 
         }
 

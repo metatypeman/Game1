@@ -37,6 +37,11 @@ namespace TmpSandBox
 
     public class TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess : BaseNPCProcess
     {
+        public TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess");
+        }
+
         public void Main()
         {
         }
