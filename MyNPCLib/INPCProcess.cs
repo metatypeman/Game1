@@ -7,5 +7,6 @@ namespace MyNPCLib
     public interface INPCProcess : IDisposable
     {
         StateOfNPCProcess State { get; }
+        ulong Id { get; }
     }
 }

@@ -6,17 +6,21 @@ namespace MyNPCLib
 {
     public class StorageOfNPCProcesses : IDisposable
     {
-        public StorageOfNPCProcesses(IIdFactory idFactory, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache)
+        public StorageOfNPCProcesses(IIdFactory idFactory, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCContext context)
         {
+            mContext = context;
             mIdFactory = idFactory;
             mEntityDictionary = entityDictionary;
             mStorageOfNPCProcessInfo = new StorageOfNPCProcessInfo(entityDictionary, npcProcessInfoCache);
+            mActivatorOfNPCProcessEntryPointInfo = new ActivatorOfNPCProcessEntryPointInfo();
         }
 
         #region private members
+        private INPCContext mContext;
         private IIdFactory mIdFactory;
         private IEntityDictionary mEntityDictionary;
         private StorageOfNPCProcessInfo mStorageOfNPCProcessInfo;
+        private ActivatorOfNPCProcessEntryPointInfo mActivatorOfNPCProcessEntryPointInfo;
         private Dictionary<ulong, BaseNPCProcess> mSingletonsDict = new Dictionary<ulong, BaseNPCProcess>();
         private object mDisposeLockObj = new object();
         private bool mIsDisposed;
@@ -69,6 +73,17 @@ namespace MyNPCLib
                 return null;
             }
 
+            var rankedEntryPointsList = mActivatorOfNPCProcessEntryPointInfo.GetRankedEntryPoints(processInfo, command.Params);
+
+#if DEBUG
+            LogInstance.Log($"StorageOfNPCProcesses GetProcess rankedEntryPointsList.Count = {rankedEntryPointsList.Count}");
+#endif
+
+            if(rankedEntryPointsList.Count == 0)
+            {
+                return null;
+            }
+
             var key = processInfo.Key;
             var startupMode = processInfo.StartupMode;
 
@@ -105,8 +120,10 @@ namespace MyNPCLib
 
         private BaseNPCProcess CreateInstanceByProcessInfo(NPCProcessInfo npcProcessInfo)
         {
-            var instance = Activator.CreateInstance(npcProcessInfo.Type);
-            return (BaseNPCProcess)instance;
+            var instance = (BaseNPCProcess)Activator.CreateInstance(npcProcessInfo.Type);
+            instance.Id = mIdFactory.GetNewId();
+            instance.Context = mContext;
+            return instance;
         }
 
         public void Dispose()

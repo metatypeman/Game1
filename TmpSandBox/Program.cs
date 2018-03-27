@@ -56,6 +56,31 @@ namespace TmpSandBox
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
 
+            NLog.LogManager.GetCurrentClassLogger().Info("TSTStorageOfNPCProcesses -----------------------------------------------");
+
+            type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
+
+            result = storage.AddTypeOfProcess(type);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses result = {result}");
+
+            command = new NPCCommand();
+            command.Name = "SomeName";
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses command = {command}");
+
+            internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses internalCommand = {internalCommand}");
+
+            process = storage.GetProcess(internalCommand);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) = {process == null}");
+
+            process = storage.GetProcess(internalCommand);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
+
             NLog.LogManager.GetCurrentClassLogger().Info("End TSTStorageOfNPCProcesses");
         }
 

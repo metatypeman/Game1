@@ -90,4 +90,10 @@ namespace TmpSandBox
         {
         }
     }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+    [NPCProcessName("SomeName")]
+    public class TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
+    {
+    }
 }
