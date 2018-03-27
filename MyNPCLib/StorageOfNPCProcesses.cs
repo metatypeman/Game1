@@ -69,26 +69,44 @@ namespace MyNPCLib
                 return null;
             }
 
+            var key = processInfo.Key;
             var startupMode = processInfo.StartupMode;
+
+            BaseNPCProcess instance = null;
 
             switch (processInfo.StartupMode)
             {
                 case NPCProcessStartupMode.Singleton:
-                    throw new NotImplementedException();
+                    {
+                        if(mSingletonsDict.ContainsKey(key))
+                        {
+                            instance = mSingletonsDict[key];
+                        }
+                        else
+                        {
+                            instance = CreateInstanceByProcessInfo(processInfo);
+                            mSingletonsDict[key] = instance;
+                        }
+                    }
+                    break;
 
                 case NPCProcessStartupMode.NewInstance:
                 case NPCProcessStartupMode.NewStandaloneInstance:
-                    throw new NotImplementedException();
+                    {
+                        instance = CreateInstanceByProcessInfo(processInfo);
+                    }
+                    break;
 
                 default: throw new ArgumentOutOfRangeException(nameof(startupMode), startupMode, null);
             }
 
-            throw new NotImplementedException();
+            return instance;
         }
 
         private BaseNPCProcess CreateInstanceByProcessInfo(NPCProcessInfo npcProcessInfo)
         {
-
+            var instance = Activator.CreateInstance(npcProcessInfo.Type);
+            return (BaseNPCProcess)instance;
         }
 
         public void Dispose()

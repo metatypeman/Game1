@@ -50,6 +50,12 @@ namespace TmpSandBox
 
             var process = storage.GetProcess(internalCommand);
 
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) = {process == null}");
+
+            process = storage.GetProcess(internalCommand);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
+
             NLog.LogManager.GetCurrentClassLogger().Info("End TSTStorageOfNPCProcesses");
         }
 

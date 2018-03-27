@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
@@ -10,42 +11,194 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_SetNull_GotArgumentNullException()
         {
-            throw new NotImplementedException();
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            var e = Assert.Throws<ArgumentNullException>(() => {
+                storage.AddTypeOfProcess(null);
+            });
+
+            Assert.Equal("type", e.ParamName);
         }
 
         [Fact]
         public void AddTypeOfProcess_SetNull_OnDisposed_GotElementIsNotActiveException()
         {
-            throw new NotImplementedException();
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            storage.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                storage.AddTypeOfProcess(null);
+            });
         }
 
         [Fact]
         public void AddTypeOfProcess_AddTypeWhatIsNotBasedOnBaseNPCProcess_GotTypeIsNotNPCProcessException()
         {
-            throw new NotImplementedException();
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            var type = GetType();
+
+            var e = Assert.Throws<TypeIsNotNPCProcessException>(() => {
+                storage.AddTypeOfProcess(type);
+            });
+
+            Assert.Equal(type, e.WrongType);
         }
 
         [Fact]
         public void AddTypeOfProcess_AddTypeWhatIsNotBasedOnBaseNPCProcessToDisposed_GotElementIsNotActiveException()
         {
-            throw new NotImplementedException();
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            storage.Dispose();
+
+            var type = GetType();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                storage.AddTypeOfProcess(type);
+            });
         }
 
         [Fact]
         public void AddTypeOfProcess_AddNormalType_GotTrue()
         {
-            throw new NotImplementedException();
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
+
+            var result = storage.AddTypeOfProcess(type);
+
+            Assert.Equal(true, result);
         }
 
         [Fact]
         public void AddTypeOfProcess_AddNormalTypeTwise_GotTrueFirstlyAndFalseSecondly()
         {
-            throw new NotImplementedException();
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
+
+            var result = storage.AddTypeOfProcess(type);
+
+            Assert.Equal(true, result);
+
+            var result_2 = storage.AddTypeOfProcess(type);
+
+            Assert.Equal(false, result_2);
         }
 
         [Fact]
         public void AddTypeOfProcess_AddTwoDifferentTypesOfProcesesWithTheSameName_GotTrueFirstlyAndFalseSecondly()
         {
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void TryGetProcessOfNotAddedType_GotNull()
+        {
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void TryGetProcessOfNotAddedType_ToDisposed_GotElementIsNotActiveException()
+        {
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void TryGetProcess_GotProcessOfTheType()
+        {
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void TryGetProcess_ToDisposed_GotElementIsNotActiveException()
+        {
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void TryGetSingletonProcessTwice_GotInstancesWithEqualsReferences()
+        {
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void TryGetNewInstanceProcessTwice_GotInstancesWithDifferentReferences()
+        {
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void TryGetNewStandaloneInstanceProcessTwice_GotInstancesWithDifferentReferences()
+        {
+            var idFactory = new IdFactory();
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+
             throw new NotImplementedException();
         }
     }

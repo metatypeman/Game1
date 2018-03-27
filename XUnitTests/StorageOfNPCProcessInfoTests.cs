@@ -123,7 +123,7 @@ namespace XUnitTests
         }
 
         [Fact]
-        public void AddTypeOfProcess_AddOneTypeToTwoLinkedStorages_GotEqualsReferences()
+        public void AddTypeOfProcess_AddOneTypeToTwoLinkedStorages_NextTryGetInfo_GotEqualsReferences()
         {
             var globalEntityDictionary = new EntityDictionary();
             var globalNPCProcessInfoCache = new NPCProcessInfoCache();
