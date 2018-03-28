@@ -15,9 +15,9 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTStorageOfNPCProcesses();
+            //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
-            //CreateContextAndProcessesCase1();
+            CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
         }
 
@@ -31,7 +31,8 @@ namespace TmpSandBox
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TmpConcreteNPCProcess);
 
@@ -149,25 +150,25 @@ namespace TmpSandBox
 
             var npcProcessInfoCache = new NPCProcessInfoCache();
             var globalEntityDictionary = new EntityDictionary();
-            //var tmpContext = new TmpConcreteNPCContext(globalEntityDictionary, npcProcessInfoCache);
+            var tmpContext = new TmpConcreteNPCContext(globalEntityDictionary, npcProcessInfoCache);
 
-            try
-            {
-                npcProcessInfoCache.Set(null);
-            }
-            catch(Exception e)
-            {
-                NLog.LogManager.GetCurrentClassLogger().Info($"CreateContextAndProcessesCase1 e = {e}");
-            }
+            //try
+            //{
+            //    npcProcessInfoCache.Set(null);
+            //}
+            //catch(Exception e)
+            //{
+            //    NLog.LogManager.GetCurrentClassLogger().Info($"CreateContextAndProcessesCase1 e = {e}");
+            //}
 
-            try
-            {
-                npcProcessInfoCache.Get(null);
-            }
-            catch (Exception e)
-            {
-                NLog.LogManager.GetCurrentClassLogger().Info($"CreateContextAndProcessesCase1 e = {e}");
-            }
+            //try
+            //{
+            //    npcProcessInfoCache.Get(null);
+            //}
+            //catch (Exception e)
+            //{
+            //    NLog.LogManager.GetCurrentClassLogger().Info($"CreateContextAndProcessesCase1 e = {e}");
+            //}
 
             NLog.LogManager.GetCurrentClassLogger().Info("End CreateContextAndProcessesCase1");
         }

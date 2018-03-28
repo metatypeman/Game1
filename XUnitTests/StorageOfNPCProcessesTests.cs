@@ -14,7 +14,8 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var e = Assert.Throws<ArgumentNullException>(() => {
                 storage.AddTypeOfProcess(null);
@@ -29,7 +30,8 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             storage.Dispose();
 
@@ -44,7 +46,8 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = GetType();
 
@@ -61,7 +64,8 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             storage.Dispose();
 
@@ -78,7 +82,8 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
 
@@ -93,7 +98,8 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
 
@@ -112,7 +118,8 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -133,7 +140,8 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
 
@@ -148,7 +156,8 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -169,7 +178,8 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -192,7 +202,8 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
 
@@ -210,13 +221,24 @@ namespace XUnitTests
             Assert.Equal(null, process);
         }
 
+        private static void CheckCreatedBaseNPCProcess(BaseNPCProcess process, Type targetType, INPCContext context)
+        {
+            Assert.NotEqual(null, process);
+
+            Assert.Equal(targetType, process.GetType());
+            Assert.Equal(StateOfNPCProcess.Created, process.State);
+            Assert.Equal(context, process.Context);
+            Assert.NotEqual(0ul, process.Id);
+        }
+
         [Fact]
         public void TryGetProcess_GotProcessOfTheType()
         {
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -230,7 +252,9 @@ namespace XUnitTests
 
             Assert.Equal(true, result);
 
-            throw new NotImplementedException();
+            var process = storage.GetProcess(internalCommand);
+
+            CheckCreatedBaseNPCProcess(process, type, testedContext);           
         }
 
         [Fact]
@@ -239,7 +263,8 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -253,7 +278,11 @@ namespace XUnitTests
 
             Assert.Equal(true, result);
 
-            throw new NotImplementedException();
+            storage.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                var process = storage.GetProcess(internalCommand);
+            });
         }
 
         [Fact]
@@ -262,7 +291,14 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcessSingleton);
+
+            var result = storage.AddTypeOfProcess(type);
+
+            Assert.Equal(true, result);
 
             var name = "SomeName";
             var command = new NPCCommand();
@@ -270,7 +306,13 @@ namespace XUnitTests
 
             var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
 
-            throw new NotImplementedException();
+            var process_1 = storage.GetProcess(internalCommand);
+            CheckCreatedBaseNPCProcess(process_1, type, testedContext);
+
+            var process_2 = storage.GetProcess(internalCommand);
+            CheckCreatedBaseNPCProcess(process_2, type, testedContext);
+
+            Assert.Equal(true, ReferenceEquals(process_1, process_2));
         }
 
         [Fact]
@@ -279,7 +321,14 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcessNewInstance);
+
+            var result = storage.AddTypeOfProcess(type);
+
+            Assert.Equal(true, result);
 
             var name = "SomeName";
             var command = new NPCCommand();
@@ -287,7 +336,13 @@ namespace XUnitTests
 
             var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
 
-            throw new NotImplementedException();
+            var process_1 = storage.GetProcess(internalCommand);
+            CheckCreatedBaseNPCProcess(process_1, type, testedContext);
+
+            var process_2 = storage.GetProcess(internalCommand);
+            CheckCreatedBaseNPCProcess(process_2, type, testedContext);
+
+            Assert.Equal(false, ReferenceEquals(process_1, process_2));
         }
 
         [Fact]
@@ -296,7 +351,14 @@ namespace XUnitTests
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache);
+            var testedContext = new TestedNPCContext();
+            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcessNewStandaloneInstance);
+
+            var result = storage.AddTypeOfProcess(type);
+
+            Assert.Equal(true, result);
 
             var name = "SomeName";
             var command = new NPCCommand();
@@ -304,7 +366,13 @@ namespace XUnitTests
 
             var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
 
-            throw new NotImplementedException();
+            var process_1 = storage.GetProcess(internalCommand);
+            CheckCreatedBaseNPCProcess(process_1, type, testedContext);
+
+            var process_2 = storage.GetProcess(internalCommand);
+            CheckCreatedBaseNPCProcess(process_2, type, testedContext);
+
+            Assert.Equal(false, ReferenceEquals(process_1, process_2));
         }
     }
 }

@@ -31,7 +31,23 @@ namespace MyNPCLib
                 return mContext;
             }
 
-            set;
+            set
+            {
+                lock (mStateLockObj)
+                {
+                    if (mState == StateOfNPCProcess.Destroyed)
+                    {
+                        throw new ElementIsNotActiveException();
+                    }
+
+                    if (mState != StateOfNPCProcess.Created)
+                    {
+                        throw new ElementIsModifiedAfterActivationException();
+                    }
+                }
+
+                mContext = value;
+            }
         }
 
         public ulong Id

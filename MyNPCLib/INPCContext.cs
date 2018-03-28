@@ -13,8 +13,8 @@ namespace MyNPCLib
         INPCResourcesManager LeftHand { get; }
         INPCResourcesManager RightHand { get; }
 
-        void AddTypeOfProcess<T>();
-        void AddTypeOfProcess(Type type);
+        bool AddTypeOfProcess<T>();
+        bool AddTypeOfProcess(Type type);
 
         void Bootstrap<T>();
         void Bootstrap(Type type);

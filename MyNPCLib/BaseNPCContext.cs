@@ -21,7 +21,7 @@ namespace MyNPCLib
             mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary);
             mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary);
             mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary);
-            mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache);
+            mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
         }
 
         #region private members
@@ -52,18 +52,26 @@ namespace MyNPCLib
         public INPCResourcesManager LeftHand => mLeftHandResourcesManager;
         public INPCResourcesManager RightHand => mRightHandResourcesManager;
 
-        public void AddTypeOfProcess<T>()
+        public bool AddTypeOfProcess<T>()
         {
-            AddTypeOfProcess(typeof(T));
+            return AddTypeOfProcess(typeof(T));
         }
 
-        public void AddTypeOfProcess(Type type)
+        public bool AddTypeOfProcess(Type type)
         {
 #if DEBUG
             LogInstance.Log($"BaseNPCContext AddTypeOfProcess type = {type?.FullName}");
 #endif
 
-            throw new NotImplementedException();
+            lock (mStateLockObj)
+            {
+                if (mState == StateOfNPCContext.Destroyed)
+                {
+                    throw new ElementIsNotActiveException();
+                }
+            }
+
+            return mStorageOfNPCProcesses.AddTypeOfProcess(type);
         }
 
         public void Bootstrap<T>()
@@ -74,8 +82,16 @@ namespace MyNPCLib
         public void Bootstrap(Type type)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.GetType()?.FullName}");
+            LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
 #endif
+
+            lock (mStateLockObj)
+            {
+                if (mState == StateOfNPCContext.Destroyed)
+                {
+                    throw new ElementIsNotActiveException();
+                }
+            }
 
             throw new NotImplementedException();
         }

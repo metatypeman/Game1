@@ -417,4 +417,31 @@ namespace XUnitTests
         {
         }
     }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+    [NPCProcessName("SomeName")]
+    public class TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcessSingleton : BaseNPCProcess
+    {
+        public void Main()
+        {
+        }
+    }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
+    [NPCProcessName("SomeName")]
+    public class TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcessNewInstance : BaseNPCProcess
+    {
+        public void Main()
+        {
+        }
+    }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.NewStandaloneInstance)]
+    [NPCProcessName("SomeName")]
+    public class TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcessNewStandaloneInstance : BaseNPCProcess
+    {
+        public void Main()
+        {
+        }
+    }
 }
