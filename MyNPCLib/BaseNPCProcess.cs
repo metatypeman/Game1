@@ -6,6 +6,8 @@ namespace MyNPCLib
 {
     public abstract class BaseNPCProcess : INPCProcess
     {
+        public KindOfNPCProcess Kind => KindOfNPCProcess.Abstract;
+
         #region private members
         private StateOfNPCProcess mState = StateOfNPCProcess.Created;
         private object mStateLockObj = new object();

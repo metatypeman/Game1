@@ -8,5 +8,6 @@ namespace MyNPCLib
     {
         StateOfNPCProcess State { get; }
         ulong Id { get; }
-    }
+        KindOfNPCProcess Kind { get; }
+}
 }

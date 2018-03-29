@@ -227,6 +227,37 @@ namespace XUnitTests
         }
 
         [Fact]
+        public void Bootstrap_ByEmpty_GotWorkingNPCContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void Bootstrap_ByEmpty_OnDisposed_
+
+        [Fact]
+        public void Bootstrap_ByNull_GotWorkingNPCContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void Bootstrap_ByNull_OnDisposed_
+        [Fact]
+        public void Bootstrap_ByNotRegisteredType_
+        [Fact]
+        public void Bootstrap_ByNotRegisteredType_OnDisposed_
+        [Fact]
+        public void Bootstrap_ByTypeWhatIsNotBasedOnBaseNPCProcess_
+        [Fact]
+        public void Bootstrap_ByTypeWhatIsNotBasedOnBaseNPCProcess_OnDisposed_
+        [Fact]
+        public void Bootstrap_ByTypeWithoutEntryPoints_
+        [Fact]
+        public void Bootstrap_ByTypeWithoutEntryPoints_OnDisposed_
+        [Fact]
+        public void Bootstrap_
+        [Fact]
         public void Bootstrap_
     }
 }

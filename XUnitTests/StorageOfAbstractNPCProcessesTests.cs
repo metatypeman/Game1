@@ -6,7 +6,7 @@ using Xunit;
 
 namespace XUnitTests
 {
-    public class StorageOfNPCProcessesTests
+    public class StorageOfAbstractNPCProcessesTests
     {
         [Fact]
         public void AddTypeOfProcess_SetNull_GotArgumentNullException()
@@ -229,6 +229,7 @@ namespace XUnitTests
             Assert.Equal(StateOfNPCProcess.Created, process.State);
             Assert.Equal(context, process.Context);
             Assert.NotEqual(0ul, process.Id);
+            Assert.Equal(KindOfNPCProcess.Abstract, process.Kind);
         }
 
         [Fact]
