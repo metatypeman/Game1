@@ -255,7 +255,7 @@ namespace XUnitTests
 
             var process = storage.GetProcess(internalCommand);
 
-            CheckCreatedBaseNPCProcess(process, type, testedContext);           
+            CheckCreatedBaseNPCProcess(process, type, testedContext);          
         }
 
         [Fact]

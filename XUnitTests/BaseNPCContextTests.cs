@@ -229,35 +229,319 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByEmpty_GotWorkingNPCContext()
         {
-            throw new NotImplementedException();
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Bootstrap();
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
         }
 
         [Fact]
-        public void Bootstrap_ByEmpty_OnDisposed_
+        public void Bootstrap_ByEmpty_OnDisposed_GotElementIsNotActiveException()
+        {
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                testedContext.Bootstrap();
+            });
+        }
 
         [Fact]
         public void Bootstrap_ByNull_GotWorkingNPCContext()
         {
-            throw new NotImplementedException();
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Bootstrap(null);
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
         }
 
         [Fact]
-        public void Bootstrap_ByNull_OnDisposed_
+        public void Bootstrap_ByNull_OnDisposed_GotElementIsNotActiveException()
+        {
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                testedContext.Bootstrap(null);
+            });
+        }
+
         [Fact]
-        public void Bootstrap_ByNotRegisteredType_
+        public void Bootstrap_ByNotRegisteredType_GotWorkingNPCContext()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            testedContext.Bootstrap(type);
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+        }
+
         [Fact]
-        public void Bootstrap_ByNotRegisteredType_OnDisposed_
+        public void Bootstrap_ByGeneric_ByNotRegisteredType_GotWorkingNPCContext()
+        {
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Bootstrap<TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess>();
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+        }
+
         [Fact]
-        public void Bootstrap_ByTypeWhatIsNotBasedOnBaseNPCProcess_
+        public void Bootstrap_ByNotRegisteredType_OnDisposed_GotElementIsNotActiveException()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            testedContext.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                testedContext.Bootstrap(type);
+            });
+        }
+
         [Fact]
-        public void Bootstrap_ByTypeWhatIsNotBasedOnBaseNPCProcess_OnDisposed_
+        public void Bootstrap_ByGeneric_ByNotRegisteredType_OnDisposed_GotElementIsNotActiveException()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            testedContext.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                testedContext.Bootstrap<TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess>();
+            });
+        }
+
         [Fact]
-        public void Bootstrap_ByTypeWithoutEntryPoints_
+        public void Bootstrap_ByTypeWhatIsNotBasedOnBaseNPCProcess_GotWorkingNPCContext()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(BaseNPCContextTests);
+
+            testedContext.Bootstrap(type);
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+        }
+
         [Fact]
-        public void Bootstrap_ByTypeWithoutEntryPoints_OnDisposed_
+        public void Bootstrap_ByGeneric_ByTypeWhatIsNotBasedOnBaseNPCProcess_GotWorkingNPCContext()
+        {
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Bootstrap<BaseNPCContextTests>();
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+        }
+
         [Fact]
-        public void Bootstrap_
+        public void Bootstrap_ByTypeWhatIsNotBasedOnBaseNPCProcess_OnDisposed_GotElementIsNotActiveException()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(BaseNPCContextTests);
+
+            testedContext.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                testedContext.Bootstrap(type);
+            });
+        }
+
         [Fact]
-        public void Bootstrap_
+        public void Bootstrap_ByGeneric_ByTypeWhatIsNotBasedOnBaseNPCProcess_OnDisposed_GotElementIsNotActiveException()
+        {
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                testedContext.Bootstrap<BaseNPCContextTests>();
+            });
+        }
+
+        [Fact]
+        public void Bootstrap_ByTypeWithoutEntryPoints_GotWorkingNPCContext()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
+
+            testedContext.Bootstrap(type);
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+        }
+
+        [Fact]
+        public void Bootstrap_ByGeneric_ByTypeWithoutEntryPoints_GotWorkingNPCContext()
+        {
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Bootstrap<TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess>();
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+        }
+
+        [Fact]
+        public void Bootstrap_ByTypeWithoutEntryPoints_OnDisposed_GotElementIsNotActiveException()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
+
+            testedContext.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                testedContext.Bootstrap(type);
+            });
+        }
+
+        [Fact]
+        public void Bootstrap_ByGeneric_ByTypeWithoutEntryPoints_OnDisposed_GotElementIsNotActiveException()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
+
+            testedContext.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                testedContext.Bootstrap<TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess>();
+            });
+        }
+
+        [Fact]
+        public void Bootstrap_ByTypeWithEntryPointWithoutArguments_GotWorkingNPCContext()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            testedContext.Bootstrap(type);
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+        }
+
+        [Fact]
+        public void Bootstrap_ByGeneric_ByTypeWithEntryPointWithoutArguments_GotWorkingNPCContext()
+        {
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Bootstrap<TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess>();
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+        }
+
+        [Fact]
+        public void Bootstrap_ByTypeWithEntryPointWithoutArguments_OnDisposed_GotElementIsNotActiveException()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            testedContext.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                testedContext.Bootstrap(type);
+            });
+        }
+
+        [Fact]
+        public void Bootstrap_ByGeneric_ByTypeWithEntryPointWithoutArguments_OnDisposed_GotElementIsNotActiveException()
+        {
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                testedContext.Bootstrap<TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess>();
+            });
+        }
+
+        [Fact]
+        public void Bootstrap_ByTypeOnlyWithEntryPointWithArgument_GotWorkingNPCContext()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32AndWithNameAndWithStartupModeNPCProcess);
+
+            testedContext.Bootstrap(type);
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+        }
+
+        [Fact]
+        public void Bootstrap_ByGeneric_ByTypeOnlyWithEntryPointWithArgument_GotWorkingNPCContext()
+        {
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Bootstrap<TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32AndWithNameAndWithStartupModeNPCProcess>();
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+        }
+
+        [Fact]
+        public void Bootstrap_ByTypeOnlyWithEntryPointWithArgument_OnDisposed_GotElementIsNotActiveException()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32AndWithNameAndWithStartupModeNPCProcess);
+
+            testedContext.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                testedContext.Bootstrap(type);
+            });
+        }
+
+        [Fact]
+        public void Bootstrap_ByGeneric_ByTypeOnlyWithEntryPointWithArgument_OnDisposed_GotElementIsNotActiveException()
+        {
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Dispose();
+
+            Assert.Throws<ElementIsNotActiveException>(() => {
+                testedContext.Bootstrap<TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32AndWithNameAndWithStartupModeNPCProcess>();
+            });
+        }
+
+        [Fact]
+        public void BootstrapTwice_GotWorkingNPCContext()
+        {
+            var testedContext = new TestedNPCContext();
+
+            var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
+
+            testedContext.Bootstrap(type);
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+
+            testedContext.Bootstrap(type);
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+        }
+
+        [Fact]
+        public void BootstrapTwice_ByGeneric_GotWorkingNPCContext()
+        {
+            var testedContext = new TestedNPCContext();
+
+            testedContext.Bootstrap<TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess>();
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+
+            testedContext.Bootstrap<TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess>();
+
+            Assert.Equal(StateOfNPCContext.Working, testedContext.State);
+        }
     }
 }

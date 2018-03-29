@@ -599,5 +599,8 @@ namespace XUnitTests
 
             NPCProcessInfoFactoryTests.CommonAssertsForEntryPoint(targetItem.EntryPoint);
         }
+
+        [Fact]
+        public void CallEntryPoint_
     }
 }

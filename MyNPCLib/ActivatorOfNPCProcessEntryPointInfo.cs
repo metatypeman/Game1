@@ -190,5 +190,10 @@ namespace MyNPCLib
 
             return result.OrderByDescending(p => p.Rank).ToList();
         }
+
+        public void CallEntryPoint()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

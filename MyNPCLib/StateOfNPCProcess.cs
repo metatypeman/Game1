@@ -7,6 +7,10 @@ namespace MyNPCLib
     public enum StateOfNPCProcess
     {
         Created,
+        Running,
+        RanToCompletion,
+        Canceled,
+        Faulted,
         Destroyed
     }
 }

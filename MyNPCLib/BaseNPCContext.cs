@@ -91,9 +91,52 @@ namespace MyNPCLib
                 {
                     throw new ElementIsNotActiveException();
                 }
+
+                if(mState == StateOfNPCContext.Working)
+                {
+                    return;
+                }
+
+                mState = StateOfNPCContext.Working;
             }
 
-            throw new NotImplementedException();
+            if(type == null)
+            {
+                return;
+            }
+
+            var npcProcessInfo = mStorageOfNPCProcesses.StorageOfNPCProcessInfo.GetNPCProcessInfo(type);
+
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
+#endif
+
+            if (npcProcessInfo == null)
+            {
+                return;
+            }
+
+            var command = new NPCCommand();
+            command.Name = npcProcessInfo.Name;
+
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
+#endif
+
+            var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, mEntityDictionary);
+
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
+#endif
+
+            var npcProcess = mStorageOfNPCProcesses.GetProcess(internalCommand);
+
+            if(npcProcess == null)
+            {
+                return;
+            }
+
+            npcProcess.RunAsync(internalCommand);
         }
 
         public void Bootstrap()

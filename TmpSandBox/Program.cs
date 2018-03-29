@@ -15,9 +15,9 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            //TSTStorageOfNPCProcesses();
+            TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
-            CreateContextAndProcessesCase1();
+            //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
         }
 
@@ -57,30 +57,32 @@ namespace TmpSandBox
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
 
+            process.RunAsync(internalCommand);
+
             NLog.LogManager.GetCurrentClassLogger().Info("TSTStorageOfNPCProcesses -----------------------------------------------");
 
-            type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
+            //type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
 
-            result = storage.AddTypeOfProcess(type);
+            //result = storage.AddTypeOfProcess(type);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses result = {result}");
+            //NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses result = {result}");
 
-            command = new NPCCommand();
-            command.Name = "SomeName";
+            //command = new NPCCommand();
+            //command.Name = "SomeName";
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses command = {command}");
+            //NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses command = {command}");
 
-            internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
+            //internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses internalCommand = {internalCommand}");
+            //NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses internalCommand = {internalCommand}");
 
-            process = storage.GetProcess(internalCommand);
+            //process = storage.GetProcess(internalCommand);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) = {process == null}");
+            //NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) = {process == null}");
 
-            process = storage.GetProcess(internalCommand);
+            //process = storage.GetProcess(internalCommand);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
+            //NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
 
             NLog.LogManager.GetCurrentClassLogger().Info("End TSTStorageOfNPCProcesses");
         }

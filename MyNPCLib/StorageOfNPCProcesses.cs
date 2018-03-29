@@ -26,6 +26,9 @@ namespace MyNPCLib
         private bool mIsDisposed;
         #endregion
 
+        public StorageOfNPCProcessInfo StorageOfNPCProcessInfo => mStorageOfNPCProcessInfo;
+        public ActivatorOfNPCProcessEntryPointInfo ActivatorOfNPCProcessEntryPointInfo => mActivatorOfNPCProcessEntryPointInfo;
+
         public bool AddTypeOfProcess(Type type)
         {
 #if DEBUG
@@ -123,6 +126,7 @@ namespace MyNPCLib
             var instance = (BaseNPCProcess)Activator.CreateInstance(npcProcessInfo.Type);
             instance.Id = mIdFactory.GetNewId();
             instance.Context = mContext;
+            instance.Info = npcProcessInfo;
             return instance;
         }
 
