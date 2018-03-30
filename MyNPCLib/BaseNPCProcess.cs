@@ -28,6 +28,58 @@ namespace MyNPCLib
             }
         }
 
+        public event NPCProcessStateChanged OnStateChanged;
+        public event Action OnRunningChanged;
+        public event Action OnRanToCompletionChanged;
+        public event Action OnCanceledChanged;
+        public event Action OnFaultedChanged;
+        public event Action OnDestroyedChanged;
+
+        private StateOfNPCProcess NState
+        {
+            set
+            {
+                if(mState == value)
+                {
+                    return;
+                }
+
+                mState = value;
+
+                var state = mState;
+                Task.Run(() => {
+                    OnStateChanged?.Invoke(state);
+
+                    switch (state)
+                    {
+                        case StateOfNPCProcess.Created:
+                            break;
+                        case StateOfNPCProcess.Running:
+                            OnRunningChanged?.Invoke();
+                            break;
+
+                        case StateOfNPCProcess.RanToCompletion:
+                            OnRanToCompletionChanged?.Invoke();
+                            break;
+
+                        case StateOfNPCProcess.Canceled:
+                            OnCanceledChanged?.Invoke();
+                            break;
+
+                        case StateOfNPCProcess.Faulted:
+                            OnFaultedChanged?.Invoke();
+                            break;
+
+                        case StateOfNPCProcess.Destroyed:
+                            OnDestroyedChanged?.Invoke();
+                            break;
+
+                        default: throw new ArgumentOutOfRangeException(nameof(state), state, null);
+                    }
+                });
+            }
+        }
+
         private void StateChecker()
         {
             lock (mStateLockObj)
@@ -129,7 +181,7 @@ namespace MyNPCLib
             {
                 lock (mStateLockObj)
                 {
-                    mState = StateOfNPCProcess.Running;
+                    NState = StateOfNPCProcess.Running;
                 }
 
                 mActivator.CallEntryPoint(this, entryPointInfo, command.Params);
@@ -138,7 +190,7 @@ namespace MyNPCLib
                 {
                     if (mState == StateOfNPCProcess.Running)
                     {
-                        mState = StateOfNPCProcess.RanToCompletion;
+                        NState = StateOfNPCProcess.RanToCompletion;
                     }
                 }
             }
@@ -146,7 +198,7 @@ namespace MyNPCLib
             {
                 if (mState == StateOfNPCProcess.Running)
                 {
-                    mState = StateOfNPCProcess.Faulted;
+                    NState = StateOfNPCProcess.Faulted;
                 }
 
 #if DEBUG
@@ -171,7 +223,7 @@ namespace MyNPCLib
                     return;
                 }
 
-                mState = StateOfNPCProcess.Destroyed;
+                NState = StateOfNPCProcess.Destroyed;
             }
 
             throw new NotImplementedException();

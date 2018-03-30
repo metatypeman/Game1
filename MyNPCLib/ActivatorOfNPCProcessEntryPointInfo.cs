@@ -215,22 +215,29 @@ namespace MyNPCLib
                 throw new ArgumentNullException(nameof(paramsOfCommand));
             }
 
-            object[] args = null;
+            var argsList = new List<object>();
 
-            if (paramsOfCommand.Count > 0)
+            var indexedParametersMap = entryPoint.IndexedParametersMap;
+            var indexedDefaultValuesMap = entryPoint.IndexedDefaultValuesMap;
+
+            foreach (var argumentKVPItem in indexedParametersMap)
             {
-                var argsList = new List<object>();
+                var key = argumentKVPItem.Key;
 
-                var indexedParametersMap = entryPoint.IndexedParametersMap;
-                var indexedDefaultValuesMap = entryPoint.IndexedDefaultValuesMap;
-
-                foreach (var argumentKVPItem in indexedParametersMap)
+                if (paramsOfCommand.ContainsKey(key))
                 {
-                    var key = argumentKVPItem.Key;
+                    var paramValue = paramsOfCommand[key];
 
-                    if (paramsOfCommand.ContainsKey(key))
+                    if (paramValue != null)
                     {
-                        var paramValue = paramsOfCommand[key];
+                        argsList.Add(paramValue);
+                    }
+                }
+                else
+                {
+                    if (indexedDefaultValuesMap.ContainsKey(key))
+                    {
+                        var paramValue = indexedDefaultValuesMap[key];
 
                         if (paramValue != null)
                         {
@@ -239,24 +246,12 @@ namespace MyNPCLib
                     }
                     else
                     {
-                        if (indexedDefaultValuesMap.ContainsKey(key))
-                        {
-                            var paramValue = indexedDefaultValuesMap[key];
-
-                            if (paramValue != null)
-                            {
-                                argsList.Add(paramValue);
-                            }
-                        }
-                        else
-                        {
-                            throw new NotSupportedException();
-                        }
+                        throw new NotSupportedException();
                     }
                 }
-
-                args = argsList.ToArray();
             }
+
+            var args = argsList.ToArray();
 
             var targetMethod = entryPoint.MethodInfo;
             targetMethod.Invoke(npcProcess, args);
