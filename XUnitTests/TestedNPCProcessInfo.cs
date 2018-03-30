@@ -271,8 +271,11 @@ namespace XUnitTests
     [NPCProcessName("SomeName")]
     public class TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
     {
+        public bool IsCalledMain { get; private set; }
+
         public void Main()
         {
+            IsCalledMain = true;
         }
     }
 
@@ -337,8 +340,15 @@ namespace XUnitTests
     [NPCProcessName("SomeName")]
     public class TestedNPCProcessInfoWithOnlyMethodWithTwoArgumentsAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
     {
+        public bool IsCalledMain_bool_int { get; private set; }
+        public bool? BoolValue { get; private set; }
+        public int? IntValue { get; private set; }
+
         public void Main(bool someArgument, int secondArgument)
         {
+            IsCalledMain_bool_int = true;
+            BoolValue = someArgument;
+            IntValue = secondArgument;
         }
     }
 

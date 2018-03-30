@@ -26,12 +26,12 @@ namespace TmpSandBox
 
         public void Main(string arg)
         {
-
+            NLog.LogManager.GetCurrentClassLogger().Info($"Main arg = {arg}");
         }
 
         protected void Main(bool arg)
         {
-
+            NLog.LogManager.GetCurrentClassLogger().Info($"Main arg = {arg}");
         }
     }
 
@@ -44,6 +44,7 @@ namespace TmpSandBox
 
         public void Main()
         {
+            NLog.LogManager.GetCurrentClassLogger().Info($"Main");
         }
 
         public void Main(int someArgument, bool secondArgument = false)
@@ -81,6 +82,7 @@ namespace TmpSandBox
     {
         public void Main(int someArgument = 12)
         {
+            NLog.LogManager.GetCurrentClassLogger().Info($"Main someArgument = {someArgument}");
         }
     }
 

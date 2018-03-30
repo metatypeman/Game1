@@ -7,11 +7,11 @@ namespace XUnitTests
 {
     public class BaseNPCProcessTests
     {
-        [Fact]
-        public void RunAsync_
-        [Fact]
-        public void RunAsync_
-        [Fact]
-        public void RunAsync_
+        //[Fact]
+        //public void RunAsync_
+        //[Fact]
+        //public void RunAsync_
+        //[Fact]
+        //public void RunAsync_
     }
 }

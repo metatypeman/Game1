@@ -120,23 +120,10 @@ namespace MyNPCLib
             command.Name = npcProcessInfo.Name;
 
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
+            LogInstance.Log($"BaseNPCContext Bootstrap command = {command}");
 #endif
 
-            var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, mEntityDictionary);
-
-#if DEBUG
-            LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
-#endif
-
-            var npcProcess = mStorageOfNPCProcesses.GetProcess(internalCommand);
-
-            if(npcProcess == null)
-            {
-                return;
-            }
-
-            npcProcess.RunAsync(internalCommand);
+            Send(command);
         }
 
         public void Bootstrap()
@@ -179,7 +166,22 @@ namespace MyNPCLib
                 }
             }
 
-            throw new NotImplementedException();
+            var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, mEntityDictionary);
+
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext Send internalCommand = {internalCommand}");
+#endif
+
+            var npcProcess = mStorageOfNPCProcesses.GetProcess(internalCommand);
+
+            if (npcProcess == null)
+            {
+                return new NotValidAbstractNPCProcess();
+            }
+
+            npcProcess.RunAsync();
+
+            return npcProcess.Process;
         }
     }
 }

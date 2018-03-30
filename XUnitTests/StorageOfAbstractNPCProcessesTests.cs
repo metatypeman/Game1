@@ -221,8 +221,16 @@ namespace XUnitTests
             Assert.Equal(null, process);
         }
 
-        private static void CheckCreatedBaseNPCProcess(BaseNPCProcess process, Type targetType, INPCContext context)
+        private static void CheckCreatedBaseNPCProcess(BaseNPCProcessInvocablePackage processPack, Type targetType, INPCContext context)
         {
+            Assert.NotEqual(null, processPack);
+
+            Assert.NotEqual(null, processPack.Command);
+            Assert.NotEqual(null, processPack.EntryPoint);
+            Assert.NotEqual(0f, processPack.RankOfEntryPoint);
+
+            var process = processPack.Process;
+
             Assert.NotEqual(null, process);
 
             Assert.Equal(targetType, process.GetType());
@@ -313,7 +321,8 @@ namespace XUnitTests
             var process_2 = storage.GetProcess(internalCommand);
             CheckCreatedBaseNPCProcess(process_2, type, testedContext);
 
-            Assert.Equal(true, ReferenceEquals(process_1, process_2));
+            Assert.Equal(false, ReferenceEquals(process_1, process_2));
+            Assert.Equal(true, ReferenceEquals(process_1.Process, process_2.Process));
         }
 
         [Fact]

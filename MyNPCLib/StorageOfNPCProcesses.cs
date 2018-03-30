@@ -32,7 +32,7 @@ namespace MyNPCLib
         public bool AddTypeOfProcess(Type type)
         {
 #if DEBUG
-            LogInstance.Log($"StorageOfNPCProcesses AddTypeOfProcess type = {type?.FullName}");
+            //LogInstance.Log($"StorageOfNPCProcesses AddTypeOfProcess type = {type?.FullName}");
 #endif
 
             lock (mDisposeLockObj)
@@ -46,7 +46,7 @@ namespace MyNPCLib
             return mStorageOfNPCProcessInfo.AddTypeOfProcess(type);
         }
 
-        public BaseNPCProcess GetProcess(NPCInternalCommand command)
+        public BaseNPCProcessInvocablePackage GetProcess(NPCInternalCommand command)
         {
 #if DEBUG
             LogInstance.Log($"StorageOfNPCProcesses GetProcess command = {command}");
@@ -76,13 +76,9 @@ namespace MyNPCLib
                 return null;
             }
 
-            var rankedEntryPointsList = mActivatorOfNPCProcessEntryPointInfo.GetRankedEntryPoints(processInfo, command.Params);
+            var targetEntryPoint = mActivatorOfNPCProcessEntryPointInfo.GetTopEntryPoint(processInfo, command.Params);
 
-#if DEBUG
-            LogInstance.Log($"StorageOfNPCProcesses GetProcess rankedEntryPointsList.Count = {rankedEntryPointsList.Count}");
-#endif
-
-            if(rankedEntryPointsList.Count == 0)
+            if (targetEntryPoint == null)
             {
                 return null;
             }
@@ -118,7 +114,14 @@ namespace MyNPCLib
                 default: throw new ArgumentOutOfRangeException(nameof(startupMode), startupMode, null);
             }
 
-            return instance;
+            var result = new BaseNPCProcessInvocablePackage() {
+                Process = instance,
+                Command = command,
+                EntryPoint = targetEntryPoint.EntryPoint,
+                RankOfEntryPoint = targetEntryPoint.Rank
+            };
+
+            return result;
         }
 
         private BaseNPCProcess CreateInstanceByProcessInfo(NPCProcessInfo npcProcessInfo)

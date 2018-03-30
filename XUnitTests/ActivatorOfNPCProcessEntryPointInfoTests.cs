@@ -601,6 +601,107 @@ namespace XUnitTests
         }
 
         [Fact]
-        public void CallEntryPoint_
+        public void CallEntryPoint_SetNPCProcessAsNull_GotArgumentNullException()
+        {
+            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+
+            var e = Assert.Throws<ArgumentNullException>(() => {
+                activator.CallEntryPoint(null, new NPCProcessEntryPointInfo(), new Dictionary<ulong, object>());
+            });
+
+            Assert.Equal("npcProcess", e.ParamName);
+        }
+
+        [Fact]
+        public void CallEntryPoint_SetEntryPointInfoAsNull_GotArgumentNullException()
+        {
+            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+
+            var instance = new TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcess();
+
+            var e = Assert.Throws<ArgumentNullException>(() => {
+                activator.CallEntryPoint(instance, null, new Dictionary<ulong, object>());
+            });
+
+            Assert.Equal("entryPoint", e.ParamName);
+        }
+
+        [Fact]
+        public void CallEntryPoint_SetNPCInternalCommandAsNull_GotArgumentNullException()
+        {
+            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+
+            var instance = new TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcess();
+
+            var e = Assert.Throws<ArgumentNullException>(() => {
+                activator.CallEntryPoint(instance, new NPCProcessEntryPointInfo(), null);
+            });
+
+            Assert.Equal("paramsOfCommand", e.ParamName);
+        }
+
+        [Fact]
+        public void CallEntryPoint_ByEntryPointWithoutArguments_GotNothing()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+
+            var instance = new TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcess();
+            var type = instance.GetType();
+
+            var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
+
+            var command = new NPCCommand();
+            command.Name = "SomeName";
+
+            var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
+
+            var targetEntryPoints = activator.GetRankedEntryPoints(npcProcessInfo, internalCommand.Params);
+
+            var targetEntryPoint = targetEntryPoints.First();
+
+            Assert.Equal(false, instance.IsCalledMain);
+
+            activator.CallEntryPoint(instance, targetEntryPoint.EntryPoint, internalCommand.Params);
+
+            Assert.Equal(true, instance.IsCalledMain);
+        }
+
+        [Fact]
+        public void CallEntryPoint_ByEntryPointWithArgument_GotNothing()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+
+            var instance = new TestedNPCProcessInfoWithOnlyMethodWithTwoArgumentsAndWithNameAndWithStartupModeNPCProcess();
+            var type = instance.GetType();
+
+            var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
+
+            var command = new NPCCommand
+            {
+                Name = "SomeName"
+            };
+            command.Params.Add("someArgument", true);
+            command.Params.Add("secondArgument", 12);
+
+            var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
+
+            var targetEntryPoints = activator.GetRankedEntryPoints(npcProcessInfo, internalCommand.Params);
+
+            var targetEntryPoint = targetEntryPoints.First();
+
+            Assert.Equal(false, instance.IsCalledMain_bool_int);
+            Assert.Equal(null, instance.BoolValue);
+            Assert.Equal(null, instance.IntValue);
+
+            activator.CallEntryPoint(instance, targetEntryPoint.EntryPoint, internalCommand.Params);
+
+            Assert.Equal(true, instance.IsCalledMain_bool_int);
+            Assert.Equal(true, instance.BoolValue);
+            Assert.Equal(12, instance.IntValue);
+        }
     }
 }

@@ -11,8 +11,8 @@ namespace MyNPCLib
         public float GetRankByTypesOfParameters(Type typeOfArgument, Type typeOfParameter)
         {
 #if DEBUG
-            LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints typeOfArgument = {typeOfArgument?.FullName}");
-            LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints typeOfParameter = {typeOfParameter?.FullName}");
+            //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints typeOfArgument = {typeOfArgument?.FullName}");
+            //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints typeOfParameter = {typeOfParameter?.FullName}");
 #endif
 
             if(typeOfArgument == null)
@@ -191,9 +191,75 @@ namespace MyNPCLib
             return result.OrderByDescending(p => p.Rank).ToList();
         }
 
-        public void CallEntryPoint()
+        public RankedNPCProcessEntryPointInfo GetTopEntryPoint(NPCProcessInfo npcProcessInfo, Dictionary<ulong, object> paramsOfCommand)
         {
-            throw new NotImplementedException();
+            var rankedEntryPointsList = GetRankedEntryPoints(npcProcessInfo, paramsOfCommand);
+
+            return rankedEntryPointsList.FirstOrDefault();
+        }
+
+        public void CallEntryPoint(BaseNPCProcess npcProcess, NPCProcessEntryPointInfo entryPoint, Dictionary<ulong, object> paramsOfCommand)
+        {
+            if(npcProcess == null)
+            {
+                throw new ArgumentNullException(nameof(npcProcess));
+            }
+
+            if(entryPoint == null)
+            {
+                throw new ArgumentNullException(nameof(entryPoint));
+            }
+
+            if(paramsOfCommand == null)
+            {
+                throw new ArgumentNullException(nameof(paramsOfCommand));
+            }
+
+            object[] args = null;
+
+            if (paramsOfCommand.Count > 0)
+            {
+                var argsList = new List<object>();
+
+                var indexedParametersMap = entryPoint.IndexedParametersMap;
+                var indexedDefaultValuesMap = entryPoint.IndexedDefaultValuesMap;
+
+                foreach (var argumentKVPItem in indexedParametersMap)
+                {
+                    var key = argumentKVPItem.Key;
+
+                    if (paramsOfCommand.ContainsKey(key))
+                    {
+                        var paramValue = paramsOfCommand[key];
+
+                        if (paramValue != null)
+                        {
+                            argsList.Add(paramValue);
+                        }
+                    }
+                    else
+                    {
+                        if (indexedDefaultValuesMap.ContainsKey(key))
+                        {
+                            var paramValue = indexedDefaultValuesMap[key];
+
+                            if (paramValue != null)
+                            {
+                                argsList.Add(paramValue);
+                            }
+                        }
+                        else
+                        {
+                            throw new NotSupportedException();
+                        }
+                    }
+                }
+
+                args = argsList.ToArray();
+            }
+
+            var targetMethod = entryPoint.MethodInfo;
+            targetMethod.Invoke(npcProcess, args);
         }
     }
 }

@@ -11,6 +11,7 @@ namespace TmpSandBox
             : base(entityDictionary, npcProcessInfoCache)
         {
             AddTypeOfProcess<TmpConcreteNPCProcess>();
+            AddTypeOfProcess<TestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess>();
             Bootstrap<TmpConcreteNPCProcess>();
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MyNPCLib
 {
@@ -89,10 +90,11 @@ namespace MyNPCLib
             }
         }
 
-        public void RunAsync(NPCInternalCommand command)
+        public void RunAsync(NPCInternalCommand command, NPCProcessEntryPointInfo entryPointInfo)
         {
 #if DEBUG
             LogInstance.Log($"Begin BaseNPCProcess RunAsync command = {command}");
+            LogInstance.Log($"Begin BaseNPCProcess RunAsync entryPointInfo = {entryPointInfo}");
 #endif
 
             StateChecker();
@@ -102,24 +104,14 @@ namespace MyNPCLib
                 throw new ArgumentNullException(nameof(command));
             }
 
-            var targetEntryPoints = mActivator.GetRankedEntryPoints(Info, command.Params);
-
-            if(targetEntryPoints.Count == 0)
+            if(entryPointInfo == null)
             {
-                lock (mStateLockObj)
-                {
-                    mState = StateOfNPCProcess.Faulted;
-                }
-
-                return;
+                throw new ArgumentNullException(nameof(entryPointInfo));
             }
 
-            var targetEntryPoint = targetEntryPoints.First();
-
-#if DEBUG
-            LogInstance.Log($"Begin BaseNPCProcess RunAsync targetEntryPoint = {targetEntryPoint}");
-#endif
-
+            Task.Run(() => {
+                NRun(entryPointInfo, command);
+            });
             //throw new NotImplementedException();
 
 #if DEBUG
@@ -127,13 +119,40 @@ namespace MyNPCLib
 #endif
         }
 
-        private void NRun(NPCInternalCommand command)
+        private void NRun(NPCProcessEntryPointInfo entryPointInfo, NPCInternalCommand command)
         {
 #if DEBUG
             LogInstance.Log($"Begin BaseNPCProcess NRun command = {command}");
 #endif
 
-            //throw new NotImplementedException();
+            try
+            {
+                lock (mStateLockObj)
+                {
+                    mState = StateOfNPCProcess.Running;
+                }
+
+                mActivator.CallEntryPoint(this, entryPointInfo, command.Params);
+
+                lock (mStateLockObj)
+                {
+                    if (mState == StateOfNPCProcess.Running)
+                    {
+                        mState = StateOfNPCProcess.RanToCompletion;
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                if (mState == StateOfNPCProcess.Running)
+                {
+                    mState = StateOfNPCProcess.Faulted;
+                }
+
+#if DEBUG
+                LogInstance.Log($"End BaseNPCProcess NRun e = {e}");
+#endif
+            }
 
 #if DEBUG
             LogInstance.Log($"End BaseNPCProcess NRun command = {command}");

@@ -3,11 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace TmpSandBox
 {
     class Program
     {
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info($"CurrentDomain_UnhandledException e.ExceptionObject = {e.ExceptionObject}");
+        }
+
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException; 
@@ -15,15 +21,10 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTStorageOfNPCProcesses();
+            //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
-            //CreateContextAndProcessesCase1();
+            CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
-        }
-
-        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            NLog.LogManager.GetCurrentClassLogger().Info($"CurrentDomain_UnhandledException e.ExceptionObject = {e.ExceptionObject}");
         }
 
         private static void TSTStorageOfNPCProcesses()
@@ -57,7 +58,7 @@ namespace TmpSandBox
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
 
-            process.RunAsync(internalCommand);
+            process.RunAsync();
 
             NLog.LogManager.GetCurrentClassLogger().Info("TSTStorageOfNPCProcesses -----------------------------------------------");
 
@@ -83,6 +84,8 @@ namespace TmpSandBox
             //process = storage.GetProcess(internalCommand);
 
             //NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
+
+            Thread.Sleep(10000);
 
             NLog.LogManager.GetCurrentClassLogger().Info("End TSTStorageOfNPCProcesses");
         }
@@ -153,6 +156,13 @@ namespace TmpSandBox
             var npcProcessInfoCache = new NPCProcessInfoCache();
             var globalEntityDictionary = new EntityDictionary();
             var tmpContext = new TmpConcreteNPCContext(globalEntityDictionary, npcProcessInfoCache);
+
+            var command = new NPCCommand();
+            command.Name = "SomeName";
+
+            var process = tmpContext.Send(command);
+
+            Thread.Sleep(10000);
 
             //try
             //{
