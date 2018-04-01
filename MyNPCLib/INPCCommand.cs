@@ -7,7 +7,7 @@ namespace MyNPCLib
     public interface INPCCommand: IObjectToString
     {
         string Name { get; }
-        int InitiatingProcessId { get; }
+        ulong InitiatingProcessId { get; }
         KindOfLinkingToInitiator KindOfLinkingToInitiator { get; }
         Dictionary<string, object> Params { get; }
     }

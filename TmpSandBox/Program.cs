@@ -159,10 +159,13 @@ namespace TmpSandBox
 
             var command = new NPCCommand();
             command.Name = "SomeName";
+            command.InitiatingProcessId = 1;
 
             var process = tmpContext.Send(command);
 
-            Thread.Sleep(10000);
+            process.Task?.Wait();
+
+            //Thread.Sleep(10000);
 
             //try
             //{

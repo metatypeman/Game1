@@ -11,9 +11,9 @@ namespace MyNPCLib
         public float RankOfEntryPoint { get; set; }
         public NPCProcessEntryPointInfo EntryPoint { get; set; }
 
-        public void RunAsync()
+        public INPCProcess RunAsync()
         {
-            Process.RunAsync(Command, EntryPoint);
+            return Process.RunAsync(Command, EntryPoint);
         }
 
         public override string ToString()

@@ -179,9 +179,21 @@ namespace MyNPCLib
                 return new NotValidAbstractNPCProcess();
             }
 
-            npcProcess.RunAsync();
+            return npcProcess.RunAsync();
+        }
 
-            return npcProcess.Process;
+        public void RegProcess(INPCProcess process, ulong parentProcessId)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext RegProcess process.Id = {process.Id} parentProcessId = {parentProcessId}");
+#endif
+        }
+
+        public void UnRegProcess(INPCProcess process)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext UnRegProcess process.Id = {process.Id}");
+#endif
         }
     }
 }

@@ -9,12 +9,17 @@ namespace MyNPCLib
     public abstract class BaseNPCProcess : INPCProcess
     {
         public KindOfNPCProcess Kind => KindOfNPCProcess.Abstract;
+        public Task Task => null;
 
         #region private members
         private StateOfNPCProcess mState = StateOfNPCProcess.Created;
         private object mStateLockObj = new object();
         private ulong mId;
         private ActivatorOfNPCProcessEntryPointInfo mActivator = new ActivatorOfNPCProcessEntryPointInfo();
+        private List<ProxyForNPCAbstractProcess> mListOfProxes = new List<ProxyForNPCAbstractProcess>();
+        private object mListOfProxesLockObj = new object();
+        private bool mIsFirstCall;
+        private object mIsFirstCallLockObj = new object();
         #endregion
 
         public StateOfNPCProcess State
@@ -142,7 +147,7 @@ namespace MyNPCLib
             }
         }
 
-        public void RunAsync(NPCInternalCommand command, NPCProcessEntryPointInfo entryPointInfo)
+        public INPCProcess RunAsync(NPCInternalCommand command, NPCProcessEntryPointInfo entryPointInfo)
         {
 #if DEBUG
             LogInstance.Log($"Begin BaseNPCProcess RunAsync command = {command}");
@@ -161,49 +166,95 @@ namespace MyNPCLib
                 throw new ArgumentNullException(nameof(entryPointInfo));
             }
 
-            Task.Run(() => {
-                NRun(entryPointInfo, command);
+            var proxy = new ProxyForNPCAbstractProcess(mId);
+
+            var task = new Task(() => {
+                NRun(entryPointInfo, command, proxy);
             });
-            //throw new NotImplementedException();
+
+            proxy.Task = task;
+
+            task.Start();
 
 #if DEBUG
             LogInstance.Log($"End BaseNPCProcess RunAsync command = {command}");
 #endif
+
+            return proxy;
         }
 
-        private void NRun(NPCProcessEntryPointInfo entryPointInfo, NPCInternalCommand command)
+        private void NRun(NPCProcessEntryPointInfo entryPointInfo, NPCInternalCommand command, ProxyForNPCAbstractProcess proxy)
         {
 #if DEBUG
             LogInstance.Log($"Begin BaseNPCProcess NRun command = {command}");
 #endif
 
+            var startupMode = Info.StartupMode;
+
             try
             {
-                lock (mStateLockObj)
+                lock(mListOfProxesLockObj)
                 {
-                    NState = StateOfNPCProcess.Running;
+                    mListOfProxes.Add(proxy);
                 }
+
+                switch (startupMode)
+                {
+                    case NPCProcessStartupMode.NewInstance:
+                        mContext.RegProcess(this, command.InitiatingProcessId);
+                        break;
+
+                    case NPCProcessStartupMode.NewStandaloneInstance:
+                        mContext.RegProcess(this, 0ul);
+                        break;
+
+                    case NPCProcessStartupMode.Singleton:
+                        lock(mIsFirstCallLockObj)
+                        {
+                            if(!mIsFirstCall)
+                            {
+                                mIsFirstCall = true;
+                                mContext.RegProcess(this, 0ul);
+                            }
+                        }
+                        break;
+                }
+
+                proxy.State = StateOfNPCProcess.Running;
 
                 mActivator.CallEntryPoint(this, entryPointInfo, command.Params);
 
-                lock (mStateLockObj)
+                if (proxy.State == StateOfNPCProcess.Running)
                 {
-                    if (mState == StateOfNPCProcess.Running)
-                    {
-                        NState = StateOfNPCProcess.RanToCompletion;
-                    }
+                    proxy.State = StateOfNPCProcess.RanToCompletion;
                 }
             }
             catch(Exception e)
             {
-                if (mState == StateOfNPCProcess.Running)
+                if (proxy.State == StateOfNPCProcess.Running)
                 {
-                    NState = StateOfNPCProcess.Faulted;
+                    proxy.State = StateOfNPCProcess.Faulted;
                 }
 
 #if DEBUG
                 LogInstance.Log($"End BaseNPCProcess NRun e = {e}");
 #endif
+            }
+
+            switch (startupMode)
+            {
+                case NPCProcessStartupMode.NewInstance:
+                case NPCProcessStartupMode.NewStandaloneInstance:
+                    mContext.UnRegProcess(this);
+                    break;
+
+                case NPCProcessStartupMode.Singleton:
+                    break;
+            }
+
+            lock (mListOfProxesLockObj)
+            {
+                mListOfProxes.Remove(proxy);
             }
 
 #if DEBUG
@@ -226,7 +277,15 @@ namespace MyNPCLib
                 NState = StateOfNPCProcess.Destroyed;
             }
 
-            throw new NotImplementedException();
+            lock (mListOfProxesLockObj)
+            {
+                foreach(var proxy in mListOfProxes)
+                {
+                    proxy.State = StateOfNPCProcess.Destroyed;
+                }
+            }
+
+            mContext.UnRegProcess(this);
         }
     }
 }

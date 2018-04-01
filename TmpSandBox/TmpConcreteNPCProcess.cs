@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace TmpSandBox
 {
@@ -76,13 +77,17 @@ namespace TmpSandBox
         }
     }
 
-    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+    [NPCProcessStartupMode(NPCProcessStartupMode.NewStandaloneInstance)]
     [NPCProcessName("SomeName")]
     public class TestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess : BaseNPCProcess
     {
         public void Main(int someArgument = 12)
         {
             NLog.LogManager.GetCurrentClassLogger().Info($"Main someArgument = {someArgument}");
+
+            //Thread.Sleep(10000);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"End Main someArgument = {someArgument}");
         }
     }
 

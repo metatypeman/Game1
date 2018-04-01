@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MyNPCLib
 {
@@ -16,6 +17,7 @@ namespace MyNPCLib
 
         public ulong Id => 0;
         public KindOfNPCProcess Kind => KindOfNPCProcess.Abstract;
+        public Task Task => null;
 
         public void Dispose()
         {

@@ -21,5 +21,8 @@ namespace MyNPCLib
         void Bootstrap();
 
         INPCProcess Send(INPCCommand command);
+
+        void RegProcess(INPCProcess process, ulong parentProcessId);
+        void UnRegProcess(INPCProcess process);
     }
 }

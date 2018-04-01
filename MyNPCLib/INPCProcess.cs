@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MyNPCLib
 {
@@ -17,5 +18,6 @@ namespace MyNPCLib
         event Action OnDestroyedChanged;
         ulong Id { get; }
         KindOfNPCProcess Kind { get; }
+        Task Task { get; }
     }
 }

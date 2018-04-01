@@ -7,7 +7,7 @@ namespace MyNPCLib
     public class NPCInternalCommand : IObjectToString
     {
         public ulong Key { get; set; }
-        public int InitiatingProcessId { get; set; }
+        public ulong InitiatingProcessId { get; set; }
         public KindOfLinkingToInitiator KindOfLinkingToInitiator { get; set; } = KindOfLinkingToInitiator.Standalone;
         public Dictionary<ulong, object> Params { get; set; } = new Dictionary<ulong, object>();
 
