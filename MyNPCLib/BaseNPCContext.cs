@@ -203,7 +203,25 @@ namespace MyNPCLib
 
                 mProcessesDict[id] = process;
 
-                throw new NotImplementedException();
+                if(parentProcessId > 0)
+                {
+                    List<ulong> childrenProcessesIdList = null;
+
+                    if(mParentChildrenProcessesDict.ContainsKey(parentProcessId))
+                    {
+                        childrenProcessesIdList = mParentChildrenProcessesDict[parentProcessId];
+
+                        if(!childrenProcessesIdList.Contains(id))
+                        {
+                            childrenProcessesIdList.Add(id);
+                        }
+                    }
+                    else
+                    {
+                        childrenProcessesIdList = new List<ulong>() { id };
+                        mParentChildrenProcessesDict[parentProcessId] = childrenProcessesIdList;
+                    }
+                }            
             }
         }
 
@@ -233,7 +251,7 @@ namespace MyNPCLib
                 throw new ArgumentNullException("process.Id");
             }
 
-            List<ulong> childrenProcesses = null;
+            List<ulong> childrenProcessesIdList = null;
 
             lock (mProcessesDictLockObj)
             {
@@ -244,13 +262,21 @@ namespace MyNPCLib
 
                 mProcessesDict.Remove(id);
 
-                if()
+                if(mParentChildrenProcessesDict.ContainsKey(id))
                 {
-                    childrenProcesses = mParentChildrenProcessesDict[id];
-                }
-
-                throw new NotImplementedException();
+                    childrenProcessesIdList = mParentChildrenProcessesDict[id];
+                    mParentChildrenProcessesDict.Remove(id);
+                }         
             }
+
+            if(childrenProcessesIdList != null)
+            {
+                foreach(var childProcessId in childrenProcessesIdList)
+                {
+                    var childProcess = mProcessesDict[childProcessId];
+                    childProcess.Dispose();
+                }               
+            }        
         }
 
         public void Dispose()
@@ -273,9 +299,9 @@ namespace MyNPCLib
             mRightHandResourcesManager.Dispose();
             mStorageOfNPCProcesses.Dispose();
 
-            lock (mProcessesDictLockObj)
+            foreach(var processesKVPItem in mProcessesDict)
             {
-                throw new NotImplementedException();
+                processesKVPItem.Value.Dispose();
             }
         }
     }
