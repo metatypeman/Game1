@@ -31,6 +31,9 @@ namespace MyNPCLib
         private NPCHandResourcesManager mLeftHandResourcesManager;
         private NPCHandResourcesManager mRightHandResourcesManager;
         private StorageOfNPCProcesses mStorageOfNPCProcesses;
+        private Dictionary<ulong, INPCProcess> mProcessesDict = new Dictionary<ulong, INPCProcess>();
+        private Dictionary<ulong, List<ulong>> mParentChildrenProcessesDict = new Dictionary<ulong, List<ulong>>();
+        private object mProcessesDictLockObj = new object();
 
         private object mStateLockObj = new object();
         private StateOfNPCContext mState = StateOfNPCContext.Created;
@@ -131,27 +134,6 @@ namespace MyNPCLib
             Bootstrap(null);
         }
 
-        public void Dispose()
-        {
-#if DEBUG
-            LogInstance.Log("BaseNPCContext Dispose");
-#endif
-
-            lock(mStateLockObj)
-            {
-                if(mState == StateOfNPCContext.Destroyed)
-                {
-                    return;
-                }
-
-                mState = StateOfNPCContext.Destroyed;
-            }
-
-            mLeftHandResourcesManager.Dispose();
-            mRightHandResourcesManager.Dispose();
-            mStorageOfNPCProcesses.Dispose();
-        }
-
         public INPCProcess Send(INPCCommand command)
         {
 #if DEBUG
@@ -160,6 +142,11 @@ namespace MyNPCLib
 
             lock (mStateLockObj)
             {
+                if (mState == StateOfNPCContext.Destroyed)
+                {
+                    return new NotValidAbstractNPCProcess();
+                }
+
                 if (mState != StateOfNPCContext.Working)
                 {
                     throw new ElementIsNotActiveException();
@@ -187,6 +174,37 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCContext RegProcess process.Id = {process.Id} parentProcessId = {parentProcessId}");
 #endif
+            lock (mStateLockObj)
+            {
+                if (mState == StateOfNPCContext.Destroyed)
+                {
+                    return;
+                }
+            }
+
+            if(process == null)
+            {
+                throw new ArgumentNullException(nameof(process));
+            }
+
+            var id = process.Id;
+
+            if (id == 0)
+            {
+                throw new ArgumentNullException("process.Id");
+            }
+
+            lock(mProcessesDictLockObj)
+            {
+                if(mProcessesDict.ContainsKey(id))
+                {
+                    return;
+                }
+
+                mProcessesDict[id] = process;
+
+                throw new NotImplementedException();
+            }
         }
 
         public void UnRegProcess(INPCProcess process)
@@ -194,6 +212,71 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCContext UnRegProcess process.Id = {process.Id}");
 #endif
+
+            lock (mStateLockObj)
+            {
+                if (mState == StateOfNPCContext.Destroyed)
+                {
+                    return;
+                }
+            }
+
+            if (process == null)
+            {
+                throw new ArgumentNullException(nameof(process));
+            }
+
+            var id = process.Id;
+
+            if (id == 0)
+            {
+                throw new ArgumentNullException("process.Id");
+            }
+
+            List<ulong> childrenProcesses = null;
+
+            lock (mProcessesDictLockObj)
+            {
+                if (!mProcessesDict.ContainsKey(id))
+                {
+                    return;
+                }
+
+                mProcessesDict.Remove(id);
+
+                if()
+                {
+                    childrenProcesses = mParentChildrenProcessesDict[id];
+                }
+
+                throw new NotImplementedException();
+            }
+        }
+
+        public void Dispose()
+        {
+#if DEBUG
+            LogInstance.Log("BaseNPCContext Dispose");
+#endif
+
+            lock (mStateLockObj)
+            {
+                if (mState == StateOfNPCContext.Destroyed)
+                {
+                    return;
+                }
+
+                mState = StateOfNPCContext.Destroyed;
+            }
+
+            mLeftHandResourcesManager.Dispose();
+            mRightHandResourcesManager.Dispose();
+            mStorageOfNPCProcesses.Dispose();
+
+            lock (mProcessesDictLockObj)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
