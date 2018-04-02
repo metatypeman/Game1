@@ -146,6 +146,8 @@ namespace MyNPCLib
             }
 
             mStorageOfNPCProcessInfo.Dispose();
+
+            mSingletonsDict.Clear();
         }
     }
 }
