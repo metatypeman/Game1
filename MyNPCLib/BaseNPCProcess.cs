@@ -147,6 +147,39 @@ namespace MyNPCLib
             }
         }
 
+        protected INPCProcess Execute(NPCCommand command)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess Execute command = {command}");
+#endif
+            StateChecker();
+
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            return Context.Send(command);
+        }
+
+        public INPCProcess ExecuteAsChild(NPCCommand command)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess ExecuteAsChild command = {command}");
+#endif
+            StateChecker();
+
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            command.KindOfLinkingToInitiator = KindOfLinkingToInitiator.Child;
+            command.InitiatingProcessId = Id;
+
+            return Context.Send(command);
+        }
+
         public INPCProcess RunAsync(NPCInternalCommand command, NPCProcessEntryPointInfo entryPointInfo)
         {
 #if DEBUG
@@ -260,6 +293,20 @@ namespace MyNPCLib
 #if DEBUG
             //LogInstance.Log($"End BaseNPCProcess NRun command = {command}");
 #endif
+        }
+
+        public void Wait(params INPCProcess[] processes)
+        {
+            var tasksArray = processes.Where(p => p.Task != null).Select(p => p.Task).ToArray();
+
+            Task.WaitAll(tasksArray);
+        }
+
+        public void Wait(List<INPCProcess> processes)
+        {
+            var tasksArray = processes.Where(p => p.Task != null).Select(p => p.Task).ToArray();
+
+            Task.WaitAll(tasksArray);
         }
 
         public void Dispose()
