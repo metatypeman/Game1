@@ -4,7 +4,13 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    class BaseNPCContextWithBlackBoard
+    public class BaseNPCContextWithBlackBoard<T>: BaseNPCContext
     {
+        public BaseNPCContextWithBlackBoard(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null)
+            : base(entityDictionary, npcProcessInfoCache)
+        {
+        }
+
+
     }
 }

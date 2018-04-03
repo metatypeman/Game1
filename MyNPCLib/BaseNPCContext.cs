@@ -63,7 +63,7 @@ namespace MyNPCLib
         public bool AddTypeOfProcess(Type type)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext AddTypeOfProcess type = {type?.FullName}");
+            //LogInstance.Log($"BaseNPCContext AddTypeOfProcess type = {type?.FullName}");
 #endif
 
             lock (mStateLockObj)
@@ -85,7 +85,7 @@ namespace MyNPCLib
         public void Bootstrap(Type type)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
+            //LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
 #endif
 
             lock (mStateLockObj)
@@ -111,7 +111,7 @@ namespace MyNPCLib
             var npcProcessInfo = mStorageOfNPCProcesses.StorageOfNPCProcessInfo.GetNPCProcessInfo(type);
 
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
+            //LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
 #endif
 
             if (npcProcessInfo == null)
@@ -123,13 +123,13 @@ namespace MyNPCLib
             command.Name = npcProcessInfo.Name;
 
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext Bootstrap command = {command}");
+            //LogInstance.Log($"BaseNPCContext Bootstrap command = {command}");
 #endif
 
             Send(command);
         }
 
-        public void Bootstrap()
+        public virtual void Bootstrap()
         {
             Bootstrap(null);
         }
@@ -137,7 +137,7 @@ namespace MyNPCLib
         public INPCProcess Send(INPCCommand command)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext Send command = {command}");
+            //LogInstance.Log($"BaseNPCContext Send command = {command}");
 #endif
 
             lock (mStateLockObj)
@@ -156,7 +156,7 @@ namespace MyNPCLib
             var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, mEntityDictionary);
 
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext Send internalCommand = {internalCommand}");
+            //LogInstance.Log($"BaseNPCContext Send internalCommand = {internalCommand}");
 #endif
 
             var npcProcess = mStorageOfNPCProcesses.GetProcess(internalCommand);
@@ -172,7 +172,7 @@ namespace MyNPCLib
         public void RegProcess(INPCProcess process, ulong parentProcessId)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext RegProcess process.Id = {process.Id} parentProcessId = {parentProcessId}");
+            //LogInstance.Log($"BaseNPCContext RegProcess process.Id = {process.Id} parentProcessId = {parentProcessId}");
 #endif
             lock (mStateLockObj)
             {
@@ -228,7 +228,7 @@ namespace MyNPCLib
         public void UnRegProcess(INPCProcess process)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext UnRegProcess process.Id = {process.Id}");
+            //LogInstance.Log($"BaseNPCContext UnRegProcess process.Id = {process.Id}");
 #endif
 
             lock (mStateLockObj)
@@ -282,7 +282,7 @@ namespace MyNPCLib
         public void Dispose()
         {
 #if DEBUG
-            LogInstance.Log("BaseNPCContext Dispose");
+            //LogInstance.Log("BaseNPCContext Dispose");
 #endif
 
             lock (mStateLockObj)

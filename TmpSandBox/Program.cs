@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using TmpSandBox.NPCBehaviour;
 
 namespace TmpSandBox
 {
@@ -21,10 +22,24 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
+            TSTMyNPCContext();
             //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
-            CreateContextAndProcessesCase1();
+            //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTMyNPCContext()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTMyNPCContext");
+
+            var context = new MyNPCContext();
+            context.Bootstrap();
+
+            while(true)
+            {
+                Thread.Sleep(10000);
+            }
         }
 
         private static void TSTStorageOfNPCProcesses()

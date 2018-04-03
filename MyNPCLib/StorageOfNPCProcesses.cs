@@ -49,7 +49,7 @@ namespace MyNPCLib
         public BaseNPCProcessInvocablePackage GetProcess(NPCInternalCommand command)
         {
 #if DEBUG
-            LogInstance.Log($"StorageOfNPCProcesses GetProcess command = {command}");
+            //LogInstance.Log($"StorageOfNPCProcesses GetProcess command = {command}");
 #endif
 
             lock (mDisposeLockObj)
@@ -68,7 +68,7 @@ namespace MyNPCLib
             var processInfo = mStorageOfNPCProcessInfo.GetNPCProcessInfo(command.Key);
 
 #if DEBUG
-            LogInstance.Log($"StorageOfNPCProcesses GetProcess processInfo = {processInfo}");
+            //LogInstance.Log($"StorageOfNPCProcesses GetProcess processInfo = {processInfo}");
 #endif
 
             if(processInfo == null)

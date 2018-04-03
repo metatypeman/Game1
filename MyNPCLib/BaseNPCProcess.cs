@@ -150,8 +150,8 @@ namespace MyNPCLib
         public INPCProcess RunAsync(NPCInternalCommand command, NPCProcessEntryPointInfo entryPointInfo)
         {
 #if DEBUG
-            LogInstance.Log($"Begin BaseNPCProcess RunAsync command = {command}");
-            LogInstance.Log($"Begin BaseNPCProcess RunAsync entryPointInfo = {entryPointInfo}");
+            //LogInstance.Log($"Begin BaseNPCProcess RunAsync command = {command}");
+            //LogInstance.Log($"Begin BaseNPCProcess RunAsync entryPointInfo = {entryPointInfo}");
 #endif
 
             StateChecker();
@@ -177,7 +177,7 @@ namespace MyNPCLib
             task.Start();
 
 #if DEBUG
-            LogInstance.Log($"End BaseNPCProcess RunAsync command = {command}");
+            //LogInstance.Log($"End BaseNPCProcess RunAsync command = {command}");
 #endif
 
             return proxy;
@@ -186,7 +186,7 @@ namespace MyNPCLib
         private void NRun(NPCProcessEntryPointInfo entryPointInfo, NPCInternalCommand command, ProxyForNPCAbstractProcess proxy)
         {
 #if DEBUG
-            LogInstance.Log($"Begin BaseNPCProcess NRun command = {command}");
+            //LogInstance.Log($"Begin BaseNPCProcess NRun command = {command}");
 #endif
 
             var startupMode = Info.StartupMode;
@@ -258,14 +258,14 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            LogInstance.Log($"End BaseNPCProcess NRun command = {command}");
+            //LogInstance.Log($"End BaseNPCProcess NRun command = {command}");
 #endif
         }
 
         public void Dispose()
         {
 #if DEBUG
-            LogInstance.Log("BaseNPCContext Dispose");
+            //LogInstance.Log("BaseNPCContext Dispose");
 #endif
             lock (mStateLockObj)
             {

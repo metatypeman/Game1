@@ -25,7 +25,7 @@ namespace MyNPCLib
         public bool AddTypeOfProcess(Type type)
         {
 #if DEBUG
-            LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess type = {type?.FullName}");
+            //LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess type = {type?.FullName}");
 #endif
 
             lock (mDisposeLockObj)
@@ -90,7 +90,7 @@ namespace MyNPCLib
         public NPCProcessInfo GetNPCProcessInfo(Type type)
         {
 #if DEBUG
-            LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess type = {type?.FullName}");
+            //LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess type = {type?.FullName}");
 #endif
 
             lock (mDisposeLockObj)
@@ -120,7 +120,7 @@ namespace MyNPCLib
         public NPCProcessInfo GetNPCProcessInfo(ulong key)
         {
 #if DEBUG
-            LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess key = {key}");
+            //LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess key = {key}");
 #endif
 
             lock (mDisposeLockObj)

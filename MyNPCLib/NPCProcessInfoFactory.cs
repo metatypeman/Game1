@@ -83,7 +83,7 @@ namespace MyNPCLib
                 var parametersList = method.GetParameters();
 
 #if DEBUG
-                LogInstance.Log($"CreateInfoOfConcreteProcess method.Name = {method.Name}");
+                //LogInstance.Log($"CreateInfoOfConcreteProcess method.Name = {method.Name}");
 #endif
                 foreach (var parameter in parametersList)
                 {
@@ -92,7 +92,7 @@ namespace MyNPCLib
                     var defaultValue = parameter.DefaultValue;
                     var parameterKey = mEntityDictionary.GetKey(parameterName);
 #if DEBUG
-                    LogInstance.Log($"CreateInfoOfConcreteProcess parameter.Name = {parameter.Name} parameter.ParameterType.FullName = {parameter.ParameterType.FullName} parameterKey = {parameterKey} defaultValue = {defaultValue} defaultValue.GetType().FullName = {defaultValue.GetType().FullName}");
+                    //LogInstance.Log($"CreateInfoOfConcreteProcess parameter.Name = {parameter.Name} parameter.ParameterType.FullName = {parameter.ParameterType.FullName} parameterKey = {parameterKey} defaultValue = {defaultValue} defaultValue.GetType().FullName = {defaultValue.GetType().FullName}");
 #endif
 
                     entryPointInfo.ParametersMap[parameterName] = parameterType;
