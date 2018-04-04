@@ -16,7 +16,9 @@ namespace TmpSandBox.NPCBehaviour
             var bodyCommand = new HumanoidHStateCommand();
             bodyCommand.State = HumanoidHState.Run;
 
-            var process = Context.Body.Send(bodyCommand.ToNPCCommand());
+            var process = ExecuteBody(bodyCommand);
+
+            Wait(process);
 
             NLog.LogManager.GetCurrentClassLogger().Info("End Main");
         }

@@ -6,7 +6,7 @@ namespace MyNPCLib
 {
     public class BaseNPCContext: INPCContext
     {
-        public BaseNPCContext(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null)
+        public BaseNPCContext(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, IHumanoidBodyController humanoidBodyController = null)
         {
             if (entityDictionary == null)
             {
@@ -18,7 +18,7 @@ namespace MyNPCLib
             }
 
             mIdFactory = new IdFactory();
-            mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary);
+            mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary, humanoidBodyController);
             mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary);
             mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary);
             mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
@@ -50,7 +50,7 @@ namespace MyNPCLib
             }
         }
 
-        public INPCResourcesManager Body => mBodyResourcesManager;
+        public INPCBodyResourcesManager Body => mBodyResourcesManager;
         public INPCResourcesManager DefaultHand => mRightHandResourcesManager;
         public INPCResourcesManager LeftHand => mLeftHandResourcesManager;
         public INPCResourcesManager RightHand => mRightHandResourcesManager;
@@ -102,6 +102,10 @@ namespace MyNPCLib
 
                 mState = StateOfNPCContext.Working;
             }
+
+            mBodyResourcesManager.Bootstrap();
+            mRightHandResourcesManager.Bootstrap();
+            mLeftHandResourcesManager.Bootstrap();
 
             if(type == null)
             {

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    public interface INPCResourcesManager : IDisposable
+    public interface INPCBodyResourcesManager : IDisposable
     {
-        INPCProcess Send(INPCCommand command);
+        INPCProcess Send(IHumanoidBodyCommand command);
         void Bootstrap();
     }
 }

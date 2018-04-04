@@ -11,22 +11,6 @@ namespace MyNPCLib
         public object TargetPosition { get; set; }
         public float Speed { get; set; }
 
-        public NPCCommand ToNPCCommand()
-        {
-            return ToNPCCommand(this);
-        }
-
-        public static implicit operator NPCCommand(HumanoidHStateCommand command)
-        {
-            return ToNPCCommand(command);
-        }
-
-        public static NPCCommand ToNPCCommand(HumanoidHStateCommand command)
-        {
-            throw new NotImplementedException();
-            return new NPCCommand();
-        }
-
         public override string ToString()
         {
             return ToString(0u);

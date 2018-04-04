@@ -8,7 +8,7 @@ namespace MyNPCLib
     {
         StateOfNPCContext State { get; }
 
-        INPCResourcesManager Body { get; }
+        INPCBodyResourcesManager Body { get; }
         INPCResourcesManager DefaultHand { get; }
         INPCResourcesManager LeftHand { get; }
         INPCResourcesManager RightHand { get; }

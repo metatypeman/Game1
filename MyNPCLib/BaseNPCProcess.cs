@@ -180,6 +180,13 @@ namespace MyNPCLib
             return Context.Send(command);
         }
 
+        public INPCProcess ExecuteBody(HumanoidBodyCommand command)
+        {
+            command.InitiatingProcessId = Id;
+
+            return Context.Body.Send(command);
+        }
+
         public INPCProcess RunAsync(NPCInternalCommand command, NPCProcessEntryPointInfo entryPointInfo)
         {
 #if DEBUG

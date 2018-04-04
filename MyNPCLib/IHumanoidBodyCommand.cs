@@ -7,5 +7,6 @@ namespace MyNPCLib
     public interface IHumanoidBodyCommand: IObjectToString
     {
         HumanoidBodyCommandKind Kind { get; }
+        ulong InitiatingProcessId { get; set; }
     }
 }

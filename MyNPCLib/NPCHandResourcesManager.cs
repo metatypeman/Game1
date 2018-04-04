@@ -19,12 +19,8 @@ namespace MyNPCLib
         private StateOfNPCContext mState = StateOfNPCContext.Created;
         #endregion
 
-        public void Dispose()
+        public void Bootstrap()
         {
-#if DEBUG
-            LogInstance.Log("NPCHandResourcesManager Dispose");
-#endif
-
             lock (mStateLockObj)
             {
                 if (mState == StateOfNPCContext.Destroyed)
@@ -32,7 +28,12 @@ namespace MyNPCLib
                     return;
                 }
 
-                mState = StateOfNPCContext.Destroyed;
+                if (mState == StateOfNPCContext.Working)
+                {
+                    return;
+                }
+
+                mState = StateOfNPCContext.Working;
             }
         }
 
@@ -51,6 +52,23 @@ namespace MyNPCLib
             }
 
             throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+#if DEBUG
+            LogInstance.Log("NPCHandResourcesManager Dispose");
+#endif
+
+            lock (mStateLockObj)
+            {
+                if (mState == StateOfNPCContext.Destroyed)
+                {
+                    return;
+                }
+
+                mState = StateOfNPCContext.Destroyed;
+            }
         }
     }
 }
