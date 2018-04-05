@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib
@@ -18,7 +19,7 @@ namespace MyNPCLib
             }
 
             mIdFactory = new IdFactory();
-            mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary, humanoidBodyController);
+            mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary, humanoidBodyController, this);
             mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary);
             mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary);
             mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
@@ -281,6 +282,82 @@ namespace MyNPCLib
                     childProcess.Dispose();
                 }               
             }        
+        }
+
+        public NPCMeshTaskResulutionKind ApproveNPCMeshTaskExecute(NPCResourcesResulution existingsNPCMeshTaskResulution)
+        {
+#if DEBUG
+            LogInstance.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingsNPCMeshTaskResulution = {existingsNPCMeshTaskResulution}");
+#endif
+
+            var targetProcessId = existingsNPCMeshTaskResulution.TargetProcessId;
+
+            var tmpExistingProcessesIdList = new List<ulong>();
+
+            var disagreementByHState = existingsNPCMeshTaskResulution.DisagreementByHState;
+
+            if (disagreementByHState != null)
+            {
+                tmpExistingProcessesIdList.AddRange(disagreementByHState.CurrentProcessesId);
+            }
+
+            var disagreementByTargetPosition = existingsNPCMeshTaskResulution.DisagreementByTargetPosition;
+
+            if (disagreementByTargetPosition != null)
+            {
+                tmpExistingProcessesIdList.AddRange(disagreementByTargetPosition.CurrentProcessesId);
+            }
+
+            var disagreementByVState = existingsNPCMeshTaskResulution.DisagreementByVState;
+
+            if (disagreementByVState != null)
+            {
+                tmpExistingProcessesIdList.AddRange(disagreementByVState.CurrentProcessesId);
+            }
+
+            var disagreementByHandsState = existingsNPCMeshTaskResulution.DisagreementByHandsState;
+
+            if (disagreementByHandsState != null)
+            {
+                tmpExistingProcessesIdList.AddRange(disagreementByHandsState.CurrentProcessesId);
+            }
+
+            var disagreementByHandsActionState = existingsNPCMeshTaskResulution.DisagreementByHandsActionState;
+
+            if (disagreementByHandsActionState != null)
+            {
+                tmpExistingProcessesIdList.AddRange(disagreementByHandsActionState.CurrentProcessesId);
+            }
+
+            tmpExistingProcessesIdList = tmpExistingProcessesIdList.Distinct().ToList();
+
+            var targetProcessInfo = mProcessesDict[targetProcessId];
+
+            var targetPriority = targetProcessInfo.GlobalPriority;
+
+
+#if DEBUG
+            //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute targetPriority = {targetPriority}");
+#endif
+            foreach (var existingProcessesId in tmpExistingProcessesIdList)
+            {
+#if DEBUG
+                //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingProcessesId = {existingProcessesId}");
+#endif
+
+                var currentProicessInfo = mProcessesDict[existingProcessesId];
+
+#if DEBUG
+                //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute currentProicessInfo.GlobalPriority = {currentProicessInfo.GlobalPriority}");
+#endif
+
+                if (currentProicessInfo.GlobalPriority > targetPriority)
+                {
+                    return NPCMeshTaskResulutionKind.Forbiden;
+                }
+            }
+
+            return NPCMeshTaskResulutionKind.Allow;//tmp
         }
 
         public void Dispose()

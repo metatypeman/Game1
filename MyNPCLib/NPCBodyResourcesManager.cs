@@ -8,20 +8,109 @@ namespace MyNPCLib
 {
     public class NPCBodyResourcesManager: INPCBodyResourcesManager
     {
-        public NPCBodyResourcesManager(IIdFactory idFactory, IEntityDictionary entityDictionary, IHumanoidBodyController humanoidBodyController)
+        public NPCBodyResourcesManager(IIdFactory idFactory, IEntityDictionary entityDictionary, IHumanoidBodyController humanoidBodyController, INPCContext context)
         {
             mIdFactory = idFactory;
             mEntityDictionary = entityDictionary;
             mHumanoidBodyController = humanoidBodyController;
+            mHumanoidBodyController.OnHumanoidStatesChanged += OnHumanoidStatesChanged;
+            mContext = context;
         }
 
 #region private members
         private IIdFactory mIdFactory;
         private IEntityDictionary mEntityDictionary;
         private IHumanoidBodyController mHumanoidBodyController;
+        private INPCContext mContext;
         private object mStateLockObj = new object();
         private StateOfNPCContext mState = StateOfNPCContext.Created;
         #endregion
+
+        private void OnHumanoidStatesChanged(List<HumanoidStateKind> changedStates)
+        {
+            lock (mStateLockObj)
+            {
+                if (mState == StateOfNPCContext.Destroyed)
+                {
+                    return;
+                }
+            }
+
+            Task.Run(() => {
+#if DEBUG
+                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged Begin changedStates");
+                //foreach (var changedState in changedStates)
+                //{
+                //    Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged changedState = {changedState}");
+                //}
+                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged End changedStates");
+#endif
+
+                var displacedProcessesIdList = new List<ulong>();
+
+                foreach (var changedState in changedStates)
+                {
+                    switch (changedState)
+                    {
+                        case HumanoidStateKind.HState:
+                            displacedProcessesIdList.AddRange(mHState);
+                            mHState.Clear();
+                            break;
+
+                        case HumanoidStateKind.TargetPosition:
+                            displacedProcessesIdList.AddRange(mTargetPosition);
+                            mTargetPosition.Clear();
+                            break;
+
+                        case HumanoidStateKind.VState:
+                            displacedProcessesIdList.AddRange(mVState);
+                            mVState.Clear();
+                            break;
+
+                        case HumanoidStateKind.HandsState:
+                            displacedProcessesIdList.AddRange(mHandsState);
+                            mHandsState.Clear();
+                            break;
+
+                        case HumanoidStateKind.HandsActionState:
+                            displacedProcessesIdList.AddRange(mHandsActionState);
+                            mHandsActionState.Clear();
+                            break;
+
+                        case HumanoidStateKind.ThingsCommand:
+                            displacedProcessesIdList.AddRange(mHandsState);
+                            mHandsState.Clear();
+                            displacedProcessesIdList.AddRange(mHandsActionState);
+                            mHandsActionState.Clear();
+                            break;
+
+                        default: throw new ArgumentOutOfRangeException(nameof(changedState), changedState, null);
+                    }
+                }
+
+                displacedProcessesIdList = displacedProcessesIdList.Distinct().ToList();
+
+#if DEBUG
+                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessesIdList.Count = {displacedProcessesIdList.Count}");
+                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
+#endif
+
+                foreach (var displacedProcessId in displacedProcessesIdList)
+                {
+#if DEBUG
+                    //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessId = {displacedProcessId}");
+#endif
+
+                    var targetTask = mTasksDict[displacedProcessId];
+                    mTasksDict.Remove(displacedProcessId);
+                    targetTask.State = StateOfNPCProcess.RanToCompletion;
+                }
+
+#if DEBUG
+                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
+#endif
+            });
+        }
 
         public void Bootstrap()
         {
@@ -85,8 +174,44 @@ namespace MyNPCLib
             var resolution = CreateResolution(mHumanoidBodyController.States, targetState, processId);
 
 #if DEBUG
-            //LogInstance.Log($"NPCBodyResourcesManager NExecute resolution = {resolution}");
+            LogInstance.Log($"NPCBodyResourcesManager NExecute resolution = {resolution}");
 #endif
+
+            var kindOfResolution = resolution.Kind;
+
+            switch (kindOfResolution)
+            {
+                case NPCMeshTaskResulutionKind.Allow:
+                case NPCMeshTaskResulutionKind.AllowAdd:
+                    ProcessAllow(targetState, processId, process, kindOfResolution);
+                    break;
+
+                case NPCMeshTaskResulutionKind.Forbiden:
+                    {
+                        var kindOfResolutionOfContext = mContext.ApproveNPCMeshTaskExecute(resolution);
+
+#if UNITY_EDITOR
+                        //Debug.Log($"NPCThreadSafeMeshController Execute kindOfResolutionOfContext = {kindOfResolutionOfContext}");
+#endif
+
+                        switch (kindOfResolutionOfContext)
+                        {
+                            case NPCMeshTaskResulutionKind.Allow:
+                            case NPCMeshTaskResulutionKind.AllowAdd:
+                                ProcessAllow(targetState, processId, process, kindOfResolutionOfContext);
+                                break;
+
+                            case NPCMeshTaskResulutionKind.Forbiden:
+                                ProcessForbiden(process);
+                                break;
+
+                            default: throw new ArgumentOutOfRangeException(nameof(kindOfResolutionOfContext), kindOfResolutionOfContext, null);
+                        }
+                    }
+                    break;
+
+                default: throw new ArgumentOutOfRangeException(nameof(kindOfResolution), kindOfResolution, null);
+            }
 
 #if DEBUG
             LogInstance.Log($"NPCBodyResourcesManager End NExecute command = {command}");
@@ -196,13 +321,13 @@ namespace MyNPCLib
             return result;
         }
 
-        private NPCResourcesResulution CreateResolution(StatesOfHumanoidBodyController sourceState, TargetStateOfHumanoidBody targetState, int processId)
+        private NPCResourcesResulution CreateResolution(StatesOfHumanoidBodyController sourceState, TargetStateOfHumanoidBody targetState, ulong processId)
         {
 #if DEBUG
             LogInstance.Log($"NPCThreadSafeMeshController CreateTargetState sourceState = {sourceState}");
             LogInstance.Log($"NPCThreadSafeMeshController CreateTargetState targetState = {targetState}");
             LogInstance.Log($"NPCThreadSafeMeshController CreateTargetState processId = {processId}");
-            //DumpProcesses();
+            DumpProcesses();
 #endif
 
             var result = new NPCResourcesResulution();
@@ -388,9 +513,9 @@ namespace MyNPCLib
                 }
             }
 
-            if (targetState.TargetHeadPosition.HasValue)
+            if (targetState.TargetHeadPosition != null)
             {
-                var targetHeadPosition = targetState.TargetHeadPosition.Value;
+                var targetHeadPosition = targetState.TargetHeadPosition;
 
                 if (mTargetHeadPosition.Count == 0)
                 {
@@ -432,14 +557,374 @@ namespace MyNPCLib
             return result;
         }
 
-        private List<int> mHState = new List<int>();
-        private List<int> mTargetPosition = new List<int>();
-        private List<int> mVState = new List<int>();
-        private List<int> mHandsState { get; set; } = new List<int>();
-        private List<int> mHandsActionState = new List<int>();
-        private List<int> mHeadState = new List<int>();
-        private List<int> mTargetHeadPosition = new List<int>();
+        private List<ulong> mHState = new List<ulong>();
+        private List<ulong> mTargetPosition = new List<ulong>();
+        private List<ulong> mVState = new List<ulong>();
+        private List<ulong> mHandsState { get; set; } = new List<ulong>();
+        private List<ulong> mHandsActionState = new List<ulong>();
+        private List<ulong> mHeadState = new List<ulong>();
+        private List<ulong> mTargetHeadPosition = new List<ulong>();
+        private Dictionary<ulong, ProxyForNPCResourceProcess> mTasksDict = new Dictionary<ulong, ProxyForNPCResourceProcess>();
 
+#if DEBUG
+        private void DumpProcesses()
+        {
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mHState");
+            foreach(var item in mHState)
+            {
+                LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mHState");
+
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mTargetPosition");
+            foreach (var item in mTargetPosition)
+            {
+                LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mTargetPosition");
+
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mVState");
+            foreach (var item in mVState)
+            {
+                LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mVState");
+
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mHandsState");
+            foreach (var item in mHandsState)
+            {
+                LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mHandsState");
+
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mHandsActionState");
+            foreach (var item in mHandsActionState)
+            {
+                LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mHandsActionState");
+
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mHeadState");
+            foreach (var item in mHeadState)
+            {
+                LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mHeadState");
+
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mTargetHeadPosition");
+            foreach (var item in mTargetHeadPosition)
+            {
+                LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+            }
+            LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mTargetHeadPosition");
+            //Debug.Log("NPCThreadSafeMeshController ProcessAllow Begin mTasksDict");
+            //foreach (var kvpItem in mTasksDict)
+            //{
+            //    var productId = kvpItem.Key;
+            //    var task = kvpItem.Value;
+
+            //    Debug.Log($"NPCThreadSafeMeshController ProcessAllow productId = {productId} task = {task}");
+            //}
+            //Debug.Log("NPCThreadSafeMeshController ProcessAllow End mTasksDict");
+        }
+#endif
+
+        private void ProcessAllow(TargetStateOfHumanoidBody targetState, ulong processId, ProxyForNPCResourceProcess process, NPCMeshTaskResulutionKind resolutionKind)
+        {
+#if DEBUG
+            //Debug.Log($"NPCThreadSafeMeshController ProcessAllow targetState = {targetState}");
+            //Debug.Log($"NPCThreadSafeMeshController ProcessAllow processId = {processId}");
+#endif
+
+            RegProcessId(targetState, processId, process, resolutionKind);
+
+#if DEBUG
+            //Debug.Log("NPCThreadSafeMeshController ProcessAllow before mMoveHumanoidController.ExecuteAsync");
+#endif
+
+            var targetStateForExecuting = mHumanoidBodyController.ExecuteAsync(targetState);
+
+            while (targetStateForExecuting.State == StateOfHumanoidTaskOfExecuting.Created)
+            {
+            }
+
+#if DEBUG
+            //Debug.Log("NPCThreadSafeMeshController ProcessAllow after mMoveHumanoidController.ExecuteAsync");
+#endif
+
+            process.State = StateOfNPCProcess.Running;
+        }
+
+        private void RegProcessId(TargetStateOfHumanoidBody targetState, ulong processId, ProxyForNPCResourceProcess process, NPCMeshTaskResulutionKind resolutionKind)
+        {
+            var displacedProcessesIdList = new List<ulong>();
+
+            if (targetState.HState.HasValue)
+            {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mHState);
+                        mHState.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
+                if (!mHState.Contains(processId))
+                {
+                    mHState.Add(processId);
+                }
+            }
+            else
+            {
+                if (mHState.Contains(processId))
+                {
+                    mHState.Remove(processId);
+                }
+            }
+
+            if (targetState.TargetPosition != null)
+            {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mTargetPosition);
+                        mTargetPosition.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
+                if (!mTargetPosition.Contains(processId))
+                {
+                    mTargetPosition.Add(processId);
+                }
+            }
+            else
+            {
+                if (mTargetPosition.Contains(processId))
+                {
+                    mTargetPosition.Remove(processId);
+                }
+            }
+
+            if (targetState.VState.HasValue)
+            {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mVState);
+                        mVState.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
+                if (!mVState.Contains(processId))
+                {
+                    mVState.Add(processId);
+                }
+            }
+            else
+            {
+                if (mVState.Contains(processId))
+                {
+                    mVState.Remove(processId);
+                }
+            }
+
+            if (targetState.HandsState.HasValue || targetState.KindOfThingsCommand.HasValue)
+            {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mHandsState);
+                        mHandsState.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
+                if (!mHandsState.Contains(processId))
+                {
+                    mHandsState.Add(processId);
+                }
+            }
+            else
+            {
+                if (mHandsState.Contains(processId))
+                {
+                    mHandsState.Remove(processId);
+                }
+            }
+
+            if (targetState.HandsActionState.HasValue)
+            {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mHandsActionState);
+                        mHandsActionState.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
+                if (!mHandsActionState.Contains(processId))
+                {
+                    mHandsActionState.Add(processId);
+                }
+            }
+            else
+            {
+                if (mHandsActionState.Contains(processId))
+                {
+                    mHandsActionState.Remove(processId);
+                }
+            }
+
+            if (targetState.HeadState.HasValue)
+            {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mHeadState);
+                        mHeadState.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
+                if (!mHeadState.Contains(processId))
+                {
+                    mHeadState.Add(processId);
+                }
+            }
+            else
+            {
+                if (mHeadState.Contains(processId))
+                {
+                    mHeadState.Remove(processId);
+                }
+            }
+
+            if (targetState.TargetHeadPosition != null)
+            {
+                switch (resolutionKind)
+                {
+                    case NPCMeshTaskResulutionKind.Allow:
+                        displacedProcessesIdList.AddRange(mTargetHeadPosition);
+                        mTargetHeadPosition.Clear();
+                        break;
+
+                    case NPCMeshTaskResulutionKind.AllowAdd:
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
+                }
+
+                if (!mTargetHeadPosition.Contains(processId))
+                {
+                    mTargetHeadPosition.Add(processId);
+                }
+            }
+            else
+            {
+                if (mTargetHeadPosition.Contains(processId))
+                {
+                    mTargetHeadPosition.Remove(processId);
+                }
+            }
+
+            if (displacedProcessesIdList.Count > 0)
+            {
+                displacedProcessesIdList = displacedProcessesIdList.Distinct().ToList();
+
+                foreach (var displacedProcessId in displacedProcessesIdList)
+                {
+#if DEBUG
+                    //Debug.Log($"NPCThreadSafeMeshController CreateTargetState displacedProcessId = {displacedProcessId}");
+#endif
+
+                    if (mHState.Contains(displacedProcessId))
+                    {
+                        mHState.Remove(displacedProcessId);
+                    }
+
+                    if (mTargetPosition.Contains(displacedProcessId))
+                    {
+                        mTargetPosition.Remove(displacedProcessId);
+                    }
+
+                    if (mVState.Contains(displacedProcessId))
+                    {
+                        mVState.Remove(displacedProcessId);
+                    }
+
+                    if (mHandsState.Contains(displacedProcessId))
+                    {
+                        mHandsState.Remove(displacedProcessId);
+                    }
+
+                    if (mHandsActionState.Contains(displacedProcessId))
+                    {
+                        mHandsActionState.Remove(displacedProcessId);
+                    }
+
+                    if (mHeadState.Contains(displacedProcessId))
+                    {
+                        mHeadState.Remove(displacedProcessId);
+                    }
+
+                    if (mTargetHeadPosition.Contains(displacedProcessId))
+                    {
+                        mTargetHeadPosition.Remove(displacedProcessId);
+                    }
+
+                    var displacedTask = mTasksDict[displacedProcessId];
+                    displacedTask.State = StateOfNPCProcess.Canceled;
+                    mTasksDict.Remove(displacedProcessId);
+                }
+            }
+
+#if UDEBUG
+            //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
+#endif
+
+            mTasksDict[processId] = process;
+
+#if DEBUG
+            //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
+#endif
+        }
+
+        private void ProcessForbiden(ProxyForNPCResourceProcess process)
+        {
+#if DEBUG
+            //LogInstance.Log($"NPCThreadSafeMeshController ProcessForbiden npcMeshTask = {npcMeshTask}");
+#endif
+
+            process.State = StateOfNPCProcess.Canceled;
+        }
 
         public void Dispose()
         {

@@ -7,9 +7,9 @@ namespace MyNPCLib
     public class DisagreementByHeadStateInfo : IObjectToString
     {
         public HumanoidStateKind Kind => HumanoidStateKind.HeadState;
-        public List<int> CurrentProcessesId { get; set; }
+        public List<ulong> CurrentProcessesId { get; set; }
         public HumanoidHeadState CurrentValue { get; set; } = HumanoidHeadState.LookingForward;
-        public int TargetProcessId { get; set; }
+        public ulong TargetProcessId { get; set; }
         public HumanoidHeadState TargetValue { get; set; } = HumanoidHeadState.LookingForward;
 
         public override string ToString()

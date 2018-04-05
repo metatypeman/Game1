@@ -7,9 +7,9 @@ namespace MyNPCLib
     public class DisagreementByHStateInfo : IObjectToString
     {
         public HumanoidStateKind Kind => HumanoidStateKind.HState;
-        public List<int> CurrentProcessesId { get; set; }
+        public List<ulong> CurrentProcessesId { get; set; }
         public HumanoidHState CurrentValue { get; set; } = HumanoidHState.Stop;
-        public int TargetProcessId { get; set; }
+        public ulong TargetProcessId { get; set; }
         public HumanoidHState TargetValue { get; set; } = HumanoidHState.Stop;
 
         public override string ToString()

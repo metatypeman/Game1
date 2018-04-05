@@ -15,7 +15,7 @@ namespace MyNPCLib
     public class NPCResourcesResulution : IObjectToString
     {
         public NPCMeshTaskResulutionKind Kind { get; set; } = NPCMeshTaskResulutionKind.Unknow;
-        public int TargetProcessId { get; set; }
+        public ulong TargetProcessId { get; set; }
         public TargetStateOfHumanoidBody TargetState { get; set; }
         public DisagreementByHStateInfo DisagreementByHState { get; set; }
         public DisagreementByTargetPositionInfo DisagreementByTargetPosition { get; set; }

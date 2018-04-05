@@ -7,9 +7,9 @@ namespace MyNPCLib
     public class DisagreementByHandsActionStateInfo : IObjectToString
     {
         public HumanoidStateKind Kind => HumanoidStateKind.HandsActionState;
-        public List<int> CurrentProcessesId { get; set; }
+        public List<ulong> CurrentProcessesId { get; set; }
         public HumanoidHandsActionState CurrentValue { get; set; } = HumanoidHandsActionState.Empty;
-        public int TargetProcessId { get; set; }
+        public ulong TargetProcessId { get; set; }
         public HumanoidHandsActionState TargetValue { get; set; } = HumanoidHandsActionState.Empty;
 
         public override string ToString()

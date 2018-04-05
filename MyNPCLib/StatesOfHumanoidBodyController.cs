@@ -7,18 +7,18 @@ namespace MyNPCLib
     public class StatesOfHumanoidBodyController : IObjectToString
     {
         public HumanoidHState HState = HumanoidHState.Stop;
-        public Vector3? TargetPosition;
+        public object TargetPosition;
         public HumanoidVState VState = HumanoidVState.Ground;
         public HumanoidHandsState HandsState = HumanoidHandsState.FreeHands;
         public HumanoidHandsActionState HandsActionState = HumanoidHandsActionState.Empty;
         public HumanoidHeadState HeadState = HumanoidHeadState.LookingForward;
-        public Vector3? TargetHeadPosition;
+        public object TargetHeadPosition;
         public KindOfHumanoidThingsCommand KindOfThingsCommand = KindOfHumanoidThingsCommand.Undefined;
         public int InstanceOfThingId;
 
-        public StatesOfHumanoidController Clone()
+        public StatesOfHumanoidBodyController Clone()
         {
-            var result = new StatesOfHumanoidController();
+            var result = new StatesOfHumanoidBodyController();
             result.HState = HState;
             result.TargetPosition = TargetPosition;
             result.VState = VState;
@@ -31,7 +31,7 @@ namespace MyNPCLib
             return result;
         }
 
-        public void Append(StatesOfHumanoidController source)
+        public void Append(StatesOfHumanoidBodyController source)
         {
             HState = source.HState;
             TargetPosition = source.TargetPosition;
@@ -46,48 +46,46 @@ namespace MyNPCLib
 
         public override string ToString()
         {
-            return ToString(0);
+            return ToString(0u);
         }
 
-        public string ToString(int n)
+        public string ToString(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}Begin {nameof(StatesOfHumanoidController)}");
+            sb.AppendLine($"{spaces}Begin {nameof(StatesOfHumanoidBodyController)}");
             sb.Append(PropertiesToSting(n));
-            sb.AppendLine($"{spaces}End {nameof(StatesOfHumanoidController)}");
+            sb.AppendLine($"{spaces}End {nameof(StatesOfHumanoidBodyController)}");
             return sb.ToString();
         }
 
-        public string PropertiesToSting(int n)
+        public string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(HState)} = {HState}");
 
-            if (TargetPosition.HasValue)
+            if(TargetPosition == null)
             {
-                var targetPosition = TargetPosition.Value;
-                sb.AppendLine($"{spaces}{nameof(TargetPosition)} = {targetPosition}");
+                sb.AppendLine($"{spaces}{nameof(TargetPosition)} = null");
             }
             else
             {
-                sb.AppendLine($"{spaces}{nameof(TargetPosition)} = null");
+                sb.AppendLine($"{spaces}{nameof(TargetPosition)} = {TargetPosition}");
             }
 
             sb.AppendLine($"{spaces}{nameof(VState)} = {VState}");
             sb.AppendLine($"{spaces}{nameof(HandsState)} = {HandsState}");
             sb.AppendLine($"{spaces}{nameof(HandsActionState)} = {HandsActionState}");
             sb.AppendLine($"{spaces}{nameof(HeadState)} = {HeadState}");
-            if (TargetHeadPosition.HasValue)
+            if (TargetHeadPosition == null)
             {
-                var targetPosition = TargetHeadPosition.Value;
-                sb.AppendLine($"{spaces}{nameof(TargetHeadPosition)} = {targetPosition}");
+                sb.AppendLine($"{spaces}{nameof(TargetHeadPosition)} = null");
             }
             else
             {
-                sb.AppendLine($"{spaces}{nameof(TargetHeadPosition)} = null");
+                sb.AppendLine($"{spaces}{nameof(TargetHeadPosition)} = {TargetHeadPosition}");
             }
 
             sb.AppendLine($"{spaces}{nameof(KindOfThingsCommand)} = {KindOfThingsCommand}");

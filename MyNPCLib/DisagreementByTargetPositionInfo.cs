@@ -7,17 +7,17 @@ namespace MyNPCLib
     public class DisagreementByTargetPositionInfo : IObjectToString
     {
         public HumanoidStateKind Kind => HumanoidStateKind.TargetPosition;
-        public List<int> CurrentProcessesId { get; set; }
-        public Vector3? CurrentValue { get; set; }
-        public int TargetProcessId { get; set; }
-        public Vector3? TargetValue { get; set; }
+        public List<ulong> CurrentProcessesId { get; set; }
+        public object CurrentValue { get; set; }
+        public ulong TargetProcessId { get; set; }
+        public object TargetValue { get; set; }
 
         public override string ToString()
         {
-            return ToString(0);
+            return ToString(0u);
         }
 
-        public string ToString(int n)
+        public string ToString(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
@@ -27,7 +27,7 @@ namespace MyNPCLib
             return sb.ToString();
         }
 
-        public string PropertiesToSting(int n)
+        public string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;

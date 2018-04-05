@@ -7,10 +7,10 @@ namespace MyNPCLib
     public class DisagreementByTargetHeadPositionInfo : IObjectToString
     {
         public HumanoidStateKind Kind => HumanoidStateKind.TargetHeadPosition;
-        public List<int> CurrentProcessesId { get; set; }
-        public Vector3? CurrentValue { get; set; }
-        public int TargetProcessId { get; set; }
-        public Vector3? TargetValue { get; set; }
+        public List<ulong> CurrentProcessesId { get; set; }
+        public object CurrentValue { get; set; }
+        public ulong TargetProcessId { get; set; }
+        public object TargetValue { get; set; }
 
         public override string ToString()
         {
