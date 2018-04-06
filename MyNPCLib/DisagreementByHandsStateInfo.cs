@@ -19,12 +19,7 @@ namespace MyNPCLib
 
         public string ToString(uint n)
         {
-            var spaces = StringHelper.Spaces(n);
-            var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}Begin {nameof(DisagreementByHandsStateInfo)}");
-            sb.Append(PropertiesToSting(n));
-            sb.AppendLine($"{spaces}End {nameof(DisagreementByHandsStateInfo)}");
-            return sb.ToString();
+            return this.GetDefaultToStringInformation(n);
         }
 
         public string PropertiesToSting(uint n)

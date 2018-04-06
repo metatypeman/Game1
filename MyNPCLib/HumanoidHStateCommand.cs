@@ -18,12 +18,7 @@ namespace MyNPCLib
 
         public override string ToString(uint n)
         {
-            var spaces = StringHelper.Spaces(n);
-            var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}Begin {nameof(HumanoidHStateCommand)}");
-            sb.Append(PropertiesToSting(n));
-            sb.AppendLine($"{spaces}End {nameof(HumanoidHStateCommand)}");
-            return sb.ToString();
+            return this.GetDefaultToStringInformation(n);
         }
 
         public override string PropertiesToSting(uint n)

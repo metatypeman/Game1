@@ -23,12 +23,7 @@ namespace MyNPCLib
 
         public string ToString(uint n)
         {
-            var spaces = StringHelper.Spaces(n);
-            var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}Begin {nameof(TargetStateOfHumanoidBody)}");
-            sb.Append(PropertiesToSting(n));
-            sb.AppendLine($"{spaces}End {nameof(TargetStateOfHumanoidBody)}");
-            return sb.ToString();
+            return this.GetDefaultToStringInformation(n);
         }
 
         public string PropertiesToSting(uint n)
