@@ -6,8 +6,8 @@ namespace MyNPCLib
 {
     public class ProxyForNPCResourceProcess : BaseProxyForNPCProcess
     {
-        public ProxyForNPCResourceProcess(ulong id)
-            : base(id)
+        public ProxyForNPCResourceProcess(ulong id, INPCContext context)
+            : base(id, context)
         {
         }
 

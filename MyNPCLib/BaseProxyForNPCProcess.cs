@@ -5,26 +5,23 @@ using System.Threading.Tasks;
 
 namespace MyNPCLib
 {
-    public abstract class BaseProxyForNPCProcess : INPCProcess
+    public abstract class BaseProxyForNPCProcess : BaseCommonNPCProcess
     {
-        protected BaseProxyForNPCProcess(ulong id)
+        protected BaseProxyForNPCProcess(ulong id, INPCContext context)
         {
             mId = id;
+            Context = context;
         }
 
-        public abstract KindOfNPCProcess Kind { get; }
-
         #region private members
-        private StateOfNPCProcess mState = StateOfNPCProcess.Created;
-        private object mStateLockObj = new object();
         private ulong mId;
         #endregion
 
-        public StateOfNPCProcess State
+        public override StateOfNPCProcess State
         {
             get
             {
-                lock (mStateLockObj)
+                lock (StateLockObj)
                 {
                     return mState;
                 }
@@ -41,30 +38,30 @@ namespace MyNPCLib
 
                 var state = mState;
                 Task.Run(() => {
-                    OnStateChanged?.Invoke(state);
+                    EmitOnStateChanged(state);
 
                     switch (state)
                     {
                         case StateOfNPCProcess.Created:
                             break;
                         case StateOfNPCProcess.Running:
-                            OnRunningChanged?.Invoke();
+                            EmitOnRunningChanged();
                             break;
 
                         case StateOfNPCProcess.RanToCompletion:
-                            OnRanToCompletionChanged?.Invoke();
+                            EmitOnRanToCompletionChanged();
                             break;
 
                         case StateOfNPCProcess.Canceled:
-                            OnCanceledChanged?.Invoke();
+                            EmitOnCanceledChanged();
                             break;
 
                         case StateOfNPCProcess.Faulted:
-                            OnFaultedChanged?.Invoke();
+                            EmitOnFaultedChanged();
                             break;
 
                         case StateOfNPCProcess.Destroyed:
-                            OnDestroyedChanged?.Invoke();
+                            EmitOnDestroyedChanged();
                             break;
 
                         default: throw new ArgumentOutOfRangeException(nameof(state), state, null);
@@ -73,23 +70,20 @@ namespace MyNPCLib
             }
         }
 
-        public event NPCProcessStateChanged OnStateChanged;
-        public event Action OnRunningChanged;
-        public event Action OnRanToCompletionChanged;
-        public event Action OnCanceledChanged;
-        public event Action OnFaultedChanged;
-        public event Action OnDestroyedChanged;
+        public override void Dispose() { }
 
-        public void Dispose() { }
-
-        public ulong Id
+        public override ulong Id
         {
             get
             {
                 return mId;
             }
+
+            set
+            {
+            }
         }
 
-        public Task Task { get; set; }
+        public override Task Task { get; set; }
     }
 }

@@ -24,6 +24,7 @@ namespace MyNPCLib
 
         void RegProcess(INPCProcess process, ulong parentProcessId);
         void UnRegProcess(INPCProcess process);
+        INPCProcess GetParentProcess(ulong childProcessId);
 
         NPCMeshTaskResulutionKind ApproveNPCMeshTaskExecute(NPCResourcesResulution existingsNPCMeshTaskResulution);
     }

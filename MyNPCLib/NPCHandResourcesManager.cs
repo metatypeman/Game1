@@ -54,6 +54,23 @@ namespace MyNPCLib
             throw new NotImplementedException();
         }
 
+        public void UnRegProcess(ulong processId)
+        {
+#if DEBUG
+            LogInstance.Log($"NPCBodyResourcesManager UnRegProcess processId = {processId}");
+#endif
+
+            lock (mStateLockObj)
+            {
+                if (mState != StateOfNPCContext.Working)
+                {
+                    throw new ElementIsNotActiveException();
+                }
+            }
+
+            //throw new NotImplementedException();
+        }
+
         public void Dispose()
         {
 #if DEBUG

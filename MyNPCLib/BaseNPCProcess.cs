@@ -6,14 +6,22 @@ using System.Threading.Tasks;
 
 namespace MyNPCLib
 {
-    public abstract class BaseNPCProcess : INPCProcess
+    public abstract class BaseNPCProcess : BaseCommonNPCProcess
     {
-        public KindOfNPCProcess Kind => KindOfNPCProcess.Abstract;
-        public Task Task => null;
+        public override KindOfNPCProcess Kind => KindOfNPCProcess.Abstract;
+        public override Task Task
+        {
+            get
+            {
+                return null;
+            }
+
+            set
+            {
+            }
+        }
 
         #region private members
-        private StateOfNPCProcess mState = StateOfNPCProcess.Created;
-        private object mStateLockObj = new object();
         private ulong mId;
         private ActivatorOfNPCProcessEntryPointInfo mActivator = new ActivatorOfNPCProcessEntryPointInfo();
         private List<ProxyForNPCAbstractProcess> mListOfProxes = new List<ProxyForNPCAbstractProcess>();
@@ -22,23 +30,20 @@ namespace MyNPCLib
         private object mIsFirstCallLockObj = new object();
         #endregion
 
-        public StateOfNPCProcess State
+        public override StateOfNPCProcess State
         {
             get
             {
-                lock(mStateLockObj)
+                lock(StateLockObj)
                 {
                     return mState;
                 }
             }
-        }
 
-        public event NPCProcessStateChanged OnStateChanged;
-        public event Action OnRunningChanged;
-        public event Action OnRanToCompletionChanged;
-        public event Action OnCanceledChanged;
-        public event Action OnFaultedChanged;
-        public event Action OnDestroyedChanged;
+            set
+            {
+            }
+        }
 
         private StateOfNPCProcess NState
         {
@@ -53,30 +58,30 @@ namespace MyNPCLib
 
                 var state = mState;
                 Task.Run(() => {
-                    OnStateChanged?.Invoke(state);
+                    EmitOnStateChanged(state);
 
                     switch (state)
                     {
                         case StateOfNPCProcess.Created:
                             break;
                         case StateOfNPCProcess.Running:
-                            OnRunningChanged?.Invoke();
+                            EmitOnRunningChanged();
                             break;
 
                         case StateOfNPCProcess.RanToCompletion:
-                            OnRanToCompletionChanged?.Invoke();
+                            EmitOnRanToCompletionChanged();
                             break;
 
                         case StateOfNPCProcess.Canceled:
-                            OnCanceledChanged?.Invoke();
+                            EmitOnCanceledChanged();
                             break;
 
                         case StateOfNPCProcess.Faulted:
-                            OnFaultedChanged?.Invoke();
+                            EmitOnFaultedChanged();
                             break;
 
                         case StateOfNPCProcess.Destroyed:
-                            OnDestroyedChanged?.Invoke();
+                            EmitOnDestroyedChanged();
                             break;
 
                         default: throw new ArgumentOutOfRangeException(nameof(state), state, null);
@@ -85,39 +90,7 @@ namespace MyNPCLib
             }
         }
 
-        private void StateChecker()
-        {
-            lock (mStateLockObj)
-            {
-                if (mState == StateOfNPCProcess.Destroyed)
-                {
-                    throw new ElementIsNotActiveException();
-                }
-
-                if (mState != StateOfNPCProcess.Created)
-                {
-                    throw new ElementIsModifiedAfterActivationException();
-                }
-            }
-        }
-
-        private INPCContext mContext;
-        public INPCContext Context
-        {
-            get
-            {
-                return mContext;
-            }
-
-            set
-            {
-                StateChecker();
-
-                mContext = value;
-            }
-        }
-
-        public ulong Id
+        public override ulong Id
         {
             get
             {
@@ -206,7 +179,7 @@ namespace MyNPCLib
                 throw new ArgumentNullException(nameof(entryPointInfo));
             }
 
-            var proxy = new ProxyForNPCAbstractProcess(mId);
+            var proxy = new ProxyForNPCAbstractProcess(mId, Context);
 
             var task = new Task(() => {
                 NRun(entryPointInfo, command, proxy);
@@ -241,11 +214,11 @@ namespace MyNPCLib
                 switch (startupMode)
                 {
                     case NPCProcessStartupMode.NewInstance:
-                        mContext.RegProcess(this, command.InitiatingProcessId);
+                        Context.RegProcess(this, command.InitiatingProcessId);
                         break;
 
                     case NPCProcessStartupMode.NewStandaloneInstance:
-                        mContext.RegProcess(this, 0ul);
+                        Context.RegProcess(this, 0ul);
                         break;
 
                     case NPCProcessStartupMode.Singleton:
@@ -254,7 +227,7 @@ namespace MyNPCLib
                             if(!mIsFirstCall)
                             {
                                 mIsFirstCall = true;
-                                mContext.RegProcess(this, 0ul);
+                                Context.RegProcess(this, 0ul);
                             }
                         }
                         break;
@@ -285,7 +258,7 @@ namespace MyNPCLib
             {
                 case NPCProcessStartupMode.NewInstance:
                 case NPCProcessStartupMode.NewStandaloneInstance:
-                    mContext.UnRegProcess(this);
+                    Context.UnRegProcess(this);
                     break;
 
                 case NPCProcessStartupMode.Singleton:
@@ -316,12 +289,12 @@ namespace MyNPCLib
             Task.WaitAll(tasksArray);
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
 #if DEBUG
             //LogInstance.Log("BaseNPCContext Dispose");
 #endif
-            lock (mStateLockObj)
+            lock (StateLockObj)
             {
                 if (mState == StateOfNPCProcess.Destroyed)
                 {
@@ -339,7 +312,7 @@ namespace MyNPCLib
                 }
             }
 
-            mContext.UnRegProcess(this);
+            Context.UnRegProcess(this);
         }
     }
 }

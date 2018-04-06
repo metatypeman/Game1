@@ -26,17 +26,18 @@ namespace MyNPCLib
         }
 
         #region private members
-        private IdFactory mIdFactory;
-        private IEntityDictionary mEntityDictionary;
-        private NPCBodyResourcesManager mBodyResourcesManager;
-        private NPCHandResourcesManager mLeftHandResourcesManager;
-        private NPCHandResourcesManager mRightHandResourcesManager;
-        private StorageOfNPCProcesses mStorageOfNPCProcesses;
-        private Dictionary<ulong, INPCProcess> mProcessesDict = new Dictionary<ulong, INPCProcess>();
-        private Dictionary<ulong, List<ulong>> mParentChildrenProcessesDict = new Dictionary<ulong, List<ulong>>();
-        private object mProcessesDictLockObj = new object();
+        private readonly IdFactory mIdFactory;
+        private readonly IEntityDictionary mEntityDictionary;
+        private readonly NPCBodyResourcesManager mBodyResourcesManager;
+        private readonly NPCHandResourcesManager mLeftHandResourcesManager;
+        private readonly NPCHandResourcesManager mRightHandResourcesManager;
+        private readonly StorageOfNPCProcesses mStorageOfNPCProcesses;
+        private readonly Dictionary<ulong, INPCProcess> mProcessesDict = new Dictionary<ulong, INPCProcess>();
+        private readonly Dictionary<ulong, List<ulong>> mParentChildrenProcessesDict = new Dictionary<ulong, List<ulong>>();
+        private readonly Dictionary<ulong, ulong> mChildParentDict = new Dictionary<ulong, ulong>();
+        private readonly object mProcessesDictLockObj = new object();
 
-        private object mStateLockObj = new object();
+        private readonly object mStateLockObj = new object();
         private StateOfNPCContext mState = StateOfNPCContext.Created;
         #endregion
 
@@ -149,7 +150,7 @@ namespace MyNPCLib
             {
                 if (mState == StateOfNPCContext.Destroyed)
                 {
-                    return new NotValidAbstractNPCProcess();
+                    return new NotValidAbstractNPCProcess(this);
                 }
 
                 if (mState != StateOfNPCContext.Working)
@@ -168,7 +169,7 @@ namespace MyNPCLib
 
             if (npcProcess == null)
             {
-                return new NotValidAbstractNPCProcess();
+                return new NotValidAbstractNPCProcess(this);
             }
 
             return npcProcess.RunAsync();
@@ -226,6 +227,8 @@ namespace MyNPCLib
                         childrenProcessesIdList = new List<ulong>() { id };
                         mParentChildrenProcessesDict[parentProcessId] = childrenProcessesIdList;
                     }
+
+                    mChildParentDict[id] = parentProcessId;
                 }            
             }
         }
@@ -271,7 +274,17 @@ namespace MyNPCLib
                 {
                     childrenProcessesIdList = mParentChildrenProcessesDict[id];
                     mParentChildrenProcessesDict.Remove(id);
-                }         
+                } 
+                
+                if(mChildParentDict.ContainsKey(id))
+                {
+                    mChildParentDict.Remove(id);
+                }
+
+                mBodyResourcesManager.UnRegProcess(id);
+
+                mLeftHandResourcesManager.UnRegProcess(id);
+                mRightHandResourcesManager.UnRegProcess(id);              
             }
 
             if(childrenProcessesIdList != null)
@@ -282,6 +295,33 @@ namespace MyNPCLib
                     childProcess.Dispose();
                 }               
             }        
+        }
+
+        public INPCProcess GetParentProcess(ulong childProcessId)
+        {
+            lock (mStateLockObj)
+            {
+                if (mState == StateOfNPCContext.Destroyed)
+                {
+                    return null;
+                }
+            }
+
+            if(childProcessId == 0)
+            {
+                throw new ArgumentNullException(nameof(childProcessId));
+            }
+
+            lock (mProcessesDictLockObj)
+            {
+                if(mChildParentDict.ContainsKey(childProcessId))
+                {
+                    var parentId = mChildParentDict[childProcessId];
+                    return mProcessesDict[parentId];
+                }
+
+                return null;
+            }
         }
 
         public NPCMeshTaskResulutionKind ApproveNPCMeshTaskExecute(NPCResourcesResulution existingsNPCMeshTaskResulution)
@@ -345,13 +385,13 @@ namespace MyNPCLib
                 //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingProcessesId = {existingProcessesId}");
 #endif
 
-                var currentProicessInfo = mProcessesDict[existingProcessesId];
+                var currentProcessInfo = mProcessesDict[existingProcessesId];
 
 #if DEBUG
-                //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute currentProicessInfo.GlobalPriority = {currentProicessInfo.GlobalPriority}");
+                //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
 #endif
 
-                if (currentProicessInfo.GlobalPriority > targetPriority)
+                if (currentProcessInfo.GlobalPriority > targetPriority)
                 {
                     return NPCMeshTaskResulutionKind.Forbiden;
                 }
@@ -376,8 +416,10 @@ namespace MyNPCLib
                 mState = StateOfNPCContext.Destroyed;
             }
 
+            mBodyResourcesManager.Dispose();
             mLeftHandResourcesManager.Dispose();
             mRightHandResourcesManager.Dispose();
+           
             mStorageOfNPCProcesses.Dispose();
 
             foreach(var processesKVPItem in mProcessesDict)

@@ -8,5 +8,6 @@ namespace MyNPCLib
     {
         INPCProcess Send(INPCCommand command);
         void Bootstrap();
+        void UnRegProcess(ulong processId);
     }
 }

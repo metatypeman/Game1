@@ -5,21 +5,50 @@ using System.Threading.Tasks;
 
 namespace MyNPCLib
 {
-    public abstract class BaseNotValidNPCProcess : INPCProcess
+    public abstract class BaseNotValidNPCProcess : BaseCommonNPCProcess
     {
-        public StateOfNPCProcess State => StateOfNPCProcess.Faulted;
-        public event NPCProcessStateChanged OnStateChanged;
-        public event Action OnRunningChanged;
-        public event Action OnRanToCompletionChanged;
-        public event Action OnCanceledChanged;
-        public event Action OnFaultedChanged;
-        public event Action OnDestroyedChanged;
+        public BaseNotValidNPCProcess(INPCContext context)
+        {
+            Context = context;
+        }
 
-        public ulong Id => 0;
-        public abstract KindOfNPCProcess Kind { get; }
-        public Task Task => null;
+        public override StateOfNPCProcess State
+        {
+            get
+            {
+                return StateOfNPCProcess.Faulted;
+            }
 
-        public void Dispose()
+            set
+            {
+            }
+        } 
+
+        public override ulong Id
+        {
+            get
+            {
+                return 0ul;
+            }
+
+            set
+            {
+            }
+        }
+
+        public override Task Task
+        {
+            get
+            {
+                return null;
+            }
+
+            set
+            {
+            }
+        }
+
+        public override void Dispose()
         {
         }
     }
