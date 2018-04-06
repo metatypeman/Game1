@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    public class BaseNPCContext: INPCContext
+    public class BaseNPCContext : INPCContext
     {
         public BaseNPCContext(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, IHumanoidBodyController humanoidBodyController = null)
         {
@@ -399,6 +399,8 @@ namespace MyNPCLib
 
             return NPCMeshTaskResulutionKind.Allow;//tmp
         }
+
+        public virtual object NoTypedBlackBoard => null;
 
         public void Dispose()
         {

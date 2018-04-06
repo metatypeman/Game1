@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TmpSandBox.NPCBehaviour
 {
-    public class MyNPCContext: BaseNPCContext
+    public class MyNPCContext: BaseNPCContextWithBlackBoard<MyBlackBoard>
     {
         public MyNPCContext(IHumanoidBodyController humanoidBodyController)
             : base(null, null, humanoidBodyController)

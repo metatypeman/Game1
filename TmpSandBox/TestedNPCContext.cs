@@ -5,6 +5,10 @@ using System.Text;
 
 namespace TmpSandBox
 {
+    public class TestedBlackBoard
+    {
+    }
+
     public class TestedNPCContext : BaseNPCContext
     {
     }

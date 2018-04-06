@@ -6,5 +6,11 @@ namespace TmpSandBox.NPCBehaviour
 {
     public class MyBlackBoard
     {
+        public MyBlackBoard()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("MyBlackBoard");
+        }
+
+        public int TstValue { get; set; }
     }
 }

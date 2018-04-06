@@ -27,5 +27,7 @@ namespace MyNPCLib
         INPCProcess GetParentProcess(ulong childProcessId);
 
         NPCMeshTaskResulutionKind ApproveNPCMeshTaskExecute(NPCResourcesResulution existingsNPCMeshTaskResulution);
+
+        object NoTypedBlackBoard { get; }
     }
 }

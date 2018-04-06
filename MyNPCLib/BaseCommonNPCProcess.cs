@@ -22,8 +22,19 @@ namespace MyNPCLib
             {
                 StateChecker();
 
+                if(mContext == value)
+                {
+                    return;
+                }
+
                 mContext = value;
+
+                OnSetContext();
             }
+        }
+
+        protected virtual void OnSetContext()
+        {
         }
 
         protected void StateChecker()
