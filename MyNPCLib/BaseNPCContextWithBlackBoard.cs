@@ -7,8 +7,8 @@ namespace MyNPCLib
     public class BaseNPCContextWithBlackBoard<BlackBoardType>: BaseNPCContext
         where BlackBoardType: class, new()
     {
-        public BaseNPCContextWithBlackBoard(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, IHumanoidBodyController humanoidBodyController = null)
-            : base(entityDictionary, npcProcessInfoCache, humanoidBodyController)
+        public BaseNPCContextWithBlackBoard(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, INPCHostContext npcHostContext = null)
+            : base(entityDictionary, npcProcessInfoCache, npcHostContext)
         {
             mBlackBoard = new BlackBoardType();
         }

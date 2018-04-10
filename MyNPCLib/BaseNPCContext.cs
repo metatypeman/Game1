@@ -7,7 +7,7 @@ namespace MyNPCLib
 {
     public class BaseNPCContext : INPCContext
     {
-        public BaseNPCContext(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, IHumanoidBodyController humanoidBodyController = null)
+        public BaseNPCContext(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, INPCHostContext npcHostContext = null)
         {
             if (entityDictionary == null)
             {
@@ -19,9 +19,9 @@ namespace MyNPCLib
             }
 
             mIdFactory = new IdFactory();
-            mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary, humanoidBodyController, this);
-            mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary);
-            mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary);
+            mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, this);
+            mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, this);
+            mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, this);
             mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
         }
 

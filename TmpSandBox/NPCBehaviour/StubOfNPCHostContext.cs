@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TmpSandBox.NPCBehaviour
 {
-    public class StubOfHumanoidBodyController: IHumanoidBodyController
+    public class StubOfNPCBodyHost: INPCBodyHost
     {
         private StatesOfHumanoidBodyController mStates = new StatesOfHumanoidBodyController();
 
@@ -48,5 +48,28 @@ namespace TmpSandBox.NPCBehaviour
                 return targetStateForExecuting;
             }
         }
+    }
+
+    public class StubOfNPCHandHost: INPCHandHost
+    {
+
+    }
+
+    public class StubOfNPCHostContext: INPCHostContext
+    {
+        public StubOfNPCHostContext()
+        {
+            mBodyHost = new StubOfNPCBodyHost();
+            mRightHandHost = new StubOfNPCHandHost();
+            mLeftHandHost = new StubOfNPCHandHost();
+        }
+
+        private StubOfNPCBodyHost mBodyHost;
+        private StubOfNPCHandHost mRightHandHost;
+        private StubOfNPCHandHost mLeftHandHost;
+
+        public INPCBodyHost BodyHost => mBodyHost;
+        public INPCHandHost RightHandHost => mRightHandHost;
+        public INPCHandHost LeftHandHost => mLeftHandHost;
     }
 }

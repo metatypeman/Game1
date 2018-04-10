@@ -8,19 +8,19 @@ namespace MyNPCLib
 {
     public class NPCBodyResourcesManager: INPCBodyResourcesManager
     {
-        public NPCBodyResourcesManager(IIdFactory idFactory, IEntityDictionary entityDictionary, IHumanoidBodyController humanoidBodyController, INPCContext context)
+        public NPCBodyResourcesManager(IIdFactory idFactory, IEntityDictionary entityDictionary, INPCHostContext npcHostContext, INPCContext context)
         {
             mIdFactory = idFactory;
             mEntityDictionary = entityDictionary;
-            mHumanoidBodyController = humanoidBodyController;
-            mHumanoidBodyController.OnHumanoidStatesChanged += OnHumanoidStatesChanged;
+            mNPCBodyHost = npcHostContext.BodyHost;
+            mNPCBodyHost.OnHumanoidStatesChanged += OnHumanoidStatesChanged;
             mContext = context;
         }
 
 #region private members
         private IIdFactory mIdFactory;
         private IEntityDictionary mEntityDictionary;
-        private IHumanoidBodyController mHumanoidBodyController;
+        private INPCBodyHost mNPCBodyHost;
         private INPCContext mContext;
         private object mStateLockObj = new object();
         private StateOfNPCContext mState = StateOfNPCContext.Created;
@@ -174,7 +174,7 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"NPCBodyResourcesManager NExecute targetState = {targetState}");
 #endif
-            var resolution = CreateResolution(mHumanoidBodyController.States, targetState, processId);
+            var resolution = CreateResolution(mNPCBodyHost.States, targetState, processId);
 
 #if DEBUG
             LogInstance.Log($"NPCBodyResourcesManager NExecute resolution = {resolution}");
@@ -653,7 +653,7 @@ namespace MyNPCLib
             //Debug.Log("NPCThreadSafeMeshController ProcessAllow before mMoveHumanoidController.ExecuteAsync");
 #endif
 
-            var targetStateForExecuting = mHumanoidBodyController.ExecuteAsync(targetState);
+            var targetStateForExecuting = mNPCBodyHost.ExecuteAsync(targetState);
 
             while (targetStateForExecuting.State == StateOfHumanoidTaskOfExecuting.Created)
             {

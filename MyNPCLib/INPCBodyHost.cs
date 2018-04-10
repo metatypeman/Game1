@@ -6,7 +6,7 @@ namespace MyNPCLib
 {
     public delegate void HumanoidStatesChangedAction(List<HumanoidStateKind> changedStates);
 
-    public interface IHumanoidBodyController
+    public interface INPCBodyHost
     {
         HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidBody targetState);
         StatesOfHumanoidBodyController States { get; }

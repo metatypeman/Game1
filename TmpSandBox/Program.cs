@@ -34,7 +34,7 @@ namespace TmpSandBox
         {
             NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTMyNPCContext");
 
-            var stubOfHumanoidBodyController = new StubOfHumanoidBodyController();
+            var stubOfHumanoidBodyController = new StubOfNPCHostContext();
 
             var context = new MyNPCContext(stubOfHumanoidBodyController);
             context.Bootstrap();

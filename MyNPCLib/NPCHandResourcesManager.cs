@@ -6,7 +6,7 @@ namespace MyNPCLib
 {
     public class NPCHandResourcesManager: INPCResourcesManager
     {
-        public NPCHandResourcesManager(IIdFactory idFactory, IEntityDictionary entityDictionary)
+        public NPCHandResourcesManager(IIdFactory idFactory, IEntityDictionary entityDictionary, INPCHostContext npcHostContext, INPCContext context)
         {
             mIdFactory = idFactory;
             mEntityDictionary = entityDictionary;
