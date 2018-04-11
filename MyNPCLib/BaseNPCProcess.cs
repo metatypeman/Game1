@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyNPCLib
@@ -289,10 +290,86 @@ namespace MyNPCLib
             Task.WaitAll(tasksArray);
         }
 
+        public void Wait()
+        {
+            while(true)
+            {
+                lock (StateLockObj)
+                {
+                    if (mState == StateOfNPCProcess.Destroyed)
+                    {
+                        break;
+                    }
+                }
+
+                Thread.Sleep(1000);
+            }
+        }
+
+        public void AddChildComponent(IChildComponentOfNPCProcess component)
+        {
+#if DEBUG
+            LogInstance.Log("BaseNPCProcess AddChildComponent");
+#endif
+
+            lock (StateLockObj)
+            {
+                if (mState == StateOfNPCProcess.Destroyed)
+                {
+                    return;
+                }
+            }
+
+            lock (mChildrenComponentsLockObj)
+            {
+                if(mChildrenComponentsList.Contains(component))
+                {
+                    return;
+                }
+
+                mChildrenComponentsList.Add(component);
+            }
+        }
+
+        public void RemoveChildComponent(IChildComponentOfNPCProcess component)
+        {
+#if DEBUG
+            LogInstance.Log("BaseNPCProcess RemoveChildComponent");
+#endif
+            lock (StateLockObj)
+            {
+                if (mState == StateOfNPCProcess.Destroyed)
+                {
+                    return;
+                }
+            }
+
+            lock (mChildrenComponentsLockObj)
+            {
+                if(!mChildrenComponentsList.Contains(component))
+                {
+                    return;
+                }
+
+                mChildrenComponentsList.Remove(component);
+            }
+        }
+
+        private readonly object mChildrenComponentsLockObj = new object();
+        private List<IChildComponentOfNPCProcess> mChildrenComponentsList = new List<IChildComponentOfNPCProcess>();
+
+        public ITrigger CreateTrigger(PredicateOfTrigger predicate, int timeout = 1000)
+        {
+            var trigger = new BaseTrigger(predicate, timeout);
+            AddChildComponent(trigger);
+            trigger.Start();
+            return trigger;
+        }
+
         public override void Dispose()
         {
 #if DEBUG
-            //LogInstance.Log("BaseNPCContext Dispose");
+            //LogInstance.Log("BaseNPCProcess Dispose");
 #endif
             lock (StateLockObj)
             {
@@ -313,6 +390,16 @@ namespace MyNPCLib
             }
 
             Context.UnRegProcess(this);
+
+            lock (mChildrenComponentsLockObj)
+            {
+                foreach(var childItem in mChildrenComponentsList)
+                {
+                    childItem.Dispose();
+                }
+
+                mChildrenComponentsList.Clear();
+            }
         }
     }
 }

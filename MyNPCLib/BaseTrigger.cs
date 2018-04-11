@@ -1,66 +1,220 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MyNPCLib
 {
     public delegate bool PredicateOfTrigger();
 
-    public class BaseTrigger
+    public class BaseTrigger : IChildComponentOfNPCProcess, ITrigger
     {
-        public BaseTrigger(PredicateOfTrigger predicate)
+        public BaseTrigger(PredicateOfTrigger predicate, int timeout = 1000)
         {
             mPredicate = predicate;
+            mTimeOut = timeout;
         }
 
         private readonly PredicateOfTrigger mPredicate;
+        private readonly int mTimeOut;
+        private readonly object mStateLockObj = new object();
+        private StateOfNPCProcess mState = StateOfNPCProcess.Created;
+        private readonly object mNeedRunLockObj = new object();
+        private bool mNeedRun;
 
-        protected readonly object StateLockObj = new object();
-        protected StateOfNPCProcess mState = StateOfNPCProcess.Created;
-
-        private INPCContext mContext;
-        public INPCContext Context
+        public void Start()
         {
-            get
+#if DEBUG
+            //LogInstance.Log($"Begin BaseTrigger Start");
+#endif
+            lock (mStateLockObj)
             {
-                return mContext;
-            }
-
-            set
-            {
-                StateChecker();
-
-                if (mContext == value)
+                if (mState == StateOfNPCProcess.Destroyed)
                 {
                     return;
                 }
 
-                mContext = value;
+                if(mState == StateOfNPCProcess.Running)
+                {
+                    return;
+                }
 
-                OnSetContext();
+                mState = StateOfNPCProcess.Running;
             }
+
+#if DEBUG
+            //LogInstance.Log($"BaseTrigger Start NEXT {mPredicate.Invoke()}");
+#endif
+
+            TryStartNRun();
+
+#if DEBUG
+            //LogInstance.Log($"End BaseTrigger Start");
+#endif
         }
 
-        protected virtual void OnSetContext()
+        public void Stop()
         {
-        }
-
-        protected void StateChecker()
-        {
-            lock (StateLockObj)
+#if DEBUG
+            //LogInstance.Log($"BaseTrigger Stop");
+#endif
+            lock (mStateLockObj)
             {
                 if (mState == StateOfNPCProcess.Destroyed)
                 {
-                    throw new ElementIsNotActiveException();
+                    return;
                 }
 
-                if (mState != StateOfNPCProcess.Created)
+                if (mState != StateOfNPCProcess.Running)
                 {
-                    throw new ElementIsModifiedAfterActivationException();
+                    return;
+                }
+
+                mState = StateOfNPCProcess.RanToCompletion;
+            }
+
+            lock (mNeedRunLockObj)
+            {
+                mNeedRun = false;
+            }
+#if DEBUG
+            //LogInstance.Log($"BaseTrigger Stop NEXT");
+#endif
+        }
+
+        private Action mOnFire;
+        private readonly object mOnFireLockObj = new object();
+
+        public event Action OnFire
+        {
+            add
+            {
+#if DEBUG
+                //LogInstance.Log($"BaseTrigger OnFire add");
+#endif
+
+                lock (mStateLockObj)
+                {
+                    if (mState == StateOfNPCProcess.Destroyed)
+                    {
+                        return;
+                    }
+                }
+
+                lock (mOnFireLockObj)
+                {
+                    mOnFire += value;
+                }
+
+                TryStartNRun();
+            }
+
+            remove
+            {
+                lock (mOnFireLockObj)
+                {
+                    mOnFire -= value;
+                }
+
+                lock (mNeedRunLockObj)
+                {
+                    mNeedRun = false;
                 }
             }
         }
 
+        private void TryStartNRun()
+        {
+            lock (mNeedRunLockObj)
+            {
+                if(mNeedRun)
+                {
+                    return;
+                }
 
+                lock(mOnFireLockObj)
+                {
+                    if(mOnFire == null)
+                    {
+                        return;
+                    }
+                }
+
+                lock(mStateLockObj)
+                {
+                    if(mState != StateOfNPCProcess.Running)
+                    {
+                        return;
+                    }
+                }
+
+                mNeedRun = true;
+            }
+
+            Task.Run(() => {
+                NRun();
+            });
+        }
+
+        private bool mLastResult;
+
+        private void NRun()
+        {
+#if DEBUG
+            //LogInstance.Log($"BaseTrigger NRun");
+#endif
+
+            while(true)
+            {
+#if DEBUG
+                //LogInstance.Log("BaseTrigger NRun while(true) ----");
+#endif
+
+                Thread.Sleep(mTimeOut);
+
+                lock (mNeedRunLockObj)
+                {
+                    if (!mNeedRun)
+                    {
+                        break;
+                    }
+                }
+
+                var currentResult = mPredicate();
+
+#if DEBUG
+                //LogInstance.Log($"BaseTrigger NRun currentResult = {currentResult}");
+#endif
+
+                if(mLastResult != currentResult)
+                {
+                    mLastResult = currentResult;
+                    Task.Run(() => { mOnFire?.Invoke(); });
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+#if DEBUG
+            //LogInstance.Log($"BaseTrigger Dispose");
+#endif
+
+            lock (mStateLockObj)
+            {
+                if (mState == StateOfNPCProcess.Destroyed)
+                {
+                    return;
+                }
+
+                mState = StateOfNPCProcess.Destroyed;
+            }
+
+            lock (mNeedRunLockObj)
+            {
+                mNeedRun = false;
+            }
+        }
     }
 }

@@ -327,7 +327,7 @@ namespace MyNPCLib
         public NPCMeshTaskResulutionKind ApproveNPCMeshTaskExecute(NPCResourcesResulution existingsNPCMeshTaskResulution)
         {
 #if DEBUG
-            LogInstance.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingsNPCMeshTaskResulution = {existingsNPCMeshTaskResulution}");
+            //LogInstance.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingsNPCMeshTaskResulution = {existingsNPCMeshTaskResulution}");
 #endif
 
             var targetProcessId = existingsNPCMeshTaskResulution.TargetProcessId;
@@ -377,18 +377,18 @@ namespace MyNPCLib
 
 
 #if DEBUG
-            //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute targetPriority = {targetPriority}");
+            //LogInstance.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute targetPriority = {targetPriority}");
 #endif
             foreach (var existingProcessesId in tmpExistingProcessesIdList)
             {
 #if DEBUG
-                //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingProcessesId = {existingProcessesId}");
+                //LogInstance.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingProcessesId = {existingProcessesId}");
 #endif
 
                 var currentProcessInfo = mProcessesDict[existingProcessesId];
 
 #if DEBUG
-                //Debug.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
+                //LogInstance.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
 #endif
 
                 if (currentProcessInfo.GlobalPriority > targetPriority)
