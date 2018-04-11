@@ -9,9 +9,9 @@ namespace MyNPCLib
         StateOfNPCContext State { get; }
 
         INPCBodyResourcesManager Body { get; }
-        INPCResourcesManager DefaultHand { get; }
-        INPCResourcesManager LeftHand { get; }
+        INPCResourcesManager DefaultHand { get; }   
         INPCResourcesManager RightHand { get; }
+        INPCResourcesManager LeftHand { get; }
 
         bool AddTypeOfProcess<T>();
         bool AddTypeOfProcess(Type type);

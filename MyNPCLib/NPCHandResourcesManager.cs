@@ -4,17 +4,35 @@ using System.Text;
 
 namespace MyNPCLib
 {
+    public enum KindOfHand
+    {
+        Right,
+        Left
+    }
+
     public class NPCHandResourcesManager: INPCResourcesManager
     {
-        public NPCHandResourcesManager(IIdFactory idFactory, IEntityDictionary entityDictionary, INPCHostContext npcHostContext, INPCContext context)
+        public NPCHandResourcesManager(IIdFactory idFactory, IEntityDictionary entityDictionary, INPCHostContext npcHostContext, KindOfHand kindOfHand, INPCContext context)
         {
             mIdFactory = idFactory;
             mEntityDictionary = entityDictionary;
+
+            switch(kindOfHand)
+            {
+                case KindOfHand.Right:
+                    mNPCHandHost = npcHostContext.RightHandHost;
+                    break;
+
+                case KindOfHand.Left:
+                    mNPCHandHost = npcHostContext.LeftHandHost;
+                    break;
+            }
         }
 
 #region private members
         private IIdFactory mIdFactory;
         private IEntityDictionary mEntityDictionary;
+        private INPCHandHost mNPCHandHost;
         private object mStateLockObj = new object();
         private StateOfNPCContext mState = StateOfNPCContext.Created;
         #endregion

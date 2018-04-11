@@ -156,9 +156,74 @@ namespace MyNPCLib
 
         public INPCProcess ExecuteBody(HumanoidBodyCommand command)
         {
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess ExecuteBody command = {command}");
+#endif
+
+            StateChecker();
+
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
             command.InitiatingProcessId = Id;
 
             return Context.Body.Send(command);
+        }
+
+        public INPCProcess ExecuteDefaultHand(NPCCommand command)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess ExecuteDefaultHand command = {command}");
+#endif
+
+            StateChecker();
+
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            command.InitiatingProcessId = Id;
+
+            return Context.DefaultHand.Send(command);
+        }
+
+        public INPCProcess ExecuteRightHand(NPCCommand command)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess ExecuteRightHand command = {command}");
+#endif
+
+            StateChecker();
+
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            command.InitiatingProcessId = Id;
+
+            return Context.RightHand.Send(command);
+        }
+
+        public INPCProcess ExecuteLeftHand(NPCCommand command)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess ExecuteLeftHand command = {command}");
+#endif
+
+            StateChecker();
+
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
+            command.InitiatingProcessId = Id;
+
+            return Context.LeftHand.Send(command);
         }
 
         public INPCProcess RunAsync(NPCInternalCommand command, NPCProcessEntryPointInfo entryPointInfo)

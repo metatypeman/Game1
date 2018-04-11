@@ -19,9 +19,9 @@ namespace MyNPCLib
             }
 
             mIdFactory = new IdFactory();
-            mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, this);
-            mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, this);
-            mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, this);
+            mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, this); 
+            mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Right, this);
+            mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Left, this);
             mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
         }
 
@@ -29,8 +29,8 @@ namespace MyNPCLib
         private readonly IdFactory mIdFactory;
         private readonly IEntityDictionary mEntityDictionary;
         private readonly NPCBodyResourcesManager mBodyResourcesManager;
-        private readonly NPCHandResourcesManager mLeftHandResourcesManager;
         private readonly NPCHandResourcesManager mRightHandResourcesManager;
+        private readonly NPCHandResourcesManager mLeftHandResourcesManager;       
         private readonly StorageOfNPCProcesses mStorageOfNPCProcesses;
         private readonly Dictionary<ulong, INPCProcess> mProcessesDict = new Dictionary<ulong, INPCProcess>();
         private readonly Dictionary<ulong, List<ulong>> mParentChildrenProcessesDict = new Dictionary<ulong, List<ulong>>();
@@ -53,9 +53,9 @@ namespace MyNPCLib
         }
 
         public INPCBodyResourcesManager Body => mBodyResourcesManager;
-        public INPCResourcesManager DefaultHand => mRightHandResourcesManager;
-        public INPCResourcesManager LeftHand => mLeftHandResourcesManager;
+        public INPCResourcesManager DefaultHand => mRightHandResourcesManager;   
         public INPCResourcesManager RightHand => mRightHandResourcesManager;
+        public INPCResourcesManager LeftHand => mLeftHandResourcesManager;
 
         public bool AddTypeOfProcess<T>()
         {
