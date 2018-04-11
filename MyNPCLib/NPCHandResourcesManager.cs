@@ -72,6 +72,23 @@ namespace MyNPCLib
             throw new NotImplementedException();
         }
 
+        public object Get(string propertyName)
+        {
+#if DEBUG
+            LogInstance.Log($"NPCBodyResourcesManager Get propertyName = {propertyName}");
+#endif
+
+            lock (mStateLockObj)
+            {
+                if (mState != StateOfNPCContext.Working)
+                {
+                    throw new ElementIsNotActiveException();
+                }
+            }
+
+            throw new NotImplementedException();
+        }
+
         public void UnRegProcess(ulong processId)
         {
 #if DEBUG
