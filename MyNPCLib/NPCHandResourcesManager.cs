@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MyNPCLib
 {
@@ -16,8 +17,9 @@ namespace MyNPCLib
         {
             mIdFactory = idFactory;
             mEntityDictionary = entityDictionary;
+            mContext = context;
 
-            switch(kindOfHand)
+            switch (kindOfHand)
             {
                 case KindOfHand.Right:
                     mNPCHandHost = npcHostContext.RightHandHost;
@@ -33,6 +35,7 @@ namespace MyNPCLib
         private IIdFactory mIdFactory;
         private IEntityDictionary mEntityDictionary;
         private INPCHandHost mNPCHandHost;
+        private INPCContext mContext;
         private object mStateLockObj = new object();
         private StateOfNPCContext mState = StateOfNPCContext.Created;
         #endregion
@@ -58,7 +61,7 @@ namespace MyNPCLib
         public INPCProcess Send(INPCCommand command)
         {
 #if DEBUG
-            LogInstance.Log($"NPCBodyResourcesManager Send command = {command}");
+            LogInstance.Log($"NPCHandResourcesManager Send command = {command}");
 #endif
 
             lock (mStateLockObj)
@@ -69,13 +72,38 @@ namespace MyNPCLib
                 }
             }
 
-            throw new NotImplementedException();
+            var id = mIdFactory.GetNewId();
+
+            var process = new ProxyForNPCResourceProcess(id, mContext);
+
+            var task = new Task(() => {
+                NExecute(command, process);
+            });
+
+            process.Task = task;
+
+            task.Start();
+
+            return process;
+        }
+
+        private void NExecute(INPCCommand command, ProxyForNPCResourceProcess process)
+        {
+#if DEBUG
+            LogInstance.Log($"NPCHandResourcesManager Begin NExecute command = {command}");
+#endif
+
+
+
+#if DEBUG
+            LogInstance.Log($"NPCHandResourcesManager End NExecute command = {command}");
+#endif
         }
 
         public object Get(string propertyName)
         {
 #if DEBUG
-            LogInstance.Log($"NPCBodyResourcesManager Get propertyName = {propertyName}");
+            LogInstance.Log($"NPCHandResourcesManager Get propertyName = {propertyName}");
 #endif
 
             lock (mStateLockObj)
@@ -92,7 +120,7 @@ namespace MyNPCLib
         public void UnRegProcess(ulong processId)
         {
 #if DEBUG
-            LogInstance.Log($"NPCBodyResourcesManager UnRegProcess processId = {processId}");
+            LogInstance.Log($"NPCHandResourcesManager UnRegProcess processId = {processId}");
 #endif
 
             lock (mStateLockObj)

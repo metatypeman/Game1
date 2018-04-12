@@ -6,5 +6,7 @@ namespace MyNPCLib
 {
     public interface INPCHandHost
     {
+        INPCProcess Send(INPCCommand command);
+        object Get(string propertyName);
     }
 }

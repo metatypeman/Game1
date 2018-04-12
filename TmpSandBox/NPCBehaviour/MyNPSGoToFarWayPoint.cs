@@ -21,6 +21,13 @@ namespace TmpSandBox.NPCBehaviour
 
             Wait(process);
 
+            var handCommand = new NPCCommand();
+            handCommand.Name = "fire";
+
+            process = ExecuteDefaultHand(handCommand);
+
+            Wait(process);
+
             NLog.LogManager.GetCurrentClassLogger().Info("End Main");
         }
     }

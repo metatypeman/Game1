@@ -25,7 +25,7 @@ namespace TmpSandBox.NPCBehaviour
         public HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidBody targetState)
         {
 #if DEBUG
-            //Debug.Log($"EnemyController ExecuteAsync targetState = {targetState}");
+            //NLog.LogManager.GetCurrentClassLogger().Info($"ExecuteAsync targetState = {targetState}");
 #endif
 
             lock (mLockObj)
@@ -42,7 +42,7 @@ namespace TmpSandBox.NPCBehaviour
 
 #if DEBUG
                 targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;//tmp
-                //Debug.Log($"EnemyController ExecuteAsync mTargetStateQueue.Count = {mTargetStateQueue.Count}");
+                //NLog.LogManager.GetCurrentClassLogger().Info($"ExecuteAsync mTargetStateQueue.Count = {mTargetStateQueue.Count}");
 #endif
 
                 return targetStateForExecuting;
@@ -52,7 +52,15 @@ namespace TmpSandBox.NPCBehaviour
 
     public class StubOfNPCHandHost: INPCHandHost
     {
+        public INPCProcess Send(INPCCommand command)
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info($" = {}");
+        }
 
+        public object Get(string propertyName)
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info($" = {}");
+        }
     }
 
     public class StubOfNPCHostContext: INPCHostContext
