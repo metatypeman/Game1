@@ -5,11 +5,8 @@ using System.Threading.Tasks;
 
 namespace MyNPCLib
 {
-    public abstract class BaseCommonNPCProcess: INPCProcess
+    public abstract class BaseCommonNPCProcess: BaseCommonNPCProcessWithEvents
     {
-        protected readonly object StateLockObj = new object();
-        protected StateOfNPCProcess mState = StateOfNPCProcess.Created;
-
         private INPCContext mContext;
         public INPCContext Context
         {
@@ -53,60 +50,10 @@ namespace MyNPCLib
             }
         }
 
-        public abstract StateOfNPCProcess State { get; set; }
-        public event NPCProcessStateChanged OnStateChanged;
-
-        protected void EmitOnStateChanged(StateOfNPCProcess state)
-        {
-            OnStateChanged?.Invoke(state);
-        }
-
-        public event Action OnRunningChanged;
-
-        protected void EmitOnRunningChanged()
-        {
-            OnRunningChanged?.Invoke();
-        }
-
-        public event Action OnRanToCompletionChanged;
-
-        protected void EmitOnRanToCompletionChanged()
-        {
-            OnRanToCompletionChanged?.Invoke();
-        }
-
-        public event Action OnCanceledChanged;
-
-        protected void EmitOnCanceledChanged()
-        {
-            OnCanceledChanged?.Invoke();
-        }
-
-        public event Action OnFaultedChanged;
-
-        protected void EmitOnFaultedChanged()
-        {
-            OnFaultedChanged?.Invoke();
-        }
-
-        public event Action OnDestroyedChanged;
-
-        protected void EmitOnDestroyedChanged()
-        {
-            OnDestroyedChanged?.Invoke();
-        }
-
-        public abstract KindOfNPCProcess Kind { get; }
-
-        public abstract void Dispose();
-
-        public abstract ulong Id { get; set; }
-        public abstract Task Task { get; set; }
-
         private float mLocalPriority = NPCProcessPriorities.Normal;
         private object mPriorityLockObj = new object();
 
-        public float LocalPriority
+        public override float LocalPriority
         {
             get
             {
@@ -137,7 +84,7 @@ namespace MyNPCLib
             }
         }
 
-        public float GlobalPriority
+        public override float GlobalPriority
         {
             get
             {

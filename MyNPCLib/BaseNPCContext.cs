@@ -324,45 +324,61 @@ namespace MyNPCLib
             }
         }
 
-        public NPCMeshTaskResulutionKind ApproveNPCMeshTaskExecute(NPCResourcesResulution existingsNPCMeshTaskResulution)
+        public NPCResourcesResolutionKind ApproveNPCResourceProcessExecute(BaseNPCResourcesResolution existingsNPCResourcesResulution)
         {
 #if DEBUG
-            //LogInstance.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingsNPCMeshTaskResulution = {existingsNPCMeshTaskResulution}");
+            //LogInstance.Log($"BaseNPCContext ApproveNPCResourceProcessExecute existingsNPCResourcesResulution = {existingsNPCResourcesResulution}");
 #endif
 
-            var targetProcessId = existingsNPCMeshTaskResulution.TargetProcessId;
+            var kind = existingsNPCResourcesResulution.Kind;
+
+            switch(kind)
+            {
+                case NPCResourceKind.Body:
+                    return ApproveNPCBodyResourceProcessExecute(existingsNPCResourcesResulution.ToBodyResourcesResulution());
+
+                case NPCResourceKind.Hand:
+                    return ApproveNPCHandResourceProcessExecute(existingsNPCResourcesResulution.ToHandResourcesResulution());
+
+                default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+            }
+        }
+
+        private NPCResourcesResolutionKind ApproveNPCBodyResourceProcessExecute(NPCBodyResourcesResolution existingsNPCResourcesResulution)
+        {
+            var targetProcessId = existingsNPCResourcesResulution.TargetProcessId;
 
             var tmpExistingProcessesIdList = new List<ulong>();
 
-            var disagreementByHState = existingsNPCMeshTaskResulution.DisagreementByHState;
+            var disagreementByHState = existingsNPCResourcesResulution.DisagreementByHState;
 
             if (disagreementByHState != null)
             {
                 tmpExistingProcessesIdList.AddRange(disagreementByHState.CurrentProcessesId);
             }
 
-            var disagreementByTargetPosition = existingsNPCMeshTaskResulution.DisagreementByTargetPosition;
+            var disagreementByTargetPosition = existingsNPCResourcesResulution.DisagreementByTargetPosition;
 
             if (disagreementByTargetPosition != null)
             {
                 tmpExistingProcessesIdList.AddRange(disagreementByTargetPosition.CurrentProcessesId);
             }
 
-            var disagreementByVState = existingsNPCMeshTaskResulution.DisagreementByVState;
+            var disagreementByVState = existingsNPCResourcesResulution.DisagreementByVState;
 
             if (disagreementByVState != null)
             {
                 tmpExistingProcessesIdList.AddRange(disagreementByVState.CurrentProcessesId);
             }
 
-            var disagreementByHandsState = existingsNPCMeshTaskResulution.DisagreementByHandsState;
+            var disagreementByHandsState = existingsNPCResourcesResulution.DisagreementByHandsState;
 
             if (disagreementByHandsState != null)
             {
                 tmpExistingProcessesIdList.AddRange(disagreementByHandsState.CurrentProcessesId);
             }
 
-            var disagreementByHandsActionState = existingsNPCMeshTaskResulution.DisagreementByHandsActionState;
+            var disagreementByHandsActionState = existingsNPCResourcesResulution.DisagreementByHandsActionState;
 
             if (disagreementByHandsActionState != null)
             {
@@ -375,29 +391,60 @@ namespace MyNPCLib
 
             var targetPriority = targetProcessInfo.GlobalPriority;
 
-
 #if DEBUG
-            //LogInstance.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute targetPriority = {targetPriority}");
+            //LogInstance.Log($"BaseNPCContext ApproveNPCBodyResourceProcessExecute targetPriority = {targetPriority}");
 #endif
             foreach (var existingProcessesId in tmpExistingProcessesIdList)
             {
 #if DEBUG
-                //LogInstance.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute existingProcessesId = {existingProcessesId}");
+                //LogInstance.Log($"BaseNPCContext ApproveNPCBodyResourceProcessExecute existingProcessesId = {existingProcessesId}");
 #endif
 
                 var currentProcessInfo = mProcessesDict[existingProcessesId];
 
 #if DEBUG
-                //LogInstance.Log($"NPCProcessesContext ApproveNPCMeshTaskExecute currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
+                //LogInstance.Log($"BaseNPCContext ApproveNPCBodyResourceProcessExecute currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
 #endif
 
                 if (currentProcessInfo.GlobalPriority > targetPriority)
                 {
-                    return NPCMeshTaskResulutionKind.Forbiden;
+                    return NPCResourcesResolutionKind.Forbiden;
                 }
             }
 
-            return NPCMeshTaskResulutionKind.Allow;//tmp
+            return NPCResourcesResolutionKind.Allow;
+        }
+
+        private NPCResourcesResolutionKind ApproveNPCHandResourceProcessExecute(NPCHandResourcesResolution existingsNPCResourcesResulution)
+        {
+            var targetProcessId = existingsNPCResourcesResulution.TargetProcessId;
+
+            var targetProcessInfo = mProcessesDict[targetProcessId];
+
+            var targetPriority = targetProcessInfo.GlobalPriority;
+
+#if DEBUG
+            //LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute targetPriority = {targetPriority}");
+#endif
+            foreach (var existingProcessesId in existingsNPCResourcesResulution.CurrentProcessesId)
+            {
+#if DEBUG
+                //LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute existingProcessesId = {existingProcessesId}");
+#endif
+
+                var currentProcessInfo = mProcessesDict[existingProcessesId];
+
+#if DEBUG
+                //LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
+#endif
+
+                if (currentProcessInfo.GlobalPriority > targetPriority)
+                {
+                    return NPCResourcesResolutionKind.Forbiden;
+                }
+            }
+
+            return NPCResourcesResolutionKind.Allow;
         }
 
         public virtual object NoTypedBlackBoard => null;

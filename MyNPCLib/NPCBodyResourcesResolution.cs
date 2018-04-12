@@ -4,18 +4,9 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    public enum NPCMeshTaskResulutionKind
+    public class NPCBodyResourcesResolution: BaseNPCResourcesResolution
     {
-        Unknow,
-        Allow,
-        AllowAdd,
-        Forbiden
-    }
-
-    public class NPCResourcesResulution : IObjectToString
-    {
-        public NPCMeshTaskResulutionKind Kind { get; set; } = NPCMeshTaskResulutionKind.Unknow;
-        public ulong TargetProcessId { get; set; }
+        public override NPCResourceKind Kind => NPCResourceKind.Body;
         public TargetStateOfHumanoidBody TargetState { get; set; }
         public DisagreementByHStateInfo DisagreementByHState { get; set; }
         public DisagreementByTargetPositionInfo DisagreementByTargetPosition { get; set; }
@@ -25,23 +16,17 @@ namespace MyNPCLib
         public DisagreementByHeadStateInfo DisagreementByHeadState { get; set; }
         public DisagreementByTargetHeadPositionInfo DisagreementByTargetHeadPosition { get; set; }
 
-        public override string ToString()
+        public override NPCBodyResourcesResolution ToBodyResourcesResulution()
         {
-            return ToString(0u);
+            return this;
         }
 
-        public string ToString(uint n)
-        {
-            return this.GetDefaultToStringInformation(n);
-        }
-
-        public string PropertiesToSting(uint n)
+        public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
-            sb.AppendLine($"{spaces}{nameof(TargetProcessId)} = {TargetProcessId}");
+            sb.Append(base.PropertiesToSting(n));
 
             if (TargetState == null)
             {

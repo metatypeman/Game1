@@ -190,6 +190,32 @@ namespace MyNPCLib
             return Context.DefaultHand.Send(command);
         }
 
+        public object GetDefaultHandProperty(string propertyName)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess GetDefaultHandProperty propertyName = {propertyName}");
+#endif
+
+            return Context.DefaultHand.Get(propertyName);
+        }
+
+        public T GetDefaultHandProperty<T>(string propertyName)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess GetDefaultHandProperty<T> propertyName = {propertyName}");
+#endif
+
+            try
+            {
+                return (T)Context.DefaultHand.Get(propertyName);
+            }
+            catch
+            {
+            }
+
+            return default(T);
+        }
+
         public INPCProcess ExecuteRightHand(NPCCommand command)
         {
 #if DEBUG
@@ -208,6 +234,32 @@ namespace MyNPCLib
             return Context.RightHand.Send(command);
         }
 
+        public object GetRightHandProperty(string propertyName)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess GetRightHandProperty propertyName = {propertyName}");
+#endif
+
+            return Context.RightHand.Get(propertyName);
+        }
+
+        public T GetRightHandProperty<T>(string propertyName)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess GetRightHandProperty<T> propertyName = {propertyName}");
+#endif
+
+            try
+            {
+                return (T)Context.RightHand.Get(propertyName);
+            }
+            catch
+            {
+            }
+
+            return default(T);
+        }
+
         public INPCProcess ExecuteLeftHand(NPCCommand command)
         {
 #if DEBUG
@@ -224,6 +276,31 @@ namespace MyNPCLib
             command.InitiatingProcessId = Id;
 
             return Context.LeftHand.Send(command);
+        }
+
+        public object GetLeftHandProperty(string propertyName)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess GetLeftHandProperty propertyName = {propertyName}");
+#endif
+
+            return Context.LeftHand.Get(propertyName);
+        }
+
+        public T GetLeftHandProperty<T>(string propertyName)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess GetLeftHandProperty<T> propertyName = {propertyName}");
+#endif
+            try
+            {
+                return (T)Context.LeftHand.Get(propertyName);
+            }
+            catch
+            {
+            }
+
+            return default(T);
         }
 
         public INPCProcess RunAsync(NPCInternalCommand command, NPCProcessEntryPointInfo entryPointInfo)

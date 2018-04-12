@@ -28,6 +28,22 @@ namespace TmpSandBox.NPCBehaviour
 
             Wait(process);
 
+            var tmpResult = Context.DefaultHand.Get("FireMode");
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpResult = {tmpResult}");
+
+            tmpResult = GetDefaultHandProperty("FireMode");
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpResult (2) = {tmpResult}");
+
+            tmpResult = GetDefaultHandProperty<object>("FireMode");
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpResult (3) = {tmpResult}");
+
+            var tmpStrRes = GetDefaultHandProperty<string>("FireMode");
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpStrRes = {tmpStrRes}");
+
             NLog.LogManager.GetCurrentClassLogger().Info("End Main");
         }
     }

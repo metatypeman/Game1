@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace TmpSandBox.NPCBehaviour
 {
@@ -54,12 +56,31 @@ namespace TmpSandBox.NPCBehaviour
     {
         public INPCProcess Send(INPCCommand command)
         {
-            NLog.LogManager.GetCurrentClassLogger().Info($" = {}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"Beging Send command = {command}");
+
+            var process = new NPCThingProcess();
+            process.State = StateOfNPCProcess.Running;
+
+            Task.Run(() => {
+                NLog.LogManager.GetCurrentClassLogger().Info($"Beging Send Task.Run command = {command}");
+
+                process.State = StateOfNPCProcess.Running;
+
+                Thread.Sleep(1000);
+
+                NLog.LogManager.GetCurrentClassLogger().Info($"End Send Task.Run command = {command}");
+            });
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"End Send command = {command}");
+
+            return process;
         }
 
         public object Get(string propertyName)
         {
-            NLog.LogManager.GetCurrentClassLogger().Info($" = {}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"Get propertyName = {propertyName}");
+
+            return "The Beatles!!!";
         }
     }
 

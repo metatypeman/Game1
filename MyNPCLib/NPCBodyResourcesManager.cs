@@ -38,12 +38,12 @@ namespace MyNPCLib
 
             Task.Run(() => {
 #if DEBUG
-                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged Begin changedStates");
+                //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged Begin changedStates");
                 //foreach (var changedState in changedStates)
                 //{
-                //    Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged changedState = {changedState}");
+                //    LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged changedState = {changedState}");
                 //}
-                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged End changedStates");
+                //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged End changedStates");
 #endif
 
                 lock (mDataLockObj)
@@ -93,23 +93,23 @@ namespace MyNPCLib
                     displacedProcessesIdList = displacedProcessesIdList.Distinct().ToList();
 
 #if DEBUG
-                    //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessesIdList.Count = {displacedProcessesIdList.Count}");
-                    //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
+                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged displacedProcessesIdList.Count = {displacedProcessesIdList.Count}");
+                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
 #endif
 
                     foreach (var displacedProcessId in displacedProcessesIdList)
                     {
 #if DEBUG
-                        //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged displacedProcessId = {displacedProcessId}");
+                        //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged displacedProcessId = {displacedProcessId}");
 #endif
 
-                        var targetTask = mTasksDict[displacedProcessId];
-                        mTasksDict.Remove(displacedProcessId);
+                        var targetTask = mProcessesDict[displacedProcessId];
+                        mProcessesDict.Remove(displacedProcessId);
                         targetTask.State = StateOfNPCProcess.RanToCompletion;
                     }
 
 #if DEBUG
-                    //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
+                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
 #endif
                 }
             });
@@ -180,31 +180,31 @@ namespace MyNPCLib
             LogInstance.Log($"NPCBodyResourcesManager NExecute resolution = {resolution}");
 #endif
 
-            var kindOfResolution = resolution.Kind;
+            var kindOfResolution = resolution.KindOfResult;
 
             switch (kindOfResolution)
             {
-                case NPCMeshTaskResulutionKind.Allow:
-                case NPCMeshTaskResulutionKind.AllowAdd:
+                case NPCResourcesResolutionKind.Allow:
+                case NPCResourcesResolutionKind.AllowAdd:
                     ProcessAllow(targetState, processId, process, kindOfResolution);
                     break;
 
-                case NPCMeshTaskResulutionKind.Forbiden:
+                case NPCResourcesResolutionKind.Forbiden:
                     {
-                        var kindOfResolutionOfContext = mContext.ApproveNPCMeshTaskExecute(resolution);
+                        var kindOfResolutionOfContext = mContext.ApproveNPCResourceProcessExecute(resolution);
 
 #if UNITY_EDITOR
-                        //Debug.Log($"NPCThreadSafeMeshController Execute kindOfResolutionOfContext = {kindOfResolutionOfContext}");
+                        //LogInstance.Log($"NPCBodyResourcesManager Execute kindOfResolutionOfContext = {kindOfResolutionOfContext}");
 #endif
 
                         switch (kindOfResolutionOfContext)
                         {
-                            case NPCMeshTaskResulutionKind.Allow:
-                            case NPCMeshTaskResulutionKind.AllowAdd:
+                            case NPCResourcesResolutionKind.Allow:
+                            case NPCResourcesResolutionKind.AllowAdd:
                                 ProcessAllow(targetState, processId, process, kindOfResolutionOfContext);
                                 break;
 
-                            case NPCMeshTaskResulutionKind.Forbiden:
+                            case NPCResourcesResolutionKind.Forbiden:
                                 ProcessForbiden(process);
                                 break;
 
@@ -224,7 +224,7 @@ namespace MyNPCLib
         private TargetStateOfHumanoidBody CreateTargetState(IHumanoidBodyCommand command)
         {
 #if DEBUG
-            LogInstance.Log($"NPCThreadSafeMeshController CreateTargetState command = {command}");
+            LogInstance.Log($"NPCBodyResourcesManager CreateTargetState command = {command}");
 #endif
 
             var result = new TargetStateOfHumanoidBody();
@@ -318,24 +318,24 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            LogInstance.Log($"NPCThreadSafeMeshController CreateTargetState result = {result}");
+            LogInstance.Log($"NPCBodyResourcesManager CreateTargetState result = {result}");
 #endif
 
             return result;
         }
 
-        private NPCResourcesResulution CreateResolution(StatesOfHumanoidBodyController sourceState, TargetStateOfHumanoidBody targetState, ulong processId)
+        private NPCBodyResourcesResolution CreateResolution(StatesOfHumanoidBodyController sourceState, TargetStateOfHumanoidBody targetState, ulong processId)
         {
 #if DEBUG
-            LogInstance.Log($"NPCThreadSafeMeshController CreateTargetState sourceState = {sourceState}");
-            LogInstance.Log($"NPCThreadSafeMeshController CreateTargetState targetState = {targetState}");
-            LogInstance.Log($"NPCThreadSafeMeshController CreateTargetState processId = {processId}");
+            LogInstance.Log($"NPCBodyResourcesManager CreateResolution sourceState = {sourceState}");
+            LogInstance.Log($"NPCBodyResourcesManager CreateResolution targetState = {targetState}");
+            LogInstance.Log($"NPCBodyResourcesManager CreateResolution processId = {processId}");
             DumpProcesses();
 #endif
 
             lock(mDataLockObj)
             {
-                var result = new NPCResourcesResulution();
+                var result = new NPCBodyResourcesResolution();
                 result.TargetProcessId = processId;
                 result.TargetState = targetState;
 
@@ -356,7 +356,7 @@ namespace MyNPCLib
                         if (!mHState.Contains(processId))
                         {
                             theSame = false;
-                            result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+                            result.KindOfResult = NPCResourcesResolutionKind.Forbiden;
 
                             var disagreement = new DisagreementByHStateInfo();
                             result.DisagreementByHState = disagreement;
@@ -381,7 +381,7 @@ namespace MyNPCLib
                         if (!mTargetPosition.Contains(processId))
                         {
                             theSame = false;
-                            result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+                            result.KindOfResult = NPCResourcesResolutionKind.Forbiden;
 
                             var disagreement = new DisagreementByTargetPositionInfo();
                             result.DisagreementByTargetPosition = disagreement;
@@ -406,7 +406,7 @@ namespace MyNPCLib
                         if (!mVState.Contains(processId))
                         {
                             theSame = false;
-                            result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+                            result.KindOfResult = NPCResourcesResolutionKind.Forbiden;
 
                             var disagreement = new DisagreementByVStateInfo();
                             result.DisagreementByVState = disagreement;
@@ -444,7 +444,7 @@ namespace MyNPCLib
                     }
 
 #if DEBUG
-                    LogInstance.Log($"NPCThreadSafeMeshController CreateTargetState targetHandsState = {targetHandsState}");
+                    LogInstance.Log($"NPCBodyResourcesManager CreateResolution targetHandsState = {targetHandsState}");
 #endif
 
                     if (mHandsState.Count == 0)
@@ -456,7 +456,7 @@ namespace MyNPCLib
                         if (!mHandsState.Contains(processId))
                         {
                             theSame = false;
-                            result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+                            result.KindOfResult = NPCResourcesResolutionKind.Forbiden;
 
                             var disagreement = new DisagreementByHandsStateInfo();
                             result.DisagreementByHandsState = disagreement;
@@ -481,7 +481,7 @@ namespace MyNPCLib
                         if (!mHandsActionState.Contains(processId))
                         {
                             theSame = false;
-                            result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+                            result.KindOfResult = NPCResourcesResolutionKind.Forbiden;
 
                             var disagreement = new DisagreementByHandsActionStateInfo();
                             result.DisagreementByHandsActionState = disagreement;
@@ -506,7 +506,7 @@ namespace MyNPCLib
                         if (!mHeadState.Contains(processId))
                         {
                             theSame = false;
-                            result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+                            result.KindOfResult = NPCResourcesResolutionKind.Forbiden;
 
                             var disagreement = new DisagreementByHeadStateInfo();
                             result.DisagreementByHeadState = disagreement;
@@ -531,7 +531,7 @@ namespace MyNPCLib
                         if (!mTargetHeadPosition.Contains(processId))
                         {
                             theSame = false;
-                            result.Kind = NPCMeshTaskResulutionKind.Forbiden;
+                            result.KindOfResult = NPCResourcesResolutionKind.Forbiden;
 
                             var disagreement = new DisagreementByTargetHeadPositionInfo();
                             result.DisagreementByTargetHeadPosition = disagreement;
@@ -543,21 +543,21 @@ namespace MyNPCLib
                     }
                 }
 
-                if (result.Kind == NPCMeshTaskResulutionKind.Unknow)
+                if (result.KindOfResult == NPCResourcesResolutionKind.Unknow)
                 {
                     if (theSame)
                     {
-                        result.Kind = NPCMeshTaskResulutionKind.AllowAdd;
+                        result.KindOfResult = NPCResourcesResolutionKind.AllowAdd;
                     }
                     else
                     {
-                        result.Kind = NPCMeshTaskResulutionKind.Allow;
+                        result.KindOfResult = NPCResourcesResolutionKind.Allow;
                     }
                 }
 
 #if DEBUG
-                LogInstance.Log("NPCThreadSafeMeshController CreateTargetState NEXT");
-                LogInstance.Log("End NPCThreadSafeMeshController CreateTargetState");
+                LogInstance.Log("NPCBodyResourcesManager CreateResolution NEXT");
+                LogInstance.Log("End NPCBodyResourcesManager CreateResolution");
 #endif
                 return result;
             }
@@ -572,85 +572,85 @@ namespace MyNPCLib
         private readonly List<ulong> mHandsActionState = new List<ulong>();
         private readonly List<ulong> mHeadState = new List<ulong>();
         private readonly List<ulong> mTargetHeadPosition = new List<ulong>();
-        private readonly Dictionary<ulong, ProxyForNPCResourceProcess> mTasksDict = new Dictionary<ulong, ProxyForNPCResourceProcess>();
+        private readonly Dictionary<ulong, ProxyForNPCResourceProcess> mProcessesDict = new Dictionary<ulong, ProxyForNPCResourceProcess>();
 
 #if DEBUG
         private void DumpProcesses()
         {
             lock (mDataLockObj)
             {
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mHState");
+                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses Begin {nameof(mHState)}");
                 foreach (var item in mHState)
                 {
-                    LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses {nameof(item)} = {item}");
                 }
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mHState");
+                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses End {nameof(mHState)}");
 
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mTargetPosition");
+                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses Begin {nameof(mTargetPosition)}");
                 foreach (var item in mTargetPosition)
                 {
-                    LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses {nameof(item)} = {item}");
                 }
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mTargetPosition");
+                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses End {nameof(mTargetPosition)}");
 
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mVState");
+                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses Begin {nameof(mVState)}");
                 foreach (var item in mVState)
                 {
-                    LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses {nameof(item)} = {item}");
                 }
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mVState");
+                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses End {nameof(mVState)}");
 
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mHandsState");
+                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses Begin {nameof(mHandsState)}");
                 foreach (var item in mHandsState)
                 {
-                    LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses item = {item}");
                 }
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mHandsState");
+                LogInstance.Log("NPCBodyResourcesManager DumpProcesses End mHandsState");
 
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mHandsActionState");
+                LogInstance.Log("NPCBodyResourcesManager DumpProcesses Begin mHandsActionState");
                 foreach (var item in mHandsActionState)
                 {
-                    LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses item = {item}");
                 }
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mHandsActionState");
+                LogInstance.Log("NPCBodyResourcesManager DumpProcesses End mHandsActionState");
 
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mHeadState");
+                LogInstance.Log("NPCBodyResourcesManager DumpProcesses Begin mHeadState");
                 foreach (var item in mHeadState)
                 {
-                    LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses item = {item}");
                 }
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mHeadState");
+                LogInstance.Log("NPCBodyResourcesManager DumpProcesses End mHeadState");
 
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mTargetHeadPosition");
+                LogInstance.Log("NPCBodyResourcesManager DumpProcesses Begin mTargetHeadPosition");
                 foreach (var item in mTargetHeadPosition)
                 {
-                    LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow item = {item}");
+                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses item = {item}");
                 }
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mTargetHeadPosition");
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow Begin mTasksDict");
-                foreach (var kvpItem in mTasksDict)
+                LogInstance.Log("NPCBodyResourcesManager DumpProcesses End mTargetHeadPosition");
+                LogInstance.Log("NPCBodyResourcesManager DumpProcesses Begin mProcessesDict");
+                foreach (var kvpItem in mProcessesDict)
                 {
                     var productId = kvpItem.Key;
                     var task = kvpItem.Value;
 
-                    LogInstance.Log($"NPCThreadSafeMeshController ProcessAllow productId = {productId} task = {task}");
+                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses productId = {productId} task = {task}");
                 }
-                LogInstance.Log("NPCThreadSafeMeshController ProcessAllow End mTasksDict");
+                LogInstance.Log("NPCBodyResourcesManager DumpProcesses End mProcessesDict");
             }
         }
 #endif
 
-        private void ProcessAllow(TargetStateOfHumanoidBody targetState, ulong processId, ProxyForNPCResourceProcess process, NPCMeshTaskResulutionKind resolutionKind)
+        private void ProcessAllow(TargetStateOfHumanoidBody targetState, ulong processId, ProxyForNPCResourceProcess process, NPCResourcesResolutionKind resolutionKind)
         {
 #if DEBUG
-            //Debug.Log($"NPCThreadSafeMeshController ProcessAllow targetState = {targetState}");
-            //Debug.Log($"NPCThreadSafeMeshController ProcessAllow processId = {processId}");
+            //LogInstance.Log($"NPCBodyResourcesManager ProcessAllow targetState = {targetState}");
+            //LogInstance.Log($"NPCBodyResourcesManager ProcessAllow processId = {processId}");
 #endif
 
             RegProcessId(targetState, processId, process, resolutionKind);
 
 #if DEBUG
-            //Debug.Log("NPCThreadSafeMeshController ProcessAllow before mMoveHumanoidController.ExecuteAsync");
+            //LogInstance.Log("NPCBodyResourcesManager ProcessAllow before mNPCBodyHost.ExecuteAsync");
 #endif
 
             var targetStateForExecuting = mNPCBodyHost.ExecuteAsync(targetState);
@@ -660,13 +660,13 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            //Debug.Log("NPCThreadSafeMeshController ProcessAllow after mMoveHumanoidController.ExecuteAsync");
+            //LogInstance.Log("NPCBodyResourcesManager ProcessAllow after mNPCBodyHost.ExecuteAsync");
 #endif
 
             process.State = StateOfNPCProcess.Running;
         }
 
-        private void RegProcessId(TargetStateOfHumanoidBody targetState, ulong processId, ProxyForNPCResourceProcess process, NPCMeshTaskResulutionKind resolutionKind)
+        private void RegProcessId(TargetStateOfHumanoidBody targetState, ulong processId, ProxyForNPCResourceProcess process, NPCResourcesResolutionKind resolutionKind)
         {
             lock (mDataLockObj)
             {
@@ -676,12 +676,12 @@ namespace MyNPCLib
                 {
                     switch (resolutionKind)
                     {
-                        case NPCMeshTaskResulutionKind.Allow:
+                        case NPCResourcesResolutionKind.Allow:
                             displacedProcessesIdList.AddRange(mHState);
                             mHState.Clear();
                             break;
 
-                        case NPCMeshTaskResulutionKind.AllowAdd:
+                        case NPCResourcesResolutionKind.AllowAdd:
                             break;
 
                         default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
@@ -704,12 +704,12 @@ namespace MyNPCLib
                 {
                     switch (resolutionKind)
                     {
-                        case NPCMeshTaskResulutionKind.Allow:
+                        case NPCResourcesResolutionKind.Allow:
                             displacedProcessesIdList.AddRange(mTargetPosition);
                             mTargetPosition.Clear();
                             break;
 
-                        case NPCMeshTaskResulutionKind.AllowAdd:
+                        case NPCResourcesResolutionKind.AllowAdd:
                             break;
 
                         default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
@@ -732,12 +732,12 @@ namespace MyNPCLib
                 {
                     switch (resolutionKind)
                     {
-                        case NPCMeshTaskResulutionKind.Allow:
+                        case NPCResourcesResolutionKind.Allow:
                             displacedProcessesIdList.AddRange(mVState);
                             mVState.Clear();
                             break;
 
-                        case NPCMeshTaskResulutionKind.AllowAdd:
+                        case NPCResourcesResolutionKind.AllowAdd:
                             break;
 
                         default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
@@ -760,12 +760,12 @@ namespace MyNPCLib
                 {
                     switch (resolutionKind)
                     {
-                        case NPCMeshTaskResulutionKind.Allow:
+                        case NPCResourcesResolutionKind.Allow:
                             displacedProcessesIdList.AddRange(mHandsState);
                             mHandsState.Clear();
                             break;
 
-                        case NPCMeshTaskResulutionKind.AllowAdd:
+                        case NPCResourcesResolutionKind.AllowAdd:
                             break;
 
                         default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
@@ -788,12 +788,12 @@ namespace MyNPCLib
                 {
                     switch (resolutionKind)
                     {
-                        case NPCMeshTaskResulutionKind.Allow:
+                        case NPCResourcesResolutionKind.Allow:
                             displacedProcessesIdList.AddRange(mHandsActionState);
                             mHandsActionState.Clear();
                             break;
 
-                        case NPCMeshTaskResulutionKind.AllowAdd:
+                        case NPCResourcesResolutionKind.AllowAdd:
                             break;
 
                         default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
@@ -816,12 +816,12 @@ namespace MyNPCLib
                 {
                     switch (resolutionKind)
                     {
-                        case NPCMeshTaskResulutionKind.Allow:
+                        case NPCResourcesResolutionKind.Allow:
                             displacedProcessesIdList.AddRange(mHeadState);
                             mHeadState.Clear();
                             break;
 
-                        case NPCMeshTaskResulutionKind.AllowAdd:
+                        case NPCResourcesResolutionKind.AllowAdd:
                             break;
 
                         default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
@@ -844,12 +844,12 @@ namespace MyNPCLib
                 {
                     switch (resolutionKind)
                     {
-                        case NPCMeshTaskResulutionKind.Allow:
+                        case NPCResourcesResolutionKind.Allow:
                             displacedProcessesIdList.AddRange(mTargetHeadPosition);
                             mTargetHeadPosition.Clear();
                             break;
 
-                        case NPCMeshTaskResulutionKind.AllowAdd:
+                        case NPCResourcesResolutionKind.AllowAdd:
                             break;
 
                         default: throw new ArgumentOutOfRangeException(nameof(resolutionKind), resolutionKind, null);
@@ -875,25 +875,25 @@ namespace MyNPCLib
                     foreach (var displacedProcessId in displacedProcessesIdList)
                     {
 #if DEBUG
-                        //Debug.Log($"NPCThreadSafeMeshController CreateTargetState displacedProcessId = {displacedProcessId}");
+                        //LogInstance.Log($"NPCBodyResourcesManager CreateTargetState displacedProcessId = {displacedProcessId}");
 #endif
 
                         RemoveProcessId(displacedProcessId);
 
-                        var displacedTask = mTasksDict[displacedProcessId];
+                        var displacedTask = mProcessesDict[displacedProcessId];
                         displacedTask.State = StateOfNPCProcess.Canceled;
-                        mTasksDict.Remove(displacedProcessId);
+                        mProcessesDict.Remove(displacedProcessId);
                     }
                 }
 
-#if UDEBUG
-            //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
+#if DEBUG
+                //LogInstance.Log($"NPCBodyResourcesManager CreateTargetState before mTasksDict.Count = {mTasksDict.Count}");
 #endif
 
-                mTasksDict[processId] = process;
+                mProcessesDict[processId] = process;
 
 #if DEBUG
-                //Debug.Log($"NPCThreadSafeMeshController OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
+                //LogInstance.Log($"NPCBodyResourcesManager CreateTargetState after mTasksDict.Count = {mTasksDict.Count}");
 #endif
             }
         }
@@ -901,7 +901,7 @@ namespace MyNPCLib
         private void ProcessForbiden(ProxyForNPCResourceProcess process)
         {
 #if DEBUG
-            //LogInstance.Log($"NPCThreadSafeMeshController ProcessForbiden npcMeshTask = {npcMeshTask}");
+            //LogInstance.Log($"NPCBodyResourcesManager ProcessForbiden npcMeshTask = {npcMeshTask}");
 #endif
 
             process.State = StateOfNPCProcess.Canceled;
@@ -923,7 +923,7 @@ namespace MyNPCLib
 
             lock (mDataLockObj)
             {
-                if (!mTasksDict.ContainsKey(processId))
+                if (!mProcessesDict.ContainsKey(processId))
                 {
                     return;
                 }
@@ -969,9 +969,9 @@ namespace MyNPCLib
                 mTargetHeadPosition.Remove(processId);
             }
 
-            if(mTasksDict.ContainsKey(processId))
+            if(mProcessesDict.ContainsKey(processId))
             {
-                mTasksDict.Remove(processId);
+                mProcessesDict.Remove(processId);
             }
         }
 
