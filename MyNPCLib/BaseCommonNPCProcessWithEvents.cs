@@ -11,6 +11,39 @@ namespace MyNPCLib
         protected StateOfNPCProcess mState = StateOfNPCProcess.Created;
 
         public abstract StateOfNPCProcess State { get; set; }
+
+        protected void EmitChangingOfState(StateOfNPCProcess state)
+        {
+            EmitOnStateChanged(state);
+
+            switch (state)
+            {
+                case StateOfNPCProcess.Created:
+                    break;
+                case StateOfNPCProcess.Running:
+                    EmitOnRunningChanged();
+                    break;
+
+                case StateOfNPCProcess.RanToCompletion:
+                    EmitOnRanToCompletionChanged();
+                    break;
+
+                case StateOfNPCProcess.Canceled:
+                    EmitOnCanceledChanged();
+                    break;
+
+                case StateOfNPCProcess.Faulted:
+                    EmitOnFaultedChanged();
+                    break;
+
+                case StateOfNPCProcess.Destroyed:
+                    EmitOnDestroyedChanged();
+                    break;
+
+                default: throw new ArgumentOutOfRangeException(nameof(state), state, null);
+            }
+        }
+
         private event NPCProcessStateChanged mOnStateChanged;
         public event NPCProcessStateChanged OnStateChanged
         {
@@ -33,7 +66,9 @@ namespace MyNPCLib
 
         protected void EmitOnStateChanged(StateOfNPCProcess state)
         {
-            mOnStateChanged?.Invoke(state);
+            Task.Run(() => {
+                mOnStateChanged?.Invoke(state);
+            });          
         }
 
         private Action mOnRunningChanged;
@@ -59,7 +94,9 @@ namespace MyNPCLib
 
         protected void EmitOnRunningChanged()
         {
-            mOnRunningChanged?.Invoke();
+            Task.Run(() => {
+                mOnRunningChanged?.Invoke();
+            });      
         }
 
         private Action mOnRanToCompletionChanged;
@@ -85,7 +122,9 @@ namespace MyNPCLib
 
         protected void EmitOnRanToCompletionChanged()
         {
-            mOnRanToCompletionChanged?.Invoke();
+            Task.Run(() => {
+                mOnRanToCompletionChanged?.Invoke();
+            });     
         }
 
         private Action mOnCanceledChanged;
@@ -111,7 +150,9 @@ namespace MyNPCLib
 
         protected void EmitOnCanceledChanged()
         {
-            mOnCanceledChanged?.Invoke();
+            Task.Run(() => {
+                mOnCanceledChanged?.Invoke();
+            });          
         }
 
         private Action mOnFaultedChanged;
@@ -137,7 +178,9 @@ namespace MyNPCLib
 
         protected void EmitOnFaultedChanged()
         {
-            mOnFaultedChanged?.Invoke();
+            Task.Run(() => {
+                mOnFaultedChanged?.Invoke();
+            });        
         }
 
         private Action mOnDestroyedChanged;
@@ -163,7 +206,9 @@ namespace MyNPCLib
 
         protected void EmitOnDestroyedChanged()
         {
-            mOnDestroyedChanged?.Invoke();
+            Task.Run(() => {
+                mOnDestroyedChanged?.Invoke();
+            });     
         }
 
         public abstract KindOfNPCProcess Kind { get; }

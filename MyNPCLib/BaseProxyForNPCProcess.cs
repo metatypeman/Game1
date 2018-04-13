@@ -36,37 +36,7 @@ namespace MyNPCLib
 
                 mState = value;
 
-                var state = mState;
-                Task.Run(() => {
-                    EmitOnStateChanged(state);
-
-                    switch (state)
-                    {
-                        case StateOfNPCProcess.Created:
-                            break;
-                        case StateOfNPCProcess.Running:
-                            EmitOnRunningChanged();
-                            break;
-
-                        case StateOfNPCProcess.RanToCompletion:
-                            EmitOnRanToCompletionChanged();
-                            break;
-
-                        case StateOfNPCProcess.Canceled:
-                            EmitOnCanceledChanged();
-                            break;
-
-                        case StateOfNPCProcess.Faulted:
-                            EmitOnFaultedChanged();
-                            break;
-
-                        case StateOfNPCProcess.Destroyed:
-                            EmitOnDestroyedChanged();
-                            break;
-
-                        default: throw new ArgumentOutOfRangeException(nameof(state), state, null);
-                    }
-                });
+                EmitChangingOfState(mState);
             }
         }
 
