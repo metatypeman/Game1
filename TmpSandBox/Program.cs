@@ -39,7 +39,15 @@ namespace TmpSandBox
             var context = new MyNPCContext(stubOfHumanoidBodyController);
             context.Bootstrap();
 
-            while(true)
+            Thread.Sleep(1000);
+
+            var command = new NPCCommand();
+            command.Name = "key press";
+            command.Params.Add("key", "k");
+
+            context.Send(command);
+
+            while (true)
             {
                 Thread.Sleep(10000);
             }
