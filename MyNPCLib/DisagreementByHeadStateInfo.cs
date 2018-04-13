@@ -4,47 +4,20 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    public class DisagreementByHeadStateInfo : IObjectToString
+    public class DisagreementByHeadStateInfo : BaseDisagreementInfo
     {
-        public HumanoidStateKind Kind => HumanoidStateKind.HeadState;
-        public List<ulong> CurrentProcessesId { get; set; }
+        public override HumanoidStateKind Kind => HumanoidStateKind.HeadState;
         public HumanoidHeadState CurrentValue { get; set; } = HumanoidHeadState.LookingForward;
-        public ulong TargetProcessId { get; set; }
         public HumanoidHeadState TargetValue { get; set; } = HumanoidHeadState.LookingForward;
 
-        public override string ToString()
-        {
-            return ToString(0u);
-        }
-
-        public string ToString(uint n)
-        {
-            return this.GetDefaultToStringInformation(n);
-        }
-
-        public string PropertiesToSting(uint n)
+        public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var nextSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
-            if (CurrentProcessesId == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(CurrentProcessesId)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(CurrentProcessesId)}");
-                foreach (var currentProcessId in CurrentProcessesId)
-                {
-                    sb.AppendLine($"{nextSpaces}{nameof(currentProcessId)} = {currentProcessId}");
-                }
-                sb.AppendLine($"{spaces}End {nameof(CurrentProcessesId)}");
-            }
-
+            sb.Append(base.PropertiesToSting(n));
             sb.AppendLine($"{spaces}{nameof(CurrentValue)} = {CurrentValue}");
-            sb.AppendLine($"{spaces}{nameof(TargetProcessId)} = {TargetProcessId}");
             sb.AppendLine($"{spaces}{nameof(TargetValue)} = {TargetValue}");
             return sb.ToString();
         }

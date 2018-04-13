@@ -7,6 +7,7 @@ namespace MyNPCLib
     public interface ITrigger: IDisposable
     {
         event Action OnFire;
+        event Action OnResetCondition;
         void Start();
         void Stop();
     }

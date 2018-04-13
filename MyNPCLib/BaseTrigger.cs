@@ -117,10 +117,44 @@ namespace MyNPCLib
                     mOnFire -= value;
                 }
 
-                lock (mNeedRunLockObj)
+                TryStopNRun();
+            }
+        }
+
+        private Action mOnResetCondition;
+        private readonly object mOnResetConditionLockObj = new object();
+        public event Action OnResetCondition
+        {
+            add
+            {
+#if DEBUG
+                //LogInstance.Log($"BaseTrigger OnResetCondition add");
+#endif
+
+                lock (mStateLockObj)
                 {
-                    mNeedRun = false;
+                    if (mState == StateOfNPCProcess.Destroyed)
+                    {
+                        return;
+                    }
                 }
+
+                lock(mOnResetConditionLockObj)
+                {
+                    mOnResetCondition += value;
+                }
+
+                TryStartNRun();
+            }
+
+            remove
+            {
+                lock (mOnResetConditionLockObj)
+                {
+                    mOnResetCondition -= value;
+                }
+
+                TryStopNRun();
             }
         }
 
@@ -135,9 +169,12 @@ namespace MyNPCLib
 
                 lock(mOnFireLockObj)
                 {
-                    if(mOnFire == null)
+                    lock(mOnResetConditionLockObj)
                     {
-                        return;
+                        if (mOnFire == null && mOnResetCondition == null)
+                        {
+                            return;
+                        }
                     }
                 }
 
@@ -157,12 +194,44 @@ namespace MyNPCLib
             });
         }
 
+        private void TryStopNRun()
+        {
+            lock (mNeedRunLockObj)
+            {
+                if(!mNeedRun)
+                {
+                    return;
+                }
+
+                lock (mOnFireLockObj)
+                {
+                    lock (mOnResetConditionLockObj)
+                    {
+                        if (mOnFire == null && mOnResetCondition == null)
+                        {
+                            mNeedRun = false;
+                            return;
+                        }
+                    }
+                }
+
+                lock (mStateLockObj)
+                {
+                    if (mState != StateOfNPCProcess.Running)
+                    {
+                        mNeedRun = false;
+                        return;
+                    }
+                }               
+            }
+        }
+
         private bool mLastResult;
 
         private void NRun()
         {
 #if DEBUG
-            //LogInstance.Log($"BaseTrigger NRun");
+            LogInstance.Log($"BaseTrigger NRun");
 #endif
 
             while(true)
@@ -184,13 +253,21 @@ namespace MyNPCLib
                 var currentResult = mPredicate();
 
 #if DEBUG
-                //LogInstance.Log($"BaseTrigger NRun currentResult = {currentResult}");
+                //LogInstance.Log($"BaseTrigger NRun currentResult = {currentResult} mLastResult = {mLastResult}");
 #endif
 
                 if(mLastResult != currentResult)
                 {
                     mLastResult = currentResult;
-                    Task.Run(() => { mOnFire?.Invoke(); });
+
+                    if(currentResult)
+                    {
+                        Task.Run(() => { mOnFire?.Invoke(); });
+                    }
+                    else
+                    {
+                        Task.Run(() => { mOnResetCondition?.Invoke(); });
+                    }          
                 }
             }
         }

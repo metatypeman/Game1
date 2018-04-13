@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace TmpSandBox.NPCBehaviour
 {
@@ -24,8 +25,22 @@ namespace TmpSandBox.NPCBehaviour
             });
 
             trigger.OnFire += Trigger_OnFire;
+            trigger.OnResetCondition += Trigger_OnResetCondition;
 
             NLog.LogManager.GetCurrentClassLogger().Info("End Awake");
+        }
+        private void Trigger_OnFire()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Trigger_OnFire");
+
+            Thread.Sleep(1000);
+
+            BlackBoard.TstValue = 15;
+        }
+
+        private void Trigger_OnResetCondition()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Trigger_OnResetCondition");
         }
 
         private void Main()
@@ -46,11 +61,6 @@ namespace TmpSandBox.NPCBehaviour
             NLog.LogManager.GetCurrentClassLogger().Info("Main End Wait(childProcess)");
 
             NLog.LogManager.GetCurrentClassLogger().Info("End Main");
-        }
-
-        private void Trigger_OnFire()
-        {
-            NLog.LogManager.GetCurrentClassLogger().Info("Trigger_OnFire");
         }
     }
 }
