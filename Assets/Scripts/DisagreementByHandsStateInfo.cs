@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,20 +17,15 @@ namespace Assets.Scripts
 
         public override string ToString()
         {
-            return ToString(0);
+            return ToString(0u);
         }
 
-        public string ToString(int n)
+        public string ToString(uint n)
         {
-            var spaces = StringHelper.Spaces(n);
-            var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}Begin {nameof(DisagreementByHandsStateInfo)}");
-            sb.Append(PropertiesToSting(n));
-            sb.AppendLine($"{spaces}End {nameof(DisagreementByHandsStateInfo)}");
-            return sb.ToString();
+            return this.GetDefaultToStringInformation(n);
         }
 
-        public string PropertiesToSting(int n)
+        public string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;

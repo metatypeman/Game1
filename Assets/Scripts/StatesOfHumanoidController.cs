@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using MyNPCLib;
 
 namespace Assets.Scripts
 {
@@ -49,20 +50,15 @@ namespace Assets.Scripts
 
         public override string ToString()
         {
-            return ToString(0);
+            return ToString(0u);
         }
 
-        public string ToString(int n)
+        public string ToString(uint n)
         {
-            var spaces = StringHelper.Spaces(n);
-            var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}Begin {nameof(StatesOfHumanoidController)}");
-            sb.Append(PropertiesToSting(n));
-            sb.AppendLine($"{spaces}End {nameof(StatesOfHumanoidController)}");
-            return sb.ToString();
+            return this.GetDefaultToStringInformation(n);
         }
 
-        public string PropertiesToSting(int n)
+        public string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();

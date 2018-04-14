@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,18 @@ namespace Assets.Scripts
     public abstract class MoveHumanoidCommand : IMoveHumanoidCommand
     {
         public abstract MoveHumanoidCommandKind Kind { get; }
-        public abstract string ToString(int n);
-        public virtual string PropertiesToSting(int n)
+
+        public override string ToString()
+        {
+            return ToString(0u);
+        }
+
+        public string ToString(uint n)
+        {
+            return this.GetDefaultToStringInformation(n);
+        }
+
+        public virtual string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();

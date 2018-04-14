@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,22 +13,7 @@ namespace Assets.Scripts
         public KindOfHumanoidThingsCommand State { get; set; }
         public int InstanceId { get; set; }
 
-        public override string ToString()
-        {
-            return ToString(0);
-        }
-
-        public override string ToString(int n)
-        {
-            var spaces = StringHelper.Spaces(n);
-            var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}Begin {nameof(HumanoidThingsCommand)}");
-            sb.Append(PropertiesToSting(n));
-            sb.AppendLine($"{spaces}End {nameof(HumanoidThingsCommand)}");
-            return sb.ToString();
-        }
-
-        public override string PropertiesToSting(int n)
+        public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();

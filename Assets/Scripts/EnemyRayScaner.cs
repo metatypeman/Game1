@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using MyNPCLib;
 
 public class VisionItem : IObjectToString
 {
@@ -15,20 +16,15 @@ public class VisionItem : IObjectToString
 
     public override string ToString()
     {
-        return ToString(0);
+        return ToString(0u);
     }
 
-    public string ToString(int n)
+    public string ToString(uint n)
     {
-        var spaces = StringHelper.Spaces(n);
-        var sb = new StringBuilder();
-        sb.AppendLine($"{spaces}Begin {nameof(VisionItem)}");
-        sb.Append(PropertiesToSting(n));
-        sb.AppendLine($"{spaces}End {nameof(VisionItem)}");
-        return sb.ToString();
+        return this.GetDefaultToStringInformation(n);
     }
 
-    public string PropertiesToSting(int n)
+    public string PropertiesToSting(uint n)
     {
         var spaces = StringHelper.Spaces(n);
         var sb = new StringBuilder();
@@ -48,20 +44,15 @@ public class VisionObject : IObjectToString
 
     public override string ToString()
     {
-        return ToString(0);
+        return ToString(0u);
     }
 
-    public string ToString(int n)
+    public string ToString(uint n)
     {
-        var spaces = StringHelper.Spaces(n);
-        var sb = new StringBuilder();
-        sb.AppendLine($"{spaces}Begin {nameof(VisionObject)}");
-        sb.Append(PropertiesToSting(n));
-        sb.AppendLine($"{spaces}End {nameof(VisionObject)}");
-        return sb.ToString();
+        return this.GetDefaultToStringInformation(n);
     }
 
-    public string PropertiesToSting(int n)
+    public string PropertiesToSting(uint n)
     {
         var spaces = StringHelper.Spaces(n);
         var nextN = n + 4;

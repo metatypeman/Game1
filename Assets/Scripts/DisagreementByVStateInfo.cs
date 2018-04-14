@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyNPCLib;
 
 namespace Assets.Scripts
 {
@@ -16,20 +17,15 @@ namespace Assets.Scripts
 
         public override string ToString()
         {
-            return ToString(0);
+            return ToString(0u);
         }
 
-        public string ToString(int n)
+        public string ToString(uint n)
         {
-            var spaces = StringHelper.Spaces(n);
-            var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}Begin {nameof(DisagreementByVStateInfo)}");
-            sb.Append(PropertiesToSting(n));
-            sb.AppendLine($"{spaces}End {nameof(DisagreementByVStateInfo)}");
-            return sb.ToString();
+            return this.GetDefaultToStringInformation(n);
         }
 
-        public string PropertiesToSting(int n)
+        public string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;

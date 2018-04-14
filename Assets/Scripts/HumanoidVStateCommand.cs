@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,22 +12,7 @@ namespace Assets.Scripts
         public override MoveHumanoidCommandKind Kind => MoveHumanoidCommandKind.VState;
         public HumanoidVState State { get; set; }
 
-        public override string ToString()
-        {
-            return ToString(0);
-        }
-
-        public override string ToString(int n)
-        {
-            var spaces = StringHelper.Spaces(n);
-            var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}Begin {nameof(HumanoidVStateCommand)}");
-            sb.Append(PropertiesToSting(n));
-            sb.AppendLine($"{spaces}End {nameof(HumanoidVStateCommand)}");
-            return sb.ToString();
-        }
-
-        public override string PropertiesToSting(int n)
+        public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
