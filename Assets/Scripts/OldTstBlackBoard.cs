@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class TstBlackBoard
+    public class OldTstBlackBoard
     {
         public RapidFireGunProxy RapidFireGunProxy { get; set; } = new RapidFireGunProxy();
         public event Action OnGunHasTaken;
@@ -15,7 +15,7 @@ namespace Assets.Scripts
         public void Tst()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TstBlackBoard Tst");
+            Debug.Log("Begin OldTstBlackBoard Tst");
 #endif
         }
     }

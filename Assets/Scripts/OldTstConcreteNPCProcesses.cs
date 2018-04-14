@@ -8,9 +8,9 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class TstRootProcess: TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTstRootProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TstRootProcess(NPCProcessesContext context)
+        public OldTstRootProcess(NPCProcessesContext context)
             : base(context)
         {
         }
@@ -18,29 +18,29 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log($"Begin TstRootProcess OnRun Status = {Status}");
+            //Debug.Log($"Begin OldTstRootProcess OnRun Status = {Status}");
 #endif
-            BaseNPCProcess tmpChildProcess = new TstInspectingProcess(Context);
+            BaseNPCProcess tmpChildProcess = new OldTstInspectingProcess(Context);
             mChildProcesses.Add(tmpChildProcess);
             tmpChildProcess.RunAsync();
 
-            tmpChildProcess = new TstGoToEnemyBaseProcess(Context);
+            tmpChildProcess = new OldTstGoToEnemyBaseProcess(Context);
             mChildProcesses.Add(tmpChildProcess);
             tmpChildProcess.RunAsync();
 
             WaitProsesses(mChildProcesses);
 
 #if UNITY_EDITOR
-            //Debug.Log("End TstRootProcess OnRun");
+            //Debug.Log("End OldTstRootProcess OnRun");
 #endif
         }
 
         private List<BaseNPCProcess> mChildProcesses = new List<BaseNPCProcess>();
     }
 
-    public class TstInspectingProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTstInspectingProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TstInspectingProcess(NPCProcessesContext context)
+        public OldTstInspectingProcess(NPCProcessesContext context)
             : base(context)
         {
             mRayScaner = context.GetInstance<INPCRayScaner>();
@@ -53,10 +53,10 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log("Begin TstInspectingProcess OnRun");
+            //Debug.Log("Begin OldTstInspectingProcess OnRun");
 #endif
 
-            while(InfinityCycleCondition)
+            while (InfinityCycleCondition)
             {
                 if(ISawTrafficBarrierRed)
                 {
@@ -71,24 +71,24 @@ namespace Assets.Scripts
                 }
 
 #if UNITY_EDITOR
-                //Debug.Log($"TstInspectingProcess OnRun items.Count = {items.Count}");
+                //Debug.Log($"OldTstInspectingProcess OnRun items.Count = {items.Count}");
 #endif
 
                 var tmpItemsWithGameObjectsList = items.Where(p => p.GameObject != null).ToList();
 
 #if UNITY_EDITOR
-                //Debug.Log($"TstInspectingProcess OnRun tmpItemsWithGameObjectsList.Count = {tmpItemsWithGameObjectsList.Count}");
-                foreach(var item in tmpItemsWithGameObjectsList)
+                //Debug.Log($"OldTstInspectingProcess OnRun tmpItemsWithGameObjectsList.Count = {tmpItemsWithGameObjectsList.Count}");
+                foreach (var item in tmpItemsWithGameObjectsList)
                 {
                     var gameObject = item.GameObject;
 
-                    //Debug.Log($"TstInspectingProcess OnRun gameObject.Name = {gameObject.Name}");
+                    //Debug.Log($"OldTstInspectingProcess OnRun gameObject.Name = {gameObject.Name}");
 
-                    if(gameObject.Name == "TrafficBarrierRed")
+                    if (gameObject.Name == "TrafficBarrierRed")
                     {
                         ISawTrafficBarrierRed = true;
 
-                        var newProcess = new TstRunAwayProcess(Context);
+                        var newProcess = new OldTstRunAwayProcess(Context);
                         newProcess.LocalPriority = BaseNPCProcessPriorities.BelowNormal;
                         newProcess.RunAsync();
                     }
@@ -99,14 +99,14 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            //Debug.Log("End TstInspectingProcess OnRun");
+            //Debug.Log("End OldTstInspectingProcess OnRun");
 #endif
         }
     }
 
-    public class TstGoToEnemyBaseProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTstGoToEnemyBaseProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TstGoToEnemyBaseProcess(NPCProcessesContext context)
+        public OldTstGoToEnemyBaseProcess(NPCProcessesContext context)
             : base(context)
         {
             var tmpTimerInterval = new TimeSpan(0, 0, 1);
@@ -120,7 +120,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log("Begin TstGoToEnemyBaseProcess OnRun");
+            //Debug.Log("Begin OldTstGoToEnemyBaseProcess OnRun");
 #endif
 
             var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
@@ -132,19 +132,19 @@ namespace Assets.Scripts
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
-                //Debug.Log($"TstGoToEnemyBaseProcess OnRun moveCommand = {moveCommand}");
+                //Debug.Log($"OldTstGoToEnemyBaseProcess OnRun moveCommand = {moveCommand}");
 #endif
                 var tmpTask = Execute(moveCommand);
                 mTmpTask = tmpTask;
 #if UNITY_EDITOR
-                //Debug.Log($"TstGoToEnemyBaseProcess OnRun tmpTask = {tmpTask}");
+                //Debug.Log($"OldTstGoToEnemyBaseProcess OnRun tmpTask = {tmpTask}");
 #endif
 
                 WaitNPCMeshTask(tmpTask);
             }
 
 #if UNITY_EDITOR
-            //Debug.Log("End TstGoToEnemyBaseProcess OnRun");
+            //Debug.Log("End OldTstGoToEnemyBaseProcess OnRun");
 #endif
         }
 
@@ -166,9 +166,9 @@ namespace Assets.Scripts
         }
     }
 
-    public class TstRunAwayProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTstRunAwayProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TstRunAwayProcess(NPCProcessesContext context)
+        public OldTstRunAwayProcess(NPCProcessesContext context)
             : base(context)
         {
         }
@@ -176,7 +176,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log("Begin TstRunAwayProcess OnRun");
+            //Debug.Log("Begin OldTstRunAwayProcess OnRun");
 #endif
 
             var targetName = "Cube_1";
@@ -184,14 +184,14 @@ namespace Assets.Scripts
             GoToTargetWayPoint(targetName);
 
 #if UNITY_EDITOR
-            //Debug.Log("End TstRunAwayProcess OnRun");
+            //Debug.Log("End OldTstRunAwayProcess OnRun");
 #endif
         }
 
         private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
         {
 #if UNITY_EDITOR
-            //Debug.Log($"TstRunAwayProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
+            //Debug.Log($"OldTstRunAwayProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
 #endif
 
             var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
@@ -203,12 +203,12 @@ namespace Assets.Scripts
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
-                //Debug.Log($"TstRunAwayProcess GoToTargetWayPoint moveCommand = {moveCommand}");
+                //Debug.Log($"OldTstRunAwayProcess GoToTargetWayPoint moveCommand = {moveCommand}");
 #endif
                 var tmpTask = Execute(moveCommand);
                 //mTmpTask = tmpTask;
 #if UNITY_EDITOR
-                //Debug.Log($"TstRunAwayProcess GoToTargetWayPoint tmpTask = {tmpTask}");
+                //Debug.Log($"OldTstRunAwayProcess GoToTargetWayPoint tmpTask = {tmpTask}");
 #endif
 
                 if (withWaiting)
@@ -218,14 +218,14 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            //Debug.Log("End TstRunAwayProcess GoToTargetWayPoint");
+            //Debug.Log("End OldTstRunAwayProcess GoToTargetWayPoint");
 #endif
         }
     }
 
-    public class TstRunAtOurBaseProcess: TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTstRunAtOurBaseProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TstRunAtOurBaseProcess(NPCProcessesContext context)
+        public OldTstRunAtOurBaseProcess(NPCProcessesContext context)
             : base(context)
         {
             var tmpTimerInterval = new TimeSpan(0, 0, 1);
@@ -239,21 +239,21 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log("Begin TstRunAtOurBaseProcess OnRun");
+            //Debug.Log("Begin OldTstRunAtOurBaseProcess OnRun");
 #endif
 
-            for(var n = 1; n <= 3; n++)
+            for (var n = 1; n <= 3; n++)
             {
                 var targetName = $"Cube_{n}";
 
 #if UNITY_EDITOR
-                //Debug.Log($"TstRunAtOurBaseProcess OnRun targetName = {targetName}");
+                //Debug.Log($"OldTstRunAtOurBaseProcess OnRun targetName = {targetName}");
 #endif
 
                 GoToTargetWayPoint(targetName);
 
 #if UNITY_EDITOR
-                //Debug.Log($"TstRunAtOurBaseProcess OnRun goal '{targetName}' had achieved!!!!");
+                //Debug.Log($"OldTstRunAtOurBaseProcess OnRun goal '{targetName}' had achieved!!!!");
 #endif
             }
 
@@ -269,14 +269,14 @@ namespace Assets.Scripts
             //"Cube_1"
 
 #if UNITY_EDITOR
-            //Debug.Log("End TstRunAtOurBaseProcess OnRun");
+            //Debug.Log("End OldTstRunAtOurBaseProcess OnRun");
 #endif
         }
 
         private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
         {
 #if UNITY_EDITOR
-            //Debug.Log($"TstRunAtOurBaseProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
+            //Debug.Log($"OldTstRunAtOurBaseProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
 #endif
 
             var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
@@ -288,22 +288,22 @@ namespace Assets.Scripts
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
-                //Debug.Log($"TstRunAtOurBaseProcess GoToTargetWayPoint moveCommand = {moveCommand}");
+                //Debug.Log($"OldTstRunAtOurBaseProcess GoToTargetWayPoint moveCommand = {moveCommand}");
 #endif
                 var tmpTask = Execute(moveCommand);
                 mTmpTask = tmpTask;
 #if UNITY_EDITOR
-                //Debug.Log($"TstRunAtOurBaseProcess GoToTargetWayPoint tmpTask = {tmpTask}");
+                //Debug.Log($"OldTstRunAtOurBaseProcess GoToTargetWayPoint tmpTask = {tmpTask}");
 #endif
 
-                if(withWaiting)
+                if (withWaiting)
                 {
                     WaitNPCMeshTask(tmpTask);
                 }        
             }
 
 #if UNITY_EDITOR
-            //Debug.Log("End TstRunAtOurBaseProcess GoToTargetWayPoint");
+            //Debug.Log("End OldTstRunAtOurBaseProcess GoToTargetWayPoint");
 #endif
         }
 
@@ -315,7 +315,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            //Debug.Log($"TstRunAtOurBaseProcess TimerCallback mTmpTask = {mTmpTask} Status = {Status}");
+            //Debug.Log($"OldTstRunAtOurBaseProcess TimerCallback mTmpTask = {mTmpTask} Status = {Status}");
 #endif          
         }
 
@@ -325,9 +325,9 @@ namespace Assets.Scripts
         }
     }
 
-    public class TstSimpleAimProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTstSimpleAimProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TstSimpleAimProcess(NPCProcessesContext context)
+        public OldTstSimpleAimProcess(NPCProcessesContext context)
             : base(context)
         {
         }
@@ -335,7 +335,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log("Begin TstSimpleAimProcess OnRun");
+            //Debug.Log("Begin OldTstSimpleAimProcess OnRun");
 #endif
 
             var tmpCommand = new HumanoidHandsActionStateCommand();
@@ -344,14 +344,14 @@ namespace Assets.Scripts
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            //Debug.Log("End TstSimpleAimProcess OnRun");
+            //Debug.Log("End OldTstSimpleAimProcess OnRun");
 #endif
         }
 
         private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
         {
 #if UNITY_EDITOR
-            //Debug.Log($"TstRunAwayProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
+            //Debug.Log($"OldTstRunAwayProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
 #endif
 
             var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
@@ -363,12 +363,12 @@ namespace Assets.Scripts
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
-                //Debug.Log($"TstRunAwayProcess GoToTargetWayPoint moveCommand = {moveCommand}");
+                //Debug.Log($"OldTstRunAwayProcess GoToTargetWayPoint moveCommand = {moveCommand}");
 #endif
                 var tmpTask = Execute(moveCommand);
                 //mTmpTask = tmpTask;
 #if UNITY_EDITOR
-                //Debug.Log($"TstRunAwayProcess GoToTargetWayPoint tmpTask = {tmpTask}");
+                //Debug.Log($"OldTstRunAwayProcess GoToTargetWayPoint tmpTask = {tmpTask}");
 #endif
 
                 if (withWaiting)
@@ -378,14 +378,14 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            //Debug.Log("End TstRunAwayProcess GoToTargetWayPoint");
+            //Debug.Log("End OldTstRunAwayProcess GoToTargetWayPoint");
 #endif
         }
     }
 
-    public class TSTFireToEthanProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTSTFireToEthanProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TSTFireToEthanProcess(NPCProcessesContext context, Vector3 targetPosition)
+        public OldTSTFireToEthanProcess(NPCProcessesContext context, Vector3 targetPosition)
             : base(context)
         {
             mTargetPosition = targetPosition;
@@ -396,7 +396,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log($"Begin TSTFireToEthanProcess OnRun mTargetPosition = {mTargetPosition}");
+            //Debug.Log($"Begin OldTSTFireToEthanProcess OnRun mTargetPosition = {mTargetPosition}");
 #endif
 
             var tmpCommand = new HumanoidHStateCommand();
@@ -408,14 +408,14 @@ namespace Assets.Scripts
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            //Debug.Log("End TSTFireToEthanProcess OnRun");
+            //Debug.Log("End OldTSTFireToEthanProcess OnRun");
 #endif
         }
     }
 
-    public class TSTRotateProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTSTRotateProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TSTRotateProcess(NPCProcessesContext context, float angle)
+        public OldTSTRotateProcess(NPCProcessesContext context, float angle)
             : base(context)
         {
             mAngle = angle;
@@ -426,7 +426,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log($"Begin TSTRotateProcess OnRun mAngle = {mAngle}");
+            //Debug.Log($"Begin OldTSTRotateProcess OnRun mAngle = {mAngle}");
 #endif
 
             var tmpCommand = new HumanoidHStateCommand();
@@ -438,14 +438,14 @@ namespace Assets.Scripts
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            //Debug.Log("End TSTFireToEthanProcess OnRun");
+            //Debug.Log("End OldTSTFireToEthanProcess OnRun");
 #endif
         }
     }
 
-    public class TSTRotateHeadProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTSTRotateHeadProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TSTRotateHeadProcess(NPCProcessesContext context, float angle)
+        public OldTSTRotateHeadProcess(NPCProcessesContext context, float angle)
             : base(context)
         {
             mAngle = angle;
@@ -456,13 +456,13 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log($"Begin TSTRotateHeadProcess OnRun mAngle = {mAngle}");
+            //Debug.Log($"Begin OldTSTRotateHeadProcess OnRun mAngle = {mAngle}");
 #endif
             var nameOfThisWaypoint = "Cube_1";
             var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
 
 #if UNITY_EDITOR
-            //Debug.Log($"Begin TSTRotateHeadProcess OnRun targetWayPoint.Position = {targetWayPoint.Position}");
+            //Debug.Log($"Begin OldTSTRotateHeadProcess OnRun targetWayPoint.Position = {targetWayPoint.Position}");
 #endif
 
             var tmpCommand = new HumanoidHeadStateCommand();
@@ -476,14 +476,14 @@ namespace Assets.Scripts
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            //Debug.Log("End TSTRotateHeadProcess OnRun");
+            //Debug.Log("End OldTSTRotateHeadProcess OnRun");
 #endif
         }
     }
 
-    public class TSTHeadToForvardProcess: TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTSTHeadToForvardProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TSTHeadToForvardProcess(NPCProcessesContext context)
+        public OldTSTHeadToForvardProcess(NPCProcessesContext context)
             : base(context)
         {
         }
@@ -491,21 +491,21 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log("Begin TSTHeadToForvardProcess OnRun");
+            //Debug.Log("Begin OldTSTHeadToForvardProcess OnRun");
 #endif
             var tmpCommand = new HumanoidHeadStateCommand();
             tmpCommand.State = HumanoidHeadState.LookingForward;
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            //Debug.Log("End TSTHeadToForvardProcess OnRun");
+            //Debug.Log("End OldTSTHeadToForvardProcess OnRun");
 #endif
         }
     }
 
-    public class TSTMoveProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTSTMoveProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TSTMoveProcess(NPCProcessesContext context)
+        public OldTSTMoveProcess(NPCProcessesContext context)
             : base(context)
         {
         }
@@ -513,7 +513,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log("Begin TSTMoveProcess OnRun");
+            //Debug.Log("Begin OldTSTMoveProcess OnRun");
 #endif
 
             var tmpCommand = new HumanoidHStateCommand();
@@ -522,14 +522,14 @@ namespace Assets.Scripts
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
-            //Debug.Log("End TSTMoveProcess OnRun");
+            //Debug.Log("End OldTSTMoveProcess OnRun");
 #endif
         }
     }
 
-    public class TSTTakeFromSurfaceProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTSTTakeFromSurfaceProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TSTTakeFromSurfaceProcess(NPCProcessesContext context, int instanceId)
+        public OldTSTTakeFromSurfaceProcess(NPCProcessesContext context, int instanceId)
             : base(context)
         {
             mInstanceId = instanceId;
@@ -540,7 +540,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log("Begin TSTTakeFromSurfaceProcess OnRun");
+            //Debug.Log("Begin OldTSTTakeFromSurfaceProcess OnRun");
 #endif
 
             var tmpCommand = new HumanoidThingsCommand();
@@ -550,7 +550,7 @@ namespace Assets.Scripts
 
             tmpTask.OnStateChangedToRanToCompletion += () => {
 #if UNITY_EDITOR
-                //Debug.Log("TSTTakeFromSurfaceProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
+                //Debug.Log("OldTSTTakeFromSurfaceProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
 #endif
 
                 var targetGameObj = MyGameObjectsBus.GetObject(mInstanceId);
@@ -559,14 +559,14 @@ namespace Assets.Scripts
             };
 
 #if UNITY_EDITOR
-            //Debug.Log("End TSTTakeFromSurfaceProcess OnRun");
+            //Debug.Log("End OldTSTTakeFromSurfaceProcess OnRun");
 #endif
         }
     }
 
-    public class TstHideRifleToBagPackProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTstHideRifleToBagPackProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TstHideRifleToBagPackProcess(NPCProcessesContext context, int instanceId)
+        public OldTstHideRifleToBagPackProcess(NPCProcessesContext context, int instanceId)
             : base(context)
         {
             mInstanceId = instanceId;
@@ -577,7 +577,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log("Begin TstHideRifleToBagPackProcess OnRun");
+            //Debug.Log("Begin OldTstHideRifleToBagPackProcess OnRun");
 #endif
 
             BlackBoard.RapidFireGunProxy.Instance = null;
@@ -588,20 +588,20 @@ namespace Assets.Scripts
 
             tmpTask.OnStateChangedToRanToCompletion += () => {
 #if UNITY_EDITOR
-                //Debug.Log("TstHideRifleToBagPackProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
+                //Debug.Log("OldTstHideRifleToBagPackProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
 #endif
 
             };
 
 #if UNITY_EDITOR
-            //Debug.Log("End TstHideRifleToBagPackProcess OnRun");
+            //Debug.Log("End OldTstHideRifleToBagPackProcess OnRun");
 #endif
         }
     }
 
-    public class TstThrowOutToSurfaceRifleToSurfaceProcess : TstBaseConcreteNPCProcessWithBlackBoard
+    public class OldTstThrowOutToSurfaceRifleToSurfaceProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public TstThrowOutToSurfaceRifleToSurfaceProcess(NPCProcessesContext context, int instanceId)
+        public OldTstThrowOutToSurfaceRifleToSurfaceProcess(NPCProcessesContext context, int instanceId)
             : base(context)
         {
             mInstanceId = instanceId;
@@ -612,7 +612,7 @@ namespace Assets.Scripts
         protected override void OnRun()
         {
 #if UNITY_EDITOR
-            //Debug.Log("Begin TstThrowOutToSurfaceRifleToSurfaceProcess OnRun");
+            //Debug.Log("Begin OldTstThrowOutToSurfaceRifleToSurfaceProcess OnRun");
 #endif
 
             BlackBoard.RapidFireGunProxy.Instance = null;
@@ -623,12 +623,12 @@ namespace Assets.Scripts
 
             tmpTask.OnStateChangedToRanToCompletion += () => {
 #if UNITY_EDITOR
-                //Debug.Log("TstThrowOutToSurfaceRifleToSurfaceProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
+                //Debug.Log("OldTstThrowOutToSurfaceRifleToSurfaceProcess OnRun tmpTask.OnStateChangedToRanToCompletion");
 #endif
             };
 
 #if UNITY_EDITOR
-            //Debug.Log("End TstThrowOutToSurfaceRifleToSurfaceProcess OnRun");
+            //Debug.Log("End OldTstThrowOutToSurfaceRifleToSurfaceProcess OnRun");
 #endif
         }
     }

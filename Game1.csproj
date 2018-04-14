@@ -396,10 +396,10 @@
     <Compile Include="Assets\Scripts\StatesOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\TargetStateOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\TerrainCamHelper.cs" />
-    <Compile Include="Assets\Scripts\TstBaseConcreteNPCProcessWithBlackBoard.cs" />
-    <Compile Include="Assets\Scripts\TstBlackBoard.cs" />
-    <Compile Include="Assets\Scripts\TstConcreteNPCProcesses.cs" />
-    <Compile Include="Assets\Scripts\TstConcreteNPCProcessesContextWithBlackBoard.cs" />
+    <Compile Include="Assets\Scripts\OldTstBaseConcreteNPCProcessWithBlackBoard.cs" />
+    <Compile Include="Assets\Scripts\OldTstBlackBoard.cs" />
+    <Compile Include="Assets\Scripts\OldTstConcreteNPCProcesses.cs" />
+    <Compile Include="Assets\Scripts\OldTstConcreteNPCProcessesContextWithBlackBoard.cs" />
     <Compile Include="Assets\Scripts\WaypointsBus.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
   </ItemGroup>

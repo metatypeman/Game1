@@ -12,7 +12,7 @@ public class EnemyNPC : MonoBehaviour
 {
     public void Awake()
     {
-        Debug.Log("EnemyNPC Awake");
+        //Debug.Log("EnemyNPC Awake");
 
         var logInstance = new LogProxyForDebug();
         LogInstance.SetLogProxy(logInstance);
@@ -24,7 +24,7 @@ public class EnemyNPC : MonoBehaviour
     public float surfaceOffset = 1.5f;
     public GameObject setTargetOn;
 
-    private TstConcreteNPCProcessesContextWithBlackBoard mNPCProcessesContext;
+    private OldTstConcreteNPCProcessesContextWithBlackBoard mNPCProcessesContext;
 
     //RapidFireGun _gun;
 
@@ -48,7 +48,7 @@ public class EnemyNPC : MonoBehaviour
 
         mEnemyRayScaner = GetComponent<EnemyRayScaner>();
 
-        mNPCProcessesContext = new TstConcreteNPCProcessesContextWithBlackBoard(mEnemyController);
+        mNPCProcessesContext = new OldTstConcreteNPCProcessesContextWithBlackBoard(mEnemyController);
         mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
 
         //_gun = GetComponentInChildren<RapidFireGun>();
@@ -93,7 +93,7 @@ public class EnemyNPC : MonoBehaviour
 
         if (mInstanceIdOfRifle > 0)
         {
-            var tmpProcess = new TstThrowOutToSurfaceRifleToSurfaceProcess(mNPCProcessesContext, mInstanceIdOfRifle);
+            var tmpProcess = new OldTstThrowOutToSurfaceRifleToSurfaceProcess(mNPCProcessesContext, mInstanceIdOfRifle);
             tmpProcess.RunAsync();
         }
     }
@@ -228,7 +228,7 @@ public class EnemyNPC : MonoBehaviour
         //isIkActive = true;
         //Head.rotation = Quaternion.Euler(0, 12f, 0) * currHeadRotation;
 
-        var tmpProcess = new TSTRotateHeadProcess(mNPCProcessesContext, 12f);
+        var tmpProcess = new OldTSTRotateHeadProcess(mNPCProcessesContext, 12f);
         tmpProcess.RunAsync();
     }
 
@@ -238,7 +238,7 @@ public class EnemyNPC : MonoBehaviour
 
         TargetAngle = 30f;
 
-        var tmpProcess = new TSTRotateProcess(mNPCProcessesContext, TargetAngle.Value);
+        var tmpProcess = new OldTSTRotateProcess(mNPCProcessesContext, TargetAngle.Value);
         tmpProcess.RunAsync();
     }
 
@@ -270,7 +270,7 @@ public class EnemyNPC : MonoBehaviour
     private void OnLPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnLPressAction key = {key}");        
-        var tmpSimpleAimProcess = new TstSimpleAimProcess(mNPCProcessesContext);
+        var tmpSimpleAimProcess = new OldTstSimpleAimProcess(mNPCProcessesContext);
         tmpSimpleAimProcess.RunAsync();
     }
 
@@ -278,7 +278,7 @@ public class EnemyNPC : MonoBehaviour
     {
         Debug.Log($"EnemyNPC OnIPressAction key = {key}");        
         var _target = GameObject.Find("Ethan");
-        var tmpTSTFireToEthanProcess = new TSTFireToEthanProcess(mNPCProcessesContext, _target.transform.position);
+        var tmpTSTFireToEthanProcess = new OldTSTFireToEthanProcess(mNPCProcessesContext, _target.transform.position);
         tmpTSTFireToEthanProcess.RunAsync();
     }
 
