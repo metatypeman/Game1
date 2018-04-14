@@ -14,7 +14,7 @@ namespace Assets.Scripts
         public Vector3? TargetPosition { get; set; }
         public HumanoidVState? VState { get; set; }
         public HumanoidHandsState? HandsState { get; set; }
-        public HumanoidHandsActionState? HandsActionState { get; set; }
+        public OldHumanoidHandsActionState? HandsActionState { get; set; }
         public HumanoidHeadState? HeadState { get; set; }
         public Vector3? TargetHeadPosition { get; set; }
         public KindOfHumanoidThingsCommand? KindOfThingsCommand { get; set; }

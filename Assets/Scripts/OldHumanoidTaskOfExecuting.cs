@@ -7,7 +7,7 @@ using MyNPCLib;
 
 namespace Assets.Scripts
 {
-    public enum StateOfHumanoidTaskOfExecuting
+    public enum OldStateOfHumanoidTaskOfExecuting
     {
         Created,
         Executed,
@@ -15,12 +15,12 @@ namespace Assets.Scripts
         Canceled
     }
 
-    public class HumanoidTaskOfExecuting : IObjectToString
+    public class OldHumanoidTaskOfExecuting : IObjectToString
     {
         private object mLockObject = new object();
-        private StateOfHumanoidTaskOfExecuting mState = StateOfHumanoidTaskOfExecuting.Created;
+        private OldStateOfHumanoidTaskOfExecuting mState = OldStateOfHumanoidTaskOfExecuting.Created;
 
-        public StateOfHumanoidTaskOfExecuting State
+        public OldStateOfHumanoidTaskOfExecuting State
         {
             get
             {

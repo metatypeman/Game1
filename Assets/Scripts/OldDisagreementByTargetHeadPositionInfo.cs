@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class DisagreementByHStateInfo : IObjectToString
+    public class OldDisagreementByTargetHeadPositionInfo : IObjectToString
     {
-        public HumanoidStateKind Kind => HumanoidStateKind.HState;
+        public HumanoidStateKind Kind => HumanoidStateKind.TargetHeadPosition;
         public List<int> CurrentProcessesId { get; set; }
-        public HumanoidHState CurrentValue { get; set; } = HumanoidHState.Stop;
+        public Vector3? CurrentValue { get; set; }
         public int TargetProcessId { get; set; }
-        public HumanoidHState TargetValue { get; set; } = HumanoidHState.Stop;
+        public Vector3? TargetValue { get; set; }
 
         public override string ToString()
         {
@@ -45,7 +46,6 @@ namespace Assets.Scripts
                 }
                 sb.AppendLine($"{spaces}End {nameof(CurrentProcessesId)}");
             }
-
             sb.AppendLine($"{spaces}{nameof(CurrentValue)} = {CurrentValue}");
             sb.AppendLine($"{spaces}{nameof(TargetProcessId)} = {TargetProcessId}");
             sb.AppendLine($"{spaces}{nameof(TargetValue)} = {TargetValue}");

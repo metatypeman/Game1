@@ -1,20 +1,19 @@
-﻿using MyNPCLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
+using MyNPCLib;
 
 namespace Assets.Scripts
 {
-    public class DisagreementByTargetHeadPositionInfo : IObjectToString
+    public class OldDisagreementByVStateInfo : IObjectToString
     {
-        public HumanoidStateKind Kind => HumanoidStateKind.TargetHeadPosition;
+        public HumanoidStateKind Kind => HumanoidStateKind.VState;
         public List<int> CurrentProcessesId { get; set; }
-        public Vector3? CurrentValue { get; set; }
+        public HumanoidVState CurrentValue { get; set; } = HumanoidVState.Ground;
         public int TargetProcessId { get; set; }
-        public Vector3? TargetValue { get; set; }
+        public HumanoidVState TargetValue { get; set; } = HumanoidVState.Ground;
 
         public override string ToString()
         {

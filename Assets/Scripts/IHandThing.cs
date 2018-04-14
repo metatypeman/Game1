@@ -9,7 +9,7 @@ namespace Assets.Scripts
     public interface IHandThing: IThing
     {
         bool IsReady { get; }
-        bool SetToHandsOfHumanoid(IHumanoid humanoid);
+        bool SetToHandsOfHumanoid(OldIHumanoid humanoid);
         bool SetAsAloneAndHide();
         bool ThrowOutToSurface();
     }

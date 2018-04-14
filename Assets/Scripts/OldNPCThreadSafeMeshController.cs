@@ -7,9 +7,9 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class NPCThreadSafeMeshController : IDisposable
+    public class OldNPCThreadSafeMeshController : IDisposable
     {
-        public NPCThreadSafeMeshController(IMoveHumanoidController movehumanoidController, NPCProcessesContext context)
+        public OldNPCThreadSafeMeshController(IMoveHumanoidController movehumanoidController, OldNPCProcessesContext context)
         {
             mMoveHumanoidController = movehumanoidController;
             mContext = context;
@@ -103,7 +103,7 @@ namespace Assets.Scripts
         }
 
         private IMoveHumanoidController mMoveHumanoidController;
-        private NPCProcessesContext mContext;
+        private OldNPCProcessesContext mContext;
 
         public NPCMeshTask Execute(IMoveHumanoidCommandsPackage package, int processId)
         {
@@ -192,7 +192,7 @@ namespace Assets.Scripts
             var hStateCommandsList = new List<IHumanoidHStateCommand>();
             var vStateCommandsList = new List<IHumanoidVStateCommand>();
             var handsStateCommandsList = new List<IHumanoidHandsStateCommand>();
-            var handsActionStateCommandsList = new List<IHumanoidHandsActionStateCommand>();
+            var handsActionStateCommandsList = new List<OldIHumanoidHandsActionStateCommand>();
             var headStateCommandsList = new List<IHumanoidHeadStateCommand>();
             var thingCommandsList = new List<IHumanoidThingsCommand>();
 
@@ -215,7 +215,7 @@ namespace Assets.Scripts
                         break;
 
                     case MoveHumanoidCommandKind.HandsActionState:
-                        handsActionStateCommandsList.Add(command as IHumanoidHandsActionStateCommand);
+                        handsActionStateCommandsList.Add(command as OldIHumanoidHandsActionStateCommand);
                         break;
 
                     case MoveHumanoidCommandKind.HeadState:
@@ -328,7 +328,7 @@ namespace Assets.Scripts
                 switch (targeHandsState)
                 {
                     case HumanoidHandsState.FreeHands:
-                        result.HandsActionState = HumanoidHandsActionState.Empty;
+                        result.HandsActionState = OldHumanoidHandsActionState.Empty;
                         break;
                 }
             }
@@ -340,7 +340,7 @@ namespace Assets.Scripts
             return result;
         }
 
-        private NPCMeshTaskResulution CreateResolution(StatesOfHumanoidController sourceState, TargetStateOfHumanoidController targetState, int processId)
+        private NPCMeshTaskResulution CreateResolution(OldStatesOfHumanoidController sourceState, TargetStateOfHumanoidController targetState, int processId)
         {
 #if UNITY_EDITOR
             //Debug.Log($"NPCThreadSafeMeshController CreateTargetState sourceState = {sourceState}");
@@ -372,7 +372,7 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-                        var disagreement = new DisagreementByHStateInfo();
+                        var disagreement = new OldDisagreementByHStateInfo();
                         result.DisagreementByHState = disagreement;
                         disagreement.CurrentProcessesId = mHState.ToList();
                         disagreement.CurrentValue = currentStates.HState;
@@ -397,7 +397,7 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-                        var disagreement = new DisagreementByTargetPositionInfo();
+                        var disagreement = new OldDisagreementByTargetPositionInfo();
                         result.DisagreementByTargetPosition = disagreement;
                         disagreement.CurrentProcessesId = mTargetPosition.ToList();
                         disagreement.CurrentValue = currentStates.TargetPosition;
@@ -422,7 +422,7 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-                        var disagreement = new DisagreementByVStateInfo();
+                        var disagreement = new OldDisagreementByVStateInfo();
                         result.DisagreementByVState = disagreement;
                         disagreement.CurrentProcessesId = mVState.ToList();
                         disagreement.CurrentValue = currentStates.VState;
@@ -472,7 +472,7 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-                        var disagreement = new DisagreementByHandsStateInfo();
+                        var disagreement = new OldDisagreementByHandsStateInfo();
                         result.DisagreementByHandsState = disagreement;
                         disagreement.CurrentProcessesId = mHandsState.ToList();
                         disagreement.CurrentValue = currentStates.HandsState;
@@ -497,7 +497,7 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-                        var disagreement = new DisagreementByHandsActionStateInfo();
+                        var disagreement = new OldDisagreementByHandsActionStateInfo();
                         result.DisagreementByHandsActionState = disagreement;
                         disagreement.CurrentProcessesId = mHandsActionState.ToList();
                         disagreement.CurrentValue = currentStates.HandsActionState;
@@ -522,7 +522,7 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-                        var disagreement = new DisagreementByHeadStateInfo();
+                        var disagreement = new OldDisagreementByHeadStateInfo();
                         result.DisagreementByHeadState = disagreement;
                         disagreement.CurrentProcessesId = mHeadState.ToList();
                         disagreement.CurrentValue = currentStates.HeadState;
@@ -547,7 +547,7 @@ namespace Assets.Scripts
                         theSame = false;
                         result.Kind = NPCMeshTaskResulutionKind.Forbiden;
 
-                        var disagreement = new DisagreementByTargetHeadPositionInfo();
+                        var disagreement = new OldDisagreementByTargetHeadPositionInfo();
                         result.DisagreementByTargetHeadPosition = disagreement;
                         disagreement.CurrentProcessesId = mTargetHeadPosition.ToList();
                         disagreement.CurrentValue = currentStates.TargetHeadPosition;
@@ -664,7 +664,7 @@ namespace Assets.Scripts
 
             var targetStateForExecuting = mMoveHumanoidController.ExecuteAsync(targetState);
 
-            while(targetStateForExecuting.State == StateOfHumanoidTaskOfExecuting.Created)
+            while(targetStateForExecuting.State == OldStateOfHumanoidTaskOfExecuting.Created)
             {
             }
 

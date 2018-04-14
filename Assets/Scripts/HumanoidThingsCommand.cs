@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public class HumanoidThingsCommand: MoveHumanoidCommand, IHumanoidThingsCommand
+    public class HumanoidThingsCommand: OldMoveHumanoidCommand, IHumanoidThingsCommand
     {
         public override MoveHumanoidCommandKind Kind => MoveHumanoidCommandKind.Things;
         public KindOfHumanoidThingsCommand State { get; set; }

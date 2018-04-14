@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public abstract class MoveHumanoidCommand : IMoveHumanoidCommand
+    public abstract class OldMoveHumanoidCommand : IMoveHumanoidCommand
     {
         public abstract MoveHumanoidCommandKind Kind { get; }
 

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public abstract class OldTstBaseConcreteNPCProcessWithBlackBoard: BaseNPCProcessWithBlackBoard<OldTstBlackBoard>
+    public abstract class OldTstBaseConcreteNPCProcessWithBlackBoard: OldBaseNPCProcessWithBlackBoard<OldTstBlackBoard>
     {
         protected OldTstBaseConcreteNPCProcessWithBlackBoard()
         {
         }
 
-        protected OldTstBaseConcreteNPCProcessWithBlackBoard(NPCProcessesContext context)
+        protected OldTstBaseConcreteNPCProcessWithBlackBoard(OldNPCProcessesContext context)
             : base(context)
         {
         }

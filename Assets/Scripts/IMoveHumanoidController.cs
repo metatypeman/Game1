@@ -22,8 +22,8 @@ namespace Assets.Scripts
 
     public interface IMoveHumanoidController
     {
-        HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidController targetState);
-        StatesOfHumanoidController States { get; }
+        OldHumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidController targetState);
+        OldStatesOfHumanoidController States { get; }
         event HumanoidStatesChangedAction OnHumanoidStatesChanged;
         void Die();
         void SetAimCorrector(IAimCorrector corrector);

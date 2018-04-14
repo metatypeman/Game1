@@ -8,21 +8,21 @@ using MyNPCLib;
 
 namespace Assets.Scripts
 {
-    public class StatesOfHumanoidController : IObjectToString
+    public class OldStatesOfHumanoidController : IObjectToString
     {
         public HumanoidHState HState = HumanoidHState.Stop;
         public Vector3? TargetPosition;
         public HumanoidVState VState = HumanoidVState.Ground;
         public HumanoidHandsState HandsState = HumanoidHandsState.FreeHands;
-        public HumanoidHandsActionState HandsActionState = HumanoidHandsActionState.Empty;
+        public OldHumanoidHandsActionState HandsActionState = OldHumanoidHandsActionState.Empty;
         public HumanoidHeadState HeadState = HumanoidHeadState.LookingForward;
         public Vector3? TargetHeadPosition;
         public KindOfHumanoidThingsCommand KindOfThingsCommand = KindOfHumanoidThingsCommand.Undefined;
         public int InstanceOfThingId;
 
-        public StatesOfHumanoidController Clone()
+        public OldStatesOfHumanoidController Clone()
         {
-            var result = new StatesOfHumanoidController();
+            var result = new OldStatesOfHumanoidController();
             result.HState = HState;
             result.TargetPosition = TargetPosition;
             result.VState = VState;
@@ -35,7 +35,7 @@ namespace Assets.Scripts
             return result;
         }
 
-        public void Append(StatesOfHumanoidController source)
+        public void Append(OldStatesOfHumanoidController source)
         {
             HState = source.HState;
             TargetPosition = source.TargetPosition;

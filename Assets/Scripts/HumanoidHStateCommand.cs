@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class HumanoidHStateCommand : MoveHumanoidCommand, IHumanoidHStateCommand
+    public class HumanoidHStateCommand : OldMoveHumanoidCommand, IHumanoidHStateCommand
     {
         public override MoveHumanoidCommandKind Kind => MoveHumanoidCommandKind.HState;
         public HumanoidHState State { get; set; }

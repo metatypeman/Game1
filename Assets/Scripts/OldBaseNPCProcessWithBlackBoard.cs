@@ -7,24 +7,24 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public abstract class BaseNPCProcessWithBlackBoard<T> : BaseNPCProcess where T: class
+    public abstract class OldBaseNPCProcessWithBlackBoard<T> : OldBaseNPCProcess where T: class
     {
-        protected BaseNPCProcessWithBlackBoard()
+        protected OldBaseNPCProcessWithBlackBoard()
         {
         }
 
-        protected BaseNPCProcessWithBlackBoard(NPCProcessesContext context)
+        protected OldBaseNPCProcessWithBlackBoard(OldNPCProcessesContext context)
             : base(context)
         {
 #if UNITY_EDITOR
-            //Debug.Log("BaseNPCProcessWithBlackBoard constructor");
+            //Debug.Log("OldBaseNPCProcessWithBlackBoard constructor");
 #endif
         }
 
         protected override void OnChangeContext()
         {
 #if UNITY_EDITOR
-            //Debug.Log("Begin BaseNPCProcessWithBlackBoard OnChangeContext");
+            //Debug.Log("Begin OldBaseNPCProcessWithBlackBoard OnChangeContext");
 #endif
 
             var blackBoard = Context.GetInstance<T>();
@@ -35,7 +35,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            //Debug.Log($"End BaseNPCProcessWithBlackBoard OnChangeContext (blackBoard == null) = {blackBoard == null}");
+            //Debug.Log($"End OldBaseNPCProcessWithBlackBoard OnChangeContext (blackBoard == null) = {blackBoard == null}");
 #endif
         }
 

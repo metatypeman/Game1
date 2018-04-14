@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public class DisagreementByHandsActionStateInfo : IObjectToString
+    public class OldDisagreementByHStateInfo : IObjectToString
     {
-        public HumanoidStateKind Kind => HumanoidStateKind.HandsActionState;
+        public HumanoidStateKind Kind => HumanoidStateKind.HState;
         public List<int> CurrentProcessesId { get; set; }
-        public HumanoidHandsActionState CurrentValue { get; set; } = HumanoidHandsActionState.Empty;
+        public HumanoidHState CurrentValue { get; set; } = HumanoidHState.Stop;
         public int TargetProcessId { get; set; }
-        public HumanoidHandsActionState TargetValue { get; set; } = HumanoidHandsActionState.Empty;
+        public HumanoidHState TargetValue { get; set; } = HumanoidHState.Stop;
 
         public override string ToString()
         {
@@ -45,6 +45,7 @@ namespace Assets.Scripts
                 }
                 sb.AppendLine($"{spaces}End {nameof(CurrentProcessesId)}");
             }
+
             sb.AppendLine($"{spaces}{nameof(CurrentValue)} = {CurrentValue}");
             sb.AppendLine($"{spaces}{nameof(TargetProcessId)} = {TargetProcessId}");
             sb.AppendLine($"{spaces}{nameof(TargetValue)} = {TargetValue}");

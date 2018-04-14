@@ -8,7 +8,7 @@ using MyNPCLib;
 
 namespace Assets.Scripts
 {
-    public class DisagreementByTargetPositionInfo : IObjectToString
+    public class OldDisagreementByTargetPositionInfo : IObjectToString
     {
         public HumanoidStateKind Kind => HumanoidStateKind.TargetPosition;
         public List<int> CurrentProcessesId { get; set; }

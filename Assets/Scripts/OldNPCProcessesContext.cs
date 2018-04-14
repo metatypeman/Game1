@@ -7,11 +7,11 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class NPCProcessesContext: IDisposable
+    public class OldNPCProcessesContext: IDisposable
     {
-        public NPCProcessesContext(IMoveHumanoidController movehumanoidController)
+        public OldNPCProcessesContext(IMoveHumanoidController movehumanoidController)
         {
-            mMeshController = new NPCThreadSafeMeshController(movehumanoidController, this);
+            mMeshController = new OldNPCThreadSafeMeshController(movehumanoidController, this);
         }
 
         private NPCSimpleDI mSimpleDI = new NPCSimpleDI();
@@ -31,12 +31,12 @@ namespace Assets.Scripts
             return mSimpleDI.GetInstance<T>();
         }
 
-        private NPCThreadSafeMeshController mMeshController;
+        private OldNPCThreadSafeMeshController mMeshController;
 
         private object mChildProcessesListLockObj = new object();
-        private List<BaseNPCProcess> mChildProcessesList = new List<BaseNPCProcess>();
+        private List<OldBaseNPCProcess> mChildProcessesList = new List<OldBaseNPCProcess>();
 
-        public void AddChild(BaseNPCProcess process)
+        public void AddChild(OldBaseNPCProcess process)
         {
             lock(mDisposeLockObj)
             {
@@ -64,7 +64,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void RemoveChild(BaseNPCProcess process)
+        public void RemoveChild(OldBaseNPCProcess process)
         {
             lock (mDisposeLockObj)
             {

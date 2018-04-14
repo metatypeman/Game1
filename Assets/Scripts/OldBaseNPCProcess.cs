@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public enum NPCProcessStatus
+    public enum OldNPCProcessStatus
     {
         WaitingToRun,
         Running,
@@ -18,7 +18,7 @@ namespace Assets.Scripts
         Faulted
     }
 
-    public static class BaseNPCProcessPriorities
+    public static class OldBaseNPCProcessPriorities
     {
         public const float Highest = 1.0F;
         public const float AboveNormal = 0.75F;
@@ -27,21 +27,21 @@ namespace Assets.Scripts
         public const float Lowest = 0.01F;
     }
     
-    public abstract class BaseNPCProcess : IDisposable
+    public abstract class OldBaseNPCProcess : IDisposable
     {
-        protected BaseNPCProcess()
+        protected OldBaseNPCProcess()
         {
         }
 
-        protected BaseNPCProcess(NPCProcessesContext context)
+        protected OldBaseNPCProcess(OldNPCProcessesContext context)
         {
             Context = context;
         }
 
-        private NPCProcessesContext mContext;
+        private OldNPCProcessesContext mContext;
         private object mContextLockObj = new object();
 
-        public NPCProcessesContext Context
+        public OldNPCProcessesContext Context
         {
             get
             {
@@ -68,7 +68,7 @@ namespace Assets.Scripts
                         return;
                     }
 
-                    if (Status != NPCProcessStatus.WaitingToRun)
+                    if (Status != OldNPCProcessStatus.WaitingToRun)
                     {
                         return;
                     }
@@ -100,11 +100,11 @@ namespace Assets.Scripts
         {
         }
 
-        private BaseNPCProcess mParentProcess;
-        private List<BaseNPCProcess> mChildrenProcesses = new List<BaseNPCProcess>();
+        private OldBaseNPCProcess mParentProcess;
+        private List<OldBaseNPCProcess> mChildrenProcesses = new List<OldBaseNPCProcess>();
         private object mChildrenProcessesLockObj = new object();
         
-        public BaseNPCProcess ParentProcess
+        public OldBaseNPCProcess ParentProcess
         {
             get
             {
@@ -136,7 +136,7 @@ namespace Assets.Scripts
                         return;
                     }
 
-                    if (Status != NPCProcessStatus.WaitingToRun)
+                    if (Status != OldNPCProcessStatus.WaitingToRun)
                     {
                         return;
                     }
@@ -150,7 +150,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void AddChild(BaseNPCProcess process)
+        public void AddChild(OldBaseNPCProcess process)
         {
             lock (mDisposeLockObj)
             {
@@ -183,7 +183,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void RemoveChild(BaseNPCProcess process)
+        public void RemoveChild(OldBaseNPCProcess process)
         {
             lock (mDisposeLockObj)
             {
@@ -216,7 +216,7 @@ namespace Assets.Scripts
             }
         }
 
-        private float mLocalPriority = BaseNPCProcessPriorities.Normal;
+        private float mLocalPriority = OldBaseNPCProcessPriorities.Normal;
         private object mPriorityLockObj = new object();
         
         public float LocalPriority
@@ -286,10 +286,10 @@ namespace Assets.Scripts
             }
         }
 
-        private NPCProcessStatus mStatus = NPCProcessStatus.WaitingToRun;
+        private OldNPCProcessStatus mStatus = OldNPCProcessStatus.WaitingToRun;
         private object mStatusLockObj = new object();
 
-        public NPCProcessStatus Status
+        public OldNPCProcessStatus Status
         {
             get
             {
@@ -322,9 +322,9 @@ namespace Assets.Scripts
             {
                 switch (Status)
                 {
-                    case NPCProcessStatus.RanToCompletion:
-                    case NPCProcessStatus.Canceled:
-                    case NPCProcessStatus.Faulted:
+                    case OldNPCProcessStatus.RanToCompletion:
+                    case OldNPCProcessStatus.Canceled:
+                    case OldNPCProcessStatus.Faulted:
                         return false;
                 }
 
@@ -382,11 +382,11 @@ namespace Assets.Scripts
             //Debug.Log("BaseNPCProcess Begin NRun");
 #endif
 
-            Status = NPCProcessStatus.Running;
+            Status = OldNPCProcessStatus.Running;
 
             OnRun();
 
-            Status = NPCProcessStatus.RanToCompletion;
+            Status = OldNPCProcessStatus.RanToCompletion;
 
 #if UNITY_EDITOR
             //Debug.Log("BaseNPCProcess End NRun");
@@ -395,7 +395,7 @@ namespace Assets.Scripts
 
         protected abstract void OnRun();
 
-        protected void WaitProsesses(List<BaseNPCProcess> processesList)
+        protected void WaitProsesses(List<OldBaseNPCProcess> processesList)
         {
 #if UNITY_EDITOR
             //Debug.Log("BaseNPCProcess Begin WaitProsesses");
@@ -515,7 +515,7 @@ namespace Assets.Scripts
             };
         }
 
-        private NPCProcessStatus ConvertNPCMeshTaskStateToActiveNPCProcessStatus(NPCMeshTaskState npcMeshTaskState)
+        private OldNPCProcessStatus ConvertNPCMeshTaskStateToActiveNPCProcessStatus(NPCMeshTaskState npcMeshTaskState)
         {
 #if UNITY_EDITOR
             //Debug.Log($"BaseNPCProcess PostProcessExecutedTask ConvertNPCMeshTaskStateToActiveNPCProcessStatus npcMeshTaskState = {npcMeshTaskState}");
@@ -524,22 +524,22 @@ namespace Assets.Scripts
             switch(npcMeshTaskState)
             {
                 case NPCMeshTaskState.WaitWaitingToRun:
-                    return NPCProcessStatus.WaitingForNPCMeshActivation;
+                    return OldNPCProcessStatus.WaitingForNPCMeshActivation;
 
                 case NPCMeshTaskState.Running:
-                    return NPCProcessStatus.NPCMeshRunning;
+                    return OldNPCProcessStatus.NPCMeshRunning;
 
                 case NPCMeshTaskState.RanToCompletion:
-                    return NPCProcessStatus.Running;
+                    return OldNPCProcessStatus.Running;
 
                 case NPCMeshTaskState.CanceledByHost:
-                    return NPCProcessStatus.Running;
+                    return OldNPCProcessStatus.Running;
 
                 case NPCMeshTaskState.CanceledByOwner:
-                    return NPCProcessStatus.Running;
+                    return OldNPCProcessStatus.Running;
 
                 case NPCMeshTaskState.Faulted:
-                    return NPCProcessStatus.Running;
+                    return OldNPCProcessStatus.Running;
 
                 default: throw new ArgumentOutOfRangeException(nameof(npcMeshTaskState), npcMeshTaskState, null);
             }

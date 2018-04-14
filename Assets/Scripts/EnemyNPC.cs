@@ -25,6 +25,9 @@ public class EnemyNPC : MonoBehaviour
     public GameObject setTargetOn;
 
     private OldTstConcreteNPCProcessesContextWithBlackBoard mOldNPCProcessesContext;
+    private TestedNPCContext mNPCProcessesContext;
+
+    public bool UseOldContext = false;
 
     //RapidFireGun _gun;
 
@@ -48,8 +51,20 @@ public class EnemyNPC : MonoBehaviour
 
         mEnemyRayScaner = GetComponent<EnemyRayScaner>();
 
-        mOldNPCProcessesContext = new OldTstConcreteNPCProcessesContextWithBlackBoard(mEnemyController);
-        mOldNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
+        if(UseOldContext)
+        {
+            mOldNPCProcessesContext = new OldTstConcreteNPCProcessesContextWithBlackBoard(mEnemyController);
+            mOldNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
+        }
+        else
+        {
+            var npcProcessInfoCache = new NPCProcessInfoCache();
+            var globalEntityDictionary = new EntityDictionary();
+            //var  GetComponent<EnemyController>();
+
+            mNPCProcessesContext = new TestedNPCContext(globalEntityDictionary, npcProcessInfoCache, null);
+            mNPCProcessesContext.Bootstrap();
+        }
 
         //_gun = GetComponentInChildren<RapidFireGun>();
 
@@ -91,10 +106,17 @@ public class EnemyNPC : MonoBehaviour
         Debug.Log($"EnemyNPC OnQPressAction key = {key}");
         Debug.Log($"EnemyNPC OnQPressAction mInstanceIdOfRifle = {mInstanceIdOfRifle}");
 
-        if (mInstanceIdOfRifle > 0)
+        if (UseOldContext)
         {
-            var tmpProcess = new OldTstThrowOutToSurfaceRifleToSurfaceProcess(mOldNPCProcessesContext, mInstanceIdOfRifle);
-            tmpProcess.RunAsync();
+            if (mInstanceIdOfRifle > 0)
+            {
+                var tmpProcess = new OldTstThrowOutToSurfaceRifleToSurfaceProcess(mOldNPCProcessesContext, mInstanceIdOfRifle);
+                tmpProcess.RunAsync();
+            }
+        }
+        else
+        {
+
         }
     }
 
@@ -103,45 +125,18 @@ public class EnemyNPC : MonoBehaviour
         Debug.Log($"EnemyNPC OnJPressAction key = {key}");
         Debug.Log($"EnemyNPC OnJPressAction mInstanceIdOfRifle = {mInstanceIdOfRifle}");
 
-        if (mInstanceIdOfRifle > 0)
-        {           
-            var tmpProcess = new OldTstHideRifleToBagPackProcess(mOldNPCProcessesContext, mInstanceIdOfRifle);
-            tmpProcess.RunAsync();
+        if (UseOldContext)
+        {
+            if (mInstanceIdOfRifle > 0)
+            {
+                var tmpProcess = new OldTstHideRifleToBagPackProcess(mOldNPCProcessesContext, mInstanceIdOfRifle);
+                tmpProcess.RunAsync();
+            }
         }
+        else
+        {
 
-        //var render = mGunBody.GetComponentInChildren<MeshRenderer>();
-
-        //render.enabled = false;
-
-        //mGunBody.SetActive(false);
-
-        //Debug.Log($"EnemyNPC OnJPressAction GunEnd.forward = {GunEnd.forward}");
-        //Debug.Log($"EnemyNPC OnJPressAction transform.forward = {transform.forward}");
-
-        //var diff = Vector3.Angle(GunEnd.forward, transform.forward);
-
-        //Debug.Log($"EnemyNPC OnJPressAction diff = {diff}");
-
-        //var targetObj = GameObject.Find("Ethan");
-        //var target = targetObj.transform;
-
-        //var targetDir = target.position - GunEnd.position;
-        //Debug.Log($"EnemyNPC OnBPressAction targetDir = {targetDir}");
-
-        //var forward = GunEnd.forward;
-
-        //var angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
-
-        //Debug.Log($"EnemyNPC OnJPressAction angle = {angle}");
-
-        //if(Mathf.Abs(angle) > 8)
-        //{
-        //    transform.rotation = Quaternion.Euler(0, -1 * angle * 0.9f , 0) * transform.rotation;
-        //} 
-
-        var cls = new Class1();
-        cls.Run();
-        cls.Tst();
+        }
     }
 
     private void OnBPressAction(KeyCode key)
@@ -169,44 +164,38 @@ public class EnemyNPC : MonoBehaviour
 
         Debug.Log($"EnemyNPC OnBPressAction instanceId = {instanceId}");
 
-        if (instanceId > 0)
+        if (UseOldContext)
         {
-            var tmpProcess = new OldTSTTakeFromSurfaceProcess(mOldNPCProcessesContext, instanceId);
-            tmpProcess.RunAsync();
+            if (instanceId > 0)
+            {
+                var tmpProcess = new OldTSTTakeFromSurfaceProcess(mOldNPCProcessesContext, instanceId);
+                tmpProcess.RunAsync();
+            }
         }
+        else
+        {
 
-        //var rightHandWPLocator = GetComponentInChildren<RightHandWPLocator>();
-
-        //Debug.Log($"EnemyNPC OnBPressAction (rightHandWPLocator == null) = {rightHandWPLocator == null}");
-
-        //Debug.Log($"EnemyNPC OnBPressAction GunEnd.forward = {GunEnd.forward}");
-        //Debug.Log($"EnemyNPC OnBPressAction transform.forward = {transform.forward}");
-        //Debug.Log($"EnemyNPC OnBPressAction Vector3.Angle(GunEnd.forward, transform.forward) = {Vector3.Angle(GunEnd.forward, transform.forward)}");
-
-        //var targetObj = GameObject.Find("Ethan");
-        //var target = targetObj.transform;
-
-        //var targetDir = target.position - GunEnd.position;
-        //Debug.Log($"EnemyNPC OnBPressAction targetDir = {targetDir}");
-
-        //var forward = GunEnd.forward;
-
-        //var angle = Vector3.SignedAngle(targetDir, forward, Vector3.up);
-
-        //Debug.Log($"EnemyNPC OnBPressAction angle = {angle}");
+        }
     }
 
     private void OnMPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnMPressAction key = {key}");
 
-        var tmpProcess = new OldTSTMoveProcess(mOldNPCProcessesContext);
-        tmpProcess.RunAsync();
+        if (UseOldContext)
+        {
+            var tmpProcess = new OldTSTMoveProcess(mOldNPCProcessesContext);
+            tmpProcess.RunAsync();
+        }
+        else
+        {
+
+        }
     }
 
     private float? TargetAngle = null;
-    private float AngleSpeed = 0.5f;
-    private float? InitAngle = null;
+    //private float AngleSpeed = 0.5f;
+    //private float? InitAngle = null;
 
     public bool isIkActive;
 
@@ -216,8 +205,15 @@ public class EnemyNPC : MonoBehaviour
 
         isIkActive = false;
 
-        var tmpProcess = new OldTSTHeadToForvardProcess(mOldNPCProcessesContext);
-        tmpProcess.RunAsync();
+        if (UseOldContext)
+        {
+            var tmpProcess = new OldTSTHeadToForvardProcess(mOldNPCProcessesContext);
+            tmpProcess.RunAsync();
+        }
+        else
+        {
+
+        }
     }
 
     private void OnGPressAction(KeyCode key)
@@ -228,8 +224,15 @@ public class EnemyNPC : MonoBehaviour
         //isIkActive = true;
         //Head.rotation = Quaternion.Euler(0, 12f, 0) * currHeadRotation;
 
-        var tmpProcess = new OldTSTRotateHeadProcess(mOldNPCProcessesContext, 12f);
-        tmpProcess.RunAsync();
+        if (UseOldContext)
+        {
+            var tmpProcess = new OldTSTRotateHeadProcess(mOldNPCProcessesContext, 12f);
+            tmpProcess.RunAsync();
+        }
+        else
+        {
+
+        }
     }
 
     private void OnKPressAction(KeyCode key)
@@ -238,77 +241,125 @@ public class EnemyNPC : MonoBehaviour
 
         TargetAngle = 30f;
 
-        var tmpProcess = new OldTSTRotateProcess(mOldNPCProcessesContext, TargetAngle.Value);
-        tmpProcess.RunAsync();
+        if (UseOldContext)
+        {
+            var tmpProcess = new OldTSTRotateProcess(mOldNPCProcessesContext, TargetAngle.Value);
+            tmpProcess.RunAsync();
+        }
+        else
+        {
+
+        }
     }
 
     private void OnNPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnNPressAction key = {key}");
 
-        var _gun = mOldNPCProcessesContext.BlackBoard.RapidFireGunProxy;
-
-        Debug.Log($"EnemyNPC OnNPressAction _gun.IsReady = {_gun.IsReady}");
-
-        if (_gun != null && _gun.IsReady)
+        if (UseOldContext)
         {
-            _gun.UseDebugLine = true;
-            _gun.TurnState = TurnState.On;
-        }      
+            var _gun = mOldNPCProcessesContext.BlackBoard.RapidFireGunProxy;
+
+            Debug.Log($"EnemyNPC OnNPressAction _gun.IsReady = {_gun.IsReady}");
+
+            if (_gun != null && _gun.IsReady)
+            {
+                _gun.UseDebugLine = true;
+                _gun.TurnState = TurnState.On;
+            }
+        }
+        else
+        {
+
+        } 
     }
 
     private void OnHPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnHPressAction key = {key}");
-        var _gun = mOldNPCProcessesContext.BlackBoard.RapidFireGunProxy;
-        if (_gun != null)
+
+        if (UseOldContext)
         {
-            _gun.TurnState = TurnState.Off;
-        }      
+            var _gun = mOldNPCProcessesContext.BlackBoard.RapidFireGunProxy;
+            if (_gun != null)
+            {
+                _gun.TurnState = TurnState.Off;
+            }
+        }
+        else
+        {
+
+        }  
     }
 
     private void OnLPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnLPressAction key = {key}");        
-        var tmpSimpleAimProcess = new OldTstSimpleAimProcess(mOldNPCProcessesContext);
-        tmpSimpleAimProcess.RunAsync();
+        Debug.Log($"EnemyNPC OnLPressAction key = {key}");
+        if (UseOldContext)
+        {
+            var tmpSimpleAimProcess = new OldTstSimpleAimProcess(mOldNPCProcessesContext);
+            tmpSimpleAimProcess.RunAsync();
+        }
+        else
+        {
+
+        }
     }
 
     private void OnIPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnIPressAction key = {key}");        
         var _target = GameObject.Find("Ethan");
-        var tmpTSTFireToEthanProcess = new OldTSTFireToEthanProcess(mOldNPCProcessesContext, _target.transform.position);
-        tmpTSTFireToEthanProcess.RunAsync();
+
+        if (UseOldContext)
+        {
+            var tmpTSTFireToEthanProcess = new OldTSTFireToEthanProcess(mOldNPCProcessesContext, _target.transform.position);
+            tmpTSTFireToEthanProcess.RunAsync();
+        }
+        else
+        {
+
+        }
     }
 
     private void OnPPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnPPressAction key = {key}");       
-        var tmpProcess = new OldTstRunAtOurBaseProcess(mOldNPCProcessesContext);
-        tmpProcess.RunAsync();
+        Debug.Log($"EnemyNPC OnPPressAction key = {key}");
+        if (UseOldContext)
+        {
+            var tmpProcess = new OldTstRunAtOurBaseProcess(mOldNPCProcessesContext);
+            tmpProcess.RunAsync();
+        }
+        else
+        {
+
+        }
     }
     
     private void OnUPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnUPressAction key = {key}");
-        var tmpProcess = new OldTstRootProcess(mOldNPCProcessesContext);
-        tmpProcess.RunAsync();
-    }
+        if (UseOldContext)
+        {
+            var tmpProcess = new OldTstRootProcess(mOldNPCProcessesContext);
+            tmpProcess.RunAsync();
+        }
+        else
+        {
 
-    //void OnAnimatorIK(int layerIndex)
-    //{
-    //    if (isIkActive)
-    //    {
-    //        mAnim.SetLookAtWeight(1);
-    //        mAnim.SetLookAtPosition(new Vector3(226.15f, 0, 98.96f));
-    //        Head.LookAt(new Vector3(226.15f, 0, 98.96f));
-    //    }    
-    //}
+        }
+    }
 
     void OnDestroy()
     {
         //Debug.Log("OnDestroy");
-        mOldNPCProcessesContext?.Dispose();
+        if (UseOldContext)
+        {
+            mOldNPCProcessesContext?.Dispose();
+        }
+        else
+        {
+
+        }    
     }
 }

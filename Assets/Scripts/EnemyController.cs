@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
+public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHumanoid
 {
     private Rigidbody mRigidbody;
     private Animator mAnimator;
@@ -57,7 +57,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
 
     // Use this for initialization
     void Start () {
-        mStates = new StatesOfHumanoidController();
+        mStates = new OldStatesOfHumanoidController();
         mBehaviourFlags = new BehaviourFlagsOfHumanoidController();
 
         mAnimator = GetComponent<Animator>();
@@ -106,9 +106,9 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
     public GameObject LeftHand { get; private set; }
     public GameObject LeftHandWP { get; private set; }
 
-    private StatesOfHumanoidController mStates;
+    private OldStatesOfHumanoidController mStates;
 
-    public StatesOfHumanoidController States => mStates;
+    public OldStatesOfHumanoidController States => mStates;
 
     private BehaviourFlagsOfHumanoidController mBehaviourFlags;
 
@@ -116,7 +116,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
     public Vector3? TargetPosition => mStates.TargetPosition;
     public HumanoidVState VState => mStates.VState;
     public HumanoidHandsState HandsState => mStates.HandsState;
-    public HumanoidHandsActionState HandsActionState => mStates.HandsActionState;
+    public OldHumanoidHandsActionState HandsActionState => mStates.HandsActionState;
     public event HumanoidStatesChangedAction OnHumanoidStatesChanged;
 
     private void EmitOnHumanoidStatesChanged(params HumanoidStateKind[] changedStates)
@@ -134,9 +134,9 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
     }
 
     private object mLockObj = new object();
-    private HumanoidTaskOfExecuting mTargetStateForExecuting;
+    private OldHumanoidTaskOfExecuting mTargetStateForExecuting;
 
-    public HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidController targetState)
+    public OldHumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
         //Debug.Log($"EnemyController ExecuteAsync targetState = {targetState}");
@@ -146,10 +146,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         {
             if(mTargetStateForExecuting != null)
             {
-                mTargetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Canceled;
+                mTargetStateForExecuting.State = OldStateOfHumanoidTaskOfExecuting.Canceled;
             }
 
-            var targetStateForExecuting = new HumanoidTaskOfExecuting();
+            var targetStateForExecuting = new OldHumanoidTaskOfExecuting();
             targetStateForExecuting.ProcessedState = targetState;
 
             mTargetStateForExecuting = targetStateForExecuting;
@@ -178,7 +178,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         StartCoroutine(Timer());
     }
 
-    private void Execute(HumanoidTaskOfExecuting targetStateForExecuting)
+    private void Execute(OldHumanoidTaskOfExecuting targetStateForExecuting)
     {
         var targetState = targetStateForExecuting.ProcessedState;
 
@@ -201,10 +201,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
             ApplyTargetState(newState);
         }
 
-        targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;
+        targetStateForExecuting.State = OldStateOfHumanoidTaskOfExecuting.Executed;
     }
 
-    private void ExecuteThingsCommand(StatesOfHumanoidController targetState)
+    private void ExecuteThingsCommand(OldStatesOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
         //Debug.Log($"EnemyController ExecuteThingsCommand targetState = {targetState}");
@@ -232,7 +232,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
                 {
                     thing.SetAsAloneAndHide();
                     mStates.HandsState = HumanoidHandsState.FreeHands;
-                    mStates.HandsActionState = HumanoidHandsActionState.Empty;
+                    mStates.HandsActionState = OldHumanoidHandsActionState.Empty;
                     ApplyCurrentStates();
                     EmitOnHumanoidStatesChanged(HumanoidStateKind.ThingsCommand);
                 }
@@ -242,7 +242,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
                 {
                     thing.ThrowOutToSurface();
                     mStates.HandsState = HumanoidHandsState.FreeHands;
-                    mStates.HandsActionState = HumanoidHandsActionState.Empty;
+                    mStates.HandsActionState = OldHumanoidHandsActionState.Empty;
                     ApplyCurrentStates();
                     EmitOnHumanoidStatesChanged(HumanoidStateKind.ThingsCommand);
                 }
@@ -252,7 +252,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         }
     }
 
-    private StatesOfHumanoidController CreateTargetState(StatesOfHumanoidController sourceState, TargetStateOfHumanoidController targetState)
+    private OldStatesOfHumanoidController CreateTargetState(OldStatesOfHumanoidController sourceState, TargetStateOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
         //Debug.Log("EnemyController CreateTargetState sourceState = " + sourceState);
@@ -318,7 +318,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
                 break;
                 
             case HumanoidHState.AimAt:
-                if(result.HandsState != HumanoidHandsState.HasRifle || result.HandsActionState != HumanoidHandsActionState.StrongAim || !result.TargetPosition.HasValue)
+                if(result.HandsState != HumanoidHandsState.HasRifle || result.HandsActionState != OldHumanoidHandsActionState.StrongAim || !result.TargetPosition.HasValue)
                 {
                     result.HState = HumanoidHState.Stop;
                 }
@@ -328,14 +328,14 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         switch (result.HandsState)
         {
             case HumanoidHandsState.FreeHands:
-                result.HandsActionState = HumanoidHandsActionState.Empty;
+                result.HandsActionState = OldHumanoidHandsActionState.Empty;
                 break;
         }
 
         return result;
     }
 
-    private BehaviourFlagsOfHumanoidController CreateBehaviourFlags(StatesOfHumanoidController sourceState)
+    private BehaviourFlagsOfHumanoidController CreateBehaviourFlags(OldStatesOfHumanoidController sourceState)
     {
         var result = new BehaviourFlagsOfHumanoidController();
 
@@ -352,11 +352,11 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
 
         switch (sourceState.HandsActionState)
         {
-            case HumanoidHandsActionState.Empty:
+            case OldHumanoidHandsActionState.Empty:
                 result.IsAim = false;
                 break;
 
-            case HumanoidHandsActionState.StrongAim:
+            case OldHumanoidHandsActionState.StrongAim:
                 result.IsAim = true;
                 break;
         }
@@ -393,7 +393,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IHumanoid
         UpdateAnimator();
     }
 
-    private void ApplyTargetState(StatesOfHumanoidController targetState)
+    private void ApplyTargetState(OldStatesOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
         //Debug.Log($"EnemyController ApplyTargetState targetState = {targetState}");

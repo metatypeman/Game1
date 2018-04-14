@@ -20,13 +20,13 @@ namespace Assets.Scripts
         public NPCMeshTaskResulutionKind Kind { get; set; } = NPCMeshTaskResulutionKind.Unknow;
         public int TargetProcessId { get; set; }
         public TargetStateOfHumanoidController TargetState { get; set; }
-        public DisagreementByHStateInfo DisagreementByHState { get; set; }
-        public DisagreementByTargetPositionInfo DisagreementByTargetPosition { get; set; }
-        public DisagreementByVStateInfo DisagreementByVState { get; set; }
-        public DisagreementByHandsStateInfo DisagreementByHandsState { get; set; }
-        public DisagreementByHandsActionStateInfo DisagreementByHandsActionState { get; set; }
-        public DisagreementByHeadStateInfo DisagreementByHeadState { get; set; }
-        public DisagreementByTargetHeadPositionInfo DisagreementByTargetHeadPosition { get; set; }
+        public OldDisagreementByHStateInfo DisagreementByHState { get; set; }
+        public OldDisagreementByTargetPositionInfo DisagreementByTargetPosition { get; set; }
+        public OldDisagreementByVStateInfo DisagreementByVState { get; set; }
+        public OldDisagreementByHandsStateInfo DisagreementByHandsState { get; set; }
+        public OldDisagreementByHandsActionStateInfo DisagreementByHandsActionState { get; set; }
+        public OldDisagreementByHeadStateInfo DisagreementByHeadState { get; set; }
+        public OldDisagreementByTargetHeadPositionInfo DisagreementByTargetHeadPosition { get; set; }
 
         public override string ToString()
         {

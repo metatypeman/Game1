@@ -10,7 +10,7 @@ namespace Assets.Scripts
 {
     public class OldTstRootProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTstRootProcess(NPCProcessesContext context)
+        public OldTstRootProcess(OldNPCProcessesContext context)
             : base(context)
         {
         }
@@ -20,7 +20,7 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             //Debug.Log($"Begin OldTstRootProcess OnRun Status = {Status}");
 #endif
-            BaseNPCProcess tmpChildProcess = new OldTstInspectingProcess(Context);
+            OldBaseNPCProcess tmpChildProcess = new OldTstInspectingProcess(Context);
             mChildProcesses.Add(tmpChildProcess);
             tmpChildProcess.RunAsync();
 
@@ -35,12 +35,12 @@ namespace Assets.Scripts
 #endif
         }
 
-        private List<BaseNPCProcess> mChildProcesses = new List<BaseNPCProcess>();
+        private List<OldBaseNPCProcess> mChildProcesses = new List<OldBaseNPCProcess>();
     }
 
     public class OldTstInspectingProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTstInspectingProcess(NPCProcessesContext context)
+        public OldTstInspectingProcess(OldNPCProcessesContext context)
             : base(context)
         {
             mRayScaner = context.GetInstance<INPCRayScaner>();
@@ -89,7 +89,7 @@ namespace Assets.Scripts
                         ISawTrafficBarrierRed = true;
 
                         var newProcess = new OldTstRunAwayProcess(Context);
-                        newProcess.LocalPriority = BaseNPCProcessPriorities.BelowNormal;
+                        newProcess.LocalPriority = OldBaseNPCProcessPriorities.BelowNormal;
                         newProcess.RunAsync();
                     }
                 }
@@ -106,7 +106,7 @@ namespace Assets.Scripts
 
     public class OldTstGoToEnemyBaseProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTstGoToEnemyBaseProcess(NPCProcessesContext context)
+        public OldTstGoToEnemyBaseProcess(OldNPCProcessesContext context)
             : base(context)
         {
             var tmpTimerInterval = new TimeSpan(0, 0, 1);
@@ -168,7 +168,7 @@ namespace Assets.Scripts
 
     public class OldTstRunAwayProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTstRunAwayProcess(NPCProcessesContext context)
+        public OldTstRunAwayProcess(OldNPCProcessesContext context)
             : base(context)
         {
         }
@@ -225,7 +225,7 @@ namespace Assets.Scripts
 
     public class OldTstRunAtOurBaseProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTstRunAtOurBaseProcess(NPCProcessesContext context)
+        public OldTstRunAtOurBaseProcess(OldNPCProcessesContext context)
             : base(context)
         {
             var tmpTimerInterval = new TimeSpan(0, 0, 1);
@@ -327,7 +327,7 @@ namespace Assets.Scripts
 
     public class OldTstSimpleAimProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTstSimpleAimProcess(NPCProcessesContext context)
+        public OldTstSimpleAimProcess(OldNPCProcessesContext context)
             : base(context)
         {
         }
@@ -339,7 +339,7 @@ namespace Assets.Scripts
 #endif
 
             var tmpCommand = new HumanoidHandsActionStateCommand();
-            tmpCommand.State = HumanoidHandsActionState.StrongAim;
+            tmpCommand.State = OldHumanoidHandsActionState.StrongAim;
 
             var tmpTask = Execute(tmpCommand);
 
@@ -385,7 +385,7 @@ namespace Assets.Scripts
 
     public class OldTSTFireToEthanProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTSTFireToEthanProcess(NPCProcessesContext context, Vector3 targetPosition)
+        public OldTSTFireToEthanProcess(OldNPCProcessesContext context, Vector3 targetPosition)
             : base(context)
         {
             mTargetPosition = targetPosition;
@@ -415,7 +415,7 @@ namespace Assets.Scripts
 
     public class OldTSTRotateProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTSTRotateProcess(NPCProcessesContext context, float angle)
+        public OldTSTRotateProcess(OldNPCProcessesContext context, float angle)
             : base(context)
         {
             mAngle = angle;
@@ -445,7 +445,7 @@ namespace Assets.Scripts
 
     public class OldTSTRotateHeadProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTSTRotateHeadProcess(NPCProcessesContext context, float angle)
+        public OldTSTRotateHeadProcess(OldNPCProcessesContext context, float angle)
             : base(context)
         {
             mAngle = angle;
@@ -483,7 +483,7 @@ namespace Assets.Scripts
 
     public class OldTSTHeadToForvardProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTSTHeadToForvardProcess(NPCProcessesContext context)
+        public OldTSTHeadToForvardProcess(OldNPCProcessesContext context)
             : base(context)
         {
         }
@@ -505,7 +505,7 @@ namespace Assets.Scripts
 
     public class OldTSTMoveProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTSTMoveProcess(NPCProcessesContext context)
+        public OldTSTMoveProcess(OldNPCProcessesContext context)
             : base(context)
         {
         }
@@ -529,7 +529,7 @@ namespace Assets.Scripts
 
     public class OldTSTTakeFromSurfaceProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTSTTakeFromSurfaceProcess(NPCProcessesContext context, int instanceId)
+        public OldTSTTakeFromSurfaceProcess(OldNPCProcessesContext context, int instanceId)
             : base(context)
         {
             mInstanceId = instanceId;
@@ -566,7 +566,7 @@ namespace Assets.Scripts
 
     public class OldTstHideRifleToBagPackProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTstHideRifleToBagPackProcess(NPCProcessesContext context, int instanceId)
+        public OldTstHideRifleToBagPackProcess(OldNPCProcessesContext context, int instanceId)
             : base(context)
         {
             mInstanceId = instanceId;
@@ -601,7 +601,7 @@ namespace Assets.Scripts
 
     public class OldTstThrowOutToSurfaceRifleToSurfaceProcess : OldTstBaseConcreteNPCProcessWithBlackBoard
     {
-        public OldTstThrowOutToSurfaceRifleToSurfaceProcess(NPCProcessesContext context, int instanceId)
+        public OldTstThrowOutToSurfaceRifleToSurfaceProcess(OldNPCProcessesContext context, int instanceId)
             : base(context)
         {
             mInstanceId = instanceId;

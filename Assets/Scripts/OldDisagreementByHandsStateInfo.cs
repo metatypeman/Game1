@@ -1,19 +1,19 @@
-﻿using System;
+﻿using MyNPCLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MyNPCLib;
 
 namespace Assets.Scripts
 {
-    public class DisagreementByVStateInfo : IObjectToString
+    public class OldDisagreementByHandsStateInfo : IObjectToString
     {
-        public HumanoidStateKind Kind => HumanoidStateKind.VState;
+        public HumanoidStateKind Kind => HumanoidStateKind.HandsState;
         public List<int> CurrentProcessesId { get; set; }
-        public HumanoidVState CurrentValue { get; set; } = HumanoidVState.Ground;
+        public HumanoidHandsState CurrentValue { get; set; } = HumanoidHandsState.FreeHands;
         public int TargetProcessId { get; set; }
-        public HumanoidVState TargetValue { get; set; } = HumanoidVState.Ground;
+        public HumanoidHandsState TargetValue { get; set; } = HumanoidHandsState.FreeHands;
 
         public override string ToString()
         {
