@@ -189,6 +189,8 @@ namespace MyNPCLib
                 mNeedRun = true;
             }
 
+            //Task tmpTask = null;
+
             Task.Run(() => {
                 NRun();
             });
@@ -239,7 +241,6 @@ namespace MyNPCLib
 #if DEBUG
                 //LogInstance.Log("BaseTrigger NRun while(true) ----");
 #endif
-
                 Thread.Sleep(mTimeOut);
 
                 lock (mNeedRunLockObj)

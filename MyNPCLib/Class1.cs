@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyNPCLib
@@ -15,6 +16,7 @@ namespace MyNPCLib
 
         public void Tst()
         {
+            Thread.Sleep(10);
             LogInstance.Log("Tst");
         }
 
