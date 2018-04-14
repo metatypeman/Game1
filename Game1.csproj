@@ -380,6 +380,7 @@
     <Compile Include="Assets\Scripts\IThing.cs" />
     <Compile Include="Assets\Scripts\LeftHandLocator.cs" />
     <Compile Include="Assets\Scripts\LeftHandWPLocator.cs" />
+    <Compile Include="Assets\Scripts\LogProxyForDebug.cs" />
     <Compile Include="Assets\Scripts\MoveHumanoidCommand.cs" />
     <Compile Include="Assets\Scripts\MoveHumanoidCommandsPackage.cs" />
     <Compile Include="Assets\Scripts\MyGameObject.cs" />

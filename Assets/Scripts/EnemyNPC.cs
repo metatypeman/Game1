@@ -10,6 +10,14 @@ using MyNPCLib;
 [RequireComponent(typeof(EnemyRayScaner))]
 public class EnemyNPC : MonoBehaviour
 {
+    public void Awake()
+    {
+        Debug.Log("EnemyNPC Awake");
+
+        var logInstance = new LogProxyForDebug();
+        LogInstance.SetLogProxy(logInstance);
+    }
+
     private EnemyController mEnemyController;
     private EnemyRayScaner mEnemyRayScaner;
 
