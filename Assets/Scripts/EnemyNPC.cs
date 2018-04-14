@@ -24,7 +24,7 @@ public class EnemyNPC : MonoBehaviour
     public float surfaceOffset = 1.5f;
     public GameObject setTargetOn;
 
-    private OldTstConcreteNPCProcessesContextWithBlackBoard mNPCProcessesContext;
+    private OldTstConcreteNPCProcessesContextWithBlackBoard mOldNPCProcessesContext;
 
     //RapidFireGun _gun;
 
@@ -48,8 +48,8 @@ public class EnemyNPC : MonoBehaviour
 
         mEnemyRayScaner = GetComponent<EnemyRayScaner>();
 
-        mNPCProcessesContext = new OldTstConcreteNPCProcessesContextWithBlackBoard(mEnemyController);
-        mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
+        mOldNPCProcessesContext = new OldTstConcreteNPCProcessesContextWithBlackBoard(mEnemyController);
+        mOldNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
 
         //_gun = GetComponentInChildren<RapidFireGun>();
 
@@ -93,7 +93,7 @@ public class EnemyNPC : MonoBehaviour
 
         if (mInstanceIdOfRifle > 0)
         {
-            var tmpProcess = new OldTstThrowOutToSurfaceRifleToSurfaceProcess(mNPCProcessesContext, mInstanceIdOfRifle);
+            var tmpProcess = new OldTstThrowOutToSurfaceRifleToSurfaceProcess(mOldNPCProcessesContext, mInstanceIdOfRifle);
             tmpProcess.RunAsync();
         }
     }
@@ -105,7 +105,7 @@ public class EnemyNPC : MonoBehaviour
 
         if (mInstanceIdOfRifle > 0)
         {           
-            var tmpProcess = new TstHideRifleToBagPackProcess(mNPCProcessesContext, mInstanceIdOfRifle);
+            var tmpProcess = new OldTstHideRifleToBagPackProcess(mOldNPCProcessesContext, mInstanceIdOfRifle);
             tmpProcess.RunAsync();
         }
 
@@ -171,7 +171,7 @@ public class EnemyNPC : MonoBehaviour
 
         if (instanceId > 0)
         {
-            var tmpProcess = new TSTTakeFromSurfaceProcess(mNPCProcessesContext, instanceId);
+            var tmpProcess = new OldTSTTakeFromSurfaceProcess(mOldNPCProcessesContext, instanceId);
             tmpProcess.RunAsync();
         }
 
@@ -200,7 +200,7 @@ public class EnemyNPC : MonoBehaviour
     {
         Debug.Log($"EnemyNPC OnMPressAction key = {key}");
 
-        var tmpProcess = new TSTMoveProcess(mNPCProcessesContext);
+        var tmpProcess = new OldTSTMoveProcess(mOldNPCProcessesContext);
         tmpProcess.RunAsync();
     }
 
@@ -216,7 +216,7 @@ public class EnemyNPC : MonoBehaviour
 
         isIkActive = false;
 
-        var tmpProcess = new TSTHeadToForvardProcess(mNPCProcessesContext);
+        var tmpProcess = new OldTSTHeadToForvardProcess(mOldNPCProcessesContext);
         tmpProcess.RunAsync();
     }
 
@@ -228,7 +228,7 @@ public class EnemyNPC : MonoBehaviour
         //isIkActive = true;
         //Head.rotation = Quaternion.Euler(0, 12f, 0) * currHeadRotation;
 
-        var tmpProcess = new OldTSTRotateHeadProcess(mNPCProcessesContext, 12f);
+        var tmpProcess = new OldTSTRotateHeadProcess(mOldNPCProcessesContext, 12f);
         tmpProcess.RunAsync();
     }
 
@@ -238,7 +238,7 @@ public class EnemyNPC : MonoBehaviour
 
         TargetAngle = 30f;
 
-        var tmpProcess = new OldTSTRotateProcess(mNPCProcessesContext, TargetAngle.Value);
+        var tmpProcess = new OldTSTRotateProcess(mOldNPCProcessesContext, TargetAngle.Value);
         tmpProcess.RunAsync();
     }
 
@@ -246,7 +246,7 @@ public class EnemyNPC : MonoBehaviour
     {
         Debug.Log($"EnemyNPC OnNPressAction key = {key}");
 
-        var _gun = mNPCProcessesContext.BlackBoard.RapidFireGunProxy;
+        var _gun = mOldNPCProcessesContext.BlackBoard.RapidFireGunProxy;
 
         Debug.Log($"EnemyNPC OnNPressAction _gun.IsReady = {_gun.IsReady}");
 
@@ -260,7 +260,7 @@ public class EnemyNPC : MonoBehaviour
     private void OnHPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnHPressAction key = {key}");
-        var _gun = mNPCProcessesContext.BlackBoard.RapidFireGunProxy;
+        var _gun = mOldNPCProcessesContext.BlackBoard.RapidFireGunProxy;
         if (_gun != null)
         {
             _gun.TurnState = TurnState.Off;
@@ -270,7 +270,7 @@ public class EnemyNPC : MonoBehaviour
     private void OnLPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnLPressAction key = {key}");        
-        var tmpSimpleAimProcess = new OldTstSimpleAimProcess(mNPCProcessesContext);
+        var tmpSimpleAimProcess = new OldTstSimpleAimProcess(mOldNPCProcessesContext);
         tmpSimpleAimProcess.RunAsync();
     }
 
@@ -278,21 +278,21 @@ public class EnemyNPC : MonoBehaviour
     {
         Debug.Log($"EnemyNPC OnIPressAction key = {key}");        
         var _target = GameObject.Find("Ethan");
-        var tmpTSTFireToEthanProcess = new OldTSTFireToEthanProcess(mNPCProcessesContext, _target.transform.position);
+        var tmpTSTFireToEthanProcess = new OldTSTFireToEthanProcess(mOldNPCProcessesContext, _target.transform.position);
         tmpTSTFireToEthanProcess.RunAsync();
     }
 
     private void OnPPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnPPressAction key = {key}");       
-        var tmpProcess = new TstRunAtOurBaseProcess(mNPCProcessesContext);
+        var tmpProcess = new OldTstRunAtOurBaseProcess(mOldNPCProcessesContext);
         tmpProcess.RunAsync();
     }
     
     private void OnUPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnUPressAction key = {key}");
-        var tmpProcess = new TstRootProcess(mNPCProcessesContext);
+        var tmpProcess = new OldTstRootProcess(mOldNPCProcessesContext);
         tmpProcess.RunAsync();
     }
 
@@ -309,6 +309,6 @@ public class EnemyNPC : MonoBehaviour
     void OnDestroy()
     {
         //Debug.Log("OnDestroy");
-        mNPCProcessesContext?.Dispose();
+        mOldNPCProcessesContext?.Dispose();
     }
 }
