@@ -10,7 +10,7 @@ namespace Assets.Scripts
 {
     public class OldDisagreementByTargetPositionInfo : IObjectToString
     {
-        public OldHumanoidStateKind Kind => OldHumanoidStateKind.TargetPosition;
+        public InternalHumanoidStateKind Kind => InternalHumanoidStateKind.TargetPosition;
         public List<int> CurrentProcessesId { get; set; }
         public Vector3? CurrentValue { get; set; }
         public int TargetProcessId { get; set; }

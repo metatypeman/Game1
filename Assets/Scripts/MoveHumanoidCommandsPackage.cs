@@ -9,7 +9,7 @@ namespace Assets.Scripts
 {
     public class MoveHumanoidCommandsPackage : IOldMoveHumanoidCommandsPackage
     {
-        public List<IOldMoveHumanoidCommand> Commands { get; set; } = new List<IOldMoveHumanoidCommand>();
+        public List<IInternalMoveHumanoidCommand> Commands { get; set; } = new List<IInternalMoveHumanoidCommand>();
 
         public override string ToString()
         {

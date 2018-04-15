@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public class OldHumanoidHandsActionStateCommand : OldMoveHumanoidCommand, OldIHumanoidHandsActionStateCommand
+    public class InternalHumanoidHandsActionStateCommand : InternalMoveHumanoidCommand, IInternalHumanoidHandsActionStateCommand
     {
-        public override OldMoveHumanoidCommandKind Kind => OldMoveHumanoidCommandKind.HandsActionState;
-        public OldHumanoidHandsActionState State { get; set; }
+        public override InternalMoveHumanoidCommandKind Kind => InternalMoveHumanoidCommandKind.HandsActionState;
+        public InternalHumanoidHandsActionState State { get; set; }
 
         public override string PropertiesToSting(uint n)
         {

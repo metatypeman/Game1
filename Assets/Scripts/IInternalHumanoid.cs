@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public interface OldIHumanoid : IObject
+    public interface IInternalHumanoid : IObject
     {
         GameObject RightHand { get; }
         GameObject RightHandWP { get; }

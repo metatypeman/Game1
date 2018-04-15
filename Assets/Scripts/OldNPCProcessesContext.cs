@@ -132,7 +132,7 @@ namespace Assets.Scripts
             }
         }
         
-        public NPCMeshTask Execute(IOldMoveHumanoidCommand command, int processId)
+        public NPCMeshTask Execute(IInternalMoveHumanoidCommand command, int processId)
         {
             lock (mDisposeLockObj)
             {

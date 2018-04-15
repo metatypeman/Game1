@@ -9,11 +9,11 @@ namespace Assets.Scripts
 {
     public class OldDisagreementByVStateInfo : IObjectToString
     {
-        public OldHumanoidStateKind Kind => OldHumanoidStateKind.VState;
+        public InternalHumanoidStateKind Kind => InternalHumanoidStateKind.VState;
         public List<int> CurrentProcessesId { get; set; }
-        public OldHumanoidVState CurrentValue { get; set; } = OldHumanoidVState.Ground;
+        public InternalHumanoidVState CurrentValue { get; set; } = InternalHumanoidVState.Ground;
         public int TargetProcessId { get; set; }
-        public OldHumanoidVState TargetValue { get; set; } = OldHumanoidVState.Ground;
+        public InternalHumanoidVState TargetValue { get; set; } = InternalHumanoidVState.Ground;
 
         public override string ToString()
         {

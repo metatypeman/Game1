@@ -12,13 +12,16 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -349,13 +352,14 @@
     <Compile Include="Assets\Scripts\IInternalBodyHumanoidHost.cs" />
     <Compile Include="Assets\Scripts\IMoveHumanoidController.cs" />
     <Compile Include="Assets\Scripts\InputKeyHelper.cs" />
+    <Compile Include="Assets\Scripts\InternalStatesConverter.cs" />
     <Compile Include="Assets\Scripts\IObject.cs" />
-    <Compile Include="Assets\Scripts\IOldHumanoidHandsStateCommand.cs" />
-    <Compile Include="Assets\Scripts\IOldHumanoidHeadStateCommand.cs" />
-    <Compile Include="Assets\Scripts\IOldHumanoidHStateCommand.cs" />
-    <Compile Include="Assets\Scripts\IOldHumanoidThingsCommand.cs" />
-    <Compile Include="Assets\Scripts\IOldHumanoidVStateCommand.cs" />
-    <Compile Include="Assets\Scripts\IOldMoveHumanoidCommand.cs" />
+    <Compile Include="Assets\Scripts\IInternalHumanoidHandsStateCommand.cs" />
+    <Compile Include="Assets\Scripts\IInternalHumanoidHeadStateCommand.cs" />
+    <Compile Include="Assets\Scripts\IInternalHumanoidHStateCommand.cs" />
+    <Compile Include="Assets\Scripts\IInternalHumanoidThingsCommand.cs" />
+    <Compile Include="Assets\Scripts\IInternalHumanoidVStateCommand.cs" />
+    <Compile Include="Assets\Scripts\IInternalMoveHumanoidCommand.cs" />
     <Compile Include="Assets\Scripts\IOldMoveHumanoidCommandsPackage.cs" />
     <Compile Include="Assets\Scripts\IRapidFireGun.cs" />
     <Compile Include="Assets\Scripts\IThing.cs" />
@@ -378,23 +382,24 @@
     <Compile Include="Assets\Scripts\OldDisagreementByTargetHeadPositionInfo.cs" />
     <Compile Include="Assets\Scripts\OldDisagreementByTargetPositionInfo.cs" />
     <Compile Include="Assets\Scripts\OldDisagreementByVStateInfo.cs" />
-    <Compile Include="Assets\Scripts\OldHumanoidHandsActionStateCommand.cs" />
-    <Compile Include="Assets\Scripts\OldHumanoidHandsStateCommand.cs" />
-    <Compile Include="Assets\Scripts\OldHumanoidHeadStateCommand.cs" />
-    <Compile Include="Assets\Scripts\OldHumanoidHStateCommand.cs" />
-    <Compile Include="Assets\Scripts\OldHumanoidTaskOfExecuting.cs" />
-    <Compile Include="Assets\Scripts\OldHumanoidThingsCommand.cs" />
-    <Compile Include="Assets\Scripts\OldHumanoidVStateCommand.cs" />
-    <Compile Include="Assets\Scripts\OldIHumanoid.cs" />
-    <Compile Include="Assets\Scripts\OldIHumanoidHandsActionStateCommand.cs" />
-    <Compile Include="Assets\Scripts\OldMoveHumanoidCommand.cs" />
+    <Compile Include="Assets\Scripts\InternalHumanoidHandsActionStateCommand.cs" />
+    <Compile Include="Assets\Scripts\InternalHumanoidHandsStateCommand.cs" />
+    <Compile Include="Assets\Scripts\InternalHumanoidHeadStateCommand.cs" />
+    <Compile Include="Assets\Scripts\InternalHumanoidHStateCommand.cs" />
+    <Compile Include="Assets\Scripts\InternalHumanoidTaskOfExecuting.cs" />
+    <Compile Include="Assets\Scripts\InternalHumanoidThingsCommand.cs" />
+    <Compile Include="Assets\Scripts\InternalHumanoidVStateCommand.cs" />
+    <Compile Include="Assets\Scripts\IInternalHumanoid.cs" />
+    <Compile Include="Assets\Scripts\IInternalHumanoidHandsActionStateCommand.cs" />
+    <Compile Include="Assets\Scripts\InternalMoveHumanoidCommand.cs" />
     <Compile Include="Assets\Scripts\OldNPCProcessesContext.cs" />
     <Compile Include="Assets\Scripts\OldNPCThreadSafeMeshController.cs" />
-    <Compile Include="Assets\Scripts\OldStatesOfHumanoidController.cs" />
+    <Compile Include="Assets\Scripts\InternalStatesOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\OldTstBaseConcreteNPCProcessWithBlackBoard.cs" />
     <Compile Include="Assets\Scripts\OldTstBlackBoard.cs" />
     <Compile Include="Assets\Scripts\OldTstConcreteNPCProcesses.cs" />
     <Compile Include="Assets\Scripts\OldTstConcreteNPCProcessesContextWithBlackBoard.cs" />
+    <Compile Include="Assets\Scripts\ProxyForStatesOfHumanoidBodyHost.cs" />
     <Compile Include="Assets\Scripts\RapidFireGunProxy.cs" />
     <Compile Include="Assets\Scripts\RightHandLocator.cs" />
     <Compile Include="Assets\Scripts\RightHandWPLocator.cs" />

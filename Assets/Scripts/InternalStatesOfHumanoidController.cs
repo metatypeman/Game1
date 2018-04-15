@@ -8,21 +8,21 @@ using MyNPCLib;
 
 namespace Assets.Scripts
 {
-    public class OldStatesOfHumanoidController : IObjectToString
+    public class InternalStatesOfHumanoidController : IObjectToString
     {
-        public OldHumanoidHState HState = OldHumanoidHState.Stop;
+        public InternalHumanoidHState HState = InternalHumanoidHState.Stop;
         public Vector3? TargetPosition;
-        public OldHumanoidVState VState = OldHumanoidVState.Ground;
-        public OldHumanoidHandsState HandsState = OldHumanoidHandsState.FreeHands;
-        public OldHumanoidHandsActionState HandsActionState = OldHumanoidHandsActionState.Empty;
-        public OldHumanoidHeadState HeadState = OldHumanoidHeadState.LookingForward;
+        public InternalHumanoidVState VState = InternalHumanoidVState.Ground;
+        public InternalHumanoidHandsState HandsState = InternalHumanoidHandsState.FreeHands;
+        public InternalHumanoidHandsActionState HandsActionState = InternalHumanoidHandsActionState.Empty;
+        public InternalHumanoidHeadState HeadState = InternalHumanoidHeadState.LookingForward;
         public Vector3? TargetHeadPosition;
-        public OldKindOfHumanoidThingsCommand KindOfThingsCommand = OldKindOfHumanoidThingsCommand.Undefined;
+        public InternalKindOfHumanoidThingsCommand KindOfThingsCommand = InternalKindOfHumanoidThingsCommand.Undefined;
         public int InstanceOfThingId;
 
-        public OldStatesOfHumanoidController Clone()
+        public InternalStatesOfHumanoidController Clone()
         {
-            var result = new OldStatesOfHumanoidController();
+            var result = new InternalStatesOfHumanoidController();
             result.HState = HState;
             result.TargetPosition = TargetPosition;
             result.VState = VState;
@@ -35,7 +35,7 @@ namespace Assets.Scripts
             return result;
         }
 
-        public void Append(OldStatesOfHumanoidController source)
+        public void Append(InternalStatesOfHumanoidController source)
         {
             HState = source.HState;
             TargetPosition = source.TargetPosition;

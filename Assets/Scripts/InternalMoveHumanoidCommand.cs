@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public abstract class OldMoveHumanoidCommand : IOldMoveHumanoidCommand
+    public abstract class InternalMoveHumanoidCommand : IInternalMoveHumanoidCommand
     {
-        public abstract OldMoveHumanoidCommandKind Kind { get; }
+        public abstract InternalMoveHumanoidCommandKind Kind { get; }
 
         public override string ToString()
         {

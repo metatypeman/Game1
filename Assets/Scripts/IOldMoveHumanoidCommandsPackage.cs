@@ -9,6 +9,6 @@ namespace Assets.Scripts
 {
     public interface IOldMoveHumanoidCommandsPackage : IObjectToString
     {
-        List<IOldMoveHumanoidCommand> Commands { get; }
+        List<IInternalMoveHumanoidCommand> Commands { get; }
     }
 }

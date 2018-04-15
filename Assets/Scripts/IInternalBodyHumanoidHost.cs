@@ -8,5 +8,10 @@ namespace Assets.Scripts
 {
     public interface IInternalBodyHumanoidHost
     {
+        InternalHumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidController targetState);
+        InternalStatesOfHumanoidController States { get; }
+        event InternalHumanoidStatesChangedAction OnHumanoidStatesChanged;
+        void Die();
+        void SetAimCorrector(IAimCorrector corrector);
     }
 }

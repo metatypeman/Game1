@@ -18,7 +18,7 @@ namespace Assets.Scripts
 
         private StatesOfHumanoidBodyController mStates = new StatesOfHumanoidBodyController();
 
-        public StatesOfHumanoidBodyController States
+        public IStatesOfHumanoidBodyHost States
         {
             get
             {

@@ -324,7 +324,7 @@ namespace MyNPCLib
             return result;
         }
 
-        private NPCBodyResourcesResolution CreateResolution(StatesOfHumanoidBodyController sourceState, TargetStateOfHumanoidBody targetState, ulong processId)
+        private NPCBodyResourcesResolution CreateResolution(IStatesOfHumanoidBodyHost sourceState, TargetStateOfHumanoidBody targetState, ulong processId)
         {
 #if DEBUG
             LogInstance.Log($"NPCBodyResourcesManager CreateResolution sourceState = {sourceState}");

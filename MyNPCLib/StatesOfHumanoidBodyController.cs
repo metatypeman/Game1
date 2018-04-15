@@ -4,17 +4,17 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    public class StatesOfHumanoidBodyController : IObjectToString
+    public class StatesOfHumanoidBodyController : IObjectToString, IStatesOfHumanoidBodyHost
     {
-        public HumanoidHState HState = HumanoidHState.Stop;
-        public object TargetPosition;
-        public HumanoidVState VState = HumanoidVState.Ground;
-        public HumanoidHandsState HandsState = HumanoidHandsState.FreeHands;
-        public HumanoidHandsActionState HandsActionState = HumanoidHandsActionState.Empty;
-        public HumanoidHeadState HeadState = HumanoidHeadState.LookingForward;
-        public object TargetHeadPosition;
-        public KindOfHumanoidThingsCommand KindOfThingsCommand = KindOfHumanoidThingsCommand.Undefined;
-        public int InstanceOfThingId;
+        public HumanoidHState HState { get; set; } = HumanoidHState.Stop;
+        public object TargetPosition { get; set; }
+        public HumanoidVState VState { get; set; } = HumanoidVState.Ground;
+        public HumanoidHandsState HandsState { get; set; } = HumanoidHandsState.FreeHands;
+        public HumanoidHandsActionState HandsActionState { get; set; } = HumanoidHandsActionState.Empty;
+        public HumanoidHeadState HeadState { get; set; } = HumanoidHeadState.LookingForward;
+        public object TargetHeadPosition { get; set; }
+        public KindOfHumanoidThingsCommand KindOfThingsCommand { get; set; } = KindOfHumanoidThingsCommand.Undefined;
+        public int InstanceOfThingId { get; set; }
 
         public StatesOfHumanoidBodyController Clone()
         {
@@ -88,6 +88,5 @@ namespace MyNPCLib
 
             return sb.ToString();
         }
-
     }
 }

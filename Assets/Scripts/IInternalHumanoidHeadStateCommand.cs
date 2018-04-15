@@ -7,16 +7,16 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public enum OldHumanoidHeadState
+    public enum InternalHumanoidHeadState
     {
         LookingForward,
         LookAt,
         Rotate
     }
 
-    public interface IOldHumanoidHeadStateCommand : IOldMoveHumanoidCommand
+    public interface IInternalHumanoidHeadStateCommand : IInternalMoveHumanoidCommand
     {
-        OldHumanoidHeadState State { get; }
+        InternalHumanoidHeadState State { get; }
         Vector3? TargetPosition { get; }
         float Speed { get; }
     }

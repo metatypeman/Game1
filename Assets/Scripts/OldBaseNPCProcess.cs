@@ -469,7 +469,7 @@ namespace Assets.Scripts
 #endif
         }
 
-        protected NPCMeshTask Execute(IOldMoveHumanoidCommand command)
+        protected NPCMeshTask Execute(IInternalMoveHumanoidCommand command)
         {
             lock (mDisposeLockObj)
             {

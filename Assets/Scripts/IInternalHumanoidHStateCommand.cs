@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public enum OldHumanoidHState
+    public enum InternalHumanoidHState
     {
         Stop,
         Walk,
@@ -18,9 +18,9 @@ namespace Assets.Scripts
         Move
     }
 
-    public interface IOldHumanoidHStateCommand : IOldMoveHumanoidCommand
+    public interface IInternalHumanoidHStateCommand : IInternalMoveHumanoidCommand
     {
-        OldHumanoidHState State { get; }
+        InternalHumanoidHState State { get; }
         Vector3? TargetPosition { get; }
         float Speed { get; }
     }

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public enum OldHumanoidHandsState
+    public enum InternalHumanoidHandsState
     {
         FreeHands,
         HasRifle
     }
 
-    public interface IOldHumanoidHandsStateCommand : IOldMoveHumanoidCommand
+    public interface IInternalHumanoidHandsStateCommand : IInternalMoveHumanoidCommand
     {
-        OldHumanoidHandsState State { get; }
+        InternalHumanoidHandsState State { get; }
     }
 }

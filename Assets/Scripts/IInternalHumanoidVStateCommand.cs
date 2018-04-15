@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public enum OldHumanoidVState
+    public enum InternalHumanoidVState
     {
         Ground,
         Jump,
         Crouch
     }
 
-    public interface IOldHumanoidVStateCommand : IOldMoveHumanoidCommand
+    public interface IInternalHumanoidVStateCommand : IInternalMoveHumanoidCommand
     {
-        OldHumanoidVState State { get; }
+        InternalHumanoidVState State { get; }
     }
 }

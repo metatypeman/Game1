@@ -173,7 +173,7 @@ namespace Assets.Scripts
             }
         }
 
-        public bool SetToHandsOfHumanoid(OldIHumanoid humanoid)
+        public bool SetToHandsOfHumanoid(IInternalHumanoid humanoid)
         {
             lock (mLockObj)
             {

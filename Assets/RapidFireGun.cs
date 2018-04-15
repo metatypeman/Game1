@@ -307,7 +307,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         return angle;
     }
 
-    public bool SetToHandsOfHumanoid(OldIHumanoid humanoid)
+    public bool SetToHandsOfHumanoid(IInternalHumanoid humanoid)
     {
 #if UNITY_EDITOR
         //Debug.Log("Begin RapidFireGun SetToHandsOfHumanoid");
