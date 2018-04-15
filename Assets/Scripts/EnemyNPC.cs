@@ -48,7 +48,6 @@ public class EnemyNPC : MonoBehaviour
 
         mEnemyController = GetComponent<EnemyController>();
         
-
         mEnemyRayScaner = GetComponent<EnemyRayScaner>();
 
         if(UseOldContext)
@@ -62,7 +61,8 @@ public class EnemyNPC : MonoBehaviour
             var globalEntityDictionary = new EntityDictionary();
             //var  GetComponent<EnemyController>();
 
-            mNPCProcessesContext = new TestedNPCContext(globalEntityDictionary, npcProcessInfoCache, null);
+            var hostContext = new TestedNPCHostContext();
+            mNPCProcessesContext = new TestedNPCContext(globalEntityDictionary, npcProcessInfoCache, hostContext);
             mNPCProcessesContext.Bootstrap();
         }
 

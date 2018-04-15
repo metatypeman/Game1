@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public enum HumanoidStateKind
+    public enum OldHumanoidStateKind
     {
         HState,
         TargetPosition,
@@ -18,13 +18,13 @@ namespace Assets.Scripts
         ThingsCommand
     }
 
-    public delegate void HumanoidStatesChangedAction(List<HumanoidStateKind> changedStates);
+    public delegate void OldHumanoidStatesChangedAction(List<OldHumanoidStateKind> changedStates);
 
     public interface IMoveHumanoidController
     {
         OldHumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidController targetState);
         OldStatesOfHumanoidController States { get; }
-        event HumanoidStatesChangedAction OnHumanoidStatesChanged;
+        event OldHumanoidStatesChangedAction OnHumanoidStatesChanged;
         void Die();
         void SetAimCorrector(IAimCorrector corrector);
     }

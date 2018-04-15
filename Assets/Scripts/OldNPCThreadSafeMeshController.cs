@@ -16,7 +16,7 @@ namespace Assets.Scripts
             mMoveHumanoidController.OnHumanoidStatesChanged += OnHumanoidStatesChanged;
         }
 
-        private void OnHumanoidStatesChanged(List<HumanoidStateKind> changedStates)
+        private void OnHumanoidStatesChanged(List<OldHumanoidStateKind> changedStates)
         {
             lock (mDisposeLockObj)
             {
@@ -42,32 +42,32 @@ namespace Assets.Scripts
                 {
                     switch (changedState)
                     {
-                        case HumanoidStateKind.HState:
+                        case OldHumanoidStateKind.HState:
                             displacedProcessesIdList.AddRange(mHState);
                             mHState.Clear();
                             break;
 
-                        case HumanoidStateKind.TargetPosition:
+                        case OldHumanoidStateKind.TargetPosition:
                             displacedProcessesIdList.AddRange(mTargetPosition);
                             mTargetPosition.Clear();
                             break;
 
-                        case HumanoidStateKind.VState:
+                        case OldHumanoidStateKind.VState:
                             displacedProcessesIdList.AddRange(mVState);
                             mVState.Clear();
                             break;
 
-                        case HumanoidStateKind.HandsState:              
+                        case OldHumanoidStateKind.HandsState:              
                             displacedProcessesIdList.AddRange(mHandsState);
                             mHandsState.Clear();
                             break;
 
-                        case HumanoidStateKind.HandsActionState:
+                        case OldHumanoidStateKind.HandsActionState:
                             displacedProcessesIdList.AddRange(mHandsActionState);
                             mHandsActionState.Clear();
                             break;
 
-                        case HumanoidStateKind.ThingsCommand:
+                        case OldHumanoidStateKind.ThingsCommand:
                             displacedProcessesIdList.AddRange(mHandsState);
                             mHandsState.Clear();
                             displacedProcessesIdList.AddRange(mHandsActionState);

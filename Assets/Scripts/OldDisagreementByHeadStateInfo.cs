@@ -9,7 +9,7 @@ namespace Assets.Scripts
 {
     public class OldDisagreementByHeadStateInfo : IObjectToString
     {
-        public HumanoidStateKind Kind => HumanoidStateKind.HeadState;
+        public OldHumanoidStateKind Kind => OldHumanoidStateKind.HeadState;
         public List<int> CurrentProcessesId { get; set; }
         public HumanoidHeadState CurrentValue { get; set; } = HumanoidHeadState.LookingForward;
         public int TargetProcessId { get; set; }

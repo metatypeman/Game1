@@ -2521,7 +2521,7 @@ MonoBehaviour:
   VRaysCount: 6
   Distance: 20
   Angle: 20
-  Head: {fileID: 1679634769}
+  Head: {fileID: 0}
 --- !u!195 &656795666
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2556,7 +2556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c292cc434c8a1ad47932dde0400bb701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Head: {fileID: 1679634769}
+  Head: {fileID: 0}
   DefaultBodyAngleSpeed: 0.5
   DefaultHeadAngleSpeed: 0.5
 --- !u!114 &656795668
@@ -2573,9 +2573,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   surfaceOffset: 1.5
   setTargetOn: {fileID: 0}
-  Head: {fileID: 1679634769}
+  UseOldContext: 0
+  Head: {fileID: 0}
   mAnim: {fileID: 0}
-  GunEnd: {fileID: 995142507}
+  GunEnd: {fileID: 0}
   isIkActive: 0
 --- !u!114 &656795669
 MonoBehaviour:
@@ -4428,7 +4429,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -674920343
+  randomSeed: -1951684045
   InitialModule:
     serializedVersion: 3
     enabled: 1

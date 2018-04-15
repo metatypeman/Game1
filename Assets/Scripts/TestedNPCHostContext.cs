@@ -24,9 +24,9 @@ namespace Assets.Scripts
         public event HumanoidStatesChangedAction OnHumanoidStatesChanged;
 
         private object mLockObj = new object();
-        private OldHumanoidTaskOfExecuting mTargetStateForExecuting;
+        private HumanoidTaskOfExecuting mTargetStateForExecuting;
 
-        public OldHumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidBody targetState)
+        public HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidBody targetState)
         {
 #if DEBUG
             //NLog.LogManager.GetCurrentClassLogger().Info($"ExecuteAsync targetState = {targetState}");
@@ -36,16 +36,16 @@ namespace Assets.Scripts
             {
                 if (mTargetStateForExecuting != null)
                 {
-                    mTargetStateForExecuting.State = OldStateOfHumanoidTaskOfExecuting.Canceled;
+                    mTargetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Canceled;
                 }
 
-                var targetStateForExecuting = new OldHumanoidTaskOfExecuting();
-                //targetStateForExecuting.ProcessedState = targetState;
+                var targetStateForExecuting = new HumanoidTaskOfExecuting();
+                targetStateForExecuting.ProcessedState = targetState;
 
                 mTargetStateForExecuting = targetStateForExecuting;
 
 #if DEBUG
-                targetStateForExecuting.State = OldStateOfHumanoidTaskOfExecuting.Executed;//tmp
+                targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;//tmp
                 //NLog.LogManager.GetCurrentClassLogger().Info($"ExecuteAsync mTargetStateQueue.Count = {mTargetStateQueue.Count}");
 #endif
 
@@ -86,7 +86,7 @@ namespace Assets.Scripts
         }
     }
 
-    public class TestedNPCHostContext
+    public class TestedNPCHostContext: INPCHostContext
     {
         public TestedNPCHostContext()
         {
