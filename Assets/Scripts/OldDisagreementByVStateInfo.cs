@@ -11,9 +11,9 @@ namespace Assets.Scripts
     {
         public OldHumanoidStateKind Kind => OldHumanoidStateKind.VState;
         public List<int> CurrentProcessesId { get; set; }
-        public HumanoidVState CurrentValue { get; set; } = HumanoidVState.Ground;
+        public OldHumanoidVState CurrentValue { get; set; } = OldHumanoidVState.Ground;
         public int TargetProcessId { get; set; }
-        public HumanoidVState TargetValue { get; set; } = HumanoidVState.Ground;
+        public OldHumanoidVState TargetValue { get; set; } = OldHumanoidVState.Ground;
 
         public override string ToString()
         {

@@ -10,14 +10,14 @@ namespace Assets.Scripts
 {
     public class TargetStateOfHumanoidController : IObjectToString
     {
-        public HumanoidHState? HState { get; set; }
+        public OldHumanoidHState? HState { get; set; }
         public Vector3? TargetPosition { get; set; }
-        public HumanoidVState? VState { get; set; }
-        public HumanoidHandsState? HandsState { get; set; }
+        public OldHumanoidVState? VState { get; set; }
+        public OldHumanoidHandsState? HandsState { get; set; }
         public OldHumanoidHandsActionState? HandsActionState { get; set; }
-        public HumanoidHeadState? HeadState { get; set; }
+        public OldHumanoidHeadState? HeadState { get; set; }
         public Vector3? TargetHeadPosition { get; set; }
-        public KindOfHumanoidThingsCommand? KindOfThingsCommand { get; set; }
+        public OldKindOfHumanoidThingsCommand? KindOfThingsCommand { get; set; }
         public int? InstanceOfThingId { get; set; }
 
         public override string ToString()

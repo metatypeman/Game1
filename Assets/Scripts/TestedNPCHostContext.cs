@@ -34,7 +34,7 @@ namespace Assets.Scripts
         public HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidBody targetState)
         {
 #if DEBUG
-            //NLog.LogManager.GetCurrentClassLogger().Info($"ExecuteAsync targetState = {targetState}");
+            Debug.Log($"ExecuteAsync targetState = {targetState}");
 #endif
 
             lock (mLockObj)

@@ -7,8 +7,8 @@ using MyNPCLib;
 
 namespace Assets.Scripts
 {
-    public interface IMoveHumanoidCommandsPackage : IObjectToString
+    public interface IOldMoveHumanoidCommandsPackage : IObjectToString
     {
-        List<IMoveHumanoidCommand> Commands { get; }
+        List<IOldMoveHumanoidCommand> Commands { get; }
     }
 }

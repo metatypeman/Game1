@@ -51,7 +51,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
     public void TstTakeRifle(IHandThing thing)
     {
         thing.SetToHandsOfHumanoid(this);
-        mStates.HandsState = HumanoidHandsState.HasRifle;
+        mStates.HandsState = OldHumanoidHandsState.HasRifle;
         ApplyCurrentStates();
     }
 
@@ -112,10 +112,10 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
 
     private BehaviourFlagsOfHumanoidController mBehaviourFlags;
 
-    public HumanoidHState HState => mStates.HState;
+    public OldHumanoidHState HState => mStates.HState;
     public Vector3? TargetPosition => mStates.TargetPosition;
-    public HumanoidVState VState => mStates.VState;
-    public HumanoidHandsState HandsState => mStates.HandsState;
+    public OldHumanoidVState VState => mStates.VState;
+    public OldHumanoidHandsState HandsState => mStates.HandsState;
     public OldHumanoidHandsActionState HandsActionState => mStates.HandsActionState;
     public event OldHumanoidStatesChangedAction OnHumanoidStatesChanged;
 
@@ -192,7 +192,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
         //Debug.Log($"EnemyController Execute newState = {newState}");
 #endif
 
-        if(newState.KindOfThingsCommand != KindOfHumanoidThingsCommand.Undefined && newState.InstanceOfThingId != 0)
+        if(newState.KindOfThingsCommand != OldKindOfHumanoidThingsCommand.Undefined && newState.InstanceOfThingId != 0)
         {
             ExecuteThingsCommand(newState);
         }
@@ -219,29 +219,29 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
 
         switch (kindOfThingsCommand)
         {
-            case KindOfHumanoidThingsCommand.Take:
+            case OldKindOfHumanoidThingsCommand.Take:
                 {
                     thing.SetToHandsOfHumanoid(this);
-                    mStates.HandsState = HumanoidHandsState.HasRifle;
+                    mStates.HandsState = OldHumanoidHandsState.HasRifle;
                     ApplyCurrentStates();
                     EmitOnHumanoidStatesChanged(OldHumanoidStateKind.ThingsCommand);
                 }
                 break;
 
-            case KindOfHumanoidThingsCommand.PutToBagpack:
+            case OldKindOfHumanoidThingsCommand.PutToBagpack:
                 {
                     thing.SetAsAloneAndHide();
-                    mStates.HandsState = HumanoidHandsState.FreeHands;
+                    mStates.HandsState = OldHumanoidHandsState.FreeHands;
                     mStates.HandsActionState = OldHumanoidHandsActionState.Empty;
                     ApplyCurrentStates();
                     EmitOnHumanoidStatesChanged(OldHumanoidStateKind.ThingsCommand);
                 }
                 break;
 
-            case KindOfHumanoidThingsCommand.ThrowOutToSurface:
+            case OldKindOfHumanoidThingsCommand.ThrowOutToSurface:
                 {
                     thing.ThrowOutToSurface();
-                    mStates.HandsState = HumanoidHandsState.FreeHands;
+                    mStates.HandsState = OldHumanoidHandsState.FreeHands;
                     mStates.HandsActionState = OldHumanoidHandsActionState.Empty;
                     ApplyCurrentStates();
                     EmitOnHumanoidStatesChanged(OldHumanoidStateKind.ThingsCommand);
@@ -302,32 +302,32 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
 
         switch (result.HState)
         {
-            case HumanoidHState.Stop:
+            case OldHumanoidHState.Stop:
                 result.TargetPosition = null;
                 break;
 
-            case HumanoidHState.Walk:
-            case HumanoidHState.Run:
-            case HumanoidHState.LookAt:
-            case HumanoidHState.Move:
-            case HumanoidHState.Rotate:
+            case OldHumanoidHState.Walk:
+            case OldHumanoidHState.Run:
+            case OldHumanoidHState.LookAt:
+            case OldHumanoidHState.Move:
+            case OldHumanoidHState.Rotate:
                 if (!result.TargetPosition.HasValue)
                 {
-                    result.HState = HumanoidHState.Stop;
+                    result.HState = OldHumanoidHState.Stop;
                 }
                 break;
                 
-            case HumanoidHState.AimAt:
-                if(result.HandsState != HumanoidHandsState.HasRifle || result.HandsActionState != OldHumanoidHandsActionState.StrongAim || !result.TargetPosition.HasValue)
+            case OldHumanoidHState.AimAt:
+                if(result.HandsState != OldHumanoidHandsState.HasRifle || result.HandsActionState != OldHumanoidHandsActionState.StrongAim || !result.TargetPosition.HasValue)
                 {
-                    result.HState = HumanoidHState.Stop;
+                    result.HState = OldHumanoidHState.Stop;
                 }
                 break;
         }
 
         switch (result.HandsState)
         {
-            case HumanoidHandsState.FreeHands:
+            case OldHumanoidHandsState.FreeHands:
                 result.HandsActionState = OldHumanoidHandsActionState.Empty;
                 break;
         }
@@ -341,11 +341,11 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
 
         switch (sourceState.HandsState)
         {
-            case HumanoidHandsState.FreeHands:
+            case OldHumanoidHandsState.FreeHands:
                 result.HasRifle = false;
                 break;
 
-            case HumanoidHandsState.HasRifle:
+            case OldHumanoidHandsState.HasRifle:
                 result.HasRifle = true;
                 break;
         }
@@ -363,15 +363,15 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
 
         switch (sourceState.HState)
         {
-            case HumanoidHState.Stop:
-            case HumanoidHState.AimAt:
-            case HumanoidHState.LookAt:
-            case HumanoidHState.Rotate:
+            case OldHumanoidHState.Stop:
+            case OldHumanoidHState.AimAt:
+            case OldHumanoidHState.LookAt:
+            case OldHumanoidHState.Rotate:
                 result.Walk = false;
                 break;
 
-            case HumanoidHState.Walk:
-            case HumanoidHState.Move:
+            case OldHumanoidHState.Walk:
+            case OldHumanoidHState.Move:
                 result.Walk = true;
                 break;
         }
@@ -385,8 +385,8 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
         var hState = mStates.HState;
         switch(hState)
         {
-            case HumanoidHState.Walk:
-            case HumanoidHState.Run:
+            case OldHumanoidHState.Walk:
+            case OldHumanoidHState.Run:
                 mNavMeshAgent.ResetPath();
                 break;
         }
@@ -422,8 +422,8 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
         var hState = mStates.HState;
         switch(hState)
         {
-            case HumanoidHState.Walk:
-            case HumanoidHState.Run:
+            case OldHumanoidHState.Walk:
+            case OldHumanoidHState.Run:
                 {
                     if(mStates.TargetPosition.HasValue)
                     {
@@ -433,7 +433,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
                 }
                 break;
 
-            case HumanoidHState.Move:
+            case OldHumanoidHState.Move:
                 {
                     if (mStates.TargetPosition.HasValue)
                     {
@@ -455,7 +455,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
                 }
                 break;
 
-            case HumanoidHState.LookAt:
+            case OldHumanoidHState.LookAt:
                 {
                     if(mStates.TargetPosition.HasValue)
                     {
@@ -466,7 +466,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
                 }              
                 break;
                 
-            case HumanoidHState.AimAt:
+            case OldHumanoidHState.AimAt:
                 {
                     if(mStates.TargetPosition.HasValue)
                     {
@@ -483,7 +483,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
                 }
                 break;
 
-            case HumanoidHState.Rotate:
+            case OldHumanoidHState.Rotate:
                 if (mStates.TargetPosition.HasValue)
                 {
                     mNavMeshAgent.isStopped = true;
@@ -514,19 +514,19 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
 
         switch(headState)
         {
-            case HumanoidHeadState.LookingForward:
+            case OldHumanoidHeadState.LookingForward:
                 mUseIkAnimation = false;
                 mCurrentHeadAngle = 0f;
                 EmitOnHumanoidStatesChanged(OldHumanoidStateKind.HeadState, OldHumanoidStateKind.TargetHeadPosition);
                 break;
 
-            case HumanoidHeadState.LookAt:
+            case OldHumanoidHeadState.LookAt:
                 mCurrentHeadPosition = mStates.TargetHeadPosition.Value;
                 mUseIkAnimation = true;
                 EmitOnHumanoidStatesChanged(OldHumanoidStateKind.HeadState, OldHumanoidStateKind.TargetHeadPosition);
                 break;
 
-            case HumanoidHeadState.Rotate:
+            case OldHumanoidHeadState.Rotate:
                 mUseIkAnimation = true;
 
                 mTargetHeadAngle = mStates.TargetHeadPosition.Value.y;
@@ -583,7 +583,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
 
     public void ApplyAchieveDestinationOfMoving()
     {
-        mStates.HState = HumanoidHState.Stop;
+        mStates.HState = OldHumanoidHState.Stop;
         mStates.TargetPosition = null;
         ApplyCurrentStates();
         EmitOnHumanoidStatesChanged(OldHumanoidStateKind.HState, OldHumanoidStateKind.TargetPosition);
@@ -614,9 +614,9 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
         var hState = mStates.HState;
         switch(hState)
         {
-            case HumanoidHState.Walk:
-            case HumanoidHState.Run:
-            case HumanoidHState.Move:
+            case OldHumanoidHState.Walk:
+            case OldHumanoidHState.Run:
+            case OldHumanoidHState.Move:
                 {
                     var targetPosition = mStates.TargetPosition.Value;
                     var nextPosition = mNavMeshAgent.nextPosition;
@@ -627,7 +627,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
                 }
                 break;
 
-            case HumanoidHState.Rotate:
+            case OldHumanoidHState.Rotate:
                 if(mNeedBodyChanges)
                 {
                     var newAngle = mCurrentBodyAngle + mBodyAngleDelta;
@@ -684,7 +684,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
 
         switch (headState)
         {
-            case HumanoidHeadState.Rotate:
+            case OldHumanoidHeadState.Rotate:
                 if(mNeedHeadChanges)
                 {
                     var newAngle = mCurrentHeadAngle + mHeadAngleDelta;
@@ -730,11 +730,11 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, OldIHuman
 
         switch (headState)
         {
-            case HumanoidHeadState.LookingForward:
+            case OldHumanoidHeadState.LookingForward:
                 break;
 
-            case HumanoidHeadState.LookAt:
-            case HumanoidHeadState.Rotate:
+            case OldHumanoidHeadState.LookAt:
+            case OldHumanoidHeadState.Rotate:
                 mAnimator.SetLookAtWeight(1);
                 mAnimator.SetLookAtPosition(mCurrentHeadPosition);
                 Head.LookAt(mCurrentHeadPosition);

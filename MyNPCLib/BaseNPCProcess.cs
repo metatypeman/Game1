@@ -395,13 +395,6 @@ namespace MyNPCLib
             Task.WaitAll(tasksArray);
         }
 
-        public void Wait(List<INPCProcess> processes)
-        {
-            var tasksArray = processes.Where(p => p.Task != null).Select(p => p.Task).ToArray();
-
-            Task.WaitAll(tasksArray);
-        }
-
         public void Wait()
         {
             while(true)

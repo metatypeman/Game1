@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public enum KindOfHumanoidThingsCommand
+    public enum OldKindOfHumanoidThingsCommand
     {
         Undefined,
         Take,
@@ -14,9 +14,9 @@ namespace Assets.Scripts
         ThrowOutToSurface
     }
 
-    public interface IHumanoidThingsCommand : IMoveHumanoidCommand
+    public interface IOldHumanoidThingsCommand : IOldMoveHumanoidCommand
     {
-        KindOfHumanoidThingsCommand State { get; }
+        OldKindOfHumanoidThingsCommand State { get; }
         int InstanceId { get; set; }
     }
 }

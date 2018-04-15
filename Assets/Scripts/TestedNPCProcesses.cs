@@ -56,6 +56,24 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log("TestedGoToEnemyBaseProcess Main");
 #endif
+
+            var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
+
+            if (targetWayPoint != null)
+            {
+                var moveCommand = new HumanoidHStateCommand();
+                moveCommand.State = HumanoidHState.Walk;
+                moveCommand.TargetPosition = targetWayPoint.Position;
+
+#if UNITY_EDITOR
+                Debug.Log($"TestedGoToEnemyBaseProcess OnRun moveCommand = {moveCommand}");
+#endif
+
+                var childProcess = ExecuteBody(moveCommand);
+                Wait(childProcess);
+            }
+
+            var l = new List<int>();
         }
     }
 }

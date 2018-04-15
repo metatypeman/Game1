@@ -10,14 +10,14 @@ namespace Assets.Scripts
 {
     public class OldStatesOfHumanoidController : IObjectToString
     {
-        public HumanoidHState HState = HumanoidHState.Stop;
+        public OldHumanoidHState HState = OldHumanoidHState.Stop;
         public Vector3? TargetPosition;
-        public HumanoidVState VState = HumanoidVState.Ground;
-        public HumanoidHandsState HandsState = HumanoidHandsState.FreeHands;
+        public OldHumanoidVState VState = OldHumanoidVState.Ground;
+        public OldHumanoidHandsState HandsState = OldHumanoidHandsState.FreeHands;
         public OldHumanoidHandsActionState HandsActionState = OldHumanoidHandsActionState.Empty;
-        public HumanoidHeadState HeadState = HumanoidHeadState.LookingForward;
+        public OldHumanoidHeadState HeadState = OldHumanoidHeadState.LookingForward;
         public Vector3? TargetHeadPosition;
-        public KindOfHumanoidThingsCommand KindOfThingsCommand = KindOfHumanoidThingsCommand.Undefined;
+        public OldKindOfHumanoidThingsCommand KindOfThingsCommand = OldKindOfHumanoidThingsCommand.Undefined;
         public int InstanceOfThingId;
 
         public OldStatesOfHumanoidController Clone()

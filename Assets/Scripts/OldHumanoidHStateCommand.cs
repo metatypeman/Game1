@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class HumanoidHStateCommand : OldMoveHumanoidCommand, IHumanoidHStateCommand
+    public class OldHumanoidHStateCommand : OldMoveHumanoidCommand, IOldHumanoidHStateCommand
     {
-        public override MoveHumanoidCommandKind Kind => MoveHumanoidCommandKind.HState;
-        public HumanoidHState State { get; set; }
+        public override OldMoveHumanoidCommandKind Kind => OldMoveHumanoidCommandKind.HState;
+        public OldHumanoidHState State { get; set; }
         public Vector3? TargetPosition { get; set; }
         public float Speed { get; set; }
 

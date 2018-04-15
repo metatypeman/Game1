@@ -7,7 +7,7 @@ using MyNPCLib;
 
 namespace Assets.Scripts
 {
-    public enum MoveHumanoidCommandKind
+    public enum OldMoveHumanoidCommandKind
     {
         HState,
         VState,
@@ -17,8 +17,8 @@ namespace Assets.Scripts
         Things
     }
 
-    public interface IMoveHumanoidCommand : IObjectToString
+    public interface IOldMoveHumanoidCommand : IObjectToString
     {
-        MoveHumanoidCommandKind Kind { get; }
+        OldMoveHumanoidCommandKind Kind { get; }
     }
 }

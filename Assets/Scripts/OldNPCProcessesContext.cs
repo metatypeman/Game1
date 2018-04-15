@@ -132,7 +132,7 @@ namespace Assets.Scripts
             }
         }
         
-        public NPCMeshTask Execute(IMoveHumanoidCommand command, int processId)
+        public NPCMeshTask Execute(IOldMoveHumanoidCommand command, int processId)
         {
             lock (mDisposeLockObj)
             {
@@ -147,7 +147,7 @@ namespace Assets.Scripts
             return Execute(commandsPackage, processId);
         }
 
-        public NPCMeshTask Execute(IMoveHumanoidCommandsPackage package, int processId)
+        public NPCMeshTask Execute(IOldMoveHumanoidCommandsPackage package, int processId)
         {
 #if UNITY_EDITOR
             //Debug.Log($"NPCProcessesContext Execute package = {package} processId = {processId}");

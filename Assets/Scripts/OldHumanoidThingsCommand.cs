@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public class HumanoidHandsActionStateCommand : OldMoveHumanoidCommand, OldIHumanoidHandsActionStateCommand
+    public class OldHumanoidThingsCommand: OldMoveHumanoidCommand, IOldHumanoidThingsCommand
     {
-        public override MoveHumanoidCommandKind Kind => MoveHumanoidCommandKind.HandsActionState;
-        public OldHumanoidHandsActionState State { get; set; }
+        public override OldMoveHumanoidCommandKind Kind => OldMoveHumanoidCommandKind.Things;
+        public OldKindOfHumanoidThingsCommand State { get; set; }
+        public int InstanceId { get; set; }
 
         public override string PropertiesToSting(uint n)
         {
@@ -18,6 +19,7 @@ namespace Assets.Scripts
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToSting(n));
             sb.AppendLine($"{spaces}{nameof(State)} = {State}");
+            sb.AppendLine($"{spaces}{nameof(InstanceId)} = {InstanceId}");
             return sb.ToString();
         }
     }

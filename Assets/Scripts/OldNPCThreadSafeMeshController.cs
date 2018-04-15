@@ -105,7 +105,7 @@ namespace Assets.Scripts
         private IMoveHumanoidController mMoveHumanoidController;
         private OldNPCProcessesContext mContext;
 
-        public NPCMeshTask Execute(IMoveHumanoidCommandsPackage package, int processId)
+        public NPCMeshTask Execute(IOldMoveHumanoidCommandsPackage package, int processId)
         {
             lock (mDisposeLockObj)
             {
@@ -174,7 +174,7 @@ namespace Assets.Scripts
             return result;
         }
 
-        private TargetStateOfHumanoidController CreateTargetState(IMoveHumanoidCommandsPackage package)
+        private TargetStateOfHumanoidController CreateTargetState(IOldMoveHumanoidCommandsPackage package)
         {
 #if UNITY_EDITOR
             //Debug.Log($"NPCThreadSafeMeshController CreateTargetState package = {package}");
@@ -189,12 +189,12 @@ namespace Assets.Scripts
                 return result;
             }
 
-            var hStateCommandsList = new List<IHumanoidHStateCommand>();
-            var vStateCommandsList = new List<IHumanoidVStateCommand>();
-            var handsStateCommandsList = new List<IHumanoidHandsStateCommand>();
+            var hStateCommandsList = new List<IOldHumanoidHStateCommand>();
+            var vStateCommandsList = new List<IOldHumanoidVStateCommand>();
+            var handsStateCommandsList = new List<IOldHumanoidHandsStateCommand>();
             var handsActionStateCommandsList = new List<OldIHumanoidHandsActionStateCommand>();
-            var headStateCommandsList = new List<IHumanoidHeadStateCommand>();
-            var thingCommandsList = new List<IHumanoidThingsCommand>();
+            var headStateCommandsList = new List<IOldHumanoidHeadStateCommand>();
+            var thingCommandsList = new List<IOldHumanoidThingsCommand>();
 
             foreach (var command in commandsList)
             {
@@ -202,28 +202,28 @@ namespace Assets.Scripts
 
                 switch (kind)
                 {
-                    case MoveHumanoidCommandKind.HState:
-                        hStateCommandsList.Add(command as IHumanoidHStateCommand);
+                    case OldMoveHumanoidCommandKind.HState:
+                        hStateCommandsList.Add(command as IOldHumanoidHStateCommand);
                         break;
 
-                    case MoveHumanoidCommandKind.VState:
-                        vStateCommandsList.Add(command as IHumanoidVStateCommand);
+                    case OldMoveHumanoidCommandKind.VState:
+                        vStateCommandsList.Add(command as IOldHumanoidVStateCommand);
                         break;
 
-                    case MoveHumanoidCommandKind.HandsState:
-                        handsStateCommandsList.Add(command as IHumanoidHandsStateCommand);
+                    case OldMoveHumanoidCommandKind.HandsState:
+                        handsStateCommandsList.Add(command as IOldHumanoidHandsStateCommand);
                         break;
 
-                    case MoveHumanoidCommandKind.HandsActionState:
+                    case OldMoveHumanoidCommandKind.HandsActionState:
                         handsActionStateCommandsList.Add(command as OldIHumanoidHandsActionStateCommand);
                         break;
 
-                    case MoveHumanoidCommandKind.HeadState:
-                        headStateCommandsList.Add(command as IHumanoidHeadStateCommand);
+                    case OldMoveHumanoidCommandKind.HeadState:
+                        headStateCommandsList.Add(command as IOldHumanoidHeadStateCommand);
                         break;
 
-                    case MoveHumanoidCommandKind.Things:
-                        thingCommandsList.Add(command as IHumanoidThingsCommand);
+                    case OldMoveHumanoidCommandKind.Things:
+                        thingCommandsList.Add(command as IOldHumanoidThingsCommand);
                         break;
 
                     default: throw new ArgumentOutOfRangeException("kind", kind, null);
@@ -254,15 +254,15 @@ namespace Assets.Scripts
 
                 switch (targetHState)
                 {
-                    case HumanoidHState.Stop:
+                    case OldHumanoidHState.Stop:
                         result.TargetPosition = null;
                         break;
 
-                    case HumanoidHState.Walk:
-                    case HumanoidHState.Run:
+                    case OldHumanoidHState.Walk:
+                    case OldHumanoidHState.Run:
                         if (!targetPosition.HasValue)
                         {
-                            result.HState = HumanoidHState.Stop;
+                            result.HState = OldHumanoidHState.Stop;
                         }
                         break;
                 }
@@ -327,7 +327,7 @@ namespace Assets.Scripts
 
                 switch (targeHandsState)
                 {
-                    case HumanoidHandsState.FreeHands:
+                    case OldHumanoidHandsState.FreeHands:
                         result.HandsActionState = OldHumanoidHandsActionState.Empty;
                         break;
                 }
@@ -434,7 +434,7 @@ namespace Assets.Scripts
              
             if (targetState.HandsState.HasValue || targetState.KindOfThingsCommand.HasValue)
             {
-                var targetHandsState = HumanoidHandsState.FreeHands;
+                var targetHandsState = OldHumanoidHandsState.FreeHands;
 
                 if(targetState.HandsState.HasValue)
                 {
@@ -446,13 +446,13 @@ namespace Assets.Scripts
 
                     switch(kindOfThingsCommand)
                     {
-                        case KindOfHumanoidThingsCommand.Take:
-                            targetHandsState = HumanoidHandsState.HasRifle;
+                        case OldKindOfHumanoidThingsCommand.Take:
+                            targetHandsState = OldHumanoidHandsState.HasRifle;
                             break;
 
-                        case KindOfHumanoidThingsCommand.PutToBagpack:
-                        case KindOfHumanoidThingsCommand.ThrowOutToSurface:
-                            targetHandsState = HumanoidHandsState.FreeHands;
+                        case OldKindOfHumanoidThingsCommand.PutToBagpack:
+                        case OldKindOfHumanoidThingsCommand.ThrowOutToSurface:
+                            targetHandsState = OldHumanoidHandsState.FreeHands;
                             break;
                     }
                 }

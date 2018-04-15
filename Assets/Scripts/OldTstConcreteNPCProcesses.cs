@@ -127,8 +127,8 @@ namespace Assets.Scripts
             
             if (targetWayPoint != null)
             {
-                var moveCommand = new HumanoidHStateCommand();
-                moveCommand.State = HumanoidHState.Walk;
+                var moveCommand = new OldHumanoidHStateCommand();
+                moveCommand.State = OldHumanoidHState.Walk;
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
@@ -198,8 +198,8 @@ namespace Assets.Scripts
 
             if (targetWayPoint != null)
             {
-                var moveCommand = new HumanoidHStateCommand();
-                moveCommand.State = HumanoidHState.Walk;
+                var moveCommand = new OldHumanoidHStateCommand();
+                moveCommand.State = OldHumanoidHState.Walk;
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
@@ -283,8 +283,8 @@ namespace Assets.Scripts
 
             if (targetWayPoint != null)
             {
-                var moveCommand = new HumanoidHStateCommand();
-                moveCommand.State = HumanoidHState.Walk;
+                var moveCommand = new OldHumanoidHStateCommand();
+                moveCommand.State = OldHumanoidHState.Walk;
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
@@ -338,7 +338,7 @@ namespace Assets.Scripts
             //Debug.Log("Begin OldTstSimpleAimProcess OnRun");
 #endif
 
-            var tmpCommand = new HumanoidHandsActionStateCommand();
+            var tmpCommand = new OldHumanoidHandsActionStateCommand();
             tmpCommand.State = OldHumanoidHandsActionState.StrongAim;
 
             var tmpTask = Execute(tmpCommand);
@@ -358,8 +358,8 @@ namespace Assets.Scripts
 
             if (targetWayPoint != null)
             {
-                var moveCommand = new HumanoidHStateCommand();
-                moveCommand.State = HumanoidHState.Walk;
+                var moveCommand = new OldHumanoidHStateCommand();
+                moveCommand.State = OldHumanoidHState.Walk;
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
@@ -399,8 +399,8 @@ namespace Assets.Scripts
             //Debug.Log($"Begin OldTSTFireToEthanProcess OnRun mTargetPosition = {mTargetPosition}");
 #endif
 
-            var tmpCommand = new HumanoidHStateCommand();
-            tmpCommand.State = HumanoidHState.AimAt;
+            var tmpCommand = new OldHumanoidHStateCommand();
+            tmpCommand.State = OldHumanoidHState.AimAt;
             tmpCommand.TargetPosition = mTargetPosition;
             //var tmpCommand = new HumanoidHandsActionStateCommand();
             //tmpCommand.State = HumanoidHandsActionState.StrongAim;
@@ -429,8 +429,8 @@ namespace Assets.Scripts
             //Debug.Log($"Begin OldTSTRotateProcess OnRun mAngle = {mAngle}");
 #endif
 
-            var tmpCommand = new HumanoidHStateCommand();
-            tmpCommand.State = HumanoidHState.Rotate;
+            var tmpCommand = new OldHumanoidHStateCommand();
+            tmpCommand.State = OldHumanoidHState.Rotate;
             tmpCommand.TargetPosition = new Vector3(0, mAngle, 0);
             //var tmpCommand = new HumanoidHandsActionStateCommand();
             //tmpCommand.State = HumanoidHandsActionState.StrongAim;
@@ -465,9 +465,9 @@ namespace Assets.Scripts
             //Debug.Log($"Begin OldTSTRotateHeadProcess OnRun targetWayPoint.Position = {targetWayPoint.Position}");
 #endif
 
-            var tmpCommand = new HumanoidHeadStateCommand();
+            var tmpCommand = new OldHumanoidHeadStateCommand();
             //tmpCommand.State = HumanoidHeadState.LookAt;
-            tmpCommand.State = HumanoidHeadState.Rotate;
+            tmpCommand.State = OldHumanoidHeadState.Rotate;
             //tmpCommand.TargetPosition = targetWayPoint.Position; // new Vector3(0, mAngle, 0);
             tmpCommand.TargetPosition = new Vector3(0, mAngle, 0);
             //var tmpCommand = new HumanoidHandsActionStateCommand();
@@ -493,8 +493,8 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             //Debug.Log("Begin OldTSTHeadToForvardProcess OnRun");
 #endif
-            var tmpCommand = new HumanoidHeadStateCommand();
-            tmpCommand.State = HumanoidHeadState.LookingForward;
+            var tmpCommand = new OldHumanoidHeadStateCommand();
+            tmpCommand.State = OldHumanoidHeadState.LookingForward;
             var tmpTask = Execute(tmpCommand);
 
 #if UNITY_EDITOR
@@ -516,8 +516,8 @@ namespace Assets.Scripts
             //Debug.Log("Begin OldTSTMoveProcess OnRun");
 #endif
 
-            var tmpCommand = new HumanoidHStateCommand();
-            tmpCommand.State = HumanoidHState.Move;
+            var tmpCommand = new OldHumanoidHStateCommand();
+            tmpCommand.State = OldHumanoidHState.Move;
             tmpCommand.TargetPosition = new Vector3(0, 0, 1);
             var tmpTask = Execute(tmpCommand);
 
@@ -543,8 +543,8 @@ namespace Assets.Scripts
             //Debug.Log("Begin OldTSTTakeFromSurfaceProcess OnRun");
 #endif
 
-            var tmpCommand = new HumanoidThingsCommand();
-            tmpCommand.State = KindOfHumanoidThingsCommand.Take;
+            var tmpCommand = new OldHumanoidThingsCommand();
+            tmpCommand.State = OldKindOfHumanoidThingsCommand.Take;
             tmpCommand.InstanceId = mInstanceId;
             var tmpTask = Execute(tmpCommand);
 
@@ -581,8 +581,8 @@ namespace Assets.Scripts
 #endif
 
             BlackBoard.RapidFireGunProxy.Instance = null;
-            var tmpCommand = new HumanoidThingsCommand();
-            tmpCommand.State = KindOfHumanoidThingsCommand.PutToBagpack;
+            var tmpCommand = new OldHumanoidThingsCommand();
+            tmpCommand.State = OldKindOfHumanoidThingsCommand.PutToBagpack;
             tmpCommand.InstanceId = mInstanceId;
             var tmpTask = Execute(tmpCommand);
 
@@ -616,8 +616,8 @@ namespace Assets.Scripts
 #endif
 
             BlackBoard.RapidFireGunProxy.Instance = null;
-            var tmpCommand = new HumanoidThingsCommand();
-            tmpCommand.State = KindOfHumanoidThingsCommand.ThrowOutToSurface;
+            var tmpCommand = new OldHumanoidThingsCommand();
+            tmpCommand.State = OldKindOfHumanoidThingsCommand.ThrowOutToSurface;
             tmpCommand.InstanceId = mInstanceId;
             var tmpTask = Execute(tmpCommand);
 

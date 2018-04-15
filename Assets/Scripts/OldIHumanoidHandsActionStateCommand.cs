@@ -12,7 +12,7 @@ namespace Assets.Scripts
         StrongAim
     }
 
-    public interface OldIHumanoidHandsActionStateCommand : IMoveHumanoidCommand
+    public interface OldIHumanoidHandsActionStateCommand : IOldMoveHumanoidCommand
     {
         OldHumanoidHandsActionState State { get; }
     }
