@@ -125,6 +125,7 @@ namespace Assets.Scripts
                 }
             }
         }
+
         public TurnState TurnState
         {
             get

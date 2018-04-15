@@ -61,7 +61,9 @@ public class EnemyNPC : MonoBehaviour
             var globalEntityDictionary = new EntityDictionary();
             //var  GetComponent<EnemyController>();
 
-            var hostContext = new TestedNPCHostContext();
+            var internalBodyHost = GetComponent <IInternalBodyHumanoidHost>();
+
+            var hostContext = new TestedNPCHostContext(internalBodyHost);
             mNPCProcessesContext = new TestedNPCContext(globalEntityDictionary, npcProcessInfoCache, hostContext);
             mNPCProcessesContext.Bootstrap();
         }
@@ -346,7 +348,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnUPressAction command = {command}");
+
+            mNPCProcessesContext.Send(command);
         }
     }
 

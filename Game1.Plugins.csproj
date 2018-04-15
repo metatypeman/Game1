@@ -284,6 +284,12 @@
     <Reference Include="MyNPCLib">
       <HintPath>Assets/MyNPCLib.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data.Common">
+      <HintPath>Assets/packages/System.Data.Common.4.3.0/lib/netstandard1.2/System.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>Assets/packages/System.Runtime.4.3.0/lib/net462/System.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.Advertisements">
       <HintPath>C:/Users/Sergey/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
     </Reference>
@@ -304,12 +310,6 @@
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/Sergey/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.Common">
-      <HintPath>Assets/packages/System.Data.Common.4.3.0/lib/netstandard1.2/System.Data.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime">
-      <HintPath>Assets/packages/System.Runtime.4.3.0/lib/net462/System.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

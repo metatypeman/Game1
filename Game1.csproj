@@ -12,16 +12,13 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -341,16 +338,7 @@
     <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
-    <Compile Include="Assets\Scripts\OldBaseNPCProcess.cs" />
-    <Compile Include="Assets\Scripts\OldBaseNPCProcessWithBlackBoard.cs" />
     <Compile Include="Assets\Scripts\BehaviourFlagsOfHumanoidController.cs" />
-    <Compile Include="Assets\Scripts\OldDisagreementByHandsActionStateInfo.cs" />
-    <Compile Include="Assets\Scripts\OldDisagreementByHandsStateInfo.cs" />
-    <Compile Include="Assets\Scripts\OldDisagreementByHeadStateInfo.cs" />
-    <Compile Include="Assets\Scripts\OldDisagreementByHStateInfo.cs" />
-    <Compile Include="Assets\Scripts\OldDisagreementByTargetHeadPositionInfo.cs" />
-    <Compile Include="Assets\Scripts\OldDisagreementByTargetPositionInfo.cs" />
-    <Compile Include="Assets\Scripts\OldDisagreementByVStateInfo.cs" />
     <Compile Include="Assets\Scripts\EnemyController.cs" />
     <Compile Include="Assets\Scripts\EnemyIK.cs" />
     <Compile Include="Assets\Scripts\EnemyNPC.cs" />
@@ -361,17 +349,15 @@
     <Compile Include="Assets\Scripts\HumanoidHandsStateCommand.cs" />
     <Compile Include="Assets\Scripts\HumanoidHeadStateCommand.cs" />
     <Compile Include="Assets\Scripts\HumanoidHStateCommand.cs" />
-    <Compile Include="Assets\Scripts\OldHumanoidTaskOfExecuting.cs" />
     <Compile Include="Assets\Scripts\HumanoidThingsCommand.cs" />
     <Compile Include="Assets\Scripts\HumanoidVStateCommand.cs" />
     <Compile Include="Assets\Scripts\IHandThing.cs" />
-    <Compile Include="Assets\Scripts\OldIHumanoid.cs" />
-    <Compile Include="Assets\Scripts\OldIHumanoidHandsActionStateCommand.cs" />
     <Compile Include="Assets\Scripts\IHumanoidHandsStateCommand.cs" />
     <Compile Include="Assets\Scripts\IHumanoidHeadStateCommand.cs" />
     <Compile Include="Assets\Scripts\IHumanoidHStateCommand.cs" />
     <Compile Include="Assets\Scripts\IHumanoidThingsCommand.cs" />
     <Compile Include="Assets\Scripts\IHumanoidVStateCommand.cs" />
+    <Compile Include="Assets\Scripts\IInternalBodyHumanoidHost.cs" />
     <Compile Include="Assets\Scripts\IMoveHumanoidCommand.cs" />
     <Compile Include="Assets\Scripts\IMoveHumanoidCommandsPackage.cs" />
     <Compile Include="Assets\Scripts\IMoveHumanoidController.cs" />
@@ -379,18 +365,32 @@
     <Compile Include="Assets\Scripts\IObject.cs" />
     <Compile Include="Assets\Scripts\IRapidFireGun.cs" />
     <Compile Include="Assets\Scripts\IThing.cs" />
+    <Compile Include="Assets\Scripts\KeyToNPCCommandConverter.cs" />
     <Compile Include="Assets\Scripts\LeftHandLocator.cs" />
     <Compile Include="Assets\Scripts\LeftHandWPLocator.cs" />
     <Compile Include="Assets\Scripts\LogProxyForDebug.cs" />
-    <Compile Include="Assets\Scripts\OldMoveHumanoidCommand.cs" />
     <Compile Include="Assets\Scripts\MoveHumanoidCommandsPackage.cs" />
     <Compile Include="Assets\Scripts\MyGameObject.cs" />
     <Compile Include="Assets\Scripts\NPCMeshTask.cs" />
     <Compile Include="Assets\Scripts\NPCMeshTaskResulution.cs" />
-    <Compile Include="Assets\Scripts\OldNPCProcessesContext.cs" />
     <Compile Include="Assets\Scripts\NPCProcessesContextWithBlackBoard.cs" />
     <Compile Include="Assets\Scripts\NPCSimpleDI.cs" />
+    <Compile Include="Assets\Scripts\OldBaseNPCProcess.cs" />
+    <Compile Include="Assets\Scripts\OldBaseNPCProcessWithBlackBoard.cs" />
+    <Compile Include="Assets\Scripts\OldDisagreementByHandsActionStateInfo.cs" />
+    <Compile Include="Assets\Scripts\OldDisagreementByHandsStateInfo.cs" />
+    <Compile Include="Assets\Scripts\OldDisagreementByHeadStateInfo.cs" />
+    <Compile Include="Assets\Scripts\OldDisagreementByHStateInfo.cs" />
+    <Compile Include="Assets\Scripts\OldDisagreementByTargetHeadPositionInfo.cs" />
+    <Compile Include="Assets\Scripts\OldDisagreementByTargetPositionInfo.cs" />
+    <Compile Include="Assets\Scripts\OldDisagreementByVStateInfo.cs" />
+    <Compile Include="Assets\Scripts\OldHumanoidTaskOfExecuting.cs" />
+    <Compile Include="Assets\Scripts\OldIHumanoid.cs" />
+    <Compile Include="Assets\Scripts\OldIHumanoidHandsActionStateCommand.cs" />
+    <Compile Include="Assets\Scripts\OldMoveHumanoidCommand.cs" />
+    <Compile Include="Assets\Scripts\OldNPCProcessesContext.cs" />
     <Compile Include="Assets\Scripts\OldNPCThreadSafeMeshController.cs" />
+    <Compile Include="Assets\Scripts\OldStatesOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\OldTstBaseConcreteNPCProcessWithBlackBoard.cs" />
     <Compile Include="Assets\Scripts\OldTstBlackBoard.cs" />
     <Compile Include="Assets\Scripts\OldTstConcreteNPCProcesses.cs" />
@@ -398,7 +398,6 @@
     <Compile Include="Assets\Scripts\RapidFireGunProxy.cs" />
     <Compile Include="Assets\Scripts\RightHandLocator.cs" />
     <Compile Include="Assets\Scripts\RightHandWPLocator.cs" />
-    <Compile Include="Assets\Scripts\OldStatesOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\TargetStateOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\TerrainCamHelper.cs" />
     <Compile Include="Assets\Scripts\TestedBaseNPCProcess.cs" />

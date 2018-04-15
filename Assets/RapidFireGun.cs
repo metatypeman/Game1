@@ -8,8 +8,11 @@ using UnityEngine;
 public class RapidFireGun : MonoBehaviour, IRapidFireGun
 {
     #region Public Fields
+    [SerializeField]
     public GameObject Body;
+    [SerializeField]
     public GameObject GunEnd;
+    [SerializeField]
     public Light FaceLight;
     public float EffectsDisplayTime = 0.1f;
     public int DamagePerShot = 20;

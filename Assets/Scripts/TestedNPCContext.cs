@@ -13,6 +13,8 @@ namespace Assets.Scripts
             : base(entityDictionary, npcProcessInfoCache, npcHostContext)
         {
             AddTypeOfProcess<TestedBootNPCProcess>();
+            AddTypeOfProcess<TestedKeyListenerProcess>();
+            AddTypeOfProcess<TestedGoToEnemyBaseProcess>();
         }
 
         public override void Bootstrap()

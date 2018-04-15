@@ -11,6 +11,11 @@ namespace Assets.Scripts
 {
     public class TestedNPCBodyHost : INPCBodyHost
     {
+        public TestedNPCBodyHost(IInternalBodyHumanoidHost internalBodyHumanoidHost)
+        {
+
+        }
+
         private StatesOfHumanoidBodyController mStates = new StatesOfHumanoidBodyController();
 
         public StatesOfHumanoidBodyController States
@@ -88,9 +93,9 @@ namespace Assets.Scripts
 
     public class TestedNPCHostContext: INPCHostContext
     {
-        public TestedNPCHostContext()
+        public TestedNPCHostContext(IInternalBodyHumanoidHost internalBodyHumanoidHost)
         {
-            mBodyHost = new TestedNPCBodyHost();
+            mBodyHost = new TestedNPCBodyHost(internalBodyHumanoidHost);
             mRightHandHost = new TestedNPCHandHost();
             mLeftHandHost = new TestedNPCHandHost();
         }
