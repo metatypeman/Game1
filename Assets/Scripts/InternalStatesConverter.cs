@@ -46,22 +46,22 @@ namespace Assets.Scripts
                     return HumanoidHState.Stop;
 
                 case InternalHumanoidHState.Walk:
-                    return HumanoidHState.;
+                    return HumanoidHState.Walk;
                         
                 case InternalHumanoidHState.Run:
-                    return HumanoidHState.;
+                    return HumanoidHState.Run;
                     
                 case InternalHumanoidHState.LookAt:
-                    return HumanoidHState.;
+                    return HumanoidHState.LookAt;
                     
                 case InternalHumanoidHState.AimAt:
-                    return HumanoidHState.;
+                    return HumanoidHState.AimAt;
                     
                 case InternalHumanoidHState.Rotate:
-                    return HumanoidHState.;
+                    return HumanoidHState.Rotate;
                     
                 case InternalHumanoidHState.Move:
-                    return HumanoidHState.;
+                    return HumanoidHState.Move;
             }
         }
 
