@@ -31,7 +31,12 @@ namespace Assets.Scripts
 
         private void InternalOnHumanoidStatesChanged(List<InternalHumanoidStateKind> changedStates)
         {
-        
+            var result = new List<HumanoidStateKind>();
+            
+            foreach(var initItem in changedStates)
+            {
+                result.Add(InternalStatesConverter.);
+            }
         }
 
         public event HumanoidStatesChangedAction OnHumanoidStatesChanged;
