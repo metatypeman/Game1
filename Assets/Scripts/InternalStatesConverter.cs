@@ -45,12 +45,23 @@ namespace Assets.Scripts
                 case InternalHumanoidHState.Stop:
                     return HumanoidHState.Stop;
 
-        case InternalHumanoidHState.Walk,
-        case InternalHumanoidHState.Run,
-        case InternalHumanoidHState.LookAt,
-        case InternalHumanoidHState.AimAt,
-        case InternalHumanoidHState.Rotate,
-        case InternalHumanoidHState.Move
+                case InternalHumanoidHState.Walk:
+                    return HumanoidHState.;
+                        
+                case InternalHumanoidHState.Run:
+                    return HumanoidHState.;
+                    
+                case InternalHumanoidHState.LookAt:
+                    return HumanoidHState.;
+                    
+                case InternalHumanoidHState.AimAt:
+                    return HumanoidHState.;
+                    
+                case InternalHumanoidHState.Rotate:
+                    return HumanoidHState.;
+                    
+                case InternalHumanoidHState.Move:
+                    return HumanoidHState.;
             }
         }
 
@@ -58,9 +69,14 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                case HumanoidVState.Ground
-        case HumanoidVState.Jump
-        case HumanoidVState.Crouch
+                case HumanoidVState.Ground:
+                    return InternalHumanoidVState.;
+                    
+                case HumanoidVState.Jump:
+                    return InternalHumanoidVState.;
+                    
+                case HumanoidVState.Crouch:
+                    return InternalHumanoidVState.;
             }
         }
 
@@ -68,9 +84,11 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                case Ground
-        Jump
-        Crouch
+                case InternalHumanoidVState.Ground:
+                    return .;
+                    
+                case InternalHumanoidVState.Jump:
+                case InternalHumanoidVState.Crouch:
             }
         }
 
@@ -78,8 +96,10 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                case FreeHands
-        HasRifle
+                case HumanoidHandsState.FreeHands:
+                    return .;
+                    
+                case HumanoidHandsState.HasRifle:
             }
         }
 
@@ -87,8 +107,10 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                case FreeHands
-        HasRifle
+                case InternalHumanoidHandsState.FreeHands:
+                    return .;
+                    
+                case InternalHumanoidHandsState.HasRifle:
             }
         }
 
@@ -96,8 +118,10 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                case Empty
-        StrongAim
+                case HumanoidHandsActionState.Empty:
+                    return .;
+                    
+                case HumanoidHandsActionState.StrongAim:
             }
         }
 
@@ -105,8 +129,10 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                case Empty
-        StrongAim
+                case InternalHumanoidHandsActionState.Empty:
+                    return .;
+                    
+                case InternalHumanoidHandsActionState.StrongAim:
             }
         }
 
@@ -114,9 +140,11 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                case LookingForward
-        LookAt
-        Rotate
+                case HumanoidHeadState.LookingForward:
+                    return .;
+                    
+                case HumanoidHeadState.LookAt:
+                case HumanoidHeadState.Rotate:
             }
         }
 
@@ -124,9 +152,11 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                case LookingForward
-        LookAt
-        Rotate
+                case InternalHumanoidHeadState.LookingForward:
+                    return .;
+                    
+                case InternalHumanoidHeadState.LookAt:
+                case InternalHumanoidHeadState.Rotate:
             }
         }
 
@@ -134,10 +164,12 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                case Undefined
-        Take
-        PutToBagpack
-        ThrowOutToSurface
+                case KindOfHumanoidThingsCommand.Undefined:
+                    return .;
+                    
+                case KindOfHumanoidThingsCommand.Take:
+                case KindOfHumanoidThingsCommand.PutToBagpack:
+                case KindOfHumanoidThingsCommand.ThrowOutToSurface:
             }
         }
 
@@ -145,10 +177,12 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                case Undefined
-        Take
-        PutToBagpack
-        ThrowOutToSurface
+                case InternalKindOfHumanoidThingsCommand.Undefined:
+                    return .;
+                    
+                case InternalKindOfHumanoidThingsCommand.Take:
+                case InternalKindOfHumanoidThingsCommand.PutToBagpack:
+                case InternalKindOfHumanoidThingsCommand.ThrowOutToSurface:
             }
         }
     }
