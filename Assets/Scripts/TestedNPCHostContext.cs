@@ -13,10 +13,12 @@ namespace Assets.Scripts
     {
         public TestedNPCBodyHost(IInternalBodyHumanoidHost internalBodyHumanoidHost)
         {
-
+            mInternalBodyHumanoidHost = internalBodyHumanoidHost;
+            mStates = new ProxyForStatesOfHumanoidBodyHost(mInternalBodyHumanoidHost.States);
         }
 
-        private StatesOfHumanoidBodyController mStates = new StatesOfHumanoidBodyController();
+        private IStatesOfHumanoidBodyHost mStates;
+        private IInternalBodyHumanoidHost mInternalBodyHumanoidHost;
 
         public IStatesOfHumanoidBodyHost States
         {
