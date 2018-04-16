@@ -22,7 +22,7 @@ namespace Assets.Scripts
 
     public interface IMoveHumanoidController
     {
-        InternalHumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidController targetState);
+        InternalHumanoidTaskOfExecuting ExecuteAsync(InternalTargetStateOfHumanoidController targetState);
         InternalStatesOfHumanoidController States { get; }
         event InternalHumanoidStatesChangedAction OnHumanoidStatesChanged;
         void Die();

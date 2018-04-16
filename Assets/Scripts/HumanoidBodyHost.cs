@@ -130,7 +130,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private object mLockObj = new object();
     private InternalHumanoidTaskOfExecuting mTargetStateForExecuting;
 
-    public InternalHumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidController targetState)
+    public InternalHumanoidTaskOfExecuting ExecuteAsync(InternalTargetStateOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
         //Debug.Log($"EnemyController ExecuteAsync targetState = {targetState}");
@@ -246,7 +246,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         }
     }
 
-    private InternalStatesOfHumanoidController CreateTargetState(InternalStatesOfHumanoidController sourceState, TargetStateOfHumanoidController targetState)
+    private InternalStatesOfHumanoidController CreateTargetState(InternalStatesOfHumanoidController sourceState, InternalTargetStateOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
         //Debug.Log("EnemyController CreateTargetState sourceState = " + sourceState);

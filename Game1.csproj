@@ -353,6 +353,7 @@
     <Compile Include="Assets\Scripts\IMoveHumanoidController.cs" />
     <Compile Include="Assets\Scripts\InputKeyHelper.cs" />
     <Compile Include="Assets\Scripts\InternalStatesConverter.cs" />
+    <Compile Include="Assets\Scripts\InternalTargetStateOfHumanoidControllerConverter.cs" />
     <Compile Include="Assets\Scripts\IObject.cs" />
     <Compile Include="Assets\Scripts\IInternalHumanoidHandsStateCommand.cs" />
     <Compile Include="Assets\Scripts\IInternalHumanoidHeadStateCommand.cs" />
@@ -403,7 +404,7 @@
     <Compile Include="Assets\Scripts\RapidFireGunProxy.cs" />
     <Compile Include="Assets\Scripts\RightHandLocator.cs" />
     <Compile Include="Assets\Scripts\RightHandWPLocator.cs" />
-    <Compile Include="Assets\Scripts\TargetStateOfHumanoidController.cs" />
+    <Compile Include="Assets\Scripts\InternalTargetStateOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\TerrainCamHelper.cs" />
     <Compile Include="Assets\Scripts\TestedBaseNPCProcess.cs" />
     <Compile Include="Assets\Scripts\TestedBlackBoard.cs" />

@@ -19,7 +19,7 @@ namespace Assets.Scripts
     {
         public NPCMeshTaskResulutionKind Kind { get; set; } = NPCMeshTaskResulutionKind.Unknow;
         public int TargetProcessId { get; set; }
-        public TargetStateOfHumanoidController TargetState { get; set; }
+        public InternalTargetStateOfHumanoidController TargetState { get; set; }
         public OldDisagreementByHStateInfo DisagreementByHState { get; set; }
         public OldDisagreementByTargetPositionInfo DisagreementByTargetPosition { get; set; }
         public OldDisagreementByVStateInfo DisagreementByVState { get; set; }

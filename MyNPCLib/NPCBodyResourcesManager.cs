@@ -26,7 +26,7 @@ namespace MyNPCLib
         private StateOfNPCContext mState = StateOfNPCContext.Created;
         #endregion
 
-        private void OnHumanoidStatesChanged(List<HumanoidStateKind> changedStates)
+        private void OnHumanoidStatesChanged(IList<HumanoidStateKind> changedStates)
         {
             lock (mStateLockObj)
             {

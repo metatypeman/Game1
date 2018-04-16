@@ -8,7 +8,7 @@ using MyNPCLib;
 
 namespace Assets.Scripts
 {
-    public class TargetStateOfHumanoidController : IObjectToString
+    public class InternalTargetStateOfHumanoidController : IObjectToString
     {
         public InternalHumanoidHState? HState { get; set; }
         public Vector3? TargetPosition { get; set; }

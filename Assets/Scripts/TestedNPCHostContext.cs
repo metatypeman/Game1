@@ -14,7 +14,7 @@ namespace Assets.Scripts
         public TestedNPCBodyHost(IInternalBodyHumanoidHost internalBodyHumanoidHost)
         {
             mInternalBodyHumanoidHost = internalBodyHumanoidHost;
-            mStates = new ProxyForStatesOfHumanoidBodyHost(mInternalBodyHumanoidHost.States);
+            mStates = new ProxyForStatesOfHumanoidBodyHost(mInternalBodyHumanoidHost);
             mInternalBodyHumanoidHost.OnHumanoidStatesChanged += InternalOnHumanoidStatesChanged;
         }
 
@@ -29,7 +29,7 @@ namespace Assets.Scripts
             }
         }
 
-        private void InternalOnHumanoidStatesChanged(List<InternalHumanoidStateKind> changedStates)
+        private void InternalOnHumanoidStatesChanged(IList<InternalHumanoidStateKind> changedStates)
         {
             var result = new List<HumanoidStateKind>();
             
@@ -38,13 +38,10 @@ namespace Assets.Scripts
                 result.Add(InternalStatesConverter.HumanoidStateKindFromInternal(initItem));
             }
 
-            //OnHumanoidStatesChanged?.Invoke(result);
+            OnHumanoidStatesChanged?.Invoke(result);
         }
 
         public event HumanoidStatesChangedAction OnHumanoidStatesChanged;
-
-        private object mLockObj = new object();
-        private HumanoidTaskOfExecuting mTargetStateForExecuting;
 
         public HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidBody targetState)
         {
@@ -52,25 +49,36 @@ namespace Assets.Scripts
             Debug.Log($"ExecuteAsync targetState = {targetState}");
 #endif
 
-            lock (mLockObj)
-            {
-                if (mTargetStateForExecuting != null)
-                {
-                    mTargetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Canceled;
-                }
-
-                var targetStateForExecuting = new HumanoidTaskOfExecuting();
-                targetStateForExecuting.ProcessedState = targetState;
-
-                mTargetStateForExecuting = targetStateForExecuting;
+            var internalTargetStateOfHumanoidBody = InternalTargetStateOfHumanoidControllerConverter.ConvertToInternal(targetState);
 
 #if DEBUG
-                targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;//tmp
-                //NLog.LogManager.GetCurrentClassLogger().Info($"ExecuteAsync mTargetStateQueue.Count = {mTargetStateQueue.Count}");
+            Debug.Log($"ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
 #endif
 
-                return targetStateForExecuting;
+            var targetStateForExecuting = new HumanoidTaskOfExecuting();
+            targetStateForExecuting.ProcessedState = targetState;
+
+            var internalHumanoidTaskOfExecuting = mInternalBodyHumanoidHost.ExecuteAsync(internalTargetStateOfHumanoidBody);
+
+            while (internalHumanoidTaskOfExecuting.State == InternalStateOfHumanoidTaskOfExecuting.Created)
+            {
             }
+
+            targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;
+            return targetStateForExecuting;
+
+            //            lock (mLockObj)
+            //            {
+            //                
+            //                
+
+            //#if DEBUG
+            //                targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;//tmp
+            //                //NLog.LogManager.GetCurrentClassLogger().Info($"ExecuteAsync mTargetStateQueue.Count = {mTargetStateQueue.Count}");
+            //#endif
+
+            //                
+            //            }
         }
     }
 

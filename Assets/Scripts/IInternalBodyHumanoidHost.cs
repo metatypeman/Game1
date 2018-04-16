@@ -8,7 +8,7 @@ namespace Assets.Scripts
 {
     public interface IInternalBodyHumanoidHost
     {
-        InternalHumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidController targetState);
+        InternalHumanoidTaskOfExecuting ExecuteAsync(InternalTargetStateOfHumanoidController targetState);
         InternalStatesOfHumanoidController States { get; }
         event InternalHumanoidStatesChangedAction OnHumanoidStatesChanged;
         void Die();

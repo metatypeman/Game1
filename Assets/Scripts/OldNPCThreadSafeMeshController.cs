@@ -16,7 +16,7 @@ namespace Assets.Scripts
             mMoveHumanoidController.OnHumanoidStatesChanged += OnHumanoidStatesChanged;
         }
 
-        private void OnHumanoidStatesChanged(List<InternalHumanoidStateKind> changedStates)
+        private void OnHumanoidStatesChanged(IList<InternalHumanoidStateKind> changedStates)
         {
             lock (mDisposeLockObj)
             {
@@ -174,13 +174,13 @@ namespace Assets.Scripts
             return result;
         }
 
-        private TargetStateOfHumanoidController CreateTargetState(IOldMoveHumanoidCommandsPackage package)
+        private InternalTargetStateOfHumanoidController CreateTargetState(IOldMoveHumanoidCommandsPackage package)
         {
 #if UNITY_EDITOR
             //Debug.Log($"NPCThreadSafeMeshController CreateTargetState package = {package}");
 #endif
 
-            var result = new TargetStateOfHumanoidController();
+            var result = new InternalTargetStateOfHumanoidController();
 
             var commandsList = package.Commands;
 
@@ -340,7 +340,7 @@ namespace Assets.Scripts
             return result;
         }
 
-        private NPCMeshTaskResulution CreateResolution(InternalStatesOfHumanoidController sourceState, TargetStateOfHumanoidController targetState, int processId)
+        private NPCMeshTaskResulution CreateResolution(InternalStatesOfHumanoidController sourceState, InternalTargetStateOfHumanoidController targetState, int processId)
         {
 #if UNITY_EDITOR
             //Debug.Log($"NPCThreadSafeMeshController CreateTargetState sourceState = {sourceState}");
@@ -649,7 +649,7 @@ namespace Assets.Scripts
         }
 #endif
 
-        private void ProcessAllow(TargetStateOfHumanoidController targetState, int processId, NPCMeshTask npcMeshTask, NPCMeshTaskResulutionKind resolutionKind)
+        private void ProcessAllow(InternalTargetStateOfHumanoidController targetState, int processId, NPCMeshTask npcMeshTask, NPCMeshTaskResulutionKind resolutionKind)
         {
 #if UNITY_EDITOR
             //Debug.Log($"NPCThreadSafeMeshController ProcessAllow targetState = {targetState}");
@@ -675,7 +675,7 @@ namespace Assets.Scripts
             npcMeshTask.State = NPCMeshTaskState.Running;
         }
 
-        private void RegProcessId(TargetStateOfHumanoidController targetState, int processId, NPCMeshTask npcMeshTask, NPCMeshTaskResulutionKind resolutionKind)
+        private void RegProcessId(InternalTargetStateOfHumanoidController targetState, int processId, NPCMeshTask npcMeshTask, NPCMeshTaskResulutionKind resolutionKind)
         {
             var displacedProcessesIdList = new List<int>();
 

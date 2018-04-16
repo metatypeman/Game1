@@ -9,18 +9,25 @@ namespace Assets.Scripts
 {
     public class ProxyForStatesOfHumanoidBodyHost : IObjectToString, IStatesOfHumanoidBodyHost
     {
-        public ProxyForStatesOfHumanoidBodyHost(InternalStatesOfHumanoidController internalState)
+        public ProxyForStatesOfHumanoidBodyHost(IInternalBodyHumanoidHost internalBodyHumanoidHost)
         {
-            mInternalState = internalState;
+            mInternalBodyHumanoidHost = internalBodyHumanoidHost;
         }
 
-        private InternalStatesOfHumanoidController mInternalState;
+        private IInternalBodyHumanoidHost mInternalBodyHumanoidHost;
 
         public HumanoidHState HState
         {
             get
             {
-                return InternalStatesConverter.HumanoidHStateFromInternal(mInternalState.HState);
+                var state = mInternalBodyHumanoidHost.States;
+
+                if(state == null)
+                {
+                    return HumanoidHState.Stop;
+                }
+
+                return InternalStatesConverter.HumanoidHStateFromInternal(state.HState);
             }
         }
 
@@ -28,7 +35,14 @@ namespace Assets.Scripts
         {
             get
             {
-                return mInternalState.TargetPosition;
+                var state = mInternalBodyHumanoidHost.States;
+
+                if (state == null)
+                {
+                    return null;
+                }
+
+                return state.TargetPosition;
             }
         }
 
@@ -36,7 +50,14 @@ namespace Assets.Scripts
         {
             get
             {
-                return InternalStatesConverter.HumanoidVStateFromInternal(mInternalState.VState);
+                var state = mInternalBodyHumanoidHost.States;
+
+                if (state == null)
+                {
+                    return HumanoidVState.Ground;
+                }
+
+                return InternalStatesConverter.HumanoidVStateFromInternal(state.VState);
             }
         }
 
@@ -44,7 +65,14 @@ namespace Assets.Scripts
         {
             get
             {
-                return InternalStatesConverter.HumanoidHandsStateFromInternal(mInternalState.HandsState);
+                var state = mInternalBodyHumanoidHost.States;
+
+                if (state == null)
+                {
+                    return HumanoidHandsState.FreeHands;
+                }
+
+                return InternalStatesConverter.HumanoidHandsStateFromInternal(state.HandsState);
             }
         }
 
@@ -52,7 +80,14 @@ namespace Assets.Scripts
         {
             get
             {
-                return InternalStatesConverter.HumanoidHandsActionStateFromInternal(mInternalState.HandsActionState);
+                var state = mInternalBodyHumanoidHost.States;
+
+                if (state == null)
+                {
+                    return HumanoidHandsActionState.Empty;
+                }
+
+                return InternalStatesConverter.HumanoidHandsActionStateFromInternal(state.HandsActionState);
             }
         }
 
@@ -60,7 +95,14 @@ namespace Assets.Scripts
         {
             get
             {
-                return InternalStatesConverter.HumanoidHeadStateFromInternal(mInternalState.HeadState);
+                var state = mInternalBodyHumanoidHost.States;
+
+                if (state == null)
+                {
+                    return HumanoidHeadState.LookingForward;
+                }
+
+                return InternalStatesConverter.HumanoidHeadStateFromInternal(state.HeadState);
             }
         }
 
@@ -68,7 +110,14 @@ namespace Assets.Scripts
         {
             get
             {
-                return mInternalState.TargetHeadPosition;
+                var state = mInternalBodyHumanoidHost.States;
+
+                if (state == null)
+                {
+                    return null;
+                }
+
+                return state.TargetHeadPosition;
             }
         }
 
@@ -76,7 +125,14 @@ namespace Assets.Scripts
         {
             get
             {
-                return InternalStatesConverter.KindOfHumanoidThingsCommandFromInternal(mInternalState.KindOfThingsCommand);
+                var state = mInternalBodyHumanoidHost.States;
+
+                if (state == null)
+                {
+                    return KindOfHumanoidThingsCommand.Undefined;
+                }
+
+                return InternalStatesConverter.KindOfHumanoidThingsCommandFromInternal(state.KindOfThingsCommand);
             }
         }
 
@@ -84,7 +140,14 @@ namespace Assets.Scripts
         {
             get
             {
-                return mInternalState.InstanceOfThingId;
+                var state = mInternalBodyHumanoidHost.States;
+
+                if (state == null)
+                {
+                    return 0;
+                }
+
+                return state.InstanceOfThingId;
             }
         }
 

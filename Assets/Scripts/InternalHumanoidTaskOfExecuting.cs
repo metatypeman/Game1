@@ -38,7 +38,7 @@ namespace Assets.Scripts
                 }
             }
         } 
-        public TargetStateOfHumanoidController ProcessedState { get; set; }
+        public InternalTargetStateOfHumanoidController ProcessedState { get; set; }
 
         public override string ToString()
         {
