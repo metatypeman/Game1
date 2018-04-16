@@ -15,6 +15,7 @@ namespace Assets.Scripts
         {
             mInternalBodyHumanoidHost = internalBodyHumanoidHost;
             mStates = new ProxyForStatesOfHumanoidBodyHost(mInternalBodyHumanoidHost.States);
+            mInternalBodyHumanoidHost.OnHumanoidStatesChanged += InternalOnHumanoidStatesChanged;
         }
 
         private IStatesOfHumanoidBodyHost mStates;
@@ -26,6 +27,11 @@ namespace Assets.Scripts
             {
                 return mStates;
             }
+        }
+
+        private void InternalOnHumanoidStatesChanged(List<InternalHumanoidStateKind> changedStates)
+        {
+        
         }
 
         public event HumanoidStatesChangedAction OnHumanoidStatesChanged;
