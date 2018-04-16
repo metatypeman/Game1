@@ -93,6 +93,9 @@ public class EnemyNPC : MonoBehaviour
         mInputKeyHelper.AddListener(KeyCode.Q, OnQPressAction);
 
         mGunBody = GameObject.Find("M4A1 Sopmod");
+
+        var clas1 = new Class1();
+        clas1.GetItems().Add(12);
     }
 
     // Update is called once per frame

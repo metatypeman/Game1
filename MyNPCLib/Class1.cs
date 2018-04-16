@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -57,6 +59,13 @@ namespace MyNPCLib
 
             targetMethod = mainMethods[1];
             targetMethod.Invoke(instance, new object[] { 12 });
+        }
+
+        public IList<int> GetItems()
+        {
+            LogInstance.Log("GetItems");
+
+            return new List<int>();
         }
     }
 }

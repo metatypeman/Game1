@@ -35,8 +35,10 @@ namespace Assets.Scripts
             
             foreach(var initItem in changedStates)
             {
-                result.Add(InternalStatesConverter.);
+                result.Add(InternalStatesConverter.HumanoidStateKindFromInternal(initItem));
             }
+
+            //OnHumanoidStatesChanged?.Invoke(result);
         }
 
         public event HumanoidStatesChangedAction OnHumanoidStatesChanged;

@@ -9,6 +9,70 @@ namespace Assets.Scripts
 {
     public static class InternalStatesConverter
     {
+        public static InternalHumanoidStateKind HumanoidStateKindToInternal(HumanoidStateKind state)
+        {
+            switch (state)
+            {
+                case HumanoidStateKind.HState:
+                    return InternalHumanoidStateKind.HState;
+
+                case HumanoidStateKind.TargetPosition:
+                    return InternalHumanoidStateKind.TargetPosition;
+
+                case HumanoidStateKind.VState:
+                    return InternalHumanoidStateKind.VState;
+
+                case HumanoidStateKind.HandsState:
+                    return InternalHumanoidStateKind.HandsState;
+
+                case HumanoidStateKind.HandsActionState:
+                    return InternalHumanoidStateKind.HandsActionState;
+
+                case HumanoidStateKind.HeadState:
+                    return InternalHumanoidStateKind.HeadState;
+
+                case HumanoidStateKind.TargetHeadPosition:
+                    return InternalHumanoidStateKind.TargetHeadPosition;
+
+                case HumanoidStateKind.ThingsCommand:
+                    return InternalHumanoidStateKind.ThingsCommand;
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
+        }
+
+        public static HumanoidStateKind HumanoidStateKindFromInternal(InternalHumanoidStateKind state)
+        {
+            switch (state)
+            {
+                case InternalHumanoidStateKind.HState:
+                    return HumanoidStateKind.HState;
+
+                case InternalHumanoidStateKind.TargetPosition:
+                    return HumanoidStateKind.TargetPosition;
+
+                case InternalHumanoidStateKind.VState:
+                    return HumanoidStateKind.VState;
+
+                case InternalHumanoidStateKind.HandsState:
+                    return HumanoidStateKind.HandsState;
+
+                case InternalHumanoidStateKind.HandsActionState:
+                    return HumanoidStateKind.HandsActionState;
+
+                case InternalHumanoidStateKind.HeadState:
+                    return HumanoidStateKind.HeadState;
+
+                case InternalHumanoidStateKind.TargetHeadPosition:
+                    return HumanoidStateKind.TargetHeadPosition;
+
+                case InternalHumanoidStateKind.ThingsCommand:
+                    return HumanoidStateKind.ThingsCommand;
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
+        }
+
         public static InternalHumanoidHState HumanoidHStateToInternal(HumanoidHState state)
         {
             switch(state)
@@ -35,7 +99,7 @@ namespace Assets.Scripts
                     return InternalHumanoidHState.Move;
             }
 
-            return InternalHumanoidHState.Stop;
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
 
         public static HumanoidHState HumanoidHStateFromInternal(InternalHumanoidHState state)
@@ -63,6 +127,8 @@ namespace Assets.Scripts
                 case InternalHumanoidHState.Move:
                     return HumanoidHState.Move;
             }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
 
         public static InternalHumanoidVState HumanoidVStateToInternal(HumanoidVState state)
@@ -78,6 +144,8 @@ namespace Assets.Scripts
                 case HumanoidVState.Crouch:
                     return InternalHumanoidVState.Crouch;
             }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
 
         public static HumanoidVState HumanoidVStateFromInternal(InternalHumanoidVState state)
@@ -93,6 +161,8 @@ namespace Assets.Scripts
                 case InternalHumanoidVState.Crouch:
                     return HumanoidVState.Crouch;
             }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
 
         public static InternalHumanoidHandsState HumanoidHandsStateToInternal(HumanoidHandsState state)
@@ -105,6 +175,8 @@ namespace Assets.Scripts
                 case HumanoidHandsState.HasRifle:
                     return InternalHumanoidHandsState.HasRifle;
             }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
 
         public static HumanoidHandsState HumanoidHandsStateFromInternal(InternalHumanoidHandsState state)
@@ -117,6 +189,8 @@ namespace Assets.Scripts
                 case InternalHumanoidHandsState.HasRifle:
                     return HumanoidHandsState.HasRifle;
             }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
 
         public static InternalHumanoidHandsActionState HumanoidHandsActionStateToInternal(HumanoidHandsActionState state)
@@ -129,6 +203,8 @@ namespace Assets.Scripts
                 case HumanoidHandsActionState.StrongAim:
                     return InternalHumanoidHandsActionState.StrongAim;
             }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
 
         public static HumanoidHandsActionState HumanoidHandsActionStateFromInternal(InternalHumanoidHandsActionState state)
@@ -141,6 +217,8 @@ namespace Assets.Scripts
                 case InternalHumanoidHandsActionState.StrongAim:
                     return HumanoidHandsActionState.StrongAim;
             }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
 
         public static InternalHumanoidHeadState HumanoidHeadStateToInternal(HumanoidHeadState state)
@@ -156,6 +234,8 @@ namespace Assets.Scripts
                 case HumanoidHeadState.Rotate:
                     return InternalHumanoidHeadState.Rotate;
             }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
 
         public static HumanoidHeadState HumanoidHeadStateFromInternal(InternalHumanoidHeadState state)
@@ -171,6 +251,8 @@ namespace Assets.Scripts
                 case InternalHumanoidHeadState.Rotate:
                     return HumanoidHeadState.Rotate;
             }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
 
         public static InternalKindOfHumanoidThingsCommand KindOfHumanoidThingsCommandToInternal(KindOfHumanoidThingsCommand state)
@@ -189,6 +271,8 @@ namespace Assets.Scripts
                 case KindOfHumanoidThingsCommand.ThrowOutToSurface:
                     return InternalKindOfHumanoidThingsCommand.ThrowOutToSurface;
             }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
 
         public static KindOfHumanoidThingsCommand KindOfHumanoidThingsCommandFromInternal(InternalKindOfHumanoidThingsCommand state)
@@ -207,6 +291,8 @@ namespace Assets.Scripts
                 case InternalKindOfHumanoidThingsCommand.ThrowOutToSurface:
                     return KindOfHumanoidThingsCommand.ThrowOutToSurface;
             }
+
+            throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    public delegate void HumanoidStatesChangedAction(List<HumanoidStateKind> changedStates);
+    public delegate void HumanoidStatesChangedAction(IList<HumanoidStateKind> changedStates);
 
     public interface INPCBodyHost
     {

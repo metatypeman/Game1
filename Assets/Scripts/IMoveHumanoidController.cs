@@ -18,7 +18,7 @@ namespace Assets.Scripts
         ThingsCommand
     }
 
-    public delegate void InternalHumanoidStatesChangedAction(List<InternalHumanoidStateKind> changedStates);
+    public delegate void InternalHumanoidStatesChangedAction(IList<InternalHumanoidStateKind> changedStates);
 
     public interface IMoveHumanoidController
     {
