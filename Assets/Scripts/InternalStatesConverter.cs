@@ -59,8 +59,8 @@ namespace Assets.Scripts
             switch (state)
             {
                 case HumanoidVState.Ground
-        Jump
-        Crouch
+        case HumanoidVState.Jump
+        case HumanoidVState.Crouch
             }
         }
 
@@ -68,7 +68,7 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                Ground
+                case Ground
         Jump
         Crouch
             }
@@ -78,7 +78,7 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                FreeHands
+                case FreeHands
         HasRifle
             }
         }
@@ -87,7 +87,7 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                FreeHands
+                case FreeHands
         HasRifle
             }
         }
@@ -96,7 +96,7 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                Empty
+                case Empty
         StrongAim
             }
         }
@@ -105,7 +105,7 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                Empty
+                case Empty
         StrongAim
             }
         }
@@ -114,7 +114,7 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                LookingForward
+                case LookingForward
         LookAt
         Rotate
             }
@@ -124,7 +124,7 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                LookingForward
+                case LookingForward
         LookAt
         Rotate
             }
@@ -134,7 +134,7 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                Undefined
+                case Undefined
         Take
         PutToBagpack
         ThrowOutToSurface
@@ -145,7 +145,7 @@ namespace Assets.Scripts
         {
             switch (state)
             {
-                Undefined
+                case Undefined
         Take
         PutToBagpack
         ThrowOutToSurface
