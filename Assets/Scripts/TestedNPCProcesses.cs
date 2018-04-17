@@ -210,10 +210,10 @@ namespace Assets.Scripts
     public class TestedTakeFromSurfaceNPCProcess : TestedBaseNPCProcess
     //OldTSTTakeFromSurfaceProcess
     {
-        private void Main()
+        private void Main(int instanceId)
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedTakeFromSurfaceNPCProcess Main");
+            Debug.Log($"TestedTakeFromSurfaceNPCProcess Main instanceId = {instanceId}");
 #endif
         }
     }
@@ -224,7 +224,7 @@ namespace Assets.Scripts
         private void Main(int instanceId)
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedHideRifleToBagPackNPCProcess Main");
+            Debug.Log($"TestedHideRifleToBagPackNPCProcess Main instanceId = {instanceId}");
 #endif
         }    
     }
@@ -232,10 +232,10 @@ namespace Assets.Scripts
     public class TestedThrowOutToSurfaceRifleToSurfaceNPCProcess : TestedBaseNPCProcess
     //OldTstThrowOutToSurfaceRifleToSurfaceProcess
     {
-        private void Main()
+        private void Main(int instanceId)
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main");
+            Debug.Log($"TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main instanceId = {instanceId}");
 #endif
         }    
     }
