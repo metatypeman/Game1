@@ -39,13 +39,28 @@ namespace Assets.Scripts
             switch(key)
             {
                 case KeyCode.F:
+                    break;
+                    
                 case KeyCode.G:
+                    break;
+                    
                 case KeyCode.K:
+                    break;
+                    
                 case KeyCode.N:
+                    break;
+                    
                 case KeyCode.H:
+                    break;
+                    
                 case KeyCode.L:
+                    break;
+                    
                 case KeyCode.I:
+                    break;
+                    
                 case KeyCode.P:
+                    break;
         
                 case KeyCode.U:
                     var command = new NPCCommand();
@@ -54,9 +69,16 @@ namespace Assets.Scripts
                     break;
                     
                 case KeyCode.M:
+                    break;
+                    
                 case KeyCode.B:
+                    break;
+                    
                 case KeyCode.J:
+                    break;
+                    
                 case KeyCode.Q:
+                    break;
             }
         }
     }
