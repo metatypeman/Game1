@@ -121,7 +121,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnQPressAction command = {command}");
+            
+            mNPCProcessesContext.Send(command);
         }
     }
 
@@ -140,7 +144,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnJPressAction command = {command}");
+            
+            mNPCProcessesContext.Send(command);
         }
     }
 
@@ -179,7 +187,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnBPressAction command = {command}");
+            
+            mNPCProcessesContext.Send(command);
         }
     }
 
@@ -194,7 +206,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnMPressAction command = {command}");
+            
+            mNPCProcessesContext.Send(command);
         }
     }
 
@@ -217,7 +233,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnFPressAction command = {command}");
+            
+            mNPCProcessesContext.Send(command);
         }
     }
 
@@ -236,7 +256,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnGPressAction command = {command}");
+            
+            mNPCProcessesContext.Send(command);
         }
     }
 
@@ -253,7 +277,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnKPressAction command = {command}");
+            
+            mNPCProcessesContext.Send(command);
         }
     }
 
@@ -275,7 +303,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnNPressAction command = {command}");
+            
+            mNPCProcessesContext.Send(command);
         } 
     }
 
@@ -293,7 +325,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnHPressAction command = {command}");
+            
+            mNPCProcessesContext.Send(command);
         }  
     }
 
@@ -307,7 +343,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnLPressAction command = {command}");
+            
+            mNPCProcessesContext.Send(command);
         }
     }
 
@@ -323,7 +363,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnIPressAction command = {command}");
+            
+            mNPCProcessesContext.Send(command);
         }
     }
 
@@ -337,7 +381,11 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var command = KeyToNPCCommandConverter.Convert(key);
 
+            Debug.Log($"EnemyNPC OnPPressAction command = {command}");
+            
+            mNPCProcessesContext.Send(command);
         }
     }
     
@@ -368,7 +416,7 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
-
+            mNPCProcessesContext?.Dispose();
         }    
     }
 }
