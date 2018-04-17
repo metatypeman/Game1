@@ -16,6 +16,9 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log("TestedBootNPCProcess Awake");
 #endif
+
+            var command = TestedInspectingNPCProcess.CreateCommand();
+            Execute(command);
         }
 
         private void Main()
@@ -31,6 +34,13 @@ namespace Assets.Scripts
     public class TestedInspectingNPCProcess : TestedBaseNPCProcess
     //OldTstInspectingProcess
     {
+        protected override void Awake()
+        {
+#if UNITY_EDITOR
+            Debug.Log("TestedInspectingNPCProcess Awake");
+#endif
+        }
+
         public static NPCCommand CreateCommand()
         {
             var command = new NPCCommand();
@@ -54,7 +64,8 @@ namespace Assets.Scripts
         {
             var command = new NPCCommand();
             command.Name = "key press";
-            
+            command.AddParam(nameof(key), key);
+            return command;
         }
         
         private void Main(KeyCode key)
@@ -90,8 +101,7 @@ namespace Assets.Scripts
                     break;
         
                 case KeyCode.U:
-                    var command = new NPCCommand();
-                    command.Name = "go to enemy base";
+                    var command = TestedGoToEnemyBaseNPCProcess.CreateCommand();
                     Execute(command);
                     break;
                     
@@ -217,7 +227,8 @@ namespace Assets.Scripts
         {
             var command = new NPCCommand();
             command.Name = "fire to ethan";
-            
+            command.AddParam(nameof(targetPosition), targetPosition);
+            return command;
         }
         
         private void Main(Vector3 targetPosition)
@@ -236,7 +247,9 @@ namespace Assets.Scripts
         public static NPCCommand CreateCommand(float angle)
         {
             var command = new NPCCommand();
-            command.Name = "rotate";        
+            command.Name = "rotate";
+            command.AddParam(nameof(angle), angle);
+            return command;
         }
         
         private void Main(float angle)
@@ -255,7 +268,9 @@ namespace Assets.Scripts
         public static NPCCommand CreateCommand(float angle)
         {
             var command = new NPCCommand();
-            command.Name = "rotate head";        
+            command.Name = "rotate head";
+            command.AddParam(nameof(angle), angle);
+            return command;
         }
         
         private void Main(float angle)
@@ -314,7 +329,9 @@ namespace Assets.Scripts
         public static NPCCommand CreateCommand(int instanceId)
         {
             var command = new NPCCommand();
-            command.Name = "take from surface";        
+            command.Name = "take from surface";
+            command.AddParam(nameof(instanceId), instanceId);
+            return command;
         }
         
         private void Main(int instanceId)
@@ -333,7 +350,9 @@ namespace Assets.Scripts
         public static NPCCommand CreateCommand(int instanceId)
         {
             var command = new NPCCommand();
-            command.Name = "hide rifle to bagpack";        
+            command.Name = "hide rifle to bagpack";
+            command.AddParam(nameof(instanceId), instanceId);
+            return command;
         }
         
         private void Main(int instanceId)
@@ -352,7 +371,9 @@ namespace Assets.Scripts
         public static NPCCommand CreateCommand(int instanceId)
         {
             var command = new NPCCommand();
-            command.Name = "throw out to surface rifle to surface";        
+            command.Name = "throw out to surface rifle to surface";
+            command.AddParam(nameof(instanceId), instanceId);
+            return command;
         }
         
         private void Main(int instanceId)

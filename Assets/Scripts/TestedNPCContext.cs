@@ -13,8 +13,20 @@ namespace Assets.Scripts
             : base(entityDictionary, npcProcessInfoCache, npcHostContext)
         {
             AddTypeOfProcess<TestedBootNPCProcess>();
-            AddTypeOfProcess<TestedKeyListenerProcess>();
-            AddTypeOfProcess<TestedGoToEnemyBaseProcess>();
+            AddTypeOfProcess<TestedKeyListenerNPCProcess>();
+            AddTypeOfProcess<TestedGoToEnemyBaseNPCProcess>();
+            AddTypeOfProcess<TestedInspectingNPCProcess>();
+            AddTypeOfProcess<TestedRunAwayNPCProcess>();
+            AddTypeOfProcess<TestedRunAtOurBaseNPCProcess>();
+            AddTypeOfProcess<TestedSimpleAimNPCProcess>();
+            AddTypeOfProcess<TestedFireToEthanNPCProcess>();
+            AddTypeOfProcess<TestedRotateNPCProcess>();
+            AddTypeOfProcess<TestedRotateHeadNPCProcess>();
+            AddTypeOfProcess<TestedHeadToForvardNPCProcess>();
+            AddTypeOfProcess<TestedMoveNPCProcess>();
+            AddTypeOfProcess<TestedTakeFromSurfaceNPCProcess>();
+            AddTypeOfProcess<TestedHideRifleToBagPackNPCProcess>();
+            AddTypeOfProcess<TestedThrowOutToSurfaceRifleToSurfaceNPCProcess>();
         }
 
         public override void Bootstrap()
