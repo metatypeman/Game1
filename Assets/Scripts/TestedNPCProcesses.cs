@@ -26,6 +26,11 @@ namespace Assets.Scripts
         }
     }
 
+    TestedInspectingNPCProcess 
+    //OldTstInspectingProcess
+    {
+    }
+    
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
     [NPCProcessName("key press")]
     public class TestedKeyListenerProcess : TestedBaseNPCProcess
