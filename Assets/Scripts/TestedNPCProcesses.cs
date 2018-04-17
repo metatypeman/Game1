@@ -38,11 +38,25 @@ namespace Assets.Scripts
 
             switch(key)
             {
+                case KeyCode.F:
+                case KeyCode.G:
+                case KeyCode.K:
+                case KeyCode.N:
+                case KeyCode.H:
+                case KeyCode.L:
+                case KeyCode.I:
+                case KeyCode.P:
+        
                 case KeyCode.U:
                     var command = new NPCCommand();
                     command.Name = "go to enemy base";
                     Execute(command);
                     break;
+                    
+                case KeyCode.M:
+                case KeyCode.B:
+                case KeyCode.J:
+                case KeyCode.Q:
             }
         }
     }
