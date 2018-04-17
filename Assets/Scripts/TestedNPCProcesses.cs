@@ -33,12 +33,12 @@ namespace Assets.Scripts
     
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
     [NPCProcessName("key press")]
-    public class TestedKeyListenerProcess : TestedBaseNPCProcess
+    public class TestedKeyListenerNPCProcess : TestedBaseNPCProcess
     {
         private void Main(KeyCode key)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TestedKeyListenerProcess Main key = {key}");
+            Debug.Log($"TestedKeyListenerNPCProcess Main key = {key}");
 #endif
 
             switch(key)
@@ -90,12 +90,13 @@ namespace Assets.Scripts
 
     [NPCProcessStartupMode(NPCProcessStartupMode.NewStandaloneInstance)]
     [NPCProcessName("go to enemy base")]
-    public class TestedGoToEnemyBaseProcess : TestedBaseNPCProcess
+    public class TestedGoToEnemyBaseNPCProcess : TestedBaseNPCProcess
+    //OldTstGoToEnemyBaseProcess
     {
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedGoToEnemyBaseProcess Main");
+            Debug.Log("TestedGoToEnemyBaseNPCProcess Main");
 #endif
 
             var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
@@ -107,7 +108,7 @@ namespace Assets.Scripts
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
-                Debug.Log($"TestedGoToEnemyBaseProcess OnRun moveCommand = {moveCommand}");
+                Debug.Log($"TestedGoToEnemyBaseNPCProcess OnRun moveCommand = {moveCommand}");
 #endif
 
                 var childProcess = ExecuteBody(moveCommand);
@@ -116,5 +117,126 @@ namespace Assets.Scripts
 
             var l = new List<int>();
         }
+    }
+    
+    public class TestedRunAwayNPCProcess : TestedBaseNPCProcess
+    //OldTstRunAwayProcess
+    {
+        private void Main()
+        {
+#if UNITY_EDITOR
+            Debug.Log("TestedRunAwayNPCProcess Main");
+#endif
+        }
+    }
+    
+    public class TestedRunAtOurBaseNPCProcess : TestedBaseNPCProcess
+    //OldTstRunAtOurBaseProcess
+    {
+        private void Main()
+        {
+#if UNITY_EDITOR
+            Debug.Log("TestedRunAtOurBaseNPCProcess Main");
+#endif
+        }
+    }
+    
+    public class TestedSimpleAimNPCProcess : TestedBaseNPCProcess
+    //OldTstSimpleAimProcess
+    {
+        private void Main()
+        {
+#if UNITY_EDITOR
+            Debug.Log("TestedSimpleAimNPCProcess Main");
+#endif
+        }    
+    }
+    
+    public class TestedFireToEthanNPCProcess : TestedBaseNPCProcess
+    //OldTSTFireToEthanProcess
+    {
+        private void Main(Vector3 targetPosition)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
+#endif
+        }    
+    }
+    
+    public class TestedRotateNPCProcess : TestedBaseNPCProcess
+    //OldTSTRotateProcess
+    {
+        private void Main(float angle)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"TestedRotateNPCProcess Main angle = {angle}");
+#endif
+        }    
+    }
+    
+    public class TestedRotateHeadNPCProcess : TestedBaseNPCProcess
+    //OldTSTRotateHeadProcess 
+    {
+        private void Main(float angle)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"TestedRotateHeadNPCProcess Main angle = {angle}");
+#endif
+        }    
+    }
+    
+    public class TestedHeadToForvardNPCProcess : TestedBaseNPCProcess
+    //OldTSTHeadToForvardProcess
+    {
+        private void Main()
+        {
+#if UNITY_EDITOR
+            Debug.Log("TestedHeadToForvardNPCProcess Main");
+#endif
+        }    
+    }
+    
+    public class TestedMoveNPCProcess : TestedBaseNPCProcess
+    //OldTSTMoveProcess
+    {
+        private void Main()
+        {
+#if UNITY_EDITOR
+            Debug.Log("TestedMoveNPCProcess Main");
+#endif
+        }    
+    }
+    
+    public class TestedTakeFromSurfaceNPCProcess : TestedBaseNPCProcess
+    //OldTSTTakeFromSurfaceProcess
+    {
+        private void Main()
+        {
+#if UNITY_EDITOR
+            Debug.Log("TestedTakeFromSurfaceNPCProcess Main");
+#endif
+        }
+    }
+    
+    public class TestedHideRifleToBagPackNPCProcess : TestedBaseNPCProcess
+    //OldTstHideRifleToBagPackProcess
+    {
+        private void Main(int instanceId)
+        {
+#if UNITY_EDITOR
+            Debug.Log("TestedHideRifleToBagPackNPCProcess Main");
+#endif
+        }    
+    }
+    
+    public class TestedThrowOutToSurfaceRifleToSurfaceNPCProcess : TestedBaseNPCProcess
+    //OldTstThrowOutToSurfaceRifleToSurfaceProcess
+    {
+        private void Main()
+        {
+#if UNITY_EDITOR
+            Debug.Log("TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main");
+#endif
+        }    
     }
 }
