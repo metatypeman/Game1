@@ -11,6 +11,8 @@ namespace Assets.Scripts
         public int PossibleIdOfRifle { get; set; }
         public int InstanceIdOfRifle { get; set; }
         public Vector3? EthanPosition { get; set; }
+        public RapidFireGunProxy RapidFireGunProxy { get; set; } = new RapidFireGunProxy();
+        public event Action OnGunHasTaken;
         
         public override string ToString()
         {
