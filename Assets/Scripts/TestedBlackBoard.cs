@@ -8,6 +8,7 @@ namespace Assets.Scripts
 {
     public class TestedBlackBoard : IObjectToString
     {
+        public int PossibleIdOfRifle { get; set; }
         public int InstanceIdOfRifle { get; set; }
         public Vector3? EthanPosition { get; set; }
         
