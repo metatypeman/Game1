@@ -28,7 +28,16 @@ namespace Assets.Scripts
             var nextN = n + 4;
             var nextSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(PossibleIdOfRifle)} = {PossibleIdOfRifle}");
             sb.AppendLine($"{spaces}{nameof(InstanceIdOfRifle)} = {InstanceIdOfRifle}");
+            if(EthanPosition.HasValue)
+            {
+                sb.AppendLine($"{spaces}{nameof(EthanPosition)} = {EthanPosition}");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}{nameof(EthanPosition)} = null");            
+            }
             return sb.ToString();
         }
     }
