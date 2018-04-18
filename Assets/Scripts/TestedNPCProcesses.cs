@@ -158,7 +158,7 @@ namespace Assets.Scripts
                     
                 case KeyCode.B:
                     {
-                        var instanceIdOfRifle = BlackBoard.InstanceIdOfRifle;
+                        var instanceIdOfRifle = BlackBoard.PossibleIdOfRifle;
                         
 #if UNITY_EDITOR
             Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
@@ -167,7 +167,7 @@ namespace Assets.Scripts
                         {
                             break;
                         }
-                        
+                                               
                         var command = TestedTakeFromSurfaceNPCProcess.CreateCommand(instanceIdOfRifle);
                         Execute(command);
                     }
@@ -202,6 +202,8 @@ namespace Assets.Scripts
                         {
                             break;
                         }
+                        
+                        BlackBoard.InstanceIdOfRifle = 0;
                         
                         var command = TestedThrowOutToSurfaceRifleToSurfaceNPCProcess.CreateCommand(instanceIdOfRifle);
                         Execute(command);
@@ -238,7 +240,7 @@ namespace Assets.Scripts
                 moveCommand.TargetPosition = targetWayPoint.Position;
 
 #if UNITY_EDITOR
-                Debug.Log($"TestedGoToEnemyBaseNPCProcess OnRun moveCommand = {moveCommand}");
+                Debug.Log($"TestedGoToEnemyBaseNPCProcess Main moveCommand = {moveCommand}");
 #endif
 
                 var childProcess = ExecuteBody(moveCommand);
@@ -264,7 +266,48 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedRunAwayNPCProcess Main");
+            Debug.Log("Begin TestedRunAwayNPCProcess Main");
+#endif
+
+            var targetName = "Cube_1";
+            GoToTargetWayPoint(targetName);
+
+#if UNITY_EDITOR
+            Debug.Log("End TestedRunAwayNPCProcess Main");
+#endif
+        }
+        
+        private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
+        {
+#if UNITY_EDITOR
+            //Debug.Log($"TestedRunAwayNPCProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
+#endif
+
+            var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
+
+            if (targetWayPoint != null)
+            {
+                var moveCommand = new HumanoidHStateCommand();
+                moveCommand.State = HumanoidHState.Walk;
+                moveCommand.TargetPosition = targetWayPoint.Position;
+
+#if UNITY_EDITOR
+                //Debug.Log($"TestedRunAwayNPCProcess GoToTargetWayPoint moveCommand = {moveCommand}");
+#endif
+                var tmpTask = ExecuteBody(moveCommand);
+                //mTmpTask = tmpTask;
+#if UNITY_EDITOR
+                //Debug.Log($"TestedRunAwayNPCProcess GoToTargetWayPoint tmpTask = {tmpTask}");
+#endif
+
+                if (withWaiting)
+                {
+                    Wait(tmpTask);
+                }
+            }
+
+#if UNITY_EDITOR
+            //Debug.Log("End TestedRunAwayNPCProcess GoToTargetWayPoint");
 #endif
         }
     }
@@ -284,7 +327,69 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedRunAtOurBaseNPCProcess Main");
+            Debug.Log("Begin TestedRunAtOurBaseNPCProcess Main");
+#endif
+
+            for (var n = 1; n <= 3; n++)
+            {
+                var targetName = $"Cube_{n}";
+
+#if UNITY_EDITOR
+                //Debug.Log($"TestedRunAtOurBaseNPCProcess Main targetName = {targetName}");
+#endif
+
+                GoToTargetWayPoint(targetName);
+
+#if UNITY_EDITOR
+                //Debug.Log($"TestedRunAtOurBaseNPCProcess Main goal '{targetName}' had achieved!!!!");
+#endif
+            }
+
+            var targetName1 = "Cube_1";
+            var targetName2 = "Cube_2";
+
+            GoToTargetWayPoint(targetName1, false);
+
+            Thread.Sleep(1000);
+
+            GoToTargetWayPoint(targetName2);
+            
+#if UNITY_EDITOR
+            Debug.Log("End TestedRunAtOurBaseNPCProcess Main");
+#endif
+        }
+        
+        private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
+        {
+#if UNITY_EDITOR
+            //Debug.Log($"TestedRunAtOurBaseNPCProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
+#endif
+
+            var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
+
+            if (targetWayPoint != null)
+            {
+                var moveCommand = new HumanoidHStateCommand();
+                moveCommand.State = HumanoidHState.Walk;
+                moveCommand.TargetPosition = targetWayPoint.Position;
+
+#if UNITY_EDITOR
+                //Debug.Log($"TestedRunAtOurBaseNPCProcess GoToTargetWayPoint moveCommand = {moveCommand}");
+#endif
+                var tmpTask = ExecuteBody(moveCommand);
+                mTmpTask = tmpTask;
+#if UNITY_EDITOR
+                //Debug.Log($"TestedRunAtOurBaseNPCProcess GoToTargetWayPoint tmpTask = {tmpTask}");
+#endif
+
+                if (withWaiting)
+                {
+                    Wait(tmpTask);
+                }        
+            }
+
+#if UNITY_EDITOR
+            //Debug.Log("End TestedRunAtOurBaseNPCProcess GoToTargetWayPoint");
 #endif
         }
     }
@@ -304,7 +409,16 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedSimpleAimNPCProcess Main");
+            Debug.Log("Begin TestedSimpleAimNPCProcess Main");
+#endif
+
+            var tmpCommand = new HumanoidHandsActionStateCommand();
+            tmpCommand.State = HumanoidHandsActionState.StrongAim;
+
+            var tmpTask = ExecuteBody(tmpCommand);
+
+#if UNITY_EDITOR
+            Debug.Log("End TestedSimpleAimNPCProcess Main");
 #endif
         }    
     }
@@ -325,7 +439,17 @@ namespace Assets.Scripts
         private void Main(Vector3 targetPosition)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
+            Debug.Log($"Begin TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
+#endif
+
+            var tmpCommand = new HumanoidHStateCommand();
+            tmpCommand.State = HumanoidHState.AimAt;
+            tmpCommand.TargetPosition = targetPosition;
+            
+            var tmpTask = ExecuteBody(tmpCommand);
+
+#if UNITY_EDITOR
+            Debug.Log($"End TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
 #endif
         }    
     }
@@ -346,7 +470,17 @@ namespace Assets.Scripts
         private void Main(float angle)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TestedRotateNPCProcess Main angle = {angle}");
+            Debug.Log($"Begin TestedRotateNPCProcess Main angle = {angle}");
+#endif
+
+            var tmpCommand = new HumanoidHStateCommand();
+            tmpCommand.State = HumanoidHState.Rotate;
+            tmpCommand.TargetPosition = new Vector3(0, mAngle, 0);
+
+            var tmpTask = ExecuteBody(tmpCommand);
+
+#if UNITY_EDITOR
+            Debug.Log($"End TestedRotateNPCProcess Main angle = {angle}");
 #endif
         }    
     }
@@ -367,7 +501,17 @@ namespace Assets.Scripts
         private void Main(float angle)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TestedRotateHeadNPCProcess Main angle = {angle}");
+            Debug.Log($"Begin TestedRotateHeadNPCProcess Main angle = {angle}");
+#endif
+
+            var tmpCommand = new HumanoidHeadStateCommand();
+            tmpCommand.State = HumanoidHeadState.Rotate;
+            tmpCommand.TargetPosition = new Vector3(0, angle, 0);
+
+            var tmpTask = ExecuteBody(tmpCommand);
+
+#if UNITY_EDITOR
+            Debug.Log($"End TestedRotateHeadNPCProcess Main angle = {angle}");
 #endif
         }    
     }
@@ -387,7 +531,15 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedHeadToForvardNPCProcess Main");
+            Debug.Log("Begin TestedHeadToForvardNPCProcess Main");
+#endif
+
+            var tmpCommand = new HumanoidHeadStateCommand();
+            tmpCommand.State = HumanoidHeadState.LookingForward;
+            var tmpTask = ExecuteBody(tmpCommand);
+
+#if UNITY_EDITOR
+            Debug.Log("End TestedHeadToForvardNPCProcess Main");
 #endif
         }    
     }
@@ -407,7 +559,16 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedMoveNPCProcess Main");
+            Debug.Log("Begin TestedMoveNPCProcess Main");
+#endif
+
+            var tmpCommand = new HumanoidHStateCommand();
+            tmpCommand.State = HumanoidHState.Move;
+            tmpCommand.TargetPosition = new Vector3(0, 0, 1);
+            var tmpTask = ExecuteBody(tmpCommand);
+
+#if UNITY_EDITOR
+            Debug.Log("End TestedMoveNPCProcess Main");
 #endif
         }    
     }
@@ -428,7 +589,28 @@ namespace Assets.Scripts
         private void Main(int instanceId)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TestedTakeFromSurfaceNPCProcess Main instanceId = {instanceId}");
+            Debug.Log($"Begin TestedTakeFromSurfaceNPCProcess Main instanceId = {instanceId}");
+#endif
+
+            var tmpCommand = new HumanoidThingsCommand();
+            tmpCommand.State = KindOfHumanoidThingsCommand.Take;
+            tmpCommand.InstanceId = mInstanceId;
+            var tmpTask = ExecuteBody(tmpCommand);
+
+            tmpTask.OnRanToCompletionChanged += () => {
+#if UNITY_EDITOR
+                //Debug.Log("TestedTakeFromSurfaceNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
+#endif
+
+                var targetGameObj = MyGameObjectsBus.GetObject(mInstanceId);
+                
+                var gun = targetGameObj.GetInstance<IRapidFireGun>();
+                BlackBoard.RapidFireGunProxy.Instance = gun;
+                BlackBoard.InstanceIdOfRifle = instanceIdOfRifle;
+            };
+
+#if UNITY_EDITOR
+            Debug.Log($"End TestedTakeFromSurfaceNPCProcess Main instanceId = {instanceId}");
 #endif
         }
     }
@@ -449,7 +631,24 @@ namespace Assets.Scripts
         private void Main(int instanceId)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TestedHideRifleToBagPackNPCProcess Main instanceId = {instanceId}");
+            Debug.Log($"Begin TestedHideRifleToBagPackNPCProcess Main instanceId = {instanceId}");
+#endif
+
+            BlackBoard.RapidFireGunProxy.Instance = null;
+            var tmpCommand = new HumanoidThingsCommand();
+            tmpCommand.State = KindOfHumanoidThingsCommand.PutToBagpack;
+            tmpCommand.InstanceId = mInstanceId;
+            var tmpTask = ExecuteBody(tmpCommand);
+
+            tmpTask.OnRanToCompletionChanged += () => {
+#if UNITY_EDITOR
+                //Debug.Log("TestedHideRifleToBagPackNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
+#endif
+
+            };
+            
+#if UNITY_EDITOR
+            Debug.Log($"End TestedHideRifleToBagPackNPCProcess Main instanceId = {instanceId}");
 #endif
         }   
     }
@@ -470,7 +669,23 @@ namespace Assets.Scripts
         private void Main(int instanceId)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main instanceId = {instanceId}");
+            Debug.Log($"Begin TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main instanceId = {instanceId}");
+#endif
+
+            BlackBoard.RapidFireGunProxy.Instance = null;
+            var tmpCommand = new HumanoidThingsCommand();
+            tmpCommand.State = KindOfHumanoidThingsCommand.ThrowOutToSurface;
+            tmpCommand.InstanceId = mInstanceId;
+            var tmpTask = ExecuteBody(tmpCommand);
+
+            tmpTask.OnRanToCompletionChanged += () => {
+#if UNITY_EDITOR
+                //Debug.Log("TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
+#endif
+            };
+
+#if UNITY_EDITOR
+            Debug.Log($"End TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main instanceId = {instanceId}");
 #endif
         }   
     }
