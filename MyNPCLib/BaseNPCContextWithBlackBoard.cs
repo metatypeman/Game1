@@ -15,6 +15,14 @@ namespace MyNPCLib
 
         private BlackBoardType mBlackBoard;
 
+        public BlackBoardType BlackBoard
+        {
+            get
+            {
+                return mBlackBoard;
+            }
+        }
+
         public override object NoTypedBlackBoard => mBlackBoard;
     }
 }
