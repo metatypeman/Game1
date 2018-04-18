@@ -9,6 +9,7 @@ namespace Assets.Scripts
     public class TestedBlackBoard : IObjectToString
     {
         public int InstanceIdOfRifle { get; set; }
+        public Vector3? EthanPosition { get; set; }
         
         public override string ToString()
         {
