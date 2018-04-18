@@ -109,12 +109,55 @@ namespace Assets.Scripts
                     break;
                     
                 case KeyCode.B:
+                    {
+                        var instanceIdOfRifle = BlackBoard.InstanceIdOfRifle;
+                        
+#if UNITY_EDITOR
+            Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
+#endif
+                        if(instanceIdOfRifle == 0)
+                        {
+                            break;
+                        }
+                        
+                        var command = TestedTakeFromSurfaceNPCProcess.CreateCommand(instanceIdOfRifle);
+                        Execute(command);
+                    }
                     break;
                     
                 case KeyCode.J:
+                    {
+                        var instanceIdOfRifle = BlackBoard.InstanceIdOfRifle;
+                        
+#if UNITY_EDITOR
+            Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
+#endif
+
+                        if(instanceIdOfRifle == 0)
+                        {
+                            break;
+                        }
+                        
+                        var command = TestedHideRifleToBagPackNPCProcess.CreateCommand(instanceIdOfRifle);
+                        Execute(command);
+                    }
                     break;
                     
                 case KeyCode.Q:
+                    {
+                        var instanceIdOfRifle = BlackBoard.InstanceIdOfRifle;
+                        
+#if UNITY_EDITOR
+            Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
+#endif                        
+                        if(instanceIdOfRifle == 0)
+                        {
+                            break;
+                        }
+                        
+                        var command = TestedThrowOutToSurfaceRifleToSurfaceNPCProcess.CreateCommand(instanceIdOfRifle);
+                        Execute(command);
+                    }
                     break;
             }
         }
