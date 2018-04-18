@@ -77,35 +77,83 @@ namespace Assets.Scripts
             switch(key)
             {
                 case KeyCode.F:
+                    {
+                        var command = TestedHeadToForvardNPCProcess.CreateCommand();
+                        Execute(command);
+                    }
                     break;
                     
                 case KeyCode.G:
+                    {
+                        var command = TestedRotateHeadNPCProcess.CreateCommand(12f);
+                        Execute(command);
+                    }
                     break;
                     
                 case KeyCode.K:
+                    {
+                        var command = TestedRotateNPCProcess.CreateCommand(30f);
+                        Execute(command);
+                    }
                     break;
                     
                 case KeyCode.N:
+                    {
+                        //var command = 
+                    }
                     break;
                     
                 case KeyCode.H:
+                    {
+                        //var command = 
+                    }
                     break;
                     
                 case KeyCode.L:
+                    {
+                        var command = TestedSimpleAimNPCProcess.CreateCommand();
+                        Execute(command);
+                    }
                     break;
                     
                 case KeyCode.I:
+                    {
+                        var ethanPos = BlackBoard.EthanPosition;
+                        
+#if UNITY_EDITOR
+            Debug.Log($"TestedKeyListenerNPCProcess Main ethanPos = {ethanPos}");
+#endif
+                        
+                        if(!ethanPos.HasValue)
+                        {
+                            break;
+                        }
+                        
+                        var command = TestedFireToEthanNPCProcess.CreateCommand(ethanPos.Value);
+                        Execute(command);
+                    }
                     break;
                     
                 case KeyCode.P:
+                    {
+                        var command = TestedRunAtOurBaseNPCProcess.CreateCommand();
+                        Execute(command);
+                    }
                     break;
         
                 case KeyCode.U:
-                    var command = TestedGoToEnemyBaseNPCProcess.CreateCommand();
-                    Execute(command);
+                    {
+                        var command = TestedGoToEnemyBaseNPCProcess.CreateCommand();
+                        Execute(command);
+                    }
                     break;
                     
                 case KeyCode.M:
+                    {
+                        var command = TestedMoveNPCProcess.CreateCommand();
+                        Execute(command);
+                    }
+
                     break;
                     
                 case KeyCode.B:
