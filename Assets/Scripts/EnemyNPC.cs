@@ -57,6 +57,23 @@ public class EnemyNPC : MonoBehaviour
         }
         else
         {
+            var targetGun = FindObjectOfType<RapidFireGun>();
+            var possibleInstanceIdOfRifle = 0;
+            
+            if (targetGun != null)
+            {
+                possibleInstanceIdOfRifle = targetGun.GetInstanceID();
+            }
+        
+            var _target = GameObject.Find("Ethan");
+            
+            Vector3? ethanPosition = null;
+            
+            if(_target != null)
+            {
+                ethanPosition = _target.transform.position;
+            }
+        
             var npcProcessInfoCache = new NPCProcessInfoCache();
             var globalEntityDictionary = new EntityDictionary();
             //var  GetComponent<EnemyController>();
@@ -65,9 +82,12 @@ public class EnemyNPC : MonoBehaviour
 
             var hostContext = new TestedNPCHostContext(internalBodyHost);
             mNPCProcessesContext = new TestedNPCContext(globalEntityDictionary, npcProcessInfoCache, hostContext);
+            var blackBoard = mNPCProcessesContext.BlackBoard;
+            blackBoard.PossibleIdOfRifle = possibleInstanceIdOfRifle;
+            blackBoard.EthanPosition = ethanPosition;
             mNPCProcessesContext.Bootstrap();
-        }
-
+        }        
+        
         //_gun = GetComponentInChildren<RapidFireGun>();
 
         //if(_gun != null)
