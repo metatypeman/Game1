@@ -449,6 +449,23 @@ namespace MyNPCLib
 
         public virtual object NoTypedBlackBoard => null;
 
+        private NPCSimpleDI mSimpleDI = new NPCSimpleDI();
+
+        public void RegisterInstance<T>(object instance) where T : class
+        {
+            mSimpleDI.RegisterInstance<T>(instance);
+        }
+
+        public void RemoveInstance<T>() where T : class
+        {
+            mSimpleDI.RemoveInstance<T>();
+        }
+
+        public T GetInstance<T>() where T : class
+        {
+            return mSimpleDI.GetInstance<T>();
+        }
+
         public void Dispose()
         {
 #if DEBUG
