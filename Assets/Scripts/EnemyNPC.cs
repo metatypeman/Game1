@@ -82,6 +82,7 @@ public class EnemyNPC : MonoBehaviour
 
             var hostContext = new TestedNPCHostContext(internalBodyHost);
             mNPCProcessesContext = new TestedNPCContext(globalEntityDictionary, npcProcessInfoCache, hostContext);
+            mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
             var blackBoard = mNPCProcessesContext.BlackBoard;
             blackBoard.PossibleIdOfRifle = possibleInstanceIdOfRifle;
             blackBoard.EthanPosition = ethanPosition;
