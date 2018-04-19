@@ -9,6 +9,6 @@ namespace MyNPCLib
         string Name { get; }
         ulong InitiatingProcessId { get; }
         KindOfLinkingToInitiator KindOfLinkingToInitiator { get; }
-        Dictionary<string, object> Params { get; }
+        IDictionary<string, object> Params { get; }
     }
 }

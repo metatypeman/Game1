@@ -351,6 +351,7 @@
     <Compile Include="Assets\Scripts\IHandThing.cs" />
     <Compile Include="Assets\Scripts\IInternalBodyHumanoidHost.cs" />
     <Compile Include="Assets\Scripts\IMoveHumanoidController.cs" />
+    <Compile Include="Assets\Scripts\INPCRayScaner.cs" />
     <Compile Include="Assets\Scripts\InputKeyHelper.cs" />
     <Compile Include="Assets\Scripts\InternalStatesConverter.cs" />
     <Compile Include="Assets\Scripts\InternalTargetStateOfHumanoidControllerConverter.cs" />
@@ -411,6 +412,8 @@
     <Compile Include="Assets\Scripts\TestedNPCContext.cs" />
     <Compile Include="Assets\Scripts\TestedNPCHostContext.cs" />
     <Compile Include="Assets\Scripts\TestedNPCProcesses.cs" />
+    <Compile Include="Assets\Scripts\VisionItem.cs" />
+    <Compile Include="Assets\Scripts\VisionObject.cs" />
     <Compile Include="Assets\Scripts\WaypointsBus.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
   </ItemGroup>

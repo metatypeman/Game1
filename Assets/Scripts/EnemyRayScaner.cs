@@ -1,93 +1,7 @@
 ﻿using Assets.Scripts;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
-using MyNPCLib;
-
-public class VisionItem : IObjectToString
-{
-    public Vector3 LocalDirection { get; set; }
-    public Vector3 Point { get; set; }
-    public float Distance { get; set; }
-    public int InstanceID { get; set; }
-
-    public override string ToString()
-    {
-        return ToString(0u);
-    }
-
-    public string ToString(uint n)
-    {
-        return this.GetDefaultToStringInformation(n);
-    }
-
-    public string PropertiesToSting(uint n)
-    {
-        var spaces = StringHelper.Spaces(n);
-        var sb = new StringBuilder();
-        sb.AppendLine($"{spaces}{nameof(LocalDirection)} = {LocalDirection}");
-        sb.AppendLine($"{spaces}{nameof(Point)} = {Point}");
-        sb.AppendLine($"{spaces}{nameof(Distance)} = {Distance}");
-        sb.AppendLine($"{spaces}{nameof(InstanceID)} = {InstanceID}");
-        return sb.ToString();
-    }
-}
-
-public class VisionObject : IObjectToString
-{
-    public int InstanceID { get; set; }
-    public MyGameObject GameObject { get; set; }
-    public List<VisionItem> VisionItems { get; set; }
-
-    public override string ToString()
-    {
-        return ToString(0u);
-    }
-
-    public string ToString(uint n)
-    {
-        return this.GetDefaultToStringInformation(n);
-    }
-
-    public string PropertiesToSting(uint n)
-    {
-        var spaces = StringHelper.Spaces(n);
-        var nextN = n + 4;
-        var sb = new StringBuilder();
-        sb.AppendLine($"{spaces}{nameof(InstanceID)} = {InstanceID}");
-        if(GameObject == null)
-        {
-            sb.AppendLine($"{spaces}{nameof(GameObject)} = null");
-        }
-        else
-        {
-            sb.Append($"{spaces}{nameof(GameObject)} = {GameObject.ToString(nextN)}");
-        }
-
-        if(VisionItems == null)
-        {
-            sb.AppendLine($"{spaces}{nameof(VisionItems)} = null");
-        }
-        else
-        {
-            sb.AppendLine($"{spaces}Begin {nameof(VisionItems)}");
-            foreach(var visionItem in VisionItems)
-            {
-                sb.Append(visionItem.ToString(nextN));
-            }
-            sb.AppendLine($"{spaces}End {nameof(VisionItems)}");
-        }
-        return sb.ToString();
-    }
-}
-
-public interface INPCRayScaner
-{
-    List<VisionObject> VisibleObjects { get; }
-}
 
 public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 {
@@ -201,7 +115,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
         if (Physics.Raycast(pos, globalDirection, out hit, distance))
         {
 #if UNITY_EDITOR
-            //Debug.DrawLine(pos, hit.point, Color.blue);
+            Debug.DrawLine(pos, hit.point, Color.blue);
 #endif
             var visibleItem = new VisionItem();
             visibleItem.LocalDirection = localDirection;
@@ -213,7 +127,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 #if UNITY_EDITOR
         else
         {
-            //Debug.DrawRay(pos, globalDirection * distance, Color.red);
+            Debug.DrawRay(pos, globalDirection * distance, Color.red);
         }
 #endif
     }

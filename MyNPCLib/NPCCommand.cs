@@ -9,7 +9,7 @@ namespace MyNPCLib
         public string Name { get; set; }
         public ulong InitiatingProcessId { get; set; }
         public KindOfLinkingToInitiator KindOfLinkingToInitiator { get; set; } = KindOfLinkingToInitiator.Standalone;
-        public Dictionary<string, object> Params { get; set; } = new Dictionary<string, object>();
+        public IDictionary<string, object> Params { get; set; } = new Dictionary<string, object>();
         public void AddParam(string name, object value)
         {
             Params[name] = value;

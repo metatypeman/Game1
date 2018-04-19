@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -39,6 +40,23 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log("TestedInspectingNPCProcess Awake");
 #endif
+
+            var trigger = CreateTrigger(() => {
+                var visibleObjects = BlackBoard.VisibleObjects;
+
+#if UNITY_EDITOR
+                Debug.Log($"TestedInspectingNPCProcess Awake visibleObjects.Count = {visibleObjects.Count}");
+#endif
+
+                if (visibleObjects.Any(p => p.GameObject != null && p.GameObject.Name == "TrafficBarrierRed"))
+                {
+                    return true;
+                }
+
+                return false;
+            }, 1000);
+
+            trigger.OnFire += Trigger_OnFire;
         }
 
         public static NPCCommand CreateCommand()
@@ -47,7 +65,14 @@ namespace Assets.Scripts
             command.Name = "inspecting";  
             return command;
         }
-        
+
+        private void Trigger_OnFire()
+        {
+#if UNITY_EDITOR
+            Debug.Log("TestedInspectingNPCProcess Trigger_OnFire");
+#endif
+        }
+
         private void Main()
         {
 #if UNITY_EDITOR
@@ -377,7 +402,7 @@ namespace Assets.Scripts
                 //Debug.Log($"TestedRunAtOurBaseNPCProcess GoToTargetWayPoint moveCommand = {moveCommand}");
 #endif
                 var tmpTask = ExecuteBody(moveCommand);
-                mTmpTask = tmpTask;
+                
 #if UNITY_EDITOR
                 //Debug.Log($"TestedRunAtOurBaseNPCProcess GoToTargetWayPoint tmpTask = {tmpTask}");
 #endif
@@ -475,7 +500,7 @@ namespace Assets.Scripts
 
             var tmpCommand = new HumanoidHStateCommand();
             tmpCommand.State = HumanoidHState.Rotate;
-            tmpCommand.TargetPosition = new Vector3(0, mAngle, 0);
+            tmpCommand.TargetPosition = new Vector3(0, angle, 0);
 
             var tmpTask = ExecuteBody(tmpCommand);
 
@@ -594,7 +619,7 @@ namespace Assets.Scripts
 
             var tmpCommand = new HumanoidThingsCommand();
             tmpCommand.State = KindOfHumanoidThingsCommand.Take;
-            tmpCommand.InstanceId = mInstanceId;
+            tmpCommand.InstanceId = instanceId;
             var tmpTask = ExecuteBody(tmpCommand);
 
             tmpTask.OnRanToCompletionChanged += () => {
@@ -602,11 +627,11 @@ namespace Assets.Scripts
                 //Debug.Log("TestedTakeFromSurfaceNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
 #endif
 
-                var targetGameObj = MyGameObjectsBus.GetObject(mInstanceId);
+                var targetGameObj = MyGameObjectsBus.GetObject(instanceId);
                 
                 var gun = targetGameObj.GetInstance<IRapidFireGun>();
                 BlackBoard.RapidFireGunProxy.Instance = gun;
-                BlackBoard.InstanceIdOfRifle = instanceIdOfRifle;
+                BlackBoard.InstanceIdOfRifle = instanceId;
             };
 
 #if UNITY_EDITOR
@@ -637,7 +662,7 @@ namespace Assets.Scripts
             BlackBoard.RapidFireGunProxy.Instance = null;
             var tmpCommand = new HumanoidThingsCommand();
             tmpCommand.State = KindOfHumanoidThingsCommand.PutToBagpack;
-            tmpCommand.InstanceId = mInstanceId;
+            tmpCommand.InstanceId = instanceId;
             var tmpTask = ExecuteBody(tmpCommand);
 
             tmpTask.OnRanToCompletionChanged += () => {
@@ -675,7 +700,7 @@ namespace Assets.Scripts
             BlackBoard.RapidFireGunProxy.Instance = null;
             var tmpCommand = new HumanoidThingsCommand();
             tmpCommand.State = KindOfHumanoidThingsCommand.ThrowOutToSurface;
-            tmpCommand.InstanceId = mInstanceId;
+            tmpCommand.InstanceId = instanceId;
             var tmpTask = ExecuteBody(tmpCommand);
 
             tmpTask.OnRanToCompletionChanged += () => {

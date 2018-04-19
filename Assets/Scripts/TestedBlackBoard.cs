@@ -1,8 +1,10 @@
-﻿using System;
+﻿using MyNPCLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -11,6 +13,29 @@ namespace Assets.Scripts
         public int PossibleIdOfRifle { get; set; }
         public int InstanceIdOfRifle { get; set; }
         public Vector3? EthanPosition { get; set; }
+
+        public INPCRayScaner NPCRayScaner { get; set; }
+        private object mNPCRayScanerLockObj = new object();
+
+        public List<VisionObject> VisibleObjects
+        {
+            get
+            {
+#if UNITY_EDITOR
+                //Debug.Log("TestedBlackBoard VisibleObjects");
+#endif
+                lock(mNPCRayScanerLockObj)
+                {
+                    if(NPCRayScaner == null)
+                    {
+                        return new List<VisionObject>();
+                    }
+
+                    return NPCRayScaner.VisibleObjects;
+                }
+            }
+        }
+
         public RapidFireGunProxy RapidFireGunProxy { get; set; } = new RapidFireGunProxy();
         public event Action OnGunHasTaken;
         
