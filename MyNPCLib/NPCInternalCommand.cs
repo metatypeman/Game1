@@ -9,6 +9,7 @@ namespace MyNPCLib
         public ulong Key { get; set; }
         public ulong InitiatingProcessId { get; set; }
         public KindOfLinkingToInitiator KindOfLinkingToInitiator { get; set; } = KindOfLinkingToInitiator.Standalone;
+        public float Priority { get; set; } = NPCProcessPriorities.Normal;
         public Dictionary<ulong, object> Params { get; set; } = new Dictionary<ulong, object>();
 
         public override string ToString()
@@ -28,6 +29,7 @@ namespace MyNPCLib
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             sb.AppendLine($"{spaces}{nameof(InitiatingProcessId)} = {InitiatingProcessId}");
             sb.AppendLine($"{spaces}{nameof(KindOfLinkingToInitiator)} = {KindOfLinkingToInitiator}");
+            sb.AppendLine($"{spaces}{nameof(Priority)} = {Priority}");
             if (Params == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Params)} = null");

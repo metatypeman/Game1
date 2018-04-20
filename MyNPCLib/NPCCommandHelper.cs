@@ -22,6 +22,7 @@ namespace MyNPCLib
             result.Key = entityDictionary.GetKey(command.Name);
             result.InitiatingProcessId = command.InitiatingProcessId;
             result.KindOfLinkingToInitiator = command.KindOfLinkingToInitiator;
+            result.Priority = command.Priority;
 
             foreach(var commandParam in command.Params)
             {

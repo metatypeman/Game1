@@ -128,6 +128,7 @@ namespace MyNPCLib
 
             var command = new NPCCommand();
             command.Name = npcProcessInfo.Name;
+            command.Priority = NPCProcessPriorities.Highest;
 
 #if DEBUG
             //LogInstance.Log($"BaseNPCContext Bootstrap command = {command}");

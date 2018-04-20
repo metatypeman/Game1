@@ -9,6 +9,7 @@ namespace MyNPCLib
         public string Name { get; set; }
         public ulong InitiatingProcessId { get; set; }
         public KindOfLinkingToInitiator KindOfLinkingToInitiator { get; set; } = KindOfLinkingToInitiator.Standalone;
+        public float Priority { get; set; } = NPCProcessPriorities.Normal;
         public IDictionary<string, object> Params { get; set; } = new Dictionary<string, object>();
         public void AddParam(string name, object value)
         {
@@ -32,7 +33,8 @@ namespace MyNPCLib
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(InitiatingProcessId)} = {InitiatingProcessId}");
             sb.AppendLine($"{spaces}{nameof(KindOfLinkingToInitiator)} = {KindOfLinkingToInitiator}");
-            if(Params == null)
+            sb.AppendLine($"{spaces}{nameof(Priority)} = {Priority}");
+            if (Params == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Params)} = null");
             }

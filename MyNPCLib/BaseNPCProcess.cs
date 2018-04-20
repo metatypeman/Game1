@@ -277,6 +277,7 @@ namespace MyNPCLib
         {
 #if DEBUG
             //LogInstance.Log($"Begin BaseNPCProcess RunAsync command = {command}");
+            //LogInstance.Log($"Begin BaseNPCProcess RunAsync LocalPriority = {LocalPriority}");
             //LogInstance.Log($"Begin BaseNPCProcess RunAsync entryPointInfo = {entryPointInfo}");
 #endif
 
@@ -293,6 +294,7 @@ namespace MyNPCLib
             }
 
             var proxy = new ProxyForNPCAbstractProcess(mId, Context);
+            proxy.LocalPriority = command.Priority;
 
             var task = new Task(() => {
                 NRun(entryPointInfo, command, proxy);
@@ -304,6 +306,7 @@ namespace MyNPCLib
 
 #if DEBUG
             //LogInstance.Log($"End BaseNPCProcess RunAsync command = {command}");
+            //LogInstance.Log($"End BaseNPCProcess RunAsync proxy.LocalPriority = {proxy.LocalPriority}");
 #endif
 
             return proxy;

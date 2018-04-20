@@ -49,7 +49,7 @@ namespace MyNPCLib
         public BaseNPCProcessInvocablePackage GetProcess(NPCInternalCommand command)
         {
 #if DEBUG
-            //LogInstance.Log($"StorageOfNPCProcesses GetProcess command = {command}");
+            LogInstance.Log($"StorageOfNPCProcesses GetProcess command = {command}");
 #endif
 
             lock (mDisposeLockObj)
@@ -98,7 +98,7 @@ namespace MyNPCLib
                         }
                         else
                         {
-                            instance = CreateInstanceByProcessInfo(processInfo);
+                            instance = CreateInstanceByProcessInfo(processInfo, command.Priority);
                             mSingletonsDict[key] = instance;
                         }
                     }
@@ -107,7 +107,7 @@ namespace MyNPCLib
                 case NPCProcessStartupMode.NewInstance:
                 case NPCProcessStartupMode.NewStandaloneInstance:
                     {
-                        instance = CreateInstanceByProcessInfo(processInfo);
+                        instance = CreateInstanceByProcessInfo(processInfo, command.Priority);
                     }
                     break;
 
@@ -124,12 +124,13 @@ namespace MyNPCLib
             return result;
         }
 
-        private BaseNPCProcess CreateInstanceByProcessInfo(NPCProcessInfo npcProcessInfo)
+        private BaseNPCProcess CreateInstanceByProcessInfo(NPCProcessInfo npcProcessInfo, float priority)
         {
             var instance = (BaseNPCProcess)Activator.CreateInstance(npcProcessInfo.Type);
             instance.Id = mIdFactory.GetNewId();
             instance.Context = mContext;
             instance.Info = npcProcessInfo;
+            instance.LocalPriority = priority;
             return instance;
         }
 
