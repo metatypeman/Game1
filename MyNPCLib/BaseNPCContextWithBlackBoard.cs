@@ -4,13 +4,14 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    public class BaseNPCContextWithBlackBoard<BlackBoardType>: BaseNPCContext
-        where BlackBoardType: class, new()
+    public class BaseNPCContextWithBlackBoard<BlackBoardType>: BaseNPCContext 
+        where BlackBoardType: BaseBlackBoard, new()
     {
         public BaseNPCContextWithBlackBoard(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, INPCHostContext npcHostContext = null)
             : base(entityDictionary, npcProcessInfoCache, npcHostContext)
         {
             mBlackBoard = new BlackBoardType();
+            mBlackBoard.Context = this;
         }
 
         private BlackBoardType mBlackBoard;
@@ -24,5 +25,11 @@ namespace MyNPCLib
         }
 
         public override object NoTypedBlackBoard => mBlackBoard;
+
+        protected override void OnBootsrap()
+        {
+            base.OnBootsrap();
+            mBlackBoard.Bootstrap();
+        }
     }
 }

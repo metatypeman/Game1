@@ -108,8 +108,9 @@ namespace MyNPCLib
             mBodyResourcesManager.Bootstrap();
             mRightHandResourcesManager.Bootstrap();
             mLeftHandResourcesManager.Bootstrap();
+            OnBootsrap();
 
-            if(type == null)
+            if (type == null)
             {
                 return;
             }
@@ -138,6 +139,10 @@ namespace MyNPCLib
         public virtual void Bootstrap()
         {
             Bootstrap(null);
+        }
+
+        protected virtual void OnBootsrap()
+        {
         }
 
         public INPCProcess Send(INPCCommand command)
