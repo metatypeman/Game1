@@ -19,6 +19,7 @@ namespace Assets.Scripts
 #endif
 
             var command = TestedInspectingNPCProcess.CreateCommand();
+            command.Priority = NPCProcessPriorities.Highest;
             Execute(command);
         }
 
