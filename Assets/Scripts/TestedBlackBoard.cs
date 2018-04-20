@@ -8,8 +8,15 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class TestedBlackBoard : IObjectToString
+    public class TestedBlackBoard : BaseBlackBoard, IObjectToString
     {
+        public override void Bootstrap()
+        {
+#if UNITY_EDITOR
+            Debug.Log("TestedBlackBoard Bootstrap");
+#endif
+        }
+    
         public int PossibleIdOfRifle { get; set; }
         public int InstanceIdOfRifle { get; set; }
         public Vector3? EthanPosition { get; set; }
