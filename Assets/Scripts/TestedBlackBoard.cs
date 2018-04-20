@@ -15,14 +15,15 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log("TestedBlackBoard Bootstrap");
 #endif
+
+            mNPCRayScaner = Context.GetInstance<INPCRayScaner>();
         }
     
         public int PossibleIdOfRifle { get; set; }
         public int InstanceIdOfRifle { get; set; }
         public Vector3? EthanPosition { get; set; }
 
-        public INPCRayScaner NPCRayScaner { get; set; }
-        private object mNPCRayScanerLockObj = new object();
+        private INPCRayScaner mNPCRayScaner { get; set; }
 
         public List<VisionObject> VisibleObjects
         {
@@ -31,15 +32,12 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
                 //Debug.Log("TestedBlackBoard VisibleObjects");
 #endif
-                lock(mNPCRayScanerLockObj)
+                if(mNPCRayScaner == null)
                 {
-                    if(NPCRayScaner == null)
-                    {
-                        return new List<VisionObject>();
-                    }
-
-                    return NPCRayScaner.VisibleObjects;
+                    return new List<VisionObject>();
                 }
+
+                return mNPCRayScaner.VisibleObjects;
             }
         }
 
