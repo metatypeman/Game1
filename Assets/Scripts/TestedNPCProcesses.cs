@@ -301,40 +301,6 @@ namespace Assets.Scripts
             Debug.Log("End TestedRunAwayNPCProcess Main");
 #endif
         }
-        
-        private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
-        {
-#if UNITY_EDITOR
-            //Debug.Log($"TestedRunAwayNPCProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
-#endif
-
-            var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
-
-            if (targetWayPoint != null)
-            {
-                var moveCommand = new HumanoidHStateCommand();
-                moveCommand.State = HumanoidHState.Walk;
-                moveCommand.TargetPosition = targetWayPoint.Position;
-
-#if UNITY_EDITOR
-                //Debug.Log($"TestedRunAwayNPCProcess GoToTargetWayPoint moveCommand = {moveCommand}");
-#endif
-                var tmpTask = ExecuteBody(moveCommand);
-                //mTmpTask = tmpTask;
-#if UNITY_EDITOR
-                //Debug.Log($"TestedRunAwayNPCProcess GoToTargetWayPoint tmpTask = {tmpTask}");
-#endif
-
-                if (withWaiting)
-                {
-                    Wait(tmpTask);
-                }
-            }
-
-#if UNITY_EDITOR
-            //Debug.Log("End TestedRunAwayNPCProcess GoToTargetWayPoint");
-#endif
-        }
     }
     
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
@@ -381,40 +347,6 @@ namespace Assets.Scripts
             
 #if UNITY_EDITOR
             Debug.Log("End TestedRunAtOurBaseNPCProcess Main");
-#endif
-        }
-        
-        private void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
-        {
-#if UNITY_EDITOR
-            //Debug.Log($"TestedRunAtOurBaseNPCProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
-#endif
-
-            var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
-
-            if (targetWayPoint != null)
-            {
-                var moveCommand = new HumanoidHStateCommand();
-                moveCommand.State = HumanoidHState.Walk;
-                moveCommand.TargetPosition = targetWayPoint.Position;
-
-#if UNITY_EDITOR
-                //Debug.Log($"TestedRunAtOurBaseNPCProcess GoToTargetWayPoint moveCommand = {moveCommand}");
-#endif
-                var tmpTask = ExecuteBody(moveCommand);
-                
-#if UNITY_EDITOR
-                //Debug.Log($"TestedRunAtOurBaseNPCProcess GoToTargetWayPoint tmpTask = {tmpTask}");
-#endif
-
-                if (withWaiting)
-                {
-                    Wait(tmpTask);
-                }        
-            }
-
-#if UNITY_EDITOR
-            //Debug.Log("End TestedRunAtOurBaseNPCProcess GoToTargetWayPoint");
 #endif
         }
     }
