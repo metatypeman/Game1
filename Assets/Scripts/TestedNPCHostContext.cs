@@ -66,19 +66,6 @@ namespace Assets.Scripts
 
             targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;
             return targetStateForExecuting;
-
-            //            lock (mLockObj)
-            //            {
-            //                
-            //                
-
-            //#if DEBUG
-            //                targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;//tmp
-            //                //NLog.LogManager.GetCurrentClassLogger().Info($"ExecuteAsync mTargetStateQueue.Count = {mTargetStateQueue.Count}");
-            //#endif
-
-            //                
-            //            }
         }
     }
 
