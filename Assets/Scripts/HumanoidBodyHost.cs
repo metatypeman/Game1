@@ -48,6 +48,13 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mAimCorrector = corrector;
     }
 
+    public void SetInternalHumanoidHostContext(IInternalHumanoidHostContext intenalHostContext)
+    {
+        mInternalHumanoidHostContext = intenalHostContext;
+    }
+
+    private IInternalHumanoidHostContext mInternalHumanoidHostContext;
+
     // Use this for initialization
     void Start ()
     {
@@ -215,7 +222,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         {
             case InternalKindOfHumanoidThingsCommand.Take:
                 {
-                    thing.SetToHandsOfHumanoid(this);
+                    thing.SetToHandsOfHumanoid(this, mInternalHumanoidHostContext);
                     mStates.HandsState = InternalHumanoidHandsState.HasRifle;
                     ApplyCurrentStates();
                     EmitOnHumanoidStatesChanged(InternalHumanoidStateKind.ThingsCommand);

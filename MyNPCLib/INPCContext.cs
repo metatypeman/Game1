@@ -29,5 +29,7 @@ namespace MyNPCLib
         NPCResourcesResolutionKind ApproveNPCResourceProcessExecute(BaseNPCResourcesResolution existingsNPCResourcesResulution);
 
         object NoTypedBlackBoard { get; }
+
+        T GetInstance<T>() where T : class;
     }
 }

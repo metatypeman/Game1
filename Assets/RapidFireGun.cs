@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using MyNPCLib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -307,7 +308,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         return angle;
     }
 
-    public bool SetToHandsOfHumanoid(IInternalHumanoid humanoid)
+    public bool SetToHandsOfHumanoid(IInternalHumanoid humanoid, IInternalHumanoidHostContext internalContext)
     {
 #if UNITY_EDITOR
         //Debug.Log("Begin RapidFireGun SetToHandsOfHumanoid");
@@ -323,6 +324,8 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
 
             return true;
         }
+
+        internalContext.RightHandThing = this;
 
         if (mBodyCollider != null)
         {
@@ -408,5 +411,28 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
 #endif
 
         return true;
+    }
+
+    public INPCProcess Send(INPCCommand command)
+    {
+#if UNITY_EDITOR
+        Debug.Log($"RapidFireGun Send command = {command}");
+#endif
+
+        throw new NotImplementedException();
+    }
+
+    public object Get(string propertyName)
+    {
+#if UNITY_EDITOR
+        Debug.Log($"RapidFireGun Get propertyName = {propertyName}");
+#endif
+
+        if(propertyName == "FireMode")
+        {
+            return FireMode;
+        }
+
+        throw new NotImplementedException();
     }
 }

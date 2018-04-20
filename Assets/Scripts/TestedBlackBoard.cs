@@ -40,9 +40,6 @@ namespace Assets.Scripts
                 return mNPCRayScaner.VisibleObjects;
             }
         }
-
-        public RapidFireGunProxy RapidFireGunProxy { get; set; } = new RapidFireGunProxy();
-        public event Action OnGunHasTaken;
         
         public override string ToString()
         {

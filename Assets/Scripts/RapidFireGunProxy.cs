@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -173,13 +174,13 @@ namespace Assets.Scripts
             }
         }
 
-        public bool SetToHandsOfHumanoid(IInternalHumanoid humanoid)
+        public bool SetToHandsOfHumanoid(IInternalHumanoid humanoid, IInternalHumanoidHostContext internalContext)
         {
             lock (mLockObj)
             {
                 if (mInstance != null)
                 {
-                    return mInstance.SetToHandsOfHumanoid(humanoid);
+                    return mInstance.SetToHandsOfHumanoid(humanoid, internalContext);
                 }
 
                 return false;           
@@ -210,6 +211,24 @@ namespace Assets.Scripts
 
                 return false;
             }
+        }
+
+        public INPCProcess Send(INPCCommand command)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"RapidFireGunProxy Send command = {command}");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        public object Get(string propertyName)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"RapidFireGunProxy Get propertyName = {propertyName}");
+#endif
+
+            throw new NotImplementedException();
         }
     }
 }

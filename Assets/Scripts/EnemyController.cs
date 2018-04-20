@@ -48,13 +48,6 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IInternal
         mAimCorrector = corrector;
     }
 
-    public void TstTakeRifle(IHandThing thing)
-    {
-        thing.SetToHandsOfHumanoid(this);
-        mStates.HandsState = InternalHumanoidHandsState.HasRifle;
-        ApplyCurrentStates();
-    }
-
     // Use this for initialization
     void Start () {
         mStates = new InternalStatesOfHumanoidController();
@@ -221,7 +214,7 @@ public class EnemyController : MonoBehaviour, IMoveHumanoidController, IInternal
         {
             case InternalKindOfHumanoidThingsCommand.Take:
                 {
-                    thing.SetToHandsOfHumanoid(this);
+                    thing.SetToHandsOfHumanoid(this, null);
                     mStates.HandsState = InternalHumanoidHandsState.HasRifle;
                     ApplyCurrentStates();
                     EmitOnHumanoidStatesChanged(InternalHumanoidStateKind.ThingsCommand);

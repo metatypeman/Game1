@@ -46,11 +46,11 @@ namespace Assets.Scripts
                 var visibleObjects = BlackBoard.VisibleObjects;
 
 #if UNITY_EDITOR
-                Debug.Log($"TestedInspectingNPCProcess Trigger visibleObjects.Count = {visibleObjects.Count}");
-                foreach(var tmpVisibleObject in visibleObjects)
-                {
-                    Debug.Log($"TestedInspectingNPCProcess Trigger tmpVisibleObject.GameObject != null = {tmpVisibleObject.GameObject != null} tmpVisibleObject.GameObject?.Name = {tmpVisibleObject.GameObject?.Name}");
-                }
+                //Debug.Log($"TestedInspectingNPCProcess Trigger visibleObjects.Count = {visibleObjects.Count}");
+                //foreach(var tmpVisibleObject in visibleObjects)
+                //{
+                //    Debug.Log($"TestedInspectingNPCProcess Trigger tmpVisibleObject.InstanceID = {tmpVisibleObject.InstanceID} tmpVisibleObject.GameObject != null = {tmpVisibleObject.GameObject != null} tmpVisibleObject.GameObject?.Name = {tmpVisibleObject.GameObject?.Name}");
+                //}
 #endif
 
                 if (visibleObjects.Any(p => p.GameObject != null && p.GameObject.Name == "TrafficBarrierRed"))
@@ -83,7 +83,7 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log("TestedInspectingNPCProcess Main");
 #endif
-        }    
+        }
     }
     
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
@@ -129,13 +129,15 @@ namespace Assets.Scripts
                     
                 case KeyCode.N:
                     {
-                        //var command = 
+                        var command = TestedStartShootingNPCProcess.CreateCommand();
+                        Execute(command);
                     }
                     break;
                     
                 case KeyCode.H:
                     {
-                        //var command = 
+                        var command = TestedStopShootingNPCProcess.CreateCommand();
+                        Execute(command);
                     }
                     break;
                     
@@ -564,10 +566,6 @@ namespace Assets.Scripts
                 //Debug.Log("TestedTakeFromSurfaceNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
 #endif
 
-                var targetGameObj = MyGameObjectsBus.GetObject(instanceId);
-                
-                var gun = targetGameObj.GetInstance<IRapidFireGun>();
-                BlackBoard.RapidFireGunProxy.Instance = gun;
                 BlackBoard.InstanceIdOfRifle = instanceId;
             };
 
@@ -596,7 +594,6 @@ namespace Assets.Scripts
             Debug.Log($"Begin TestedHideRifleToBagPackNPCProcess Main instanceId = {instanceId}");
 #endif
 
-            BlackBoard.RapidFireGunProxy.Instance = null;
             var tmpCommand = new HumanoidThingsCommand();
             tmpCommand.State = KindOfHumanoidThingsCommand.PutToBagpack;
             tmpCommand.InstanceId = instanceId;
@@ -634,7 +631,6 @@ namespace Assets.Scripts
             Debug.Log($"Begin TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main instanceId = {instanceId}");
 #endif
 
-            BlackBoard.RapidFireGunProxy.Instance = null;
             var tmpCommand = new HumanoidThingsCommand();
             tmpCommand.State = KindOfHumanoidThingsCommand.ThrowOutToSurface;
             tmpCommand.InstanceId = instanceId;
@@ -650,5 +646,57 @@ namespace Assets.Scripts
             Debug.Log($"End TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main instanceId = {instanceId}");
 #endif
         }   
+    }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
+    [NPCProcessName("start shooting")]
+    public class TestedStartShootingNPCProcess : TestedBaseNPCProcess
+    {
+        public static NPCCommand CreateCommand()
+        {
+            var command = new NPCCommand();
+            command.Name = "start shooting";
+            return command;
+        }
+
+        private void Main()
+        {
+#if UNITY_EDITOR
+            Debug.Log("Begin TestedStartShootingNPCProcess Main");
+#endif
+
+            var fireMode = GetDefaultHandProperty<FireMode?>("FireMode");
+
+#if UNITY_EDITOR
+            Debug.Log($"TestedStartShootingNPCProcess Main fireMode = {fireMode}");
+#endif
+
+#if UNITY_EDITOR
+            Debug.Log("End TestedStartShootingNPCProcess Main");
+#endif
+        }
+    }
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
+    [NPCProcessName("stop shooting")]
+    public class TestedStopShootingNPCProcess : TestedBaseNPCProcess
+    {
+        public static NPCCommand CreateCommand()
+        {
+            var command = new NPCCommand();
+            command.Name = "stop shooting";
+            return command;
+        }
+
+        private void Main()
+        {
+#if UNITY_EDITOR
+            Debug.Log("Begin TestedStopShootingNPCProcess Main");
+#endif
+
+#if UNITY_EDITOR
+            Debug.Log("End TestedStopShootingNPCProcess Main");
+#endif
+        }
     }
 }

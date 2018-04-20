@@ -350,9 +350,11 @@
     <Compile Include="Assets\Scripts\HumanoidBodyHost.cs" />
     <Compile Include="Assets\Scripts\IHandThing.cs" />
     <Compile Include="Assets\Scripts\IInternalBodyHumanoidHost.cs" />
+    <Compile Include="Assets\Scripts\IInternalHumanoidHostContext.cs" />
     <Compile Include="Assets\Scripts\IMoveHumanoidController.cs" />
     <Compile Include="Assets\Scripts\INPCRayScaner.cs" />
     <Compile Include="Assets\Scripts\InputKeyHelper.cs" />
+    <Compile Include="Assets\Scripts\InternalHumanoidHostContext.cs" />
     <Compile Include="Assets\Scripts\InternalStatesConverter.cs" />
     <Compile Include="Assets\Scripts\InternalTargetStateOfHumanoidControllerConverter.cs" />
     <Compile Include="Assets\Scripts\IObject.cs" />

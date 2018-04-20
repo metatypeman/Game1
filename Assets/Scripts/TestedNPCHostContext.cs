@@ -11,13 +11,16 @@ namespace Assets.Scripts
 {
     public class TestedNPCBodyHost : INPCBodyHost
     {
-        public TestedNPCBodyHost(IInternalBodyHumanoidHost internalBodyHumanoidHost)
+        public TestedNPCBodyHost(IInternalHumanoidHostContext intenalHostContext, IInternalBodyHumanoidHost internalBodyHumanoidHost)
         {
+            mInternalHumanoidHostContext = intenalHostContext;
             mInternalBodyHumanoidHost = internalBodyHumanoidHost;
+            mInternalBodyHumanoidHost.SetInternalHumanoidHostContext(intenalHostContext);
             mStates = new ProxyForStatesOfHumanoidBodyHost(mInternalBodyHumanoidHost);
             mInternalBodyHumanoidHost.OnHumanoidStatesChanged += InternalOnHumanoidStatesChanged;
         }
 
+        private IInternalHumanoidHostContext mInternalHumanoidHostContext;
         private IStatesOfHumanoidBodyHost mStates;
         private IInternalBodyHumanoidHost mInternalBodyHumanoidHost;
 
@@ -46,13 +49,13 @@ namespace Assets.Scripts
         public HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidBody targetState)
         {
 #if DEBUG
-            Debug.Log($"ExecuteAsync targetState = {targetState}");
+            Debug.Log($"TestedNPCBodyHost ExecuteAsync targetState = {targetState}");
 #endif
 
             var internalTargetStateOfHumanoidBody = InternalTargetStateOfHumanoidControllerConverter.ConvertToInternal(targetState);
 
 #if DEBUG
-            Debug.Log($"ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
+            Debug.Log($"TestedNPCBodyHost ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
 #endif
 
             var targetStateForExecuting = new HumanoidTaskOfExecuting();
@@ -71,33 +74,46 @@ namespace Assets.Scripts
 
     public class TestedNPCHandHost : INPCHandHost
     {
+        public TestedNPCHandHost(IInternalHumanoidHostContext intenalHostContext)
+        {
+            mInternalHumanoidHostContext = intenalHostContext;
+        }
+
+        private IInternalHumanoidHostContext mInternalHumanoidHostContext;
+
         public INPCProcess Send(INPCCommand command)
         {
-            Debug.Log($"Begin Send command = {command}");
+            Debug.Log($"Begin TestedNPCHandHost Send command = {command}");
 
             var process = new NPCThingProcess();
             process.State = StateOfNPCProcess.Running;
 
-            Task.Run(() => {
-                Debug.Log($"Begin Send Task.Run command = {command}");
+            Task.Run(() =>
+            {
+                Debug.Log($"Begin TestedNPCHandHost Send Task.Run command = {command}");
 
                 process.State = StateOfNPCProcess.Running;
 
                 Thread.Sleep(1000);
 
-                Debug.Log($"End Send Task.Run command = {command}");
+                Debug.Log($"End TestedNPCHandHost Send Task.Run command = {command}");
             });
 
-            Debug.Log($"End Send command = {command}");
+            Debug.Log($"End TestedNPCHandHost Send command = {command}");
 
             return process;
         }
 
         public object Get(string propertyName)
         {
-            Debug.Log($"Get propertyName = {propertyName}");
+            Debug.Log($"TestedNPCHandHost Get propertyName = {propertyName}");
 
-            return "The Beatles!!!";
+            if(mInternalHumanoidHostContext != null)
+            {
+                return mInternalHumanoidHostContext.RightHandThing.Get(propertyName);
+            }
+
+            return null;
         }
     }
 
@@ -105,11 +121,14 @@ namespace Assets.Scripts
     {
         public TestedNPCHostContext(IInternalBodyHumanoidHost internalBodyHumanoidHost)
         {
-            mBodyHost = new TestedNPCBodyHost(internalBodyHumanoidHost);
-            mRightHandHost = new TestedNPCHandHost();
-            mLeftHandHost = new TestedNPCHandHost();
+            mInternalHumanoidHostContext = new InternalHumanoidHostContext();
+
+            mBodyHost = new TestedNPCBodyHost(mInternalHumanoidHostContext, internalBodyHumanoidHost);
+            mRightHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
+            mLeftHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
         }
 
+        private InternalHumanoidHostContext mInternalHumanoidHostContext;
         private TestedNPCBodyHost mBodyHost;
         private TestedNPCHandHost mRightHandHost;
         private TestedNPCHandHost mLeftHandHost;

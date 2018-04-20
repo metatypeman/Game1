@@ -27,6 +27,8 @@ namespace Assets.Scripts
             AddTypeOfProcess<TestedTakeFromSurfaceNPCProcess>();
             AddTypeOfProcess<TestedHideRifleToBagPackNPCProcess>();
             AddTypeOfProcess<TestedThrowOutToSurfaceRifleToSurfaceNPCProcess>();
+            AddTypeOfProcess<TestedStartShootingNPCProcess>();
+            AddTypeOfProcess<TestedStopShootingNPCProcess>();
         }
 
         public override void Bootstrap()
