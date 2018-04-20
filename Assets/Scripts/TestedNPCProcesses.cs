@@ -45,7 +45,11 @@ namespace Assets.Scripts
                 var visibleObjects = BlackBoard.VisibleObjects;
 
 #if UNITY_EDITOR
-                Debug.Log($"TestedInspectingNPCProcess Awake visibleObjects.Count = {visibleObjects.Count}");
+                Debug.Log($"TestedInspectingNPCProcess Trigger visibleObjects.Count = {visibleObjects.Count}");
+                foreach(var tmpVisibleObject in visibleObjects)
+                {
+                    Debug.Log($"TestedInspectingNPCProcess Trigger tmpVisibleObject.GameObject != null = {tmpVisibleObject.GameObject != null} tmpVisibleObject.GameObject?.Name = {tmpVisibleObject.GameObject?.Name}");
+                }
 #endif
 
                 if (visibleObjects.Any(p => p.GameObject != null && p.GameObject.Name == "TrafficBarrierRed"))
