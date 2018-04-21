@@ -18,6 +18,10 @@ namespace MyNPCLib
 
         public override NPCBodyResourcesResolution ToBodyResourcesResulution()
         {
+#if DEBUG
+            LogInstance.Log("NPCBodyResourcesResolution ToBodyResourcesResulution()");
+#endif
+
             return this;
         }
 

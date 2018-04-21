@@ -79,6 +79,9 @@ namespace MyNPCLib
             var id = mIdFactory.GetNewId();
 
             var process = new ProxyForNPCResourceProcess(id, mContext);
+            process.LocalPriority = command.Priority;
+
+            mContext.RegProcess(process, command.InitiatingProcessId);
 
             var task = new Task(() => {
                 NExecute(command, process);
@@ -97,7 +100,7 @@ namespace MyNPCLib
             LogInstance.Log($"NPCHandResourcesManager Begin NExecute command = {command}");
 #endif
 
-            var processId = command.InitiatingProcessId;
+            var processId = process.Id;
 
             var resolution = CreateResolution(command, processId);
 
@@ -106,6 +109,10 @@ namespace MyNPCLib
 #endif
 
             var kindOfResolution = resolution.KindOfResult;
+
+#if DEBUG
+            LogInstance.Log($"NPCHandResourcesManager NExecute kindOfResolution = {kindOfResolution}");
+#endif
 
             switch (kindOfResolution)
             {
@@ -116,10 +123,14 @@ namespace MyNPCLib
 
                 case NPCResourcesResolutionKind.Forbiden:
                     {
+#if DEBUG
+                        LogInstance.Log($"NPCHandResourcesManager NExecute case NPCResourcesResolutionKind.Forbiden:");
+#endif
+
                         var kindOfResolutionOfContext = mContext.ApproveNPCResourceProcessExecute(resolution);
 
-#if UNITY_EDITOR
-                        //LogInstance.Log($"NPCHandResourcesManager Execute kindOfResolutionOfContext = {kindOfResolutionOfContext}");
+#if DEBUG
+                        LogInstance.Log($"NPCHandResourcesManager NExecute kindOfResolutionOfContext = {kindOfResolutionOfContext}");
 #endif
 
                         switch (kindOfResolutionOfContext)
@@ -227,8 +238,16 @@ namespace MyNPCLib
 
         private void RegProcessId(ulong processId, ProxyForNPCResourceProcess process, NPCResourcesResolutionKind resolutionKind)
         {
+#if DEBUG
+            LogInstance.Log($"NPCHandResourcesManager RegProcessId processId = {processId} process = {process} resolutionKind = {resolutionKind}");
+#endif
+
             lock (mDataLockObj)
             {
+#if DEBUG
+                LogInstance.Log($"NPCHandResourcesManager RegProcessId processId = {processId} NEXT");
+#endif
+
                 var displacedProcessesIdList = new List<ulong>();
 
                 switch (resolutionKind)
@@ -256,25 +275,25 @@ namespace MyNPCLib
                     foreach (var displacedProcessId in displacedProcessesIdList)
                     {
 #if DEBUG
-                        //LogInstance.Log($"NPCHandResourcesManager CreateTargetState displacedProcessId = {displacedProcessId}");
+                        LogInstance.Log($"NPCHandResourcesManager RegProcessId displacedProcessId = {displacedProcessId}");
 #endif
 
                         RemoveProcessId(displacedProcessId);
 
-                        var displacedTask = mProcessesDict[displacedProcessId];
-                        displacedTask.State = StateOfNPCProcess.Canceled;
-                        mProcessesDict.Remove(displacedProcessId);
+                        //var displacedTask = mProcessesDict[displacedProcessId];
+                        //displacedTask.State = StateOfNPCProcess.Canceled;
+                        //mProcessesDict.Remove(displacedProcessId);
                     }
                 }
 
 #if DEBUG
-                //LogInstance.Log($"NPCHandResourcesManager CreateTargetState before mTasksDict.Count = {mTasksDict.Count}");
+                LogInstance.Log($"NPCHandResourcesManager RegProcessId before mProcessesDict.Count = {mProcessesDict.Count}");
 #endif
 
                 mProcessesDict[processId] = process;
 
 #if DEBUG
-                //LogInstance.Log($"NPCHandResourcesManager CreateTargetState after mTasksDict.Count = {mTasksDict.Count}");
+                LogInstance.Log($"NPCHandResourcesManager RegProcessId after mProcessesDict.Count = {mProcessesDict.Count}");
 #endif
             }
         }
@@ -288,6 +307,8 @@ namespace MyNPCLib
 
             if (mProcessesDict.ContainsKey(processId))
             {
+                var displacedTask = mProcessesDict[processId];
+                displacedTask.State = StateOfNPCProcess.Canceled;
                 mProcessesDict.Remove(processId);
             }
         }

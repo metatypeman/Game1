@@ -184,7 +184,7 @@ namespace MyNPCLib
         public void RegProcess(INPCProcess process, ulong parentProcessId)
         {
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext RegProcess process.Id = {process.Id} parentProcessId = {parentProcessId}");
+            LogInstance.Log($"BaseNPCContext RegProcess process.Id = {process.Id} parentProcessId = {parentProcessId}");
 #endif
             lock (mStateLockObj)
             {
@@ -242,7 +242,7 @@ namespace MyNPCLib
         public void UnRegProcess(INPCProcess process)
         {
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext UnRegProcess process.Id = {process.Id}");
+            LogInstance.Log($"BaseNPCContext UnRegProcess process.Id = {process.Id}");
 #endif
 
             lock (mStateLockObj)
@@ -305,6 +305,10 @@ namespace MyNPCLib
 
         public INPCProcess GetParentProcess(ulong childProcessId)
         {
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext GetParentProcess childProcessId = {childProcessId}");
+#endif
+
             lock (mStateLockObj)
             {
                 if (mState == StateOfNPCContext.Destroyed)
@@ -315,15 +319,35 @@ namespace MyNPCLib
 
             if(childProcessId == 0)
             {
-                throw new ArgumentNullException(nameof(childProcessId));
+                return null;
             }
+
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext GetParentProcess childProcessId = {childProcessId} NEXT");
+#endif
 
             lock (mProcessesDictLockObj)
             {
-                if(mChildParentDict.ContainsKey(childProcessId))
+#if DEBUG
+                LogInstance.Log($"BaseNPCContext GetParentProcess childProcessId = {childProcessId} NEXT NEXT");
+#endif
+
+                if (mChildParentDict.ContainsKey(childProcessId))
                 {
+#if DEBUG
+                    LogInstance.Log("BaseNPCContext GetParentProcess mChildParentDict.ContainsKey(childProcessId)");
+#endif
+
                     var parentId = mChildParentDict[childProcessId];
-                    return mProcessesDict[parentId];
+
+#if DEBUG
+                    LogInstance.Log($"BaseNPCContext GetParentProcess parentId = {parentId}");
+                    LogInstance.Log($"BaseNPCContext GetParentProcess mProcessesDict.ContainsKey(parentId) = {mProcessesDict.ContainsKey(parentId)}");
+#endif
+                    if(mProcessesDict.ContainsKey(parentId))
+                    {
+                        return mProcessesDict[parentId];
+                    }            
                 }
 
                 return null;
@@ -333,17 +357,25 @@ namespace MyNPCLib
         public NPCResourcesResolutionKind ApproveNPCResourceProcessExecute(BaseNPCResourcesResolution existingsNPCResourcesResulution)
         {
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext ApproveNPCResourceProcessExecute existingsNPCResourcesResulution = {existingsNPCResourcesResulution}");
+            LogInstance.Log($"BaseNPCContext ApproveNPCResourceProcessExecute existingsNPCResourcesResulution = {existingsNPCResourcesResulution}");
 #endif
 
             var kind = existingsNPCResourcesResulution.Kind;
 
-            switch(kind)
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext ApproveNPCResourceProcessExecute kind = {kind}");
+#endif
+
+            switch (kind)
             {
                 case NPCResourceKind.Body:
                     return ApproveNPCBodyResourceProcessExecute(existingsNPCResourcesResulution.ToBodyResourcesResulution());
 
                 case NPCResourceKind.Hand:
+#if DEBUG
+                    LogInstance.Log("BaseNPCContext ApproveNPCResourceProcessExecute case NPCResourceKind.Hand");
+#endif
+
                     return ApproveNPCHandResourceProcessExecute(existingsNPCResourcesResulution.ToHandResourcesResulution());
 
                 default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
@@ -423,32 +455,55 @@ namespace MyNPCLib
 
         private NPCResourcesResolutionKind ApproveNPCHandResourceProcessExecute(NPCHandResourcesResolution existingsNPCResourcesResulution)
         {
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute existingsNPCResourcesResulution = {existingsNPCResourcesResulution}");
+#endif
+
             var targetProcessId = existingsNPCResourcesResulution.TargetProcessId;
 
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute targetProcessId = {targetProcessId}");
+            LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute mProcessesDict.Count = {mProcessesDict.Count}");
+            LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute mProcessesDict.ContainsKey(targetProcessId) = {mProcessesDict.ContainsKey(targetProcessId)}");
+#endif
+
             var targetProcessInfo = mProcessesDict[targetProcessId];
+
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute targetProcessInfo == null = {targetProcessInfo == null}");
+#endif
 
             var targetPriority = targetProcessInfo.GlobalPriority;
 
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute targetPriority = {targetPriority}");
+            LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute targetPriority = {targetPriority}");
 #endif
+
             foreach (var existingProcessesId in existingsNPCResourcesResulution.CurrentProcessesId)
             {
 #if DEBUG
-                //LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute existingProcessesId = {existingProcessesId}");
+                LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute existingProcessesId = {existingProcessesId}");
 #endif
 
                 var currentProcessInfo = mProcessesDict[existingProcessesId];
 
 #if DEBUG
-                //LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
+                LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
 #endif
 
                 if (currentProcessInfo.GlobalPriority > targetPriority)
                 {
+#if DEBUG
+                    LogInstance.Log("BaseNPCContext ApproveNPCHandResourceProcessExecute currentProcessInfo.GlobalPriority > targetPriority");
+#endif
+
                     return NPCResourcesResolutionKind.Forbiden;
                 }
             }
+
+#if DEBUG
+            LogInstance.Log("BaseNPCContext ApproveNPCHandResourceProcessExecute return NPCResourcesResolutionKind.Allow");
+#endif
 
             return NPCResourcesResolutionKind.Allow;
         }

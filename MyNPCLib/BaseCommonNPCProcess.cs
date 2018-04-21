@@ -99,11 +99,24 @@ namespace MyNPCLib
                     }
                 }
 
+#if DEBUG
+                LogInstance.Log("BaseCommonNPCProcess GlobalPriority");
+#endif
+
                 lock (mPriorityLockObj)
                 {
+
+#if DEBUG
+                    LogInstance.Log("BaseCommonNPCProcess GlobalPriority NEXT");
+#endif
+
                     var result = mLocalPriority;
 
                     var parentProcess = mContext.GetParentProcess(Id);
+
+#if DEBUG
+                    LogInstance.Log($"BaseCommonNPCProcess GlobalPriority parentProcess == null = {parentProcess == null}");
+#endif
 
                     if (parentProcess != null)
                     {
