@@ -419,7 +419,44 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
         Debug.Log($"RapidFireGun Send command = {command}");
 #endif
 
-        throw new NotImplementedException();
+        var process = new NPCThingProcess();
+
+        var commandName = command.Name;
+
+        if (commandName == "shoot on")
+        {
+            TurnState = TurnState.On;
+
+            process.State = StateOfNPCProcess.RanToCompletion;
+            return process;
+        }
+
+        if(commandName == "shoot off")
+        {
+            TurnState = TurnState.Off;
+
+            process.State = StateOfNPCProcess.RanToCompletion;
+            return process;
+        }
+
+        if(commandName == "set single")
+        {
+            FireMode = FireMode.Single;
+
+            process.State = StateOfNPCProcess.RanToCompletion;
+            return process;
+        }
+
+        if(commandName == "set multiple")
+        {
+            FireMode = FireMode.Multiple;
+
+            process.State = StateOfNPCProcess.RanToCompletion;
+            return process;
+        }
+
+        process.State = StateOfNPCProcess.Faulted;
+        return process;
     }
 
     public object Get(string propertyName)
@@ -433,6 +470,11 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
             return FireMode;
         }
 
-        throw new NotImplementedException();
+        if(propertyName == "TurnState")
+        {
+            return TurnState;
+        }
+
+        return null;
     }
 }

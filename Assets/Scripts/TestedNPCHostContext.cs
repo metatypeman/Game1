@@ -85,30 +85,39 @@ namespace Assets.Scripts
         {
             Debug.Log($"Begin TestedNPCHandHost Send command = {command}");
 
-            var process = new NPCThingProcess();
-            process.State = StateOfNPCProcess.Running;
-
-            Task.Run(() =>
+            if(mInternalHumanoidHostContext.RightHandThing != null)
             {
-                Debug.Log($"Begin TestedNPCHandHost Send Task.Run command = {command}");
+                return mInternalHumanoidHostContext.RightHandThing.Send(command);
+            }
 
-                process.State = StateOfNPCProcess.Running;
-
-                Thread.Sleep(1000);
-
-                Debug.Log($"End TestedNPCHandHost Send Task.Run command = {command}");
-            });
-
-            Debug.Log($"End TestedNPCHandHost Send command = {command}");
-
+            var process = new NPCThingProcess();
+            process.State = StateOfNPCProcess.Faulted;
             return process;
+
+            //var process = new NPCThingProcess();
+            //process.State = StateOfNPCProcess.Running;
+
+            //Task.Run(() =>
+            //{
+            //    Debug.Log($"Begin TestedNPCHandHost Send Task.Run command = {command}");
+
+            //    process.State = StateOfNPCProcess.Running;
+
+            //    Thread.Sleep(1000);
+
+            //    Debug.Log($"End TestedNPCHandHost Send Task.Run command = {command}");
+            //});
+
+            //Debug.Log($"End TestedNPCHandHost Send command = {command}");
+
+            //return process;
         }
 
         public object Get(string propertyName)
         {
             Debug.Log($"TestedNPCHandHost Get propertyName = {propertyName}");
 
-            if(mInternalHumanoidHostContext != null)
+            if(mInternalHumanoidHostContext.RightHandThing != null)
             {
                 return mInternalHumanoidHostContext.RightHandThing.Get(propertyName);
             }

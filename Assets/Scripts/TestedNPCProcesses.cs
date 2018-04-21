@@ -671,8 +671,53 @@ namespace Assets.Scripts
             Debug.Log($"TestedStartShootingNPCProcess Main fireMode = {fireMode}");
 #endif
 
+            if(fireMode.HasValue)
+            {
+                var fireModeValue = fireMode.Value;
+
+                switch(fireModeValue)
+                {
+                    case FireMode.Single:
+                        SingleShoting();
+                        break;
+
+                    case FireMode.Multiple:
+                        MultipleShooting();
+                        break;
+                }
+            }
+
 #if UNITY_EDITOR
             Debug.Log("End TestedStartShootingNPCProcess Main");
+#endif
+        }
+
+        private void MultipleShooting()
+        {
+#if UNITY_EDITOR
+            Debug.Log("Begin TestedStartShootingNPCProcess ");
+#endif
+
+            var command = new NPCCommand();
+            command.Name = "shoot on";
+
+            ExecuteDefaultHand(command);
+
+#if UNITY_EDITOR
+            Debug.Log("End TestedStartShootingNPCProcess ");
+#endif
+        }
+
+        private void SingleShoting()
+        {
+#if UNITY_EDITOR
+            Debug.Log("Begin TestedStartShootingNPCProcess ");
+#endif
+
+
+
+#if UNITY_EDITOR
+            Debug.Log("End TestedStartShootingNPCProcess ");
 #endif
         }
     }
@@ -693,6 +738,11 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log("Begin TestedStopShootingNPCProcess Main");
 #endif
+
+            var command = new NPCCommand();
+            command.Name = "shoot off";
+
+            ExecuteDefaultHand(command);
 
 #if UNITY_EDITOR
             Debug.Log("End TestedStopShootingNPCProcess Main");
