@@ -2492,7 +2492,6 @@ GameObject:
   - component: {fileID: 656795670}
   - component: {fileID: 656795669}
   - component: {fileID: 656795668}
-  - component: {fileID: 656795667}
   - component: {fileID: 656795666}
   - component: {fileID: 656795665}
   - component: {fileID: 656795674}
@@ -2544,21 +2543,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
---- !u!114 &656795667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114110208877468106, guid: 07f2d63023de7be488145ee5a69236e5,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 656795664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c292cc434c8a1ad47932dde0400bb701, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Head: {fileID: 0}
-  DefaultBodyAngleSpeed: 0.5
-  DefaultHeadAngleSpeed: 0.5
 --- !u!114 &656795668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2573,11 +2557,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   surfaceOffset: 1.5
   setTargetOn: {fileID: 0}
-  UseOldContext: 0
   Head: {fileID: 0}
   mAnim: {fileID: 0}
   GunEnd: {fileID: 0}
-  isIkActive: 0
 --- !u!114 &656795669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2839,9 +2821,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c292cc434c8a1ad47932dde0400bb701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mRigidbody: {fileID: 0}
+  mAnimator: {fileID: 0}
+  mNavMeshAgent: {fileID: 0}
   Head: {fileID: 0}
   DefaultBodyAngleSpeed: 0.5
+  mCurrentBodyAngle: 0
+  mBodyAngleSpeed: 0
+  mTargetBodyAngle: 0
+  mBodyAngleDelta: 0
+  mAbsBodyAngleDelta: 0
+  mNeedBodyChanges: 0
   DefaultHeadAngleSpeed: 0.5
+  mCurrentHeadAngle: 0
+  mHeadAngleSpeed: 0
+  mTargetHeadAngle: 0
+  mHeadAngleDelta: 0
+  mAbsHeadAngleDelta: 0
+  mCurrentHeadPosition: {x: 0, y: 0, z: 0}
+  mNeedHeadChanges: 0
+  mUseIkAnimation: 0
+  <RightHand>k__BackingField: {fileID: 0}
+  <RightHandWP>k__BackingField: {fileID: 0}
+  <LeftHand>k__BackingField: {fileID: 0}
+  <LeftHandWP>k__BackingField: {fileID: 0}
 --- !u!114 &719648040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2866,6 +2869,20 @@ CapsuleCollider:
   m_Height: 1.6
   m_Direction: 1
   m_Center: {x: 0, y: 0.8, z: 0}
+--- !u!114 &719648042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 719648037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09aed90169286f54f891fdcd5820b1b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Head: {fileID: 0}
+  DefaultBodyAngleSpeed: 0.5
+  DefaultHeadAngleSpeed: 0.5
 --- !u!1001 &726053857
 Prefab:
   m_ObjectHideFlags: 0

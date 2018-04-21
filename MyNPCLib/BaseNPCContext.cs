@@ -19,10 +19,18 @@ namespace MyNPCLib
             }
 
             mIdFactory = new IdFactory();
+
+            npcHostContext.BodyHost.OnDie += BodyHost_OnDie;
+
             mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, this); 
             mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Right, this);
             mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Left, this);
             mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
+        }
+
+        private void BodyHost_OnDie()
+        {
+            Dispose();
         }
 
         #region private members

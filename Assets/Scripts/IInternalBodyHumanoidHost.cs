@@ -12,6 +12,7 @@ namespace Assets.Scripts
         InternalStatesOfHumanoidController States { get; }
         event InternalHumanoidStatesChangedAction OnHumanoidStatesChanged;
         void Die();
+        event Action OnDie;
         void SetAimCorrector(IAimCorrector corrector);
         void SetInternalHumanoidHostContext(IInternalHumanoidHostContext intenalHostContext);
     }

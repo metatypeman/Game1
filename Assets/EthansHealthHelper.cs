@@ -4,15 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyController))]
+[RequireComponent(typeof(HumanoidBodyHost))]
 public class EthansHealthHelper : MonoBehaviour, ITargetOfShoot
 {
-    private EnemyController mEnemyController;
+    private HumanoidBodyHost mEnemyController;
     private int Health = 20;
     
     // Use this for initialization
     void Start () {
-        mEnemyController = GetComponent<EnemyController>();
+        mEnemyController = GetComponent<HumanoidBodyHost>();
     }
 	
 	// Update is called once per frame

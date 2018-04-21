@@ -380,6 +380,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         return result;
     }
 
+    public event Action OnDie;
+
     public void Die()
     {
         mBehaviourFlags.IsDead = true;
@@ -391,6 +393,10 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 mNavMeshAgent.ResetPath();
                 break;
         }
+        Task.Run(() => {
+            OnDie?.Invoke();
+        });
+
         UpdateAnimator();
     }
 
@@ -719,8 +725,6 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 }
                 break;
         }
-
-
     }
 
     void OnAnimatorIK(int layerIndex)

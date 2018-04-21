@@ -11,5 +11,6 @@ namespace MyNPCLib
         HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidBody targetState);
         IStatesOfHumanoidBodyHost States { get; }
         event HumanoidStatesChangedAction OnHumanoidStatesChanged;
+        event Action OnDie;
     }
 }

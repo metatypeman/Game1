@@ -15,9 +15,21 @@ namespace Assets.Scripts
         {
             mInternalHumanoidHostContext = intenalHostContext;
             mInternalBodyHumanoidHost = internalBodyHumanoidHost;
+
+            mInternalBodyHumanoidHost.OnDie += MInternalBodyHumanoidHost_OnDie;
+
             mInternalBodyHumanoidHost.SetInternalHumanoidHostContext(intenalHostContext);
             mStates = new ProxyForStatesOfHumanoidBodyHost(mInternalBodyHumanoidHost);
             mInternalBodyHumanoidHost.OnHumanoidStatesChanged += InternalOnHumanoidStatesChanged;
+        }
+
+        public event Action OnDie;
+
+        private void MInternalBodyHumanoidHost_OnDie()
+        {
+            Task.Run(() => {
+                OnDie?.Invoke();
+            });
         }
 
         private IInternalHumanoidHostContext mInternalHumanoidHostContext;
