@@ -561,7 +561,7 @@ namespace Assets.Scripts
             tmpCommand.InstanceId = instanceId;
             var tmpTask = ExecuteBody(tmpCommand);
 
-            tmpTask.OnRanToCompletionChanged += () => {
+            tmpTask.OnRanToCompletionChanged += (INPCProcess sender) => {
 #if UNITY_EDITOR
                 //Debug.Log("TestedTakeFromSurfaceNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
 #endif
@@ -599,7 +599,7 @@ namespace Assets.Scripts
             tmpCommand.InstanceId = instanceId;
             var tmpTask = ExecuteBody(tmpCommand);
 
-            tmpTask.OnRanToCompletionChanged += () => {
+            tmpTask.OnRanToCompletionChanged += (INPCProcess sender) => {
 #if UNITY_EDITOR
                 //Debug.Log("TestedHideRifleToBagPackNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
 #endif
@@ -636,7 +636,7 @@ namespace Assets.Scripts
             tmpCommand.InstanceId = instanceId;
             var tmpTask = ExecuteBody(tmpCommand);
 
-            tmpTask.OnRanToCompletionChanged += () => {
+            tmpTask.OnRanToCompletionChanged += (INPCProcess sender) => {
 #if UNITY_EDITOR
                 //Debug.Log("TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
 #endif

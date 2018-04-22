@@ -11,7 +11,7 @@ namespace MyNPCLib
         {
             Context = context;
         }
-
+        
         public override StateOfNPCProcess State
         {
             get

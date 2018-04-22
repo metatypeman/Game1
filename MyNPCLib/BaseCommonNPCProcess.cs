@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MyNPCLib
 {
-    public abstract class BaseCommonNPCProcess: BaseCommonNPCProcessWithEvents
+    public abstract class BaseCommonNPCProcess : BaseCommonNPCProcessWithEvents
     {
         private INPCContext mContext;
         public INPCContext Context

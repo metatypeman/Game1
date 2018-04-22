@@ -12,6 +12,14 @@ namespace MyNPCLib
 
         public abstract StateOfNPCProcess State { get; set; }
 
+        protected bool StateTransitionChecker(StateOfNPCProcess currentState, StateOfNPCProcess newState)
+        {
+            if (mState == value)
+            {
+                return;
+            }
+        }
+
         protected void EmitChangingOfState(StateOfNPCProcess state)
         {
             EmitOnStateChanged(state);
@@ -50,11 +58,11 @@ namespace MyNPCLib
             add
             {
                 mOnStateChanged += value;
-                if(State != StateOfNPCProcess.Created)
+                if (State != StateOfNPCProcess.Created)
                 {
                     Task.Run(() => {
-                        value(State);
-                    });       
+                        value(this, State);
+                    });
                 }
             }
 
@@ -67,12 +75,12 @@ namespace MyNPCLib
         protected void EmitOnStateChanged(StateOfNPCProcess state)
         {
             Task.Run(() => {
-                mOnStateChanged?.Invoke(state);
-            });          
+                mOnStateChanged?.Invoke(this, state);
+            });
         }
 
-        private Action mOnRunningChanged;
-        public event Action OnRunningChanged
+        private NPCProcessConcreteStateChanged mOnRunningChanged;
+        public event NPCProcessConcreteStateChanged OnRunningChanged
         {
             add
             {
@@ -81,8 +89,8 @@ namespace MyNPCLib
                 if (State == StateOfNPCProcess.Running)
                 {
                     Task.Run(() => {
-                        value();
-                    });            
+                        value(this);
+                    });
                 }
             }
 
@@ -95,12 +103,12 @@ namespace MyNPCLib
         protected void EmitOnRunningChanged()
         {
             Task.Run(() => {
-                mOnRunningChanged?.Invoke();
-            });      
+                mOnRunningChanged?.Invoke(this);
+            });
         }
 
-        private Action mOnRanToCompletionChanged;
-        public event Action OnRanToCompletionChanged
+        private NPCProcessConcreteStateChanged mOnRanToCompletionChanged;
+        public event NPCProcessConcreteStateChanged OnRanToCompletionChanged
         {
             add
             {
@@ -109,8 +117,8 @@ namespace MyNPCLib
                 if (State == StateOfNPCProcess.RanToCompletion)
                 {
                     Task.Run(() => {
-                        value();
-                    });                  
+                        value(this);
+                    });
                 }
             }
 
@@ -123,12 +131,12 @@ namespace MyNPCLib
         protected void EmitOnRanToCompletionChanged()
         {
             Task.Run(() => {
-                mOnRanToCompletionChanged?.Invoke();
-            });     
+                mOnRanToCompletionChanged?.Invoke(this);
+            });
         }
 
-        private Action mOnCanceledChanged;
-        public event Action OnCanceledChanged
+        private NPCProcessConcreteStateChanged mOnCanceledChanged;
+        public event NPCProcessConcreteStateChanged OnCanceledChanged
         {
             add
             {
@@ -137,7 +145,7 @@ namespace MyNPCLib
                 if (State == StateOfNPCProcess.Canceled)
                 {
                     Task.Run(() => {
-                        value();
+                        value(this);
                     });
                 }
             }
@@ -151,12 +159,12 @@ namespace MyNPCLib
         protected void EmitOnCanceledChanged()
         {
             Task.Run(() => {
-                mOnCanceledChanged?.Invoke();
-            });          
+                mOnCanceledChanged?.Invoke(this);
+            });
         }
 
-        private Action mOnFaultedChanged;
-        public event Action OnFaultedChanged
+        private NPCProcessConcreteStateChanged mOnFaultedChanged;
+        public event NPCProcessConcreteStateChanged OnFaultedChanged
         {
             add
             {
@@ -165,7 +173,7 @@ namespace MyNPCLib
                 if (State == StateOfNPCProcess.Faulted)
                 {
                     Task.Run(() => {
-                        value();
+                        value(this);
                     });
                 }
             }
@@ -179,12 +187,12 @@ namespace MyNPCLib
         protected void EmitOnFaultedChanged()
         {
             Task.Run(() => {
-                mOnFaultedChanged?.Invoke();
-            });        
+                mOnFaultedChanged?.Invoke(this);
+            });
         }
 
-        private Action mOnDestroyedChanged;
-        public event Action OnDestroyedChanged
+        private NPCProcessConcreteStateChanged mOnDestroyedChanged;
+        public event NPCProcessConcreteStateChanged OnDestroyedChanged
         {
             add
             {
@@ -193,7 +201,7 @@ namespace MyNPCLib
                 if (State == StateOfNPCProcess.Destroyed)
                 {
                     Task.Run(() => {
-                        value();
+                        value(this);
                     });
                 }
             }
@@ -207,8 +215,8 @@ namespace MyNPCLib
         protected void EmitOnDestroyedChanged()
         {
             Task.Run(() => {
-                mOnDestroyedChanged?.Invoke();
-            });     
+                mOnDestroyedChanged?.Invoke(this);
+            });
         }
 
         public abstract KindOfNPCProcess Kind { get; }

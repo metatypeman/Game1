@@ -227,7 +227,7 @@ namespace MyNPCLib
             LogInstance.Log($"NPCHandResourcesManager ProcessAllow processOfHost.State = {processOfHost.State}");
 #endif
 
-            processOfHost.OnRunningChanged += () => {
+            processOfHost.OnRunningChanged += (INPCProcess sender) => {
 #if DEBUG
                 LogInstance.Log("NPCHandResourcesManager ProcessAllow processOfHost.OnRunningChanged");
 #endif

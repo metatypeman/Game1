@@ -233,7 +233,7 @@ namespace MyNPCLib
         private void NRun()
         {
 #if DEBUG
-            LogInstance.Log($"BaseTrigger NRun");
+            //LogInstance.Log($"BaseTrigger NRun");
 #endif
 
             while(true)

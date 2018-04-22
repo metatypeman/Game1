@@ -2810,41 +2810,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &719648039
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 719648037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c292cc434c8a1ad47932dde0400bb701, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mRigidbody: {fileID: 0}
-  mAnimator: {fileID: 0}
-  mNavMeshAgent: {fileID: 0}
-  Head: {fileID: 0}
-  DefaultBodyAngleSpeed: 0.5
-  mCurrentBodyAngle: 0
-  mBodyAngleSpeed: 0
-  mTargetBodyAngle: 0
-  mBodyAngleDelta: 0
-  mAbsBodyAngleDelta: 0
-  mNeedBodyChanges: 0
-  DefaultHeadAngleSpeed: 0.5
-  mCurrentHeadAngle: 0
-  mHeadAngleSpeed: 0
-  mTargetHeadAngle: 0
-  mHeadAngleDelta: 0
-  mAbsHeadAngleDelta: 0
-  mCurrentHeadPosition: {x: 0, y: 0, z: 0}
-  mNeedHeadChanges: 0
-  mUseIkAnimation: 0
-  <RightHand>k__BackingField: {fileID: 0}
-  <RightHandWP>k__BackingField: {fileID: 0}
-  <LeftHand>k__BackingField: {fileID: 0}
-  <LeftHandWP>k__BackingField: {fileID: 0}
 --- !u!114 &719648040
 MonoBehaviour:
   m_ObjectHideFlags: 0
