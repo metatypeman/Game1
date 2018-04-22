@@ -14,10 +14,32 @@ namespace MyNPCLib
 
         protected bool StateTransitionChecker(StateOfNPCProcess currentState, StateOfNPCProcess newState)
         {
-            if (mState == value)
+            if (currentState == newState)
             {
-                return;
+                return false;
             }
+
+            if (currentState == StateOfNPCProcess.RanToCompletion)
+            {
+                return false;
+            }
+
+            if (currentState == StateOfNPCProcess.Canceled)
+            {
+                return false;
+            }
+
+            if (currentState == StateOfNPCProcess.Faulted)
+            {
+                return false;
+            }
+
+            if (currentState == StateOfNPCProcess.Destroyed)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         protected void EmitChangingOfState(StateOfNPCProcess state)
@@ -28,6 +50,7 @@ namespace MyNPCLib
             {
                 case StateOfNPCProcess.Created:
                     break;
+
                 case StateOfNPCProcess.Running:
                     EmitOnRunningChanged();
                     break;
@@ -78,6 +101,8 @@ namespace MyNPCLib
                 mOnStateChanged?.Invoke(this, state);
             });
         }
+
+        protected virtual void 
 
         private NPCProcessConcreteStateChanged mOnRunningChanged;
         public event NPCProcessConcreteStateChanged OnRunningChanged

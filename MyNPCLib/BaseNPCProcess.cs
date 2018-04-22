@@ -50,7 +50,7 @@ namespace MyNPCLib
         {
             set
             {
-                if(mState == value)
+                if (!StateTransitionChecker(mState, value))
                 {
                     return;
                 }
