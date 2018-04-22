@@ -327,7 +327,9 @@ namespace MyNPCLib
                     mListOfProxes.Add(proxy);
                 }
 
-                switch (startupMode)
+                NPCProcessHelpers.RegProcess(Context, proxy, startupMode, command.KindOfLinkingToInitiator);
+
+                /*switch (startupMode)
                 {
                     case NPCProcessStartupMode.NewInstance:
                         Context.RegProcess(this, command.InitiatingProcessId);
@@ -347,7 +349,7 @@ namespace MyNPCLib
                             }
                         }
                         break;
-                }
+                }*/
 
                 proxy.State = StateOfNPCProcess.Running;
 
@@ -370,7 +372,9 @@ namespace MyNPCLib
 #endif
             }
 
-            switch (startupMode)
+            NPCProcessHelpers.UnRegProcess(Context, proxy);
+
+            /*switch (startupMode)
             {
                 case NPCProcessStartupMode.NewInstance:
                 case NPCProcessStartupMode.NewStandaloneInstance:
@@ -379,7 +383,7 @@ namespace MyNPCLib
 
                 case NPCProcessStartupMode.Singleton:
                     break;
-            }
+            }*/
 
             lock (mListOfProxesLockObj)
             {

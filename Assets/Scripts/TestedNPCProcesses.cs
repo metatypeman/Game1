@@ -279,7 +279,7 @@ namespace Assets.Scripts
                 Wait(childProcess);
             }
 
-            var l = new List<int>();
+            //var l = new List<int>();
         }
     }
     

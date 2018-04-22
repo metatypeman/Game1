@@ -7,6 +7,8 @@ namespace MyNPCLib
 {
     public abstract class BaseCommonNPCProcessWithEvents : INPCProcess
     {
+        public NPCProcessStartupMode StartupMode { get; set; }
+
         protected readonly object StateLockObj = new object();
         protected StateOfNPCProcess mState = StateOfNPCProcess.Created;
 
@@ -102,7 +104,9 @@ namespace MyNPCLib
             });
         }
 
-        protected virtual void 
+        protected virtual void RunningChanged()
+        {
+        }
 
         private NPCProcessConcreteStateChanged mOnRunningChanged;
         public event NPCProcessConcreteStateChanged OnRunningChanged
@@ -127,9 +131,15 @@ namespace MyNPCLib
 
         protected void EmitOnRunningChanged()
         {
+            RunningChanged();
+
             Task.Run(() => {
                 mOnRunningChanged?.Invoke(this);
             });
+        }
+
+        protected virtual void EndOfProcessChanged()
+        {
         }
 
         private NPCProcessConcreteStateChanged mOnRanToCompletionChanged;
@@ -155,6 +165,8 @@ namespace MyNPCLib
 
         protected void EmitOnRanToCompletionChanged()
         {
+            EndOfProcessChanged();
+
             Task.Run(() => {
                 mOnRanToCompletionChanged?.Invoke(this);
             });
@@ -183,6 +195,8 @@ namespace MyNPCLib
 
         protected void EmitOnCanceledChanged()
         {
+            EndOfProcessChanged();
+
             Task.Run(() => {
                 mOnCanceledChanged?.Invoke(this);
             });
@@ -211,6 +225,8 @@ namespace MyNPCLib
 
         protected void EmitOnFaultedChanged()
         {
+            EndOfProcessChanged();
+
             Task.Run(() => {
                 mOnFaultedChanged?.Invoke(this);
             });
@@ -239,6 +255,8 @@ namespace MyNPCLib
 
         protected void EmitOnDestroyedChanged()
         {
+            EndOfProcessChanged();
+
             Task.Run(() => {
                 mOnDestroyedChanged?.Invoke(this);
             });
