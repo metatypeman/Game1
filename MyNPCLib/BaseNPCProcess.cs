@@ -27,8 +27,6 @@ namespace MyNPCLib
         private ActivatorOfNPCProcessEntryPointInfo mActivator = new ActivatorOfNPCProcessEntryPointInfo();
         private List<ProxyForNPCAbstractProcess> mListOfProxes = new List<ProxyForNPCAbstractProcess>();
         private object mListOfProxesLockObj = new object();
-        private bool mIsFirstCall;
-        private object mIsFirstCallLockObj = new object();
         #endregion
 
         public override StateOfNPCProcess State
@@ -327,29 +325,7 @@ namespace MyNPCLib
                     mListOfProxes.Add(proxy);
                 }
 
-                NPCProcessHelpers.RegProcess(Context, proxy, startupMode, command.KindOfLinkingToInitiator);
-
-                /*switch (startupMode)
-                {
-                    case NPCProcessStartupMode.NewInstance:
-                        Context.RegProcess(this, command.InitiatingProcessId);
-                        break;
-
-                    case NPCProcessStartupMode.NewStandaloneInstance:
-                        Context.RegProcess(this, 0ul);
-                        break;
-
-                    case NPCProcessStartupMode.Singleton:
-                        lock(mIsFirstCallLockObj)
-                        {
-                            if(!mIsFirstCall)
-                            {
-                                mIsFirstCall = true;
-                                Context.RegProcess(this, 0ul);
-                            }
-                        }
-                        break;
-                }*/
+                NPCProcessHelpers.RegProcess(Context, proxy, startupMode, command.KindOfLinkingToInitiator, command.InitiatingProcessId, true);
 
                 proxy.State = StateOfNPCProcess.Running;
 
@@ -371,19 +347,6 @@ namespace MyNPCLib
                 LogInstance.Log($"End BaseNPCProcess NRun e = {e}");
 #endif
             }
-
-            NPCProcessHelpers.UnRegProcess(Context, proxy);
-
-            /*switch (startupMode)
-            {
-                case NPCProcessStartupMode.NewInstance:
-                case NPCProcessStartupMode.NewStandaloneInstance:
-                    Context.UnRegProcess(this);
-                    break;
-
-                case NPCProcessStartupMode.Singleton:
-                    break;
-            }*/
 
             lock (mListOfProxesLockObj)
             {

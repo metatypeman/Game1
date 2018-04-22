@@ -81,7 +81,7 @@ namespace MyNPCLib
             var process = new ProxyForNPCResourceProcess(id, mContext);
             process.LocalPriority = command.Priority;
 
-            mContext.RegProcess(process, command.InitiatingProcessId);
+            NPCProcessHelpers.RegProcess(mContext, process, NPCProcessStartupMode.NewInstance, command.KindOfLinkingToInitiator, command.InitiatingProcessId, true);
 
             var task = new Task(() => {
                 NExecute(command, process);

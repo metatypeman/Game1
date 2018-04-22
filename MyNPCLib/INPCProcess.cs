@@ -10,7 +10,7 @@ namespace MyNPCLib
 
     public interface INPCProcess : IDisposable
     {
-        NPCProcessStartupMode StartupMode { get; }
+        NPCProcessStartupMode StartupMode { get; set; }
         StateOfNPCProcess State { get; }
         event NPCProcessStateChanged OnStateChanged;
         event NPCProcessConcreteStateChanged OnRunningChanged;

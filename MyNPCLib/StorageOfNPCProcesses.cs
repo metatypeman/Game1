@@ -98,7 +98,7 @@ namespace MyNPCLib
                         }
                         else
                         {
-                            instance = CreateInstanceByProcessInfo(processInfo, command.Priority);
+                            instance = CreateInstanceByProcessInfo(processInfo, command.Priority, startupMode);
                             mSingletonsDict[key] = instance;
                         }
                     }
@@ -107,7 +107,7 @@ namespace MyNPCLib
                 case NPCProcessStartupMode.NewInstance:
                 case NPCProcessStartupMode.NewStandaloneInstance:
                     {
-                        instance = CreateInstanceByProcessInfo(processInfo, command.Priority);
+                        instance = CreateInstanceByProcessInfo(processInfo, command.Priority, startupMode);
                     }
                     break;
 
@@ -124,13 +124,20 @@ namespace MyNPCLib
             return result;
         }
 
-        private BaseNPCProcess CreateInstanceByProcessInfo(NPCProcessInfo npcProcessInfo, float priority)
+        private BaseNPCProcess CreateInstanceByProcessInfo(NPCProcessInfo npcProcessInfo, float priority, NPCProcessStartupMode startupMode)
         {
             var instance = (BaseNPCProcess)Activator.CreateInstance(npcProcessInfo.Type);
             instance.Id = mIdFactory.GetNewId();
             instance.Context = mContext;
             instance.Info = npcProcessInfo;
             instance.LocalPriority = priority;
+            instance.StartupMode = startupMode;
+
+            if(startupMode == NPCProcessStartupMode.Singleton)
+            {
+                NPCProcessHelpers.RegProcess(mContext, instance, startupMode, KindOfLinkingToInitiator.Standalone, 0ul, false);
+            }
+
             return instance;
         }
 

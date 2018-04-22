@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using MyNPCLib;
+using System;
+using System.Threading;
 
 [RequireComponent(typeof(HumanoidBodyHost))]
 [RequireComponent(typeof(EnemyRayScaner))]
@@ -91,6 +93,77 @@ public class EnemyNPC : MonoBehaviour
 
         var clas1 = new Class1();
         clas1.GetItems().Add(12);
+
+        StartCoroutine(Timer());
+
+        Task.Run(() => {
+            var gameObj = ThreadSafeGameObj();
+
+            Debug.Log($"EnemyNPC gameObj = {gameObj}");
+
+            //Action fun = () => {
+            //    var gunBody = GameObject.Find("M4A1 Sopmod");
+            //    Debug.Log($"EnemyNPC End fun = () gunBody.name = {gunBody.name}");
+            //};
+
+            //lock(mTmpQueueLockObj)
+            //{
+            //    mTmpQueue.Enqueue(fun);
+            //}
+        });
+    }
+
+    private string ThreadSafeGameObj()
+    {
+        var tmpTask = new Task<string>(() => {
+            var hasResult = false;
+            var tmpResult = string.Empty;
+
+            Action fun = () => {
+                var gunBody = GameObject.Find("M4A1 Sopmod");
+                Debug.Log($"EnemyNPC End fun = () gunBody.name = {gunBody.name}");
+                tmpResult = gunBody.name;
+                hasResult = true;
+            };
+
+            lock(mTmpQueueLockObj)
+            {
+                mTmpQueue.Enqueue(fun);
+            }
+
+            while (!hasResult)
+            {
+                Thread.Sleep(10);
+            }
+
+            return tmpResult;
+        });
+
+        tmpTask.Start();
+        tmpTask.Wait();
+
+        return tmpTask.Result;
+    }
+
+    private object mTmpQueueLockObj = new object();
+    private Queue<Action> mTmpQueue = new Queue<Action>();
+
+    private IEnumerator Timer()
+    {
+        Action fun = null;
+
+        lock (mTmpQueueLockObj)
+        {
+            if(mTmpQueue.Count > 0)
+            {
+                fun = mTmpQueue.Dequeue();
+            }
+        }
+
+        fun?.Invoke();
+
+        yield return new WaitForSeconds(1);
+        StartCoroutine(Timer());
     }
 
     // Update is called once per frame

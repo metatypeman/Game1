@@ -40,6 +40,11 @@ namespace MyNPCLib
             }
         }
 
+        protected override void EndOfProcessChanged()
+        {
+            NPCProcessHelpers.UnRegProcess(Context, this);
+        }
+
         public override void Dispose() { }
 
         public override ulong Id
