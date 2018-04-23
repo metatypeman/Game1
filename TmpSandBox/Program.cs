@@ -33,6 +33,8 @@ namespace TmpSandBox
             //CreateInfoOfConcreteProcess();
         }
 
+        private static Dictionary<int, CancellationToken> mCancelationTokenDict = new Dictionary<int, CancellationToken>();
+
         private static void TSTCancelTask_2()
         {
             NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTCancelTask_2");
@@ -41,34 +43,64 @@ namespace TmpSandBox
             var token = cs.Token;
             var token2 = token;
 
-            var factory = new TaskFactory(token);
-
-            var tmpTask = factory.StartNew(() =>
+            var tmpTask = new Task(() =>
             {
-                NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask Task start");
-                var n = 0;
-
-                while (true)
+                try
                 {
-                    NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask Task n = {n}");
-                    n++;
+                    mCancelationTokenDict[Task.CurrentId.Value] = token;
 
-                    token2.ThrowIfCancellationRequested();
+                    NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask_2 Task start");
+                    NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask_2 Task.CurrentId = {Task.CurrentId}");
+
+                    DoWork();
                 }
-
+                catch(OperationCanceledException)
+                {
+                    NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask_2 catch(OperationCanceledException)");
+                }
+                catch(Exception e)
+                {
+                    NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask_2 Task e = {e}");
+                }
+                finally
+                {
+                    mCancelationTokenDict.Remove(Task.CurrentId.Value);
+                    NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask_2 finally");
+                }
             }, token);
 
-            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask started");
+            tmpTask.Start();
+
+            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask_2 started");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask_2 tmpTask.Id = {tmpTask.Id}");
 
             Thread.Sleep(1000);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask_2 mCancelationTokenDict.Count = {mCancelationTokenDict.Count}");
 
             cs.Cancel();
 
-            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask Canceled");
+            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask_2 Canceled");
 
             Thread.Sleep(1000);
 
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask after mCancelationTokenDict.Count = {mCancelationTokenDict.Count}");
             NLog.LogManager.GetCurrentClassLogger().Info("End TSTCancelTask_2");
+        }
+
+        private static void DoWork()
+        {
+            var token = mCancelationTokenDict[Task.CurrentId.Value];
+
+            var n = 0;
+
+            while (true)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"DoWork Task n = {n}");
+                n++;
+
+                token.ThrowIfCancellationRequested();
+            }
         }
 
         private static void TSTCancelTask()
