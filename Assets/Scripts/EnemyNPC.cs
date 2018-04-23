@@ -7,10 +7,66 @@ using UnityStandardAssets.CrossPlatformInput;
 using MyNPCLib;
 using System;
 using System.Threading;
+using System.Linq;
+
+public interface IInvokingInMainThread
+{
+    void SetInvocableObj(IInvocableObj invokableObj);
+}
+
+public interface IInvocableObj
+{
+    void Invoke();
+}
+
+public class InvocableObj<TResult> : IInvocableObj
+{
+    public InvocableObj(Func<TResult> function, IInvokingInMainThread invokingInMainThread)
+    {
+        mFunction = function;
+        mInvokingInMainThread = invokingInMainThread;
+    }
+
+    private Func<TResult> mFunction;
+    private IInvokingInMainThread mInvokingInMainThread;
+    private bool mHasResult;
+    private TResult mResult;
+    private readonly object mLockObj = new object();
+
+    public TResult Run()
+    {
+        mInvokingInMainThread.SetInvocableObj(this);
+
+        while (true)
+        {
+            lock (mLockObj)
+            {
+                if(mHasResult)
+                {
+                    break;
+                }
+            }
+
+            Thread.Sleep(10);
+        }
+
+        return mResult;
+    }
+
+    public void Invoke()
+    {
+        mResult = mFunction.Invoke();
+
+        lock(mLockObj)
+        {
+            mHasResult = true;
+        }
+    }
+}
 
 [RequireComponent(typeof(HumanoidBodyHost))]
 [RequireComponent(typeof(EnemyRayScaner))]
-public class EnemyNPC : MonoBehaviour
+public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 {
     public void Awake()
     {
@@ -94,76 +150,57 @@ public class EnemyNPC : MonoBehaviour
         var clas1 = new Class1();
         clas1.GetItems().Add(12);
 
-        StartCoroutine(Timer());
-
         Task.Run(() => {
             var gameObj = ThreadSafeGameObj();
 
             Debug.Log($"EnemyNPC gameObj = {gameObj}");
-
-            //Action fun = () => {
-            //    var gunBody = GameObject.Find("M4A1 Sopmod");
-            //    Debug.Log($"EnemyNPC End fun = () gunBody.name = {gunBody.name}");
-            //};
-
-            //lock(mTmpQueueLockObj)
-            //{
-            //    mTmpQueue.Enqueue(fun);
-            //}
         });
+    }
+
+    public void SetInvocableObj(IInvocableObj invokableObj)
+    {
+        lock (mTmpQueueLockObj)
+        {
+            mTmpQueue.Enqueue(invokableObj);
+        }
     }
 
     private string ThreadSafeGameObj()
     {
-        var tmpTask = new Task<string>(() => {
-            var hasResult = false;
-            var tmpResult = string.Empty;
+        var invocable = new InvocableObj<string>(() => {
+            var gunBody = GameObject.Find("M4A1 Sopmod");
+            Debug.Log($"EnemyNPC End fun = () gunBody.name = {gunBody.name}");
+            return gunBody.name;
+        }, this);
 
-            Action fun = () => {
-                var gunBody = GameObject.Find("M4A1 Sopmod");
-                Debug.Log($"EnemyNPC End fun = () gunBody.name = {gunBody.name}");
-                tmpResult = gunBody.name;
-                hasResult = true;
-            };
-
-            lock(mTmpQueueLockObj)
-            {
-                mTmpQueue.Enqueue(fun);
-            }
-
-            while (!hasResult)
-            {
-                Thread.Sleep(10);
-            }
-
-            return tmpResult;
-        });
-
-        tmpTask.Start();
-        tmpTask.Wait();
-
-        return tmpTask.Result;
+        return invocable.Run();
     }
 
     private object mTmpQueueLockObj = new object();
-    private Queue<Action> mTmpQueue = new Queue<Action>();
+    private Queue<IInvocableObj> mTmpQueue = new Queue<IInvocableObj>();
 
-    private IEnumerator Timer()
+    private void ProcessInvocable()
     {
-        Action fun = null;
+        List<IInvocableObj> invocableList = null;
 
         lock (mTmpQueueLockObj)
         {
-            if(mTmpQueue.Count > 0)
+            if (mTmpQueue.Count > 0)
             {
-                fun = mTmpQueue.Dequeue();
+                invocableList = mTmpQueue.ToList();
+                mTmpQueue.Clear();
             }
         }
 
-        fun?.Invoke();
+        if(invocableList == null)
+        {
+            return;
+        }
 
-        yield return new WaitForSeconds(1);
-        StartCoroutine(Timer());
+        foreach(var invocable in invocableList)
+        {
+            invocable.Invoke();
+        }
     }
 
     // Update is called once per frame
@@ -171,6 +208,7 @@ public class EnemyNPC : MonoBehaviour
     {
         //Debug.Log("EnemyNPC Update");
         mInputKeyHelper.Update();
+        ProcessInvocable();
         //mGunBody.SetActive(false);
     }
 
