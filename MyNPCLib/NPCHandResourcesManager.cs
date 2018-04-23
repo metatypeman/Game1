@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyNPCLib
@@ -81,13 +82,20 @@ namespace MyNPCLib
             var process = new ProxyForNPCResourceProcess(id, mContext);
             process.LocalPriority = command.Priority;
 
+            var cs = new CancellationTokenSource();
+            var token = cs.Token;
+
             NPCProcessHelpers.RegProcess(mContext, process, NPCProcessStartupMode.NewInstance, command.KindOfLinkingToInitiator, command.InitiatingProcessId, true);
 
             var task = new Task(() => {
                 NExecute(command, process);
-            });
+            }, token);
 
             process.Task = task;
+
+            var taskId = task.Id;
+
+            mContext.RegCancellationToken(taskId, token);
 
             task.Start();
 

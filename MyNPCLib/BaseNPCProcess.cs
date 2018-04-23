@@ -291,14 +291,21 @@ namespace MyNPCLib
                 throw new ArgumentNullException(nameof(entryPointInfo));
             }
 
+            var cs = new CancellationTokenSource();
+            var token = cs.Token;
+
             var proxy = new ProxyForNPCAbstractProcess(mId, Context);
             proxy.LocalPriority = command.Priority;
 
             var task = new Task(() => {
                 NRun(entryPointInfo, command, proxy);
-            });
+            }, token);
 
             proxy.Task = task;
+
+            var taskId = task.Id;
+
+            Context.RegCancellationToken(taskId, token);
 
             task.Start();
 
@@ -331,21 +338,27 @@ namespace MyNPCLib
 
                 mActivator.CallEntryPoint(this, entryPointInfo, command.Params);
 
-                if (proxy.State == StateOfNPCProcess.Running)
-                {
-                    proxy.State = StateOfNPCProcess.RanToCompletion;
-                }
+                proxy.State = StateOfNPCProcess.RanToCompletion;
             }
-            catch(Exception e)
+            catch (OperationCanceledException)
             {
-                if (proxy.State == StateOfNPCProcess.Running)
-                {
-                    proxy.State = StateOfNPCProcess.Faulted;
-                }
+#if DEBUG
+                LogInstance.Log("BaseNPCProcess NRun catch(OperationCanceledException)");
+#endif
+            }
+            catch (Exception e)
+            {
+                proxy.State = StateOfNPCProcess.Faulted;
 
 #if DEBUG
                 LogInstance.Log($"End BaseNPCProcess NRun e = {e}");
 #endif
+            }
+            finally
+            {
+                var taskId = Task.CurrentId;
+
+                Context.UnRegCancellationToken(taskId.Value);
             }
 
             lock (mListOfProxesLockObj)

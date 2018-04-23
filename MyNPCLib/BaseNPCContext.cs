@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace MyNPCLib
 {
@@ -533,6 +534,57 @@ namespace MyNPCLib
         public T GetInstance<T>() where T : class
         {
             return mSimpleDI.GetInstance<T>();
+        }
+
+        private Dictionary<int, CancellationToken> mCancelationTokenDict = new Dictionary<int, CancellationToken>();
+        private readonly object mCancelationTokenDictLockObj = new object();
+
+        public void RegCancellationToken(int taskId, CancellationToken token)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext RegCancellationToken taskId = {taskId}");
+#endif
+            lock (mCancelationTokenDictLockObj)
+            {
+                if(mCancelationTokenDict.ContainsKey(taskId))
+                {
+                    return;
+                }
+
+                mCancelationTokenDict[taskId] = token;
+            }
+        }
+
+        public CancellationToken GetCancellationToken(int taskId)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext GetCancellationToken taskId = {taskId}");
+#endif
+            lock (mCancelationTokenDictLockObj)
+            {
+                if(mCancelationTokenDict.ContainsKey(taskId))
+                {
+                    return mCancelationTokenDict[taskId];
+                }
+
+                return CancellationToken.None;
+            }
+        }
+
+        public void UnRegCancellationToken(int taskId)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext UnRegCancellationToken taskId = {taskId}");
+#endif
+            lock (mCancelationTokenDictLockObj)
+            {
+                if (!mCancelationTokenDict.ContainsKey(taskId))
+                {
+                    return;
+                }
+
+                mCancelationTokenDict.Remove(taskId);
+            }
         }
 
         public void Dispose()

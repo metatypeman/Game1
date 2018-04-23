@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib
 {
-    public interface INPCContext: IDisposable
+    public interface INPCContext: INPCCancellationTokensContext, IDisposable
     {
         StateOfNPCContext State { get; }
 

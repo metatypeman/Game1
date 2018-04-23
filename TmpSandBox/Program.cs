@@ -24,9 +24,9 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTCancelTask_2();
+            //TSTCancelTask_2();
             //TSTCancelTask();
-            //TSTMyNPCContext();
+            TSTMyNPCContext();
             //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
