@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using TmpSandBox.NPCBehaviour;
 
 namespace TmpSandBox
@@ -23,11 +24,84 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTMyNPCContext();
+            TSTCancelTask_2();
+            //TSTCancelTask();
+            //TSTMyNPCContext();
             //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTCancelTask_2()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTCancelTask_2");
+
+            var cs = new CancellationTokenSource();
+            var token = cs.Token;
+            var token2 = token;
+
+            var factory = new TaskFactory(token);
+
+            var tmpTask = factory.StartNew(() =>
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask Task start");
+                var n = 0;
+
+                while (true)
+                {
+                    NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask Task n = {n}");
+                    n++;
+
+                    token2.ThrowIfCancellationRequested();
+                }
+
+            }, token);
+
+            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask started");
+
+            Thread.Sleep(1000);
+
+            cs.Cancel();
+
+            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask Canceled");
+
+            Thread.Sleep(1000);
+
+            NLog.LogManager.GetCurrentClassLogger().Info("End TSTCancelTask_2");
+        }
+
+        private static void TSTCancelTask()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTCancelTask");
+
+            Thread tmpThread = null;
+
+            var tmpTask = new Task(() => {
+                tmpThread = Thread.CurrentThread;
+
+                var n = 0;
+
+                while(true)
+                {
+                    NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask Task n = {n}");
+                    n++;
+                }
+            });
+
+            tmpTask.Start();
+
+            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask started");
+
+            Thread.Sleep(1000);
+
+            tmpThread.Abort();
+
+            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask aborted");
+
+            Thread.Sleep(1000);
+
+            NLog.LogManager.GetCurrentClassLogger().Info("End TSTCancelTask");
         }
 
         private static void TSTMyNPCContext()

@@ -21,6 +21,8 @@ namespace TmpSandBox.NPCBehaviour
 
         public event HumanoidStatesChangedAction OnHumanoidStatesChanged;
 
+        public event Action OnDie;
+
         private object mLockObj = new object();
         private HumanoidTaskOfExecuting mTargetStateForExecuting;
 

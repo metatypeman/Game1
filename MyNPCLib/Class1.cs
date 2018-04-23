@@ -67,5 +67,38 @@ namespace MyNPCLib
 
             return new List<int>();
         }
+
+        public void TSTCancelTask()
+        {
+            LogInstance.Log("Begin TSTCancelTask");
+
+            Thread tmpThread = null;
+
+            var tmpTask = new Task(() => {
+                tmpThread = Thread.CurrentThread;
+
+                var n = 0;
+
+                while (true)
+                {
+                    LogInstance.Log($"TSTCancelTask Task n = {n}");
+                    n++;
+                }
+            });
+
+            tmpTask.Start();
+
+            LogInstance.Log("TSTCancelTask started");
+
+            Thread.Sleep(1000);
+
+            //tmpThread.
+
+            LogInstance.Log("TSTCancelTask aborted");
+
+            Thread.Sleep(1000);
+
+            LogInstance.Log("End TSTCancelTask");
+        }
     }
 }
