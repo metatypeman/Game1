@@ -58,10 +58,10 @@ namespace Assets.Scripts
 
         public event HumanoidStatesChangedAction OnHumanoidStatesChanged;
 
-        public HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidBody targetState)
+        public void Execute(TargetStateOfHumanoidBody targetState)
         {
 #if DEBUG
-            Debug.Log($"TestedNPCBodyHost ExecuteAsync targetState = {targetState}");
+            Debug.Log($"TestedNPCBodyHost Execute targetState = {targetState}");
 #endif
 
             var internalTargetStateOfHumanoidBody = InternalTargetStateOfHumanoidControllerConverter.ConvertToInternal(targetState);
@@ -70,17 +70,23 @@ namespace Assets.Scripts
             Debug.Log($"TestedNPCBodyHost ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
 #endif
 
-            var targetStateForExecuting = new HumanoidTaskOfExecuting();
-            targetStateForExecuting.ProcessedState = targetState;
+            //var targetStateForExecuting = new HumanoidTaskOfExecuting();
+            //targetStateForExecuting.ProcessedState = targetState;
 
-            var internalHumanoidTaskOfExecuting = mInternalBodyHumanoidHost.ExecuteAsync(internalTargetStateOfHumanoidBody);
+            mInternalBodyHumanoidHost.Execute(internalTargetStateOfHumanoidBody);
 
-            while (internalHumanoidTaskOfExecuting.State == InternalStateOfHumanoidTaskOfExecuting.Created)
-            {
-            }
+            //var internalHumanoidTaskOfExecuting = mInternalBodyHumanoidHost.ExecuteAsync(internalTargetStateOfHumanoidBody);
 
-            targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;
-            return targetStateForExecuting;
+            //while (internalHumanoidTaskOfExecuting.State == InternalStateOfHumanoidTaskOfExecuting.Created)
+            //{
+            //}
+
+#if DEBUG
+            Debug.Log($"TestedNPCBodyHost End ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
+#endif
+
+            //targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;
+            //return targetStateForExecuting;
         }
     }
 

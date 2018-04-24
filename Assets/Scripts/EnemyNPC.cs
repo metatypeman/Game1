@@ -19,6 +19,48 @@ public interface IInvocableObj
     void Invoke();
 }
 
+public class InvocableObj: IInvocableObj
+{
+    public InvocableObj(Action function, IInvokingInMainThread invokingInMainThread)
+    {
+        mFunction = function;
+        mInvokingInMainThread = invokingInMainThread;
+    }
+
+    private Action mFunction;
+    private IInvokingInMainThread mInvokingInMainThread;
+    private bool mHasResult;
+    private readonly object mLockObj = new object();
+
+    public void Run()
+    {
+        mInvokingInMainThread.SetInvocableObj(this);
+
+        while (true)
+        {
+            lock (mLockObj)
+            {
+                if (mHasResult)
+                {
+                    break;
+                }
+            }
+
+            Thread.Sleep(10);
+        }
+    }
+
+    public void Invoke()
+    {
+        mFunction.Invoke();
+
+        lock (mLockObj)
+        {
+            mHasResult = true;
+        }
+    }
+}
+
 public class InvocableObj<TResult> : IInvocableObj
 {
     public InvocableObj(Func<TResult> function, IInvokingInMainThread invokingInMainThread)
@@ -167,6 +209,16 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
     private string ThreadSafeGameObj()
     {
+        var invocableWithoutResult = new InvocableObj(() =>
+        {
+            var gunBody = GameObject.Find("M4A1 Sopmod");
+            Debug.Log($"EnemyNPC fun = () gunBody.name = {gunBody.name}");
+            var position = gunBody.transform.position;
+            Debug.Log($"EnemyNPC End fun = () position = {position}");
+        }, this);
+
+        invocableWithoutResult.Run();
+
         var invocable = new InvocableObj<string>(() => {
             var gunBody = GameObject.Find("M4A1 Sopmod");
             Debug.Log($"EnemyNPC End fun = () gunBody.name = {gunBody.name}");

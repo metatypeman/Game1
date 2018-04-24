@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public interface IInternalBodyHumanoidHost
+    public interface IInternalBodyHumanoidHost: IInvokingInMainThread
     {
-        InternalHumanoidTaskOfExecuting ExecuteAsync(InternalTargetStateOfHumanoidController targetState);
+        void Execute(InternalTargetStateOfHumanoidController targetState);
         InternalStatesOfHumanoidController States { get; }
         event InternalHumanoidStatesChangedAction OnHumanoidStatesChanged;
         void Die();

@@ -686,17 +686,13 @@ namespace MyNPCLib
             RegProcessId(targetState, processId, process, resolutionKind);
 
 #if DEBUG
-            //LogInstance.Log("NPCBodyResourcesManager ProcessAllow before mNPCBodyHost.ExecuteAsync");
+            LogInstance.Log("NPCBodyResourcesManager ProcessAllow before mNPCBodyHost.ExecuteAsync");
 #endif
 
-            var targetStateForExecuting = mNPCBodyHost.ExecuteAsync(targetState);
-
-            while (targetStateForExecuting.State == StateOfHumanoidTaskOfExecuting.Created)
-            {
-            }
+            mNPCBodyHost.Execute(targetState);
 
 #if DEBUG
-            //LogInstance.Log("NPCBodyResourcesManager ProcessAllow after mNPCBodyHost.ExecuteAsync");
+            LogInstance.Log("NPCBodyResourcesManager ProcessAllow after mNPCBodyHost.ExecuteAsync");
 #endif
 
             process.State = StateOfNPCProcess.Running;

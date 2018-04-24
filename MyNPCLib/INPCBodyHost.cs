@@ -8,7 +8,7 @@ namespace MyNPCLib
 
     public interface INPCBodyHost
     {
-        HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidBody targetState);
+        void Execute(TargetStateOfHumanoidBody targetState);
         IStatesOfHumanoidBodyHost States { get; }
         event HumanoidStatesChangedAction OnHumanoidStatesChanged;
         event Action OnDie;

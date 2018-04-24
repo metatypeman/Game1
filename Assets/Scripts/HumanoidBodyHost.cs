@@ -41,6 +41,41 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private bool mUseIkAnimation;
 
+    private object mTmpQueueLockObj = new object();
+    private Queue<IInvocableObj> mTmpQueue = new Queue<IInvocableObj>();
+
+    private void ProcessInvocable()
+    {
+        List<IInvocableObj> invocableList = null;
+
+        lock (mTmpQueueLockObj)
+        {
+            if (mTmpQueue.Count > 0)
+            {
+                invocableList = mTmpQueue.ToList();
+                mTmpQueue.Clear();
+            }
+        }
+
+        if (invocableList == null)
+        {
+            return;
+        }
+
+        foreach (var invocable in invocableList)
+        {
+            invocable.Invoke();
+        }
+    }
+
+    public void SetInvocableObj(IInvocableObj invokableObj)
+    {
+        lock (mTmpQueueLockObj)
+        {
+            mTmpQueue.Enqueue(invokableObj);
+        }
+    }
+
     private IAimCorrector mAimCorrector;
 
     public void SetAimCorrector(IAimCorrector corrector)
@@ -99,7 +134,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         ApplyCurrentStates();
 
-        StartCoroutine(Timer());
+        //StartCoroutine(Timer());
     }
 
     public GameObject RightHand { get; private set; }
@@ -113,11 +148,6 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private BehaviourFlagsOfHumanoidController mBehaviourFlags;
 
-    public InternalHumanoidHState HState => mStates.HState;
-    public Vector3? TargetPosition => mStates.TargetPosition;
-    public InternalHumanoidVState VState => mStates.VState;
-    public InternalHumanoidHandsState HandsState => mStates.HandsState;
-    public InternalHumanoidHandsActionState HandsActionState => mStates.HandsActionState;
     public event InternalHumanoidStatesChangedAction OnHumanoidStatesChanged;
 
     private void EmitOnHumanoidStatesChanged(params InternalHumanoidStateKind[] changedStates)
@@ -134,63 +164,25 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         ApplyInternalStates();
     }
 
-    private object mLockObj = new object();
-    private InternalHumanoidTaskOfExecuting mTargetStateForExecuting;
-
-    public InternalHumanoidTaskOfExecuting ExecuteAsync(InternalTargetStateOfHumanoidController targetState)
+    public void Execute(InternalTargetStateOfHumanoidController targetState)
     {
-#if UNITY_EDITOR
-        //Debug.Log($"EnemyController ExecuteAsync targetState = {targetState}");
-#endif
+        var invocable = new InvocableObj(() => {
+            NExecute(targetState);
+        }, this);
 
-        lock (mLockObj)
-        {
-            if (mTargetStateForExecuting != null)
-            {
-                mTargetStateForExecuting.State = InternalStateOfHumanoidTaskOfExecuting.Canceled;
-            }
-
-            var targetStateForExecuting = new InternalHumanoidTaskOfExecuting();
-            targetStateForExecuting.ProcessedState = targetState;
-
-            mTargetStateForExecuting = targetStateForExecuting;
-
-#if UNITY_EDITOR
-            //Debug.Log($"EnemyController ExecuteAsync mTargetStateQueue.Count = {mTargetStateQueue.Count}");
-#endif
-
-            return targetStateForExecuting;
-        }
+        invocable.Run();
     }
 
-    private IEnumerator Timer()
+    private void NExecute(InternalTargetStateOfHumanoidController targetState)
     {
-        lock (mLockObj)
-        {
-            if (mTargetStateForExecuting != null)
-            {
-                var targetStateForExecuting = mTargetStateForExecuting;
-                mTargetStateForExecuting = null;
-                Execute(targetStateForExecuting);
-            }
-        }
-
-        yield return new WaitForSeconds(1);
-        StartCoroutine(Timer());
-    }
-
-    private void Execute(InternalHumanoidTaskOfExecuting targetStateForExecuting)
-    {
-        var targetState = targetStateForExecuting.ProcessedState;
-
 #if UNITY_EDITOR
-        //Debug.Log($"EnemyController Execute targetState = {targetState}");
+        Debug.Log($"EnemyController NExecute targetState = {targetState}");
 #endif
 
         var newState = CreateTargetState(mStates, targetState);
 
 #if UNITY_EDITOR
-        //Debug.Log($"EnemyController Execute newState = {newState}");
+        Debug.Log($"EnemyController NExecute newState = {newState}");
 #endif
 
         if (newState.KindOfThingsCommand != InternalKindOfHumanoidThingsCommand.Undefined && newState.InstanceOfThingId != 0)
@@ -201,8 +193,6 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         {
             ApplyTargetState(newState);
         }
-
-        targetStateForExecuting.State = InternalStateOfHumanoidTaskOfExecuting.Executed;
     }
 
     private void ExecuteThingsCommand(InternalStatesOfHumanoidController targetState)
@@ -618,6 +608,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         {
             return;
         }
+
+        ProcessInvocable();
 
         var hState = mStates.HState;
         switch (hState)

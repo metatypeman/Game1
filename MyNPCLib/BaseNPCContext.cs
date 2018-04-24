@@ -493,20 +493,22 @@ namespace MyNPCLib
 #if DEBUG
                 LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute existingProcessesId = {existingProcessesId}");
 #endif
-
-                var currentProcessInfo = mProcessesDict[existingProcessesId];
-
-#if DEBUG
-                LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
-#endif
-
-                if (currentProcessInfo.GlobalPriority > targetPriority)
+                if(mProcessesDict.ContainsKey(existingProcessesId))
                 {
+                    var currentProcessInfo = mProcessesDict[existingProcessesId];
+
 #if DEBUG
-                    LogInstance.Log("BaseNPCContext ApproveNPCHandResourceProcessExecute currentProcessInfo.GlobalPriority > targetPriority");
+                    LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
 #endif
 
-                    return NPCResourcesResolutionKind.Forbiden;
+                    if (currentProcessInfo.GlobalPriority > targetPriority)
+                    {
+#if DEBUG
+                        LogInstance.Log("BaseNPCContext ApproveNPCHandResourceProcessExecute currentProcessInfo.GlobalPriority > targetPriority");
+#endif
+
+                        return NPCResourcesResolutionKind.Forbiden;
+                    }
                 }
             }
 

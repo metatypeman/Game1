@@ -375,7 +375,6 @@
     <Compile Include="Assets\Scripts\InternalHumanoidHandsStateCommand.cs" />
     <Compile Include="Assets\Scripts\InternalHumanoidHeadStateCommand.cs" />
     <Compile Include="Assets\Scripts\InternalHumanoidHStateCommand.cs" />
-    <Compile Include="Assets\Scripts\InternalHumanoidTaskOfExecuting.cs" />
     <Compile Include="Assets\Scripts\InternalHumanoidThingsCommand.cs" />
     <Compile Include="Assets\Scripts\InternalHumanoidVStateCommand.cs" />
     <Compile Include="Assets\Scripts\IInternalHumanoid.cs" />

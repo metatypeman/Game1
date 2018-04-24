@@ -23,34 +23,16 @@ namespace TmpSandBox.NPCBehaviour
 
         public event Action OnDie;
 
-        private object mLockObj = new object();
-        private HumanoidTaskOfExecuting mTargetStateForExecuting;
+        //private object mLockObj { get; set; } = new object();
+        //private HumanoidTaskOfExecuting mTargetStateForExecuting { get; set; }
 
-        public HumanoidTaskOfExecuting ExecuteAsync(TargetStateOfHumanoidBody targetState)
+        public void Execute(TargetStateOfHumanoidBody targetState)
         {
 #if DEBUG
             //NLog.LogManager.GetCurrentClassLogger().Info($"ExecuteAsync targetState = {targetState}");
 #endif
 
-            lock (mLockObj)
-            {
-                if (mTargetStateForExecuting != null)
-                {
-                    mTargetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Canceled;
-                }
-
-                var targetStateForExecuting = new HumanoidTaskOfExecuting();
-                targetStateForExecuting.ProcessedState = targetState;
-
-                mTargetStateForExecuting = targetStateForExecuting;
-
-#if DEBUG
-                targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;//tmp
-                //NLog.LogManager.GetCurrentClassLogger().Info($"ExecuteAsync mTargetStateQueue.Count = {mTargetStateQueue.Count}");
-#endif
-
-                return targetStateForExecuting;
-            }
+            Thread.Sleep(1000);
         }
     }
 
