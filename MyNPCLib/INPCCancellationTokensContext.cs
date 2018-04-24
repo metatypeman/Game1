@@ -8,7 +8,7 @@ namespace MyNPCLib
     public interface INPCCancellationTokensContext
     {
         void RegCancellationToken(int taskId, CancellationToken token);
-        CancellationToken GetCancellationToken(int taskId);
+        CancellationToken? GetCancellationToken(int taskId);
         void UnRegCancellationToken(int taskId);
     }
 }

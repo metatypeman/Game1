@@ -555,7 +555,7 @@ namespace MyNPCLib
             }
         }
 
-        public CancellationToken GetCancellationToken(int taskId)
+        public CancellationToken? GetCancellationToken(int taskId)
         {
 #if DEBUG
             LogInstance.Log($"BaseNPCContext GetCancellationToken taskId = {taskId}");
@@ -567,7 +567,7 @@ namespace MyNPCLib
                     return mCancelationTokenDict[taskId];
                 }
 
-                return CancellationToken.None;
+                return null;
             }
         }
 

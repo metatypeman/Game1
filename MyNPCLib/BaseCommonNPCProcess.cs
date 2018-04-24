@@ -127,5 +127,24 @@ namespace MyNPCLib
                 }
             }
         }
+
+        protected void TryAsCancel()
+        {
+#if DEBUG
+            LogInstance.Log("BaseCommonNPCProcess TryAsCancel");
+#endif
+
+            var currTaskId = Task.CurrentId;
+
+            if(currTaskId.HasValue)
+            {
+                var cancelationToken = mContext.GetCancellationToken(currTaskId.Value);
+
+                if(cancelationToken.HasValue)
+                {
+                    cancelationToken.Value.ThrowIfCancellationRequested();
+                }        
+            }
+        }
     }
 }

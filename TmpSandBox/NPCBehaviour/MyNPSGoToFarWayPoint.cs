@@ -30,6 +30,8 @@ namespace TmpSandBox.NPCBehaviour
 
             Wait(process);
 
+            TryAsCancel();
+
             var tmpResult = Context.DefaultHand.Get("FireMode");
 
             NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpResult = {tmpResult}");

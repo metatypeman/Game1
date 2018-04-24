@@ -22,8 +22,6 @@ namespace MyNPCLib
         ulong Id { get; }
         KindOfNPCProcess Kind { get; }
         Task Task { get; }
-        CancellationTokenSource CancellationToken { get; }
-
         float LocalPriority { get; set; }
         float GlobalPriority { get; }
     }
