@@ -25,7 +25,7 @@ namespace MyNPCLib
         #region private members
         private ulong mId;
         private ActivatorOfNPCProcessEntryPointInfo mActivator = new ActivatorOfNPCProcessEntryPointInfo();
-        private List<ProxyForNPCAbstractProcess> mListOfProxes = new List<ProxyForNPCAbstractProcess>();
+        private List<BaseCommonNPCProcess> mListOfProxes = new List<BaseCommonNPCProcess>();
         private object mListOfProxesLockObj = new object();
         #endregion
 
@@ -291,11 +291,24 @@ namespace MyNPCLib
                 throw new ArgumentNullException(nameof(entryPointInfo));
             }
 
+            BaseCommonNPCProcess proxy = null;
+
+            switch (StartupMode)
+            {
+                case NPCProcessStartupMode.Singleton:
+                    proxy = new ProxyForNPCAbstractProcess(mId, Context);
+                    break;
+
+                case NPCProcessStartupMode.NewInstance:
+                case NPCProcessStartupMode.NewStandaloneInstance:              
+                    proxy = this;
+                    break;
+            }
+        
+            proxy.LocalPriority = command.Priority;
+
             var cs = new CancellationTokenSource();
             var token = cs.Token;
-
-            var proxy = new ProxyForNPCAbstractProcess(mId, Context);
-            proxy.LocalPriority = command.Priority;
 
             var task = new Task(() => {
                 NRun(entryPointInfo, command, proxy);
@@ -317,7 +330,7 @@ namespace MyNPCLib
             return proxy;
         }
 
-        private void NRun(NPCProcessEntryPointInfo entryPointInfo, NPCInternalCommand command, ProxyForNPCAbstractProcess proxy)
+        private void NRun(NPCProcessEntryPointInfo entryPointInfo, NPCInternalCommand command, BaseCommonNPCProcess proxy)
         {
 #if DEBUG
             //LogInstance.Log($"Begin BaseNPCProcess NRun command = {command}");
@@ -327,9 +340,12 @@ namespace MyNPCLib
 
             try
             {
-                lock(mListOfProxesLockObj)
+                if(proxy != this)
                 {
-                    mListOfProxes.Add(proxy);
+                    lock (mListOfProxesLockObj)
+                    {
+                        mListOfProxes.Add(proxy);
+                    }
                 }
 
                 NPCProcessHelpers.RegProcess(Context, proxy, startupMode, command.KindOfLinkingToInitiator, command.InitiatingProcessId, true);
@@ -361,9 +377,12 @@ namespace MyNPCLib
                 Context.UnRegCancellationToken(taskId.Value);
             }
 
-            lock (mListOfProxesLockObj)
+            if (proxy != this)
             {
-                mListOfProxes.Remove(proxy);
+                lock (mListOfProxesLockObj)
+                {
+                    mListOfProxes.Remove(proxy);
+                }
             }
 
 #if DEBUG
