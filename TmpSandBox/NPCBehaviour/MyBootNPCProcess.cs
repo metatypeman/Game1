@@ -46,6 +46,8 @@ namespace TmpSandBox.NPCBehaviour
         private void Main()
         {
             NLog.LogManager.GetCurrentClassLogger().Info("Begin Main");
+            NLog.LogManager.GetCurrentClassLogger().Info($"Main Id = {Id}");
+            //NLog.LogManager.GetCurrentClassLogger().Info($"Main ");
 
             NLog.LogManager.GetCurrentClassLogger().Info($"Main BlackBoard.TstValue = {BlackBoard.TstValue}");
 
@@ -53,14 +55,22 @@ namespace TmpSandBox.NPCBehaviour
 
             var command = new NPCCommand();
             command.Name = "go to far waypoint";
+            command.KindOfLinkingToInitiator = KindOfLinkingToInitiator.Child;
 
             var childProcess = ExecuteAsChild(command);
+
+            childProcess.OnStateChanged += ChildProcess_OnStateChanged;
 
             Wait(childProcess);
 
             NLog.LogManager.GetCurrentClassLogger().Info("Main End Wait(childProcess)");
 
             NLog.LogManager.GetCurrentClassLogger().Info("End Main");
+        }
+
+        private void ChildProcess_OnStateChanged(INPCProcess sender, StateOfNPCProcess state)
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info($"ChildProcess_OnStateChanged sender.Id = {sender.Id} state = {state}");
         }
     }
 }

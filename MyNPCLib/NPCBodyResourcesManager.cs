@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyNPCLib
@@ -151,11 +152,23 @@ namespace MyNPCLib
 
             var process = new ProxyForNPCResourceProcess(id, mContext);
 
+            var cs = new CancellationTokenSource();
+
+            process.CancellationToken = cs;
+
+            var token = cs.Token;
+
             var task = new Task(() => {
                 NExecute(command, process);
-            });
+            }, token);
 
             process.Task = task;
+
+            process.Task = task;
+
+            var taskId = task.Id;
+
+            mContext.RegCancellationToken(taskId, token);
 
             task.Start();
 
@@ -167,53 +180,76 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"NPCBodyResourcesManager Begin NExecute command = {command}");
 #endif
-            var processId = command.InitiatingProcessId;
-
-            var targetState = CreateTargetState(command);
-
-#if DEBUG
-            LogInstance.Log($"NPCBodyResourcesManager NExecute targetState = {targetState}");
-#endif
-            var resolution = CreateResolution(mNPCBodyHost.States, targetState, processId);
-
-#if DEBUG
-            LogInstance.Log($"NPCBodyResourcesManager NExecute resolution = {resolution}");
-#endif
-
-            var kindOfResolution = resolution.KindOfResult;
-
-            switch (kindOfResolution)
+            try
             {
-                case NPCResourcesResolutionKind.Allow:
-                case NPCResourcesResolutionKind.AllowAdd:
-                    ProcessAllow(targetState, processId, process, kindOfResolution);
-                    break;
+                var processId = command.InitiatingProcessId;
 
-                case NPCResourcesResolutionKind.Forbiden:
-                    {
-                        var kindOfResolutionOfContext = mContext.ApproveNPCResourceProcessExecute(resolution);
+                var targetState = CreateTargetState(command);
+
+#if DEBUG
+                LogInstance.Log($"NPCBodyResourcesManager NExecute targetState = {targetState}");
+#endif
+                var resolution = CreateResolution(mNPCBodyHost.States, targetState, processId);
+
+#if DEBUG
+                LogInstance.Log($"NPCBodyResourcesManager NExecute resolution = {resolution}");
+#endif
+
+                var kindOfResolution = resolution.KindOfResult;
+
+                switch (kindOfResolution)
+                {
+                    case NPCResourcesResolutionKind.Allow:
+                    case NPCResourcesResolutionKind.AllowAdd:
+                        ProcessAllow(targetState, processId, process, kindOfResolution);
+                        break;
+
+                    case NPCResourcesResolutionKind.Forbiden:
+                        {
+                            var kindOfResolutionOfContext = mContext.ApproveNPCResourceProcessExecute(resolution);
 
 #if UNITY_EDITOR
                         //LogInstance.Log($"NPCBodyResourcesManager Execute kindOfResolutionOfContext = {kindOfResolutionOfContext}");
 #endif
 
-                        switch (kindOfResolutionOfContext)
-                        {
-                            case NPCResourcesResolutionKind.Allow:
-                            case NPCResourcesResolutionKind.AllowAdd:
-                                ProcessAllow(targetState, processId, process, kindOfResolutionOfContext);
-                                break;
+                            switch (kindOfResolutionOfContext)
+                            {
+                                case NPCResourcesResolutionKind.Allow:
+                                case NPCResourcesResolutionKind.AllowAdd:
+                                    ProcessAllow(targetState, processId, process, kindOfResolutionOfContext);
+                                    break;
 
-                            case NPCResourcesResolutionKind.Forbiden:
-                                ProcessForbiden(process);
-                                break;
+                                case NPCResourcesResolutionKind.Forbiden:
+                                    ProcessForbiden(process);
+                                    break;
 
-                            default: throw new ArgumentOutOfRangeException(nameof(kindOfResolutionOfContext), kindOfResolutionOfContext, null);
+                                default: throw new ArgumentOutOfRangeException(nameof(kindOfResolutionOfContext), kindOfResolutionOfContext, null);
+                            }
                         }
-                    }
-                    break;
+                        break;
 
-                default: throw new ArgumentOutOfRangeException(nameof(kindOfResolution), kindOfResolution, null);
+                    default: throw new ArgumentOutOfRangeException(nameof(kindOfResolution), kindOfResolution, null);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+#if DEBUG
+                LogInstance.Log("NPCBodyResourcesManager NExecute catch(OperationCanceledException)");
+#endif
+            }
+            catch (Exception e)
+            {
+                process.State = StateOfNPCProcess.Faulted;
+
+#if DEBUG
+                LogInstance.Log($"End NPCBodyResourcesManager NExecute e = {e}");
+#endif
+            }
+            finally
+            {
+                var taskId = Task.CurrentId;
+
+                mContext.UnRegCancellationToken(taskId.Value);
             }
 
 #if DEBUG

@@ -82,6 +82,10 @@ namespace TmpSandBox
 
             NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask_2 Canceled");
 
+            cs.Cancel();
+
+            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask_2 Canceled twice");
+
             Thread.Sleep(1000);
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask after mCancelationTokenDict.Count = {mCancelationTokenDict.Count}");

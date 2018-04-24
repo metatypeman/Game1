@@ -26,6 +26,8 @@ namespace TmpSandBox.NPCBehaviour
 
             process = ExecuteDefaultHand(handCommand);
 
+            process.OnStateChanged += Process_OnStateChanged;
+
             Wait(process);
 
             var tmpResult = Context.DefaultHand.Get("FireMode");
@@ -45,6 +47,11 @@ namespace TmpSandBox.NPCBehaviour
             NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpStrRes = {tmpStrRes}");
 
             NLog.LogManager.GetCurrentClassLogger().Info("End Main");
+        }
+
+        private void Process_OnStateChanged(INPCProcess sender, StateOfNPCProcess state)
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info($"Process_OnStateChanged sender.Id = {sender.Id} state = {state}");
         }
     }
 }

@@ -70,6 +70,8 @@ namespace TmpSandBox.NPCBehaviour
 
                 Thread.Sleep(1000);
 
+                process.State = StateOfNPCProcess.RanToCompletion;
+
                 NLog.LogManager.GetCurrentClassLogger().Info($"End Send Task.Run command = {command}");
             });
 

@@ -43,19 +43,6 @@ namespace MyNPCLib
         } 
 
         public override KindOfNPCProcess Kind => KindOfNPCProcess.Resource;
-        public override Task Task
-        {
-            get
-            {
-                return null;
-            }
-
-            set
-            {
-
-            }
-        }
-
         public override float LocalPriority { get; set; }
         public override float GlobalPriority => 0f;
         public override void Dispose()

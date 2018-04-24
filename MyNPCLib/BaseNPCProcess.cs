@@ -10,17 +10,6 @@ namespace MyNPCLib
     public abstract class BaseNPCProcess : BaseCommonNPCProcess
     {
         public override KindOfNPCProcess Kind => KindOfNPCProcess.Abstract;
-        public override Task Task
-        {
-            get
-            {
-                return null;
-            }
-
-            set
-            {
-            }
-        }
 
         #region private members
         private ulong mId;
@@ -297,17 +286,28 @@ namespace MyNPCLib
             {
                 case NPCProcessStartupMode.Singleton:
                     proxy = new ProxyForNPCAbstractProcess(mId, Context);
+                    proxy.StartupMode = StartupMode;
+#if DEBUG
+
+                    LogInstance.Log($"End BaseNPCProcess RunAsync (1) proxy.StartupMode = {proxy.StartupMode}");
+#endif
                     break;
 
                 case NPCProcessStartupMode.NewInstance:
                 case NPCProcessStartupMode.NewStandaloneInstance:              
                     proxy = this;
+#if DEBUG
+                    LogInstance.Log($"End BaseNPCProcess RunAsync (2) proxy.StartupMode = {proxy.StartupMode}");
+#endif
                     break;
             }
         
             proxy.LocalPriority = command.Priority;
 
             var cs = new CancellationTokenSource();
+
+            proxy.CancellationToken = cs;
+
             var token = cs.Token;
 
             var task = new Task(() => {

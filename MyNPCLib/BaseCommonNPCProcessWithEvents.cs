@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyNPCLib
@@ -193,8 +194,20 @@ namespace MyNPCLib
             }
         }
 
+        protected virtual void CancelOfProcessChanged()
+        {
+            try
+            {
+                CancellationToken?.Cancel();
+            }
+            catch
+            {
+            }          
+        }
+
         protected void EmitOnCanceledChanged()
         {
+            CancelOfProcessChanged();
             EndOfProcessChanged();
 
             Task.Run(() => {
@@ -255,6 +268,7 @@ namespace MyNPCLib
 
         protected void EmitOnDestroyedChanged()
         {
+            CancelOfProcessChanged();
             EndOfProcessChanged();
 
             Task.Run(() => {
@@ -267,7 +281,8 @@ namespace MyNPCLib
         public abstract void Dispose();
 
         public abstract ulong Id { get; set; }
-        public abstract Task Task { get; set; }
+        public Task Task { get; set; }
+        public CancellationTokenSource CancellationToken { get; set; }
         public abstract float LocalPriority { get; set; }
         public abstract float GlobalPriority { get; }
     }

@@ -58,7 +58,5 @@ namespace MyNPCLib
             {
             }
         }
-
-        public override Task Task { get; set; }
     }
 }

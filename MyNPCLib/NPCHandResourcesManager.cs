@@ -33,7 +33,7 @@ namespace MyNPCLib
             }
         }
 
-#region private members
+        #region private members
         private IIdFactory mIdFactory;
         private IEntityDictionary mEntityDictionary;
         private INPCHandHost mNPCHandHost;
@@ -83,6 +83,9 @@ namespace MyNPCLib
             process.LocalPriority = command.Priority;
 
             var cs = new CancellationTokenSource();
+
+            process.CancellationToken = cs;
+
             var token = cs.Token;
 
             NPCProcessHelpers.RegProcess(mContext, process, NPCProcessStartupMode.NewInstance, command.KindOfLinkingToInitiator, command.InitiatingProcessId, true);
@@ -108,56 +111,79 @@ namespace MyNPCLib
             LogInstance.Log($"NPCHandResourcesManager Begin NExecute command = {command}");
 #endif
 
-            var processId = process.Id;
-
-            var resolution = CreateResolution(command, processId);
-
-#if DEBUG
-            LogInstance.Log($"NPCHandResourcesManager NExecute resolution = {resolution}");
-#endif
-
-            var kindOfResolution = resolution.KindOfResult;
-
-#if DEBUG
-            LogInstance.Log($"NPCHandResourcesManager NExecute kindOfResolution = {kindOfResolution}");
-#endif
-
-            switch (kindOfResolution)
+            try
             {
-                case NPCResourcesResolutionKind.Allow:
-                case NPCResourcesResolutionKind.AllowAdd:
-                    ProcessAllow(command, processId, process, kindOfResolution);
-                    break;
+                var processId = process.Id;
 
-                case NPCResourcesResolutionKind.Forbiden:
-                    {
-#if DEBUG
-                        LogInstance.Log($"NPCHandResourcesManager NExecute case NPCResourcesResolutionKind.Forbiden:");
-#endif
-
-                        var kindOfResolutionOfContext = mContext.ApproveNPCResourceProcessExecute(resolution);
+                var resolution = CreateResolution(command, processId);
 
 #if DEBUG
-                        LogInstance.Log($"NPCHandResourcesManager NExecute kindOfResolutionOfContext = {kindOfResolutionOfContext}");
+                LogInstance.Log($"NPCHandResourcesManager NExecute resolution = {resolution}");
 #endif
 
-                        switch (kindOfResolutionOfContext)
+                var kindOfResolution = resolution.KindOfResult;
+
+#if DEBUG
+                LogInstance.Log($"NPCHandResourcesManager NExecute kindOfResolution = {kindOfResolution}");
+#endif
+
+                switch (kindOfResolution)
+                {
+                    case NPCResourcesResolutionKind.Allow:
+                    case NPCResourcesResolutionKind.AllowAdd:
+                        ProcessAllow(command, processId, process, kindOfResolution);
+                        break;
+
+                    case NPCResourcesResolutionKind.Forbiden:
                         {
-                            case NPCResourcesResolutionKind.Allow:
-                            case NPCResourcesResolutionKind.AllowAdd:
-                                ProcessAllow(command, processId, process, kindOfResolutionOfContext);
-                                break;
+#if DEBUG
+                            LogInstance.Log($"NPCHandResourcesManager NExecute case NPCResourcesResolutionKind.Forbiden:");
+#endif
 
-                            case NPCResourcesResolutionKind.Forbiden:
-                                ProcessForbiden(process);
-                                break;
+                            var kindOfResolutionOfContext = mContext.ApproveNPCResourceProcessExecute(resolution);
 
-                            default: throw new ArgumentOutOfRangeException(nameof(kindOfResolutionOfContext), kindOfResolutionOfContext, null);
+#if DEBUG
+                            LogInstance.Log($"NPCHandResourcesManager NExecute kindOfResolutionOfContext = {kindOfResolutionOfContext}");
+#endif
+
+                            switch (kindOfResolutionOfContext)
+                            {
+                                case NPCResourcesResolutionKind.Allow:
+                                case NPCResourcesResolutionKind.AllowAdd:
+                                    ProcessAllow(command, processId, process, kindOfResolutionOfContext);
+                                    break;
+
+                                case NPCResourcesResolutionKind.Forbiden:
+                                    ProcessForbiden(process);
+                                    break;
+
+                                default: throw new ArgumentOutOfRangeException(nameof(kindOfResolutionOfContext), kindOfResolutionOfContext, null);
+                            }
                         }
-                    }
-                    break;
+                        break;
 
-                default: throw new ArgumentOutOfRangeException(nameof(kindOfResolution), kindOfResolution, null);
+                    default: throw new ArgumentOutOfRangeException(nameof(kindOfResolution), kindOfResolution, null);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+#if DEBUG
+                LogInstance.Log("NPCHandResourcesManager NExecute catch(OperationCanceledException)");
+#endif
+            }
+            catch (Exception e)
+            {
+                process.State = StateOfNPCProcess.Faulted;
+
+#if DEBUG
+                LogInstance.Log($"End NPCHandResourcesManager NExecute e = {e}");
+#endif
+            }
+            finally
+            {
+                var taskId = Task.CurrentId;
+
+                mContext.UnRegCancellationToken(taskId.Value);
             }
 
 #if DEBUG
@@ -235,10 +261,12 @@ namespace MyNPCLib
             LogInstance.Log($"NPCHandResourcesManager ProcessAllow processOfHost.State = {processOfHost.State}");
 #endif
 
-            processOfHost.OnRunningChanged += (INPCProcess sender) => {
+            processOfHost.OnStateChanged += (INPCProcess sender, StateOfNPCProcess state) => {
 #if DEBUG
-                LogInstance.Log("NPCHandResourcesManager ProcessAllow processOfHost.OnRunningChanged");
+                LogInstance.Log($"NPCHandResourcesManager ProcessAllow processOfHost.OnStateChanged sender.Id = {sender.Id} state = {state}");
 #endif
+
+                process.State = state;
             };
 
             //throw new NotImplementedException();

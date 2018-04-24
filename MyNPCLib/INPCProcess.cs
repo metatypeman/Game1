@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyNPCLib
@@ -21,6 +22,7 @@ namespace MyNPCLib
         ulong Id { get; }
         KindOfNPCProcess Kind { get; }
         Task Task { get; }
+        CancellationTokenSource CancellationToken { get; }
 
         float LocalPriority { get; set; }
         float GlobalPriority { get; }
