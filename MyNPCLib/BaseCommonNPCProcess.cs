@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyNPCLib
@@ -134,17 +135,25 @@ namespace MyNPCLib
             LogInstance.Log("BaseCommonNPCProcess TryAsCancel");
 #endif
 
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
+        }
+
+        protected CancellationToken? GetCancellationToken()
+        {
             var currTaskId = Task.CurrentId;
 
-            if(currTaskId.HasValue)
+            if (currTaskId.HasValue)
             {
                 var cancelationToken = mContext.GetCancellationToken(currTaskId.Value);
 
-                if(cancelationToken.HasValue)
+                if (cancelationToken.HasValue)
                 {
-                    cancelationToken.Value.ThrowIfCancellationRequested();
-                }        
+                    return cancelationToken;
+                }
             }
+
+            return null;
         }
     }
 }

@@ -392,14 +392,26 @@ namespace MyNPCLib
 
         public void Wait(params INPCProcess[] processes)
         {
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
+
             var tasksArray = processes.Where(p => p.Task != null).Select(p => p.Task).ToArray();
 
+            cancelationToken?.ThrowIfCancellationRequested();
+
             Task.WaitAll(tasksArray);
+
+            cancelationToken?.ThrowIfCancellationRequested();
         }
 
         public void Wait()
         {
-            while(true)
+            var currTaskId = Task.CurrentId;
+
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            while (true)
             {
                 lock (StateLockObj)
                 {
@@ -408,6 +420,8 @@ namespace MyNPCLib
                         break;
                     }
                 }
+
+                cancelationToken?.ThrowIfCancellationRequested();
 
                 Thread.Sleep(1000);
             }
