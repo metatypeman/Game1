@@ -589,6 +589,16 @@ namespace MyNPCLib
             }
         }
 
+        public void CallInMainUI(Action function)
+        {
+            mBodyResourcesManager.CallInMainUI(function);
+        }
+
+        public TResult CallInMainUI<TResult>(Func<TResult> function)
+        {
+            return mBodyResourcesManager.CallInMainUI(function);
+        }
+
         public void Dispose()
         {
 #if DEBUG

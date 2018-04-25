@@ -1007,6 +1007,16 @@ namespace MyNPCLib
             }
         }
 
+        public void CallInMainUI(Action function)
+        {
+            mNPCBodyHost.CallInMainUI(function);
+        }
+
+        public TResult CallInMainUI<TResult>(Func<TResult> function)
+        {
+            return mNPCBodyHost.CallInMainUI(function);
+        }
+
         public void Dispose()
         {
 #if DEBUG

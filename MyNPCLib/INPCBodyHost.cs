@@ -12,5 +12,7 @@ namespace MyNPCLib
         IStatesOfHumanoidBodyHost States { get; }
         event HumanoidStatesChangedAction OnHumanoidStatesChanged;
         event Action OnDie;
+        void CallInMainUI(Action function);
+        TResult CallInMainUI<TResult>(Func<TResult> function);
     }
 }

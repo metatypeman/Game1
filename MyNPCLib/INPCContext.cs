@@ -31,5 +31,8 @@ namespace MyNPCLib
         object NoTypedBlackBoard { get; }
 
         T GetInstance<T>() where T : class;
+
+        void CallInMainUI(Action function);
+        TResult CallInMainUI<TResult>(Func<TResult> function);
     }
 }

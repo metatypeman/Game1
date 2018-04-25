@@ -534,6 +534,28 @@ namespace MyNPCLib
             }
         }
 
+        protected void CallInMainUI(Action function)
+        {
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            Context.CallInMainUI(function);
+
+            cancelationToken?.ThrowIfCancellationRequested();
+        }
+
+        protected TResult CallInMainUI<TResult>(Func<TResult> function)
+        {
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            var result = Context.CallInMainUI(function);
+
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
+        }
+
         public void AddChildComponent(IChildComponentOfNPCProcess component)
         {
 #if DEBUG

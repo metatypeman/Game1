@@ -34,6 +34,16 @@ namespace TmpSandBox.NPCBehaviour
 
             Thread.Sleep(1000);
         }
+
+        public void CallInMainUI(Action function)
+        {
+            function();
+        }
+
+        public TResult CallInMainUI<TResult>(Func<TResult> function)
+        {
+            return function();
+        }
     }
 
     public class StubOfNPCHandHost: INPCHandHost
