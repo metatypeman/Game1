@@ -13,15 +13,7 @@ namespace Assets.Scripts
         public static InternalTargetStateOfHumanoidController ConvertToInternal(TargetStateOfHumanoidBody state)
         {
             var result = new InternalTargetStateOfHumanoidController();
-            
-            if(state.HState.HasValue)
-            {
-                result.HState = InternalStatesConverter.HumanoidHStateToInternal(state.HState.Value);
-            }
-            else
-            {
-                result.HState = null;
-            }
+            result.HState = state.HState;
 
             if (state.TargetPosition == null)
             {
@@ -32,41 +24,10 @@ namespace Assets.Scripts
                 result.TargetPosition = (Vector3)state.TargetPosition;
             }
 
-            if (state.VState.HasValue)
-            {
-                result.VState = InternalStatesConverter.HumanoidVStateToInternal(state.VState.Value);
-            }
-            else
-            {
-                result.VState = null;
-            }
-
-            if (state.HandsState.HasValue)
-            {
-                result.HandsState = InternalStatesConverter.HumanoidHandsStateToInternal(state.HandsState.Value);
-            }
-            else
-            {
-                result.HandsState = null;
-            }
-
-            if (state.HandsActionState.HasValue)
-            {
-                result.HandsActionState = InternalStatesConverter.HumanoidHandsActionStateToInternal(state.HandsActionState.Value);
-            }
-            else
-            {
-                result.HandsActionState = null;
-            }
-
-            if (state.HeadState.HasValue)
-            {
-                result.HeadState = InternalStatesConverter.HumanoidHeadStateToInternal(state.HeadState.Value);
-            }
-            else
-            {
-                result.HeadState = null;
-            }
+            result.VState = state.VState;
+            result.HandsState = state.HandsState;
+            result.HandsActionState = state.HandsActionState;
+            result.HeadState = state.HeadState;
 
             if (state.TargetHeadPosition == null)
             {
@@ -77,23 +38,8 @@ namespace Assets.Scripts
                 result.TargetHeadPosition = (Vector3)result.TargetHeadPosition;
             }
 
-            if (state.KindOfThingsCommand.HasValue)
-            {
-                result.KindOfThingsCommand = InternalStatesConverter.KindOfHumanoidThingsCommandToInternal(state.KindOfThingsCommand.Value);
-            }
-            else
-            {
-                result.KindOfThingsCommand = null;
-            }
-
-            if (state.InstanceOfThingId.HasValue)
-            {
-                result.InstanceOfThingId = state.InstanceOfThingId.Value;
-            }
-            else
-            {
-                result.InstanceOfThingId = null;
-            }
+            result.KindOfThingsCommand = state.KindOfThingsCommand;
+            result.InstanceOfThingId = state.InstanceOfThingId;
 
             return result;
         }

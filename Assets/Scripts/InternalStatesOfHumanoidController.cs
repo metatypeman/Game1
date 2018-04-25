@@ -10,14 +10,14 @@ namespace Assets.Scripts
 {
     public class InternalStatesOfHumanoidController : IObjectToString
     {
-        public InternalHumanoidHState HState = InternalHumanoidHState.Stop;
+        public HumanoidHState HState = HumanoidHState.Stop;
         public Vector3? TargetPosition;
-        public InternalHumanoidVState VState = InternalHumanoidVState.Ground;
-        public InternalHumanoidHandsState HandsState = InternalHumanoidHandsState.FreeHands;
-        public InternalHumanoidHandsActionState HandsActionState = InternalHumanoidHandsActionState.Empty;
-        public InternalHumanoidHeadState HeadState = InternalHumanoidHeadState.LookingForward;
+        public HumanoidVState VState = HumanoidVState.Ground;
+        public HumanoidHandsState HandsState = HumanoidHandsState.FreeHands;
+        public HumanoidHandsActionState HandsActionState = HumanoidHandsActionState.Empty;
+        public HumanoidHeadState HeadState = HumanoidHeadState.LookingForward;
         public Vector3? TargetHeadPosition;
-        public InternalKindOfHumanoidThingsCommand KindOfThingsCommand = InternalKindOfHumanoidThingsCommand.Undefined;
+        public KindOfHumanoidThingsCommand KindOfThingsCommand = KindOfHumanoidThingsCommand.Undefined;
         public int InstanceOfThingId;
 
         public InternalStatesOfHumanoidController Clone()

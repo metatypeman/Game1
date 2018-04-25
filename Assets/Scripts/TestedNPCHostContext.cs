@@ -44,13 +44,13 @@ namespace Assets.Scripts
             }
         }
 
-        private void InternalOnHumanoidStatesChanged(IList<InternalHumanoidStateKind> changedStates)
+        private void InternalOnHumanoidStatesChanged(IList<HumanoidStateKind> changedStates)
         {
             var result = new List<HumanoidStateKind>();
             
             foreach(var initItem in changedStates)
             {
-                result.Add(InternalStatesConverter.HumanoidStateKindFromInternal(initItem));
+                result.Add(initItem);
             }
 
             OnHumanoidStatesChanged?.Invoke(result);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Assets.Scripts
     {
         void Execute(InternalTargetStateOfHumanoidController targetState);
         InternalStatesOfHumanoidController States { get; }
-        event InternalHumanoidStatesChangedAction OnHumanoidStatesChanged;
+        event HumanoidStatesChangedAction OnHumanoidStatesChanged;
         void Die();
         event Action OnDie;
         void SetAimCorrector(IAimCorrector corrector);

@@ -27,7 +27,7 @@ namespace Assets.Scripts
                     return HumanoidHState.Stop;
                 }
 
-                return InternalStatesConverter.HumanoidHStateFromInternal(state.HState);
+                return state.HState;
             }
         }
 
@@ -57,7 +57,7 @@ namespace Assets.Scripts
                     return HumanoidVState.Ground;
                 }
 
-                return InternalStatesConverter.HumanoidVStateFromInternal(state.VState);
+                return state.VState;
             }
         }
 
@@ -72,7 +72,7 @@ namespace Assets.Scripts
                     return HumanoidHandsState.FreeHands;
                 }
 
-                return InternalStatesConverter.HumanoidHandsStateFromInternal(state.HandsState);
+                return state.HandsState;
             }
         }
 
@@ -87,7 +87,7 @@ namespace Assets.Scripts
                     return HumanoidHandsActionState.Empty;
                 }
 
-                return InternalStatesConverter.HumanoidHandsActionStateFromInternal(state.HandsActionState);
+                return state.HandsActionState;
             }
         }
 
@@ -102,7 +102,7 @@ namespace Assets.Scripts
                     return HumanoidHeadState.LookingForward;
                 }
 
-                return InternalStatesConverter.HumanoidHeadStateFromInternal(state.HeadState);
+                return state.HeadState;
             }
         }
 
@@ -132,7 +132,7 @@ namespace Assets.Scripts
                     return KindOfHumanoidThingsCommand.Undefined;
                 }
 
-                return InternalStatesConverter.KindOfHumanoidThingsCommandFromInternal(state.KindOfThingsCommand);
+                return state.KindOfThingsCommand;
             }
         }
 

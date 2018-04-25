@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using MyNPCLib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     
     public TResult CallInMainUI<TResult>(Func<TResult> function)
     {
-        var invocable = new InvocableObj(function, this);
+        var invocable = new InvocableObj<TResult>(function, this);
         return invocable.Run();
     }
 
@@ -160,9 +161,9 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private BehaviourFlagsOfHumanoidController mBehaviourFlags;
 
-    public event InternalHumanoidStatesChangedAction OnHumanoidStatesChanged;
+    public event HumanoidStatesChangedAction OnHumanoidStatesChanged;
 
-    private void EmitOnHumanoidStatesChanged(params InternalHumanoidStateKind[] changedStates)
+    private void EmitOnHumanoidStatesChanged(params HumanoidStateKind[] changedStates)
     {
         Task.Run(() => {
             OnHumanoidStatesChanged?.Invoke(changedStates.ToList());
@@ -197,7 +198,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         Debug.Log($"EnemyController NExecute newState = {newState}");
 #endif
 
-        if (newState.KindOfThingsCommand != InternalKindOfHumanoidThingsCommand.Undefined && newState.InstanceOfThingId != 0)
+        if (newState.KindOfThingsCommand != KindOfHumanoidThingsCommand.Undefined && newState.InstanceOfThingId != 0)
         {
             ExecuteThingsCommand(newState);
         }
@@ -222,32 +223,32 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         switch (kindOfThingsCommand)
         {
-            case InternalKindOfHumanoidThingsCommand.Take:
+            case KindOfHumanoidThingsCommand.Take:
                 {
                     thing.SetToHandsOfHumanoid(this, mInternalHumanoidHostContext);
-                    mStates.HandsState = InternalHumanoidHandsState.HasRifle;
+                    mStates.HandsState = HumanoidHandsState.HasRifle;
                     ApplyCurrentStates();
-                    EmitOnHumanoidStatesChanged(InternalHumanoidStateKind.ThingsCommand);
+                    EmitOnHumanoidStatesChanged(HumanoidStateKind.ThingsCommand);
                 }
                 break;
 
-            case InternalKindOfHumanoidThingsCommand.PutToBagpack:
+            case KindOfHumanoidThingsCommand.PutToBagpack:
                 {
                     thing.SetAsAloneAndHide();
-                    mStates.HandsState = InternalHumanoidHandsState.FreeHands;
-                    mStates.HandsActionState = InternalHumanoidHandsActionState.Empty;
+                    mStates.HandsState = HumanoidHandsState.FreeHands;
+                    mStates.HandsActionState = HumanoidHandsActionState.Empty;
                     ApplyCurrentStates();
-                    EmitOnHumanoidStatesChanged(InternalHumanoidStateKind.ThingsCommand);
+                    EmitOnHumanoidStatesChanged(HumanoidStateKind.ThingsCommand);
                 }
                 break;
 
-            case InternalKindOfHumanoidThingsCommand.ThrowOutToSurface:
+            case KindOfHumanoidThingsCommand.ThrowOutToSurface:
                 {
                     thing.ThrowOutToSurface();
-                    mStates.HandsState = InternalHumanoidHandsState.FreeHands;
-                    mStates.HandsActionState = InternalHumanoidHandsActionState.Empty;
+                    mStates.HandsState = HumanoidHandsState.FreeHands;
+                    mStates.HandsActionState = HumanoidHandsActionState.Empty;
                     ApplyCurrentStates();
-                    EmitOnHumanoidStatesChanged(InternalHumanoidStateKind.ThingsCommand);
+                    EmitOnHumanoidStatesChanged(HumanoidStateKind.ThingsCommand);
                 }
                 break;
 
@@ -305,33 +306,33 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         switch (result.HState)
         {
-            case InternalHumanoidHState.Stop:
+            case HumanoidHState.Stop:
                 result.TargetPosition = null;
                 break;
 
-            case InternalHumanoidHState.Walk:
-            case InternalHumanoidHState.Run:
-            case InternalHumanoidHState.LookAt:
-            case InternalHumanoidHState.Move:
-            case InternalHumanoidHState.Rotate:
+            case HumanoidHState.Walk:
+            case HumanoidHState.Run:
+            case HumanoidHState.LookAt:
+            case HumanoidHState.Move:
+            case HumanoidHState.Rotate:
                 if (!result.TargetPosition.HasValue)
                 {
-                    result.HState = InternalHumanoidHState.Stop;
+                    result.HState = HumanoidHState.Stop;
                 }
                 break;
 
-            case InternalHumanoidHState.AimAt:
-                if (result.HandsState != InternalHumanoidHandsState.HasRifle || result.HandsActionState != InternalHumanoidHandsActionState.StrongAim || !result.TargetPosition.HasValue)
+            case HumanoidHState.AimAt:
+                if (result.HandsState != HumanoidHandsState.HasRifle || result.HandsActionState != HumanoidHandsActionState.StrongAim || !result.TargetPosition.HasValue)
                 {
-                    result.HState = InternalHumanoidHState.Stop;
+                    result.HState = HumanoidHState.Stop;
                 }
                 break;
         }
 
         switch (result.HandsState)
         {
-            case InternalHumanoidHandsState.FreeHands:
-                result.HandsActionState = InternalHumanoidHandsActionState.Empty;
+            case HumanoidHandsState.FreeHands:
+                result.HandsActionState = HumanoidHandsActionState.Empty;
                 break;
         }
 
@@ -344,37 +345,37 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         switch (sourceState.HandsState)
         {
-            case InternalHumanoidHandsState.FreeHands:
+            case HumanoidHandsState.FreeHands:
                 result.HasRifle = false;
                 break;
 
-            case InternalHumanoidHandsState.HasRifle:
+            case HumanoidHandsState.HasRifle:
                 result.HasRifle = true;
                 break;
         }
 
         switch (sourceState.HandsActionState)
         {
-            case InternalHumanoidHandsActionState.Empty:
+            case HumanoidHandsActionState.Empty:
                 result.IsAim = false;
                 break;
 
-            case InternalHumanoidHandsActionState.StrongAim:
+            case HumanoidHandsActionState.StrongAim:
                 result.IsAim = true;
                 break;
         }
 
         switch (sourceState.HState)
         {
-            case InternalHumanoidHState.Stop:
-            case InternalHumanoidHState.AimAt:
-            case InternalHumanoidHState.LookAt:
-            case InternalHumanoidHState.Rotate:
+            case HumanoidHState.Stop:
+            case HumanoidHState.AimAt:
+            case HumanoidHState.LookAt:
+            case HumanoidHState.Rotate:
                 result.Walk = false;
                 break;
 
-            case InternalHumanoidHState.Walk:
-            case InternalHumanoidHState.Move:
+            case HumanoidHState.Walk:
+            case HumanoidHState.Move:
                 result.Walk = true;
                 break;
         }
@@ -390,8 +391,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         var hState = mStates.HState;
         switch (hState)
         {
-            case InternalHumanoidHState.Walk:
-            case InternalHumanoidHState.Run:
+            case HumanoidHState.Walk:
+            case HumanoidHState.Run:
                 mNavMeshAgent.ResetPath();
                 break;
         }
@@ -431,8 +432,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         var hState = mStates.HState;
         switch (hState)
         {
-            case InternalHumanoidHState.Walk:
-            case InternalHumanoidHState.Run:
+            case HumanoidHState.Walk:
+            case HumanoidHState.Run:
                 {
                     if (mStates.TargetPosition.HasValue)
                     {
@@ -442,7 +443,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 }
                 break;
 
-            case InternalHumanoidHState.Move:
+            case HumanoidHState.Move:
                 {
                     if (mStates.TargetPosition.HasValue)
                     {
@@ -464,7 +465,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 }
                 break;
 
-            case InternalHumanoidHState.LookAt:
+            case HumanoidHState.LookAt:
                 {
                     if (mStates.TargetPosition.HasValue)
                     {
@@ -475,7 +476,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 }
                 break;
 
-            case InternalHumanoidHState.AimAt:
+            case HumanoidHState.AimAt:
                 {
                     if (mStates.TargetPosition.HasValue)
                     {
@@ -492,7 +493,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 }
                 break;
 
-            case InternalHumanoidHState.Rotate:
+            case HumanoidHState.Rotate:
                 if (mStates.TargetPosition.HasValue)
                 {
                     mNavMeshAgent.isStopped = true;
@@ -523,19 +524,19 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         switch (headState)
         {
-            case InternalHumanoidHeadState.LookingForward:
+            case HumanoidHeadState.LookingForward:
                 mUseIkAnimation = false;
                 mCurrentHeadAngle = 0f;
-                EmitOnHumanoidStatesChanged(InternalHumanoidStateKind.HeadState, InternalHumanoidStateKind.TargetHeadPosition);
+                EmitOnHumanoidStatesChanged(HumanoidStateKind.HeadState, HumanoidStateKind.TargetHeadPosition);
                 break;
 
-            case InternalHumanoidHeadState.LookAt:
+            case HumanoidHeadState.LookAt:
                 mCurrentHeadPosition = mStates.TargetHeadPosition.Value;
                 mUseIkAnimation = true;
-                EmitOnHumanoidStatesChanged(InternalHumanoidStateKind.HeadState, InternalHumanoidStateKind.TargetHeadPosition);
+                EmitOnHumanoidStatesChanged(HumanoidStateKind.HeadState, HumanoidStateKind.TargetHeadPosition);
                 break;
 
-            case InternalHumanoidHeadState.Rotate:
+            case HumanoidHeadState.Rotate:
                 mUseIkAnimation = true;
 
                 mTargetHeadAngle = mStates.TargetHeadPosition.Value.y;
@@ -592,21 +593,21 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     public void ApplyAchieveDestinationOfMoving()
     {
-        mStates.HState = InternalHumanoidHState.Stop;
+        mStates.HState = HumanoidHState.Stop;
         mStates.TargetPosition = null;
         ApplyCurrentStates();
-        EmitOnHumanoidStatesChanged(InternalHumanoidStateKind.HState, InternalHumanoidStateKind.TargetPosition);
+        EmitOnHumanoidStatesChanged(HumanoidStateKind.HState, HumanoidStateKind.TargetPosition);
     }
 
     private void ApplyAchiveDestinationOfHead()
     {
         if (mStates.TargetHeadPosition.HasValue)
         {
-            EmitOnHumanoidStatesChanged(InternalHumanoidStateKind.HeadState, InternalHumanoidStateKind.TargetHeadPosition);
+            EmitOnHumanoidStatesChanged(HumanoidStateKind.HeadState, HumanoidStateKind.TargetHeadPosition);
         }
         else
         {
-            EmitOnHumanoidStatesChanged(InternalHumanoidStateKind.HeadState);
+            EmitOnHumanoidStatesChanged(HumanoidStateKind.HeadState);
         }
     }
 
@@ -626,9 +627,9 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         var hState = mStates.HState;
         switch (hState)
         {
-            case InternalHumanoidHState.Walk:
-            case InternalHumanoidHState.Run:
-            case InternalHumanoidHState.Move:
+            case HumanoidHState.Walk:
+            case HumanoidHState.Run:
+            case HumanoidHState.Move:
                 {
                     var targetPosition = mStates.TargetPosition.Value;
                     var nextPosition = mNavMeshAgent.nextPosition;
@@ -639,7 +640,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 }
                 break;
 
-            case InternalHumanoidHState.Rotate:
+            case HumanoidHState.Rotate:
                 if (mNeedBodyChanges)
                 {
                     var newAngle = mCurrentBodyAngle + mBodyAngleDelta;
@@ -696,7 +697,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         switch (headState)
         {
-            case InternalHumanoidHeadState.Rotate:
+            case HumanoidHeadState.Rotate:
                 if (mNeedHeadChanges)
                 {
                     var newAngle = mCurrentHeadAngle + mHeadAngleDelta;
@@ -708,7 +709,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     else
                     {
                         mCurrentHeadAngle = mTargetHeadAngle;
-                        EmitOnHumanoidStatesChanged(InternalHumanoidStateKind.HeadState, InternalHumanoidStateKind.TargetHeadPosition);
+                        EmitOnHumanoidStatesChanged(HumanoidStateKind.HeadState, HumanoidStateKind.TargetHeadPosition);
                         mNeedHeadChanges = false;
                     }
 
@@ -742,11 +743,11 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         switch (headState)
         {
-            case InternalHumanoidHeadState.LookingForward:
+            case HumanoidHeadState.LookingForward:
                 break;
 
-            case InternalHumanoidHeadState.LookAt:
-            case InternalHumanoidHeadState.Rotate:
+            case HumanoidHeadState.LookAt:
+            case HumanoidHeadState.Rotate:
                 mAnimator.SetLookAtWeight(1);
                 mAnimator.SetLookAtPosition(mCurrentHeadPosition);
                 Head.LookAt(mCurrentHeadPosition);
