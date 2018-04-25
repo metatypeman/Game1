@@ -70,23 +70,21 @@ namespace Assets.Scripts
             Debug.Log($"TestedNPCBodyHost ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
 #endif
 
-            //var targetStateForExecuting = new HumanoidTaskOfExecuting();
-            //targetStateForExecuting.ProcessedState = targetState;
-
             mInternalBodyHumanoidHost.Execute(internalTargetStateOfHumanoidBody);
-
-            //var internalHumanoidTaskOfExecuting = mInternalBodyHumanoidHost.ExecuteAsync(internalTargetStateOfHumanoidBody);
-
-            //while (internalHumanoidTaskOfExecuting.State == InternalStateOfHumanoidTaskOfExecuting.Created)
-            //{
-            //}
 
 #if DEBUG
             Debug.Log($"TestedNPCBodyHost End ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
 #endif
-
-            //targetStateForExecuting.State = StateOfHumanoidTaskOfExecuting.Executed;
-            //return targetStateForExecuting;
+        }
+        
+        public void CallInMainUI(Action function)
+        {
+            mInternalBodyHumanoidHost.CallInMainUI(function);
+        }
+        
+        public TResult CallInMainUI<TResult>(Func<TResult> function)
+        {
+            return mInternalBodyHumanoidHost.CallInMainUI(function);
         }
     }
 
@@ -111,24 +109,6 @@ namespace Assets.Scripts
             var process = new NPCThingProcess();
             process.State = StateOfNPCProcess.Faulted;
             return process;
-
-            //var process = new NPCThingProcess();
-            //process.State = StateOfNPCProcess.Running;
-
-            //Task.Run(() =>
-            //{
-            //    Debug.Log($"Begin TestedNPCHandHost Send Task.Run command = {command}");
-
-            //    process.State = StateOfNPCProcess.Running;
-
-            //    Thread.Sleep(1000);
-
-            //    Debug.Log($"End TestedNPCHandHost Send Task.Run command = {command}");
-            //});
-
-            //Debug.Log($"End TestedNPCHandHost Send command = {command}");
-
-            //return process;
         }
 
         public object Get(string propertyName)
