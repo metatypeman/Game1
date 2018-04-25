@@ -41,6 +41,18 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private bool mUseIkAnimation;
 
+    public void CallInMainUI(Action function)
+    {
+        var invocable = new InvocableObj(function, this);
+        invocable.Run();
+    }
+    
+    public TResult CallInMainUI<TResult>(Func<TResult> function)
+    {
+        var invocable = new InvocableObj(function, this);
+        return invocable.Run();
+    }
+
     private object mTmpQueueLockObj = new object();
     private Queue<IInvocableObj> mTmpQueue = new Queue<IInvocableObj>();
 
