@@ -15,5 +15,7 @@ namespace Assets.Scripts
         event Action OnDie;
         void SetAimCorrector(IAimCorrector corrector);
         void SetInternalHumanoidHostContext(IInternalHumanoidHostContext intenalHostContext);
+        void CallInMainUI(Action function);
+        TResult CallInMainUI<TResult>(Func<TResult> function);
     }
 }
