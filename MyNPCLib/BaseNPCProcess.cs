@@ -83,6 +83,9 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess Execute command = {command}");
 #endif
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
+
             StateChecker();
 
             if (command == null)
@@ -90,7 +93,13 @@ namespace MyNPCLib
                 throw new ArgumentNullException(nameof(command));
             }
 
-            return Context.Send(command);
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            var result = Context.Send(command);
+
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
         }
 
         public INPCProcess ExecuteAsChild(NPCCommand command)
@@ -98,6 +107,9 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess ExecuteAsChild command = {command}");
 #endif
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
+
             StateChecker();
 
             if (command == null)
@@ -108,7 +120,13 @@ namespace MyNPCLib
             command.KindOfLinkingToInitiator = KindOfLinkingToInitiator.Child;
             command.InitiatingProcessId = Id;
 
-            return Context.Send(command);
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            var result = Context.Send(command);
+
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
         }
 
         public INPCProcess ExecuteBody(HumanoidBodyCommand command)
@@ -116,6 +134,8 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess ExecuteBody command = {command}");
 #endif
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
 
             StateChecker();
 
@@ -126,7 +146,13 @@ namespace MyNPCLib
 
             command.InitiatingProcessId = Id;
 
-            return Context.Body.Send(command);
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            var result = Context.Body.Send(command);
+
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
         }
 
         public INPCProcess ExecuteDefaultHand(NPCCommand command)
@@ -134,6 +160,8 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess ExecuteDefaultHand command = {command}");
 #endif
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
 
             StateChecker();
 
@@ -144,7 +172,13 @@ namespace MyNPCLib
 
             command.InitiatingProcessId = Id;
 
-            return Context.DefaultHand.Send(command);
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            var result = Context.DefaultHand.Send(command);
+
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
         }
 
         public object GetDefaultHandProperty(string propertyName)
@@ -152,8 +186,14 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess GetDefaultHandProperty propertyName = {propertyName}");
 #endif
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
 
-            return Context.DefaultHand.Get(propertyName);
+            var result = Context.DefaultHand.Get(propertyName);
+
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
         }
 
         public T GetDefaultHandProperty<T>(string propertyName)
@@ -161,16 +201,22 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess GetDefaultHandProperty<T> propertyName = {propertyName}");
 #endif
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            T result = default(T);
 
             try
             {
-                return (T)Context.DefaultHand.Get(propertyName);
+                result = (T)Context.DefaultHand.Get(propertyName);
             }
             catch
             {
             }
 
-            return default(T);
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
         }
 
         public INPCProcess ExecuteRightHand(NPCCommand command)
@@ -178,6 +224,8 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess ExecuteRightHand command = {command}");
 #endif
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
 
             StateChecker();
 
@@ -188,7 +236,13 @@ namespace MyNPCLib
 
             command.InitiatingProcessId = Id;
 
-            return Context.RightHand.Send(command);
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            var result = Context.RightHand.Send(command);
+
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
         }
 
         public object GetRightHandProperty(string propertyName)
@@ -196,8 +250,14 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess GetRightHandProperty propertyName = {propertyName}");
 #endif
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
 
-            return Context.RightHand.Get(propertyName);
+            var result = Context.RightHand.Get(propertyName);
+
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
         }
 
         public T GetRightHandProperty<T>(string propertyName)
@@ -205,16 +265,22 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess GetRightHandProperty<T> propertyName = {propertyName}");
 #endif
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            T result = default(T);
 
             try
             {
-                return (T)Context.RightHand.Get(propertyName);
+                result = (T)Context.RightHand.Get(propertyName);
             }
             catch
             {
             }
 
-            return default(T);
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
         }
 
         public INPCProcess ExecuteLeftHand(NPCCommand command)
@@ -222,6 +288,8 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess ExecuteLeftHand command = {command}");
 #endif
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
 
             StateChecker();
 
@@ -232,7 +300,13 @@ namespace MyNPCLib
 
             command.InitiatingProcessId = Id;
 
-            return Context.LeftHand.Send(command);
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            var result = Context.LeftHand.Send(command);
+
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
         }
 
         public object GetLeftHandProperty(string propertyName)
@@ -240,8 +314,14 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess GetLeftHandProperty propertyName = {propertyName}");
 #endif
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
 
-            return Context.LeftHand.Get(propertyName);
+            var result = Context.LeftHand.Get(propertyName);
+
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
         }
 
         public T GetLeftHandProperty<T>(string propertyName)
@@ -249,15 +329,22 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess GetLeftHandProperty<T> propertyName = {propertyName}");
 #endif
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            T result = default(T);
+
             try
             {
-                return (T)Context.LeftHand.Get(propertyName);
+                result = (T)Context.LeftHand.Get(propertyName);
             }
             catch
             {
             }
 
-            return default(T);
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            return result;
         }
 
         public INPCProcess RunAsync(NPCInternalCommand command, NPCProcessEntryPointInfo entryPointInfo)
@@ -311,7 +398,7 @@ namespace MyNPCLib
             var token = cs.Token;
 
             var task = new Task(() => {
-                NRun(entryPointInfo, command, proxy);
+                NRun(entryPointInfo, command, proxy, token);
             }, token);
 
             proxy.Task = task;
@@ -330,11 +417,12 @@ namespace MyNPCLib
             return proxy;
         }
 
-        private void NRun(NPCProcessEntryPointInfo entryPointInfo, NPCInternalCommand command, BaseCommonNPCProcess proxy)
+        private void NRun(NPCProcessEntryPointInfo entryPointInfo, NPCInternalCommand command, BaseCommonNPCProcess proxy, CancellationToken cancellationToken)
         {
 #if DEBUG
             //LogInstance.Log($"Begin BaseNPCProcess NRun command = {command}");
 #endif
+            cancellationToken.ThrowIfCancellationRequested();
 
             var startupMode = Info.StartupMode;
 
@@ -348,7 +436,11 @@ namespace MyNPCLib
                     }
                 }
 
+                cancellationToken.ThrowIfCancellationRequested();
+
                 NPCProcessHelpers.RegProcess(Context, proxy, startupMode, command.KindOfLinkingToInitiator, command.InitiatingProcessId, true);
+
+                cancellationToken.ThrowIfCancellationRequested();
 
                 proxy.State = StateOfNPCProcess.Running;
 
@@ -406,8 +498,6 @@ namespace MyNPCLib
 
         public void Wait()
         {
-            var currTaskId = Task.CurrentId;
-
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
 
@@ -424,6 +514,23 @@ namespace MyNPCLib
                 cancelationToken?.ThrowIfCancellationRequested();
 
                 Thread.Sleep(1000);
+            }
+        }
+
+        protected bool InfinityCondition
+        {
+            get
+            {
+                lock (StateLockObj)
+                {
+                    if (mState != StateOfNPCProcess.Running)
+                    {
+                        return false;
+                    }
+                }
+
+                TryAsCancel();
+                return true;
             }
         }
 
