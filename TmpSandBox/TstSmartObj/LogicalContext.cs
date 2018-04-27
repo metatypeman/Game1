@@ -6,7 +6,7 @@ namespace TmpSandBox.TstSmartObj
 {
     public class LogicalContext: ILogicalContext
     {
-        public ILogicalObject Get(string query)
+        public AbstractLogicalObject Get(string query)
         {
 #if DEBUG
             NLog.LogManager.GetCurrentClassLogger().Info($"Get query = '{query}'");

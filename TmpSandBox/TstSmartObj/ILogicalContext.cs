@@ -6,6 +6,6 @@ namespace TmpSandBox.TstSmartObj
 {
     public interface ILogicalContext
     {
-        ILogicalObject Get(string query);
+        AbstractLogicalObject Get(string query);
     }
 }

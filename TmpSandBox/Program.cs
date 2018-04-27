@@ -43,7 +43,17 @@ namespace TmpSandBox
 
             var logicalObject = logicalContext.Get("name = mary");
 
+            var visibleObj = new TestedVisibleItem();
 
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalObject (logicalObject == visibleObj) = {logicalObject == visibleObj}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalObject (visibleObj == logicalObject) = {visibleObj == logicalObject}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalObject logicalObject['a'] = {logicalObject["a"]}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalObject logicalObject['a', 16] = {logicalObject["a", 16]}");
+
+            var c = new C();
+            var b = new B();
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalObject (b == c) = {b == c}");
         }
 
         private static Dictionary<int, CancellationToken> mCancelationTokenDict = new Dictionary<int, CancellationToken>();

@@ -4,7 +4,8 @@ using System.Text;
 
 namespace TmpSandBox.TstSmartObj
 {
-    public interface ILogicalObject
+    public interface ILogicalObject/*: IEqualityComparer<ILogicalObject>*/
     {
+        object this[string propertyName] { get; }
     }
 }
