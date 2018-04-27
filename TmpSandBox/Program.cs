@@ -50,6 +50,8 @@ namespace TmpSandBox
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalObject logicalObject['a'] = {logicalObject["a"]}");
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalObject logicalObject['a', 16] = {logicalObject["a", 16]}");
 
+            var getProperty = logicalObject.GetProperty("name");
+
             var c = new C();
             var b = new B();
 

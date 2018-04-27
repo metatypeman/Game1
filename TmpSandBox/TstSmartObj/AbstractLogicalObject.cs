@@ -22,6 +22,11 @@ namespace TmpSandBox.TstSmartObj
             }
         }
 
+        public LogicalPropertyInfo GetProperty(string propertyName)
+        {
+            return new LogicalPropertyInfo();
+        }
+
         public static bool operator == (AbstractLogicalObject item1, AbstractLogicalObject item2)
         {
             NLog.LogManager.GetCurrentClassLogger().Info("==");
