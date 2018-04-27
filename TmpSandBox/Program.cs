@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using TmpSandBox.NPCBehaviour;
+using TmpSandBox.TstSmartObj;
 
 namespace TmpSandBox
 {
@@ -24,13 +25,25 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
+            TSTLogicalObject();
             //TSTCancelTask_2();
             //TSTCancelTask();
-            TSTMyNPCContext();
+            //TSTMyNPCContext();
             //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTLogicalObject()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTLogicalObject");
+
+            var logicalContext = new LogicalContext();
+
+            var logicalObject = logicalContext.Get("name = mary");
+
+
         }
 
         private static Dictionary<int, CancellationToken> mCancelationTokenDict = new Dictionary<int, CancellationToken>();
