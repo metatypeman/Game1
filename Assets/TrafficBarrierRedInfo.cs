@@ -7,12 +7,12 @@ public class TrafficBarrierRedInfo : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        var gameInfo = MyGameObjectFactory.CreateByComponent(this);
+        //var gameInfo = MyGameObjectFactory.CreateByComponent(this);
 
 #if UNITY_EDITOR
-        Debug.Log($"TrafficBarrierRedInfo Start gameInfo = {gameInfo}");
+        Debug.Log("TrafficBarrierRedInfo Start");
 #endif
 
-        MyGameObjectsBus.RegisterObject(gameInfo);
+        //MyGameObjectsBus.RegisterObject(gameInfo);
     }
 }

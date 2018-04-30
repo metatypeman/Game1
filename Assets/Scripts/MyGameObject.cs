@@ -11,7 +11,7 @@ namespace Assets.Scripts
 {
     public static class MyGameObjectsBus
     {
-        private static object mLockObj = new object();
+        private static readonly object mLockObj = new object();
         private static Dictionary<int, MyGameObject> mObjectsDict = new Dictionary<int, MyGameObject>();
 
         public static void RegisterObject(MyGameObject value)
@@ -46,8 +46,9 @@ namespace Assets.Scripts
 
             var result = new MyGameObject();
             var tmpTransform = component.transform;
-            result.InstanceID = component.GetInstanceID();
-            result.GameObject = component.gameObject;
+            var gameObject = component.gameObject;
+            result.InstanceID = gameObject.GetInstanceID();
+            result.GameObject = gameObject;
             result.Name = tmpTransform.name;
             result.Tag = tmpTransform.tag;
             foreach(var targetComponentType in targetComponents)

@@ -9012,7 +9012,7 @@ GameObject:
   - component: {fileID: 1334801307}
   m_Layer: 0
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: LevelCommonHost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -9079,13 +9079,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1334801303}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 571a55259be4fb749bb69f9667c54e74, type: 3}
+  m_Script: {fileID: 11500000, guid: 61b8d10e6907d274db71ddfaf6958cc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  rotateSpeed: 3
-  XSensitivity: 2
-  YSensitivity: 2
 --- !u!1 &1342689378
 GameObject:
   m_ObjectHideFlags: 0
@@ -10257,6 +10253,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &1649283104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1649283095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba910d9cedd60c542887d37a74484650, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1654263421
 Prefab:
   m_ObjectHideFlags: 0

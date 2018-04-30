@@ -110,14 +110,6 @@ public class InvocableObj<TResult> : IInvocableObj
 [RequireComponent(typeof(EnemyRayScaner))]
 public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 {
-    public void Awake()
-    {
-        //Debug.Log("EnemyNPC Awake");
-
-        var logInstance = new LogProxyForDebug();
-        LogInstance.SetLogProxy(logInstance);
-    }
-
     private EnemyRayScaner mEnemyRayScaner;
 
     public float surfaceOffset = 1.5f;
@@ -138,6 +130,10 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
     // Use this for initialization
     void Start()
     {
+        var commonLevelHost = LevelCommonHostFactory.Get();
+
+        Debug.Log($"EnemyNPC (commonLevelHost == null) = {commonLevelHost == null}");
+
         mAnim = GetComponent<Animator>();
 
         mEnemyRayScaner = GetComponent<EnemyRayScaner>();
@@ -159,13 +155,10 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
             ethanPosition = _target.transform.position;
         }
 
-        var npcProcessInfoCache = new NPCProcessInfoCache();
-        var globalEntityDictionary = new EntityDictionary();
-
         var internalBodyHost = GetComponent<IInternalBodyHumanoidHost>();
 
         var hostContext = new TestedNPCHostContext(internalBodyHost);
-        mNPCProcessesContext = new TestedNPCContext(globalEntityDictionary, npcProcessInfoCache, hostContext);
+        mNPCProcessesContext = new TestedNPCContext(commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext);
         mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
         var blackBoard = mNPCProcessesContext.BlackBoard;
         blackBoard.PossibleIdOfRifle = possibleInstanceIdOfRifle;
@@ -197,6 +190,18 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
             Debug.Log($"EnemyNPC gameObj = {gameObj}");
         });
+
+        PrintInstancesIds();
+    }
+
+    private void PrintInstancesIds()
+    {
+        Debug.Log($"EnemyNPC GetInstanceID() = {GetInstanceID()}");
+        Debug.Log($"EnemyNPC gameObject.GetInstanceID() = {gameObject.GetInstanceID()}");
+        Debug.Log($"EnemyNPC mEnemyRayScaner.GetInstanceID() = {mEnemyRayScaner.GetInstanceID()}");
+        Debug.Log($"EnemyNPC mEnemyRayScaner.gameObject.GetInstanceID() = {mEnemyRayScaner.gameObject.GetInstanceID()}");
+        Debug.Log($"EnemyNPC mEnemyRayScaner.transform.GetInstanceID() = {mEnemyRayScaner.transform.GetInstanceID()}");
+        Debug.Log($"EnemyNPC mEnemyRayScaner.transform.gameObject.GetInstanceID() = {mEnemyRayScaner.transform.gameObject.GetInstanceID()}");
     }
 
     public void SetInvocableObj(IInvocableObj invokableObj)

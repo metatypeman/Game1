@@ -121,7 +121,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
             visibleItem.LocalDirection = localDirection;
             visibleItem.Point = hit.point;
             visibleItem.Distance = hit.distance;
-            visibleItem.InstanceID = hit.transform.GetInstanceID();
+            visibleItem.InstanceID = hit.transform.gameObject.GetInstanceID();
             visibleItems.Add(visibleItem);
         }
 #if UNITY_EDITOR
