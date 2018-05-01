@@ -34,7 +34,6 @@ namespace Assets.Scripts
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
     [NPCProcessName("inspecting")]
     public class TestedInspectingNPCProcess : TestedBaseNPCProcess
-    //OldTstInspectingProcess
     {
         protected override void Awake()
         {
@@ -248,7 +247,6 @@ namespace Assets.Scripts
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("go to enemy base")]
     public class TestedGoToEnemyBaseNPCProcess : TestedBaseNPCProcess
-    //OldTstGoToEnemyBaseProcess
     {
         public static NPCCommand CreateCommand()
         {
@@ -286,7 +284,6 @@ namespace Assets.Scripts
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("run away")]
     public class TestedRunAwayNPCProcess : TestedBaseNPCProcess
-    //OldTstRunAwayProcess
     {
         public static NPCCommand CreateCommand()
         {
@@ -313,7 +310,6 @@ namespace Assets.Scripts
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("run at our base")]
     public class TestedRunAtOurBaseNPCProcess : TestedBaseNPCProcess
-    //OldTstRunAtOurBaseProcess
     {
         public static NPCCommand CreateCommand()
         {
@@ -361,7 +357,6 @@ namespace Assets.Scripts
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("simple aim")]    
     public class TestedSimpleAimNPCProcess : TestedBaseNPCProcess
-    //OldTstSimpleAimProcess
     {
         public static NPCCommand CreateCommand()
         {
@@ -390,7 +385,6 @@ namespace Assets.Scripts
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("fire to ethan")]    
     public class TestedFireToEthanNPCProcess : TestedBaseNPCProcess
-    //OldTSTFireToEthanProcess
     {
         public static NPCCommand CreateCommand(Vector3 targetPosition)
         {
@@ -421,7 +415,6 @@ namespace Assets.Scripts
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("rotate")]    
     public class TestedRotateNPCProcess : TestedBaseNPCProcess
-    //OldTSTRotateProcess
     {
         public static NPCCommand CreateCommand(float angle)
         {
@@ -451,8 +444,7 @@ namespace Assets.Scripts
     
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("rotate head")]    
-    public class TestedRotateHeadNPCProcess : TestedBaseNPCProcess
-    //OldTSTRotateHeadProcess 
+    public class TestedRotateHeadNPCProcess : TestedBaseNPCProcess 
     {
         public static NPCCommand CreateCommand(float angle)
         {
@@ -483,7 +475,6 @@ namespace Assets.Scripts
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("head to forvard")]    
     public class TestedHeadToForvardNPCProcess : TestedBaseNPCProcess
-    //OldTSTHeadToForvardProcess
     {
         public static NPCCommand CreateCommand()
         {
@@ -511,7 +502,6 @@ namespace Assets.Scripts
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("move")]    
     public class TestedMoveNPCProcess : TestedBaseNPCProcess
-    //OldTSTMoveProcess
     {
         public static NPCCommand CreateCommand()
         {
@@ -540,7 +530,6 @@ namespace Assets.Scripts
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("take from surface")]    
     public class TestedTakeFromSurfaceNPCProcess : TestedBaseNPCProcess
-    //OldTSTTakeFromSurfaceProcess
     {
         public static NPCCommand CreateCommand(int instanceId)
         {
@@ -578,7 +567,6 @@ namespace Assets.Scripts
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("hide rifle to bagpack")]    
     public class TestedHideRifleToBagPackNPCProcess : TestedBaseNPCProcess
-    //OldTstHideRifleToBagPackProcess
     {
         public static NPCCommand CreateCommand(int instanceId)
         {
@@ -615,7 +603,6 @@ namespace Assets.Scripts
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("throw out to surface rifle to surface")]    
     public class TestedThrowOutToSurfaceRifleToSurfaceNPCProcess : TestedBaseNPCProcess
-    //OldTstThrowOutToSurfaceRifleToSurfaceProcess
     {
         public static NPCCommand CreateCommand(int instanceId)
         {
