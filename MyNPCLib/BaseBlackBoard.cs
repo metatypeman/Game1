@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.Logical;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -24,6 +25,19 @@ namespace MyNPCLib
                 mContext = value;
 
                 OnSetContext();
+            }
+        }
+
+        public BaseAbstractLogicalObject GetLogicalObject(string query)
+        {
+            return Context.GetLogicalObject(query);
+        }
+
+        public IList<VisionObject> VisibleObjects
+        {
+            get
+            {
+                return new List<VisionObject>() { new VisionObject() };//tmp
             }
         }
 

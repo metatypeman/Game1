@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.Logical;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -597,6 +598,14 @@ namespace MyNPCLib
         public TResult CallInMainUI<TResult>(Func<TResult> function)
         {
             return mBodyResourcesManager.CallInMainUI(function);
+        }
+
+        public BaseAbstractLogicalObject GetLogicalObject(string query)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext GetLogicalObject query = {query}");
+#endif
+            return new LogicalObject();//tmp
         }
 
         public void Dispose()

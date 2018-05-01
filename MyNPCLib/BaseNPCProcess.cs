@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.Logical;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -614,6 +615,11 @@ namespace MyNPCLib
             AddChildComponent(trigger);
             trigger.Start();
             return trigger;
+        }
+
+        public BaseAbstractLogicalObject GetLogicalObject(string query)
+        {
+            return Context.GetLogicalObject(query);
         }
 
         public override void Dispose()

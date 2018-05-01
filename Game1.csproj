@@ -12,16 +12,13 @@
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectGenerator>VSTU</UnityProjectGenerator>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2017.3.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
@@ -314,6 +311,9 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/Sergey/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
+    <Reference Include="MyNPCHostLib">
+      <HintPath>Assets/MyNPCHostLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Game1.Plugins.csproj">
@@ -328,14 +328,6 @@
     <Compile Include="Assets\Dead\Script\PlayGUI.cs" />
     <Compile Include="Assets\EthansHealthHelper.cs" />
     <Compile Include="Assets\GameInfoObject.cs" />
-    <Compile Include="Assets\Scripts\BasePassiveLogicalGameObject.cs" />
-    <Compile Include="Assets\Scripts\GameObjectHelper.cs" />
-    <Compile Include="Assets\Scripts\GameObjectsBus.cs" />
-    <Compile Include="Assets\Scripts\IInvocableInMainThreadObj.cs" />
-    <Compile Include="Assets\Scripts\IInvokingInMainThread.cs" />
-    <Compile Include="Assets\Scripts\ILevelCommonHost.cs" />
-    <Compile Include="Assets\Scripts\InvocableInMainThreadObj.cs" />
-    <Compile Include="Assets\Scripts\LevelCommonHost.cs" />
     <Compile Include="Assets\MyHeadBob.cs" />
     <Compile Include="Assets\MyThirdPersonCharacter.cs" />
     <Compile Include="Assets\MyThirdPersonUserControl.cs" />
@@ -349,17 +341,23 @@
     <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
+    <Compile Include="Assets\Scripts\BasePassiveLogicalGameObject.cs" />
     <Compile Include="Assets\Scripts\BehaviourFlagsOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\EnemyIK.cs" />
     <Compile Include="Assets\Scripts\EnemyNPC.cs" />
     <Compile Include="Assets\Scripts\EnemyRayScaner.cs" />
     <Compile Include="Assets\Scripts\FarWaypoint.cs" />
+    <Compile Include="Assets\Scripts\GameObjectHelper.cs" />
+    <Compile Include="Assets\Scripts\GameObjectsBus.cs" />
     <Compile Include="Assets\Scripts\HumanoidBodyHost.cs" />
     <Compile Include="Assets\Scripts\IHandThing.cs" />
     <Compile Include="Assets\Scripts\IInternalBodyHumanoidHost.cs" />
     <Compile Include="Assets\Scripts\IInternalHumanoid.cs" />
     <Compile Include="Assets\Scripts\IInternalHumanoidHostContext.cs" />
     <Compile Include="Assets\Scripts\IInternalLogicalObject.cs" />
+    <Compile Include="Assets\Scripts\IInvocableInMainThreadObj.cs" />
+    <Compile Include="Assets\Scripts\IInvokingInMainThread.cs" />
+    <Compile Include="Assets\Scripts\ILevelCommonHost.cs" />
     <Compile Include="Assets\Scripts\INPCRayScaner.cs" />
     <Compile Include="Assets\Scripts\InputKeyHelper.cs" />
     <Compile Include="Assets\Scripts\InternalHumanoidHostContext.cs" />
@@ -367,12 +365,14 @@
     <Compile Include="Assets\Scripts\InternalStatesOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\InternalTargetStateOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\InternalTargetStateOfHumanoidControllerConverter.cs" />
+    <Compile Include="Assets\Scripts\InvocableInMainThreadObj.cs" />
     <Compile Include="Assets\Scripts\IObject.cs" />
     <Compile Include="Assets\Scripts\IRapidFireGun.cs" />
     <Compile Include="Assets\Scripts\IThing.cs" />
     <Compile Include="Assets\Scripts\KeyToNPCCommandConverter.cs" />
     <Compile Include="Assets\Scripts\LeftHandLocator.cs" />
     <Compile Include="Assets\Scripts\LeftHandWPLocator.cs" />
+    <Compile Include="Assets\Scripts\LevelCommonHost.cs" />
     <Compile Include="Assets\Scripts\LevelCommonHostFactory.cs" />
     <Compile Include="Assets\Scripts\LogProxyForDebug.cs" />
     <Compile Include="Assets\Scripts\ProxyForStatesOfHumanoidBodyHost.cs" />

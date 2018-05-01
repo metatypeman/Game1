@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.Logical;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -34,5 +35,7 @@ namespace MyNPCLib
 
         void CallInMainUI(Action function);
         TResult CallInMainUI<TResult>(Func<TResult> function);
+
+        BaseAbstractLogicalObject GetLogicalObject(string query);
     }
 }

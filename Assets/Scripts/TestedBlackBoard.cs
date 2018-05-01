@@ -25,14 +25,14 @@ namespace Assets.Scripts
 
         private INPCRayScaner mNPCRayScaner { get; set; }
 
-        public List<VisionObject> VisibleObjects
+        public List<VisionObject> InternalVisibleObjects
         {
             get
             {
 #if UNITY_EDITOR
-                //Debug.Log("TestedBlackBoard VisibleObjects");
+                //Debug.Log("TestedBlackBoard InternalVisibleObjects");
 #endif
-                if(mNPCRayScaner == null)
+                if (mNPCRayScaner == null)
                 {
                     return new List<VisionObject>();
                 }

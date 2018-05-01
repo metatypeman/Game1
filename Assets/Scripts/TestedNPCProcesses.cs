@@ -41,8 +41,13 @@ namespace Assets.Scripts
             Debug.Log("TestedInspectingNPCProcess Awake");
 #endif
 
+            var targetObject = GetLogicalObject("name='TrafficBarrierRed'");
+
             var trigger = CreateTrigger(() => {
-                var visibleObjects = BlackBoard.VisibleObjects;
+                if(BlackBoard.VisibleObjects.Any(p => p == targetObject))
+                {
+                    return true;
+                }
 
 #if UNITY_EDITOR
                 //Debug.Log($"TestedInspectingNPCProcess Trigger visibleObjects.Count = {visibleObjects.Count}");
