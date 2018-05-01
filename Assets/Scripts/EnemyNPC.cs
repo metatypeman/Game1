@@ -9,103 +9,6 @@ using System;
 using System.Threading;
 using System.Linq;
 
-public interface IInvokingInMainThread
-{
-    void SetInvocableObj(IInvocableObj invokableObj);
-}
-
-public interface IInvocableObj
-{
-    void Invoke();
-}
-
-public class InvocableObj: IInvocableObj
-{
-    public InvocableObj(Action function, IInvokingInMainThread invokingInMainThread)
-    {
-        mFunction = function;
-        mInvokingInMainThread = invokingInMainThread;
-    }
-
-    private Action mFunction;
-    private IInvokingInMainThread mInvokingInMainThread;
-    private bool mHasResult;
-    private readonly object mLockObj = new object();
-
-    public void Run()
-    {
-        mInvokingInMainThread.SetInvocableObj(this);
-
-        while (true)
-        {
-            lock (mLockObj)
-            {
-                if (mHasResult)
-                {
-                    break;
-                }
-            }
-
-            Thread.Sleep(10);
-        }
-    }
-
-    public void Invoke()
-    {
-        mFunction.Invoke();
-
-        lock (mLockObj)
-        {
-            mHasResult = true;
-        }
-    }
-}
-
-public class InvocableObj<TResult> : IInvocableObj
-{
-    public InvocableObj(Func<TResult> function, IInvokingInMainThread invokingInMainThread)
-    {
-        mFunction = function;
-        mInvokingInMainThread = invokingInMainThread;
-    }
-
-    private Func<TResult> mFunction;
-    private IInvokingInMainThread mInvokingInMainThread;
-    private bool mHasResult;
-    private TResult mResult;
-    private readonly object mLockObj = new object();
-
-    public TResult Run()
-    {
-        mInvokingInMainThread.SetInvocableObj(this);
-
-        while (true)
-        {
-            lock (mLockObj)
-            {
-                if(mHasResult)
-                {
-                    break;
-                }
-            }
-
-            Thread.Sleep(10);
-        }
-
-        return mResult;
-    }
-
-    public void Invoke()
-    {
-        mResult = mFunction.Invoke();
-
-        lock(mLockObj)
-        {
-            mHasResult = true;
-        }
-    }
-}
-
 [RequireComponent(typeof(HumanoidBodyHost))]
 [RequireComponent(typeof(EnemyRayScaner))]
 public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
@@ -204,7 +107,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         Debug.Log($"EnemyNPC mEnemyRayScaner.transform.gameObject.GetInstanceID() = {mEnemyRayScaner.transform.gameObject.GetInstanceID()}");
     }
 
-    public void SetInvocableObj(IInvocableObj invokableObj)
+    public void SetInvocableObj(IInvocableInMainThreadObj invokableObj)
     {
         lock (mTmpQueueLockObj)
         {
@@ -214,7 +117,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
     private string ThreadSafeGameObj()
     {
-        var invocableWithoutResult = new InvocableObj(() =>
+        var invocableWithoutResult = new InvocableInMainThreadObj(() =>
         {
             var gunBody = GameObject.Find("M4A1 Sopmod");
             Debug.Log($"EnemyNPC fun = () gunBody.name = {gunBody.name}");
@@ -224,7 +127,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         invocableWithoutResult.Run();
 
-        var invocable = new InvocableObj<string>(() => {
+        var invocable = new InvocableInMainThreadObj<string>(() => {
             var gunBody = GameObject.Find("M4A1 Sopmod");
             Debug.Log($"EnemyNPC End fun = () gunBody.name = {gunBody.name}");
             return gunBody.name;
@@ -234,11 +137,11 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
     }
 
     private object mTmpQueueLockObj = new object();
-    private Queue<IInvocableObj> mTmpQueue = new Queue<IInvocableObj>();
+    private Queue<IInvocableInMainThreadObj> mTmpQueue = new Queue<IInvocableInMainThreadObj>();
 
     private void ProcessInvocable()
     {
-        List<IInvocableObj> invocableList = null;
+        List<IInvocableInMainThreadObj> invocableList = null;
 
         lock (mTmpQueueLockObj)
         {

@@ -46,22 +46,22 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     public void CallInMainUI(Action function)
     {
-        var invocable = new InvocableObj(function, this);
+        var invocable = new InvocableInMainThreadObj(function, this);
         invocable.Run();
     }
     
     public TResult CallInMainUI<TResult>(Func<TResult> function)
     {
-        var invocable = new InvocableObj<TResult>(function, this);
+        var invocable = new InvocableInMainThreadObj<TResult>(function, this);
         return invocable.Run();
     }
 
     private object mTmpQueueLockObj = new object();
-    private Queue<IInvocableObj> mTmpQueue = new Queue<IInvocableObj>();
+    private Queue<IInvocableInMainThreadObj> mTmpQueue = new Queue<IInvocableInMainThreadObj>();
 
     private void ProcessInvocable()
     {
-        List<IInvocableObj> invocableList = null;
+        List<IInvocableInMainThreadObj> invocableList = null;
 
         lock (mTmpQueueLockObj)
         {
@@ -83,7 +83,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         }
     }
 
-    public void SetInvocableObj(IInvocableObj invokableObj)
+    public void SetInvocableObj(IInvocableInMainThreadObj invokableObj)
     {
         lock (mTmpQueueLockObj)
         {
@@ -182,7 +182,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     public void Execute(InternalTargetStateOfHumanoidController targetState)
     {
-        var invocable = new InvocableObj(() => {
+        var invocable = new InvocableInMainThreadObj(() => {
             NExecute(targetState);
         }, this);
 

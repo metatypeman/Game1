@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
     public class VisionObject : IObjectToString
     {
         public int InstanceID { get; set; }
-        public MyGameObject GameObject { get; set; }
+        public GameObject GameObject { get; set; }
+        public IInternalLogicalObject LogicalObject { get; set; }
         public List<VisionItem> VisionItems { get; set; }
 
         public override string ToString()
@@ -35,7 +37,7 @@ namespace Assets.Scripts
             }
             else
             {
-                sb.Append($"{spaces}{nameof(GameObject)} = {GameObject.ToString(nextN)}");
+                sb.Append($"{spaces}{nameof(GameObject)} = {GameObjectHelper.GameObjectToString(GameObject, nextN)}");
             }
 
             if (VisionItems == null)

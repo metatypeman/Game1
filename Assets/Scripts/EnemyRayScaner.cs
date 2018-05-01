@@ -16,9 +16,15 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
     public Transform Head;
 
     private List<Vector3> mRayDirectionsList = new List<Vector3>();
+    private GameObjectsBus mGameObjectsBus;
+    private InternalLogicalObjectsBus mLogicalObjectsBus;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
+        var commonLevelHost = LevelCommonHostFactory.Get();
+        mGameObjectsBus = commonLevelHost.GameObjectsBus;
+        mLogicalObjectsBus = commonLevelHost.LogicalObjectsBus;
+
         var dz = 0f;
 
         for (var n = 0; n < VRaysCount; n++)
@@ -86,13 +92,24 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
         if(tmpVisibleItems.Count > 0)
         {
             var tmpGroupedVisibleItems = tmpVisibleItems.GroupBy(p => p.InstanceID).ToDictionary(p => p.Key, p => p.ToList());
+            var instancesIdList = tmpGroupedVisibleItems.Keys.ToList();
 
-            foreach(var tmpGroupedVisibleKVPItems in tmpGroupedVisibleItems)
+            var gameObjectsDict = mGameObjectsBus.GetObjects(instancesIdList);
+            var logicalObjectsDict = mLogicalObjectsBus.GetObjects(instancesIdList);
+
+            foreach (var tmpGroupedVisibleKVPItems in tmpGroupedVisibleItems)
             {
                 var item = new VisionObject();
                 var instanceID = tmpGroupedVisibleKVPItems.Key;
                 item.InstanceID = instanceID;
-                item.GameObject = MyGameObjectsBus.GetObject(instanceID);
+                if(gameObjectsDict.ContainsKey(instanceID))
+                {
+                    item.GameObject = gameObjectsDict[instanceID];
+                }
+                if(logicalObjectsDict.ContainsKey(instanceID))
+                {
+                    item.LogicalObject = logicalObjectsDict[instanceID];
+                }
                 item.VisionItems = tmpGroupedVisibleKVPItems.Value;
                 newVisibleObjects.Add(item);
             }
@@ -133,7 +150,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
     }
 
     private List<VisionObject> mVisibleObjects = new List<VisionObject>();
-    private object mVisibleItemsLockObj = new object();
+    private readonly object mVisibleItemsLockObj = new object();
 
     public List<VisionObject> VisibleObjects
     {

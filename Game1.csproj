@@ -329,8 +329,12 @@
     <Compile Include="Assets\EthansHealthHelper.cs" />
     <Compile Include="Assets\GameInfoObject.cs" />
     <Compile Include="Assets\Scripts\BasePassiveLogicalGameObject.cs" />
+    <Compile Include="Assets\Scripts\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\GameObjectsBus.cs" />
+    <Compile Include="Assets\Scripts\IInvocableInMainThreadObj.cs" />
+    <Compile Include="Assets\Scripts\IInvokingInMainThread.cs" />
     <Compile Include="Assets\Scripts\ILevelCommonHost.cs" />
+    <Compile Include="Assets\Scripts\InvocableInMainThreadObj.cs" />
     <Compile Include="Assets\Scripts\LevelCommonHost.cs" />
     <Compile Include="Assets\MyHeadBob.cs" />
     <Compile Include="Assets\MyThirdPersonCharacter.cs" />

@@ -53,10 +53,10 @@ namespace Assets.Scripts
                 //}
 #endif
 
-                if (visibleObjects.Any(p => p.GameObject != null && p.GameObject.Name == "TrafficBarrierRed"))
-                {
+                /*if (visibleObjects.Any(p => p.GameObject != null && p.GameObject.name == "TrafficBarrierRed"))
+                {//A name of GameObject can to be taken not in additional threads. Only in main thread.
                     return true;
-                }
+                }*/
 
                 return false;
             }, 1000);
