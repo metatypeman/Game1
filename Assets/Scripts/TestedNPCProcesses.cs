@@ -54,6 +54,7 @@ namespace Assets.Scripts
 
                 /*if (visibleObjects.Any(p => p.GameObject != null && p.GameObject.name == "TrafficBarrierRed"))
                 {//A name of GameObject can to be taken not in additional threads. Only in main thread.
+                //I have to repair this code and make it more convenient. 
                     return true;
                 }*/
 

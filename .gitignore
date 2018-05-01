@@ -50,3 +50,11 @@ TmpSandBox/obj/
 TmpSandBox/bin/
 XUnitTests/bin/
 XUnitTests/obj/
+MyNPCHostLib/obj/project.assets.json
+MyNPCHostLib/obj/MyNPCHostLib.csproj.nuget.g.props
+MyNPCHostLib/obj/MyNPCHostLib.csproj.nuget.g.targets
+MyNPCHostLib/obj/MyNPCHostLib.csproj.nuget.cache
+MyNPCHostLib/obj/Debug/netstandard2.0/MyNPCHostLib.csprojResolveAssemblyReference.cache
+MyNPCHostLib/obj/Debug/netstandard2.0/MyNPCHostLib.csproj.CoreCompileInputs.cache
+MyNPCHostLib/obj/Debug/netstandard2.0/MyNPCHostLib.AssemblyInfoInputs.cache
+MyNPCHostLib/obj/Debug/netstandard2.0/MyNPCHostLib.AssemblyInfo.cs
