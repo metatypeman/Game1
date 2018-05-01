@@ -9,6 +9,6 @@ namespace Assets.Scripts
     public interface IInternalLogicalObject
     {
         ulong EntityId { get; }
-        object this[ulong propertyKey] { get; set; }
+        object this[ulong propertyKey] { get; }
     }
 }

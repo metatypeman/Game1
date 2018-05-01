@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrafficBarrierRedInfo : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-        //var gameInfo = MyGameObjectFactory.CreateByComponent(this);
-
+public class TrafficBarrierRedInfo : BasePassiveLogicalGameObject
+{
+    protected override void OnInitFacts()
+    {
 #if UNITY_EDITOR
-        Debug.Log("TrafficBarrierRedInfo Start");
+        Debug.Log($"TrafficBarrierRedInfo OnInitFacts EntityId = {EntityId}");
 #endif
 
-        //MyGameObjectsBus.RegisterObject(gameInfo);
+        base.OnInitFacts();
+
+        this["color"] = "red";
     }
 }

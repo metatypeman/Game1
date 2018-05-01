@@ -1,18 +1,19 @@
-﻿using MyNPCLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
+using MyNPCLib;
 
 namespace Assets.Scripts
 {
-    public class InternalLogicalObjectsBus
+    public class GameObjectsBus
     {
         private readonly object mLockObj = new object();
-        private Dictionary<int, IInternalLogicalObject> mObjectsDict = new Dictionary<int, IInternalLogicalObject>();
+        private Dictionary<int, GameObject> mObjectsDict = new Dictionary<int, GameObject>();
 
-        public void RegisterObject(int instanceId, IInternalLogicalObject value)
+        public void RegisterObject(int instanceId, GameObject value)
         {
             lock (mLockObj)
             {
@@ -20,11 +21,11 @@ namespace Assets.Scripts
             }
         }
 
-        public IInternalLogicalObject GetObject(int instanceId)
+        public GameObject GetObject(int instanceId)
         {
             lock (mLockObj)
             {
-                if(mObjectsDict.ContainsKey(instanceId))
+                if (mObjectsDict.ContainsKey(instanceId))
                 {
                     return mObjectsDict[instanceId];
                 }
@@ -33,11 +34,11 @@ namespace Assets.Scripts
             }
         }
 
-        public Dictionary<int, IInternalLogicalObject> GetObjects(List<int> instancesIdsList)
+        public Dictionary<int, GameObject> GetObjects(List<int> instancesIdsList)
         {
-            if(instancesIdsList.IsEmpty())
+            if (instancesIdsList.IsEmpty())
             {
-                return new Dictionary<int, IInternalLogicalObject>();
+                return new Dictionary<int, GameObject>();
             }
 
             lock (mLockObj)

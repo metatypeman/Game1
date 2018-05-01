@@ -143,7 +143,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         if (targetGun != null)
         {
-            possibleInstanceIdOfRifle = targetGun.GetInstanceID();
+            possibleInstanceIdOfRifle = targetGun.gameObject.GetInstanceID();
         }
 
         var _target = GameObject.Find("Ethan");

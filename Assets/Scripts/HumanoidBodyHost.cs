@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInternalHumanoid
+public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInternalHumanoid/*, IInternalLogicalObject*/
 {
     private Rigidbody mRigidbody;
     private Animator mAnimator;
@@ -41,6 +41,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     #endregion
 
     private bool mUseIkAnimation;
+
+    private GameObjectsBus mGameObjectsBus;
 
     public void CallInMainUI(Action function)
     {
@@ -106,6 +108,9 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     // Use this for initialization
     void Start ()
     {
+        var commonLevelHost = LevelCommonHostFactory.Get();
+        mGameObjectsBus = commonLevelHost.GameObjectsBus;
+
         mStates = new InternalStatesOfHumanoidController();
         mBehaviourFlags = new BehaviourFlagsOfHumanoidController();
 
@@ -146,8 +151,6 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mCurrentHeadAngle = 0f;
 
         ApplyCurrentStates();
-
-        //StartCoroutine(Timer());
     }
 
     public GameObject RightHand { get; private set; }
@@ -216,8 +219,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         var kindOfThingsCommand = targetState.KindOfThingsCommand;
 
-        var myGameObjectOfThing = MyGameObjectsBus.GetObject(targetState.InstanceOfThingId);
-        var gameObjectOfThing = myGameObjectOfThing.GameObject;
+        var gameObjectOfThing = mGameObjectsBus.GetObject(targetState.InstanceOfThingId);
 
         var thing = gameObjectOfThing.GetComponent<IHandThing>();
 

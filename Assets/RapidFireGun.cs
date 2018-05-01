@@ -1,12 +1,13 @@
 ﻿using Assets.Scripts;
 using MyNPCLib;
+using MyNPCLib.Logical;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class RapidFireGun : MonoBehaviour, IRapidFireGun
+public class RapidFireGun : MonoBehaviour, IRapidFireGun, IInternalLogicalObject
 {
     #region Public Fields
     [SerializeField]
@@ -33,7 +34,22 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
     private bool mUseDebugLine;
     private Collider mBodyCollider;
     private Rigidbody mBodyRigidbody;
+    private PassiveLogicalObject mPassiveLogicalObject;
     #endregion
+
+    public ulong EntityId => mPassiveLogicalObject.EntityId;
+    public object this[ulong propertyKey]
+    {
+        get
+        {
+            return mPassiveLogicalObject[propertyKey];
+        }
+
+        protected set
+        {
+            mPassiveLogicalObject[propertyKey] = value;
+        }
+    }
 
     public bool IsReady => true;
 
@@ -64,8 +80,15 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun
 
     // Use this for initialization
     void Start() {
-        var gameInfo = MyGameObjectFactory.CreateByComponent(this, typeof(IRapidFireGun));
-        MyGameObjectsBus.RegisterObject(gameInfo);
+        var commonLevelHost = LevelCommonHostFactory.Get();
+
+        mPassiveLogicalObject = new PassiveLogicalObject(commonLevelHost.EntityDictionary);
+
+        var tmpGameObject = gameObject;
+        var instanceId = tmpGameObject.GetInstanceID();
+
+        commonLevelHost.LogicalObjectsBus.RegisterObject(instanceId, this);
+        commonLevelHost.GameObjectsBus.RegisterObject(instanceId, tmpGameObject);
 
         mGunParticles = GetComponent<ParticleSystem>();
 

@@ -328,7 +328,8 @@
     <Compile Include="Assets\Dead\Script\PlayGUI.cs" />
     <Compile Include="Assets\EthansHealthHelper.cs" />
     <Compile Include="Assets\GameInfoObject.cs" />
-    <Compile Include="Assets\OldTrafficBarrierRedInfo.cs" />
+    <Compile Include="Assets\Scripts\BasePassiveLogicalGameObject.cs" />
+    <Compile Include="Assets\Scripts\GameObjectsBus.cs" />
     <Compile Include="Assets\Scripts\ILevelCommonHost.cs" />
     <Compile Include="Assets\Scripts\LevelCommonHost.cs" />
     <Compile Include="Assets\MyHeadBob.cs" />
