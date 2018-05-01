@@ -3,16 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameInfoObject : MonoBehaviour {
+public class GameInfoObject : BasePassiveLogicalGameObject
+{
 
-	// Use this for initialization
-	void Start () {
-        var gameInfo = new MyGameObject();
-        var tmpTransform = transform;
-        gameInfo.InstanceID = tmpTransform.GetInstanceID();
-        gameInfo.Name = tmpTransform.name;
-        gameInfo.Tag = tmpTransform.tag;
-
-        MyGameObjectsBus.RegisterObject(gameInfo);
-    }
 }

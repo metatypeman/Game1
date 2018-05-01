@@ -375,7 +375,6 @@
     <Compile Include="Assets\Scripts\LeftHandWPLocator.cs" />
     <Compile Include="Assets\Scripts\LevelCommonHostFactory.cs" />
     <Compile Include="Assets\Scripts\LogProxyForDebug.cs" />
-    <Compile Include="Assets\Scripts\MyGameObject.cs" />
     <Compile Include="Assets\Scripts\ProxyForStatesOfHumanoidBodyHost.cs" />
     <Compile Include="Assets\Scripts\RightHandLocator.cs" />
     <Compile Include="Assets\Scripts\RightHandWPLocator.cs" />
