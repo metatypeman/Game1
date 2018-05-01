@@ -36,12 +36,14 @@ namespace Assets.Scripts
 
             var commonLevelHost = LevelCommonHostFactory.Get();
 
-            mPassiveLogicalObject = new PassiveLogicalObject(commonLevelHost.EntityDictionary);
-
-            OnInitFacts();
+            mPassiveLogicalObject = new PassiveLogicalObject(commonLevelHost.EntityDictionary, commonLevelHost.LogicalObjectsBus);
 
             var tmpGameObject = gameObject;
             var instanceId = tmpGameObject.GetInstanceID();
+
+            mPassiveLogicalObject["name"] = tmpGameObject.name;
+
+            OnInitFacts();
 
             commonLevelHost.LogicalObjectsBus.RegisterObject(instanceId, this);
             commonLevelHost.GameObjectsBus.RegisterObject(instanceId, tmpGameObject);

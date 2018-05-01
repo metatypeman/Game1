@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public class InternalLogicalObjectsBus
+    public class InternalLogicalObjectsBus: ILogicalIndexingBus
     {
         private readonly object mLockObj = new object();
         private Dictionary<int, IInternalLogicalObject> mObjectsDict = new Dictionary<int, IInternalLogicalObject>();
@@ -44,6 +45,13 @@ namespace Assets.Scripts
             {
                 return mObjectsDict.Where(p => instancesIdsList.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value);
             }
+        }
+
+        public void PutPropertyValue(ulong entityId, ulong propertyId, object value)
+        {
+#if DEBUG
+            LogInstance.Log($"InternalLogicalObjectsBus PutPropertyValue entityId = {entityId} propertyId = {propertyId} value = {value}");
+#endif
         }
     }
 }

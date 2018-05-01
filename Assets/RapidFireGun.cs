@@ -82,10 +82,12 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IInternalLogicalObject
     void Start() {
         var commonLevelHost = LevelCommonHostFactory.Get();
 
-        mPassiveLogicalObject = new PassiveLogicalObject(commonLevelHost.EntityDictionary);
+        mPassiveLogicalObject = new PassiveLogicalObject(commonLevelHost.EntityDictionary, commonLevelHost.LogicalObjectsBus);
 
         var tmpGameObject = gameObject;
         var instanceId = tmpGameObject.GetInstanceID();
+
+        mPassiveLogicalObject["name"] = tmpGameObject.name;
 
         commonLevelHost.LogicalObjectsBus.RegisterObject(instanceId, this);
         commonLevelHost.GameObjectsBus.RegisterObject(instanceId, tmpGameObject);

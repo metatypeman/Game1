@@ -6,19 +6,22 @@ namespace MyNPCLib.Logical
 {
     public class PassiveLogicalObject
     {
-        public PassiveLogicalObject(IEntityDictionary entityDictionary)
+        public PassiveLogicalObject(IEntityDictionary entityDictionary, ILogicalIndexingBus logicalIndexingBus)
         {
             mEntityDictionary = entityDictionary;
+            mLogicalIndexingBus = logicalIndexingBus;
 
             var name = Guid.NewGuid().ToString("D");
-            var entityId = mEntityDictionary.GetKey(name);
-            mLogicalFrame = new LogicalFrame(entityId);
+            mEntityId = mEntityDictionary.GetKey(name);
+            mLogicalFrame = new LogicalFrame(mEntityId);
         }
 
         private IEntityDictionary mEntityDictionary;
+        private ILogicalIndexingBus mLogicalIndexingBus;
         private LogicalFrame mLogicalFrame;
+        private ulong mEntityId;
 
-        public ulong EntityId => mLogicalFrame.EntityId;
+        public ulong EntityId => mEntityId;
         public object this[ulong propertyKey]
         {
             get
@@ -28,7 +31,7 @@ namespace MyNPCLib.Logical
 
             set
             {
-                mLogicalFrame[propertyKey] = value;
+                SetProperty(propertyKey, value);
             }
         }
 
@@ -43,8 +46,14 @@ namespace MyNPCLib.Logical
             set
             {
                 var propertyKey = mEntityDictionary.GetKey(propertyName);
-                mLogicalFrame[propertyKey] = value;
+                SetProperty(propertyKey, value);
             }
+        }
+
+        private void SetProperty(ulong propertyKey, object value)
+        {
+            mLogicalFrame[propertyKey] = value;
+            mLogicalIndexingBus.PutPropertyValue(mEntityId, propertyKey, value);
         }
     }
 }
