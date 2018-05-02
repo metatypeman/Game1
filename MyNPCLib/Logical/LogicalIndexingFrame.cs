@@ -4,43 +4,18 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
-    public class LogicalFrame: IObjectToString
+    public class LogicalIndexingFrame : IObjectToString
     {
-        public LogicalFrame(ulong entityId)
+        public LogicalIndexingFrame(ulong propertyId)
         {
-            mEntityId = entityId;
+            mPropertyId = propertyId;
         }
 
-        private ulong mEntityId;
-
-        public ulong EntityId => mEntityId;
+        private ulong mPropertyId;
+        public ulong PropertyId => mPropertyId;
 
         private readonly object mValuesDictLockObj = new object();
-        private Dictionary<ulong, object> mValuesDict = new Dictionary<ulong, object>();
-
-        public object this [ulong propertyKey]
-        {
-            get
-            {
-                lock(mValuesDictLockObj)
-                {
-                    if(mValuesDict.ContainsKey(propertyKey))
-                    {
-                        return mValuesDict[propertyKey];
-                    }
-
-                    return null;
-                }
-            }
-
-            set
-            {
-                lock (mValuesDictLockObj)
-                {
-                    mValuesDict[propertyKey] = propertyKey;
-                }
-            }
-        }
+        private Dictionary<object, ulong> mValuesDict = new Dictionary<object, ulong>();
 
         public override string ToString()
         {
@@ -56,13 +31,13 @@ namespace MyNPCLib.Logical
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(EntityId)} = {EntityId}");
-            Dictionary<ulong, object> valuesDict = null;
-            lock(mValuesDictLockObj)
+            sb.AppendLine($"{spaces}{nameof(PropertyId)} = {PropertyId}");
+            Dictionary<object, ulong> valuesDict = null;
+            lock (mValuesDictLockObj)
             {
                 valuesDict = mValuesDict;
             }
-            if(valuesDict == null)
+            if (valuesDict == null)
             {
                 sb.AppendLine($"{spaces}{nameof(valuesDict)} = null");
             }

@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,8 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTLogicalObject();
+            TSTLogicalAST();
+            //TSTLogicalObject();
             //TSTCancelTask_2();
             //TSTCancelTask();
             //TSTMyNPCContext();
@@ -35,13 +37,32 @@ namespace TmpSandBox
             //CreateInfoOfConcreteProcess();
         }
 
+        private static void TSTLogicalAST()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTLogicalAST");
+
+            var globalEntityDictionary = new EntityDictionary();
+
+            var indexingStorage = new LogicalIndexStorage();
+
+            var namePropertyId = globalEntityDictionary.GetKey("name");
+
+            indexingStorage.PutPropertyValue(12, namePropertyId, "helen");
+
+            var conditionNode = new ConditionOfQueryASTNode();
+            conditionNode.PropertyId = namePropertyId;
+            conditionNode.Value = "helen";
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST conditionNode = {conditionNode}");
+        }
+
         private static void TSTLogicalObject()
         {
             NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTLogicalObject");
 
             var logicalContext = new LogicalContext();
 
-            var logicalObject = logicalContext.Get("name = mary");
+            var logicalObject = logicalContext.Get("name = helen");
 
             var visibleObj = new TestedVisibleItem();
 
