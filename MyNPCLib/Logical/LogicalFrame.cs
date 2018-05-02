@@ -37,7 +37,7 @@ namespace MyNPCLib.Logical
             {
                 lock (mValuesDictLockObj)
                 {
-                    mValuesDict[propertyKey] = propertyKey;
+                    mValuesDict[propertyKey] = value;
                 }
             }
         }

@@ -6,7 +6,7 @@ namespace MyNPCLib.Logical
 {
     public class PassiveLogicalObject
     {
-        public PassiveLogicalObject(IEntityDictionary entityDictionary, ILogicalIndexingBus logicalIndexingBus)
+        public PassiveLogicalObject(IEntityDictionary entityDictionary, ILogicalStorage logicalIndexingBus)
         {
             mEntityDictionary = entityDictionary;
             mLogicalIndexingBus = logicalIndexingBus;
@@ -17,7 +17,7 @@ namespace MyNPCLib.Logical
         }
 
         private IEntityDictionary mEntityDictionary;
-        private ILogicalIndexingBus mLogicalIndexingBus;
+        private ILogicalStorage mLogicalIndexingBus;
         private LogicalFrame mLogicalFrame;
         private ulong mEntityId;
 

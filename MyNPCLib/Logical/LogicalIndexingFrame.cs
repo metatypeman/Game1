@@ -17,6 +17,30 @@ namespace MyNPCLib.Logical
         private readonly object mValuesDictLockObj = new object();
         private Dictionary<object, ulong> mValuesDict = new Dictionary<object, ulong>();
 
+        public ulong this[object val]
+        {
+            get
+            {
+                lock (mValuesDictLockObj)
+                {
+                    if (mValuesDict.ContainsKey(val))
+                    {
+                        return mValuesDict[val];
+                    }
+
+                    return 0ul;
+                }
+            }
+
+            set
+            {
+                lock (mValuesDictLockObj)
+                {
+                    mValuesDict[val] = value;
+                }
+            }
+        }
+
         public override string ToString()
         {
             return ToString(0u);
