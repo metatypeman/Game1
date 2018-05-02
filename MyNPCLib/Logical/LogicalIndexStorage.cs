@@ -1,13 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.Logical
 {
     public class LogicalIndexStorage: ILogicalStorage
     {
+        public LogicalIndexStorage()
+        {
+            mQueryASTNodeResolver = new QueryASTNodeResolver(this);
+        }
+
         private readonly object mLockObj = new object();
         private Dictionary<ulong, LogicalIndexingFrame> mDataDict = new Dictionary<ulong, LogicalIndexingFrame>();
+        private Dictionary<ulong, IReadOnlyLogicalObject> mObjectsDict = new Dictionary<ulong, IReadOnlyLogicalObject>();
+        private QueryASTNodeResolver mQueryASTNodeResolver;
+
+        public void RegisterObject(ulong entityId, IReadOnlyLogicalObject value)
+        {
+            lock (mLockObj)
+            {
+                mObjectsDict[entityId] = value;
+            }
+        }
+
+        public IReadOnlyLogicalObject GetObjectByEntityId(ulong entityId)
+        {
+            lock (mLockObj)
+            {
+                if(mObjectsDict.ContainsKey(entityId))
+                {
+                    return mObjectsDict[entityId];
+                }
+
+                return null;
+            }
+        }
+
+        public IDictionary<ulong, IReadOnlyLogicalObject> GetObjectsByEntitiesIdList(IList<ulong> entitiesIdsList)
+        {
+            if (entitiesIdsList.IsEmpty())
+            {
+                return new Dictionary<ulong, IReadOnlyLogicalObject>();
+            }
+
+            lock (mLockObj)
+            {
+                return mObjectsDict.Where(p => entitiesIdsList.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value);
+            }
+        }
 
         public void PutPropertyValue(ulong entityId, ulong propertyId, object value)
         {
@@ -33,13 +75,13 @@ namespace MyNPCLib.Logical
             }
         }
 
-        public List<ulong> GetEntitiesIdListByAST(BaseQueryASTNode queryNode)
+        public IList<ulong> GetEntitiesIdListByAST(BaseQueryASTNode queryNode)
         {
 #if DEBUG
             LogInstance.Log($"LogicalIndexStorage GetEntitiesIdListByAST queryNode = {queryNode}");
 #endif
 
-            return new List<ulong>();//tmp
+            return mQueryASTNodeResolver.GetEntitiesIdListByAST(queryNode);
         }
     }
 }

@@ -95,7 +95,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
             var instancesIdList = tmpGroupedVisibleItems.Keys.ToList();
 
             var gameObjectsDict = mGameObjectsBus.GetObjects(instancesIdList);
-            var logicalObjectsDict = mLogicalObjectsBus.GetObjects(instancesIdList);
+            var logicalObjectsDict = mLogicalObjectsBus.GetObjectsByInstancesId(instancesIdList);
 
             foreach (var tmpGroupedVisibleKVPItems in tmpGroupedVisibleItems)
             {

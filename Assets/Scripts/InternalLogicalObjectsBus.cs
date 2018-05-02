@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public class InternalLogicalObjectsBus: ILogicalIndexingBus
+    public class InternalLogicalObjectsBus: ILogicalStorage
     {
         private readonly object mLockObj = new object();
-        private Dictionary<int, IInternalLogicalObject> mObjectsDict = new Dictionary<int, IInternalLogicalObject>();
+        private Dictionary<int, IReadOnlyLogicalObject> mObjectsDict = new Dictionary<int, IReadOnlyLogicalObject>();
 
-        public void RegisterObject(int instanceId, IInternalLogicalObject value)
+        public void RegisterObject(int instanceId, IReadOnlyLogicalObject value)
         {
             lock (mLockObj)
             {
@@ -21,7 +21,7 @@ namespace Assets.Scripts
             }
         }
 
-        public IInternalLogicalObject GetObject(int instanceId)
+        public IReadOnlyLogicalObject GetObjectByInstanceId(int instanceId)
         {
             lock (mLockObj)
             {
@@ -34,11 +34,11 @@ namespace Assets.Scripts
             }
         }
 
-        public Dictionary<int, IInternalLogicalObject> GetObjects(List<int> instancesIdsList)
+        public Dictionary<int, IReadOnlyLogicalObject> GetObjectsByInstancesId(List<int> instancesIdsList)
         {
             if(instancesIdsList.IsEmpty())
             {
-                return new Dictionary<int, IInternalLogicalObject>();
+                return new Dictionary<int, IReadOnlyLogicalObject>();
             }
 
             lock (mLockObj)

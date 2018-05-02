@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Assets.Scripts
     {
         public int InstanceID { get; set; }
         public GameObject GameObject { get; set; }
-        public IInternalLogicalObject LogicalObject { get; set; }
+        public IReadOnlyLogicalObject LogicalObject { get; set; }
         public List<VisionItem> VisionItems { get; set; }
 
         public override string ToString()

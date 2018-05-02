@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
-    public class PassiveLogicalObject
+    public class PassiveLogicalObject: IReadOnlyLogicalObject
     {
         public PassiveLogicalObject(IEntityDictionary entityDictionary, ILogicalStorage logicalIndexingBus)
         {

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class RapidFireGun : MonoBehaviour, IRapidFireGun, IInternalLogicalObject
+public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
 {
     #region Public Fields
     [SerializeField]

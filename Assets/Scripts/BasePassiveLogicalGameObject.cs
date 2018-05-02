@@ -8,7 +8,7 @@ using MyNPCLib.Logical;
 
 namespace Assets.Scripts
 {
-    public class BasePassiveLogicalGameObject: MonoBehaviour, IInternalLogicalObject
+    public class BasePassiveLogicalGameObject: MonoBehaviour, IReadOnlyLogicalObject
     {
         private PassiveLogicalObject mPassiveLogicalObject;
         public ulong EntityId => mPassiveLogicalObject.EntityId;

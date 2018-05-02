@@ -47,13 +47,21 @@ namespace TmpSandBox
 
             var namePropertyId = globalEntityDictionary.GetKey("name");
 
-            indexingStorage.PutPropertyValue(12, namePropertyId, "helen");
+            var passiveLogicalObject = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
+
+            indexingStorage.RegisterObject(passiveLogicalObject.EntityId, passiveLogicalObject);
+
+            passiveLogicalObject[namePropertyId] = "helen";
+
+            //indexingStorage.PutPropertyValue(12, namePropertyId, "helen");
 
             var conditionNode = new ConditionOfQueryASTNode();
             conditionNode.PropertyId = namePropertyId;
             conditionNode.Value = "helen";
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST conditionNode = {conditionNode}");
+
+            var entities
         }
 
         private static void TSTLogicalObject()

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
-    public class LogicalFrame: IObjectToString
+    public class LogicalFrame: IReadOnlyLogicalObject, IObjectToString
     {
         public LogicalFrame(ulong entityId)
         {
