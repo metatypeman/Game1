@@ -87,6 +87,14 @@ namespace MyNPCLib.Logical
             }            
         }
 
+        public IList<ulong> GetAllEntitiesIdsList()
+        {
+            lock (mLockObj)
+            {
+                return mObjectsDict.Keys.ToList();
+            }
+        }
+
         public IList<ulong> GetEntitiesIdListByAST(BaseQueryASTNode queryNode)
         {
 #if DEBUG

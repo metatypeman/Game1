@@ -55,11 +55,34 @@ namespace TmpSandBox
             passiveLogicalObject[namePropertyId] = "helen";
             passiveLogicalObject[classPropertyId] = "girl";
 
+            var passiveLogicalObject_2 = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
+
+            indexingStorage.RegisterObject(passiveLogicalObject_2.EntityId, passiveLogicalObject_2);
+
+            passiveLogicalObject_2[namePropertyId] = "ann";
+            passiveLogicalObject_2[classPropertyId] = "girl";
+
+            var passiveLogicalObject_3 = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
+
+            indexingStorage.RegisterObject(passiveLogicalObject_3.EntityId, passiveLogicalObject_3);
+
+            passiveLogicalObject_3[namePropertyId] = "Beatles";
+            passiveLogicalObject_3[classPropertyId] = "band";
+
             //indexingStorage.PutPropertyValue(12, namePropertyId, "helen");
 
             var conditionNode = new ConditionOfQueryASTNode();
             conditionNode.PropertyId = namePropertyId;
             conditionNode.Value = "helen";
+
+            var conditionNode_2 = new ConditionOfQueryASTNode();
+            conditionNode_2.PropertyId = namePropertyId;
+            conditionNode_2.Value = "ann";
+
+            var orNode = new BinaryOperatorOfQueryASTNode();
+            orNode.OperatorId = KindOfBinaryOperators.Or;
+            orNode.Left = conditionNode;
+            orNode.Right = conditionNode_2;
 
             var conditionNode_1 = new ConditionOfQueryASTNode();
             conditionNode_1.PropertyId = classPropertyId;
@@ -67,12 +90,16 @@ namespace TmpSandBox
 
             var andNode = new BinaryOperatorOfQueryASTNode();
             andNode.OperatorId = KindOfBinaryOperators.And;
-            andNode.Left = conditionNode;
+            andNode.Left = orNode;
             andNode.Right = conditionNode_1;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST andNode = {andNode}");
+            var notNode = new UnaryOperatorOfQueryASTNode();
+            notNode.OperatorId = KindOfUnaryOperators.Not;
+            notNode.Left = andNode;
 
-            var entitiesIdList = indexingStorage.GetEntitiesIdListByAST(andNode);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST notNode = {notNode}");
+
+            var entitiesIdList = indexingStorage.GetEntitiesIdListByAST(notNode);
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entitiesIdList.Count = {entitiesIdList.Count}");
             foreach(var entityId in entitiesIdList)
