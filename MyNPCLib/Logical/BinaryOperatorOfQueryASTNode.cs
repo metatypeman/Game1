@@ -6,6 +6,7 @@ namespace MyNPCLib.Logical
 {
     public class BinaryOperatorOfQueryASTNode: BaseQueryASTNode
     {
+        public override QueryASTNodeKind Kind => QueryASTNodeKind.BinaryOperator;
         public override bool IsBinaryOperator => true;
         public override BinaryOperatorOfQueryASTNode AsBinaryOperator => this;
 
@@ -18,6 +19,7 @@ namespace MyNPCLib.Logical
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(OperatorId)} = {OperatorId}");
             if (Right == null)
             {

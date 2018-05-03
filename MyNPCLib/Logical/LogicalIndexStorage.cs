@@ -7,16 +7,10 @@ namespace MyNPCLib.Logical
 {
     public class LogicalIndexStorage: ILogicalStorage
     {
-        public LogicalIndexStorage()
-        {
-            mQueryASTNodeResolver = new QueryASTNodeResolver(this);
-        }
-
         private readonly object mLockObj = new object();
         private Dictionary<ulong, LogicalIndexingFrame> mDataDict = new Dictionary<ulong, LogicalIndexingFrame>();
         private Dictionary<ulong, IReadOnlyLogicalObject> mObjectsDict = new Dictionary<ulong, IReadOnlyLogicalObject>();
-        private QueryASTNodeResolver mQueryASTNodeResolver;
-
+        
         public void RegisterObject(ulong entityId, IReadOnlyLogicalObject value)
         {
             lock (mLockObj)
@@ -81,7 +75,9 @@ namespace MyNPCLib.Logical
             LogInstance.Log($"LogicalIndexStorage GetEntitiesIdListByAST queryNode = {queryNode}");
 #endif
 
-            return mQueryASTNodeResolver.GetEntitiesIdListByAST(queryNode);
+            var plan = QueryResolverASTNodeFactory.CreatePlan(queryNode);
+
+            return plan.GetEntitiesIdList(this);
         }
     }
 }

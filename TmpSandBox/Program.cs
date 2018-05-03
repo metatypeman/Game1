@@ -61,7 +61,13 @@ namespace TmpSandBox
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST conditionNode = {conditionNode}");
 
-            var entities
+            var entitiesIdList = indexingStorage.GetEntitiesIdListByAST(conditionNode);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entitiesIdList.Count = {entitiesIdList.Count}");
+            foreach(var entityId in entitiesIdList)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entityId = {entityId}");
+            }
         }
 
         private static void TSTLogicalObject()

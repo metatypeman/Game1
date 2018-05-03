@@ -6,6 +6,7 @@ namespace MyNPCLib.Logical
 {
     public abstract class BaseQueryASTNode: IObjectToString
     {
+        public abstract QueryASTNodeKind Kind { get; }
         public virtual bool IsCondition => false;
         public virtual ConditionOfQueryASTNode AsCondition => null;
         public virtual bool IsBinaryOperator => false;

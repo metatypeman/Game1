@@ -6,6 +6,7 @@ namespace MyNPCLib.Logical
 {
     public class ConditionOfQueryASTNode : BaseQueryASTNode
     {
+        public override QueryASTNodeKind Kind => QueryASTNodeKind.Condition;
         public override bool IsCondition => true;
         public override ConditionOfQueryASTNode AsCondition => this;
 
@@ -16,6 +17,7 @@ namespace MyNPCLib.Logical
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(PropertyId)} = {PropertyId}");
             sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
             return sb.ToString();
