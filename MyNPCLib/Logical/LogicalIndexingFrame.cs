@@ -15,28 +15,57 @@ namespace MyNPCLib.Logical
         public ulong PropertyId => mPropertyId;
 
         private readonly object mValuesDictLockObj = new object();
-        private Dictionary<object, ulong> mValuesDict = new Dictionary<object, ulong>();
+        private Dictionary<object, List<ulong>> mValuesDict = new Dictionary<object, List<ulong>>();
+        private Dictionary<ulong, object> mEntitiesDict = new Dictionary<ulong, object>();
 
-        public ulong this[object val]
+        public IList<ulong> Get(object key)
         {
-            get
+            lock (mValuesDictLockObj)
             {
-                lock (mValuesDictLockObj)
+                if (mValuesDict.ContainsKey(key))
                 {
-                    if (mValuesDict.ContainsKey(val))
-                    {
-                        return mValuesDict[val];
-                    }
-
-                    return 0ul;
+                    return mValuesDict[key];
                 }
-            }
 
-            set
+                return new List<ulong>();
+            }
+        }
+
+        public void Set(object key, ulong entityId)
+        {
+            lock (mValuesDictLockObj)
             {
-                lock (mValuesDictLockObj)
+                object oldValue = null;
+
+                if(mEntitiesDict.ContainsKey(entityId))
                 {
-                    mValuesDict[val] = value;
+                    oldValue = mEntitiesDict[entityId];
+                }
+
+                mEntitiesDict[entityId] = key;
+
+                if(oldValue != null)
+                {
+                    if (mValuesDict.ContainsKey(oldValue))
+                    {
+                        mValuesDict[oldValue].Remove(entityId);
+                    }
+                }
+
+                if(mValuesDict.ContainsKey(key))
+                {
+                    var entitiesIdsList = mValuesDict[key];
+
+                    if(!entitiesIdsList.Contains(entityId))
+                    {
+                        entitiesIdsList.Add(entityId);
+                    }
+                }
+                else
+                {
+                    var entitiesIdsList = new List<ulong>();
+                    mValuesDict[key] = entitiesIdsList;
+                    entitiesIdsList.Add(entityId);
                 }
             }
         }
@@ -56,7 +85,8 @@ namespace MyNPCLib.Logical
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(PropertyId)} = {PropertyId}");
-            Dictionary<object, ulong> valuesDict = null;
+            throw new NotImplementedException();
+            /*Dictionary<object, ulong> valuesDict = null;
             lock (mValuesDictLockObj)
             {
                 valuesDict = mValuesDict;
@@ -75,7 +105,7 @@ namespace MyNPCLib.Logical
                     sb.AppendLine($"{nextSpaces}valueItemKey = {valueItem.Key}; valueItemValue = {valueItem.Value}");
                 }
                 sb.AppendLine($"{spaces}End{nameof(valuesDict)}");
-            }
+            }*/
 
             return sb.ToString();
         }

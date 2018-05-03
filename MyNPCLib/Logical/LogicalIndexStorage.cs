@@ -65,8 +65,26 @@ namespace MyNPCLib.Logical
                     mDataDict[propertyId] = indexingFrame;
                 }
 
-                indexingFrame[value] = entityId;
+                indexingFrame.Set(value, entityId);
             }
+        }
+
+        public IList<ulong> GetEntitiesIdsList(ulong propertyId, object value)
+        {
+#if DEBUG
+            LogInstance.Log($"LogicalIndexStorage GetEntitiesIdsList propertyId = {propertyId} value = {value}");
+#endif
+
+            lock (mLockObj)
+            {
+                if(mDataDict.ContainsKey(propertyId))
+                {
+                    var targetIndexingFrame = mDataDict[propertyId];
+                    return targetIndexingFrame.Get(value);
+                }
+
+                return new List<ulong>();
+            }            
         }
 
         public IList<ulong> GetEntitiesIdListByAST(BaseQueryASTNode queryNode)

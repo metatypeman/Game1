@@ -13,11 +13,15 @@ namespace MyNPCLib.Logical
 
         private ConditionOfQueryASTNode mQueryNode;
 
-        public override void FillExecutingCard(QueryExecutingCard queryExecutingCard)
+        public override void FillExecutingCard(QueryExecutingCard queryExecutingCard, ILogicalStorage source)
         {
 #if DEBUG
             LogInstance.Log($"ResolverOfConditionOfQueryASTNode GetEntitiesIdList mQueryNode = {mQueryNode}");
 #endif
+
+            var entitiesIdsList = source.GetEntitiesIdsList(mQueryNode.PropertyId, mQueryNode.Value);
+
+            queryExecutingCard.EntitiesIdList = entitiesIdsList;
         }
     }
 }

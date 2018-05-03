@@ -10,7 +10,7 @@ namespace MyNPCLib.Logical
         public override bool IsUnaryOperator => true;
         public override UnaryOperatorOfQueryASTNode AsUnaryOperator => this;
 
-        public ulong OperatorId { get; set; }
+        public KindOfUnaryOperators OperatorId { get; set; } = KindOfUnaryOperators.Not;
 
         public BaseQueryASTNode Left { get; set; }
 

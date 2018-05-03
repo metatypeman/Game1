@@ -10,7 +10,7 @@ namespace MyNPCLib.Logical
         public override bool IsBinaryOperator => true;
         public override BinaryOperatorOfQueryASTNode AsBinaryOperator => this;
 
-        public ulong OperatorId { get; set; }
+        public KindOfBinaryOperators OperatorId { get; set; } = KindOfBinaryOperators.And;
         public BaseQueryASTNode Right { get; set; }
         public BaseQueryASTNode Left { get; set; }
 

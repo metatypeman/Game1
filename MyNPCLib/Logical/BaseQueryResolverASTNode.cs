@@ -14,9 +14,13 @@ namespace MyNPCLib.Logical
 
             var queryExecutingCard = new QueryExecutingCard();
 
-            FillExecutingCard(queryExecutingCard);
+            FillExecutingCard(queryExecutingCard, source);
 
-            if(queryExecutingCard.EntitiesIdList == null)
+#if DEBUG
+            LogInstance.Log($"BaseQueryResolverASTNode GetEntitiesIdList queryExecutingCard = {queryExecutingCard}");
+#endif
+
+            if (queryExecutingCard.EntitiesIdList == null)
             {
                 return new List<ulong>();
             }
@@ -24,6 +28,6 @@ namespace MyNPCLib.Logical
             return queryExecutingCard.EntitiesIdList;
         }
 
-        public abstract void FillExecutingCard(QueryExecutingCard queryExecutingCard);
+        public abstract void FillExecutingCard(QueryExecutingCard queryExecutingCard, ILogicalStorage source);
     }
 }

@@ -36,8 +36,6 @@ namespace MyNPCLib.Logical
 
                 default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
             }
-
-            throw new NotImplementedException();
         }
 
         private static BaseQueryResolverASTNode CreateResolverOfConditionOfQueryASTNode(ConditionOfQueryASTNode queryNode)
@@ -57,7 +55,25 @@ namespace MyNPCLib.Logical
             LogInstance.Log($"QueryResolverASTNodeFactory CreateResolverOfBinaryOperatorOfQueryASTNode queryNode = {queryNode}");
 #endif
 
-            var result = new ResolverOfBinaryOperatorOfQueryASTNode(queryNode);
+            var operatorKind = queryNode.OperatorId;
+
+            ResolverOfBinaryOperatorOfQueryASTNode result = null;
+
+            switch (operatorKind)
+            {
+                case KindOfBinaryOperators.And:
+                    result = new ResolverOfAndBinaryOperatorOfQueryASTNode();
+                    break;
+
+                case KindOfBinaryOperators.Or:
+                    result = new ResolverOfOrBinaryOperatorOfQueryASTNode();
+                    break;
+
+                default: throw new ArgumentOutOfRangeException(nameof(operatorKind), operatorKind, null);
+            }
+
+            result.Right = CreateNode(queryNode.Right);
+            result.Left = CreateNode(queryNode.Left);
 
             return result;
         }
@@ -68,7 +84,20 @@ namespace MyNPCLib.Logical
             LogInstance.Log($"QueryResolverASTNodeFactory CreateResolverOfUnaryOperatorOfQueryASTNode queryNode = {queryNode}");
 #endif
 
-            var result = new ResolverOfUnaryOperatorOfQueryASTNode(queryNode);
+            var operatorKind = queryNode.OperatorId;
+
+            ResolverOfUnaryOperatorOfQueryASTNode result = null;
+
+            switch (operatorKind)
+            {
+                case KindOfUnaryOperators.Not:
+                    result = new ResolverOfNotUnaryOperatorOfQueryASTNode();
+                    break;
+
+                default: throw new ArgumentOutOfRangeException(nameof(operatorKind), operatorKind, null);
+            }
+
+            result.Left = CreateNode(queryNode.Left);
 
             return result;
         }

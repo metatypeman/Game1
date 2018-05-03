@@ -46,12 +46,14 @@ namespace TmpSandBox
             var indexingStorage = new LogicalIndexStorage();
 
             var namePropertyId = globalEntityDictionary.GetKey("name");
+            var classPropertyId = globalEntityDictionary.GetKey("class");
 
             var passiveLogicalObject = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
 
             indexingStorage.RegisterObject(passiveLogicalObject.EntityId, passiveLogicalObject);
 
             passiveLogicalObject[namePropertyId] = "helen";
+            passiveLogicalObject[classPropertyId] = "girl";
 
             //indexingStorage.PutPropertyValue(12, namePropertyId, "helen");
 
@@ -59,9 +61,18 @@ namespace TmpSandBox
             conditionNode.PropertyId = namePropertyId;
             conditionNode.Value = "helen";
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST conditionNode = {conditionNode}");
+            var conditionNode_1 = new ConditionOfQueryASTNode();
+            conditionNode_1.PropertyId = classPropertyId;
+            conditionNode_1.Value = "girl";
 
-            var entitiesIdList = indexingStorage.GetEntitiesIdListByAST(conditionNode);
+            var andNode = new BinaryOperatorOfQueryASTNode();
+            andNode.OperatorId = KindOfBinaryOperators.And;
+            andNode.Left = conditionNode;
+            andNode.Right = conditionNode_1;
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST andNode = {andNode}");
+
+            var entitiesIdList = indexingStorage.GetEntitiesIdListByAST(andNode);
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entitiesIdList.Count = {entitiesIdList.Count}");
             foreach(var entityId in entitiesIdList)
