@@ -7,7 +7,9 @@ namespace MyNPCLib.Logical
 {
     public abstract class BaseAbstractLogicalObject
     {
-        public abstract IList<ulong> CurrentEnitiesIdList();
+        public abstract IList<ulong> CurrentEntitiesIdList { get; }
+        public abstract ulong CurrentEntityId { get; }
+        public abstract bool IsConcrete { get; }
 
         private static bool NEqual(BaseAbstractLogicalObject item1, BaseAbstractLogicalObject item2)
         {
@@ -19,11 +21,31 @@ namespace MyNPCLib.Logical
                 return true;
             }
 
+            var item1IsConcrete = item1.IsConcrete;
+            var item2IsConcrete = item2.IsConcrete;
+
 #if DEBUG
-            LogInstance.Log("BaseAbstractLogicalObject NEqual NEXT");
+            LogInstance.Log($"BaseAbstractLogicalObject NEqual NEXT item1IsConcrete = {item1IsConcrete} item2IsConcrete = {item2IsConcrete}");
 #endif
 
-            var entitiesIdListOfItem1 = item1.CurrentEnitiesIdList();
+            if(item1IsConcrete)
+            {
+                if(item2IsConcrete)
+                {
+                    return item1.CurrentEntityId == item2.CurrentEntityId;
+                }
+                else
+                {
+                    return item2.CurrentEntitiesIdList.Contains(item1.CurrentEntityId);
+                }
+            }
+
+            if (item2IsConcrete)
+            {
+                return item1.CurrentEntitiesIdList.Contains(item2.CurrentEntityId);
+            }
+
+            var entitiesIdListOfItem1 = item1.CurrentEntitiesIdList;
 
 #if DEBUG
             LogInstance.Log($"BaseAbstractLogicalObject NEqual entitiesIdListOfItem1.Count = {entitiesIdListOfItem1.Count}");
@@ -33,7 +55,7 @@ namespace MyNPCLib.Logical
             }
 #endif
 
-            var entitiesIdListOfItem2 = item2.CurrentEnitiesIdList();
+            var entitiesIdListOfItem2 = item2.CurrentEntitiesIdList;
 
 #if DEBUG
             LogInstance.Log($"BaseAbstractLogicalObject NEqual entitiesIdListOfItem2.Count = {entitiesIdListOfItem2.Count}");
@@ -81,10 +103,14 @@ namespace MyNPCLib.Logical
                 smallerList = entitiesIdListOfItem1;
             }
 
-            d
-            throw new NotImplementedException();
+            var exceptList_2 = smallerList.Except(smallerList);
 
-            //return true;
+            if (exceptList_2.Count() == 0)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public static bool operator == (BaseAbstractLogicalObject item1, BaseAbstractLogicalObject item2)

@@ -6,6 +6,8 @@ namespace MyNPCLib.Logical
 {
     public class LogicalObject : BaseAbstractLogicalObject
     {
+        public override bool IsConcrete => false;
+
         public LogicalObject(string query, IEntityDictionary entityDictionary, ILogicalStorage source)
         {
 #if DEBUG
@@ -45,19 +47,24 @@ namespace MyNPCLib.Logical
         private readonly object mCurrentEnitiesIdListLockObj = new object();
         private IList<ulong> mCurrentEnitiesIdList;
 
-        public override IList<ulong> CurrentEnitiesIdList()
+        public override IList<ulong> CurrentEntitiesIdList
         {
+            get
+            {
 #if DEBUG
-            LogInstance.Log("Begin LogicalObject CurrentEnitiesIdList");
+                LogInstance.Log("Begin LogicalObject CurrentEnitiesIdList");
 #endif
 
-            lock(mCurrentEnitiesIdListLockObj)
-            {
-                UpdateCurrentEnitiesIdList();
+                lock (mCurrentEnitiesIdListLockObj)
+                {
+                    UpdateCurrentEnitiesIdList();
 
-                return mCurrentEnitiesIdList;
-            }           
+                    return mCurrentEnitiesIdList;
+                }
+            }     
         }
+
+        public override ulong CurrentEntityId => throw new NotImplementedException();
 
         private void UpdateCurrentEnitiesIdList()
         {

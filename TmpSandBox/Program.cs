@@ -110,7 +110,7 @@ namespace TmpSandBox
             var queryStr = "!((name=helen|name=ann)&class=girl)";
             var logicalObject = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage);
 
-            entitiesIdList = logicalObject.CurrentEnitiesIdList();
+            entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
@@ -122,7 +122,7 @@ namespace TmpSandBox
 
             Thread.Sleep(100);
 
-            entitiesIdList = logicalObject.CurrentEnitiesIdList();
+            entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2) entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
@@ -132,7 +132,7 @@ namespace TmpSandBox
 
             var logicalObject_2 = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage);
 
-            entitiesIdList = logicalObject.CurrentEnitiesIdList();
+            entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (3) entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
@@ -147,6 +147,23 @@ namespace TmpSandBox
             resultOfcomparsing = logicalObject_2 == logicalObject;
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2) resultOfcomparsing = {resultOfcomparsing}");
+
+            /*var list1 = new List<int>() { 1 };
+            var list2 = new List<int>() { 1, 2 };
+
+            var except1_2 = list1.Except(list2).ToList();
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST except1_2.Count = {except1_2.Count}");
+            foreach (var entityId in except1_2)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (1_2) entityId = {entityId}");
+            }
+
+            var except2_1 = list2.Except(list1).ToList();
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST except2_1.Count = {except2_1.Count}");
+            foreach (var entityId in except2_1)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2_1) entityId = {entityId}");
+            }*/
         }
 
         private static void TSTLogicalObject()
