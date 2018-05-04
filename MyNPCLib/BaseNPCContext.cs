@@ -605,7 +605,7 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCContext GetLogicalObject query = {query}");
 #endif
-            return new LogicalObject();//tmp
+            return new LogicalObject(query, mEntityDictionary, null);//tmp
         }
 
         public void Dispose()

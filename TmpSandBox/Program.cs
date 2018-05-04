@@ -106,6 +106,29 @@ namespace TmpSandBox
             {
                 NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entityId = {entityId}");
             }
+
+            var queryStr = "!((name=helen|name=ann)&class=girl)";
+            var logicalObject = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage);
+
+            entitiesIdList = logicalObject.CurrentEnitiesIdList();
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entitiesIdList.Count = {entitiesIdList.Count}");
+            foreach (var entityId in entitiesIdList)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entityId = {entityId}");
+            }
+
+            passiveLogicalObject_2[classPropertyId] = "boy";
+
+            Thread.Sleep(100);
+
+            entitiesIdList = logicalObject.CurrentEnitiesIdList();
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entitiesIdList.Count = {entitiesIdList.Count}");
+            foreach (var entityId in entitiesIdList)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entityId = {entityId}");
+            }
         }
 
         private static void TSTLogicalObject()

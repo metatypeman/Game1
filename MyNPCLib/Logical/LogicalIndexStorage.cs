@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MyNPCLib.Logical
 {
@@ -10,7 +11,9 @@ namespace MyNPCLib.Logical
         private readonly object mLockObj = new object();
         private Dictionary<ulong, LogicalIndexingFrame> mDataDict = new Dictionary<ulong, LogicalIndexingFrame>();
         private Dictionary<ulong, IReadOnlyLogicalObject> mObjectsDict = new Dictionary<ulong, IReadOnlyLogicalObject>();
-        
+
+        public event Action OnChanged;
+
         public void RegisterObject(ulong entityId, IReadOnlyLogicalObject value)
         {
             lock (mLockObj)
@@ -66,6 +69,10 @@ namespace MyNPCLib.Logical
                 }
 
                 indexingFrame.Set(value, entityId);
+
+                Task.Run(() => {
+                    OnChanged?.Invoke();
+                });           
             }
         }
 

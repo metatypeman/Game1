@@ -52,8 +52,17 @@ namespace MyNPCLib.Logical
 
         private void SetProperty(ulong propertyKey, object value)
         {
+            var currentValue = mLogicalFrame[propertyKey];
+
+            if(currentValue == value)
+            {
+                return;
+            }
+
             mLogicalFrame[propertyKey] = value;
             mLogicalIndexingBus.PutPropertyValue(mEntityId, propertyKey, value);
+
+
         }
     }
 }

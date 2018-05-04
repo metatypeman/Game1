@@ -11,5 +11,6 @@ namespace MyNPCLib.Logical
         void PutPropertyValue(ulong entityId, ulong propertyId, object value);
         IList<ulong> GetEntitiesIdsList(ulong propertyId, object value);
         IList<ulong> GetAllEntitiesIdsList();
+        event Action OnChanged;
     }
 }
