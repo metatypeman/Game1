@@ -6,6 +6,9 @@ namespace MyNPCLib.Logical
 {
     public class VisionObject: BaseAbstractLogicalObject
     {
-
+        public override IList<ulong> CurrentEnitiesIdList()
+        {
+            return new List<ulong>();//tmp
+        }
     }
 }

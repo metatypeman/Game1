@@ -124,11 +124,29 @@ namespace TmpSandBox
 
             entitiesIdList = logicalObject.CurrentEnitiesIdList();
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entitiesIdList.Count = {entitiesIdList.Count}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2) entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entityId = {entityId}");
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2) entityId = {entityId}");
             }
+
+            var logicalObject_2 = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage);
+
+            entitiesIdList = logicalObject.CurrentEnitiesIdList();
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (3) entitiesIdList.Count = {entitiesIdList.Count}");
+            foreach (var entityId in entitiesIdList)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (3) entityId = {entityId}");
+            }
+
+            var resultOfcomparsing = logicalObject == logicalObject_2;
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST resultOfcomparsing = {resultOfcomparsing}");
+
+            resultOfcomparsing = logicalObject_2 == logicalObject;
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2) resultOfcomparsing = {resultOfcomparsing}");
         }
 
         private static void TSTLogicalObject()

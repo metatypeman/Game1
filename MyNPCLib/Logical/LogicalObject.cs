@@ -45,7 +45,7 @@ namespace MyNPCLib.Logical
         private readonly object mCurrentEnitiesIdListLockObj = new object();
         private IList<ulong> mCurrentEnitiesIdList;
 
-        public IList<ulong> CurrentEnitiesIdList()
+        public override IList<ulong> CurrentEnitiesIdList()
         {
 #if DEBUG
             LogInstance.Log("Begin LogicalObject CurrentEnitiesIdList");
