@@ -28,6 +28,7 @@ namespace MyNPCLib
             mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Right, this);
             mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Left, this);
             mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
+            mLogicalStorage = new LogicalStorage();
         }
 
         private void BodyHost_OnDie()
@@ -46,6 +47,7 @@ namespace MyNPCLib
         private readonly Dictionary<ulong, List<ulong>> mParentChildrenProcessesDict = new Dictionary<ulong, List<ulong>>();
         private readonly Dictionary<ulong, ulong> mChildParentDict = new Dictionary<ulong, ulong>();
         private readonly object mProcessesDictLockObj = new object();
+        private LogicalStorage mLogicalStorage;
 
         private readonly object mStateLockObj = new object();
         private StateOfNPCContext mState = StateOfNPCContext.Created;
@@ -605,7 +607,7 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCContext GetLogicalObject query = {query}");
 #endif
-            return new LogicalObject(query, mEntityDictionary, null);//tmp
+            return new LogicalObject(query, mEntityDictionary, mLogicalStorage);
         }
 
         public void Dispose()

@@ -79,7 +79,9 @@ namespace MyNPCLib.Logical
 
             mNeedUpdateEnitiesIdList = false;
 
-            mCurrentEnitiesIdList = mPlan.GetEntitiesIdList(mSource);
+            mCurrentEnitiesIdList = mSource.GetEntitiesIdList(mPlan);
+
+            //mCurrentEnitiesIdList = mPlan.GetEntitiesIdList(mSource);
 
 #if DEBUG
             LogInstance.Log("End LogicalObject UpdateCurrentEnitiesIdList");

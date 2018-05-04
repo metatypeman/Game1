@@ -102,14 +102,8 @@ namespace MyNPCLib.Logical
             }
         }
 
-        public IList<ulong> GetEntitiesIdListByAST(BaseQueryASTNode queryNode)
+        public IList<ulong> GetEntitiesIdList(BaseQueryResolverASTNode plan)
         {
-#if DEBUG
-            LogInstance.Log($"LogicalIndexStorage GetEntitiesIdListByAST queryNode = {queryNode}");
-#endif
-
-            var plan = QueryResolverASTNodeFactory.CreatePlan(queryNode);
-
             return plan.GetEntitiesIdList(this);
         }
     }

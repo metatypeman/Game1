@@ -30,7 +30,7 @@ namespace TmpSandBox
             //TSTLogicalObject();
             //TSTCancelTask_2();
             //TSTCancelTask();
-            //TSTMyNPCContext();
+            TSTMyNPCContext();
             //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
@@ -99,18 +99,10 @@ namespace TmpSandBox
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST notNode = {notNode}");
 
-            var entitiesIdList = indexingStorage.GetEntitiesIdListByAST(notNode);
-
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entitiesIdList.Count = {entitiesIdList.Count}");
-            foreach(var entityId in entitiesIdList)
-            {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entityId = {entityId}");
-            }
-
             var queryStr = "!((name=helen|name=ann)&class=girl)";
             var logicalObject = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage);
 
-            entitiesIdList = logicalObject.CurrentEntitiesIdList;
+            var entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
@@ -312,6 +304,32 @@ namespace TmpSandBox
             command.Params.Add("key", "k");
 
             context.Send(command);
+
+            var queryStr = "!((name=helen|name=ann)&class=girl)";
+
+            var logicalObject = context.GetLogicalObject(queryStr);
+
+            var entitiesIdList = logicalObject.CurrentEntitiesIdList;
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext entitiesIdList.Count = {entitiesIdList.Count}");
+            foreach (var entityId in entitiesIdList)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext entityId = {entityId}");
+            }
+
+            var logicalObject_2 = context.GetLogicalObject(queryStr);
+
+            var entitiesIdList_2 = logicalObject_2.CurrentEntitiesIdList;
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entitiesIdList_2.Count = {entitiesIdList_2.Count}");
+            foreach (var entityId in entitiesIdList)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entityId = {entityId}");
+            }
+
+            var resultOfcomparsing = logicalObject == logicalObject_2;
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST resultOfcomparsing = {resultOfcomparsing}");
 
             while (true)
             {
