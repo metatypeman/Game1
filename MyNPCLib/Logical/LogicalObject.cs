@@ -81,11 +81,51 @@ namespace MyNPCLib.Logical
 
             mCurrentEnitiesIdList = mSource.GetEntitiesIdList(mPlan);
 
-            //mCurrentEnitiesIdList = mPlan.GetEntitiesIdList(mSource);
-
 #if DEBUG
             LogInstance.Log("End LogicalObject UpdateCurrentEnitiesIdList");
 #endif
+        }
+
+        public override object this[ulong propertyKey]
+        {
+            get
+            {
+#if DEBUG
+                LogInstance.Log($"LogicalObject this get propertyKey = {propertyKey}");
+#endif
+
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+#if DEBUG
+                LogInstance.Log($"LogicalObject this set propertyKey = {propertyKey} value = {value}");
+#endif
+
+                throw new NotImplementedException();
+            }
+        }
+
+        public override object this[string propertyName]
+        {
+            get
+            {
+#if DEBUG
+                LogInstance.Log($"LogicalObject this get propertyName = {propertyName}");
+#endif
+
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+#if DEBUG
+                LogInstance.Log($"LogicalObject this set propertyName = {propertyName} value = {value}");
+#endif
+
+                throw new NotImplementedException();
+            }
         }
     }
 }

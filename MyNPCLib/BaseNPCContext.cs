@@ -28,7 +28,7 @@ namespace MyNPCLib
             mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Right, this);
             mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Left, this);
             mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
-            mLogicalStorage = new LogicalStorage();
+            mLogicalStorage = new LogicalStorage(mEntityDictionary, npcHostContext.HostLogicalStorage);
         }
 
         private void BodyHost_OnDie()

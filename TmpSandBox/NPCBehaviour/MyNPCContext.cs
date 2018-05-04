@@ -7,8 +7,8 @@ namespace TmpSandBox.NPCBehaviour
 {
     public class MyNPCContext: BaseNPCContextWithBlackBoard<MyBlackBoard>
     {
-        public MyNPCContext(INPCHostContext npcHostContext)
-            : base(null, null, npcHostContext)
+        public MyNPCContext(IEntityDictionary entityDictionary, INPCHostContext npcHostContext)
+            : base(entityDictionary, null, npcHostContext) 
         {
             AddTypeOfProcess<MyBootNPCProcess>();
             AddTypeOfProcess<MyNPSGoToFarWayPoint>();

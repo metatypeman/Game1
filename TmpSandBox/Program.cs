@@ -292,9 +292,12 @@ namespace TmpSandBox
         {
             NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTMyNPCContext");
 
+            var globalEntityDictionary = new EntityDictionary();
             var stubOfHumanoidBodyController = new StubOfNPCHostContext();
 
-            var context = new MyNPCContext(stubOfHumanoidBodyController);
+            var indexingStorage = stubOfHumanoidBodyController.LogicalIndexStorageImpl;
+
+            var context = new MyNPCContext(globalEntityDictionary, stubOfHumanoidBodyController);
             context.Bootstrap();
 
             Thread.Sleep(1000);
@@ -304,6 +307,30 @@ namespace TmpSandBox
             command.Params.Add("key", "k");
 
             context.Send(command);
+
+            var namePropertyId = globalEntityDictionary.GetKey("name");
+            var classPropertyId = globalEntityDictionary.GetKey("class");
+
+            var passiveLogicalObject = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
+
+            indexingStorage.RegisterObject(passiveLogicalObject.EntityId, passiveLogicalObject);
+
+            passiveLogicalObject[namePropertyId] = "helen";
+            passiveLogicalObject[classPropertyId] = "girl";
+
+            var passiveLogicalObject_2 = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
+
+            indexingStorage.RegisterObject(passiveLogicalObject_2.EntityId, passiveLogicalObject_2);
+
+            passiveLogicalObject_2[namePropertyId] = "ann";
+            passiveLogicalObject_2[classPropertyId] = "girl";
+
+            var passiveLogicalObject_3 = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
+
+            indexingStorage.RegisterObject(passiveLogicalObject_3.EntityId, passiveLogicalObject_3);
+
+            passiveLogicalObject_3[namePropertyId] = "Beatles";
+            passiveLogicalObject_3[classPropertyId] = "band";
 
             var queryStr = "!((name=helen|name=ann)&class=girl)";
 
@@ -330,6 +357,12 @@ namespace TmpSandBox
             var resultOfcomparsing = logicalObject == logicalObject_2;
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST resultOfcomparsing = {resultOfcomparsing}");
+
+            var name = logicalObject["name"];
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST name = {name}");
+
+            logicalObject["name"] = 12;
 
             while (true)
             {

@@ -5,11 +5,13 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
-    public abstract class BaseAbstractLogicalObject
+    public abstract class BaseAbstractLogicalObject : ILogicalObject
     {
         public abstract IList<ulong> CurrentEntitiesIdList { get; }
         public abstract ulong CurrentEntityId { get; }
         public abstract bool IsConcrete { get; }
+        public abstract object this[ulong propertyKey] { get; set; }
+        public abstract object this[string propertyName] { get; set; }
 
         private static bool NEqual(BaseAbstractLogicalObject item1, BaseAbstractLogicalObject item2)
         {

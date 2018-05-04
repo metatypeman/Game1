@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.Logical;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,5 +10,6 @@ namespace MyNPCLib
         INPCBodyHost BodyHost { get; }
         INPCHandHost RightHandHost { get; }
         INPCHandHost LeftHandHost { get; }
+        ILogicalStorage HostLogicalStorage { get; }
     }
 }

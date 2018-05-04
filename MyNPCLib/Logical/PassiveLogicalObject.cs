@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
-    public class PassiveLogicalObject: IReadOnlyLogicalObject
+    public class PassiveLogicalObject: IReadOnlyLogicalObject, ILogicalObject
     {
         public PassiveLogicalObject(IEntityDictionary entityDictionary, ILogicalStorage logicalIndexingBus)
         {
@@ -61,8 +61,6 @@ namespace MyNPCLib.Logical
 
             mLogicalFrame[propertyKey] = value;
             mLogicalIndexingBus.PutPropertyValue(mEntityId, propertyKey, value);
-
-
         }
     }
 }

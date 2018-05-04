@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -87,14 +88,17 @@ namespace TmpSandBox.NPCBehaviour
             mBodyHost = new StubOfNPCBodyHost();
             mRightHandHost = new StubOfNPCHandHost();
             mLeftHandHost = new StubOfNPCHandHost();
+            LogicalIndexStorageImpl = new LogicalIndexStorage();
         }
 
         private StubOfNPCBodyHost mBodyHost;
         private StubOfNPCHandHost mRightHandHost;
         private StubOfNPCHandHost mLeftHandHost;
+        public LogicalIndexStorage LogicalIndexStorageImpl { get; private set; }
 
         public INPCBodyHost BodyHost => mBodyHost;
         public INPCHandHost RightHandHost => mRightHandHost;
         public INPCHandHost LeftHandHost => mLeftHandHost;
+        public ILogicalStorage HostLogicalStorage => LogicalIndexStorageImpl;
     }
 }
