@@ -29,6 +29,7 @@ namespace MyNPCLib
             mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Left, this);
             mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
             mLogicalStorage = new LogicalStorage(mEntityDictionary, npcHostContext.HostLogicalStorage);
+            mSelfLogicalObject = new SelfLogicalObject(npcHostContext.SelfEntityId, mEntityDictionary, mLogicalStorage);
         }
 
         private void BodyHost_OnDie()
@@ -600,6 +601,16 @@ namespace MyNPCLib
         public TResult CallInMainUI<TResult>(Func<TResult> function)
         {
             return mBodyResourcesManager.CallInMainUI(function);
+        }
+
+        private BaseAbstractLogicalObject mSelfLogicalObject;
+
+        public BaseAbstractLogicalObject SelfLogicalObject
+        {
+            get
+            {
+                return mSelfLogicalObject;
+            }
         }
 
         public BaseAbstractLogicalObject GetLogicalObject(string query)

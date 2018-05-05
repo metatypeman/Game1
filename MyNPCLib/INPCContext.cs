@@ -36,6 +36,7 @@ namespace MyNPCLib
         void CallInMainUI(Action function);
         TResult CallInMainUI<TResult>(Func<TResult> function);
 
+        BaseAbstractLogicalObject SelfLogicalObject { get; }
         BaseAbstractLogicalObject GetLogicalObject(string query);
     }
 }

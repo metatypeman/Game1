@@ -368,6 +368,10 @@ namespace TmpSandBox
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext name (2) = {name}");
 
+            resultOfcomparsing = context.SelfLogicalObject == logicalObject;
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext resultOfcomparsing (2) = {resultOfcomparsing}");
+
             while (true)
             {
                 Thread.Sleep(10000);

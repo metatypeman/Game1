@@ -108,6 +108,6 @@ namespace TmpSandBox.NPCBehaviour
         public INPCHandHost RightHandHost => mRightHandHost;
         public INPCHandHost LeftHandHost => mLeftHandHost;
         public ILogicalStorage HostLogicalStorage => LogicalIndexStorageImpl;
-        public IPassiveLogicalObject SelfLogicalObject => mSelfLogicalObject;
+        public ulong SelfEntityId => mSelfLogicalObject.EntityId;
     }
 }
