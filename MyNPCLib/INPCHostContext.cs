@@ -11,5 +11,6 @@ namespace MyNPCLib
         INPCHandHost RightHandHost { get; }
         INPCHandHost LeftHandHost { get; }
         ILogicalStorage HostLogicalStorage { get; }
+        IPassiveLogicalObject SelfLogicalObject { get; }
     }
 }

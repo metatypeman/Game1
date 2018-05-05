@@ -135,6 +135,7 @@ namespace Assets.Scripts
             mRightHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
             mLeftHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
             mHostLogicalStorage = internalBodyHumanoidHost.HostLogicalStorage;
+            mSelfLogicalObject = internalBodyHumanoidHost.SelfLogicalObject;
         }
 
         private InternalHumanoidHostContext mInternalHumanoidHostContext;
@@ -142,10 +143,12 @@ namespace Assets.Scripts
         private TestedNPCHandHost mRightHandHost;
         private TestedNPCHandHost mLeftHandHost;
         private ILogicalStorage mHostLogicalStorage;
+        private IPassiveLogicalObject mSelfLogicalObject;
 
         public INPCBodyHost BodyHost => mBodyHost;
         public INPCHandHost RightHandHost => mRightHandHost;
         public INPCHandHost LeftHandHost => mLeftHandHost;
         public ILogicalStorage HostLogicalStorage => mHostLogicalStorage;
+        public IPassiveLogicalObject SelfLogicalObject => mSelfLogicalObject;
     }
 }

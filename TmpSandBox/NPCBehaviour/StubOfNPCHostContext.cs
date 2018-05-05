@@ -83,22 +83,31 @@ namespace TmpSandBox.NPCBehaviour
 
     public class StubOfNPCHostContext: INPCHostContext
     {
-        public StubOfNPCHostContext()
+        public StubOfNPCHostContext(IEntityDictionary entityDictionary = null)
         {
+            if(entityDictionary == null)
+            {
+                entityDictionary = new EntityDictionary();
+            }
+
             mBodyHost = new StubOfNPCBodyHost();
             mRightHandHost = new StubOfNPCHandHost();
             mLeftHandHost = new StubOfNPCHandHost();
             LogicalIndexStorageImpl = new LogicalIndexStorage();
+            mSelfLogicalObject = new PassiveLogicalObject(entityDictionary, LogicalIndexStorageImpl);
+            LogicalIndexStorageImpl.RegisterObject(mSelfLogicalObject.EntityId, mSelfLogicalObject);
         }
 
         private StubOfNPCBodyHost mBodyHost;
         private StubOfNPCHandHost mRightHandHost;
         private StubOfNPCHandHost mLeftHandHost;
         public LogicalIndexStorage LogicalIndexStorageImpl { get; private set; }
+        private PassiveLogicalObject mSelfLogicalObject;
 
         public INPCBodyHost BodyHost => mBodyHost;
         public INPCHandHost RightHandHost => mRightHandHost;
         public INPCHandHost LeftHandHost => mLeftHandHost;
         public ILogicalStorage HostLogicalStorage => LogicalIndexStorageImpl;
+        public IPassiveLogicalObject SelfLogicalObject => mSelfLogicalObject;
     }
 }

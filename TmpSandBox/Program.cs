@@ -293,7 +293,7 @@ namespace TmpSandBox
             NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTMyNPCContext");
 
             var globalEntityDictionary = new EntityDictionary();
-            var stubOfHumanoidBodyController = new StubOfNPCHostContext();
+            var stubOfHumanoidBodyController = new StubOfNPCHostContext(globalEntityDictionary);
 
             var indexingStorage = stubOfHumanoidBodyController.LogicalIndexStorageImpl;
 
