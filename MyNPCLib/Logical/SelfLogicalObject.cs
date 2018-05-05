@@ -4,9 +4,9 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
-    public class VisionObject: BaseAbstractLogicalObject
+    public class SelfLogicalObject : BaseAbstractLogicalObject
     {
-        public VisionObject()
+        public SelfLogicalObject()
         {
 
         }
@@ -19,7 +19,7 @@ namespace MyNPCLib.Logical
             get
             {
 #if DEBUG
-                LogInstance.Log($"VisionObject this get propertyKey = {propertyKey}");
+                LogInstance.Log($"SelfLogicalObject this get propertyKey = {propertyKey}");
 #endif
 
                 throw new NotImplementedException();
@@ -28,7 +28,7 @@ namespace MyNPCLib.Logical
             set
             {
 #if DEBUG
-                LogInstance.Log($"VisionObject this set propertyKey = {propertyKey} value = {value}");
+                LogInstance.Log($"SelfLogicalObject this set propertyKey = {propertyKey} value = {value}");
 #endif
 
                 throw new NotImplementedException();
@@ -40,7 +40,7 @@ namespace MyNPCLib.Logical
             get
             {
 #if DEBUG
-                LogInstance.Log($"VisionObject this get propertyName = {propertyName}");
+                LogInstance.Log($"SelfLogicalObject this get propertyName = {propertyName}");
 #endif
 
                 throw new NotImplementedException();
@@ -49,7 +49,7 @@ namespace MyNPCLib.Logical
             set
             {
 #if DEBUG
-                LogInstance.Log($"VisionObject this set propertyName = {propertyName} value = {value}");
+                LogInstance.Log($"SelfLogicalObject this set propertyName = {propertyName} value = {value}");
 #endif
 
                 throw new NotImplementedException();

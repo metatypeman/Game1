@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using MyNPCLib.Logical;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,7 +18,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 
     private List<Vector3> mRayDirectionsList = new List<Vector3>();
     private GameObjectsBus mGameObjectsBus;
-    private InternalLogicalObjectsBus mLogicalObjectsBus;
+    private LogicalIndexStorage mLogicalObjectsBus;
 
     // Use this for initialization
     void Start () {
@@ -87,7 +88,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
             GetRaycast(targetTransform, localDirection, tmpVisibleItems);
         }
 
-        var newVisibleObjects = new List<VisionObject>();
+        var newVisibleObjects = new List<Assets.Scripts.VisionObject>();
 
         if(tmpVisibleItems.Count > 0)
         {
@@ -99,7 +100,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 
             foreach (var tmpGroupedVisibleKVPItems in tmpGroupedVisibleItems)
             {
-                var item = new VisionObject();
+                var item = new Assets.Scripts.VisionObject();
                 var instanceID = tmpGroupedVisibleKVPItems.Key;
                 item.InstanceID = instanceID;
                 if(gameObjectsDict.ContainsKey(instanceID))
@@ -149,10 +150,10 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 #endif
     }
 
-    private List<VisionObject> mVisibleObjects = new List<VisionObject>();
+    private List<Assets.Scripts.VisionObject> mVisibleObjects = new List<Assets.Scripts.VisionObject>();
     private readonly object mVisibleItemsLockObj = new object();
 
-    public List<VisionObject> VisibleObjects
+    public List<Assets.Scripts.VisionObject> VisibleObjects
     {
         get
         {

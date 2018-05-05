@@ -26,7 +26,7 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTLogicalAST();
+            //TSTLogicalAST();
             //TSTLogicalObject();
             //TSTCancelTask_2();
             //TSTCancelTask();
@@ -348,21 +348,25 @@ namespace TmpSandBox
 
             var entitiesIdList_2 = logicalObject_2.CurrentEntitiesIdList;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entitiesIdList_2.Count = {entitiesIdList_2.Count}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext entitiesIdList_2.Count = {entitiesIdList_2.Count}");
             foreach (var entityId in entitiesIdList)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entityId = {entityId}");
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext entityId = {entityId}");
             }
 
             var resultOfcomparsing = logicalObject == logicalObject_2;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST resultOfcomparsing = {resultOfcomparsing}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext resultOfcomparsing = {resultOfcomparsing}");
 
             var name = logicalObject["name"];
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST name = {name}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext name = {name}");
 
             logicalObject["name"] = 12;
+
+            name = logicalObject["name"];
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext name (2) = {name}");
 
             while (true)
             {

@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,6 @@ namespace Assets.Scripts
         void SetInternalHumanoidHostContext(IInternalHumanoidHostContext intenalHostContext);
         void CallInMainUI(Action function);
         TResult CallInMainUI<TResult>(Func<TResult> function);
+        ILogicalStorage HostLogicalStorage { get; }
     }
 }

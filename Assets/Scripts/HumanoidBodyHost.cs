@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts;
 using MyNPCLib;
+using MyNPCLib.Logical;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -104,12 +105,16 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     }
 
     private IInternalHumanoidHostContext mInternalHumanoidHostContext;
+    private LogicalIndexStorage mLogicalObjectsBus;
+
+    public ILogicalStorage HostLogicalStorage => mLogicalObjectsBus;
 
     // Use this for initialization
     void Start ()
     {
         var commonLevelHost = LevelCommonHostFactory.Get();
         mGameObjectsBus = commonLevelHost.GameObjectsBus;
+        mLogicalObjectsBus = commonLevelHost.LogicalObjectsBus;
 
         mStates = new InternalStatesOfHumanoidController();
         mBehaviourFlags = new BehaviourFlagsOfHumanoidController();

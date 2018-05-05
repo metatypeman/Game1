@@ -6,10 +6,16 @@ namespace MyNPCLib.Logical
 {
     public interface ILogicalStorage
     {
-        void PutPropertyValue(ulong entityId, ulong propertyId, object value);
+        void SetPropertyValue(ulong entityId, ulong propertyId, object value);
+        void SetPropertyValue(IList<ulong> entitiesIdsList, ulong propertyId, object value);
+        object GetPropertyValue(ulong entityId, ulong propertyId);
+        object GetPropertyValue(IList<ulong> entitiesIdsList, ulong propertyId);
+        void PutPropertyValueAsIndex(ulong entityId, ulong propertyId, object value);
         IList<ulong> GetEntitiesIdsList(ulong propertyId, object value);
         IList<ulong> GetAllEntitiesIdsList();
         IList<ulong> GetEntitiesIdList(BaseQueryResolverASTNode plan);
         event Action OnChanged;
+        IReadOnlyLogicalObject GetObjectByInstanceId(int instanceId);
+        Dictionary<int, IReadOnlyLogicalObject> GetObjectsByInstancesId(List<int> instancesIdsList);
     }
 }

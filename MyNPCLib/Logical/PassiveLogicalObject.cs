@@ -60,7 +60,7 @@ namespace MyNPCLib.Logical
             }
 
             mLogicalFrame[propertyKey] = value;
-            mLogicalIndexingBus.PutPropertyValue(mEntityId, propertyKey, value);
+            mLogicalIndexingBus.PutPropertyValueAsIndex(mEntityId, propertyKey, value);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -133,15 +134,18 @@ namespace Assets.Scripts
             mBodyHost = new TestedNPCBodyHost(mInternalHumanoidHostContext, internalBodyHumanoidHost);
             mRightHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
             mLeftHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
+            mHostLogicalStorage = internalBodyHumanoidHost.HostLogicalStorage;
         }
 
         private InternalHumanoidHostContext mInternalHumanoidHostContext;
         private TestedNPCBodyHost mBodyHost;
         private TestedNPCHandHost mRightHandHost;
         private TestedNPCHandHost mLeftHandHost;
+        private ILogicalStorage mHostLogicalStorage;
 
         public INPCBodyHost BodyHost => mBodyHost;
         public INPCHandHost RightHandHost => mRightHandHost;
         public INPCHandHost LeftHandHost => mLeftHandHost;
+        public ILogicalStorage HostLogicalStorage => mHostLogicalStorage;
     }
 }

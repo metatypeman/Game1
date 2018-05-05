@@ -13,7 +13,7 @@ namespace MyNPCLib.Logical
 #if DEBUG
             LogInstance.Log($"Begin LogicalObject query = {query}");
 #endif
-
+            mEntityDictionary = entityDictionary;
             mSource = source;
             mSource.OnChanged += MSource_OnChanged;
             var rootQueryNode = QueryASTNodeFactory.CreateASTNode(query, entityDictionary);
@@ -28,6 +28,8 @@ namespace MyNPCLib.Logical
             LogInstance.Log($"End LogicalObject query = {query}");
 #endif
         }
+
+        private IEntityDictionary mEntityDictionary;
 
         private void MSource_OnChanged()
         {
@@ -94,7 +96,12 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"LogicalObject this get propertyKey = {propertyKey}");
 #endif
 
-                throw new NotImplementedException();
+                lock (mCurrentEnitiesIdListLockObj)
+                {
+                    UpdateCurrentEnitiesIdList();
+                }
+
+                return mSource.GetPropertyValue(mCurrentEnitiesIdList, propertyKey);
             }
 
             set
@@ -103,7 +110,12 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"LogicalObject this set propertyKey = {propertyKey} value = {value}");
 #endif
 
-                throw new NotImplementedException();
+                lock (mCurrentEnitiesIdListLockObj)
+                {
+                    UpdateCurrentEnitiesIdList();
+                }
+
+                mSource.SetPropertyValue(mCurrentEnitiesIdList, propertyKey, value);
             }
         }
 
@@ -111,20 +123,34 @@ namespace MyNPCLib.Logical
         {
             get
             {
+                var propertyKey = mEntityDictionary.GetKey(propertyName);
+
 #if DEBUG
-                LogInstance.Log($"LogicalObject this get propertyName = {propertyName}");
+                LogInstance.Log($"LogicalObject this get propertyName = {propertyName} propertyKey = {propertyKey}");
 #endif
 
-                throw new NotImplementedException();
+                lock (mCurrentEnitiesIdListLockObj)
+                {
+                    UpdateCurrentEnitiesIdList();
+                }
+
+                return mSource.GetPropertyValue(mCurrentEnitiesIdList, propertyKey);
             }
 
             set
             {
+                var propertyKey = mEntityDictionary.GetKey(propertyName);
+
 #if DEBUG
-                LogInstance.Log($"LogicalObject this set propertyName = {propertyName} value = {value}");
+                LogInstance.Log($"LogicalObject this set propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
 #endif
 
-                throw new NotImplementedException();
+                lock (mCurrentEnitiesIdListLockObj)
+                {
+                    UpdateCurrentEnitiesIdList();
+                }
+
+                mSource.SetPropertyValue(mCurrentEnitiesIdList, propertyKey, value);
             }
         }
     }

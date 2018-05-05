@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.Logical;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace Assets.Scripts
 
             mEntityDictionary = new EntityDictionary();
             mNPCProcessInfoCache = new NPCProcessInfoCache();
-            mLogicalObjectsBus = new InternalLogicalObjectsBus();
+            mLogicalObjectsBus = new LogicalIndexStorage();
             mGameObjectsBus = new GameObjectsBus();
         }
 
@@ -30,8 +31,8 @@ namespace Assets.Scripts
 
         public NPCProcessInfoCache NPCProcessInfoCache => mNPCProcessInfoCache;
 
-        private InternalLogicalObjectsBus mLogicalObjectsBus;
-        public InternalLogicalObjectsBus LogicalObjectsBus => mLogicalObjectsBus;
+        private LogicalIndexStorage mLogicalObjectsBus;
+        public LogicalIndexStorage LogicalObjectsBus => mLogicalObjectsBus;
 
         private GameObjectsBus mGameObjectsBus;
         public GameObjectsBus GameObjectsBus => mGameObjectsBus;
