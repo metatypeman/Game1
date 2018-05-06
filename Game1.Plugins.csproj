@@ -281,11 +281,17 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="MyNPCHostLib">
+      <HintPath>Assets/MyNPCHostLib.dll</HintPath>
+    </Reference>
     <Reference Include="MyNPCLib">
       <HintPath>Assets/MyNPCLib.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Common">
       <HintPath>Assets/packages/System.Data.Common.4.3.0/lib/netstandard1.2/System.Data.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>Assets/packages/System.Numerics.Vectors.4.4.0/lib/netstandard1.0/System.Numerics.Vectors.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime">
       <HintPath>Assets/packages/System.Runtime.4.3.0/lib/net462/System.Runtime.dll</HintPath>
@@ -310,9 +316,6 @@
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/Sergey/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="MyNPCHostLib">
-      <HintPath>Assets/MyNPCHostLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -451,6 +454,11 @@
     <None Include="Assets\Standard Assets\Vehicles\Car\Shaders\ReflectiveDiffuseSpecTransp.shader" />
     <None Include="Assets\packages\System.Data.Common.4.3.0\ThirdPartyNotices.txt" />
     <None Include="Assets\packages\System.Data.Common.4.3.0\dotnet_library_license.txt" />
+    <None Include="Assets\packages\System.Numerics.Vectors.4.4.0\LICENSE.TXT" />
+    <None Include="Assets\packages\System.Numerics.Vectors.4.4.0\THIRD-PARTY-NOTICES.TXT" />
+    <None Include="Assets\packages\System.Numerics.Vectors.4.4.0\lib\netstandard1.0\System.Numerics.Vectors.xml" />
+    <None Include="Assets\packages\System.Numerics.Vectors.4.4.0\useSharedDesignerContext.txt" />
+    <None Include="Assets\packages\System.Numerics.Vectors.4.4.0\version.txt" />
     <None Include="Assets\packages\System.Runtime.4.3.0\ThirdPartyNotices.txt" />
     <None Include="Assets\packages\System.Runtime.4.3.0\dotnet_library_license.txt" />
   </ItemGroup>

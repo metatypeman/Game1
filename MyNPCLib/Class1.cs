@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -99,6 +100,11 @@ namespace MyNPCLib
             Thread.Sleep(1000);
 
             LogInstance.Log("End TSTCancelTask");
+        }
+
+        public Vector3 GetVector()
+        {
+            return new Vector3(1, 2, 3);
         }
     }
 }

@@ -91,10 +91,16 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         Task.Run(() => {
             var gameObj = ThreadSafeGameObj();
 
-            Debug.Log($"EnemyNPC gameObj = {gameObj}");
+            Debug.Log($"EnemyNPC Start gameObj = {gameObj}");
         });
 
         PrintInstancesIds();
+
+        var cls1 = new Class1();
+
+        System.Numerics.Vector3 vec = clas1.GetVector();
+
+        Debug.Log($"EnemyNPC vec = {vec}");
     }
 
     private void PrintInstancesIds()
