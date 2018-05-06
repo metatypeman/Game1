@@ -8,6 +8,6 @@ namespace Assets.Scripts
 {
     public interface INPCRayScaner
     {
-        List<VisionObject> VisibleObjects { get; }
+        List<InternalVisionObject> VisibleObjects { get; }
     }
 }

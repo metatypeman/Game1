@@ -9,12 +9,12 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class VisionObject : IObjectToString
+    public class InternalVisionObject : IObjectToString
     {
         public int InstanceID { get; set; }
         public GameObject GameObject { get; set; }
         public IReadOnlyLogicalObject LogicalObject { get; set; }
-        public List<VisionItem> VisionItems { get; set; }
+        public List<InternalVisionItem> VisionItems { get; set; }
 
         public override string ToString()
         {

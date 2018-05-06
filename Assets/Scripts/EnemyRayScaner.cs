@@ -81,14 +81,14 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 
     private void RayToScan(Transform targetTransform)
     {
-        var tmpVisibleItems = new List<VisionItem>();
+        var tmpVisibleItems = new List<InternalVisionItem>();
 
         foreach(var localDirection in mRayDirectionsList)
         {
             GetRaycast(targetTransform, localDirection, tmpVisibleItems);
         }
 
-        var newVisibleObjects = new List<Assets.Scripts.VisionObject>();
+        var newVisibleObjects = new List<InternalVisionObject>();
 
         if(tmpVisibleItems.Count > 0)
         {
@@ -100,7 +100,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 
             foreach (var tmpGroupedVisibleKVPItems in tmpGroupedVisibleItems)
             {
-                var item = new Assets.Scripts.VisionObject();
+                var item = new InternalVisionObject();
                 var instanceID = tmpGroupedVisibleKVPItems.Key;
                 item.InstanceID = instanceID;
                 if(gameObjectsDict.ContainsKey(instanceID))
@@ -122,7 +122,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
         }
     }
 
-    private void GetRaycast(Transform targetTransform, Vector3 localDirection, List<VisionItem> visibleItems)
+    private void GetRaycast(Transform targetTransform, Vector3 localDirection, List<InternalVisionItem> visibleItems)
     {
         var globalDirection = targetTransform.TransformDirection(localDirection);
 
@@ -135,7 +135,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 #if UNITY_EDITOR
             Debug.DrawLine(pos, hit.point, Color.blue);
 #endif
-            var visibleItem = new VisionItem();
+            var visibleItem = new InternalVisionItem();
             visibleItem.LocalDirection = localDirection;
             visibleItem.Point = hit.point;
             visibleItem.Distance = hit.distance;
@@ -150,10 +150,10 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 #endif
     }
 
-    private List<Assets.Scripts.VisionObject> mVisibleObjects = new List<Assets.Scripts.VisionObject>();
+    private List<InternalVisionObject> mVisibleObjects = new List<InternalVisionObject>();
     private readonly object mVisibleItemsLockObj = new object();
 
-    public List<Assets.Scripts.VisionObject> VisibleObjects
+    public List<InternalVisionObject> VisibleObjects
     {
         get
         {

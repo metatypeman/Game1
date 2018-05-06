@@ -25,7 +25,7 @@ namespace Assets.Scripts
 
         private INPCRayScaner mNPCRayScaner { get; set; }
 
-        public List<VisionObject> InternalVisibleObjects
+        public List<InternalVisionObject> InternalVisibleObjects
         {
             get
             {
@@ -34,7 +34,7 @@ namespace Assets.Scripts
 #endif
                 if (mNPCRayScaner == null)
                 {
-                    return new List<VisionObject>();
+                    return new List<InternalVisionObject>();
                 }
 
                 return mNPCRayScaner.VisibleObjects;
