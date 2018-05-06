@@ -22,20 +22,64 @@ namespace MyNPCLib
 
 
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext npcHostContext.SelfEntityId = {npcHostContext.SelfEntityId}");
+            LogInstance.Log($"BaseNPCContext npcHostContext.SelfEntityId = {npcHostContext.SelfEntityId} npcHostContext.IsReady = {npcHostContext.IsReady}");
 #endif
 
             mIdFactory = new IdFactory();
 
+            mNPCHostContext = npcHostContext;
+
+            npcHostContext.OnReady += NpcHostContext_OnReady;
             npcHostContext.BodyHost.OnDie += BodyHost_OnDie;
 
             mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, this);
             mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Right, this);
             mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Left, this);
             mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
-            mLogicalStorage = new LogicalStorage(mEntityDictionary, npcHostContext.HostLogicalStorage);
+            
+            if(mNPCHostContext.IsReady)
+            {
+                InitLogicalSubSystem();
+            }
+        }
 
-            mSelfLogicalObject = new SelfLogicalObject(npcHostContext.SelfEntityId, mEntityDictionary, mLogicalStorage);
+        private void NpcHostContext_OnReady()
+        {
+#if DEBUG
+            LogInstance.Log("BaseNPCContext NpcHostContext_OnReady");
+#endif
+
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext NpcHostContext_OnReady mNPCHostContext.SelfEntityId = {mNPCHostContext.SelfEntityId} mNPCHostContext.IsReady = {mNPCHostContext.IsReady}");
+#endif
+
+            InitLogicalSubSystem();
+        }
+
+        private void InitLogicalSubSystem()
+        {
+#if DEBUG
+            LogInstance.Log("BaseNPCContext InitLogicalSubSystem");
+#endif
+
+            mLogicalStorage = new LogicalStorage(mEntityDictionary, mNPCHostContext.HostLogicalStorage);
+
+#if DEBUG
+            LogInstance.Log("BaseNPCContext InitLogicalSubSystem NEXT");
+#endif
+
+            mSelfLogicalObject = new SelfLogicalObject(mNPCHostContext.SelfEntityId, mEntityDictionary, mLogicalStorage);
+
+#if DEBUG
+            LogInstance.Log("BaseNPCContext InitLogicalSubSystem NEXT NEXT");
+#endif
+
+            lock (mIsReadyLockObj)
+            {
+                mIsLogicalSubSystemReady = true;
+            }
+
+            TryDelayedBootstrap();
         }
 
         private void BodyHost_OnDie()
@@ -44,6 +88,7 @@ namespace MyNPCLib
         }
 
         #region private members
+        private INPCHostContext mNPCHostContext;
         private readonly IdFactory mIdFactory;
         private readonly IEntityDictionary mEntityDictionary;
         private readonly NPCBodyResourcesManager mBodyResourcesManager;
@@ -58,7 +103,23 @@ namespace MyNPCLib
 
         private readonly object mStateLockObj = new object();
         private StateOfNPCContext mState = StateOfNPCContext.Created;
+        private readonly object mIsReadyLockObj = new object();
+        private bool mIsLogicalSubSystemReady;
+        private object mNeedDelayedBootstrapLockObj = new object();
+        private bool mNeedDelayedBootstrap;
+        private Type mDelayedBootstrapType;
         #endregion
+
+        public bool IsLogicalSubSystemReady
+        {
+            get
+            {
+                lock (mIsReadyLockObj)
+                {
+                    return mIsLogicalSubSystemReady;
+                }
+            }
+        }
 
         public StateOfNPCContext State
         {
@@ -106,7 +167,51 @@ namespace MyNPCLib
         public void Bootstrap(Type type)
         {
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
+            LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
+#endif
+
+            lock(mIsReadyLockObj)
+            {
+                if(mIsLogicalSubSystemReady)
+                {
+                    NBootstrap(type);
+                    return;
+                }
+
+                lock(mNeedDelayedBootstrapLockObj)
+                {
+                    mNeedDelayedBootstrap = true;
+                    mDelayedBootstrapType = type;
+                }
+            }
+        }
+
+        public virtual void Bootstrap()
+        {
+            Bootstrap(null);
+        }
+
+        private void TryDelayedBootstrap()
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext TryDelayedBootstrap mNeedDelayedBootstrap = {mNeedDelayedBootstrap}");
+#endif
+
+            lock (mNeedDelayedBootstrapLockObj)
+            {
+                if (!mNeedDelayedBootstrap)
+                {
+                    return;
+                }
+            }
+
+            NBootstrap(mDelayedBootstrapType);
+        }
+
+        private void NBootstrap(Type type)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext NBootstrap type = {type?.FullName}");
 #endif
 
             lock (mStateLockObj)
@@ -116,7 +221,7 @@ namespace MyNPCLib
                     throw new ElementIsNotActiveException();
                 }
 
-                if(mState == StateOfNPCContext.Working)
+                if (mState == StateOfNPCContext.Working)
                 {
                     return;
                 }
@@ -137,7 +242,7 @@ namespace MyNPCLib
             var npcProcessInfo = mStorageOfNPCProcesses.StorageOfNPCProcessInfo.GetNPCProcessInfo(type);
 
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
+            //LogInstance.Log($"BaseNPCContext NBootstrap type = {type?.FullName}");
 #endif
 
             if (npcProcessInfo == null)
@@ -150,15 +255,10 @@ namespace MyNPCLib
             command.Priority = NPCProcessPriorities.Highest;
 
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext Bootstrap command = {command}");
+            //LogInstance.Log($"BaseNPCContext NBootstrap command = {command}");
 #endif
 
             Send(command);
-        }
-
-        public virtual void Bootstrap()
-        {
-            Bootstrap(null);
         }
 
         protected virtual void OnBootsrap()

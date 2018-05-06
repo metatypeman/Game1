@@ -12,5 +12,7 @@ namespace MyNPCLib
         INPCHandHost LeftHandHost { get; }
         ILogicalStorage HostLogicalStorage { get; }
         ulong SelfEntityId { get; }
+        bool IsReady { get; }
+        event Action OnReady;
     }
 }

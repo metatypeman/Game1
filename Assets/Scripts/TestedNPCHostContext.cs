@@ -17,11 +17,21 @@ namespace Assets.Scripts
             mInternalHumanoidHostContext = intenalHostContext;
             mInternalBodyHumanoidHost = internalBodyHumanoidHost;
 
+            mInternalBodyHumanoidHost.OnReady += MInternalBodyHumanoidHost_OnReady;
             mInternalBodyHumanoidHost.OnDie += MInternalBodyHumanoidHost_OnDie;
 
             mInternalBodyHumanoidHost.SetInternalHumanoidHostContext(intenalHostContext);
             mStates = new ProxyForStatesOfHumanoidBodyHost(mInternalBodyHumanoidHost);
             mInternalBodyHumanoidHost.OnHumanoidStatesChanged += InternalOnHumanoidStatesChanged;
+        }
+
+        private void MInternalBodyHumanoidHost_OnReady()
+        {
+#if DEBUG
+            LogInstance.Log("TestedNPCBodyHost MInternalBodyHumanoidHost_OnReady");
+#endif
+
+            OnReady?.Invoke();
         }
 
         public event Action OnDie;
@@ -87,6 +97,9 @@ namespace Assets.Scripts
         {
             return mInternalBodyHumanoidHost.CallInMainUI(function);
         }
+
+        public bool IsReady => mInternalBodyHumanoidHost.IsReady;
+        public event Action OnReady;
     }
 
     public class TestedNPCHandHost : INPCHandHost
@@ -129,31 +142,37 @@ namespace Assets.Scripts
     {
         public TestedNPCHostContext(IInternalBodyHumanoidHost internalBodyHumanoidHost)
         {
+            mInternalBodyHumanoidHost = internalBodyHumanoidHost;
             mInternalHumanoidHostContext = new InternalHumanoidHostContext();
 
             mBodyHost = new TestedNPCBodyHost(mInternalHumanoidHostContext, internalBodyHumanoidHost);
+            mBodyHost.OnReady += MBodyHost_OnReady;
+
             mRightHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
             mLeftHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
-            mHostLogicalStorage = internalBodyHumanoidHost.HostLogicalStorage;
-
-#if DEBUG
-            LogInstance.Log($"TestedNPCHostContext (mHostLogicalStorage == null) = {mHostLogicalStorage == null}");
-#endif
-
-            mSelfEntityId = internalBodyHumanoidHost.SelfEntityId;
         }
 
+        private void MBodyHost_OnReady()
+        {
+#if DEBUG
+            LogInstance.Log("TestedNPCHostContext MBodyHost_OnReady");
+#endif
+
+            OnReady?.Invoke();
+        }
+
+        private IInternalBodyHumanoidHost mInternalBodyHumanoidHost;
         private InternalHumanoidHostContext mInternalHumanoidHostContext;
         private TestedNPCBodyHost mBodyHost;
         private TestedNPCHandHost mRightHandHost;
         private TestedNPCHandHost mLeftHandHost;
-        private ILogicalStorage mHostLogicalStorage;
-        private ulong mSelfEntityId;
 
         public INPCBodyHost BodyHost => mBodyHost;
         public INPCHandHost RightHandHost => mRightHandHost;
         public INPCHandHost LeftHandHost => mLeftHandHost;
-        public ILogicalStorage HostLogicalStorage => mHostLogicalStorage;
-        public ulong SelfEntityId => mSelfEntityId;
+        public ILogicalStorage HostLogicalStorage => mInternalBodyHumanoidHost.HostLogicalStorage;
+        public ulong SelfEntityId => mInternalBodyHumanoidHost.SelfEntityId;
+        public bool IsReady => mBodyHost.IsReady;
+        public event Action OnReady;
     }
 }

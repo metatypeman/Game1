@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MyNPCLib.Logical
 {
@@ -18,30 +19,31 @@ namespace MyNPCLib.Logical
             LogInstance.Log("LogicalStorage()2");
 #endif
 
-            mHostLogicalStorage.OnChanged += MHostLogicalStorage_OnChanged;
+            mEntityDictionary = entityDictionary;
 
 #if DEBUG
             LogInstance.Log("LogicalStorage()3");
 #endif
 
-            mEntityDictionary = entityDictionary;
+            mStorageOfPassiveLogicalObjects = new StorageOfPassiveLogicalObjects();
 
 #if DEBUG
             LogInstance.Log("LogicalStorage()4");
 #endif
 
-            mStorageOfPassiveLogicalObjects = new StorageOfPassiveLogicalObjects();
+            mLogicalIndexStorage = new LogicalIndexStorage();
 
 #if DEBUG
             LogInstance.Log("LogicalStorage()5");
 #endif
-
-            mLogicalIndexStorage = new LogicalIndexStorage();
+            mLogicalIndexStorage.OnChanged += MHostLogicalStorage_OnChanged;
 
 #if DEBUG
             LogInstance.Log("LogicalStorage()6");
+            LogInstance.Log($"LogicalStorage() (mHostLogicalStorage == null) = {mHostLogicalStorage == null}");
 #endif
-            mLogicalIndexStorage.OnChanged += MHostLogicalStorage_OnChanged;
+
+            mHostLogicalStorage.OnChanged += MHostLogicalStorage_OnChanged;
 
 #if DEBUG
             LogInstance.Log("LogicalStorage()7");
@@ -53,8 +55,10 @@ namespace MyNPCLib.Logical
 #if DEBUG
             LogInstance.Log("LogicalStorage MHostLogicalStorage_OnChanged");
 #endif
-
-            OnChanged?.Invoke();
+            Task.Run(() =>
+            {
+                OnChanged?.Invoke();
+            });
         }
 
         private ILogicalStorage mHostLogicalStorage;

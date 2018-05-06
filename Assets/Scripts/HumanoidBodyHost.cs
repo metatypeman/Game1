@@ -111,7 +111,25 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private PassiveLogicalObject mSelfLogicalObject;
 
-    public ulong SelfEntityId { get; }
+    public ulong SelfEntityId => mSelfEntityId;
+
+    private ulong mSelfEntityId;
+
+    private readonly object mIsReadyLockObj = new object();
+    private bool mIsReady;
+
+    public bool IsReady
+    {
+        get
+        {
+            lock(mIsReadyLockObj)
+            {
+                return mIsReady;
+            }
+        }
+    }
+
+    public event Action OnReady;
 
     // Use this for initialization
     void Start ()
@@ -122,6 +140,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         mSelfLogicalObject = new PassiveLogicalObject(commonLevelHost.EntityDictionary, mLogicalObjectsBus);
         mLogicalObjectsBus.RegisterObject(mSelfLogicalObject.EntityId, mSelfLogicalObject);
+
+        mSelfEntityId = mSelfLogicalObject.EntityId;
 
         mStates = new InternalStatesOfHumanoidController();
         mBehaviourFlags = new BehaviourFlagsOfHumanoidController();
@@ -164,6 +184,14 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         ApplyCurrentStates();
 
+        lock(mIsReadyLockObj)
+        {
+            mIsReady = true;
+
+            Task.Run(() => {
+                OnReady?.Invoke();
+            });
+        }
 #if DEBUG
         LogInstance.Log("End HumanoidBodyHost Start");
 #endif

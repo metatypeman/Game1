@@ -21,5 +21,7 @@ namespace Assets.Scripts
         TResult CallInMainUI<TResult>(Func<TResult> function);
         ILogicalStorage HostLogicalStorage { get; }
         ulong SelfEntityId { get; }
+        bool IsReady { get; }
+        event Action OnReady;
     }
 }

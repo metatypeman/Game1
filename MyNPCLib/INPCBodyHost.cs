@@ -14,5 +14,7 @@ namespace MyNPCLib
         event Action OnDie;
         void CallInMainUI(Action function);
         TResult CallInMainUI<TResult>(Func<TResult> function);
+        bool IsReady { get; }
+        event Action OnReady;
     }
 }
