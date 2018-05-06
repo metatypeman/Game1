@@ -38,5 +38,7 @@ namespace MyNPCLib
 
         BaseAbstractLogicalObject SelfLogicalObject { get; }
         BaseAbstractLogicalObject GetLogicalObject(string query);
+
+        IList<VisionObject> VisibleObjects { get; }
     }
 }

@@ -45,6 +45,9 @@ namespace TmpSandBox.NPCBehaviour
         {
             return function();
         }
+
+        public bool IsReady => true;
+        public event Action OnReady;
     }
 
     public class StubOfNPCHandHost: INPCHandHost
@@ -109,5 +112,25 @@ namespace TmpSandBox.NPCBehaviour
         public INPCHandHost LeftHandHost => mLeftHandHost;
         public ILogicalStorage HostLogicalStorage => LogicalIndexStorageImpl;
         public ulong SelfEntityId => mSelfLogicalObject.EntityId;
+        public bool IsReady => mBodyHost.IsReady;
+        public event Action OnReady;
+
+        public IList<IHostVisionObject> VisibleObjects
+        {
+            get
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info("VisibleObjects");
+
+                var result = new List<IHostVisionObject>();
+
+                var item = new HostVisionObject();
+                item.EntityId = 2;
+
+                result.Add(item);
+                item.VisionItems = new List<IVisionItem>();
+
+                return result;
+            }
+        }
     }
 }

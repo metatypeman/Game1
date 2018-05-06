@@ -65,5 +65,15 @@ namespace MyNPCLib.Logical
                 mSource.SetPropertyValue(mSelfEntityId, propertyKey, value);
             }
         }
+
+        public override string PropertiesToSting(uint n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var sb = new StringBuilder();
+            sb.Append(base.PropertiesToSting(n));
+            sb.AppendLine($"{spaces}{nameof(CurrentEntityId)} = {CurrentEntityId}");
+            return sb.ToString();
+        }
     }
 }

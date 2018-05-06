@@ -372,6 +372,13 @@ namespace TmpSandBox
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext resultOfcomparsing (2) = {resultOfcomparsing}");
 
+            var visibleItems = context.VisibleObjects;
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext visibleItems.Count = {visibleItems.Count}");
+            foreach (var visibleItem in visibleItems)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext visibleItem = {visibleItem}");
+            }
+
             while (true)
             {
                 Thread.Sleep(10000);

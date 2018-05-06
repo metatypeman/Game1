@@ -37,7 +37,7 @@ namespace MyNPCLib
         {
             get
             {
-                return new List<VisionObject>() { new VisionObject() };//tmp
+                return Context.VisibleObjects;
             }
         }
 

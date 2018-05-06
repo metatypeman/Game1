@@ -727,6 +727,36 @@ namespace MyNPCLib
             return new LogicalObject(query, mEntityDictionary, mLogicalStorage);
         }
 
+        public IList<VisionObject> VisibleObjects
+        {
+            get
+            {
+                var hostVisibleObjectsList = mNPCHostContext.VisibleObjects;
+
+#if DEBUG
+                LogInstance.Log($"BaseNPCContext VisibleObjects hostVisibleObjectsList.Count = {hostVisibleObjectsList.Count}");
+#endif
+                var result = new List<VisionObject>();
+
+                if (hostVisibleObjectsList.IsEmpty())
+                {
+                    return result;
+                }
+
+                foreach (var hostVisibleObject in hostVisibleObjectsList)
+                {
+#if DEBUG
+                    LogInstance.Log($"BaseNPCContext VisibleObjects hostVisibleObject = {hostVisibleObject}");
+#endif
+
+                    var item = new VisionObject(hostVisibleObject.EntityId, hostVisibleObject.VisionItems, mEntityDictionary, mLogicalStorage);
+                    result.Add(item);                
+                }
+
+                return result;
+            }
+        }
+
         public void Dispose()
         {
 #if DEBUG

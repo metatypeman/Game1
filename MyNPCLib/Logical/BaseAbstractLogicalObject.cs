@@ -5,13 +5,32 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
-    public abstract class BaseAbstractLogicalObject : ILogicalObject
+    public abstract class BaseAbstractLogicalObject : ILogicalObject, IObjectToString
     {
         public abstract IList<ulong> CurrentEntitiesIdList { get; }
         public abstract ulong CurrentEntityId { get; }
         public abstract bool IsConcrete { get; }
         public abstract object this[ulong propertyKey] { get; set; }
         public abstract object this[string propertyName] { get; set; }
+
+        public override string ToString()
+        {
+            return ToString(0u);
+        }
+
+        public string ToString(uint n)
+        {
+            return this.GetDefaultToStringInformation(n);
+        }
+
+        public virtual string PropertiesToSting(uint n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(IsConcrete)} = {IsConcrete}");
+            return sb.ToString();
+        }
 
         private static bool NEqual(BaseAbstractLogicalObject item1, BaseAbstractLogicalObject item2)
         {
