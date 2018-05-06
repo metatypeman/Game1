@@ -8,14 +8,44 @@ namespace MyNPCLib.Logical
     {
         public LogicalStorage(IEntityDictionary entityDictionary, ILogicalStorage hostLogicalStorage)
         {
+#if DEBUG
+            LogInstance.Log("LogicalStorage()1");
+#endif
+
             mHostLogicalStorage = hostLogicalStorage;
+
+#if DEBUG
+            LogInstance.Log("LogicalStorage()2");
+#endif
 
             mHostLogicalStorage.OnChanged += MHostLogicalStorage_OnChanged;
 
+#if DEBUG
+            LogInstance.Log("LogicalStorage()3");
+#endif
+
             mEntityDictionary = entityDictionary;
+
+#if DEBUG
+            LogInstance.Log("LogicalStorage()4");
+#endif
+
             mStorageOfPassiveLogicalObjects = new StorageOfPassiveLogicalObjects();
+
+#if DEBUG
+            LogInstance.Log("LogicalStorage()5");
+#endif
+
             mLogicalIndexStorage = new LogicalIndexStorage();
+
+#if DEBUG
+            LogInstance.Log("LogicalStorage()6");
+#endif
             mLogicalIndexStorage.OnChanged += MHostLogicalStorage_OnChanged;
+
+#if DEBUG
+            LogInstance.Log("LogicalStorage()7");
+#endif
         }
 
         private void MHostLogicalStorage_OnChanged()
@@ -149,7 +179,7 @@ namespace MyNPCLib.Logical
             return mHostLogicalStorage.GetObjectByInstanceId(instanceId);
         }
 
-        public Dictionary<int, IReadOnlyLogicalObject> GetObjectsByInstancesId(List<int> instancesIdsList)
+        public IDictionary<int, IReadOnlyLogicalObject> GetObjectsByInstancesId(IList<int> instancesIdsList)
         {
             return mHostLogicalStorage.GetObjectsByInstancesId(instancesIdsList);
         }

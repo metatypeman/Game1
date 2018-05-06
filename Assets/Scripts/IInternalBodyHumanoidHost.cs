@@ -20,6 +20,6 @@ namespace Assets.Scripts
         void CallInMainUI(Action function);
         TResult CallInMainUI<TResult>(Func<TResult> function);
         ILogicalStorage HostLogicalStorage { get; }
-        IPassiveLogicalObject SelfLogicalObject { get; }
+        ulong SelfEntityId { get; }
     }
 }

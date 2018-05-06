@@ -109,12 +109,19 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     public ILogicalStorage HostLogicalStorage => mLogicalObjectsBus;
 
+    private PassiveLogicalObject mSelfLogicalObject;
+
+    public ulong SelfEntityId { get; }
+
     // Use this for initialization
     void Start ()
     {
         var commonLevelHost = LevelCommonHostFactory.Get();
         mGameObjectsBus = commonLevelHost.GameObjectsBus;
         mLogicalObjectsBus = commonLevelHost.LogicalObjectsBus;
+
+        mSelfLogicalObject = new PassiveLogicalObject(commonLevelHost.EntityDictionary, mLogicalObjectsBus);
+        mLogicalObjectsBus.RegisterObject(mSelfLogicalObject.EntityId, mSelfLogicalObject);
 
         mStates = new InternalStatesOfHumanoidController();
         mBehaviourFlags = new BehaviourFlagsOfHumanoidController();
@@ -156,6 +163,10 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mCurrentHeadAngle = 0f;
 
         ApplyCurrentStates();
+
+#if DEBUG
+        LogInstance.Log("End HumanoidBodyHost Start");
+#endif
     }
 
     public GameObject RightHand { get; private set; }

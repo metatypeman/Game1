@@ -20,6 +20,11 @@ namespace MyNPCLib
                 mEntityDictionary = entityDictionary;
             }
 
+
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext npcHostContext.SelfEntityId = {npcHostContext.SelfEntityId}");
+#endif
+
             mIdFactory = new IdFactory();
 
             npcHostContext.BodyHost.OnDie += BodyHost_OnDie;
@@ -29,6 +34,7 @@ namespace MyNPCLib
             mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Left, this);
             mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
             mLogicalStorage = new LogicalStorage(mEntityDictionary, npcHostContext.HostLogicalStorage);
+
             mSelfLogicalObject = new SelfLogicalObject(npcHostContext.SelfEntityId, mEntityDictionary, mLogicalStorage);
         }
 

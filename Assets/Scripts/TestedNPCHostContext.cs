@@ -135,7 +135,12 @@ namespace Assets.Scripts
             mRightHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
             mLeftHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
             mHostLogicalStorage = internalBodyHumanoidHost.HostLogicalStorage;
-            mSelfLogicalObject = internalBodyHumanoidHost.SelfLogicalObject;
+
+#if DEBUG
+            LogInstance.Log($"TestedNPCHostContext (mHostLogicalStorage == null) = {mHostLogicalStorage == null}");
+#endif
+
+            mSelfEntityId = internalBodyHumanoidHost.SelfEntityId;
         }
 
         private InternalHumanoidHostContext mInternalHumanoidHostContext;
@@ -143,12 +148,12 @@ namespace Assets.Scripts
         private TestedNPCHandHost mRightHandHost;
         private TestedNPCHandHost mLeftHandHost;
         private ILogicalStorage mHostLogicalStorage;
-        private IPassiveLogicalObject mSelfLogicalObject;
+        private ulong mSelfEntityId;
 
         public INPCBodyHost BodyHost => mBodyHost;
         public INPCHandHost RightHandHost => mRightHandHost;
         public INPCHandHost LeftHandHost => mLeftHandHost;
         public ILogicalStorage HostLogicalStorage => mHostLogicalStorage;
-        public IPassiveLogicalObject SelfLogicalObject => mSelfLogicalObject;
+        public ulong SelfEntityId => mSelfEntityId;
     }
 }

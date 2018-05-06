@@ -190,7 +190,7 @@ namespace MyNPCLib.Logical
             }
         }
 
-        public Dictionary<int, IReadOnlyLogicalObject> GetObjectsByInstancesId(List<int> instancesIdsList)
+        public IDictionary<int, IReadOnlyLogicalObject> GetObjectsByInstancesId(IList<int> instancesIdsList)
         {
             if (instancesIdsList.IsEmpty())
             {
