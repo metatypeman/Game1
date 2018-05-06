@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(EnemyRayScaner))]
 public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInternalHumanoid/*, IInternalLogicalObject*/
 {
     private Rigidbody mRigidbody;
@@ -184,7 +185,9 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         ApplyCurrentStates();
 
-        lock(mIsReadyLockObj)
+        mEnemyRayScaner = GetComponent<EnemyRayScaner>();
+
+        lock (mIsReadyLockObj)
         {
             mIsReady = true;
 
@@ -197,15 +200,13 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 #endif
     }
 
+    private EnemyRayScaner mEnemyRayScaner;
+
     public IList<IHostVisionObject> VisibleObjects
     {
         get
         {
-#if DEBUG
-            LogInstance.Log("HumanoidBodyHost VisibleObjects Not Implemented Yet!!!!!!!");
-#endif
-
-            return new List<IHostVisionObject>();
+            return mEnemyRayScaner.VisibleObjects;
         }
     }
 

@@ -43,13 +43,27 @@ namespace Assets.Scripts
 
             var targetObject = GetLogicalObject("name='TrafficBarrierRed'");
 
+#if UNITY_EDITOR
+            Debug.Log("TestedInspectingNPCProcess Awake NEXT");
+#endif
+
             var trigger = CreateTrigger(() => {
-                if(BlackBoard.VisibleObjects.Any(p => p == targetObject))
+#if UNITY_EDITOR
+                var visibleObjects = BlackBoard.VisibleObjects;
+                Debug.Log($"TestedInspectingNPCProcess Trigger visibleObjects.Count = {visibleObjects.Count}");
+                foreach (var tmpVisibleObject in visibleObjects)
+                {
+                    Debug.Log($"TestedInspectingNPCProcess Trigger tmpVisibleObject = {tmpVisibleObject}");
+                }
+#endif
+
+                if (BlackBoard.VisibleObjects.Any(p => p == targetObject))
                 {
                     return true;
                 }
 
 #if UNITY_EDITOR
+
                 //Debug.Log($"TestedInspectingNPCProcess Trigger visibleObjects.Count = {visibleObjects.Count}");
                 //foreach(var tmpVisibleObject in visibleObjects)
                 //{
@@ -64,7 +78,7 @@ namespace Assets.Scripts
                 }*/
 
                 return false;
-            }, 1000);
+            }, 100);
 
             trigger.OnFire += Trigger_OnFire;
         }

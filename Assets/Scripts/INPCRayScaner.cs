@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.Logical;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace Assets.Scripts
 {
     public interface INPCRayScaner
     {
-        List<InternalVisionObject> VisibleObjects { get; }
+        IList<IHostVisionObject> VisibleObjects { get; }
     }
 }

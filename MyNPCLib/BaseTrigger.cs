@@ -26,7 +26,7 @@ namespace MyNPCLib
         public void Start()
         {
 #if DEBUG
-            //LogInstance.Log($"Begin BaseTrigger Start");
+            LogInstance.Log($"Begin BaseTrigger Start");
 #endif
             lock (mStateLockObj)
             {
@@ -44,13 +44,20 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            //LogInstance.Log($"BaseTrigger Start NEXT {mPredicate.Invoke()}");
+            LogInstance.Log($"BaseTrigger Start NEXT");
+            try
+            {
+                LogInstance.Log($"BaseTrigger Start NEXT {mPredicate.Invoke()}");
+            }catch(Exception e)
+            {
+                LogInstance.Log($"BaseTrigger Start NEXT e = {e}");
+            }    
 #endif
 
             TryStartNRun();
 
 #if DEBUG
-            //LogInstance.Log($"End BaseTrigger Start");
+            LogInstance.Log($"End BaseTrigger Start");
 #endif
         }
 

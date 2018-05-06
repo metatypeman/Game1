@@ -177,7 +177,10 @@ namespace Assets.Scripts
 
         public IList<IHostVisionObject> VisibleObjects
         {
-            get;
+            get
+            {
+                return mInternalBodyHumanoidHost.VisibleObjects;
+            }
         }
     }
 }

@@ -30,14 +30,14 @@ namespace Assets.Scripts
             get
             {
 #if UNITY_EDITOR
-                //Debug.Log("TestedBlackBoard InternalVisibleObjects");
+                Debug.Log("TestedBlackBoard InternalVisibleObjects");
 #endif
-                if (mNPCRayScaner == null)
-                {
+                //if (mNPCRayScaner == null)
+                //{
                     return new List<InternalVisionObject>();
-                }
+                //}
 
-                return mNPCRayScaner.VisibleObjects;
+                //return mNPCRayScaner.InternalVisibleObjects;
             }
         }
         

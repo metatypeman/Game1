@@ -2763,7 +2763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09aed90169286f54f891fdcd5820b1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Head: {fileID: 0}
+  Head: {fileID: 1644060279}
   DefaultBodyAngleSpeed: 0.5
   DefaultHeadAngleSpeed: 0.5
 --- !u!1001 &676274917
@@ -2922,6 +2922,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &719648039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 719648037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d87711b46d77e8443af1ac6aaa5989be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 15
+  Offset: {x: 0, y: 1.6, z: 0}
+  HRaysCount: 6
+  VRaysCount: 6
+  Distance: 20
+  Angle: 20
+  Head: {fileID: 0}
 --- !u!114 &719648040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2957,7 +2975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09aed90169286f54f891fdcd5820b1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Head: {fileID: 0}
+  Head: {fileID: 1263749199}
   DefaultBodyAngleSpeed: 0.5
   DefaultHeadAngleSpeed: 0.5
 --- !u!1001 &726053857
@@ -8923,19 +8941,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400316, guid: b235179bd2a63d1468dd430670338c55, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.53267515
+      value: 0.5326752
       objectReference: {fileID: 0}
     - target: {fileID: 400316, guid: b235179bd2a63d1468dd430670338c55, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.07034045
+      value: 0.070340455
       objectReference: {fileID: 0}
     - target: {fileID: 400316, guid: b235179bd2a63d1468dd430670338c55, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.83613265
+      value: 0.83613276
       objectReference: {fileID: 0}
     - target: {fileID: 400316, guid: b235179bd2a63d1468dd430670338c55, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.11041513
+      value: -0.110415146
       objectReference: {fileID: 0}
     - target: {fileID: 9500000, guid: b235179bd2a63d1468dd430670338c55, type: 3}
       propertyPath: m_Controller
@@ -8984,6 +9002,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b235179bd2a63d1468dd430670338c55, type: 3}
   m_IsPrefabParent: 0
+--- !u!4 &1263749199 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 400174, guid: b235179bd2a63d1468dd430670338c55, type: 3}
+  m_PrefabInternal: {fileID: 1263749198}
 --- !u!1001 &1268939248
 Prefab:
   m_ObjectHideFlags: 0

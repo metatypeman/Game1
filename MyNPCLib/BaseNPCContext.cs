@@ -734,7 +734,7 @@ namespace MyNPCLib
                 var hostVisibleObjectsList = mNPCHostContext.VisibleObjects;
 
 #if DEBUG
-                LogInstance.Log($"BaseNPCContext VisibleObjects hostVisibleObjectsList.Count = {hostVisibleObjectsList.Count}");
+                LogInstance.Log($"BaseNPCContext VisibleObjects hostVisibleObjectsList.Count = {hostVisibleObjectsList?.Count}");
 #endif
                 var result = new List<VisionObject>();
 

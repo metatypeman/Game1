@@ -88,30 +88,44 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
             GetRaycast(targetTransform, localDirection, tmpVisibleItems);
         }
 
-        var newVisibleObjects = new List<InternalVisionObject>();
+        var newVisibleObjects = new List<IHostVisionObject>();
 
         if(tmpVisibleItems.Count > 0)
         {
             var tmpGroupedVisibleItems = tmpVisibleItems.GroupBy(p => p.InstanceID).ToDictionary(p => p.Key, p => p.ToList());
             var instancesIdList = tmpGroupedVisibleItems.Keys.ToList();
 
-            var gameObjectsDict = mGameObjectsBus.GetObjects(instancesIdList);
             var logicalObjectsDict = mLogicalObjectsBus.GetObjectsByInstancesId(instancesIdList);
 
             foreach (var tmpGroupedVisibleKVPItems in tmpGroupedVisibleItems)
             {
-                var item = new InternalVisionObject();
+                var item = new HostVisionObject();
                 var instanceID = tmpGroupedVisibleKVPItems.Key;
-                item.InstanceID = instanceID;
-                if(gameObjectsDict.ContainsKey(instanceID))
+ 
+                if(!logicalObjectsDict.ContainsKey(instanceID))
                 {
-                    item.GameObject = gameObjectsDict[instanceID];
+                    continue;
                 }
-                if(logicalObjectsDict.ContainsKey(instanceID))
+
+                var logicalObject = logicalObjectsDict[instanceID];
+                item.EntityId = logicalObject.EntityId;
+
+                var visibleItemsList = new List<IVisionItem>();
+
+                var sourceVisibleItemsList = tmpGroupedVisibleKVPItems.Value;
+
+                foreach(var sourceVisibleItem in sourceVisibleItemsList)
                 {
-                    item.LogicalObject = logicalObjectsDict[instanceID];
+                    var visibleItem = new VisionItem();
+                    var localDirection = sourceVisibleItem.LocalDirection;
+                    visibleItem.LocalDirection = new System.Numerics.Vector3(localDirection.x, localDirection.y, localDirection.z);
+                    var point = sourceVisibleItem.Point;
+                    visibleItem.Point = new System.Numerics.Vector3(point.x, point.y, point.z);
+                    visibleItem.Distance = sourceVisibleItem.Distance;
+                    visibleItemsList.Add(visibleItem);
                 }
-                item.VisionItems = tmpGroupedVisibleKVPItems.Value;
+
+                item.VisionItems = visibleItemsList;
                 newVisibleObjects.Add(item);
             }
         }
@@ -150,10 +164,10 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 #endif
     }
 
-    private List<InternalVisionObject> mVisibleObjects = new List<InternalVisionObject>();
+    private List<IHostVisionObject> mVisibleObjects = new List<IHostVisionObject>();
     private readonly object mVisibleItemsLockObj = new object();
 
-    public List<InternalVisionObject> VisibleObjects
+    public IList<IHostVisionObject> VisibleObjects
     {
         get
         {
