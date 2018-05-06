@@ -197,6 +197,18 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 #endif
     }
 
+    public IList<IHostVisionObject> VisibleObjects
+    {
+        get
+        {
+#if DEBUG
+            LogInstance.Log("HumanoidBodyHost VisibleObjects Not Implemented Yet!!!!!!!");
+#endif
+
+            return new List<IHostVisionObject>();
+        }
+    }
+
     public GameObject RightHand { get; private set; }
     public GameObject RightHandWP { get; private set; }
     public GameObject LeftHand { get; private set; }

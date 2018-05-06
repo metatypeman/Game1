@@ -23,5 +23,6 @@ namespace Assets.Scripts
         ulong SelfEntityId { get; }
         bool IsReady { get; }
         event Action OnReady;
+        IList<IHostVisionObject> VisibleObjects { get; }
     }
 }

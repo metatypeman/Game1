@@ -174,5 +174,10 @@ namespace Assets.Scripts
         public ulong SelfEntityId => mInternalBodyHumanoidHost.SelfEntityId;
         public bool IsReady => mBodyHost.IsReady;
         public event Action OnReady;
+
+        public IList<IHostVisionObject> VisibleObjects
+        {
+            get;
+        }
     }
 }
