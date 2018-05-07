@@ -1,5 +1,6 @@
 ﻿using MyNPCLib;
 using MyNPCLib.Logical;
+using MyNPCLib.Parser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,15 +27,27 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
+            TSTLexer();
             //TSTLogicalAST();
             //TSTLogicalObject();
             //TSTCancelTask_2();
             //TSTCancelTask();
-            TSTMyNPCContext();
+            //TSTMyNPCContext();
             //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTLexer()
+        {
+            var queryStr = "!((name='helen'|name='ann')&class='girl')";
+            var lexer = new Lexer(queryStr);
+            Token token = null;
+            while ((token = lexer.GetToken()) != null)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer token = {token}");
+            }
         }
 
         private static void TSTLogicalAST()
