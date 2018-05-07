@@ -49,11 +49,15 @@ namespace TmpSandBox
             //    NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer token = {token}");
             //}
             var context = new ParserContext(queryStr);
-            Token token = null;
-            while ((token = context.GetToken()) != null)
-            {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer token = {token}");
-            }
+            //Token token = null;
+            //while ((token = context.GetToken()) != null)
+            //{
+            //    NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer token = {token}");
+            //}
+            //var parser = new LogicalExpressionParser(context);
+            //parser.Run();
+            var node = LogicalExpressionParserHelper.CreateNode(context);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
         }
 
         private static void TSTLogicalAST()
