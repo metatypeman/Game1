@@ -15,6 +15,16 @@ namespace MyNPCLib.Parser
         Unknown,
 
         /// <summary>
+        /// Represents symbol `(`.
+        /// </summary>
+        OpenRoundBracket,
+
+        /// <summary>
+        /// Represents symbol `)`.
+        /// </summary>
+        CloseRoundBracket,
+
+        /// <summary>
         /// Represents symbol `!`.
         /// </summary>
         Not

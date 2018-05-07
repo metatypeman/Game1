@@ -50,8 +50,30 @@ namespace MyNPCLib.Parser
                 switch (mLexerState)
                 {
                     case LexerState.Init:
+                        if (char.IsLetterOrDigit(tmpChar))
+                        {
+                            tmpBuffer = new StringBuilder();
+                            tmpBuffer.Append(tmpChar);
+
+                            if (char.IsLetterOrDigit(mItems.Peek()))
+                            {
+                                mLexerState = LexerState.InWord;
+                            }
+                            else
+                            {
+                                return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+                            }
+                            break;
+                        }
+
                         switch (tmpChar)
                         {
+                            case '(':
+                                return CreateToken(TokenKind.OpenRoundBracket);
+
+                            case ')':
+                                return CreateToken(TokenKind.CloseRoundBracket);
+
                             case '!':
                                 return CreateToken(TokenKind.Not);
 
@@ -73,6 +95,40 @@ namespace MyNPCLib.Parser
 
                                     throw new UnexpectedSymbolException(tmpChar);
                                 }
+                        }
+                        break;
+
+                    case LexerState.InWord:
+                        {
+                            tmpBuffer.Append(tmpChar);
+                            mLexerState = LexerState.InWord;
+
+                            if (mItems.Count == 0)
+                            {
+                                mLexerState = LexerState.Init;
+                                return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+                            }
+
+                            var tmpNextChar = mItems.Peek();
+
+                            if (!char.IsLetterOrDigit(tmpNextChar) && tmpNextChar != '_')
+                            {
+                                mLexerState = LexerState.Init;
+                                return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+                            }
+                        }
+                        break;
+
+                    case LexerState.InRichWord:
+                        switch (tmpChar)
+                        {
+                            case '`':
+                                mLexerState = LexerState.Init;
+                                return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+
+                            default:
+                                tmpBuffer.Append(tmpChar);
+                                break;
                         }
                         break;
 
