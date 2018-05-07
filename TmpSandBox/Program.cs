@@ -42,9 +42,15 @@ namespace TmpSandBox
         private static void TSTLexer()
         {
             var queryStr = "!((name='helen'|name='ann')&class='girl')";
-            var lexer = new Lexer(queryStr);
+            //var lexer = new Lexer(queryStr);
+            //Token token = null;
+            //while ((token = lexer.GetToken()) != null)
+            //{
+            //    NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer token = {token}");
+            //}
+            var context = new ParserContext(queryStr);
             Token token = null;
-            while ((token = lexer.GetToken()) != null)
+            while ((token = context.GetToken()) != null)
             {
                 NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer token = {token}");
             }

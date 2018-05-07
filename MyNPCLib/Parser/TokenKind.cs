@@ -15,6 +15,16 @@ namespace MyNPCLib.Parser
         Unknown,
 
         /// <summary>
+        /// Represents some word. Next may transforms to Var, SELECT, INSERT.
+        /// </summary>
+        Word,
+
+        /// <summary>
+        /// Represents some number.
+        /// </summary>
+        Number,
+
+        /// <summary>
         /// Represents symbol `(`.
         /// </summary>
         OpenRoundBracket,
@@ -25,8 +35,23 @@ namespace MyNPCLib.Parser
         CloseRoundBracket,
 
         /// <summary>
+        /// Represents symbol `&amp;`.
+        /// </summary>
+        And,
+
+        /// <summary>
+        /// Represents symbol `|`.
+        /// </summary>
+        Or,
+
+        /// <summary>
         /// Represents symbol `!`.
         /// </summary>
-        Not
+        Not,
+
+        /// <summary>
+        /// Represents symbol `=`.
+        /// </summary>
+        Assing
     }
 }

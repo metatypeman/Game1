@@ -27,6 +27,7 @@ namespace MyNPCLib.Parser
 
         private int mCurrentPos;
         private int mCurrentLine = 1;
+        private char mEndStringChar;
 
         public Token GetToken()
         {
@@ -44,7 +45,7 @@ namespace MyNPCLib.Parser
                 mCurrentPos++;
 
 #if DEBUG
-                LogInstance.Log($"Lexer this GetToken tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
+                //LogInstance.Log($"Lexer this GetToken tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
 #endif
 
                 switch (mLexerState)
@@ -68,14 +69,38 @@ namespace MyNPCLib.Parser
 
                         switch (tmpChar)
                         {
+                            case ' ':
+                                break;
+
                             case '(':
                                 return CreateToken(TokenKind.OpenRoundBracket);
 
                             case ')':
                                 return CreateToken(TokenKind.CloseRoundBracket);
 
+                            case '&':
+                                return CreateToken(TokenKind.And);
+
+                            case '|':
+                                return CreateToken(TokenKind.Or);
+
                             case '!':
                                 return CreateToken(TokenKind.Not);
+
+                            case '=':
+                                return CreateToken(TokenKind.Assing);
+
+                            case '`':
+                                mEndStringChar = tmpChar;
+                                tmpBuffer = new StringBuilder();
+                                mLexerState = LexerState.InRichWord;
+                                break;
+
+                            case '\'':
+                                mEndStringChar = tmpChar;
+                                tmpBuffer = new StringBuilder();
+                                mLexerState = LexerState.InRichWord;
+                                break;
 
                             default:
                                 {
@@ -123,8 +148,14 @@ namespace MyNPCLib.Parser
                         switch (tmpChar)
                         {
                             case '`':
-                                mLexerState = LexerState.Init;
-                                return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+                            case '\'':
+                                if(mEndStringChar == tmpChar)
+                                {
+                                    mLexerState = LexerState.Init;
+                                    return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+                                }
+                                tmpBuffer.Append(tmpChar);
+                                break;
 
                             default:
                                 tmpBuffer.Append(tmpChar);
@@ -154,6 +185,22 @@ namespace MyNPCLib.Parser
             result.Line = mCurrentLine;
 
             return result;
+        }
+
+        public void Recovery(Token token)
+        {
+            mRecoveriesTokens.Enqueue(token);
+        }
+
+        /// <summary>
+        /// Number of remaining characters.
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                return mRecoveriesTokens.Count + mItems.Count;
+            }
         }
     }
 }
