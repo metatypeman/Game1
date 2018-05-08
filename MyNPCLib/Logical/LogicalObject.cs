@@ -8,7 +8,7 @@ namespace MyNPCLib.Logical
     {
         public override bool IsConcrete => false;
 
-        public LogicalObject(string query, IEntityDictionary entityDictionary, ILogicalStorage source)
+        public LogicalObject(string query, IEntityDictionary entityDictionary, ILogicalStorage source, QueriesCache queriesCache)
         {
 #if DEBUG
             LogInstance.Log($"Begin LogicalObject query = {query}");
@@ -16,13 +16,16 @@ namespace MyNPCLib.Logical
             mEntityDictionary = entityDictionary;
             mSource = source;
             mSource.OnChanged += MSource_OnChanged;
-            var rootQueryNode = QueryASTNodeFactory.CreateASTNode(query, entityDictionary);
 
-#if DEBUG
-            LogInstance.Log($"LogicalObject rootQueryNode = {rootQueryNode}");
-#endif
+            mPlan = queriesCache.CreatePlan(query);
 
-            mPlan = QueryResolverASTNodeFactory.CreatePlan(rootQueryNode);
+//            var rootQueryNode = QueryASTNodeFactory.CreateASTNode(query, entityDictionary);
+
+//#if DEBUG
+//            LogInstance.Log($"LogicalObject rootQueryNode = {rootQueryNode}");
+//#endif
+
+//            mPlan = QueryResolverASTNodeFactory.CreatePlan(rootQueryNode);
 
 #if DEBUG
             LogInstance.Log($"End LogicalObject query = {query}");

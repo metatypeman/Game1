@@ -9,7 +9,7 @@ namespace MyNPCLib
 {
     public class BaseNPCContext : INPCContext
     {
-        public BaseNPCContext(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, INPCHostContext npcHostContext = null)
+        public BaseNPCContext(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, INPCHostContext npcHostContext = null, QueriesCache queriesCache = null)
         {
             if (entityDictionary == null)
             {
@@ -91,6 +91,7 @@ namespace MyNPCLib
         private INPCHostContext mNPCHostContext;
         private readonly IdFactory mIdFactory;
         private readonly IEntityDictionary mEntityDictionary;
+        private readonly QueriesCache mQueriesCache;
         private readonly NPCBodyResourcesManager mBodyResourcesManager;
         private readonly NPCHandResourcesManager mRightHandResourcesManager;
         private readonly NPCHandResourcesManager mLeftHandResourcesManager;
