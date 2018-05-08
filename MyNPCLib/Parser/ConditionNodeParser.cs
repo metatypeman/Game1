@@ -119,5 +119,18 @@ namespace MyNPCLib.Parser
                 default: throw new ArgumentOutOfRangeException(nameof(mState), mState, null);
             }
         }
+
+        protected override void OnFinish()
+        {
+#if DEBUG
+            LogInstance.Log($"ConditionNodeParser OnRun mState = {mState} Context.Count = {Context.Count} mResult = {mResult} mConditionNode = {mConditionNode}");
+#endif
+
+            if(Context.Count == 0 && mResult == null && mConditionNode != null)
+            {
+                mResult = mConditionNode;
+                return;
+            }
+        }
     }
 }

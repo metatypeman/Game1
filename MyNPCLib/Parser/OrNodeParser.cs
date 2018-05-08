@@ -64,6 +64,34 @@ namespace MyNPCLib.Parser
                             }
                             break;
 
+                        case TokenKind.OpenRoundBracket:
+                            {
+                                var parser = new OpenRoundBracketNodeParser(Context);
+                                parser.Run();
+                                var result = parser.Result;
+                                mBinaryOperatorOfQueryASTNode.Right = result;
+                                mState = State.ArterRigthNode;
+
+#if DEBUG
+                                LogInstance.Log($"OrNodeParser OnRun result = {result}");
+#endif
+                            }
+                            break;
+
+                        case TokenKind.Not:
+                            {
+                                var parentNode = new NotNodeParser(Context);
+                                parentNode.Run();
+                                var result = parentNode.Result;
+                                mBinaryOperatorOfQueryASTNode.Right = result;
+                                mState = State.ArterRigthNode;
+
+#if DEBUG
+                                LogInstance.Log($"AndNodeParser OnRun result = {result}");
+#endif
+                            }
+                            break;
+
                         default:
                             throw new UnexpectedTokenException(CurrToken);
                     }

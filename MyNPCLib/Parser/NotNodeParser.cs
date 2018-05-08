@@ -40,6 +40,15 @@ namespace MyNPCLib.Parser
                     }
                     break;
 
+                case TokenKind.Word:
+                    {
+                        Context.Recovery(CurrToken);
+                        var parser = new ConditionNodeParser(Context, null);
+                        parser.Run();
+                        mResult.Left = parser.Result;
+                    }
+                    break;
+
                 default: throw new UnexpectedTokenException(CurrToken);
             }
         }

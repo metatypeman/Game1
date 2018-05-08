@@ -61,6 +61,70 @@ namespace TmpSandBox
             //parser.Run();
             var node = LogicalExpressionParserHelper.CreateNode(context);
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+
+            queryStr = "!((name='helen'&name='ann')|class='girl')";
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+
+            context = new ParserContext(queryStr, globalEntityDictionary);
+
+            node = LogicalExpressionParserHelper.CreateNode(context);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+
+            queryStr = "(name='helen'&name='ann')|class='girl'";
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+
+            context = new ParserContext(queryStr, globalEntityDictionary);
+
+            node = LogicalExpressionParserHelper.CreateNode(context);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+
+            queryStr = "class='girl'|(name='helen'&name='ann')";
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+
+            context = new ParserContext(queryStr, globalEntityDictionary);
+
+            node = LogicalExpressionParserHelper.CreateNode(context);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+
+            queryStr = "class='girl'&(name='helen'&name='ann')";
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+
+            context = new ParserContext(queryStr, globalEntityDictionary);
+
+            node = LogicalExpressionParserHelper.CreateNode(context);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+
+            queryStr = "class='girl'&!(name='helen'&name='ann')";
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+
+            context = new ParserContext(queryStr, globalEntityDictionary);
+
+            node = LogicalExpressionParserHelper.CreateNode(context);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+
+            queryStr = "class='girl'|!(name='helen'&name='ann')";
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+
+            context = new ParserContext(queryStr, globalEntityDictionary);
+
+            node = LogicalExpressionParserHelper.CreateNode(context);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+
+            queryStr = "!class='girl'";
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+
+            context = new ParserContext(queryStr, globalEntityDictionary);
+
+            node = LogicalExpressionParserHelper.CreateNode(context);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+
+            queryStr = "class='girl'";
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+
+            context = new ParserContext(queryStr, globalEntityDictionary);
+
+            node = LogicalExpressionParserHelper.CreateNode(context);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
         }
 
         private static void TSTLogicalAST()
