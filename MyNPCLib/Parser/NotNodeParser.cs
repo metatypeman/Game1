@@ -32,15 +32,15 @@ namespace MyNPCLib.Parser
 
             switch (CurrToken.TokenKind)
             {
-                case TokenKind.Not:
+                case TokenKind.OpenRoundBracket:
+                    {
+                        var parser = new OpenRoundBracketNodeParser(Context);
+                        parser.Run();
+                        mResult.Left = parser.Result;
+                    }
                     break;
 
-                default:
-                    Context.Recovery(CurrToken);
-                    var left = LogicalExpressionParserHelper.CreateNode(Context);
-                    mResult.Left = left;
-                    Exit();
-                    break;
+                default: throw new UnexpectedTokenException(CurrToken);
             }
         }
     }

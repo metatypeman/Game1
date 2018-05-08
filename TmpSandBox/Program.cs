@@ -42,13 +42,16 @@ namespace TmpSandBox
         private static void TSTLexer()
         {
             var queryStr = "!((name='helen'|name='ann')&class='girl')";
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+
             //var lexer = new Lexer(queryStr);
             //Token token = null;
             //while ((token = lexer.GetToken()) != null)
             //{
             //    NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer token = {token}");
             //}
-            var context = new ParserContext(queryStr);
+            var globalEntityDictionary = new EntityDictionary();
+            var context = new ParserContext(queryStr, globalEntityDictionary);
             //Token token = null;
             //while ((token = context.GetToken()) != null)
             //{

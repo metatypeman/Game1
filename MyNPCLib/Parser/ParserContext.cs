@@ -6,12 +6,14 @@ namespace MyNPCLib.Parser
 {
     public class ParserContext
     {
-        public ParserContext(string text)
+        public ParserContext(string text, IEntityDictionary entityDictionary)
         {
             mLexer = new Lexer(text);
+            mEntityDictionary = entityDictionary;
         }
 
         private Lexer mLexer;
+        private IEntityDictionary mEntityDictionary;
         private Queue<Token> mRecoveriesTokens = new Queue<Token>();
 
         public Token GetToken()
@@ -52,6 +54,11 @@ namespace MyNPCLib.Parser
             {
                 return mRecoveriesTokens.Count + mLexer.Count;
             }
+        }
+
+        public ulong GetKey(string name)
+        {
+            return mEntityDictionary.GetKey(name);
         }
     }
 }

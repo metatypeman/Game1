@@ -21,17 +21,6 @@ namespace MyNPCLib.Logical
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(OperatorId)} = {OperatorId}");
-            if (Right == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(Right)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin{nameof(Right)}");
-                sb.Append(Right.ToString(nextN));
-                sb.AppendLine($"{spaces}End{nameof(Right)}");
-            }
-
             if (Left == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Left)} = null");
@@ -41,6 +30,16 @@ namespace MyNPCLib.Logical
                 sb.AppendLine($"{spaces}Begin{nameof(Left)}");
                 sb.Append(Left.ToString(nextN));
                 sb.AppendLine($"{spaces}End{nameof(Left)}");
+            }
+            if (Right == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Right)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin{nameof(Right)}");
+                sb.Append(Right.ToString(nextN));
+                sb.AppendLine($"{spaces}End{nameof(Right)}");
             }
             return sb.ToString();
         }
