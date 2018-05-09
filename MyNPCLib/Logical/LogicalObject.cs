@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.Logical
@@ -69,7 +70,18 @@ namespace MyNPCLib.Logical
             }     
         }
 
-        public override ulong CurrentEntityId => throw new NotImplementedException();
+        public override ulong CurrentEntityId
+        {
+            get
+            {
+                if(mCurrentEnitiesIdList.Count == 0)
+                {
+                    return 0ul;
+                }
+
+                return mCurrentEnitiesIdList.First();
+            }
+        } 
 
         private void UpdateCurrentEnitiesIdList()
         {
