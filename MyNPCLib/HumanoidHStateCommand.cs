@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace MyNPCLib
@@ -8,7 +9,7 @@ namespace MyNPCLib
     {
         public override HumanoidBodyCommandKind Kind => HumanoidBodyCommandKind.HState;
         public HumanoidHState State { get; set; }
-        public object TargetPosition { get; set; }
+        public Vector3? TargetPosition { get; set; }
         public float Speed { get; set; }
 
         public override string ToString()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace MyNPCLib
@@ -7,12 +8,12 @@ namespace MyNPCLib
     public class TargetStateOfHumanoidBody : IObjectToString
     {
         public HumanoidHState? HState { get; set; }
-        public object TargetPosition { get; set; }
+        public Vector3? TargetPosition { get; set; }
         public HumanoidVState? VState { get; set; }
         public HumanoidHandsState? HandsState { get; set; }
         public HumanoidHandsActionState? HandsActionState { get; set; }
         public HumanoidHeadState? HeadState { get; set; }
-        public object TargetHeadPosition { get; set; }
+        public Vector3? TargetHeadPosition { get; set; }
         public KindOfHumanoidThingsCommand? KindOfThingsCommand { get; set; }
         public int? InstanceOfThingId { get; set; }
 

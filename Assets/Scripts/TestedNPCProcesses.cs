@@ -287,7 +287,7 @@ namespace Assets.Scripts
             {
                 var moveCommand = new HumanoidHStateCommand();
                 moveCommand.State = HumanoidHState.Walk;
-                moveCommand.TargetPosition = targetWayPoint.Position;
+                moveCommand.TargetPosition = VectorsConvertor.UnityToNumeric(targetWayPoint.Position);
 
 #if UNITY_EDITOR
                 Debug.Log($"TestedGoToEnemyBaseNPCProcess Main moveCommand = {moveCommand}");
@@ -406,7 +406,7 @@ namespace Assets.Scripts
     [NPCProcessName("fire to ethan")]    
     public class TestedFireToEthanNPCProcess : TestedBaseNPCProcess
     {
-        public static NPCCommand CreateCommand(Vector3 targetPosition)
+        public static NPCCommand CreateCommand(System.Numerics.Vector3 targetPosition)
         {
             var command = new NPCCommand();
             command.Name = "fire to ethan";
@@ -414,7 +414,7 @@ namespace Assets.Scripts
             return command;
         }
         
-        private void Main(Vector3 targetPosition)
+        private void Main(System.Numerics.Vector3 targetPosition)
         {
 #if UNITY_EDITOR
             Debug.Log($"Begin TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
@@ -452,7 +452,7 @@ namespace Assets.Scripts
 
             var tmpCommand = new HumanoidHStateCommand();
             tmpCommand.State = HumanoidHState.Rotate;
-            tmpCommand.TargetPosition = new Vector3(0, angle, 0);
+            tmpCommand.TargetPosition = new System.Numerics.Vector3(0, angle, 0);
 
             var tmpTask = ExecuteBody(tmpCommand);
 
@@ -482,7 +482,7 @@ namespace Assets.Scripts
 
             var tmpCommand = new HumanoidHeadStateCommand();
             tmpCommand.State = HumanoidHeadState.Rotate;
-            tmpCommand.TargetPosition = new Vector3(0, angle, 0);
+            tmpCommand.TargetPosition = new System.Numerics.Vector3(0, angle, 0);
 
             var tmpTask = ExecuteBody(tmpCommand);
 
@@ -538,7 +538,7 @@ namespace Assets.Scripts
 
             var tmpCommand = new HumanoidHStateCommand();
             tmpCommand.State = HumanoidHState.Move;
-            tmpCommand.TargetPosition = new Vector3(0, 0, 1);
+            tmpCommand.TargetPosition = new System.Numerics.Vector3(0, 0, 1);
             var tmpTask = ExecuteBody(tmpCommand);
 
 #if UNITY_EDITOR

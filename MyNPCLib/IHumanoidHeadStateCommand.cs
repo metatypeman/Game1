@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace MyNPCLib
@@ -14,7 +15,7 @@ namespace MyNPCLib
     public interface IHumanoidHeadStateCommand : IHumanoidBodyCommand
     {
         HumanoidHeadState State { get; }
-        object TargetPosition { get; }
+        Vector3? TargetPosition { get; }
         float Speed { get; }
     }
 }

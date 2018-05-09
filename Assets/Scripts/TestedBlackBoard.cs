@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -13,7 +13,7 @@ namespace Assets.Scripts
         public override void Bootstrap()
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedBlackBoard Bootstrap");
+            LogInstance.Log("TestedBlackBoard Bootstrap");
 #endif
 
             mNPCRayScaner = Context.GetInstance<INPCRayScaner>();

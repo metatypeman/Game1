@@ -15,28 +15,14 @@ namespace Assets.Scripts
             var result = new InternalTargetStateOfHumanoidController();
             result.HState = state.HState;
 
-            if (state.TargetPosition == null)
-            {
-                result.TargetPosition = null;
-            }
-            else
-            {
-                result.TargetPosition = (Vector3)state.TargetPosition;
-            }
+            result.TargetPosition = VectorsConvertor.NullableNumericToUnity(state.TargetPosition);
 
             result.VState = state.VState;
             result.HandsState = state.HandsState;
             result.HandsActionState = state.HandsActionState;
             result.HeadState = state.HeadState;
 
-            if (state.TargetHeadPosition == null)
-            {
-                result.TargetHeadPosition = null;
-            }
-            else
-            {
-                result.TargetHeadPosition = (Vector3)result.TargetHeadPosition;
-            }
+            result.TargetHeadPosition = VectorsConvertor.NullableNumericToUnity(state.TargetHeadPosition);
 
             result.KindOfThingsCommand = state.KindOfThingsCommand;
             result.InstanceOfThingId = state.InstanceOfThingId;

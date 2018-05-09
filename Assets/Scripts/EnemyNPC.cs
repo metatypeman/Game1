@@ -51,11 +51,11 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         var _target = GameObject.Find("Ethan");
 
-        Vector3? ethanPosition = null;
+        System.Numerics.Vector3? ethanPosition = null;
 
         if (_target != null)
         {
-            ethanPosition = _target.transform.position;
+            ethanPosition = VectorsConvertor.UnityToNumeric(_target.transform.position);
         }
 
         var internalBodyHost = GetComponent<IInternalBodyHumanoidHost>();

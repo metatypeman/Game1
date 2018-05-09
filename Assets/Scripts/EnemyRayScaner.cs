@@ -116,10 +116,8 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
                 foreach(var sourceVisibleItem in sourceVisibleItemsList)
                 {
                     var visibleItem = new VisionItem();
-                    var localDirection = sourceVisibleItem.LocalDirection;
-                    visibleItem.LocalDirection = new System.Numerics.Vector3(localDirection.x, localDirection.y, localDirection.z);
-                    var point = sourceVisibleItem.Point;
-                    visibleItem.Point = new System.Numerics.Vector3(point.x, point.y, point.z);
+                    visibleItem.LocalDirection = VectorsConvertor.UnityToNumeric(sourceVisibleItem.LocalDirection);
+                    visibleItem.Point = VectorsConvertor.UnityToNumeric(sourceVisibleItem.Point);
                     visibleItem.Distance = sourceVisibleItem.Distance;
                     visibleItemsList.Add(visibleItem);
                 }

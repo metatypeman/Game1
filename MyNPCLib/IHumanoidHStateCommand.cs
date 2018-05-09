@@ -19,7 +19,7 @@ namespace MyNPCLib
     public interface IHumanoidHStateCommand: IHumanoidBodyCommand
     {
         HumanoidHState State { get; }
-        object TargetPosition { get; }
+        Vector3? TargetPosition { get; }
         float Speed { get; }
     }
 }

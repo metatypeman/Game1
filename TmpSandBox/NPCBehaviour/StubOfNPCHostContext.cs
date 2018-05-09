@@ -98,7 +98,7 @@ namespace TmpSandBox.NPCBehaviour
             mLeftHandHost = new StubOfNPCHandHost();
             LogicalIndexStorageImpl = new LogicalIndexStorage();
             mSelfLogicalObject = new PassiveLogicalObject(entityDictionary, LogicalIndexStorageImpl);
-            LogicalIndexStorageImpl.RegisterObject(mSelfLogicalObject.EntityId, mSelfLogicalObject);
+            LogicalIndexStorageImpl.RegisterObject(mSelfLogicalObject);
         }
 
         private StubOfNPCBodyHost mBodyHost;

@@ -21,7 +21,7 @@ namespace Assets.Scripts
             {
                 var moveCommand = new HumanoidHStateCommand();
                 moveCommand.State = HumanoidHState.Walk;
-                moveCommand.TargetPosition = targetWayPoint.Position;
+                moveCommand.TargetPosition = VectorsConvertor.UnityToNumeric(targetWayPoint.Position);
 
 #if UNITY_EDITOR
                 //Debug.Log($"TestedRunAwayNPCProcess GoToTargetWayPoint moveCommand = {moveCommand}");

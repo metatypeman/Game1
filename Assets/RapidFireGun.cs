@@ -259,7 +259,14 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     private void NotifyAboutFire()
     {
         Task.Run(() => {
-            OnFire?.Invoke();
+            try
+            {
+                OnFire?.Invoke();
+            }
+            catch(Exception e)
+            {
+                Debug.Log($"RapidFireGun NotifyAboutFire e = {e}");
+            }          
         });
     }
 
