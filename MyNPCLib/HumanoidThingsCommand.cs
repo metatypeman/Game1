@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.Logical;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,7 +9,7 @@ namespace MyNPCLib
     {
         public override HumanoidBodyCommandKind Kind => HumanoidBodyCommandKind.Things;
         public KindOfHumanoidThingsCommand State { get; set; }
-        public int InstanceId { get; set; }
+        public BaseAbstractLogicalObject Thing { get; set; }
 
         public override string ToString()
         {
@@ -23,10 +24,11 @@ namespace MyNPCLib
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToSting(n));
             sb.AppendLine($"{spaces}{nameof(State)} = {State}");
-            sb.AppendLine($"{spaces}{nameof(InstanceId)} = {InstanceId}");
+            sb.AppendLine($"{spaces}{nameof(Thing)} = {Thing.ToString(nextN)}");
             return sb.ToString();
         }
     }

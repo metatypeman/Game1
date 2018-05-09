@@ -18,7 +18,7 @@ namespace Assets.Scripts
         public HumanoidHeadState HeadState = HumanoidHeadState.LookingForward;
         public Vector3? TargetHeadPosition;
         public KindOfHumanoidThingsCommand KindOfThingsCommand = KindOfHumanoidThingsCommand.Undefined;
-        public int InstanceOfThingId;
+        public ulong EntityIdOfThing;
 
         public InternalStatesOfHumanoidController Clone()
         {
@@ -31,7 +31,7 @@ namespace Assets.Scripts
             result.HeadState = HeadState;
             result.TargetHeadPosition = TargetHeadPosition;
             result.KindOfThingsCommand = KindOfThingsCommand;
-            result.InstanceOfThingId = InstanceOfThingId;
+            result.EntityIdOfThing = EntityIdOfThing;
             return result;
         }
 
@@ -45,7 +45,7 @@ namespace Assets.Scripts
             HeadState = source.HeadState;
             TargetHeadPosition = source.TargetHeadPosition;
             KindOfThingsCommand = source.KindOfThingsCommand;
-            InstanceOfThingId = source.InstanceOfThingId;
+            EntityIdOfThing = source.EntityIdOfThing;
         }
 
         public override string ToString()
@@ -90,7 +90,7 @@ namespace Assets.Scripts
             }
 
             sb.AppendLine($"{spaces}{nameof(KindOfThingsCommand)} = {KindOfThingsCommand}");
-            sb.AppendLine($"{spaces}{nameof(InstanceOfThingId)} = {InstanceOfThingId}");
+            sb.AppendLine($"{spaces}{nameof(EntityIdOfThing)} = {EntityIdOfThing}");
 
             return sb.ToString();
         }

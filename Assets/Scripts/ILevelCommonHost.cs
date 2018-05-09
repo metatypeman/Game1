@@ -13,7 +13,7 @@ namespace Assets.Scripts
         IEntityDictionary EntityDictionary { get; }
         NPCProcessInfoCache NPCProcessInfoCache { get; }
         LogicalObjectsBus LogicalObjectsBus { get; }
-        GameObjectsBus GameObjectsBus { get; }
         QueriesCache QueriesCache { get; }
+        HandThingsBus HandThingsBus { get; }
     }
 }

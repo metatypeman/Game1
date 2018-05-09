@@ -25,7 +25,7 @@ namespace Assets.Scripts
             result.TargetHeadPosition = VectorsConvertor.NullableNumericToUnity(state.TargetHeadPosition);
 
             result.KindOfThingsCommand = state.KindOfThingsCommand;
-            result.InstanceOfThingId = state.InstanceOfThingId;
+            result.EntityIdOfThing = state.EntityIdOfThing;
 
             return result;
         }

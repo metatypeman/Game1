@@ -17,13 +17,11 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
     public Transform Head;
 
     private List<Vector3> mRayDirectionsList = new List<Vector3>();
-    private GameObjectsBus mGameObjectsBus;
     private LogicalObjectsBus mLogicalObjectsBus;
 
     // Use this for initialization
     void Start () {
         var commonLevelHost = LevelCommonHostFactory.Get();
-        mGameObjectsBus = commonLevelHost.GameObjectsBus;
         mLogicalObjectsBus = commonLevelHost.LogicalObjectsBus;
 
         var dz = 0f;

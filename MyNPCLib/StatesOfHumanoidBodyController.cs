@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace MyNPCLib
@@ -7,14 +8,14 @@ namespace MyNPCLib
     public class StatesOfHumanoidBodyController : IObjectToString, IStatesOfHumanoidBodyHost
     {
         public HumanoidHState HState { get; set; } = HumanoidHState.Stop;
-        public object TargetPosition { get; set; }
+        public Vector3? TargetPosition { get; set; }
         public HumanoidVState VState { get; set; } = HumanoidVState.Ground;
         public HumanoidHandsState HandsState { get; set; } = HumanoidHandsState.FreeHands;
         public HumanoidHandsActionState HandsActionState { get; set; } = HumanoidHandsActionState.Empty;
         public HumanoidHeadState HeadState { get; set; } = HumanoidHeadState.LookingForward;
-        public object TargetHeadPosition { get; set; }
+        public Vector3? TargetHeadPosition { get; set; }
         public KindOfHumanoidThingsCommand KindOfThingsCommand { get; set; } = KindOfHumanoidThingsCommand.Undefined;
-        public int InstanceOfThingId { get; set; }
+        public ulong? EntityIdOfThing { get; set; }
 
         public StatesOfHumanoidBodyController Clone()
         {
@@ -27,7 +28,7 @@ namespace MyNPCLib
             result.HeadState = HeadState;
             result.TargetHeadPosition = TargetHeadPosition;
             result.KindOfThingsCommand = KindOfThingsCommand;
-            result.InstanceOfThingId = InstanceOfThingId;
+            result.EntityIdOfThing = EntityIdOfThing;
             return result;
         }
 
@@ -41,7 +42,7 @@ namespace MyNPCLib
             HeadState = source.HeadState;
             TargetHeadPosition = source.TargetHeadPosition;
             KindOfThingsCommand = source.KindOfThingsCommand;
-            InstanceOfThingId = source.InstanceOfThingId;
+            EntityIdOfThing = source.EntityIdOfThing;
         }
 
         public override string ToString()
@@ -84,7 +85,7 @@ namespace MyNPCLib
             }
 
             sb.AppendLine($"{spaces}{nameof(KindOfThingsCommand)} = {KindOfThingsCommand}");
-            sb.AppendLine($"{spaces}{nameof(InstanceOfThingId)} = {InstanceOfThingId}");
+            sb.AppendLine($"{spaces}{nameof(EntityIdOfThing)} = {EntityIdOfThing}");
 
             return sb.ToString();
         }

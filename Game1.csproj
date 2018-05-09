@@ -354,7 +354,7 @@
     <Compile Include="Assets\Scripts\EnemyRayScaner.cs" />
     <Compile Include="Assets\Scripts\FarWaypoint.cs" />
     <Compile Include="Assets\Scripts\GameObjectHelper.cs" />
-    <Compile Include="Assets\Scripts\GameObjectsBus.cs" />
+    <Compile Include="Assets\Scripts\HandThingsBus.cs" />
     <Compile Include="Assets\Scripts\HumanoidBodyHost.cs" />
     <Compile Include="Assets\Scripts\IHandThing.cs" />
     <Compile Include="Assets\Scripts\IInternalBodyHumanoidHost.cs" />

@@ -44,8 +44,6 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private bool mUseIkAnimation;
 
-    private GameObjectsBus mGameObjectsBus;
-
     public void CallInMainUI(Action function)
     {
         var invocable = new InvocableInMainThreadObj(function, this);
@@ -107,7 +105,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private IInternalHumanoidHostContext mInternalHumanoidHostContext;
     private LogicalObjectsBus mLogicalObjectsBus;
-
+   
     public ILogicalStorage HostLogicalStorage => mLogicalObjectsBus;
 
     private PassiveLogicalObject mSelfLogicalObject;
@@ -115,6 +113,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     public ulong SelfEntityId => mSelfEntityId;
 
     private ulong mSelfEntityId;
+
+    private HandThingsBus mHandThingsBus;
 
     private readonly object mIsReadyLockObj = new object();
     private bool mIsReady;
@@ -136,8 +136,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     void Start ()
     {
         var commonLevelHost = LevelCommonHostFactory.Get();
-        mGameObjectsBus = commonLevelHost.GameObjectsBus;
         mLogicalObjectsBus = commonLevelHost.LogicalObjectsBus;
+        mHandThingsBus = commonLevelHost.HandThingsBus;
 
         var tmpGameObject = gameObject;
         var instanceId = tmpGameObject.GetInstanceID();
@@ -279,7 +279,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         Debug.Log($"HumanoidBodyHost NExecute newState = {newState}");
 #endif
 
-        if (newState.KindOfThingsCommand != KindOfHumanoidThingsCommand.Undefined && newState.InstanceOfThingId != 0)
+        if (newState.KindOfThingsCommand != KindOfHumanoidThingsCommand.Undefined && newState.EntityIdOfThing != 0)
         {
             ExecuteThingsCommand(newState);
         }
@@ -297,9 +297,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         var kindOfThingsCommand = targetState.KindOfThingsCommand;
 
-        var gameObjectOfThing = mGameObjectsBus.GetObject(targetState.InstanceOfThingId);
-
-        var thing = gameObjectOfThing.GetComponent<IHandThing>();
+        var thing = mHandThingsBus.GetThing(targetState.EntityIdOfThing);
 
         switch (kindOfThingsCommand)
         {
@@ -378,9 +376,9 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         if (targetState.KindOfThingsCommand.HasValue)
         {
             result.KindOfThingsCommand = targetState.KindOfThingsCommand.Value;
-            if (targetState.InstanceOfThingId.HasValue)
+            if (targetState.EntityIdOfThing.HasValue)
             {
-                result.InstanceOfThingId = targetState.InstanceOfThingId.Value;
+                result.EntityIdOfThing = targetState.EntityIdOfThing.Value;
             }
         }
 

@@ -20,8 +20,8 @@ namespace Assets.Scripts
             mEntityDictionary = new EntityDictionary();
             mNPCProcessInfoCache = new NPCProcessInfoCache();
             mLogicalObjectsBus = new LogicalObjectsBus();
-            mGameObjectsBus = new GameObjectsBus();
             mQueriesCache = new QueriesCache(mEntityDictionary);
+            mHandThingsBus = new HandThingsBus();
         }
 
         private IEntityDictionary mEntityDictionary;
@@ -35,12 +35,13 @@ namespace Assets.Scripts
         private LogicalObjectsBus mLogicalObjectsBus;
         public LogicalObjectsBus LogicalObjectsBus => mLogicalObjectsBus;
 
-        private GameObjectsBus mGameObjectsBus;
-        public GameObjectsBus GameObjectsBus => mGameObjectsBus;
-
         private QueriesCache mQueriesCache;
 
         public QueriesCache QueriesCache => mQueriesCache;
+
+        private HandThingsBus mHandThingsBus;
+
+        public HandThingsBus HandThingsBus => mHandThingsBus;
 
         // Use this for initialization
         void Start()

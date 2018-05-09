@@ -84,14 +84,16 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
 
         mPassiveLogicalObject = new PassiveLogicalObject(commonLevelHost.EntityDictionary, commonLevelHost.LogicalObjectsBus);
 
+        var entityId = mPassiveLogicalObject.EntityId;
+
         var tmpGameObject = gameObject;
         var instanceId = tmpGameObject.GetInstanceID();
 
         mPassiveLogicalObject["name"] = tmpGameObject.name;
 
         commonLevelHost.LogicalObjectsBus.RegisterObject(instanceId, this);
-        commonLevelHost.GameObjectsBus.RegisterObject(instanceId, tmpGameObject);
-
+        commonLevelHost.HandThingsBus.RegisterThing(entityId, this);
+        
         mGunParticles = GetComponent<ParticleSystem>();
 
         if (mGunParticles == null)

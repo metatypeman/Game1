@@ -15,7 +15,7 @@ namespace MyNPCLib
         public HumanoidHeadState? HeadState { get; set; }
         public Vector3? TargetHeadPosition { get; set; }
         public KindOfHumanoidThingsCommand? KindOfThingsCommand { get; set; }
-        public int? InstanceOfThingId { get; set; }
+        public ulong? EntityIdOfThing { get; set; }
 
         public override string ToString()
         {
@@ -109,14 +109,14 @@ namespace MyNPCLib
                 sb.AppendLine($"{spaces}{nameof(KindOfThingsCommand)} = null");
             }
 
-            if (InstanceOfThingId.HasValue)
+            if (EntityIdOfThing.HasValue)
             {
-                var state = InstanceOfThingId.Value;
-                sb.AppendLine($"{spaces}{nameof(InstanceOfThingId)} = {state}");
+                var state = EntityIdOfThing.Value;
+                sb.AppendLine($"{spaces}{nameof(EntityIdOfThing)} = {state}");
             }
             else
             {
-                sb.AppendLine($"{spaces}{nameof(InstanceOfThingId)} = null");
+                sb.AppendLine($"{spaces}{nameof(EntityIdOfThing)} = null");
             }
 
             return sb.ToString();

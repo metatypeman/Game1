@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,7 +32,7 @@ namespace Assets.Scripts
             }
         }
 
-        public object TargetPosition
+        public Vector3? TargetPosition
         {
             get
             {
@@ -106,7 +107,7 @@ namespace Assets.Scripts
             }
         }
 
-        public object TargetHeadPosition
+        public Vector3? TargetHeadPosition
         {
             get
             {
@@ -136,7 +137,7 @@ namespace Assets.Scripts
             }
         }
 
-        public int InstanceOfThingId
+        public ulong? EntityIdOfThing
         {
             get
             {
@@ -144,10 +145,10 @@ namespace Assets.Scripts
 
                 if (state == null)
                 {
-                    return 0;
+                    return 0ul;
                 }
 
-                return state.InstanceOfThingId;
+                return state.EntityIdOfThing;
             }
         }
 

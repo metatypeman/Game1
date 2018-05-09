@@ -343,7 +343,13 @@ namespace MyNPCLib
                         var targetCommand = command as IHumanoidThingsCommand;
 
                         result.KindOfThingsCommand = targetCommand.State;
-                        result.InstanceOfThingId = targetCommand.InstanceId;
+
+                        var thing = targetCommand.Thing;
+
+                        if(thing != null)
+                        {
+                            result.EntityIdOfThing = thing.CurrentEntityId;
+                        }                        
                     }
                     break;
 

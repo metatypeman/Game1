@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.Logical;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,6 +16,6 @@ namespace MyNPCLib
     public interface IHumanoidThingsCommand : IHumanoidBodyCommand
     {
         KindOfHumanoidThingsCommand State { get; }
-        int InstanceId { get; set; }
+        BaseAbstractLogicalObject Thing { get; set; }
     }
 }
