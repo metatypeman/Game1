@@ -24,22 +24,6 @@ namespace Assets.Scripts
         public Vector3? EthanPosition { get; set; }
 
         private INPCRayScaner mNPCRayScaner { get; set; }
-
-        public List<InternalVisionObject> InternalVisibleObjects
-        {
-            get
-            {
-#if UNITY_EDITOR
-                Debug.Log("TestedBlackBoard InternalVisibleObjects");
-#endif
-                //if (mNPCRayScaner == null)
-                //{
-                    return new List<InternalVisionObject>();
-                //}
-
-                //return mNPCRayScaner.InternalVisibleObjects;
-            }
-        }
         
         public override string ToString()
         {

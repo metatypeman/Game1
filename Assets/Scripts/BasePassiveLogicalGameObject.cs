@@ -45,7 +45,7 @@ namespace Assets.Scripts
 
             OnInitFacts();
 
-            commonLevelHost.LogicalObjectsBus.RegisterObjectByInstanceId(instanceId, this);
+            commonLevelHost.LogicalObjectsBus.RegisterObject(instanceId, this);
             commonLevelHost.GameObjectsBus.RegisterObject(instanceId, tmpGameObject);
         }
 

@@ -29,7 +29,7 @@ namespace MyNPCLib.Logical
                 var rootQueryNode = QueryASTNodeFactory.CreateASTNode(query, mEntityDictionary);
 
 #if DEBUG
-                LogInstance.Log($"QueriesCache CreatePlan rootQueryNode = {rootQueryNode}");
+                //LogInstance.Log($"QueriesCache CreatePlan rootQueryNode = {rootQueryNode}");
 #endif
 
                 var plan = QueryResolverASTNodeFactory.CreatePlan(rootQueryNode);

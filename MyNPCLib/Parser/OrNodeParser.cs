@@ -26,8 +26,6 @@ namespace MyNPCLib.Parser
         private BinaryOperatorOfQueryASTNode mBinaryOperatorOfQueryASTNode;
         private TokenKind? mClosingToken;
 
-        private BaseQueryASTNode mResult;
-
         public BaseQueryASTNode Result
         {
             get
@@ -41,7 +39,7 @@ namespace MyNPCLib.Parser
         protected override void OnRun()
         {
 #if DEBUG
-            LogInstance.Log($"OrNodeParser OnRun mState = {mState} CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}` mClosingToken = {mClosingToken}");
+            //LogInstance.Log($"OrNodeParser OnRun mState = {mState} CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}` mClosingToken = {mClosingToken}");
 #endif
 
             switch (mState)
@@ -59,7 +57,7 @@ namespace MyNPCLib.Parser
                                 mState = State.ArterRigthNode;
 
 #if DEBUG
-                                LogInstance.Log($"OrNodeParser OnRun result = {result}");
+                                //LogInstance.Log($"OrNodeParser OnRun result = {result}");
 #endif
                             }
                             break;
@@ -73,7 +71,7 @@ namespace MyNPCLib.Parser
                                 mState = State.ArterRigthNode;
 
 #if DEBUG
-                                LogInstance.Log($"OrNodeParser OnRun result = {result}");
+                                //LogInstance.Log($"OrNodeParser OnRun result = {result}");
 #endif
                             }
                             break;
@@ -99,7 +97,7 @@ namespace MyNPCLib.Parser
 
                 case State.ArterRigthNode:
 #if DEBUG
-                    LogInstance.Log($"OrNodeParser OnRun mBinaryOperatorOfQueryASTNode = {mBinaryOperatorOfQueryASTNode}");
+                    //LogInstance.Log($"OrNodeParser OnRun mBinaryOperatorOfQueryASTNode = {mBinaryOperatorOfQueryASTNode}");
 #endif
                     switch (CurrToken.TokenKind)
                     {

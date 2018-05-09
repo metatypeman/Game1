@@ -35,7 +35,7 @@ namespace MyNPCLib.Logical
         private static bool NEqual(BaseAbstractLogicalObject item1, BaseAbstractLogicalObject item2)
         {
 #if DEBUG
-            LogInstance.Log("BaseAbstractLogicalObject NEqual");
+            //LogInstance.Log("BaseAbstractLogicalObject NEqual");
 #endif
             if(ReferenceEquals(item1, item2))
             {
@@ -46,7 +46,7 @@ namespace MyNPCLib.Logical
             var item2IsConcrete = item2.IsConcrete;
 
 #if DEBUG
-            LogInstance.Log($"BaseAbstractLogicalObject NEqual NEXT item1IsConcrete = {item1IsConcrete} item2IsConcrete = {item2IsConcrete}");
+            //LogInstance.Log($"BaseAbstractLogicalObject NEqual NEXT item1IsConcrete = {item1IsConcrete} item2IsConcrete = {item2IsConcrete}");
 #endif
 
             if(item1IsConcrete)
@@ -69,33 +69,33 @@ namespace MyNPCLib.Logical
             var entitiesIdListOfItem1 = item1.CurrentEntitiesIdList;
 
 #if DEBUG
-            LogInstance.Log($"BaseAbstractLogicalObject NEqual entitiesIdListOfItem1.Count = {entitiesIdListOfItem1.Count}");
-            foreach (var entityId in entitiesIdListOfItem1)
-            {
-                LogInstance.Log($"BaseAbstractLogicalObject NEqual entityId = {entityId}");
-            }
+            //LogInstance.Log($"BaseAbstractLogicalObject NEqual entitiesIdListOfItem1.Count = {entitiesIdListOfItem1.Count}");
+            //foreach (var entityId in entitiesIdListOfItem1)
+            //{
+            //    LogInstance.Log($"BaseAbstractLogicalObject NEqual entityId = {entityId}");
+            //}
 #endif
 
             var entitiesIdListOfItem2 = item2.CurrentEntitiesIdList;
 
 #if DEBUG
-            LogInstance.Log($"BaseAbstractLogicalObject NEqual entitiesIdListOfItem2.Count = {entitiesIdListOfItem2.Count}");
-            foreach (var entityId in entitiesIdListOfItem2)
-            {
-                LogInstance.Log($"BaseAbstractLogicalObject NEqual entityId = {entityId}");
-            }
+            //LogInstance.Log($"BaseAbstractLogicalObject NEqual entitiesIdListOfItem2.Count = {entitiesIdListOfItem2.Count}");
+            //foreach (var entityId in entitiesIdListOfItem2)
+            //{
+            //    LogInstance.Log($"BaseAbstractLogicalObject NEqual entityId = {entityId}");
+            //}
 #endif
 
             if(entitiesIdListOfItem1.Count == entitiesIdListOfItem2.Count)
             {
 #if DEBUG
-                LogInstance.Log("BaseAbstractLogicalObject NEqual entitiesIdListOfItem1.Count == entitiesIdListOfItem2.Count");
+                //LogInstance.Log("BaseAbstractLogicalObject NEqual entitiesIdListOfItem1.Count == entitiesIdListOfItem2.Count");
 #endif
 
                 var exceptList = entitiesIdListOfItem1.Except(entitiesIdListOfItem2);
 
 #if DEBUG
-                LogInstance.Log($"BaseAbstractLogicalObject NEqual exceptList.Count() = {exceptList.Count()}");
+                //LogInstance.Log($"BaseAbstractLogicalObject NEqual exceptList.Count() = {exceptList.Count()}");
 #endif
 
                 if(exceptList.Count() == 0)
@@ -107,7 +107,7 @@ namespace MyNPCLib.Logical
             }
 
 #if DEBUG
-            LogInstance.Log("BaseAbstractLogicalObject NEqual NEXT NEXT");
+            //LogInstance.Log("BaseAbstractLogicalObject NEqual NEXT NEXT");
 #endif
 
             IList<ulong> bigerList = null;
@@ -137,7 +137,7 @@ namespace MyNPCLib.Logical
         public static bool operator == (BaseAbstractLogicalObject item1, BaseAbstractLogicalObject item2)
         {
 #if DEBUG
-            LogInstance.Log("BaseAbstractLogicalObject ==");
+            //LogInstance.Log("BaseAbstractLogicalObject ==");
 #endif
             return NEqual(item1, item2);
         }
@@ -145,7 +145,7 @@ namespace MyNPCLib.Logical
         public static bool operator !=(BaseAbstractLogicalObject item1, BaseAbstractLogicalObject item2)
         {
 #if DEBUG
-            LogInstance.Log("BaseAbstractLogicalObject !=");
+            //LogInstance.Log("BaseAbstractLogicalObject !=");
 #endif
             return !NEqual(item1, item2);
         }

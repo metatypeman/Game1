@@ -33,7 +33,7 @@ namespace MyNPCLib.Parser
         protected override void OnRun()
         {
 #if DEBUG
-            LogInstance.Log($"OpenRoundBracketNodeParser OnRun mState = {mState} CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}`");
+            //LogInstance.Log($"OpenRoundBracketNodeParser OnRun mState = {mState} CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}`");
 #endif
 
             switch(mState)

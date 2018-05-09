@@ -106,7 +106,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     }
 
     private IInternalHumanoidHostContext mInternalHumanoidHostContext;
-    private LogicalIndexStorage mLogicalObjectsBus;
+    private LogicalObjectsBus mLogicalObjectsBus;
 
     public ILogicalStorage HostLogicalStorage => mLogicalObjectsBus;
 
@@ -139,8 +139,11 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mGameObjectsBus = commonLevelHost.GameObjectsBus;
         mLogicalObjectsBus = commonLevelHost.LogicalObjectsBus;
 
+        var tmpGameObject = gameObject;
+        var instanceId = tmpGameObject.GetInstanceID();
+
         mSelfLogicalObject = new PassiveLogicalObject(commonLevelHost.EntityDictionary, mLogicalObjectsBus);
-        mLogicalObjectsBus.RegisterObject(mSelfLogicalObject.EntityId, mSelfLogicalObject);
+        mLogicalObjectsBus.RegisterObject(instanceId, mSelfLogicalObject);
 
         mSelfEntityId = mSelfLogicalObject.EntityId;
 

@@ -40,7 +40,7 @@ namespace MyNPCLib.Parser
         protected override void OnRun()
         {
 #if DEBUG
-            LogInstance.Log($"ConditionNodeParser OnRun mState = {mState} CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}` mClosingToken = {mClosingToken}");
+            //LogInstance.Log($"ConditionNodeParser OnRun mState = {mState} CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}` mClosingToken = {mClosingToken}");
 #endif
 
             switch(mState)
@@ -123,7 +123,7 @@ namespace MyNPCLib.Parser
         protected override void OnFinish()
         {
 #if DEBUG
-            LogInstance.Log($"ConditionNodeParser OnRun mState = {mState} Context.Count = {Context.Count} mResult = {mResult} mConditionNode = {mConditionNode}");
+            //LogInstance.Log($"ConditionNodeParser OnRun mState = {mState} Context.Count = {Context.Count} mResult = {mResult} mConditionNode = {mConditionNode}");
 #endif
 
             if(Context.Count == 0 && mResult == null && mConditionNode != null)

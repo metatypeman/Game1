@@ -12,7 +12,8 @@ namespace Assets.Scripts
     {
         IEntityDictionary EntityDictionary { get; }
         NPCProcessInfoCache NPCProcessInfoCache { get; }
-        LogicalIndexStorage LogicalObjectsBus { get; }
+        LogicalObjectsBus LogicalObjectsBus { get; }
         GameObjectsBus GameObjectsBus { get; }
+        QueriesCache QueriesCache { get; }
     }
 }

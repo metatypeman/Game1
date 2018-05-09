@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.Logical;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,8 +8,8 @@ namespace MyNPCLib
     public class BaseNPCContextWithBlackBoard<BlackBoardType>: BaseNPCContext 
         where BlackBoardType: BaseBlackBoard, new()
     {
-        public BaseNPCContextWithBlackBoard(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, INPCHostContext npcHostContext = null)
-            : base(entityDictionary, npcProcessInfoCache, npcHostContext)
+        public BaseNPCContextWithBlackBoard(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, INPCHostContext npcHostContext = null, QueriesCache queriesCache = null)
+            : base(entityDictionary, npcProcessInfoCache, npcHostContext, queriesCache)
         {
             mBlackBoard = new BlackBoardType();
             mBlackBoard.Context = this;

@@ -18,7 +18,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 
     private List<Vector3> mRayDirectionsList = new List<Vector3>();
     private GameObjectsBus mGameObjectsBus;
-    private LogicalIndexStorage mLogicalObjectsBus;
+    private LogicalObjectsBus mLogicalObjectsBus;
 
     // Use this for initialization
     void Start () {
@@ -95,20 +95,19 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
             var tmpGroupedVisibleItems = tmpVisibleItems.GroupBy(p => p.InstanceID).ToDictionary(p => p.Key, p => p.ToList());
             var instancesIdList = tmpGroupedVisibleItems.Keys.ToList();
 
-            var logicalObjectsDict = mLogicalObjectsBus.GetObjectsByInstancesId(instancesIdList);
+            var entitiesIdDict = mLogicalObjectsBus.GetEntitiesIdListByInstancesIdList(instancesIdList);
 
             foreach (var tmpGroupedVisibleKVPItems in tmpGroupedVisibleItems)
             {
                 var item = new HostVisionObject();
                 var instanceID = tmpGroupedVisibleKVPItems.Key;
  
-                if(!logicalObjectsDict.ContainsKey(instanceID))
+                if(!entitiesIdDict.ContainsKey(instanceID))
                 {
                     continue;
                 }
 
-                var logicalObject = logicalObjectsDict[instanceID];
-                item.EntityId = logicalObject.EntityId;
+                item.EntityId = entitiesIdDict[instanceID];
 
                 var visibleItemsList = new List<IVisionItem>();
 

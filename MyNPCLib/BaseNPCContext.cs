@@ -20,7 +20,15 @@ namespace MyNPCLib
                 mEntityDictionary = entityDictionary;
             }
 
-
+            if (queriesCache == null)
+            {
+                mQueriesCache = new QueriesCache(mEntityDictionary);
+            }
+            else
+            {
+                mQueriesCache = queriesCache;
+            }
+            
 #if DEBUG
             LogInstance.Log($"BaseNPCContext npcHostContext.SelfEntityId = {npcHostContext.SelfEntityId} npcHostContext.IsReady = {npcHostContext.IsReady}");
 #endif
@@ -725,7 +733,7 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCContext GetLogicalObject query = {query}");
 #endif
-            return new LogicalObject(query, mEntityDictionary, mLogicalStorage);
+            return new LogicalObject(query, mEntityDictionary, mLogicalStorage, mQueriesCache);
         }
 
         public IList<VisionObject> VisibleObjects

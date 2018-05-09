@@ -15,7 +15,5 @@ namespace MyNPCLib.Logical
         IList<ulong> GetAllEntitiesIdsList();
         IList<ulong> GetEntitiesIdList(BaseQueryResolverASTNode plan);
         event Action OnChanged;
-        IReadOnlyLogicalObject GetObjectByInstanceId(int instanceId);
-        IDictionary<int, IReadOnlyLogicalObject> GetObjectsByInstancesId(IList<int> instancesIdsList);
     }
 }

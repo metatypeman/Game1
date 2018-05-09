@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.Parser;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,10 +10,19 @@ namespace MyNPCLib.Logical
         public static BaseQueryASTNode CreateASTNode(string queryString, IEntityDictionary entityDictionary)
         {
 #if DEBUG
-            LogInstance.Log($"QueryASTNodeFactory CreateASTNode queryString = {queryString}");
+            //LogInstance.Log($"QueryASTNodeFactory CreateASTNode queryString = {queryString}");
 #endif
 
-            return CreateFakeASTNodeCase_2(entityDictionary);
+            var context = new ParserContext(queryString, entityDictionary);
+
+            var node = LogicalExpressionParserHelper.CreateNode(context);
+
+#if DEBUG
+            //LogInstance.Log($"QueryASTNodeFactory CreateASTNode node = {node}");
+#endif
+
+            return node;
+            //return CreateFakeASTNodeCase_2(entityDictionary);
         }
 
         public static BaseQueryASTNode CreateFakeASTNodeCase_1(IEntityDictionary entityDictionary)

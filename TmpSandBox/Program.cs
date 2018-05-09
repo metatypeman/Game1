@@ -27,12 +27,12 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            //TSTLexer();
+            TSTLexer();
             //TSTLogicalAST();
             //TSTLogicalObject();
             //TSTCancelTask_2();
             //TSTCancelTask();
-            TSTMyNPCContext();
+            //TSTMyNPCContext();
             //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
@@ -140,21 +140,21 @@ namespace TmpSandBox
 
             var passiveLogicalObject = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
 
-            indexingStorage.RegisterObject(passiveLogicalObject.EntityId, passiveLogicalObject);
+            indexingStorage.RegisterObject(passiveLogicalObject);
 
             passiveLogicalObject[namePropertyId] = "helen";
             passiveLogicalObject[classPropertyId] = "girl";
 
             var passiveLogicalObject_2 = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
 
-            indexingStorage.RegisterObject(passiveLogicalObject_2.EntityId, passiveLogicalObject_2);
+            indexingStorage.RegisterObject(passiveLogicalObject_2);
 
             passiveLogicalObject_2[namePropertyId] = "ann";
             passiveLogicalObject_2[classPropertyId] = "girl";
 
             var passiveLogicalObject_3 = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
 
-            indexingStorage.RegisterObject(passiveLogicalObject_3.EntityId, passiveLogicalObject_3);
+            indexingStorage.RegisterObject(passiveLogicalObject_3);
 
             passiveLogicalObject_3[namePropertyId] = "Beatles";
             passiveLogicalObject_3[classPropertyId] = "band";
@@ -189,8 +189,10 @@ namespace TmpSandBox
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST notNode = {notNode}");
 
+            var queryCache = new QueriesCache(globalEntityDictionary);
+
             var queryStr = "!((name=helen|name=ann)&class=girl)";
-            var logicalObject = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage);
+            var logicalObject = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache);
 
             var entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
@@ -212,7 +214,7 @@ namespace TmpSandBox
                 NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2) entityId = {entityId}");
             }
 
-            var logicalObject_2 = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage);
+            var logicalObject_2 = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache);
 
             entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
@@ -403,21 +405,21 @@ namespace TmpSandBox
 
             var passiveLogicalObject = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
 
-            indexingStorage.RegisterObject(passiveLogicalObject.EntityId, passiveLogicalObject);
+            indexingStorage.RegisterObject(passiveLogicalObject);
 
             passiveLogicalObject[namePropertyId] = "helen";
             passiveLogicalObject[classPropertyId] = "girl";
 
             var passiveLogicalObject_2 = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
 
-            indexingStorage.RegisterObject(passiveLogicalObject_2.EntityId, passiveLogicalObject_2);
+            indexingStorage.RegisterObject(passiveLogicalObject_2);
 
             passiveLogicalObject_2[namePropertyId] = "ann";
             passiveLogicalObject_2[classPropertyId] = "girl";
 
             var passiveLogicalObject_3 = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
 
-            indexingStorage.RegisterObject(passiveLogicalObject_3.EntityId, passiveLogicalObject_3);
+            indexingStorage.RegisterObject(passiveLogicalObject_3);
 
             passiveLogicalObject_3[namePropertyId] = "Beatles";
             passiveLogicalObject_3[classPropertyId] = "band";

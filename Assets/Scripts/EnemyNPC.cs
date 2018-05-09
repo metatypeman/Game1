@@ -61,7 +61,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         var internalBodyHost = GetComponent<IInternalBodyHumanoidHost>();
 
         var hostContext = new TestedNPCHostContext(internalBodyHost);
-        mNPCProcessesContext = new TestedNPCContext(commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext);
+        mNPCProcessesContext = new TestedNPCContext(commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext, commonLevelHost.QueriesCache);
         mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
         var blackBoard = mNPCProcessesContext.BlackBoard;
         blackBoard.PossibleIdOfRifle = possibleInstanceIdOfRifle;

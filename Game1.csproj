@@ -378,6 +378,7 @@
     <Compile Include="Assets\Scripts\LeftHandWPLocator.cs" />
     <Compile Include="Assets\Scripts\LevelCommonHost.cs" />
     <Compile Include="Assets\Scripts\LevelCommonHostFactory.cs" />
+    <Compile Include="Assets\Scripts\LogicalObjectsBus.cs" />
     <Compile Include="Assets\Scripts\LogProxyForDebug.cs" />
     <Compile Include="Assets\Scripts\ProxyForStatesOfHumanoidBodyHost.cs" />
     <Compile Include="Assets\Scripts\RightHandLocator.cs" />
@@ -388,7 +389,6 @@
     <Compile Include="Assets\Scripts\TestedNPCHostContext.cs" />
     <Compile Include="Assets\Scripts\TestedNPCProcesses.cs" />
     <Compile Include="Assets\Scripts\InternalVisionItem.cs" />
-    <Compile Include="Assets\Scripts\InternalVisionObject.cs" />
     <Compile Include="Assets\Scripts\WaypointsBus.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
   </ItemGroup>

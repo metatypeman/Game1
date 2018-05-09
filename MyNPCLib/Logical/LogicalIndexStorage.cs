@@ -15,10 +15,11 @@ namespace MyNPCLib.Logical
 
         public event Action OnChanged;
 
-        public void RegisterObject(ulong entityId, IReadOnlyLogicalObject value)
+        public void RegisterObject(IReadOnlyLogicalObject value)
         {
             lock (mLockObj)
             {
+                var entityId = value.EntityId;
                 mObjectsDict[entityId] = value;
             }
         }
@@ -165,42 +166,6 @@ namespace MyNPCLib.Logical
             }
 
             return null;
-        }
-
-        public void RegisterObjectByInstanceId(int instanceId, IReadOnlyLogicalObject value)
-        {
-            lock (mLockObj)
-            {
-                mObjectsByInstanceIdAsKeyDict[instanceId] = value;
-                var entityId = value.EntityId;
-                mObjectsDict[entityId] = value;
-            }
-        }
-
-        public IReadOnlyLogicalObject GetObjectByInstanceId(int instanceId)
-        {
-            lock (mLockObj)
-            {
-                if (mObjectsByInstanceIdAsKeyDict.ContainsKey(instanceId))
-                {
-                    return mObjectsByInstanceIdAsKeyDict[instanceId];
-                }
-
-                return null;
-            }
-        }
-
-        public IDictionary<int, IReadOnlyLogicalObject> GetObjectsByInstancesId(IList<int> instancesIdsList)
-        {
-            if (instancesIdsList.IsEmpty())
-            {
-                return new Dictionary<int, IReadOnlyLogicalObject>();
-            }
-
-            lock (mLockObj)
-            {
-                return mObjectsByInstanceIdAsKeyDict.Where(p => instancesIdsList.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value);
-            }
         }
     }
 }
