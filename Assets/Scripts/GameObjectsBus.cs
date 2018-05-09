@@ -33,18 +33,5 @@ namespace Assets.Scripts
                 return null;
             }
         }
-
-        public Dictionary<int, GameObject> GetObjects(List<int> instancesIdsList)
-        {
-            if (instancesIdsList.IsEmpty())
-            {
-                return new Dictionary<int, GameObject>();
-            }
-
-            lock (mLockObj)
-            {
-                return mObjectsDict.Where(p => instancesIdsList.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value);
-            }
-        }
     }
 }

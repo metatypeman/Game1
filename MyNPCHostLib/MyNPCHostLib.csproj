@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="REM copy MyNPCHostLib.dll $(SolutionDir)Assets\MyNPCHostLib.dll" />
+    <Exec Command="copy $(OutDir)MyNPCHostLib.dll $(SolutionDir)Assets\MyNPCHostLib.dll" />
   </Target>
 
 </Project>
