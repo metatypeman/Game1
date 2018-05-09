@@ -73,7 +73,16 @@ namespace MyNPCLib.Logical
                 indexingFrame.Set(value, entityId);
 
                 Task.Run(() => {
-                    OnChanged?.Invoke();
+                    try
+                    {
+                        OnChanged?.Invoke();
+                    }
+                    catch(Exception e)
+                    {
+#if DEBUG
+                        LogInstance.Log($"LogicalIndexStorage PutPropertyValue e = {e}");
+#endif
+                    }              
                 });           
             }
         }

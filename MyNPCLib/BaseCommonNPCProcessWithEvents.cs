@@ -87,7 +87,16 @@ namespace MyNPCLib
                 if (State != StateOfNPCProcess.Created)
                 {
                     Task.Run(() => {
-                        value(this, State);
+                        try
+                        {
+                            value(this, State);
+                        }
+                        catch (Exception e)
+                        {
+#if DEBUG
+                            LogInstance.Log($"BaseCommonNPCProcessWithEvents add OnStateChanged e = {e}");
+#endif
+                        }
                     });
                 }
             }
@@ -101,7 +110,16 @@ namespace MyNPCLib
         protected void EmitOnStateChanged(StateOfNPCProcess state)
         {
             Task.Run(() => {
-                mOnStateChanged?.Invoke(this, state);
+                try
+                {
+                    mOnStateChanged?.Invoke(this, state);
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"BaseCommonNPCProcessWithEvents EmitOnStateChanged e = {e}");
+#endif
+                }
             });
         }
 
@@ -119,7 +137,16 @@ namespace MyNPCLib
                 if (State == StateOfNPCProcess.Running)
                 {
                     Task.Run(() => {
-                        value(this);
+                        try
+                        {
+                            value(this);
+                        }
+                        catch (Exception e)
+                        {
+#if DEBUG
+                            LogInstance.Log($"BaseCommonNPCProcessWithEvents add OnRunningChanged e = {e}");
+#endif
+                        }
                     });
                 }
             }
@@ -135,7 +162,16 @@ namespace MyNPCLib
             RunningChanged();
 
             Task.Run(() => {
-                mOnRunningChanged?.Invoke(this);
+                try
+                {
+                    mOnRunningChanged?.Invoke(this);
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"BaseCommonNPCProcessWithEvents EmitOnRunningChanged e = {e}");
+#endif
+                }
             });
         }
 
@@ -153,7 +189,16 @@ namespace MyNPCLib
                 if (State == StateOfNPCProcess.RanToCompletion)
                 {
                     Task.Run(() => {
-                        value(this);
+                        try
+                        {
+                            value(this);
+                        }
+                        catch (Exception e)
+                        {
+#if DEBUG
+                            LogInstance.Log($"BaseCommonNPCProcessWithEvents add OnRanToCompletionChanged e = {e}");
+#endif
+                        }
                     });
                 }
             }
@@ -169,7 +214,16 @@ namespace MyNPCLib
             EndOfProcessChanged();
 
             Task.Run(() => {
-                mOnRanToCompletionChanged?.Invoke(this);
+                try
+                {
+                    mOnRanToCompletionChanged?.Invoke(this);
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"BaseCommonNPCProcessWithEvents EmitOnRanToCompletionChanged e = {e}");
+#endif
+                }
             });
         }
 
@@ -183,7 +237,16 @@ namespace MyNPCLib
                 if (State == StateOfNPCProcess.Canceled)
                 {
                     Task.Run(() => {
-                        value(this);
+                        try
+                        {
+                            value(this);
+                        }
+                        catch (Exception e)
+                        {
+#if DEBUG
+                            LogInstance.Log($"BaseCommonNPCProcessWithEvents add OnCanceledChanged e = {e}");
+#endif
+                        }
                     });
                 }
             }
@@ -211,7 +274,16 @@ namespace MyNPCLib
             EndOfProcessChanged();
 
             Task.Run(() => {
-                mOnCanceledChanged?.Invoke(this);
+                try
+                {
+                    mOnCanceledChanged?.Invoke(this);
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"BaseCommonNPCProcessWithEvents EmitOnCanceledChanged e = {e}");
+#endif
+                }
             });
         }
 
@@ -225,7 +297,16 @@ namespace MyNPCLib
                 if (State == StateOfNPCProcess.Faulted)
                 {
                     Task.Run(() => {
-                        value(this);
+                        try
+                        {
+                            value(this);
+                        }
+                        catch (Exception e)
+                        {
+#if DEBUG
+                            LogInstance.Log($"BaseCommonNPCProcessWithEvents add OnFaultedChanged e = {e}");
+#endif
+                        }
                     });
                 }
             }
@@ -241,7 +322,16 @@ namespace MyNPCLib
             EndOfProcessChanged();
 
             Task.Run(() => {
-                mOnFaultedChanged?.Invoke(this);
+                try
+                {
+                    mOnFaultedChanged?.Invoke(this);
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"BaseCommonNPCProcessWithEvents EmitOnFaultedChanged e = {e}");
+#endif
+                }
             });
         }
 
@@ -255,7 +345,16 @@ namespace MyNPCLib
                 if (State == StateOfNPCProcess.Destroyed)
                 {
                     Task.Run(() => {
-                        value(this);
+                        try
+                        {
+                            value(this);
+                        }
+                        catch (Exception e)
+                        {
+#if DEBUG
+                            LogInstance.Log($"BaseCommonNPCProcessWithEvents add OnDestroyedChanged e = {e}");
+#endif
+                        }
                     });
                 }
             }
@@ -272,7 +371,16 @@ namespace MyNPCLib
             EndOfProcessChanged();
 
             Task.Run(() => {
-                mOnDestroyedChanged?.Invoke(this);
+                try
+                {
+                    mOnDestroyedChanged?.Invoke(this);
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"BaseCommonNPCProcessWithEvents EmitOnDestroyedChanged e = {e}");
+#endif
+                }
             });
         }
 

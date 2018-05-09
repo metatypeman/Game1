@@ -15,16 +15,12 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             LogInstance.Log("TestedBlackBoard Bootstrap");
 #endif
-
-            mNPCRayScaner = Context.GetInstance<INPCRayScaner>();
         }
     
         public int PossibleIdOfRifle { get; set; }
         public int InstanceIdOfRifle { get; set; }
         public Vector3? EthanPosition { get; set; }
-
-        private INPCRayScaner mNPCRayScaner { get; set; }
-        
+      
         public override string ToString()
         {
             return ToString(0u);

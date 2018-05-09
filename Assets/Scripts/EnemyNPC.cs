@@ -13,8 +13,6 @@ using System.Linq;
 [RequireComponent(typeof(EnemyRayScaner))]
 public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 {
-    private EnemyRayScaner mEnemyRayScaner;
-
     public float surfaceOffset = 1.5f;
     public GameObject setTargetOn;
 
@@ -23,8 +21,6 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
     private InputKeyHelper mInputKeyHelper;
 
     public Transform Head;
-    public Animator mAnim;
-
     public Transform GunEnd;
     private GameObject mGunBody;
 
@@ -36,10 +32,6 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         var commonLevelHost = LevelCommonHostFactory.Get();
 
         Debug.Log($"EnemyNPC (commonLevelHost == null) = {commonLevelHost == null}");
-
-        mAnim = GetComponent<Animator>();
-
-        mEnemyRayScaner = GetComponent<EnemyRayScaner>();
 
         var targetGun = FindObjectOfType<RapidFireGun>();
         var possibleInstanceIdOfRifle = 0;
@@ -62,7 +54,6 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         var hostContext = new TestedNPCHostContext(internalBodyHost);
         mNPCProcessesContext = new TestedNPCContext(commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext, commonLevelHost.QueriesCache);
-        mNPCProcessesContext.RegisterInstance<INPCRayScaner>(mEnemyRayScaner);
         var blackBoard = mNPCProcessesContext.BlackBoard;
         blackBoard.PossibleIdOfRifle = possibleInstanceIdOfRifle;
         blackBoard.EthanPosition = ethanPosition;
@@ -89,28 +80,17 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         clas1.GetItems().Add(12);
 
         Task.Run(() => {
-            var gameObj = ThreadSafeGameObj();
+            try
+            {
+                var gameObj = ThreadSafeGameObj();
 
-            Debug.Log($"EnemyNPC Start gameObj = {gameObj}");
+                Debug.Log($"EnemyNPC Start gameObj = {gameObj}");
+            }
+            catch(Exception e)
+            {
+                Debug.Log($"EnemyNPC Start e = {e}");
+            }
         });
-
-        PrintInstancesIds();
-
-        var cls1 = new Class1();
-
-        System.Numerics.Vector3 vec = clas1.GetVector();
-
-        Debug.Log($"EnemyNPC vec = {vec}");
-    }
-
-    private void PrintInstancesIds()
-    {
-        Debug.Log($"EnemyNPC GetInstanceID() = {GetInstanceID()}");
-        Debug.Log($"EnemyNPC gameObject.GetInstanceID() = {gameObject.GetInstanceID()}");
-        Debug.Log($"EnemyNPC mEnemyRayScaner.GetInstanceID() = {mEnemyRayScaner.GetInstanceID()}");
-        Debug.Log($"EnemyNPC mEnemyRayScaner.gameObject.GetInstanceID() = {mEnemyRayScaner.gameObject.GetInstanceID()}");
-        Debug.Log($"EnemyNPC mEnemyRayScaner.transform.GetInstanceID() = {mEnemyRayScaner.transform.GetInstanceID()}");
-        Debug.Log($"EnemyNPC mEnemyRayScaner.transform.gameObject.GetInstanceID() = {mEnemyRayScaner.transform.gameObject.GetInstanceID()}");
     }
 
     public void SetInvocableObj(IInvocableInMainThreadObj invokableObj)

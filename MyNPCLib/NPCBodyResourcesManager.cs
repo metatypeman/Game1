@@ -38,79 +38,88 @@ namespace MyNPCLib
             }
 
             Task.Run(() => {
-#if DEBUG
-                //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged Begin changedStates");
-                //foreach (var changedState in changedStates)
-                //{
-                //    LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged changedState = {changedState}");
-                //}
-                //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged End changedStates");
-#endif
-
-                lock (mDataLockObj)
+                try
                 {
-                    var displacedProcessesIdList = new List<ulong>();
+#if DEBUG
+                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged Begin changedStates");
+                    //foreach (var changedState in changedStates)
+                    //{
+                    //    LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged changedState = {changedState}");
+                    //}
+                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged End changedStates");
+#endif
 
-                    foreach (var changedState in changedStates)
+                    lock (mDataLockObj)
                     {
-                        switch (changedState)
+                        var displacedProcessesIdList = new List<ulong>();
+
+                        foreach (var changedState in changedStates)
                         {
-                            case HumanoidStateKind.HState:
-                                displacedProcessesIdList.AddRange(mHState);
-                                mHState.Clear();
-                                break;
+                            switch (changedState)
+                            {
+                                case HumanoidStateKind.HState:
+                                    displacedProcessesIdList.AddRange(mHState);
+                                    mHState.Clear();
+                                    break;
 
-                            case HumanoidStateKind.TargetPosition:
-                                displacedProcessesIdList.AddRange(mTargetPosition);
-                                mTargetPosition.Clear();
-                                break;
+                                case HumanoidStateKind.TargetPosition:
+                                    displacedProcessesIdList.AddRange(mTargetPosition);
+                                    mTargetPosition.Clear();
+                                    break;
 
-                            case HumanoidStateKind.VState:
-                                displacedProcessesIdList.AddRange(mVState);
-                                mVState.Clear();
-                                break;
+                                case HumanoidStateKind.VState:
+                                    displacedProcessesIdList.AddRange(mVState);
+                                    mVState.Clear();
+                                    break;
 
-                            case HumanoidStateKind.HandsState:
-                                displacedProcessesIdList.AddRange(mHandsState);
-                                mHandsState.Clear();
-                                break;
+                                case HumanoidStateKind.HandsState:
+                                    displacedProcessesIdList.AddRange(mHandsState);
+                                    mHandsState.Clear();
+                                    break;
 
-                            case HumanoidStateKind.HandsActionState:
-                                displacedProcessesIdList.AddRange(mHandsActionState);
-                                mHandsActionState.Clear();
-                                break;
+                                case HumanoidStateKind.HandsActionState:
+                                    displacedProcessesIdList.AddRange(mHandsActionState);
+                                    mHandsActionState.Clear();
+                                    break;
 
-                            case HumanoidStateKind.ThingsCommand:
-                                displacedProcessesIdList.AddRange(mHandsState);
-                                mHandsState.Clear();
-                                displacedProcessesIdList.AddRange(mHandsActionState);
-                                mHandsActionState.Clear();
-                                break;
+                                case HumanoidStateKind.ThingsCommand:
+                                    displacedProcessesIdList.AddRange(mHandsState);
+                                    mHandsState.Clear();
+                                    displacedProcessesIdList.AddRange(mHandsActionState);
+                                    mHandsActionState.Clear();
+                                    break;
 
-                            default: throw new ArgumentOutOfRangeException(nameof(changedState), changedState, null);
+                                default: throw new ArgumentOutOfRangeException(nameof(changedState), changedState, null);
+                            }
                         }
-                    }
 
-                    displacedProcessesIdList = displacedProcessesIdList.Distinct().ToList();
+                        displacedProcessesIdList = displacedProcessesIdList.Distinct().ToList();
 
 #if DEBUG
-                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged displacedProcessesIdList.Count = {displacedProcessesIdList.Count}");
-                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
+                        //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged displacedProcessesIdList.Count = {displacedProcessesIdList.Count}");
+                        //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
 #endif
 
-                    foreach (var displacedProcessId in displacedProcessesIdList)
-                    {
+                        foreach (var displacedProcessId in displacedProcessesIdList)
+                        {
 #if DEBUG
-                        //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged displacedProcessId = {displacedProcessId}");
+                            //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged displacedProcessId = {displacedProcessId}");
 #endif
 
-                        var targetTask = mProcessesDict[displacedProcessId];
-                        mProcessesDict.Remove(displacedProcessId);
-                        targetTask.State = StateOfNPCProcess.RanToCompletion;
-                    }
+                            var targetTask = mProcessesDict[displacedProcessId];
+                            mProcessesDict.Remove(displacedProcessId);
+                            targetTask.State = StateOfNPCProcess.RanToCompletion;
+                        }
 
 #if DEBUG
-                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
+                        //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
+#endif
+                    }
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged e = {e}");
 #endif
                 }
             });

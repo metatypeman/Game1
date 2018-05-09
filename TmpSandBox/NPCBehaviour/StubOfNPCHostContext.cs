@@ -60,15 +60,22 @@ namespace TmpSandBox.NPCBehaviour
             process.State = StateOfNPCProcess.Running;
 
             Task.Run(() => {
-                NLog.LogManager.GetCurrentClassLogger().Info($"Beging Send Task.Run command = {command}");
+                try
+                {
+                    NLog.LogManager.GetCurrentClassLogger().Info($"Send Task.Run command = {command}");
 
-                process.State = StateOfNPCProcess.Running;
+                    process.State = StateOfNPCProcess.Running;
 
-                Thread.Sleep(1000);
+                    Thread.Sleep(1000);
 
-                process.State = StateOfNPCProcess.RanToCompletion;
+                    process.State = StateOfNPCProcess.RanToCompletion;
 
-                NLog.LogManager.GetCurrentClassLogger().Info($"End Send Task.Run command = {command}");
+                    NLog.LogManager.GetCurrentClassLogger().Info($"Send Task.Run command = {command}");
+                }
+                catch(Exception e)
+                {
+                    NLog.LogManager.GetCurrentClassLogger().Info($"Send Task.Run e = {e}");
+                }
             });
 
             NLog.LogManager.GetCurrentClassLogger().Info($"End Send command = {command}");

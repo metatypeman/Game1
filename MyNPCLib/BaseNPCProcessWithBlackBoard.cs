@@ -14,7 +14,18 @@ namespace MyNPCLib
         {
             BlackBoard = Context.NoTypedBlackBoard as BlackBoardType;
 
-            Task.Run(() => { Awake(); });
+            Task.Run(() => {
+                try
+                {
+                    Awake();
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"BaseNPCProcessWithBlackBoard OnSetContext e = {e}");
+#endif
+                }
+            });
         }
 
         protected virtual void Awake()

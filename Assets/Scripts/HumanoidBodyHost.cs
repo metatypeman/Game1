@@ -195,7 +195,16 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
             mIsReady = true;
 
             Task.Run(() => {
-                OnReady?.Invoke();
+                try
+                {
+                    OnReady?.Invoke();
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"HumanoidBodyHost Start e = {e}");
+#endif
+                }              
             });
         }
 #if DEBUG
@@ -229,7 +238,16 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void EmitOnHumanoidStatesChanged(params HumanoidStateKind[] changedStates)
     {
         Task.Run(() => {
-            OnHumanoidStatesChanged?.Invoke(changedStates.ToList());
+            try
+            {
+                OnHumanoidStatesChanged?.Invoke(changedStates.ToList());
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                LogInstance.Log($"HumanoidBodyHost EmitOnHumanoidStatesChanged e = {e}");
+#endif
+            }
         });
     }
 
@@ -252,13 +270,13 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void NExecute(InternalTargetStateOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
-        Debug.Log($"EnemyController NExecute targetState = {targetState}");
+        Debug.Log($"HumanoidBodyHost NExecute targetState = {targetState}");
 #endif
 
         var newState = CreateTargetState(mStates, targetState);
 
 #if UNITY_EDITOR
-        Debug.Log($"EnemyController NExecute newState = {newState}");
+        Debug.Log($"HumanoidBodyHost NExecute newState = {newState}");
 #endif
 
         if (newState.KindOfThingsCommand != KindOfHumanoidThingsCommand.Undefined && newState.InstanceOfThingId != 0)
@@ -274,7 +292,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void ExecuteThingsCommand(InternalStatesOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
-        //Debug.Log($"EnemyController ExecuteThingsCommand targetState = {targetState}");
+        //Debug.Log($"HumanoidBodyHost ExecuteThingsCommand targetState = {targetState}");
 #endif
 
         var kindOfThingsCommand = targetState.KindOfThingsCommand;
@@ -321,8 +339,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private InternalStatesOfHumanoidController CreateTargetState(InternalStatesOfHumanoidController sourceState, InternalTargetStateOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
-        //Debug.Log("EnemyController CreateTargetState sourceState = " + sourceState);
-        //Debug.Log("EnemyController CreateTargetState targetState = " + targetState);
+        //Debug.Log("HumanoidBodyHost CreateTargetState sourceState = " + sourceState);
+        //Debug.Log("HumanoidBodyHost CreateTargetState targetState = " + targetState);
 #endif
 
         var result = sourceState.Clone();
@@ -459,7 +477,16 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 break;
         }
         Task.Run(() => {
-            OnDie?.Invoke();
+            try
+            {
+                OnDie?.Invoke();
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                LogInstance.Log($"HumanoidBodyHost Die e = {e}");
+#endif
+            }
         });
 
         UpdateAnimator();
@@ -468,13 +495,13 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void ApplyTargetState(InternalStatesOfHumanoidController targetState)
     {
 #if UNITY_EDITOR
-        //Debug.Log($"EnemyController ApplyTargetState targetState = {targetState}");
+        //Debug.Log($"HumanoidBodyHost ApplyTargetState targetState = {targetState}");
 #endif
 
         var targetBehaviourFlags = CreateBehaviourFlags(targetState);
 
 #if UNITY_EDITOR
-        //Debug.Log($"EnemyController ApplyTargetState targetBehaviourFlags = {targetBehaviourFlags}");
+        //Debug.Log($"HumanoidBodyHost ApplyTargetState targetBehaviourFlags = {targetBehaviourFlags}");
 #endif
 
         mStates.Append(targetState);
@@ -488,7 +515,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         UpdateAnimator();
 
 #if UNITY_EDITOR
-        //Debug.Log($"EnemyController ApplyInternalStates mStates = {mStates}");
+        //Debug.Log($"HumanoidBodyHost ApplyInternalStates mStates = {mStates}");
 #endif
 
         var hState = mStates.HState;
@@ -512,14 +539,14 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                         mNavMeshAgent.ResetPath();
 
 #if DEBUG
-                        //Debug.Log($"EnemyController ApplyInternalStates mStates.TargetPosition = {mStates.TargetPosition}");
+                        //Debug.Log($"HumanoidBodyHost ApplyInternalStates mStates.TargetPosition = {mStates.TargetPosition}");
 #endif
                         var direction = transform.TransformDirection(mStates.TargetPosition.Value);
                         mStates.TargetPosition = transform.position + direction;
 
 #if DEBUG
-                        //Debug.Log($"EnemyController ApplyInternalStates transform.position = {transform.position}");
-                        //Debug.Log($"EnemyController ApplyInternalStates after mStates.TargetPosition = {mStates.TargetPosition}");
+                        //Debug.Log($"HumanoidBodyHost ApplyInternalStates transform.position = {transform.position}");
+                        //Debug.Log($"HumanoidBodyHost ApplyInternalStates after mStates.TargetPosition = {mStates.TargetPosition}");
 #endif
 
                         mNavMeshAgent.SetDestination(mStates.TargetPosition.Value);
@@ -576,7 +603,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     mAbsBodyAngleDelta = Math.Abs(mBodyAngleDelta);
 
 #if UNITY_EDITOR
-                    //Debug.Log("EnemyController ApplyInternalStates case HumanoidHState.Rotate");
+                    //Debug.Log("HumanoidBodyHost ApplyInternalStates case HumanoidHState.Rotate");
 #endif
                 }
                 break;
@@ -630,7 +657,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
             var correctingAngle = mAimCorrector.GetCorrectingAngle(targetPos);
 
 #if UNITY_EDITOR
-            //Debug.Log($"EnemyController ApplyInternalStates correctingAngle = {correctingAngle}");
+            //Debug.Log($"HumanoidBodyHost ApplyInternalStates correctingAngle = {correctingAngle}");
 #endif
 
             if (Mathf.Abs(correctingAngle) > 8)
@@ -645,7 +672,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void UpdateAnimator()
     {
 #if UNITY_EDITOR
-        //Debug.Log("EnemyController UpdateAnimator");
+        //Debug.Log("HumanoidBodyHost UpdateAnimator");
 #endif
         mAnimator.SetBool("hasRifle", mBehaviourFlags.HasRifle);
         mAnimator.SetBool("walk", mBehaviourFlags.Walk);
@@ -677,7 +704,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     void Update ()
     {
 #if UNITY_EDITOR
-        //Debug.Log("EnemyController Update mNavMeshAgent.pathStatus = " + mNavMeshAgent.pathStatus + " mNavMeshAgent.isOnOffMeshLink = " + mNavMeshAgent.isOnOffMeshLink + " mNavMeshAgent.isStopped = " + mNavMeshAgent.isStopped + " mNavMeshAgent.nextPosition = " + mNavMeshAgent.nextPosition);
+        //Debug.Log("HumanoidBodyHost Update mNavMeshAgent.pathStatus = " + mNavMeshAgent.pathStatus + " mNavMeshAgent.isOnOffMeshLink = " + mNavMeshAgent.isOnOffMeshLink + " mNavMeshAgent.isStopped = " + mNavMeshAgent.isStopped + " mNavMeshAgent.nextPosition = " + mNavMeshAgent.nextPosition);
 #endif
         if (mBehaviourFlags.IsDead)
         {
@@ -708,25 +735,25 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     var newAngle = mCurrentBodyAngle + mBodyAngleDelta;
 
 #if UNITY_EDITOR
-                    //Debug.Log($"EnemyController Update newAngle = {newAngle}");
+                    //Debug.Log($"HumanoidBodyHost Update newAngle = {newAngle}");
 #endif
                     var tmpDelta = mTargetBodyAngle - newAngle;
 
 #if UNITY_EDITOR
-                    //Debug.Log($"EnemyController Update mBodyAngleDelta = {mBodyAngleDelta}");
-                    //Debug.Log($"EnemyController Update tmpDelta = {tmpDelta}");
+                    //Debug.Log($"HumanoidBodyHost Update mBodyAngleDelta = {mBodyAngleDelta}");
+                    //Debug.Log($"HumanoidBodyHost Update tmpDelta = {tmpDelta}");
 #endif
 
                     var tmpAbsDelta = Math.Abs(tmpDelta);
 
 #if UNITY_EDITOR
-                    //Debug.Log($"EnemyController Update tmpAbsDelta = {tmpAbsDelta}");
+                    //Debug.Log($"HumanoidBodyHost Update tmpAbsDelta = {tmpAbsDelta}");
 #endif
 
                     if (tmpAbsDelta >= mAbsBodyAngleDelta)
                     {
 #if UNITY_EDITOR
-                        //Debug.Log("EnemyController Update tmpAbsDelta >= mAbsBodyAngleDelta");
+                        //Debug.Log("HumanoidBodyHost Update tmpAbsDelta >= mAbsBodyAngleDelta");
 #endif
                         transform.rotation = Quaternion.Euler(0, mBodyAngleDelta, 0) * transform.rotation;
                         mCurrentBodyAngle = newAngle;
@@ -734,7 +761,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     else
                     {
 #if UNITY_EDITOR
-                        //Debug.Log("EnemyController Update tmpAbsDelta < mAbsBodyAngleDelta");
+                        //Debug.Log("HumanoidBodyHost Update tmpAbsDelta < mAbsBodyAngleDelta");
 #endif
                         transform.rotation = Quaternion.Euler(0, tmpDelta, 0) * transform.rotation;
                         mCurrentBodyAngle = mTargetBodyAngle;
@@ -743,8 +770,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     }
 
 #if UNITY_EDITOR
-                    //Debug.Log($"EnemyController Update mCurrentBodyAngle = {mCurrentBodyAngle}");
-                    //Debug.Log($"EnemyController Update mNeedBodyChanges = {mNeedBodyChanges}");
+                    //Debug.Log($"HumanoidBodyHost Update mCurrentBodyAngle = {mCurrentBodyAngle}");
+                    //Debug.Log($"HumanoidBodyHost Update mNeedBodyChanges = {mNeedBodyChanges}");
 #endif
 
                     if (!mNeedBodyChanges)
@@ -783,8 +810,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     var oldY = Head.position.y;
 
 #if UNITY_EDITOR
-                    //Debug.Log($"EnemyController Update oldY = {oldY}");
-                    //Debug.Log($"EnemyController Update Head.localPosition.y = {Head.localPosition.y}");
+                    //Debug.Log($"HumanoidBodyHost Update oldY = {oldY}");
+                    //Debug.Log($"HumanoidBodyHost Update Head.localPosition.y = {Head.localPosition.y}");
 #endif
 
                     var newPosition = globalDirection + transform.position;

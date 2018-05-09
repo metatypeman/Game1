@@ -30,8 +30,17 @@ namespace Assets.Scripts
 #if DEBUG
             LogInstance.Log("TestedNPCBodyHost MInternalBodyHumanoidHost_OnReady");
 #endif
-
-            OnReady?.Invoke();
+            Task.Run(() => {
+                try
+                {
+                    OnReady?.Invoke();
+                }catch(Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"TestedNPCBodyHost MInternalBodyHumanoidHost_OnReady e = {e}");
+#endif
+                }
+            });
         }
 
         public event Action OnDie;
@@ -39,7 +48,16 @@ namespace Assets.Scripts
         private void MInternalBodyHumanoidHost_OnDie()
         {
             Task.Run(() => {
-                OnDie?.Invoke();
+                try
+                {
+                    OnDie?.Invoke();
+                }
+                catch(Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"TestedNPCBodyHost MInternalBodyHumanoidHost_OnDie e = {e}");
+#endif
+                }            
             });
         }
 
@@ -64,7 +82,19 @@ namespace Assets.Scripts
                 result.Add(initItem);
             }
 
-            OnHumanoidStatesChanged?.Invoke(result);
+            Task.Run(() => {
+                try
+                {
+                    OnHumanoidStatesChanged?.Invoke(result);
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    Debug.Log($"TestedNPCBodyHost InternalOnHumanoidStatesChanged e = {e}");
+#endif
+                }
+            });
+                
         }
 
         public event HumanoidStatesChangedAction OnHumanoidStatesChanged;
@@ -158,7 +188,17 @@ namespace Assets.Scripts
             LogInstance.Log("TestedNPCHostContext MBodyHost_OnReady");
 #endif
 
-            OnReady?.Invoke();
+            Task.Run(() => {
+                try
+                {
+                    OnReady?.Invoke();
+                }catch(Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"TestedNPCHostContext MBodyHost_OnReady e = {e}");
+#endif
+                }
+            });       
         }
 
         private IInternalBodyHumanoidHost mInternalBodyHumanoidHost;

@@ -196,10 +196,16 @@ namespace MyNPCLib
                 mNeedRun = true;
             }
 
-            //Task tmpTask = null;
-
             Task.Run(() => {
-                NRun();
+                try
+                {
+                    NRun();
+                }catch(Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"BaseTrigger TryStartNRun e = {e}");
+#endif
+                }
             });
         }
 
@@ -270,17 +276,39 @@ namespace MyNPCLib
 
                     if(currentResult)
                     {
-                        Task.Run(() => { mOnFire?.Invoke(); });
+                        Task.Run(() => {
+                            try
+                            {
+                                mOnFire?.Invoke();
+                            }
+                            catch (Exception e)
+                            {
+#if DEBUG
+                                LogInstance.Log($"BaseTrigger NRun e = {e}");
+#endif
+                            }
+                        });
                     }
                     else
                     {
-                        Task.Run(() => { mOnResetCondition?.Invoke(); });
+                        Task.Run(() => {
+                            try
+                            {
+                                mOnResetCondition?.Invoke();
+                            }
+                            catch (Exception e)
+                            {
+#if DEBUG
+                                LogInstance.Log($"BaseTrigger NRun e = {e}");
+#endif
+                            }
+                        });
                     }          
                 }
             }
         }
 
-        public void Dispose()
+public void Dispose()
         {
 #if DEBUG
             //LogInstance.Log($"BaseTrigger Dispose");

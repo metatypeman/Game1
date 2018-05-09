@@ -13,7 +13,16 @@ namespace MyNPCLib
         public void Run()
         {
             Task.Run(() => {
+                try
+                {
 
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    LogInstance.Log($"Class1 Run e = {e}");
+#endif
+                }
             });
         }
 
