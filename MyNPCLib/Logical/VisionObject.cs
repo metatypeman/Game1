@@ -67,7 +67,7 @@ namespace MyNPCLib.Logical
             }
         }
 
-        public IList<IVisionItem> VisionItems { get; private set; }
+        public IList<IVisionItem> VisionItems { get; set; }
 
         public override string PropertiesToSting(uint n)
         {

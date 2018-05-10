@@ -44,8 +44,10 @@ namespace MyNPCLib
             mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Right, this);
             mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Left, this);
             mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
-            
-            if(mNPCHostContext.IsReady)
+
+            mVisionObjectsStorage = new VisionObjectsStorage(mEntityDictionary, npcHostContext);
+
+            if (mNPCHostContext.IsReady)
             {
                 InitLogicalSubSystem();
             }
@@ -71,6 +73,8 @@ namespace MyNPCLib
 #endif
 
             mLogicalStorage = new LogicalStorage(mEntityDictionary, mNPCHostContext.HostLogicalStorage);
+
+            mVisionObjectsStorage.LogicalStorage = mLogicalStorage;
 
 #if DEBUG
             LogInstance.Log("BaseNPCContext InitLogicalSubSystem NEXT");
@@ -100,6 +104,7 @@ namespace MyNPCLib
         private readonly IdFactory mIdFactory;
         private readonly IEntityDictionary mEntityDictionary;
         private readonly QueriesCache mQueriesCache;
+        private readonly VisionObjectsStorage mVisionObjectsStorage;
         private readonly NPCBodyResourcesManager mBodyResourcesManager;
         private readonly NPCHandResourcesManager mRightHandResourcesManager;
         private readonly NPCHandResourcesManager mLeftHandResourcesManager;
@@ -740,29 +745,7 @@ namespace MyNPCLib
         {
             get
             {
-                var hostVisibleObjectsList = mNPCHostContext.VisibleObjects;
-
-#if DEBUG
-                LogInstance.Log($"BaseNPCContext VisibleObjects hostVisibleObjectsList.Count = {hostVisibleObjectsList?.Count}");
-#endif
-                var result = new List<VisionObject>();
-
-                if (hostVisibleObjectsList.IsEmpty())
-                {
-                    return result;
-                }
-
-                foreach (var hostVisibleObject in hostVisibleObjectsList)
-                {
-#if DEBUG
-                    LogInstance.Log($"BaseNPCContext VisibleObjects hostVisibleObject = {hostVisibleObject}");
-#endif
-
-                    var item = new VisionObject(hostVisibleObject.EntityId, hostVisibleObject.VisionItems, mEntityDictionary, mLogicalStorage);
-                    result.Add(item);                
-                }
-
-                return result;
+                return mVisionObjectsStorage.VisibleObjects;
             }
         }
 
