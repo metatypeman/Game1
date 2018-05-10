@@ -211,8 +211,11 @@ namespace MyNPCLib
             {
                 result = (T)Context.DefaultHand.Get(propertyName);
             }
-            catch
+            catch(Exception e)
             {
+#if DEBUG
+                LogInstance.Log($"BaseNPCProcess GetDefaultHandProperty<T> propertyName = {propertyName} e = {e}");
+#endif
             }
 
             cancelationToken?.ThrowIfCancellationRequested();
@@ -275,8 +278,11 @@ namespace MyNPCLib
             {
                 result = (T)Context.RightHand.Get(propertyName);
             }
-            catch
+            catch(Exception e)
             {
+#if DEBUG
+                LogInstance.Log($"BaseNPCProcess GetRightHandProperty<T> propertyName = {propertyName} e = {e}");
+#endif
             }
 
             cancelationToken?.ThrowIfCancellationRequested();
@@ -339,8 +345,11 @@ namespace MyNPCLib
             {
                 result = (T)Context.LeftHand.Get(propertyName);
             }
-            catch
+            catch(Exception e)
             {
+#if DEBUG
+                LogInstance.Log($"BaseNPCProcess GetLeftHandProperty<T> propertyName = {propertyName} e = {e}");
+#endif
             }
 
             cancelationToken?.ThrowIfCancellationRequested();

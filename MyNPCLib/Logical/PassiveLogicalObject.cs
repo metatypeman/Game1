@@ -50,6 +50,42 @@ namespace MyNPCLib.Logical
             }
         }
 
+        public T GetValue<T>(ulong propertyKey)
+        {
+            T result = default(T);
+
+            try
+            {
+                result = (T)this[propertyKey];
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                LogInstance.Log($"PassiveLogicalObject GetValue<T> propertyKey = {propertyKey} = {e}");
+#endif
+            }
+
+            return result;
+        }
+
+        public T GetValue<T>(string propertyName)
+        {
+            T result = default(T);
+
+            try
+            {
+                result = (T)this[propertyName];
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                LogInstance.Log($"PassiveLogicalObject GetValue<T> propertyName = {propertyName} = {e}");
+#endif
+            }
+
+            return result;
+        }
+
         private void SetProperty(ulong propertyKey, object value)
         {
             var currentValue = mLogicalFrame[propertyKey];
