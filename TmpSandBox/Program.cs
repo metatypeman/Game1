@@ -27,12 +27,12 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTLexer();
+            //TSTLexer();
             //TSTLogicalAST();
             //TSTLogicalObject();
             //TSTCancelTask_2();
             //TSTCancelTask();
-            //TSTMyNPCContext();
+            TSTMyNPCContext();
             //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
@@ -470,6 +470,8 @@ namespace TmpSandBox
             {
                 NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext visibleItem = {visibleItem}");
             }
+
+            var pseudoConcrete
 
             while (true)
             {

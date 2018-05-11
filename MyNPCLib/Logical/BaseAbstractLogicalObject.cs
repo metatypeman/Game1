@@ -78,6 +78,16 @@ namespace MyNPCLib.Logical
                 return true;
             }
 
+            if(item1 == null)
+            {
+                return false;
+            }
+
+            if(item2 == null)
+            {
+                return false;
+            }
+
             var item1IsConcrete = item1.IsConcrete;
             var item2IsConcrete = item2.IsConcrete;
 
