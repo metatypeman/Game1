@@ -13,6 +13,15 @@ namespace MyNPCLib.Logical
         public abstract object this[ulong propertyKey] { get; set; }
         public abstract object this[string propertyName] { get; set; }
 
+        protected KindOfSystemProperties KindOfSystemProperty(ulong propertyKey)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseAbstractLogicalObject KindOfSystemProperty propertyKey = {propertyKey}");
+#endif
+
+            return KindOfSystemProperties.Undefined;
+        }
+
         public T GetValue<T>(ulong propertyKey)
         {
             T result = default(T);
@@ -24,7 +33,7 @@ namespace MyNPCLib.Logical
             catch (Exception e)
             {
 #if DEBUG
-                LogInstance.Log($"BaseAbstractLogicalObject GetValue<T> propertyKey = {propertyKey} = {e}");
+                LogInstance.Log($"BaseAbstractLogicalObject GetValue<T> propertyKey = {propertyKey} e = {e}");
 #endif
             }
 
@@ -42,7 +51,7 @@ namespace MyNPCLib.Logical
             catch (Exception e)
             {
 #if DEBUG
-                LogInstance.Log($"BaseAbstractLogicalObject GetValue<T> propertyName = {propertyName} = {e}");
+                LogInstance.Log($"BaseAbstractLogicalObject GetValue<T> propertyName = {propertyName} e = {e}");
 #endif
             }
 
@@ -78,12 +87,12 @@ namespace MyNPCLib.Logical
                 return true;
             }
 
-            if(item1 == null)
+            if(ReferenceEquals(item1, null))
             {
                 return false;
             }
 
-            if(item2 == null)
+            if(ReferenceEquals(item2, null))
             {
                 return false;
             }

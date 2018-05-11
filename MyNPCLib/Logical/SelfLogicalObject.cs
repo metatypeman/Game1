@@ -28,7 +28,7 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"SelfLogicalObject this get propertyKey = {propertyKey}");
 #endif
 
-                return mSource.GetPropertyValue(mSelfEntityId, propertyKey);
+                return NGetProperty(propertyKey);
             }
 
             set
@@ -37,7 +37,7 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"SelfLogicalObject this set propertyKey = {propertyKey} value = {value}");
 #endif
 
-                mSource.SetPropertyValue(mSelfEntityId, propertyKey, value);
+                NSetProperty(propertyKey, value);
             }
         }
 
@@ -51,7 +51,7 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"SelfLogicalObject this get propertyName = {propertyName} propertyKey = {propertyKey}");
 #endif
 
-                return mSource.GetPropertyValue(mSelfEntityId, propertyKey);
+                return NGetProperty(propertyKey);
             }
 
             set
@@ -62,8 +62,39 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"SelfLogicalObject this set propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
 #endif
 
-                mSource.SetPropertyValue(mSelfEntityId, propertyKey, value);
+                NSetProperty(propertyKey, value);
             }
+        }
+
+        private void NSetProperty(ulong propertyKey, object value)
+        {
+#if DEBUG
+            LogInstance.Log($"SelfLogicalObject NSetProperty propertyKey = {propertyKey} value = {value}");
+#endif
+
+            if(KindOfSystemProperty(propertyKey) != KindOfSystemProperties.Undefined)
+            {
+                return;
+            }
+
+            mSource.SetPropertyValue(mSelfEntityId, propertyKey, value);        
+        }
+
+        private object NGetProperty(ulong propertyKey)
+        {
+#if DEBUG
+            LogInstance.Log($"SelfLogicalObject NGetProperty propertyKey = {propertyKey}");
+#endif
+            var kindOfSystemProperty = KindOfSystemProperty(propertyKey);
+
+            switch (kindOfSystemProperty)
+            {
+                case KindOfSystemProperties.Undefined:
+                    return mSource.GetPropertyValue(mSelfEntityId, propertyKey);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kindOfSystemProperty), kindOfSystemProperty, null);
+            }         
         }
 
         public override string PropertiesToSting(uint n)

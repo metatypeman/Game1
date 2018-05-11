@@ -471,7 +471,9 @@ namespace TmpSandBox
                 NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext visibleItem = {visibleItem}");
             }
 
-            var pseudoConcrete
+            var pos = context.SelfLogicalObject["global position"];
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext pos = {pos}");
 
             while (true)
             {
