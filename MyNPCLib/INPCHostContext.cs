@@ -1,6 +1,7 @@
 ﻿using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace MyNPCLib
@@ -15,5 +16,6 @@ namespace MyNPCLib
         bool IsReady { get; }
         event Action OnReady;
         IList<IHostVisionObject> VisibleObjects { get; }
+        Vector3 GlobalPosition { get; }
     }
 }

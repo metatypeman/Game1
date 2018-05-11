@@ -72,7 +72,7 @@ namespace MyNPCLib.Logical
                         }
                         else
                         {
-                            item = new VisionObject(hostVisibleObject.EntityId, hostVisibleObject.VisionItems, mEntityDictionary, mLogicalStorage);
+                            item = new VisionObject(hostVisibleObject.EntityId, hostVisibleObject.VisionItems, mEntityDictionary, mLogicalStorage, mSystemPropertiesDictionary);
                             mVisibleObjectsDict[entityId] = item;
                         }
 

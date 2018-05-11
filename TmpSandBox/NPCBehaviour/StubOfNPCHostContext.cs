@@ -2,6 +2,7 @@
 using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -136,7 +137,29 @@ namespace TmpSandBox.NPCBehaviour
                 result.Add(item);
                 item.VisionItems = new List<IVisionItem>();
 
+                var visionItem = new VisionItem();
+                visionItem.Point = new Vector3(1, 1, 1);
+                visionItem.Distance = 12f;
+                visionItem.LocalDirection = new Vector3(1, 1, 1);
+
+                item.VisionItems.Add(visionItem);
+
+                visionItem = new VisionItem();
+                visionItem.Point = new Vector3(2, 2, 2);
+                visionItem.Distance = 12f;
+                visionItem.LocalDirection = new Vector3(2, 2, 2);
+
+                item.VisionItems.Add(visionItem);
+
                 return result;
+            }
+        }
+
+        public Vector3 GlobalPosition
+        {
+            get
+            {
+                return new Vector3(10, 11, 12);
             }
         }
     }

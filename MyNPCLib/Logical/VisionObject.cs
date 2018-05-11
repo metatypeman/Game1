@@ -6,7 +6,8 @@ namespace MyNPCLib.Logical
 {
     public class VisionObject: BaseAbstractLogicalObject
     {
-        public VisionObject(ulong entityId, IList<IVisionItem> visionItems, IEntityDictionary entityDictionary, ILogicalStorage source)
+        public VisionObject(ulong entityId, IList<IVisionItem> visionItems, IEntityDictionary entityDictionary, ILogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary)
+            : base(systemPropertiesDictionary)
         {
             mEntityId = entityId;
             VisionItems = visionItems;
@@ -29,7 +30,7 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"VisionObject this get propertyKey = {propertyKey}");
 #endif
 
-                return mSource.GetPropertyValue(mEntityId, propertyKey);
+                return NGetProperty(propertyKey);
             }
 
             set
@@ -38,7 +39,7 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"VisionObject this set propertyKey = {propertyKey} value = {value}");
 #endif
 
-                mSource.SetPropertyValue(mEntityId, propertyKey, value);
+                NSetProperty(propertyKey, value);
             }
         }
 
@@ -52,7 +53,7 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"VisionObject this get propertyName = {propertyName} propertyKey = {propertyKey}");
 #endif
 
-                return mSource.GetPropertyValue(mEntityId, propertyKey);
+                return NGetProperty(propertyKey);
             }
 
             set
@@ -63,7 +64,34 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"VisionObject this set propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
 #endif
 
-                mSource.SetPropertyValue(mEntityId, propertyKey, value);
+                NSetProperty(propertyKey, value);
+            }
+        }
+
+        private void NSetProperty(ulong propertyKey, object value)
+        {
+#if DEBUG
+            LogInstance.Log($"VisionObject NSetProperty propertyKey = {propertyKey} value = {value}");
+#endif
+
+            mSource.SetPropertyValue(mEntityId, propertyKey, value);
+        }
+
+        private object NGetProperty(ulong propertyKey)
+        {
+#if DEBUG
+            LogInstance.Log($"VisionObject NGetProperty propertyKey = {propertyKey}");
+#endif
+
+            var kindOfSystemProperty = GetKindOfSystemProperty(propertyKey);
+
+            switch (kindOfSystemProperty)
+            {
+                case KindOfSystemProperties.Undefined:
+                    return mSource.GetPropertyValue(mEntityId, propertyKey);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kindOfSystemProperty), kindOfSystemProperty, null);
             }
         }
 

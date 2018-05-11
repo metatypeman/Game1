@@ -82,7 +82,7 @@ namespace MyNPCLib
             LogInstance.Log("BaseNPCContext InitLogicalSubSystem NEXT");
 #endif
 
-            mSelfLogicalObject = new SelfLogicalObject(mNPCHostContext.SelfEntityId, mEntityDictionary, mLogicalStorage);
+            mSelfLogicalObject = new SelfLogicalObject(mEntityDictionary, mLogicalStorage, mSystemPropertiesDictionary, mNPCHostContext);
 
 #if DEBUG
             LogInstance.Log("BaseNPCContext InitLogicalSubSystem NEXT NEXT");
@@ -741,7 +741,7 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCContext GetLogicalObject query = {query}");
 #endif
-            return new LogicalObject(query, mEntityDictionary, mLogicalStorage, mQueriesCache);
+            return new LogicalObject(query, mEntityDictionary, mLogicalStorage, mQueriesCache, mSystemPropertiesDictionary);
         }
 
         public IList<VisionObject> VisibleObjects

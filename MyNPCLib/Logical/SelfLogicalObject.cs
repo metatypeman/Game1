@@ -6,16 +6,19 @@ namespace MyNPCLib.Logical
 {
     public class SelfLogicalObject : BaseAbstractLogicalObject
     {
-        public SelfLogicalObject(ulong selfEntityId, IEntityDictionary entityDictionary, ILogicalStorage source)
+        public SelfLogicalObject(IEntityDictionary entityDictionary, ILogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary, INPCHostContext npcHostContext)
+             : base(systemPropertiesDictionary)
         {
-            mSelfEntityId = selfEntityId;
+            mSelfEntityId = npcHostContext.SelfEntityId;
             mEntityDictionary = entityDictionary;
             mSource = source;
+            mNPCHostContext = npcHostContext;
         }
 
         private ulong mSelfEntityId;
         private IEntityDictionary mEntityDictionary;
         private ILogicalStorage mSource;
+        private INPCHostContext mNPCHostContext;
 
         public override bool IsConcrete => true;
         public override IList<ulong> CurrentEntitiesIdList => new List<ulong>() { mSelfEntityId };
@@ -91,6 +94,9 @@ namespace MyNPCLib.Logical
             {
                 case KindOfSystemProperties.Undefined:
                     return mSource.GetPropertyValue(mSelfEntityId, propertyKey);
+
+                case KindOfSystemProperties.GlobalPosition:
+                    return mNPCHostContext.GlobalPosition;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kindOfSystemProperty), kindOfSystemProperty, null);

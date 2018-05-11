@@ -9,7 +9,8 @@ namespace MyNPCLib.Logical
     {
         public override bool IsConcrete => false;
 
-        public LogicalObject(string query, IEntityDictionary entityDictionary, ILogicalStorage source, QueriesCache queriesCache)
+        public LogicalObject(string query, IEntityDictionary entityDictionary, ILogicalStorage source, QueriesCache queriesCache, SystemPropertiesDictionary systemPropertiesDictionary)
+            : base (systemPropertiesDictionary)
         {
 #if DEBUG
             LogInstance.Log($"Begin LogicalObject query = {query}");
@@ -115,12 +116,7 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"LogicalObject this get propertyKey = {propertyKey}");
 #endif
 
-                lock (mCurrentEnitiesIdListLockObj)
-                {
-                    UpdateCurrentEnitiesIdList();
-                }
-
-                return mSource.GetPropertyValue(mCurrentEnitiesIdList, propertyKey);
+                return NGetProperty(propertyKey);
             }
 
             set
@@ -129,12 +125,7 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"LogicalObject this set propertyKey = {propertyKey} value = {value}");
 #endif
 
-                lock (mCurrentEnitiesIdListLockObj)
-                {
-                    UpdateCurrentEnitiesIdList();
-                }
-
-                mSource.SetPropertyValue(mCurrentEnitiesIdList, propertyKey, value);
+                NSetProperty(propertyKey, value);
             }
         }
 
@@ -148,12 +139,7 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"LogicalObject this get propertyName = {propertyName} propertyKey = {propertyKey}");
 #endif
 
-                lock (mCurrentEnitiesIdListLockObj)
-                {
-                    UpdateCurrentEnitiesIdList();
-                }
-
-                return mSource.GetPropertyValue(mCurrentEnitiesIdList, propertyKey);
+                return NGetProperty(propertyKey);
             }
 
             set
@@ -164,12 +150,44 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"LogicalObject this set propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
 #endif
 
-                lock (mCurrentEnitiesIdListLockObj)
-                {
-                    UpdateCurrentEnitiesIdList();
-                }
+                NSetProperty(propertyKey, value);
+            }
+        }
 
-                mSource.SetPropertyValue(mCurrentEnitiesIdList, propertyKey, value);
+        private void NSetProperty(ulong propertyKey, object value)
+        {
+#if DEBUG
+            LogInstance.Log($"LogicalObject NSetProperty propertyKey = {propertyKey} value = {value}");
+#endif
+
+            lock (mCurrentEnitiesIdListLockObj)
+            {
+                UpdateCurrentEnitiesIdList();
+            }
+
+            mSource.SetPropertyValue(mCurrentEnitiesIdList, propertyKey, value);
+        }
+
+        private object NGetProperty(ulong propertyKey)
+        {
+#if DEBUG
+            LogInstance.Log($"LogicalObject NGetProperty propertyKey = {propertyKey}");
+#endif
+
+            var kindOfSystemProperty = GetKindOfSystemProperty(propertyKey);
+
+            lock (mCurrentEnitiesIdListLockObj)
+            {
+                UpdateCurrentEnitiesIdList();
+            }
+
+            switch (kindOfSystemProperty)
+            {
+                case KindOfSystemProperties.Undefined:
+                    return mSource.GetPropertyValue(mCurrentEnitiesIdList, propertyKey);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kindOfSystemProperty), kindOfSystemProperty, null);
             }
         }
 

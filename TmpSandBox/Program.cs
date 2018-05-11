@@ -191,8 +191,10 @@ namespace TmpSandBox
 
             var queryCache = new QueriesCache(globalEntityDictionary);
 
+            var systemPropertiesDictionary = new SystemPropertiesDictionary(globalEntityDictionary);
+
             var queryStr = "!((name=helen|name=ann)&class=girl)";
-            var logicalObject = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache);
+            var logicalObject = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary);
 
             var entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
@@ -214,7 +216,7 @@ namespace TmpSandBox
                 NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2) entityId = {entityId}");
             }
 
-            var logicalObject_2 = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache);
+            var logicalObject_2 = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary);
 
             entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
@@ -469,6 +471,8 @@ namespace TmpSandBox
             foreach (var visibleItem in visibleItems)
             {
                 NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext visibleItem = {visibleItem}");
+                var posOfVisibleItem = visibleItem["global position"];
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext posOfVisibleItem = {posOfVisibleItem}");
             }
 
             var pos = context.SelfLogicalObject["global position"];
