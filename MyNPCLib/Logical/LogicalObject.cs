@@ -74,12 +74,16 @@ namespace MyNPCLib.Logical
         {
             get
             {
-                if(mCurrentEnitiesIdList.Count == 0)
+#if DEBUG
+                LogInstance.Log($"LogicalObject CurrentEntityId CurrentEntitiesIdList?.Count = {CurrentEntitiesIdList?.Count}");
+#endif
+
+                if (CurrentEntitiesIdList.Count == 0)
                 {
                     return 0ul;
                 }
 
-                return mCurrentEnitiesIdList.First();
+                return CurrentEntitiesIdList.First();
             }
         } 
 
@@ -167,6 +171,16 @@ namespace MyNPCLib.Logical
 
                 mSource.SetPropertyValue(mCurrentEnitiesIdList, propertyKey, value);
             }
+        }
+
+        public override string PropertiesToSting(uint n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var sb = new StringBuilder();
+            sb.Append(base.PropertiesToSting(n));
+            sb.AppendLine($"{spaces}{nameof(CurrentEntityId)} = {CurrentEntityId}");
+            return sb.ToString();
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Assets.Scripts
                     return null;
                 }
 
-                return state.TargetPosition;
+                return VectorsConvertor.NullableUnityToNumeric(state.TargetPosition);
             }
         }
 
@@ -118,7 +118,7 @@ namespace Assets.Scripts
                     return null;
                 }
 
-                return state.TargetHeadPosition;
+                return VectorsConvertor.NullableUnityToNumeric(state.TargetHeadPosition);
             }
         }
 
@@ -192,7 +192,7 @@ namespace Assets.Scripts
             }
 
             sb.AppendLine($"{spaces}{nameof(KindOfThingsCommand)} = {KindOfThingsCommand}");
-            sb.AppendLine($"{spaces}{nameof(InstanceOfThingId)} = {InstanceOfThingId}");
+            sb.AppendLine($"{spaces}{nameof(EntityIdOfThing)} = {EntityIdOfThing}");
 
             return sb.ToString();
         }

@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Assets.Scripts
         }
     
         public int PossibleIdOfRifle { get; set; }
-        public int InstanceIdOfRifle { get; set; }
+        public BaseAbstractLogicalObject InstanceIdOfRifle { get; set; }
         public Vector3? EthanPosition { get; set; }
       
         public override string ToString()

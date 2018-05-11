@@ -287,6 +287,9 @@
     <Reference Include="MyNPCLib">
       <HintPath>Assets/MyNPCLib.dll</HintPath>
     </Reference>
+    <Reference Include="TestedNPCLogic">
+      <HintPath>Assets/TestedNPCLogic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Common">
       <HintPath>Assets/packages/System.Data.Common.4.3.0/lib/netstandard1.2/System.Data.Common.dll</HintPath>
     </Reference>

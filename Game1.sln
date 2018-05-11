@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
-MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game1", "Game1.csproj", "{35E37FF1-AFDA-94C7-0A4A-DC4EE8CFA03B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game1.Plugins", "Game1.Plugins.csproj", "{78B630A5-F5F5-4B8B-860F-7FABF35A7DE1}"
@@ -60,8 +58,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {13E6DC35-229E-4AB7-ACD8-9B93E63376FE}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,12 +50,12 @@ namespace Assets.Scripts
 
             var trigger = CreateTrigger(() => {
 #if UNITY_EDITOR
-                var visibleObjects = BlackBoard.VisibleObjects;
-                Debug.Log($"TestedInspectingNPCProcess Trigger visibleObjects.Count = {visibleObjects.Count}");
-                foreach (var tmpVisibleObject in visibleObjects)
-                {
-                    Debug.Log($"TestedInspectingNPCProcess Trigger tmpVisibleObject = {tmpVisibleObject}");
-                }
+                //var visibleObjects = BlackBoard.VisibleObjects;
+                //Debug.Log($"TestedInspectingNPCProcess Trigger visibleObjects.Count = {visibleObjects.Count}");
+                //foreach (var tmpVisibleObject in visibleObjects)
+                //{
+                //    Debug.Log($"TestedInspectingNPCProcess Trigger tmpVisibleObject = {tmpVisibleObject}");
+                //}
 #endif
 
                 if (BlackBoard.VisibleObjects.Any(p => p == targetObject))
@@ -204,22 +205,21 @@ namespace Assets.Scripts
                         var command = TestedMoveNPCProcess.CreateCommand();
                         Execute(command);
                     }
-
                     break;
                     
                 case KeyCode.B:
                     {
-                        var instanceIdOfRifle = BlackBoard.PossibleIdOfRifle;
+                        var rifle = Context.GetLogicalObject("name='M4A1 Sopmod'");
                         
 #if UNITY_EDITOR
-            Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
+            Debug.Log($"TestedKeyListenerNPCProcess Main rifle = {rifle}");
 #endif
-                        if(instanceIdOfRifle == 0)
+                        if(rifle == null)
                         {
                             break;
                         }
                                                
-                        var command = TestedTakeFromSurfaceNPCProcess.CreateCommand(instanceIdOfRifle);
+                        var command = TestedTakeFromSurfaceNPCProcess.CreateCommand(rifle);
                         Execute(command);
                     }
                     break;
@@ -232,7 +232,7 @@ namespace Assets.Scripts
             Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
 #endif
 
-                        if(instanceIdOfRifle == 0)
+                        if(instanceIdOfRifle == null)
                         {
                             break;
                         }
@@ -249,12 +249,12 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
 #endif                        
-                        if(instanceIdOfRifle == 0)
+                        if(instanceIdOfRifle == null)
                         {
                             break;
                         }
                         
-                        BlackBoard.InstanceIdOfRifle = 0;
+                        BlackBoard.InstanceIdOfRifle = null;
                         
                         var command = TestedThrowOutToSurfaceRifleToSurfaceNPCProcess.CreateCommand(instanceIdOfRifle);
                         Execute(command);
@@ -551,23 +551,23 @@ namespace Assets.Scripts
     [NPCProcessName("take from surface")]    
     public class TestedTakeFromSurfaceNPCProcess : TestedBaseNPCProcess
     {
-        public static NPCCommand CreateCommand(int instanceId)
+        public static NPCCommand CreateCommand(BaseAbstractLogicalObject thing)
         {
             var command = new NPCCommand();
             command.Name = "take from surface";
-            command.AddParam(nameof(instanceId), instanceId);
+            command.AddParam(nameof(thing), thing);
             return command;
         }
         
-        private void Main(int instanceId)
+        private void Main(BaseAbstractLogicalObject thing)
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TestedTakeFromSurfaceNPCProcess Main instanceId = {instanceId}");
+            Debug.Log($"Begin TestedTakeFromSurfaceNPCProcess Main thing = {thing}");
 #endif
 
             var tmpCommand = new HumanoidThingsCommand();
             tmpCommand.State = KindOfHumanoidThingsCommand.Take;
-            tmpCommand.InstanceId = instanceId;
+            tmpCommand.Thing = thing;
             var tmpTask = ExecuteBody(tmpCommand);
 
             tmpTask.OnRanToCompletionChanged += (INPCProcess sender) => {
@@ -575,11 +575,11 @@ namespace Assets.Scripts
                 //Debug.Log("TestedTakeFromSurfaceNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
 #endif
 
-                BlackBoard.InstanceIdOfRifle = instanceId;
+                BlackBoard.InstanceIdOfRifle = thing;
             };
 
 #if UNITY_EDITOR
-            Debug.Log($"End TestedTakeFromSurfaceNPCProcess Main instanceId = {instanceId}");
+            Debug.Log($"End TestedTakeFromSurfaceNPCProcess Main thing = {thing}");
 #endif
         }
     }
@@ -588,23 +588,23 @@ namespace Assets.Scripts
     [NPCProcessName("hide rifle to bagpack")]    
     public class TestedHideRifleToBagPackNPCProcess : TestedBaseNPCProcess
     {
-        public static NPCCommand CreateCommand(int instanceId)
+        public static NPCCommand CreateCommand(BaseAbstractLogicalObject thing)
         {
             var command = new NPCCommand();
             command.Name = "hide rifle to bagpack";
-            command.AddParam(nameof(instanceId), instanceId);
+            command.AddParam(nameof(thing), thing);
             return command;
         }
         
-        private void Main(int instanceId)
+        private void Main(BaseAbstractLogicalObject thing)
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TestedHideRifleToBagPackNPCProcess Main instanceId = {instanceId}");
+            Debug.Log($"Begin TestedHideRifleToBagPackNPCProcess Main thing = {thing}");
 #endif
 
             var tmpCommand = new HumanoidThingsCommand();
             tmpCommand.State = KindOfHumanoidThingsCommand.PutToBagpack;
-            tmpCommand.InstanceId = instanceId;
+            tmpCommand.Thing = thing;
             var tmpTask = ExecuteBody(tmpCommand);
 
             tmpTask.OnRanToCompletionChanged += (INPCProcess sender) => {
@@ -615,7 +615,7 @@ namespace Assets.Scripts
             };
             
 #if UNITY_EDITOR
-            Debug.Log($"End TestedHideRifleToBagPackNPCProcess Main instanceId = {instanceId}");
+            Debug.Log($"End TestedHideRifleToBagPackNPCProcess Main thing = {thing}");
 #endif
         }   
     }
@@ -624,23 +624,23 @@ namespace Assets.Scripts
     [NPCProcessName("throw out to surface rifle to surface")]    
     public class TestedThrowOutToSurfaceRifleToSurfaceNPCProcess : TestedBaseNPCProcess
     {
-        public static NPCCommand CreateCommand(int instanceId)
+        public static NPCCommand CreateCommand(BaseAbstractLogicalObject thing)
         {
             var command = new NPCCommand();
             command.Name = "throw out to surface rifle to surface";
-            command.AddParam(nameof(instanceId), instanceId);
+            command.AddParam(nameof(thing), thing);
             return command;
         }
         
-        private void Main(int instanceId)
+        private void Main(BaseAbstractLogicalObject thing)
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main instanceId = {instanceId}");
+            Debug.Log($"Begin TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main thing = {thing}");
 #endif
 
             var tmpCommand = new HumanoidThingsCommand();
             tmpCommand.State = KindOfHumanoidThingsCommand.ThrowOutToSurface;
-            tmpCommand.InstanceId = instanceId;
+            tmpCommand.Thing = thing;
             var tmpTask = ExecuteBody(tmpCommand);
 
             tmpTask.OnRanToCompletionChanged += (INPCProcess sender) => {
@@ -650,7 +650,7 @@ namespace Assets.Scripts
             };
 
 #if UNITY_EDITOR
-            Debug.Log($"End TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main instanceId = {instanceId}");
+            Debug.Log($"End TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main thing = {thing}");
 #endif
         }   
     }

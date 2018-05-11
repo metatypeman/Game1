@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MyNPCHostLib
 {
-    public class Class1
+    public class Class1: MonoBehaviour
     {
     }
 }

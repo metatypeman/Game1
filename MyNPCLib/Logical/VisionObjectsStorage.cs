@@ -33,7 +33,7 @@ namespace MyNPCLib.Logical
                 var hostVisibleObjectsList = mNPCHostContext.VisibleObjects;
 
 #if DEBUG
-                LogInstance.Log($"VisionObjectsStorage VisibleObjects hostVisibleObjectsList.Count = {hostVisibleObjectsList?.Count}");
+                //LogInstance.Log($"VisionObjectsStorage VisibleObjects hostVisibleObjectsList.Count = {hostVisibleObjectsList?.Count}");
 #endif
                 var result = new List<VisionObject>();
 
@@ -54,7 +54,7 @@ namespace MyNPCLib.Logical
                     foreach (var hostVisibleObject in hostVisibleObjectsList)
                     {
 #if DEBUG
-                        LogInstance.Log($"VisionObjectsStorage VisibleObjects hostVisibleObject = {hostVisibleObject}");
+                        //LogInstance.Log($"VisionObjectsStorage VisibleObjects hostVisibleObject = {hostVisibleObject}");
 #endif
 
                         var entityId = hostVisibleObject.EntityId;
