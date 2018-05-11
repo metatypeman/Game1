@@ -72,7 +72,7 @@ namespace MyNPCLib.Logical
             LogInstance.Log($"SelfLogicalObject NSetProperty propertyKey = {propertyKey} value = {value}");
 #endif
 
-            if(KindOfSystemProperty(propertyKey) != KindOfSystemProperties.Undefined)
+            if(GetKindOfSystemProperty(propertyKey) != KindOfSystemProperties.Undefined)
             {
                 return;
             }
@@ -85,7 +85,7 @@ namespace MyNPCLib.Logical
 #if DEBUG
             LogInstance.Log($"SelfLogicalObject NGetProperty propertyKey = {propertyKey}");
 #endif
-            var kindOfSystemProperty = KindOfSystemProperty(propertyKey);
+            var kindOfSystemProperty = GetKindOfSystemProperty(propertyKey);
 
             switch (kindOfSystemProperty)
             {

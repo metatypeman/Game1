@@ -7,19 +7,26 @@ namespace MyNPCLib.Logical
 {
     public abstract class BaseAbstractLogicalObject : ILogicalObject, IObjectToString
     {
+        protected BaseAbstractLogicalObject(SystemPropertiesDictionary systemPropertiesDictionary)
+        {
+            mSystemPropertiesDictionary = systemPropertiesDictionary;
+        }
+
+        private readonly SystemPropertiesDictionary mSystemPropertiesDictionary;
+
         public abstract IList<ulong> CurrentEntitiesIdList { get; }
         public abstract ulong CurrentEntityId { get; }
         public abstract bool IsConcrete { get; }
         public abstract object this[ulong propertyKey] { get; set; }
         public abstract object this[string propertyName] { get; set; }
 
-        protected KindOfSystemProperties KindOfSystemProperty(ulong propertyKey)
+        protected KindOfSystemProperties GetKindOfSystemProperty(ulong propertyKey)
         {
 #if DEBUG
-            LogInstance.Log($"BaseAbstractLogicalObject KindOfSystemProperty propertyKey = {propertyKey}");
+            LogInstance.Log($"BaseAbstractLogicalObject GetKindOfSystemProperty propertyKey = {propertyKey}");
 #endif
 
-            return KindOfSystemProperties.Undefined;
+            return mSystemPropertiesDictionary.GetKindOfSystemProperty(propertyKey);
         }
 
         public T GetValue<T>(ulong propertyKey)

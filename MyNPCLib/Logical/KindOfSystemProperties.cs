@@ -6,6 +6,7 @@ namespace MyNPCLib.Logical
 {
     public enum KindOfSystemProperties
     {
-        Undefined
+        Undefined,
+        GlobalPosition
     }
 }

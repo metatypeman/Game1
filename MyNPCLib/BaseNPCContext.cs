@@ -45,7 +45,9 @@ namespace MyNPCLib
             mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Left, this);
             mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
 
-            mVisionObjectsStorage = new VisionObjectsStorage(mEntityDictionary, npcHostContext);
+            mSystemPropertiesDictionary = new SystemPropertiesDictionary(mEntityDictionary);
+
+            mVisionObjectsStorage = new VisionObjectsStorage(mEntityDictionary, npcHostContext, mSystemPropertiesDictionary);
 
             if (mNPCHostContext.IsReady)
             {
@@ -104,6 +106,7 @@ namespace MyNPCLib
         private readonly IdFactory mIdFactory;
         private readonly IEntityDictionary mEntityDictionary;
         private readonly QueriesCache mQueriesCache;
+        private readonly SystemPropertiesDictionary mSystemPropertiesDictionary;
         private readonly VisionObjectsStorage mVisionObjectsStorage;
         private readonly NPCBodyResourcesManager mBodyResourcesManager;
         private readonly NPCHandResourcesManager mRightHandResourcesManager;
