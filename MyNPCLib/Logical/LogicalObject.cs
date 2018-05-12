@@ -45,8 +45,58 @@ namespace MyNPCLib.Logical
         private ILogicalStorage mSource;
         private VisionObjectsStorage mVisionObjectsStorage;
         private bool mNeedUpdateEnitiesIdList = true;
-        private readonly object mCurrentEnitiesIdListLockObj = new object();
+        private readonly object mCurrentEnitiesIdListLockObj = new object();     
         private IList<ulong> mCurrentEnitiesIdList;
+        private readonly object mPrimaryEntityIdLockObj = new object(); 
+        private ulong mPrimaryEntityId;
+
+        private void FindPrimaryEntityId()
+        {
+            lock(mPrimaryEntityIdLockObj)
+            {
+                if (mCurrentEnitiesIdList.Count == 0)
+                {
+                    mPrimaryEntityId = 0ul;
+                    CurrentVisionObjectImpl = null;
+
+                    return;
+                }
+
+                if(mCurrentEnitiesIdList.Count == 1)
+                {
+                    var newPrimaryEntityId = mCurrentEnitiesIdList.First();
+
+                    if(mPrimaryEntityId == newPrimaryEntityId)
+                    {
+                        return;
+                    }
+
+                    CurrentVisionObjectImpl = mVisionObjectsStorage.GetVisionObjectImpl(mPrimaryEntityId);
+
+                    return;
+                }
+
+                var implsDict = mVisionObjectsStorage.GetVisionObjectsImplDict(mCurrentEnitiesIdList);
+
+                if(implsDict.Count == 0)
+                {
+                    mPrimaryEntityId = mCurrentEnitiesIdList.First();
+                    CurrentVisionObjectImpl = null;
+
+                    return;
+                }
+
+                if(implsDict.ContainsKey(mPrimaryEntityId))
+                {
+                    return;
+                }
+
+                var firstImplItem = implsDict.First();
+
+                mPrimaryEntityId = firstImplItem.Key;
+                CurrentVisionObjectImpl = firstImplItem.Value;
+            }
+        }
 
         public override IList<ulong> CurrentEntitiesIdList
         {
@@ -73,12 +123,12 @@ namespace MyNPCLib.Logical
                 LogInstance.Log($"LogicalObject CurrentEntityId CurrentEntitiesIdList?.Count = {CurrentEntitiesIdList?.Count}");
 #endif
 
-                if (CurrentEntitiesIdList.Count == 0)
+                lock (mCurrentEnitiesIdListLockObj)
                 {
-                    return 0ul;
-                }
+                    UpdateCurrentEnitiesIdList();
 
-                return CurrentEntitiesIdList.First();
+                    return mPrimaryEntityId;
+                }                
             }
         } 
 
@@ -90,12 +140,15 @@ namespace MyNPCLib.Logical
 
             if(!mNeedUpdateEnitiesIdList)
             {
+                FindPrimaryEntityId();
                 return;
             }
 
             mNeedUpdateEnitiesIdList = false;
 
             mCurrentEnitiesIdList = mSource.GetEntitiesIdList(mPlan);
+
+            FindPrimaryEntityId();
 
 #if DEBUG
             LogInstance.Log("End LogicalObject UpdateCurrentEnitiesIdList");
@@ -159,6 +212,11 @@ namespace MyNPCLib.Logical
                 UpdateCurrentEnitiesIdList();
             }
 
+            CommonSetProperty(propertyKey, value);
+        }
+
+        protected override void ConcreteSetProperty(ulong propertyKey, object value)
+        {
             mSource.SetPropertyValue(mCurrentEnitiesIdList, propertyKey, value);
         }
 
@@ -168,21 +226,17 @@ namespace MyNPCLib.Logical
             LogInstance.Log($"LogicalObject NGetProperty propertyKey = {propertyKey}");
 #endif
 
-            var kindOfSystemProperty = GetKindOfSystemProperty(propertyKey);
-
             lock (mCurrentEnitiesIdListLockObj)
             {
                 UpdateCurrentEnitiesIdList();
             }
 
-            switch (kindOfSystemProperty)
-            {
-                case KindOfSystemProperties.Undefined:
-                    return mSource.GetPropertyValue(mCurrentEnitiesIdList, propertyKey);
+            return CommonGetProperty(propertyKey);
+        }
 
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(kindOfSystemProperty), kindOfSystemProperty, null);
-            }
+        protected override object ConcreteGetPropertyFromStorage(ulong propertyKey)
+        {
+            return mSource.GetPropertyValue(mCurrentEnitiesIdList, propertyKey);
         }
 
         public override string PropertiesToSting(uint n)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.Logical
@@ -97,6 +98,27 @@ namespace MyNPCLib.Logical
                 }
 
                 return result;
+            }
+        }
+
+        public VisionObjectImpl GetVisionObjectImpl(ulong entityId)
+        {
+            lock (mLockObj)
+            {
+                if(mVisibleObjectsImplDict.ContainsKey(entityId))
+                {
+                    return mVisibleObjectsImplDict[entityId];
+                }
+
+                return null;
+            }
+        }
+
+        public Dictionary<ulong, VisionObjectImpl> GetVisionObjectsImplDict(IList<ulong> entitiesIdList)
+        {
+            lock (mLockObj)
+            {
+                return mVisibleObjectsImplDict.Where(p => entitiesIdList.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value);
             }
         }
     }

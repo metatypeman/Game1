@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace MyNPCLib.Logical
@@ -46,6 +47,40 @@ namespace MyNPCLib.Logical
                     return mVisionItems.Count > 0;
                 }
             }
+        }
+
+        public Vector3? GetGlobalPosition()
+        {
+            lock (mVisionItemsLockObj)
+            {
+                var count = mVisionItems.Count;
+
+#if DEBUG
+                LogInstance.Log($"VisionObjectImpl GetGlobalPosition query = {query}");
+#endif
+
+                if (count == 0)
+                {
+                    return null;
+                }
+
+                var result = Vector3.Zero;
+
+                foreach(var item in mVisionItems)
+                {
+#if DEBUG
+                    LogInstance.Log($"VisionObjectImpl GetGlobalPosition query = {query}");
+#endif
+
+                    result += item.Point;
+                }
+
+#if DEBUG
+                LogInstance.Log($"VisionObjectImpl GetGlobalPosition query = {query}");
+#endif
+            }
+
+            return new Vector3(-1,-1,-1);//tmp
         }
 
         public override string ToString()
