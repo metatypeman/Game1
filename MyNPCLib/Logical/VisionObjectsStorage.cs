@@ -19,6 +19,7 @@ namespace MyNPCLib.Logical
         private readonly SystemPropertiesDictionary mSystemPropertiesDictionary;
         private readonly object mLockObj = new object();
         private Dictionary<ulong, VisionObject> mVisibleObjectsDict = new Dictionary<ulong, VisionObject>();
+        private Dictionary<ulong, VisionObjectImpl> mVisibleObjectsImplDict = new Dictionary<ulong, VisionObjectImpl>();
 
         public ILogicalStorage LogicalStorage
         {
@@ -43,7 +44,7 @@ namespace MyNPCLib.Logical
                 {
                     if (hostVisibleObjectsList.IsEmpty())
                     {
-                        foreach (var item in mVisibleObjectsDict)
+                        foreach (var item in mVisibleObjectsImplDict)
                         {
                             item.Value.VisionItems = new List<IVisionItem>();
                         }
@@ -68,18 +69,23 @@ namespace MyNPCLib.Logical
                         if (mVisibleObjectsDict.ContainsKey(entityId))
                         {
                             item = mVisibleObjectsDict[entityId];
-                            item.VisionItems = hostVisibleObject.VisionItems;
+
+                            var impl = mVisibleObjectsImplDict[entityId];
+
+                            impl.VisionItems = hostVisibleObject.VisionItems;
                         }
                         else
                         {
-                            item = new VisionObject(hostVisibleObject.EntityId, hostVisibleObject.VisionItems, mEntityDictionary, mLogicalStorage, mSystemPropertiesDictionary);
+                            var impl = new VisionObjectImpl(entityId, hostVisibleObject.VisionItems);
+                            item = new VisionObject(entityId, impl, mEntityDictionary, mLogicalStorage, mSystemPropertiesDictionary);
                             mVisibleObjectsDict[entityId] = item;
+                            mVisibleObjectsImplDict[entityId] = impl;
                         }
 
                         result.Add(item);
                     }
 
-                    foreach (var item in mVisibleObjectsDict)
+                    foreach (var item in mVisibleObjectsImplDict)
                     {
                         if (visibleEntitiesIdList.Contains(item.Key))
                         {

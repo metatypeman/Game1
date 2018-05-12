@@ -221,7 +221,7 @@ namespace Assets.Scripts
                     
                 case KeyCode.J:
                     {
-                        var instanceIdOfRifle = BlackBoard.EntityIdOfRifle;
+                        var instanceIdOfRifle = BlackBoard.EntityOfRifle;
                         
 #if UNITY_EDITOR
             Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
@@ -239,7 +239,7 @@ namespace Assets.Scripts
                     
                 case KeyCode.Q:
                     {
-                        var instanceIdOfRifle = BlackBoard.EntityIdOfRifle;
+                        var instanceIdOfRifle = BlackBoard.EntityOfRifle;
                         
 #if UNITY_EDITOR
             Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
@@ -249,7 +249,7 @@ namespace Assets.Scripts
                             break;
                         }
                         
-                        BlackBoard.EntityIdOfRifle = null;
+                        BlackBoard.EntityOfRifle = null;
                         
                         var command = TestedThrowOutToSurfaceRifleToSurfaceNPCProcess.CreateCommand(instanceIdOfRifle);
                         Execute(command);
@@ -576,7 +576,7 @@ namespace Assets.Scripts
                 //Debug.Log("TestedTakeFromSurfaceNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
 #endif
 
-                BlackBoard.EntityIdOfRifle = thing;
+                BlackBoard.EntityOfRifle = thing;
             };
 
 #if UNITY_EDITOR

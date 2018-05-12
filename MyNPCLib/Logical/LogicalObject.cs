@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
-    public class LogicalObject : BaseAbstractLogicalObject
+    public class LogicalObject : OtherLogicalObject
     {
         public override bool IsConcrete => false;
 

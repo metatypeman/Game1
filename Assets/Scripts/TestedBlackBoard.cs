@@ -18,7 +18,7 @@ namespace Assets.Scripts
 #endif
         }
     
-        public BaseAbstractLogicalObject EntityIdOfRifle { get; set; }
+        public BaseAbstractLogicalObject EntityOfRifle { get; set; }
         
         public override string ToString()
         {
@@ -36,7 +36,7 @@ namespace Assets.Scripts
             var nextN = n + 4;
             var nextSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(EntityIdOfRifle)} = {EntityIdOfRifle}");
+            sb.AppendLine($"{spaces}{nameof(EntityOfRifle)} = {EntityOfRifle}");
             return sb.ToString();
         }
     }

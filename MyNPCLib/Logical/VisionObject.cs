@@ -4,18 +4,19 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
-    public class VisionObject: BaseAbstractLogicalObject
+    public class VisionObject: OtherLogicalObject
     {
-        public VisionObject(ulong entityId, IList<IVisionItem> visionItems, IEntityDictionary entityDictionary, ILogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary)
+        public VisionObject(ulong entityId, VisionObjectImpl visionObjectImpl, IEntityDictionary entityDictionary, ILogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary)
             : base(systemPropertiesDictionary)
         {
             mEntityId = entityId;
-            VisionItems = visionItems;
+            mVisionObjectImpl = visionObjectImpl;
             mEntityDictionary = entityDictionary;
             mSource = source;
         }
 
         private ulong mEntityId;
+        private VisionObjectImpl mVisionObjectImpl;
         private IEntityDictionary mEntityDictionary;
         private ILogicalStorage mSource;
 
@@ -95,7 +96,7 @@ namespace MyNPCLib.Logical
             }
         }
 
-        public IList<IVisionItem> VisionItems { get; set; }
+        public IList<IVisionItem> VisionItems => mVisionObjectImpl.VisionItems;
 
         public override string PropertiesToSting(uint n)
         {
