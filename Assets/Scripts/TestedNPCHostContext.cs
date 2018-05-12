@@ -3,10 +3,10 @@ using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -90,7 +90,7 @@ namespace Assets.Scripts
                 catch (Exception e)
                 {
 #if DEBUG
-                    Debug.Log($"TestedNPCBodyHost InternalOnHumanoidStatesChanged e = {e}");
+                    LogInstance.Log($"TestedNPCBodyHost InternalOnHumanoidStatesChanged e = {e}");
 #endif
                 }
             });
@@ -102,19 +102,19 @@ namespace Assets.Scripts
         public void Execute(TargetStateOfHumanoidBody targetState)
         {
 #if DEBUG
-            Debug.Log($"TestedNPCBodyHost Execute targetState = {targetState}");
+            LogInstance.Log($"TestedNPCBodyHost Execute targetState = {targetState}");
 #endif
 
             var internalTargetStateOfHumanoidBody = InternalTargetStateOfHumanoidControllerConverter.ConvertToInternal(targetState);
 
 #if DEBUG
-            Debug.Log($"TestedNPCBodyHost ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
+            LogInstance.Log($"TestedNPCBodyHost ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
 #endif
 
             mInternalBodyHumanoidHost.Execute(internalTargetStateOfHumanoidBody);
 
 #if DEBUG
-            Debug.Log($"TestedNPCBodyHost End ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
+            LogInstance.Log($"TestedNPCBodyHost End ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
 #endif
         }
         
@@ -143,7 +143,7 @@ namespace Assets.Scripts
 
         public INPCProcess Send(INPCCommand command)
         {
-            Debug.Log($"Begin TestedNPCHandHost Send command = {command}");
+            LogInstance.Log($"Begin TestedNPCHandHost Send command = {command}");
 
             if(mInternalHumanoidHostContext.RightHandThing != null)
             {
@@ -157,9 +157,10 @@ namespace Assets.Scripts
 
         public object Get(string propertyName)
         {
-            Debug.Log($"TestedNPCHandHost Get propertyName = {propertyName}");
-
-            if(mInternalHumanoidHostContext.RightHandThing != null)
+#if DEBUG
+            LogInstance.Log($"TestedNPCHandHost Get propertyName = {propertyName}");
+#endif
+            if (mInternalHumanoidHostContext.RightHandThing != null)
             {
                 return mInternalHumanoidHostContext.RightHandThing.Get(propertyName);
             }
@@ -215,12 +216,7 @@ namespace Assets.Scripts
         public bool IsReady => mBodyHost.IsReady;
         public event Action OnReady;
 
-        public IList<IHostVisionObject> VisibleObjects
-        {
-            get
-            {
-                return mInternalBodyHumanoidHost.VisibleObjects;
-            }
-        }
+        public IList<IHostVisionObject> VisibleObjects => mInternalBodyHumanoidHost.VisibleObjects;
+        public Vector3 GlobalPosition => mInternalBodyHumanoidHost.GlobalPosition;
     }
 }

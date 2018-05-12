@@ -222,6 +222,18 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         }
     }
 
+    public System.Numerics.Vector3 GlobalPosition
+    {
+        get
+        {
+            var invocable = new InvocableInMainThreadObj<Vector3>(() => {
+                return gameObject.transform.position;
+            }, this);
+
+            return VectorsConvertor.UnityToNumeric(invocable.Run());
+        }
+    }
+
     public GameObject RightHand { get; private set; }
     public GameObject RightHandWP { get; private set; }
     public GameObject LeftHand { get; private set; }

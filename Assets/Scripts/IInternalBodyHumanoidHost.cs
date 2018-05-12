@@ -3,6 +3,7 @@ using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,5 +25,6 @@ namespace Assets.Scripts
         bool IsReady { get; }
         event Action OnReady;
         IList<IHostVisionObject> VisibleObjects { get; }
+        Vector3 GlobalPosition { get; }
     }
 }
