@@ -18,7 +18,6 @@ namespace Assets.Scripts
 #endif
         }
     
-        public int PossibleIdOfRifle { get; set; }
         public BaseAbstractLogicalObject InstanceIdOfRifle { get; set; }
         public Vector3? EthanPosition { get; set; }
       
@@ -38,7 +37,6 @@ namespace Assets.Scripts
             var nextN = n + 4;
             var nextSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(PossibleIdOfRifle)} = {PossibleIdOfRifle}");
             sb.AppendLine($"{spaces}{nameof(InstanceIdOfRifle)} = {InstanceIdOfRifle}");
             if(EthanPosition.HasValue)
             {

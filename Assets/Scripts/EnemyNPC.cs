@@ -33,14 +33,6 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         Debug.Log($"EnemyNPC (commonLevelHost == null) = {commonLevelHost == null}");
 
-        var targetGun = FindObjectOfType<RapidFireGun>();
-        var possibleInstanceIdOfRifle = 0;
-
-        if (targetGun != null)
-        {
-            possibleInstanceIdOfRifle = targetGun.gameObject.GetInstanceID();
-        }
-
         var _target = GameObject.Find("Ethan");
 
         System.Numerics.Vector3? ethanPosition = null;
@@ -55,7 +47,6 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         var hostContext = new TestedNPCHostContext(internalBodyHost);
         mNPCProcessesContext = new TestedNPCContext(commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext, commonLevelHost.QueriesCache);
         var blackBoard = mNPCProcessesContext.BlackBoard;
-        blackBoard.PossibleIdOfRifle = possibleInstanceIdOfRifle;
         blackBoard.EthanPosition = ethanPosition;
         mNPCProcessesContext.Bootstrap();
         
