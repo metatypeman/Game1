@@ -9,25 +9,18 @@ namespace MyNPCLib.Logical
     {
         public override bool IsConcrete => false;
 
-        public LogicalObject(string query, IEntityDictionary entityDictionary, ILogicalStorage source, QueriesCache queriesCache, SystemPropertiesDictionary systemPropertiesDictionary)
+        public LogicalObject(string query, IEntityDictionary entityDictionary, ILogicalStorage source, QueriesCache queriesCache, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
             : base (systemPropertiesDictionary)
         {
 #if DEBUG
             LogInstance.Log($"Begin LogicalObject query = {query}");
 #endif
             mEntityDictionary = entityDictionary;
+            mVisionObjectsStorage = visionObjectsStorage;
             mSource = source;
             mSource.OnChanged += MSource_OnChanged;
 
             mPlan = queriesCache.CreatePlan(query);
-
-//            var rootQueryNode = QueryASTNodeFactory.CreateASTNode(query, entityDictionary);
-
-//#if DEBUG
-//            LogInstance.Log($"LogicalObject rootQueryNode = {rootQueryNode}");
-//#endif
-
-//            mPlan = QueryResolverASTNodeFactory.CreatePlan(rootQueryNode);
 
 #if DEBUG
             LogInstance.Log($"End LogicalObject query = {query}");
@@ -50,6 +43,7 @@ namespace MyNPCLib.Logical
 
         private BaseQueryResolverASTNode mPlan;
         private ILogicalStorage mSource;
+        private VisionObjectsStorage mVisionObjectsStorage;
         private bool mNeedUpdateEnitiesIdList = true;
         private readonly object mCurrentEnitiesIdListLockObj = new object();
         private IList<ulong> mCurrentEnitiesIdList;

@@ -10,5 +10,9 @@ namespace MyNPCLib.Logical
             : base(systemPropertiesDictionary)
         {
         }
+
+        protected VisionObjectImpl CurrentVisionObjectImpl { get; set; }
+
+
     }
 }

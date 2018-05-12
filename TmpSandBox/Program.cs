@@ -193,8 +193,12 @@ namespace TmpSandBox
 
             var systemPropertiesDictionary = new SystemPropertiesDictionary(globalEntityDictionary);
 
+            var npcHostContext = new StubOfNPCHostContext();
+
+            var visionObjectsStorage = new VisionObjectsStorage(globalEntityDictionary, npcHostContext, systemPropertiesDictionary);
+
             var queryStr = "!((name=helen|name=ann)&class=girl)";
-            var logicalObject = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary);
+            var logicalObject = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
 
             var entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
@@ -216,7 +220,7 @@ namespace TmpSandBox
                 NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2) entityId = {entityId}");
             }
 
-            var logicalObject_2 = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary);
+            var logicalObject_2 = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
 
             entitiesIdList = logicalObject.CurrentEntitiesIdList;
 

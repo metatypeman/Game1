@@ -741,7 +741,7 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log($"BaseNPCContext GetLogicalObject query = {query}");
 #endif
-            return new LogicalObject(query, mEntityDictionary, mLogicalStorage, mQueriesCache, mSystemPropertiesDictionary);
+            return new LogicalObject(query, mEntityDictionary, mLogicalStorage, mQueriesCache, mSystemPropertiesDictionary, mVisionObjectsStorage);
         }
 
         public IList<VisionObject> VisibleObjects

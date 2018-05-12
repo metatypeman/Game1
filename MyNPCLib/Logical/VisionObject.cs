@@ -10,13 +10,12 @@ namespace MyNPCLib.Logical
             : base(systemPropertiesDictionary)
         {
             mEntityId = entityId;
-            mVisionObjectImpl = visionObjectImpl;
+            CurrentVisionObjectImpl = visionObjectImpl;
             mEntityDictionary = entityDictionary;
             mSource = source;
         }
 
         private ulong mEntityId;
-        private VisionObjectImpl mVisionObjectImpl;
         private IEntityDictionary mEntityDictionary;
         private ILogicalStorage mSource;
 
@@ -96,7 +95,7 @@ namespace MyNPCLib.Logical
             }
         }
 
-        public IList<IVisionItem> VisionItems => mVisionObjectImpl.VisionItems;
+        public IList<IVisionItem> VisionItems => CurrentVisionObjectImpl.VisionItems;
 
         public override string PropertiesToSting(uint n)
         {
