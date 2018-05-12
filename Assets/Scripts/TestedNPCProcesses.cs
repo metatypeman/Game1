@@ -170,18 +170,13 @@ namespace Assets.Scripts
                     
                 case KeyCode.I:
                     {
-                        var ethanPos = BlackBoard.EthanPosition;
+                        var ethan = Context.GetLogicalObject("name='Ethan'");
                         
 #if UNITY_EDITOR
-            Debug.Log($"TestedKeyListenerNPCProcess Main ethanPos = {ethanPos}");
+            Debug.Log($"TestedKeyListenerNPCProcess Main ethan = {ethan}");
 #endif
-                        
-                        if(!ethanPos.HasValue)
-                        {
-                            break;
-                        }
-                        
-                        var command = TestedFireToEthanNPCProcess.CreateCommand(ethanPos.Value);
+                       
+                        var command = TestedFireToEthanNPCProcess.CreateCommand(ethan);
                         Execute(command);
                     }
                     break;
@@ -226,7 +221,7 @@ namespace Assets.Scripts
                     
                 case KeyCode.J:
                     {
-                        var instanceIdOfRifle = BlackBoard.InstanceIdOfRifle;
+                        var instanceIdOfRifle = BlackBoard.EntityIdOfRifle;
                         
 #if UNITY_EDITOR
             Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
@@ -244,7 +239,7 @@ namespace Assets.Scripts
                     
                 case KeyCode.Q:
                     {
-                        var instanceIdOfRifle = BlackBoard.InstanceIdOfRifle;
+                        var instanceIdOfRifle = BlackBoard.EntityIdOfRifle;
                         
 #if UNITY_EDITOR
             Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
@@ -254,7 +249,7 @@ namespace Assets.Scripts
                             break;
                         }
                         
-                        BlackBoard.InstanceIdOfRifle = null;
+                        BlackBoard.EntityIdOfRifle = null;
                         
                         var command = TestedThrowOutToSurfaceRifleToSurfaceNPCProcess.CreateCommand(instanceIdOfRifle);
                         Execute(command);
@@ -406,16 +401,22 @@ namespace Assets.Scripts
     [NPCProcessName("fire to ethan")]    
     public class TestedFireToEthanNPCProcess : TestedBaseNPCProcess
     {
-        public static NPCCommand CreateCommand(System.Numerics.Vector3 targetPosition)
+        public static NPCCommand CreateCommand(BaseAbstractLogicalObject enemy)
         {
             var command = new NPCCommand();
             command.Name = "fire to ethan";
-            command.AddParam(nameof(targetPosition), targetPosition);
+            command.AddParam(nameof(enemy), enemy);
             return command;
         }
         
-        private void Main(System.Numerics.Vector3 targetPosition)
+        private void Main(BaseAbstractLogicalObject enemy)
         {
+#if UNITY_EDITOR
+            Debug.Log($"Begin TestedFireToEthanNPCProcess Main enemy = {enemy}");
+#endif
+
+            var targetPosition = enemy.GetValue<System.Numerics.Vector3?>("global position");
+
 #if UNITY_EDITOR
             Debug.Log($"Begin TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
 #endif
@@ -575,7 +576,7 @@ namespace Assets.Scripts
                 //Debug.Log("TestedTakeFromSurfaceNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
 #endif
 
-                BlackBoard.InstanceIdOfRifle = thing;
+                BlackBoard.EntityIdOfRifle = thing;
             };
 
 #if UNITY_EDITOR

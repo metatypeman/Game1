@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using MyNPCLib;
@@ -15,13 +16,13 @@ namespace Assets.Scripts
             //Debug.Log($"TestedRunAwayNPCProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
 #endif
 
-            var targetWayPoint = WaypointsBus.GetByName(nameOfThisWaypoint);
+            var targetWayPoint = Context.GetLogicalObject($"name='{nameOfThisWaypoint}'&class='waypoint'");
 
             if (targetWayPoint != null)
             {
                 var moveCommand = new HumanoidHStateCommand();
                 moveCommand.State = HumanoidHState.Walk;
-                moveCommand.TargetPosition = VectorsConvertor.UnityToNumeric(targetWayPoint.Position);
+                moveCommand.TargetPosition = targetWayPoint.GetValue<Vector3?>("global position");
 
 #if UNITY_EDITOR
                 //Debug.Log($"TestedRunAwayNPCProcess GoToTargetWayPoint moveCommand = {moveCommand}");

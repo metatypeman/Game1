@@ -18,9 +18,8 @@ namespace Assets.Scripts
 #endif
         }
     
-        public BaseAbstractLogicalObject InstanceIdOfRifle { get; set; }
-        public Vector3? EthanPosition { get; set; }
-      
+        public BaseAbstractLogicalObject EntityIdOfRifle { get; set; }
+        
         public override string ToString()
         {
             return ToString(0u);
@@ -37,15 +36,7 @@ namespace Assets.Scripts
             var nextN = n + 4;
             var nextSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(InstanceIdOfRifle)} = {InstanceIdOfRifle}");
-            if(EthanPosition.HasValue)
-            {
-                sb.AppendLine($"{spaces}{nameof(EthanPosition)} = {EthanPosition}");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}{nameof(EthanPosition)} = null");            
-            }
+            sb.AppendLine($"{spaces}{nameof(EntityIdOfRifle)} = {EntityIdOfRifle}");
             return sb.ToString();
         }
     }

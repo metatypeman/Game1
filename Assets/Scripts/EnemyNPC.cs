@@ -13,19 +13,10 @@ using System.Linq;
 [RequireComponent(typeof(EnemyRayScaner))]
 public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 {
-    public float surfaceOffset = 1.5f;
-    public GameObject setTargetOn;
-
     private TestedNPCContext mNPCProcessesContext;
 
     private InputKeyHelper mInputKeyHelper;
-
-    public Transform Head;
-    public Transform GunEnd;
-    private GameObject mGunBody;
-
-    private int mInstanceIdOfRifle;
-
+    
     // Use this for initialization
     void Start()
     {
@@ -33,21 +24,11 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         Debug.Log($"EnemyNPC (commonLevelHost == null) = {commonLevelHost == null}");
 
-        var _target = GameObject.Find("Ethan");
-
-        System.Numerics.Vector3? ethanPosition = null;
-
-        if (_target != null)
-        {
-            ethanPosition = VectorsConvertor.UnityToNumeric(_target.transform.position);
-        }
-
         var internalBodyHost = GetComponent<IInternalBodyHumanoidHost>();
 
         var hostContext = new TestedNPCHostContext(internalBodyHost);
         mNPCProcessesContext = new TestedNPCContext(commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext, commonLevelHost.QueriesCache);
-        var blackBoard = mNPCProcessesContext.BlackBoard;
-        blackBoard.EthanPosition = ethanPosition;
+
         mNPCProcessesContext.Bootstrap();
         
         mInputKeyHelper = new InputKeyHelper();
@@ -64,11 +45,6 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         mInputKeyHelper.AddListener(KeyCode.B, OnBPressAction);
         mInputKeyHelper.AddListener(KeyCode.J, OnJPressAction);
         mInputKeyHelper.AddListener(KeyCode.Q, OnQPressAction);
-
-        mGunBody = GameObject.Find("M4A1 Sopmod");
-
-        var clas1 = new Class1();
-        clas1.GetItems().Add(12);
 
         Task.Run(() => {
             try
@@ -152,8 +128,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
     private void OnQPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnQPressAction key = {key}");
-        Debug.Log($"EnemyNPC OnQPressAction mInstanceIdOfRifle = {mInstanceIdOfRifle}");
-
+        
         var command = KeyToNPCCommandConverter.Convert(key);
         Debug.Log($"EnemyNPC OnQPressAction command = {command}");
         mNPCProcessesContext.Send(command);
@@ -162,8 +137,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
     private void OnJPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnJPressAction key = {key}");
-        Debug.Log($"EnemyNPC OnJPressAction mInstanceIdOfRifle = {mInstanceIdOfRifle}");
-
+        
         var command = KeyToNPCCommandConverter.Convert(key);
         Debug.Log($"EnemyNPC OnJPressAction command = {command}");
         mNPCProcessesContext.Send(command);
@@ -172,27 +146,6 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
     private void OnBPressAction(KeyCode key)
     {
         Debug.Log($"EnemyNPC OnBPressAction key = {key}");
-
-        var instanceId = 0;
-
-        var targetGun = FindObjectOfType<RapidFireGun>();
-
-        Debug.Log($"EnemyNPC OnBPressAction (targetGun == null) = {targetGun == null}");
-
-        if (targetGun == null)
-        {
-            if(mInstanceIdOfRifle > 0)
-            {
-                instanceId = mInstanceIdOfRifle;
-            }
-        }
-        else
-        { 
-            instanceId = targetGun.GetInstanceID();
-            mInstanceIdOfRifle = instanceId;        
-        }
-
-        Debug.Log($"EnemyNPC OnBPressAction instanceId = {instanceId}");
 
         var command = KeyToNPCCommandConverter.Convert(key);
         Debug.Log($"EnemyNPC OnBPressAction command = {command}");
