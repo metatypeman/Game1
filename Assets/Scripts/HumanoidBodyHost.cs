@@ -349,8 +349,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private InternalStatesOfHumanoidController CreateTargetState(InternalStatesOfHumanoidController sourceState, InternalTargetStateOfHumanoidController targetState)
     {
 #if DEBUG
-        //Debug.Log("HumanoidBodyHost CreateTargetState sourceState = " + sourceState);
-        //Debug.Log("HumanoidBodyHost CreateTargetState targetState = " + targetState);
+        //Debug.Log($"HumanoidBodyHost CreateTargetState sourceState = {sourceState}");
+        //Debug.Log($"HumanoidBodyHost CreateTargetState targetState = {targetState}");
 #endif
 
         var result = sourceState.Clone();

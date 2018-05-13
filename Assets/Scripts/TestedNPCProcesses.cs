@@ -173,7 +173,7 @@ namespace Assets.Scripts
                         var ethan = Context.GetLogicalObject("name='Ethan'");
                         
 #if UNITY_EDITOR
-            Debug.Log($"TestedKeyListenerNPCProcess Main ethan = {ethan}");
+                        Debug.Log($"TestedKeyListenerNPCProcess Main ethan = {ethan}");
 #endif
                        
                         var command = TestedFireToEthanNPCProcess.CreateCommand(ethan);
@@ -207,8 +207,11 @@ namespace Assets.Scripts
                         var rifle = Context.GetLogicalObject("name='M4A1 Sopmod'");
                         
 #if UNITY_EDITOR
-            Debug.Log($"TestedKeyListenerNPCProcess Main rifle = {rifle}");
+                        Debug.Log($"TestedKeyListenerNPCProcess Main rifle = {rifle}");
 #endif
+
+                        //throw new Exception("E");
+
                         if(rifle == null)
                         {
                             break;
@@ -420,6 +423,11 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log($"Begin TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
 #endif
+
+            if(targetPosition == null)
+            {
+                return;
+            }
 
             var tmpCommand = new HumanoidHStateCommand();
             tmpCommand.State = HumanoidHState.AimAt;

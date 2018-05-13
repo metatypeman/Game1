@@ -16,7 +16,7 @@ namespace MyNPCLib.Logical
         protected object CommonGetProperty(ulong propertyKey)
         {
 #if DEBUG
-            LogInstance.Log($"VisionObject NGetProperty propertyKey = {propertyKey}");
+            //LogInstance.Log($"VisionObject NGetProperty propertyKey = {propertyKey}");
 #endif
 
             var kindOfSystemProperty = GetKindOfSystemProperty(propertyKey);
@@ -51,7 +51,7 @@ namespace MyNPCLib.Logical
         private object GetGlobalPosition(ulong propertyKey)
         {
 #if DEBUG
-            LogInstance.Log($"VisionObject GetGlobalPosition propertyKey = {propertyKey}");
+            //LogInstance.Log($"VisionObject GetGlobalPosition propertyKey = {propertyKey}");
 #endif
 
             if(CurrentVisionObjectImpl == null)

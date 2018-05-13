@@ -926,10 +926,6 @@ namespace MyNPCLib
 #endif
 
                         RemoveProcessId(displacedProcessId);
-
-                        var displacedTask = mProcessesDict[displacedProcessId];
-                        displacedTask.State = StateOfNPCProcess.Canceled;
-                        mProcessesDict.Remove(displacedProcessId);
                     }
                 }
 
@@ -1018,6 +1014,8 @@ namespace MyNPCLib
 
             if(mProcessesDict.ContainsKey(processId))
             {
+                var displacedTask = mProcessesDict[processId];
+                displacedTask.State = StateOfNPCProcess.Canceled;
                 mProcessesDict.Remove(processId);
             }
         }

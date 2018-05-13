@@ -118,7 +118,7 @@ namespace MyNPCLib.Logical
         {
             lock (mLockObj)
             {
-                return mVisibleObjectsImplDict.Where(p => entitiesIdList.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value);
+                return mVisibleObjectsImplDict.Where(p => p.Value.IsVisible && entitiesIdList.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value);
             }
         }
     }

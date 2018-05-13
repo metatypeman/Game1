@@ -52,12 +52,20 @@ namespace MyNPCLib.Logical
 
         private void FindPrimaryEntityId()
         {
-            lock(mPrimaryEntityIdLockObj)
+#if DEBUG
+            //LogInstance.Log("Begin LogicalObject FindPrimaryEntityId");
+#endif
+
+            lock (mPrimaryEntityIdLockObj)
             {
                 if (mCurrentEnitiesIdList.Count == 0)
                 {
                     mPrimaryEntityId = 0ul;
                     CurrentVisionObjectImpl = null;
+
+#if DEBUG
+                    //LogInstance.Log("LogicalObject FindPrimaryEntityId mCurrentEnitiesIdList.Count == 0");
+#endif
 
                     return;
                 }
@@ -68,10 +76,20 @@ namespace MyNPCLib.Logical
 
                     if(mPrimaryEntityId == newPrimaryEntityId)
                     {
+#if DEBUG
+                        //LogInstance.Log($"LogicalObject FindPrimaryEntityId mCurrentEnitiesIdList.Count == 1 mPrimaryEntityId == newPrimaryEntityId newPrimaryEntityId = {newPrimaryEntityId}");
+#endif
+
                         return;
                     }
 
+                    mPrimaryEntityId = newPrimaryEntityId;
+
                     CurrentVisionObjectImpl = mVisionObjectsStorage.GetVisionObjectImpl(mPrimaryEntityId);
+
+#if DEBUG
+                    //LogInstance.Log($"LogicalObject FindPrimaryEntityId mCurrentEnitiesIdList.Count == 1 ff mPrimaryEntityId = {mPrimaryEntityId}");
+#endif
 
                     return;
                 }
@@ -83,11 +101,19 @@ namespace MyNPCLib.Logical
                     mPrimaryEntityId = mCurrentEnitiesIdList.First();
                     CurrentVisionObjectImpl = null;
 
+#if DEBUG
+                    //LogInstance.Log($"LogicalObject FindPrimaryEntityId implsDict.Count == 0 mPrimaryEntityId = {mPrimaryEntityId}");
+#endif
+
                     return;
                 }
 
                 if(implsDict.ContainsKey(mPrimaryEntityId))
                 {
+#if DEBUG
+                    //LogInstance.Log("LogicalObject FindPrimaryEntityId implsDict.ContainsKey(mPrimaryEntityId)");
+#endif
+
                     return;
                 }
 
@@ -95,6 +121,10 @@ namespace MyNPCLib.Logical
 
                 mPrimaryEntityId = firstImplItem.Key;
                 CurrentVisionObjectImpl = firstImplItem.Value;
+
+#if DEBUG
+                //LogInstance.Log($"End LogicalObject FindPrimaryEntityId mPrimaryEntityId = {mPrimaryEntityId}");
+#endif
             }
         }
 
@@ -103,7 +133,7 @@ namespace MyNPCLib.Logical
             get
             {
 #if DEBUG
-                LogInstance.Log("Begin LogicalObject CurrentEnitiesIdList");
+                //LogInstance.Log("Begin LogicalObject CurrentEnitiesIdList");
 #endif
 
                 lock (mCurrentEnitiesIdListLockObj)
@@ -120,7 +150,7 @@ namespace MyNPCLib.Logical
             get
             {
 #if DEBUG
-                LogInstance.Log($"LogicalObject CurrentEntityId CurrentEntitiesIdList?.Count = {CurrentEntitiesIdList?.Count}");
+                //LogInstance.Log($"LogicalObject CurrentEntityId CurrentEntitiesIdList?.Count = {CurrentEntitiesIdList?.Count}");
 #endif
 
                 lock (mCurrentEnitiesIdListLockObj)
@@ -135,7 +165,7 @@ namespace MyNPCLib.Logical
         private void UpdateCurrentEnitiesIdList()
         {
 #if DEBUG
-            LogInstance.Log("Begin LogicalObject UpdateCurrentEnitiesIdList");
+            //LogInstance.Log("Begin LogicalObject UpdateCurrentEnitiesIdList");
 #endif
 
             if(!mNeedUpdateEnitiesIdList)
@@ -151,7 +181,7 @@ namespace MyNPCLib.Logical
             FindPrimaryEntityId();
 
 #if DEBUG
-            LogInstance.Log("End LogicalObject UpdateCurrentEnitiesIdList");
+            //LogInstance.Log("End LogicalObject UpdateCurrentEnitiesIdList");
 #endif
         }
 
@@ -160,7 +190,7 @@ namespace MyNPCLib.Logical
             get
             {
 #if DEBUG
-                LogInstance.Log($"LogicalObject this get propertyKey = {propertyKey}");
+                //LogInstance.Log($"LogicalObject this get propertyKey = {propertyKey}");
 #endif
 
                 return NGetProperty(propertyKey);
@@ -169,7 +199,7 @@ namespace MyNPCLib.Logical
             set
             {
 #if DEBUG
-                LogInstance.Log($"LogicalObject this set propertyKey = {propertyKey} value = {value}");
+                //LogInstance.Log($"LogicalObject this set propertyKey = {propertyKey} value = {value}");
 #endif
 
                 NSetProperty(propertyKey, value);
@@ -183,7 +213,7 @@ namespace MyNPCLib.Logical
                 var propertyKey = mEntityDictionary.GetKey(propertyName);
 
 #if DEBUG
-                LogInstance.Log($"LogicalObject this get propertyName = {propertyName} propertyKey = {propertyKey}");
+                //LogInstance.Log($"LogicalObject this get propertyName = {propertyName} propertyKey = {propertyKey}");
 #endif
 
                 return NGetProperty(propertyKey);
@@ -194,7 +224,7 @@ namespace MyNPCLib.Logical
                 var propertyKey = mEntityDictionary.GetKey(propertyName);
 
 #if DEBUG
-                LogInstance.Log($"LogicalObject this set propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
+                //LogInstance.Log($"LogicalObject this set propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
 #endif
 
                 NSetProperty(propertyKey, value);
@@ -204,7 +234,7 @@ namespace MyNPCLib.Logical
         private void NSetProperty(ulong propertyKey, object value)
         {
 #if DEBUG
-            LogInstance.Log($"LogicalObject NSetProperty propertyKey = {propertyKey} value = {value}");
+            //LogInstance.Log($"LogicalObject NSetProperty propertyKey = {propertyKey} value = {value}");
 #endif
 
             lock (mCurrentEnitiesIdListLockObj)
@@ -223,7 +253,7 @@ namespace MyNPCLib.Logical
         private object NGetProperty(ulong propertyKey)
         {
 #if DEBUG
-            LogInstance.Log($"LogicalObject NGetProperty propertyKey = {propertyKey}");
+            //LogInstance.Log($"LogicalObject NGetProperty propertyKey = {propertyKey}");
 #endif
 
             lock (mCurrentEnitiesIdListLockObj)

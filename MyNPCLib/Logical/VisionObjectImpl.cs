@@ -56,7 +56,7 @@ namespace MyNPCLib.Logical
                 var count = mVisionItems.Count;
 
 #if DEBUG
-                LogInstance.Log($"VisionObjectImpl GetGlobalPosition query = {query}");
+                LogInstance.Log($"VisionObjectImpl GetGlobalPosition count = {count}");
 #endif
 
                 if (count == 0)
@@ -69,18 +69,18 @@ namespace MyNPCLib.Logical
                 foreach(var item in mVisionItems)
                 {
 #if DEBUG
-                    LogInstance.Log($"VisionObjectImpl GetGlobalPosition query = {query}");
+                    LogInstance.Log($"VisionObjectImpl GetGlobalPosition item = {item}");
 #endif
 
                     result += item.Point;
                 }
 
 #if DEBUG
-                LogInstance.Log($"VisionObjectImpl GetGlobalPosition query = {query}");
+                LogInstance.Log($"VisionObjectImpl GetGlobalPosition result = {result}");
 #endif
-            }
 
-            return new Vector3(-1,-1,-1);//tmp
+                return new Vector3(result.X/count, result.Y / count, result.Z / count);
+            }         
         }
 
         public override string ToString()
