@@ -10,6 +10,19 @@ namespace Assets.Scripts
 {
     public class BasePassiveLogicalGameObject: MonoBehaviour, IReadOnlyLogicalObject
     {
+        protected BasePassiveLogicalGameObject(PassiveLogicalGameObjectOptions options = null)
+        {
+            if(options == null)
+            {
+                mOptions = new PassiveLogicalGameObjectOptions();
+            }
+            else
+            {
+                mOptions = options;
+            }
+        }
+
+        private PassiveLogicalGameObjectOptions mOptions;
         private PassiveLogicalObject mPassiveLogicalObject;
         public ulong EntityId => mPassiveLogicalObject.EntityId;
         public object this[ulong propertyKey]
@@ -42,6 +55,11 @@ namespace Assets.Scripts
             var instanceId = tmpGameObject.GetInstanceID();
 
             mPassiveLogicalObject["name"] = tmpGameObject.name;
+
+            if(mOptions.ShowGlobalPosition)
+            {
+                mPassiveLogicalObject["global position"] = VectorsConvertor.UnityToNumeric(tmpGameObject.transform.position);
+            }
 
             OnInitFacts();
 

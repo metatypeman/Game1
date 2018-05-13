@@ -210,9 +210,15 @@ namespace Assets.Scripts
                         Debug.Log($"TestedKeyListenerNPCProcess Main rifle = {rifle}");
 #endif
 
-                        //throw new Exception("E");
+                        var tmpB = Context.GetLogicalObject("name='TrafficBarrierHazards (1)'");
 
-                        if(rifle == null)
+                        //var tmpP = tmpB.GetValue<System.Numerics.Vector3?>("global position");
+
+#if UNITY_EDITOR
+                        //Debug.Log($"TestedKeyListenerNPCProcess Main tmpP = {tmpP}");
+#endif
+
+                        if (rifle == null)
                         {
                             break;
                         }
