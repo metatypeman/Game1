@@ -5,4 +5,8 @@
     <RootNamespace>OpenNLP</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SharpEntropyForNS\SharpEntropyForNS.csproj" />
+  </ItemGroup>
+
 </Project>

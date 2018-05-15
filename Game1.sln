@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestedNPCLogic", "TestedNPC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenNLPForNS", "OpenNLPForNS\OpenNLPForNS.csproj", "{FDC503EA-AB3B-477E-A1EE-F0417665E1A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpEntropyForNS", "SharpEntropyForNS\SharpEntropyForNS.csproj", "{5E08CB2A-CA1B-4376-8A07-CBA45B3F807A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{FDC503EA-AB3B-477E-A1EE-F0417665E1A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDC503EA-AB3B-477E-A1EE-F0417665E1A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDC503EA-AB3B-477E-A1EE-F0417665E1A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E08CB2A-CA1B-4376-8A07-CBA45B3F807A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E08CB2A-CA1B-4376-8A07-CBA45B3F807A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E08CB2A-CA1B-4376-8A07-CBA45B3F807A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E08CB2A-CA1B-4376-8A07-CBA45B3F807A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
