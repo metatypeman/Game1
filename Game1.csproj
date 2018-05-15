@@ -395,7 +395,6 @@
     <Compile Include="Assets\Scripts\TestedNPCHostContext.cs" />
     <Compile Include="Assets\Scripts\TestedNPCProcesses.cs" />
     <Compile Include="Assets\Scripts\VectorsConvertor.cs" />
-    <Compile Include="Assets\Scripts\WaypointsBus.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
   </ItemGroup>
   <ItemGroup>

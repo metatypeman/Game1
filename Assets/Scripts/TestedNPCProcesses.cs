@@ -284,24 +284,24 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Debug.Log("TestedGoToEnemyBaseNPCProcess Main");
 #endif
+            var targetWayPoint = Context.GetLogicalObject($"name='FarWaypoint'&class='waypoint'");
+            //var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
 
-            var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
-
-            if (targetWayPoint != null)
+            if(targetWayPoint == null)
             {
-                var moveCommand = new HumanoidHStateCommand();
-                moveCommand.State = HumanoidHState.Walk;
-                moveCommand.TargetPosition = VectorsConvertor.UnityToNumeric(targetWayPoint.Position);
-
-#if UNITY_EDITOR
-                Debug.Log($"TestedGoToEnemyBaseNPCProcess Main moveCommand = {moveCommand}");
-#endif
-
-                var childProcess = ExecuteBody(moveCommand);
-                Wait(childProcess);
+                return;
             }
 
-            //var l = new List<int>();
+            var moveCommand = new HumanoidHStateCommand();
+            moveCommand.State = HumanoidHState.Walk;
+            moveCommand.TargetPosition = targetWayPoint.GetValue<System.Numerics.Vector3?>("global position");
+
+#if UNITY_EDITOR
+            Debug.Log($"TestedGoToEnemyBaseNPCProcess Main moveCommand = {moveCommand}");
+#endif
+
+            var childProcess = ExecuteBody(moveCommand);
+            Wait(childProcess);
         }
     }
     

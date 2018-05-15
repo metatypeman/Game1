@@ -14,5 +14,12 @@ namespace Assets.Scripts
             })
         {
         }
+
+        protected override void OnInitFacts()
+        {
+            base.OnInitFacts();
+
+            this["class"] = "waypoint";
+        }
     }
 }
