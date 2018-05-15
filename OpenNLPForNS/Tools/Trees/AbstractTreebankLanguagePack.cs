@@ -1,4 +1,7 @@
-﻿using System;
+﻿//OpenNLPForNS is based on AlexPoint/OpenNlp
+//I just need OpenNLP what is based on Net. Standard 1.6. 
+
+using System;
 using OpenNLP.Tools.Ling;
 using OpenNLP.Tools.Util;
 using OpenNLP.Tools.Util.International.Morph;
