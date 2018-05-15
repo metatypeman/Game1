@@ -1,4 +1,4 @@
-﻿//OpenNLPForNS is based on https://github.com/AlexPoint/OpenNlp
+﻿//OpenNLPForNS is based on AlexPoint/OpenNlp
 //I just need OpenNLP what is based on Net. Standard 1.6. 
 
 using System.IO;
