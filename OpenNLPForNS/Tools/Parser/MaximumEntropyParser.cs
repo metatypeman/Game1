@@ -1,5 +1,5 @@
 ﻿//OpenNLPForNS is based on AlexPoint/OpenNlp
-//I just need OpenNLP what is based on Net. Standard 1.6. 
+//I just need OpenNLP for Net. Standard 1.6. 
 
 using System;
 using System.Collections.Generic;

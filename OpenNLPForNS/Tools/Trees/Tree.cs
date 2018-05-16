@@ -1,5 +1,5 @@
 ﻿//OpenNLPForNS is based on AlexPoint/OpenNlp
-//I just need OpenNLP what is based on Net. Standard 1.6. 
+//I just need OpenNLP for Net. Standard 1.6. 
 
 using System;
 using System.Collections;
@@ -993,7 +993,7 @@ namespace OpenNLP.Tools.Trees
             {
                 if (!(head.Label() is CoreLabel))
                 {
-                    throw new SystemException("Horrible bug");
+                    throw new Exception("Horrible bug");
                 }
                 var headLabel = (CoreLabel)head.Label();
                 nodeLabel.Set(typeof(TreeCoreAnnotations.HeadWordAnnotation),
