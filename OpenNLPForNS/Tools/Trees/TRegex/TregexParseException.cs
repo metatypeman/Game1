@@ -1,0 +1,24 @@
+﻿//OpenNLPForNS is based on AlexPoint/OpenNlp
+//I just need OpenNLP for Net. Standard 1.6.
+
+using System;
+
+namespace OpenNLP.Tools.Trees.TRegex
+{
+    /// <summary>
+    /// A runtime exception that indicates something went wrong parsing a
+    /// tregex expression.  The purpose is to make those exceptions
+    /// unchecked exceptions, as there are only a few circumstances in
+    /// which one could recover.
+    /// 
+    /// @author John Bauer
+    /// 
+    /// Code retrieved on the Stanford parser and ported to C# (see http://nlp.stanford.edu/software/lex-parser.shtml)
+    /// </summary>
+    public class TregexParseException : Exception
+    {
+        public TregexParseException(string message) : base(message)
+        {
+        }
+    }
+}
