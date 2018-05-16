@@ -2314,7 +2314,7 @@ namespace OpenNLP.Tools.Trees
             }
             catch (IOException ioe)
             {
-                throw new SystemException("Tree.valueOf() tree construction failed", ioe);
+                throw new Exception("Tree.valueOf() tree construction failed", ioe);
             }
         }
 
