@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game1", "Game1.csproj", "{35E37FF1-AFDA-94C7-0A4A-DC4EE8CFA03B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game1.Plugins", "Game1.Plugins.csproj", "{78B630A5-F5F5-4B8B-860F-7FABF35A7DE1}"
@@ -16,10 +18,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyNPCHostLib", "MyNPCHostLib\MyNPCHostLib.csproj", "{83C5D20C-D6C8-43B6-A6F2-72FAB196CA84}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestedNPCLogic", "TestedNPCLogic\TestedNPCLogic.csproj", "{35FFBC99-5CBB-4829-9312-2B4E0420CED5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenNLPForNS", "OpenNLPForNS\OpenNLPForNS.csproj", "{FDC503EA-AB3B-477E-A1EE-F0417665E1A9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpEntropyForNS", "SharpEntropyForNS\SharpEntropyForNS.csproj", "{5E08CB2A-CA1B-4376-8A07-CBA45B3F807A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,16 +57,11 @@ Global
 		{35FFBC99-5CBB-4829-9312-2B4E0420CED5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35FFBC99-5CBB-4829-9312-2B4E0420CED5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35FFBC99-5CBB-4829-9312-2B4E0420CED5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FDC503EA-AB3B-477E-A1EE-F0417665E1A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FDC503EA-AB3B-477E-A1EE-F0417665E1A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FDC503EA-AB3B-477E-A1EE-F0417665E1A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FDC503EA-AB3B-477E-A1EE-F0417665E1A9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E08CB2A-CA1B-4376-8A07-CBA45B3F807A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E08CB2A-CA1B-4376-8A07-CBA45B3F807A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E08CB2A-CA1B-4376-8A07-CBA45B3F807A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E08CB2A-CA1B-4376-8A07-CBA45B3F807A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A9278004-FA53-4398-B069-660106AB4A15}
 	EndGlobalSection
 EndGlobal
