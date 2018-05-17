@@ -19,6 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyNPCHostLib", "MyNPCHostLi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestedNPCLogic", "TestedNPCLogic\TestedNPCLogic.csproj", "{35FFBC99-5CBB-4829-9312-2B4E0420CED5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenNLPForNS", "OpenNLPForNS\OpenNLPForNS.csproj", "{3218E1E9-B30B-4503-A735-2A59E441B47B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpWordNetForNS", "SharpWordNetForNS\SharpWordNetForNS.csproj", "{EE157A20-01D8-4C27-B36A-6A5405813316}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpEntropyForNS", "SharpEntropyForNS\SharpEntropyForNS.csproj", "{3F614D0E-224F-4235-9C9B-8CE36B037D29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +63,18 @@ Global
 		{35FFBC99-5CBB-4829-9312-2B4E0420CED5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35FFBC99-5CBB-4829-9312-2B4E0420CED5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35FFBC99-5CBB-4829-9312-2B4E0420CED5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3218E1E9-B30B-4503-A735-2A59E441B47B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3218E1E9-B30B-4503-A735-2A59E441B47B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3218E1E9-B30B-4503-A735-2A59E441B47B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3218E1E9-B30B-4503-A735-2A59E441B47B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE157A20-01D8-4C27-B36A-6A5405813316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE157A20-01D8-4C27-B36A-6A5405813316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE157A20-01D8-4C27-B36A-6A5405813316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE157A20-01D8-4C27-B36A-6A5405813316}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F614D0E-224F-4235-9C9B-8CE36B037D29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F614D0E-224F-4235-9C9B-8CE36B037D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F614D0E-224F-4235-9C9B-8CE36B037D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F614D0E-224F-4235-9C9B-8CE36B037D29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
