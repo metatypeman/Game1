@@ -14,6 +14,10 @@ namespace TmpSandBox.NPCBehaviour
             NLog.LogManager.GetCurrentClassLogger().Info("Begin Main");
             NLog.LogManager.GetCurrentClassLogger().Info($"Main BlackBoard.TstValue = {BlackBoard.TstValue}");
 
+            var currnetProcessId = Id;
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"Main currnetProcessId = {currnetProcessId}");
+
             var bodyCommand = new HumanoidHStateCommand();
             bodyCommand.State = HumanoidHState.Run;
 

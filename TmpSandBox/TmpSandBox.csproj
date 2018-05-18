@@ -11,9 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OpenNLPForNS\OpenNLPForNS.csproj" />
-    <ProjectReference Include="..\SharpEntropyForNS\SharpEntropyForNS.csproj" />
-    <ProjectReference Include="..\SharpWordNetForNS\SharpWordNetForNS.csproj" />
+    <ProjectReference Include="..\MyNPCLib\MyNPCLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

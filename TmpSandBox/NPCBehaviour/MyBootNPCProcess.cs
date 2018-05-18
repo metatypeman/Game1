@@ -49,6 +49,10 @@ namespace TmpSandBox.NPCBehaviour
             NLog.LogManager.GetCurrentClassLogger().Info($"Main Id = {Id}");
             //NLog.LogManager.GetCurrentClassLogger().Info($"Main ");
 
+            var currnetProcessId = Id;
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"Main currnetProcessId = {currnetProcessId}");
+
             NLog.LogManager.GetCurrentClassLogger().Info($"Main BlackBoard.TstValue = {BlackBoard.TstValue}");
 
             BlackBoard.TstValue = 12;
