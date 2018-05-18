@@ -30,6 +30,7 @@ namespace Assets.Scripts
             AddTypeOfProcess<TestedThrowOutToSurfaceRifleToSurfaceNPCProcess>();
             AddTypeOfProcess<TestedStartShootingNPCProcess>();
             AddTypeOfProcess<TestedStopShootingNPCProcess>();
+            AddTypeOfProcess<TestedSearchNearNPCProcess>();
         }
 
         public override void Bootstrap()

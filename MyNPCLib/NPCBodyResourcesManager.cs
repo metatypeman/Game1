@@ -18,7 +18,7 @@ namespace MyNPCLib
             mContext = context;
         }
 
-#region private members
+        #region private members
         private IIdFactory mIdFactory;
         private IEntityDictionary mEntityDictionary;
         private INPCBodyHost mNPCBodyHost;
@@ -41,12 +41,12 @@ namespace MyNPCLib
                 try
                 {
 #if DEBUG
-                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged Begin changedStates");
-                    //foreach (var changedState in changedStates)
-                    //{
-                    //    LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged changedState = {changedState}");
-                    //}
-                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged End changedStates");
+                    LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged Begin changedStates");
+                    foreach (var changedState in changedStates)
+                    {
+                        LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged changedState = {changedState}");
+                    }
+                    LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged End changedStates");
 #endif
 
                     lock (mDataLockObj)
@@ -381,7 +381,7 @@ namespace MyNPCLib
             LogInstance.Log($"NPCBodyResourcesManager CreateResolution sourceState = {sourceState}");
             LogInstance.Log($"NPCBodyResourcesManager CreateResolution targetState = {targetState}");
             LogInstance.Log($"NPCBodyResourcesManager CreateResolution processId = {processId}");
-            DumpProcesses();
+            //DumpProcesses();
 #endif
 
             lock(mDataLockObj)

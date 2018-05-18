@@ -505,7 +505,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void ApplyTargetState(InternalStatesOfHumanoidController targetState)
     {
 #if DEBUG
-        //Debug.Log($"HumanoidBodyHost ApplyTargetState targetState = {targetState}");
+        Debug.Log($"HumanoidBodyHost ApplyTargetState targetState = {targetState}");
 #endif
 
         var targetBehaviourFlags = CreateBehaviourFlags(targetState);
@@ -525,7 +525,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         UpdateAnimator();
 
 #if DEBUG
-        //Debug.Log($"HumanoidBodyHost ApplyInternalStates mStates = {mStates}");
+        Debug.Log($"HumanoidBodyHost ApplyInternalStates mStates = {mStates}");
 #endif
 
         var hState = mStates.HState;
@@ -613,7 +613,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     mAbsBodyAngleDelta = Math.Abs(mBodyAngleDelta);
 
 #if DEBUG
-                    //Debug.Log("HumanoidBodyHost ApplyInternalStates case HumanoidHState.Rotate");
+                    Debug.Log("HumanoidBodyHost ApplyInternalStates case HumanoidHState.Rotate");
 #endif
                 }
                 break;
@@ -692,6 +692,10 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     public void ApplyAchieveDestinationOfMoving()
     {
+#if DEBUG
+        Debug.Log("HumanoidBodyHost ApplyAchieveDestinationOfMoving");
+#endif
+
         mStates.HState = HumanoidHState.Stop;
         mStates.TargetPosition = null;
         ApplyCurrentStates();
@@ -745,7 +749,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     var newAngle = mCurrentBodyAngle + mBodyAngleDelta;
 
 #if DEBUG
-                    //Debug.Log($"HumanoidBodyHost Update newAngle = {newAngle}");
+                    Debug.Log($"HumanoidBodyHost Update newAngle = {newAngle}");
 #endif
                     var tmpDelta = mTargetBodyAngle - newAngle;
 

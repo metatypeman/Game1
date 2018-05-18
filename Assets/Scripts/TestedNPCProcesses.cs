@@ -424,29 +424,124 @@ namespace Assets.Scripts
             Debug.Log($"Begin TestedFireToEthanNPCProcess Main enemy = {enemy}");
 #endif
 
-            var targetPosition = enemy.GetValue<System.Numerics.Vector3?>("global position");
+            var n = 0;
 
-#if UNITY_EDITOR
-            Debug.Log($"Begin TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
-#endif
-
-            if(targetPosition == null)
+            while(true)
             {
-                return;
+                var searchNearCommand = TestedSearchNearNPCProcess.CreateCommand(enemy);
+
+                var tmpSearchNearProcess = Execute(searchNearCommand);
+
+                Wait(tmpSearchNearProcess);
+
+                n++;
+
+                if(n > 2)
+                {
+                    break;
+                }
             }
 
-            var tmpCommand = new HumanoidHStateCommand();
-            tmpCommand.State = HumanoidHState.AimAt;
-            tmpCommand.TargetPosition = targetPosition;
-            
-            var tmpTask = ExecuteBody(tmpCommand);
+            //var targetPosition = enemy.GetValue<System.Numerics.Vector3?>("global position");
 
 #if UNITY_EDITOR
-            Debug.Log($"End TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
+            //Debug.Log($"Begin TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
+#endif
+
+            //if(targetPosition == null)
+            //{
+            //    return;
+            //}
+
+            //var tmpCommand = new HumanoidHStateCommand();
+            //tmpCommand.State = HumanoidHState.AimAt;
+            //tmpCommand.TargetPosition = targetPosition;
+            
+            //var tmpTask = ExecuteBody(tmpCommand);
+
+#if UNITY_EDITOR
+            //Debug.Log($"End TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
 #endif
         }    
     }
-    
+
+    [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
+    [NPCProcessName("search near")]
+    public class TestedSearchNearNPCProcess : TestedBaseNPCProcess
+    {
+        public static NPCCommand CreateCommand(BaseAbstractLogicalObject enemy, float angle = 90)
+        {
+            var command = new NPCCommand();
+            command.Name = "search near";
+            command.AddParam(nameof(angle), angle);
+            command.AddParam(nameof(enemy), enemy);
+            return command;
+        }
+
+        private void Main(BaseAbstractLogicalObject enemy, float angle)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"Begin TestedSearchNearNPCProcess Main angle = {angle}");
+            Debug.Log($"TestedSearchNearNPCProcess Main enemy = {enemy}");
+            Debug.Log($"TestedSearchNearNPCProcess Begin Rotate to Angle angle = {angle}");
+#endif
+
+            var tmpCommand = new HumanoidHStateCommand();
+            tmpCommand.State = HumanoidHState.Rotate;
+            tmpCommand.TargetPosition = new System.Numerics.Vector3(0, angle, 0);
+
+            var tmpTask = ExecuteBody(tmpCommand);
+            tmpTask.OnStateChanged += TmpTask_OnStateChanged;
+
+            Wait(tmpTask);
+
+#if UNITY_EDITOR
+            Debug.Log($"TestedSearchNearNPCProcess End Rotate to Angle angle = {angle}");
+#endif
+
+            Wait(2000);
+
+#if UNITY_EDITOR
+            Debug.Log($"TestedSearchNearNPCProcess Begin Rotate to Angle -angle = {-angle}");
+#endif
+
+            tmpCommand = new HumanoidHStateCommand();
+            tmpCommand.State = HumanoidHState.Rotate;
+            tmpCommand.TargetPosition = new System.Numerics.Vector3(0, -angle, 0);
+
+            tmpTask = ExecuteBody(tmpCommand);
+            tmpTask.OnStateChanged += TmpTask_OnStateChanged;
+
+            Wait(tmpTask);
+
+            Wait(2000);
+
+#if UNITY_EDITOR
+            Debug.Log($"TestedSearchNearNPCProcess Begin Rotate to Angle -angle = {-angle}");
+            Debug.Log($"TestedSearchNearNPCProcess Begin Rotate to Angle -angle = {-angle}");
+#endif
+
+            tmpCommand = new HumanoidHStateCommand();
+            tmpCommand.State = HumanoidHState.Rotate;
+            tmpCommand.TargetPosition = new System.Numerics.Vector3(0, -angle, 0);
+
+            tmpTask = ExecuteBody(tmpCommand);
+            tmpTask.OnStateChanged += TmpTask_OnStateChanged;
+
+            Wait(tmpTask);
+
+#if UNITY_EDITOR
+            Debug.Log($"TestedSearchNearNPCProcess End Rotate to Angle -angle = {-angle}");
+            Debug.Log($"End TestedSearchNearNPCProcess Main angle = {angle}");
+#endif
+        }
+
+        private void TmpTask_OnStateChanged(INPCProcess sender, StateOfNPCProcess state)
+        {
+            Debug.Log($"TestedSearchNearNPCProcess TmpTask_OnStateChanged sender.Id = {sender.Id} state = {state}");
+        }
+    }
+
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("rotate")]    
     public class TestedRotateNPCProcess : TestedBaseNPCProcess

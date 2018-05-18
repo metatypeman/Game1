@@ -527,6 +527,16 @@ namespace MyNPCLib
             }
         }
 
+        public void Wait(int millisecondsTimeout)
+        {
+            var cancelationToken = GetCancellationToken();
+            cancelationToken?.ThrowIfCancellationRequested();
+
+            Thread.Sleep(1000);
+
+            cancelationToken?.ThrowIfCancellationRequested();
+        }
+
         protected bool InfinityCondition
         {
             get
