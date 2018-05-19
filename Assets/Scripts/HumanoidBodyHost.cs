@@ -202,7 +202,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"HumanoidBodyHost Start e = {e}");
+                    LogInstance.Error($"HumanoidBodyHost Start e = {e}");
 #endif
                 }              
             });
@@ -249,6 +249,15 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private void EmitOnHumanoidStatesChanged(params HumanoidStateKind[] changedStates)
     {
+#if DEBUG
+        LogInstance.Log($"HumanoidBodyHost EmitOnHumanoidStatesChanged Begin changedStates");
+        foreach (var changedState in changedStates)
+        {
+            LogInstance.Log($"HumanoidBodyHost OnHumanoidStatesChanged changedState = {changedState}");
+        }
+        LogInstance.Log($"HumanoidBodyHost EmitOnHumanoidStatesChanged End changedStates");
+#endif
+
         Task.Run(() => {
             try
             {
@@ -257,7 +266,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
             catch (Exception e)
             {
 #if DEBUG
-                LogInstance.Log($"HumanoidBodyHost EmitOnHumanoidStatesChanged e = {e}");
+                LogInstance.Error($"HumanoidBodyHost EmitOnHumanoidStatesChanged e = {e}");
 #endif
             }
         });
@@ -494,7 +503,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
             catch (Exception e)
             {
 #if DEBUG
-                LogInstance.Log($"HumanoidBodyHost Die e = {e}");
+                LogInstance.Error($"HumanoidBodyHost Die e = {e}");
 #endif
             }
         });

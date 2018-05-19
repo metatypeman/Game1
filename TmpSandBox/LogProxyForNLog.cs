@@ -9,9 +9,17 @@ namespace TmpSandBox
     {
         public void Log(string message)
         {
-#if DEBUG
             NLog.LogManager.GetCurrentClassLogger().Info(message);
-#endif
+        }
+
+        public void Error(string message)
+        {
+            NLog.LogManager.GetCurrentClassLogger().Error(message);
+        }
+
+        public void Warning(string message)
+        {
+            NLog.LogManager.GetCurrentClassLogger().Warn(message);
         }
     }
 }

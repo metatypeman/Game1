@@ -214,7 +214,7 @@ namespace MyNPCLib
             catch(Exception e)
             {
 #if DEBUG
-                LogInstance.Log($"BaseNPCProcess GetDefaultHandProperty<T> propertyName = {propertyName} e = {e}");
+                LogInstance.Error($"BaseNPCProcess GetDefaultHandProperty<T> propertyName = {propertyName} e = {e}");
 #endif
             }
 
@@ -281,7 +281,7 @@ namespace MyNPCLib
             catch(Exception e)
             {
 #if DEBUG
-                LogInstance.Log($"BaseNPCProcess GetRightHandProperty<T> propertyName = {propertyName} e = {e}");
+                LogInstance.Error($"BaseNPCProcess GetRightHandProperty<T> propertyName = {propertyName} e = {e}");
 #endif
             }
 
@@ -348,7 +348,7 @@ namespace MyNPCLib
             catch(Exception e)
             {
 #if DEBUG
-                LogInstance.Log($"BaseNPCProcess GetLeftHandProperty<T> propertyName = {propertyName} e = {e}");
+                LogInstance.Error($"BaseNPCProcess GetLeftHandProperty<T> propertyName = {propertyName} e = {e}");
 #endif
             }
 
@@ -461,7 +461,7 @@ namespace MyNPCLib
             catch (OperationCanceledException)
             {
 #if DEBUG
-                LogInstance.Log("BaseNPCProcess NRun catch(OperationCanceledException)");
+                LogInstance.Error("BaseNPCProcess NRun catch(OperationCanceledException)");
 #endif
             }
             catch (Exception e)
@@ -469,7 +469,7 @@ namespace MyNPCLib
                 proxy.State = StateOfNPCProcess.Faulted;
 
 #if DEBUG
-                LogInstance.Log($"End BaseNPCProcess NRun e = {e}");
+                LogInstance.Error($"End BaseNPCProcess NRun e = {e}");
 #endif
             }
             finally

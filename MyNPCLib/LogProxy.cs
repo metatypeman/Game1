@@ -7,6 +7,8 @@ namespace MyNPCLib
     public interface ILogProxy
     {
         void Log(string message);
+        void Error(string message);
+        void Warning(string message);
     }
 
     public static class LogInstance
@@ -24,6 +26,22 @@ namespace MyNPCLib
             lock (mLockObj)
             {
                 mILogProxy?.Log(message);
+            }
+        }
+
+        public static void Error(string message)
+        {
+            lock (mLockObj)
+            {
+                mILogProxy?.Error(message);
+            }
+        }
+
+        public static void Warning(string message)
+        {
+            lock (mLockObj)
+            {
+                mILogProxy?.Warning(message);
             }
         }
 

@@ -16,5 +16,18 @@ namespace Assets.Scripts
             Debug.Log(message);
 #endif
         }
+
+        public void Error(string message)
+        {
+#if UNITY_EDITOR
+            Debug.LogError(message);
+#endif
+        }
+        public void Warning(string message)
+        {
+#if UNITY_EDITOR
+            Debug.LogWarning(message);
+#endif
+        }
     }
 }

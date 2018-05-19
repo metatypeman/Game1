@@ -82,6 +82,16 @@ namespace MyNPCLib
                                     mHandsActionState.Clear();
                                     break;
 
+                                case HumanoidStateKind.HeadState:
+                                    displacedProcessesIdList.AddRange(mHeadState);
+                                    mHeadState.Clear();
+                                    break;
+
+                                case HumanoidStateKind.TargetHeadPosition:
+                                    displacedProcessesIdList.AddRange(mTargetHeadPosition);
+                                    mTargetHeadPosition.Clear();
+                                    break;
+
                                 case HumanoidStateKind.ThingsCommand:
                                     displacedProcessesIdList.AddRange(mHandsState);
                                     mHandsState.Clear();
@@ -119,7 +129,7 @@ namespace MyNPCLib
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged e = {e}");
+                    LogInstance.Error($"NPCBodyResourcesManager OnHumanoidStatesChanged e = {e}");
 #endif
                 }
             });
@@ -243,7 +253,7 @@ namespace MyNPCLib
             catch (OperationCanceledException)
             {
 #if DEBUG
-                LogInstance.Log("NPCBodyResourcesManager NExecute catch(OperationCanceledException)");
+                LogInstance.Error("NPCBodyResourcesManager NExecute catch(OperationCanceledException)");
 #endif
             }
             catch (Exception e)
@@ -251,7 +261,7 @@ namespace MyNPCLib
                 process.State = StateOfNPCProcess.Faulted;
 
 #if DEBUG
-                LogInstance.Log($"End NPCBodyResourcesManager NExecute e = {e}");
+                LogInstance.Error($"End NPCBodyResourcesManager NExecute e = {e}");
 #endif
             }
             finally
