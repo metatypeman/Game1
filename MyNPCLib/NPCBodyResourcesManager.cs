@@ -41,12 +41,12 @@ namespace MyNPCLib
                 try
                 {
 #if DEBUG
-                    LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged Begin changedStates");
-                    foreach (var changedState in changedStates)
-                    {
-                        LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged changedState = {changedState}");
-                    }
-                    LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged End changedStates");
+                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged Begin changedStates");
+                    //foreach (var changedState in changedStates)
+                    //{
+                    //    LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged changedState = {changedState}");
+                    //}
+                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged End changedStates");
 #endif
 
                     lock (mDataLockObj)

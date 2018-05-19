@@ -94,7 +94,7 @@ namespace MyNPCLib
                         catch (Exception e)
                         {
 #if DEBUG
-                            LogInstance.Log($"BaseCommonNPCProcessWithEvents add OnStateChanged e = {e}");
+                            LogInstance.Error($"BaseCommonNPCProcessWithEvents add OnStateChanged e = {e}");
 #endif
                         }
                     });
@@ -117,7 +117,7 @@ namespace MyNPCLib
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"BaseCommonNPCProcessWithEvents EmitOnStateChanged e = {e}");
+                    LogInstance.Error($"BaseCommonNPCProcessWithEvents EmitOnStateChanged e = {e}");
 #endif
                 }
             });
@@ -144,7 +144,7 @@ namespace MyNPCLib
                         catch (Exception e)
                         {
 #if DEBUG
-                            LogInstance.Log($"BaseCommonNPCProcessWithEvents add OnRunningChanged e = {e}");
+                            LogInstance.Error($"BaseCommonNPCProcessWithEvents add OnRunningChanged e = {e}");
 #endif
                         }
                     });
@@ -169,7 +169,7 @@ namespace MyNPCLib
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"BaseCommonNPCProcessWithEvents EmitOnRunningChanged e = {e}");
+                    LogInstance.Error($"BaseCommonNPCProcessWithEvents EmitOnRunningChanged e = {e}");
 #endif
                 }
             });
@@ -196,7 +196,7 @@ namespace MyNPCLib
                         catch (Exception e)
                         {
 #if DEBUG
-                            LogInstance.Log($"BaseCommonNPCProcessWithEvents add OnRanToCompletionChanged e = {e}");
+                            LogInstance.Error($"BaseCommonNPCProcessWithEvents add OnRanToCompletionChanged e = {e}");
 #endif
                         }
                     });
@@ -221,7 +221,7 @@ namespace MyNPCLib
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"BaseCommonNPCProcessWithEvents EmitOnRanToCompletionChanged e = {e}");
+                    LogInstance.Error($"BaseCommonNPCProcessWithEvents EmitOnRanToCompletionChanged e = {e}");
 #endif
                 }
             });
@@ -244,7 +244,7 @@ namespace MyNPCLib
                         catch (Exception e)
                         {
 #if DEBUG
-                            LogInstance.Log($"BaseCommonNPCProcessWithEvents add OnCanceledChanged e = {e}");
+                            LogInstance.Error($"BaseCommonNPCProcessWithEvents add OnCanceledChanged e = {e}");
 #endif
                         }
                     });
@@ -281,7 +281,7 @@ namespace MyNPCLib
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"BaseCommonNPCProcessWithEvents EmitOnCanceledChanged e = {e}");
+                    LogInstance.Error($"BaseCommonNPCProcessWithEvents EmitOnCanceledChanged e = {e}");
 #endif
                 }
             });
@@ -304,7 +304,7 @@ namespace MyNPCLib
                         catch (Exception e)
                         {
 #if DEBUG
-                            LogInstance.Log($"BaseCommonNPCProcessWithEvents add OnFaultedChanged e = {e}");
+                            LogInstance.Error($"BaseCommonNPCProcessWithEvents add OnFaultedChanged e = {e}");
 #endif
                         }
                     });
@@ -329,7 +329,7 @@ namespace MyNPCLib
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"BaseCommonNPCProcessWithEvents EmitOnFaultedChanged e = {e}");
+                    LogInstance.Error($"BaseCommonNPCProcessWithEvents EmitOnFaultedChanged e = {e}");
 #endif
                 }
             });
@@ -352,7 +352,7 @@ namespace MyNPCLib
                         catch (Exception e)
                         {
 #if DEBUG
-                            LogInstance.Log($"BaseCommonNPCProcessWithEvents add OnDestroyedChanged e = {e}");
+                            LogInstance.Error($"BaseCommonNPCProcessWithEvents add OnDestroyedChanged e = {e}");
 #endif
                         }
                     });
@@ -378,7 +378,7 @@ namespace MyNPCLib
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"BaseCommonNPCProcessWithEvents EmitOnDestroyedChanged e = {e}");
+                    LogInstance.Error($"BaseCommonNPCProcessWithEvents EmitOnDestroyedChanged e = {e}");
 #endif
                 }
             });

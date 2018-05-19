@@ -51,7 +51,7 @@ namespace MyNPCLib.Logical
         private object GetGlobalPosition(ulong propertyKey)
         {
 #if DEBUG
-            //LogInstance.Log($"VisionObject GetGlobalPosition propertyKey = {propertyKey}");
+            LogInstance.Log($"VisionObject GetGlobalPosition propertyKey = {propertyKey} (CurrentVisionObjectImpl == null) = {CurrentVisionObjectImpl == null}");
 #endif
 
             if(CurrentVisionObjectImpl == null)

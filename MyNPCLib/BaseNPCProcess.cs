@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,6 +32,10 @@ namespace MyNPCLib
 
             set
             {
+                lock (StateLockObj)
+                {
+                    NState = value;
+                }
             }
         }
 
@@ -386,7 +391,7 @@ namespace MyNPCLib
                     proxy.StartupMode = StartupMode;
 #if DEBUG
 
-                    LogInstance.Log($"End BaseNPCProcess RunAsync (1) proxy.StartupMode = {proxy.StartupMode}");
+                    LogInstance.Log($"End BaseNPCProcess RunAsync (1) proxy.StartupMode = {proxy.StartupMode} command = {command}");
 #endif
                     break;
 
@@ -394,7 +399,7 @@ namespace MyNPCLib
                 case NPCProcessStartupMode.NewStandaloneInstance:              
                     proxy = this;
 #if DEBUG
-                    LogInstance.Log($"End BaseNPCProcess RunAsync (2) proxy.StartupMode = {proxy.StartupMode}");
+                    LogInstance.Log($"End BaseNPCProcess RunAsync (2) proxy.StartupMode = {proxy.StartupMode} command = {command}");
 #endif
                     break;
             }
@@ -430,11 +435,15 @@ namespace MyNPCLib
         private void NRun(NPCProcessEntryPointInfo entryPointInfo, NPCInternalCommand command, BaseCommonNPCProcess proxy, CancellationToken cancellationToken)
         {
 #if DEBUG
-            //LogInstance.Log($"Begin BaseNPCProcess NRun command = {command}");
+            LogInstance.Log($"Begin BaseNPCProcess NRun proxy.Id = {proxy.Id} proxy.State = {proxy.State} command = {command}");
 #endif
             cancellationToken.ThrowIfCancellationRequested();
 
             var startupMode = Info.StartupMode;
+
+#if DEBUG
+            LogInstance.Log($"BaseNPCProcess NRun proxy.Id = {proxy.Id} proxy.State = {proxy.State} startupMode = {startupMode}");
+#endif
 
             try
             {
@@ -448,20 +457,39 @@ namespace MyNPCLib
 
                 cancellationToken.ThrowIfCancellationRequested();
 
+#if DEBUG
+                LogInstance.Log($"BaseNPCProcess NRun proxy.Id = {proxy.Id} proxy.State = {proxy.State} Step 1");
+#endif
+
                 NPCProcessHelpers.RegProcess(Context, proxy, startupMode, command.KindOfLinkingToInitiator, command.InitiatingProcessId, true);
+
+#if DEBUG
+                LogInstance.Log($"BaseNPCProcess NRun proxy.Id = {proxy.Id} proxy.State = {proxy.State} Step 2");
+#endif
 
                 cancellationToken.ThrowIfCancellationRequested();
 
                 proxy.State = StateOfNPCProcess.Running;
 
+#if DEBUG
+                LogInstance.Log($"BaseNPCProcess NRun proxy.Id = {proxy.Id} proxy.State = {proxy.State} Step 3");
+#endif
+
                 mActivator.CallEntryPoint(this, entryPointInfo, command.Params);
+
+#if DEBUG
+                LogInstance.Log($"BaseNPCProcess NRun proxy.Id = {proxy.Id} proxy.State = {proxy.State} Step 4");
+#endif
 
                 proxy.State = StateOfNPCProcess.RanToCompletion;
             }
+            //catch (TargetInvocationException)
+            //{
+            //}
             catch (OperationCanceledException)
             {
 #if DEBUG
-                LogInstance.Error("BaseNPCProcess NRun catch(OperationCanceledException)");
+                //LogInstance.Error("BaseNPCProcess NRun catch(OperationCanceledException)");
 #endif
             }
             catch (Exception e)
@@ -469,14 +497,22 @@ namespace MyNPCLib
                 proxy.State = StateOfNPCProcess.Faulted;
 
 #if DEBUG
-                LogInstance.Error($"End BaseNPCProcess NRun e = {e}");
+                LogInstance.Error($"End BaseNPCProcess NRun proxy.Id = {proxy.Id} e = {e}");
 #endif
             }
             finally
             {
+#if DEBUG
+                LogInstance.Log($"BaseNPCProcess NRun Begin finally proxy.Id = {proxy.Id} proxy.State = {proxy.State}");
+#endif
+
                 var taskId = Task.CurrentId;
 
                 Context.UnRegCancellationToken(taskId.Value);
+
+#if DEBUG
+                LogInstance.Log($"BaseNPCProcess NRun End finally proxy.Id = {proxy.Id} proxy.State = {proxy.State}");
+#endif
             }
 
             if (proxy != this)
@@ -488,7 +524,7 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            //LogInstance.Log($"End BaseNPCProcess NRun command = {command}");
+            LogInstance.Log($"End BaseNPCProcess NRun proxy.Id = {proxy.Id} proxy.State = {proxy.State} command = {command}");
 #endif
         }
 
@@ -497,11 +533,49 @@ namespace MyNPCLib
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
 
-            var tasksArray = processes.Where(p => p.Task != null).Select(p => p.Task).ToArray();
+            //var tasksArray = processes.Where(p => p.Task != null).Select(p => p.Task).ToArray();
 
-            cancelationToken?.ThrowIfCancellationRequested();
+            //cancelationToken?.ThrowIfCancellationRequested();
 
-            Task.WaitAll(tasksArray);
+            //Task.WaitAll(tasksArray);
+
+            //cancelationToken?.ThrowIfCancellationRequested();
+
+            var tasksList = processes.ToList();
+
+            while (true)
+            {
+#if DEBUG
+                //var sb = new StringBuilder();
+                //sb.Append(tasksList.Count);
+                //foreach (var tmpT in tasksList)
+                //{
+                //    sb.Append($"Id = {tmpT.Id}; State = {tmpT.State}");
+                //}
+                //LogInstance.Log($"BaseNPCProcess Wait ------- {sb.ToString()}");
+#endif
+
+                lock (StateLockObj)
+                {
+                    if (mState == StateOfNPCProcess.Destroyed)
+                    {
+                        break;
+                    }
+                }
+
+                if(!tasksList.Any(p => p.State == StateOfNPCProcess.Created || p.State == StateOfNPCProcess.Running))
+                {
+                    break;
+                }
+
+                cancelationToken?.ThrowIfCancellationRequested();
+
+                Thread.Sleep(10);
+
+#if DEBUG
+                //LogInstance.Log("BaseNPCProcess Wait !!!!!!!!");
+#endif
+            }
 
             cancelationToken?.ThrowIfCancellationRequested();
         }
@@ -532,7 +606,7 @@ namespace MyNPCLib
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
 
-            Thread.Sleep(1000);
+            Thread.Sleep(millisecondsTimeout);
 
             cancelationToken?.ThrowIfCancellationRequested();
         }

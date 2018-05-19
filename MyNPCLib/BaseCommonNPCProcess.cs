@@ -39,15 +39,28 @@ namespace MyNPCLib
         {
             lock (StateLockObj)
             {
-                if (mState == StateOfNPCProcess.Destroyed)
+                if(mState == StateOfNPCProcess.Created)
                 {
-                    throw new ElementIsNotActiveException();
+                    return;
                 }
 
-                if (mState != StateOfNPCProcess.Created)
+                if (mState == StateOfNPCProcess.Running)
                 {
-                    throw new ElementIsModifiedAfterActivationException();
+                    return;
                 }
+
+                //if (mState == StateOfNPCProcess.Destroyed)
+                //{
+                //    throw new ElementIsNotActiveException();
+                //}
+
+                //if (!(mState == StateOfNPCProcess.Created && mState == StateOfNPCProcess.Running))
+                //{
+                //    //throw new ElementIsModifiedAfterActivationException();
+                //    throw new ElementIsNotActiveException();
+                //}
+
+                throw new ElementIsNotActiveException();
             }
         }
 

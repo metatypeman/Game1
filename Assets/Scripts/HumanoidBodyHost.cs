@@ -145,6 +145,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mSelfLogicalObject = new PassiveLogicalObject(commonLevelHost.EntityDictionary, mLogicalObjectsBus);
         mLogicalObjectsBus.RegisterObject(instanceId, mSelfLogicalObject);
 
+        mSelfLogicalObject["name"] = tmpGameObject.name;
+
         mSelfEntityId = mSelfLogicalObject.EntityId;
 
         mStates = new InternalStatesOfHumanoidController();
@@ -250,12 +252,12 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void EmitOnHumanoidStatesChanged(params HumanoidStateKind[] changedStates)
     {
 #if DEBUG
-        LogInstance.Log($"HumanoidBodyHost EmitOnHumanoidStatesChanged Begin changedStates");
-        foreach (var changedState in changedStates)
-        {
-            LogInstance.Log($"HumanoidBodyHost OnHumanoidStatesChanged changedState = {changedState}");
-        }
-        LogInstance.Log($"HumanoidBodyHost EmitOnHumanoidStatesChanged End changedStates");
+        //LogInstance.Log($"HumanoidBodyHost EmitOnHumanoidStatesChanged Begin changedStates");
+        //foreach (var changedState in changedStates)
+        //{
+        //    LogInstance.Log($"HumanoidBodyHost OnHumanoidStatesChanged changedState = {changedState}");
+        //}
+        //LogInstance.Log($"HumanoidBodyHost EmitOnHumanoidStatesChanged End changedStates");
 #endif
 
         Task.Run(() => {

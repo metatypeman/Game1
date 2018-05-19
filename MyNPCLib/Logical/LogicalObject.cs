@@ -79,7 +79,10 @@ namespace MyNPCLib.Logical
 #if DEBUG
                         //LogInstance.Log($"LogicalObject FindPrimaryEntityId mCurrentEnitiesIdList.Count == 1 mPrimaryEntityId == newPrimaryEntityId newPrimaryEntityId = {newPrimaryEntityId}");
 #endif
-
+                        if(CurrentVisionObjectImpl == null)
+                        {
+                            CurrentVisionObjectImpl = mVisionObjectsStorage.GetVisionObjectImpl(mPrimaryEntityId);
+                        }
                         return;
                     }
 

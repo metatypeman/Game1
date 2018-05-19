@@ -56,7 +56,7 @@ namespace MyNPCLib.Logical
                 var count = mVisionItems.Count;
 
 #if DEBUG
-                //LogInstance.Log($"VisionObjectImpl GetGlobalPosition count = {count}");
+                LogInstance.Log($"VisionObjectImpl GetGlobalPosition count = {count}");
 #endif
 
                 if (count == 0)
@@ -76,7 +76,7 @@ namespace MyNPCLib.Logical
                 }
 
 #if DEBUG
-                //LogInstance.Log($"VisionObjectImpl GetGlobalPosition result = {result}");
+                LogInstance.Log($"VisionObjectImpl GetGlobalPosition result = {result}");
 #endif
 
                 return new Vector3(result.X/count, result.Y / count, result.Z / count);
