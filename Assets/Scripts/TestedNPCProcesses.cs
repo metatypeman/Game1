@@ -447,6 +447,14 @@ namespace Assets.Scripts
                 return;
             }
 
+#if UNITY_EDITOR
+            var isAlive = enemy.GetValue<bool?>("alive");
+            Debug.Log($"TestedFireToEthanNPCProcess Main isAlive = {isAlive}");
+
+            var isDied = enemy.GetValue<bool?>("died");
+            Debug.Log($"TestedFireToEthanNPCProcess Main isDied = {isDied}");
+#endif
+
             var tmpCommand = new HumanoidHStateCommand();
             tmpCommand.State = HumanoidHState.AimAt;
             tmpCommand.TargetPosition = targetPosition;
