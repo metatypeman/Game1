@@ -50,6 +50,12 @@ namespace TmpSandBox
             {
                 NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
             }
+            list = ListHelper.GetRange(90, 0, 5);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
+            foreach (var item in list)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
+            }
             list = ListHelper.GetRange(-90, 0, 5);
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
             foreach (var item in list)
@@ -63,6 +69,12 @@ namespace TmpSandBox
                 NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
             }
             list = ListHelper.GetRange(10, 90, 0);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
+            foreach (var item in list)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
+            }
+            list = ListHelper.GetRange(0, -90, 5);
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
             foreach (var item in list)
             {
