@@ -20,5 +20,16 @@ namespace MyNPCLib
 
             return false;
         }
+
+        public static IList<float> GetRange(float begin, float end, float delta)
+        {
+#if DEBUG
+            LogInstance.Log($"BaseNPCContext GetRange begin = {begin} end = {end} delta = {delta}");
+#endif
+
+            var result = new List<float>();
+
+
+        }
     }
 }

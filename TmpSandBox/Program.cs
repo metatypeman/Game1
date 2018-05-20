@@ -27,16 +27,49 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
+            TSTRange();
             //TSTLexer();
             //TSTLogicalAST();
             //TSTLogicalObject();
             //TSTCancelTask_2();
             //TSTCancelTask();
-            TSTMyNPCContext();
+            //TSTMyNPCContext();
             //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTRange()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTRange");
+
+            var list = ListHelper.GetRange(0, 90, 5);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
+            foreach(var item in list)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
+            }
+            list = ListHelper.GetRange(-90, 0, 5);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
+            foreach (var item in list)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
+            }
+            list = ListHelper.GetRange(90, 90, 5);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
+            foreach (var item in list)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
+            }
+            list = ListHelper.GetRange(10, 90, 0);
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
+            foreach (var item in list)
+            {
+                NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
+            }
+
+            NLog.LogManager.GetCurrentClassLogger().Info("End TSTRange");
         }
 
         private static void TSTLexer()
