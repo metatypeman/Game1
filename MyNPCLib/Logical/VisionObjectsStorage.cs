@@ -7,11 +7,12 @@ namespace MyNPCLib.Logical
 {
     public class VisionObjectsStorage
     {
-        public VisionObjectsStorage(IEntityDictionary entityDictionary, INPCHostContext npcHostContext, SystemPropertiesDictionary systemPropertiesDictionary)
+        public VisionObjectsStorage(IEntityDictionary entityDictionary, INPCHostContext npcHostContext, SystemPropertiesDictionary systemPropertiesDictionary, StorageOfSpecialEntities storageOfSpecialEntities)
         {
             mNPCHostContext = npcHostContext;
             mEntityDictionary = entityDictionary;
             mSystemPropertiesDictionary = systemPropertiesDictionary;
+            mStorageOfSpecialEntities = storageOfSpecialEntities;
         }
 
         private readonly INPCHostContext mNPCHostContext;
@@ -21,6 +22,7 @@ namespace MyNPCLib.Logical
         private readonly object mLockObj = new object();
         private Dictionary<ulong, VisionObject> mVisibleObjectsDict = new Dictionary<ulong, VisionObject>();
         private Dictionary<ulong, VisionObjectImpl> mVisibleObjectsImplDict = new Dictionary<ulong, VisionObjectImpl>();
+        private StorageOfSpecialEntities mStorageOfSpecialEntities;
 
         public ILogicalStorage LogicalStorage
         {

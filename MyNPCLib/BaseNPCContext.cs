@@ -47,7 +47,9 @@ namespace MyNPCLib
 
             mSystemPropertiesDictionary = new SystemPropertiesDictionary(mEntityDictionary);
 
-            mVisionObjectsStorage = new VisionObjectsStorage(mEntityDictionary, npcHostContext, mSystemPropertiesDictionary);
+            mStorageOfSpecialEntities = new StorageOfSpecialEntities();
+
+            mVisionObjectsStorage = new VisionObjectsStorage(mEntityDictionary, npcHostContext, mSystemPropertiesDictionary, mStorageOfSpecialEntities);
 
             if (mNPCHostContext.IsReady)
             {
@@ -73,6 +75,8 @@ namespace MyNPCLib
 #if DEBUG
             LogInstance.Log("BaseNPCContext InitLogicalSubSystem");
 #endif
+
+            mStorageOfSpecialEntities.SelfEntityId = mNPCHostContext.SelfEntityId;
 
             mLogicalStorage = new LogicalStorage(mEntityDictionary, mNPCHostContext.HostLogicalStorage);
 
@@ -117,6 +121,7 @@ namespace MyNPCLib
         private readonly Dictionary<ulong, ulong> mChildParentDict = new Dictionary<ulong, ulong>();
         private readonly object mProcessesDictLockObj = new object();
         private LogicalStorage mLogicalStorage;
+        private StorageOfSpecialEntities mStorageOfSpecialEntities;
 
         private readonly object mStateLockObj = new object();
         private StateOfNPCContext mState = StateOfNPCContext.Created;
