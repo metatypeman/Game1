@@ -428,6 +428,14 @@ namespace Assets.Scripts
             Debug.Log($"Begin TestedFireToEthanNPCProcess Main enemy = {enemy}");
 #endif
 
+#if UNITY_EDITOR
+            var isAlive = enemy.GetValue<bool?>("alive");
+            Debug.LogError($"TestedFireToEthanNPCProcess Main isAlive = {isAlive}");
+
+            var isDied = enemy.GetValue<bool?>("died");
+            Debug.LogError($"TestedFireToEthanNPCProcess Main isDied = {isDied}");
+#endif
+
             var searchNearCommand = TestedSearchNearNPCProcess.CreateCommand(enemy, 100);
 
             var tmpSearchNearProcess = ExecuteAsChild(searchNearCommand);
@@ -448,11 +456,11 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            var isAlive = enemy.GetValue<bool?>("alive");
-            Debug.Log($"TestedFireToEthanNPCProcess Main isAlive = {isAlive}");
+            isAlive = enemy.GetValue<bool?>("alive");
+            Debug.LogError($"TestedFireToEthanNPCProcess Main isAlive (2) = {isAlive}");
 
-            var isDied = enemy.GetValue<bool?>("died");
-            Debug.Log($"TestedFireToEthanNPCProcess Main isDied = {isDied}");
+            isDied = enemy.GetValue<bool?>("died");
+            Debug.LogError($"TestedFireToEthanNPCProcess Main isDied (2) = {isDied}");
 #endif
 
             var tmpCommand = new HumanoidHStateCommand();
@@ -470,6 +478,14 @@ namespace Assets.Scripts
 
             command = TestedStopShootingNPCProcess.CreateCommand();
             ExecuteAsChild(command);
+
+#if UNITY_EDITOR
+            isAlive = enemy.GetValue<bool?>("alive");
+            Debug.LogError($"TestedFireToEthanNPCProcess Main isAlive (3) = {isAlive}");
+
+            isDied = enemy.GetValue<bool?>("died");
+            Debug.LogError($"TestedFireToEthanNPCProcess Main isDied (3) = {isDied}");
+#endif
 
 #if UNITY_EDITOR
             Debug.Log($"End TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");

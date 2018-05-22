@@ -146,6 +146,11 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mLogicalObjectsBus.RegisterObject(instanceId, mSelfLogicalObject);
 
         mSelfLogicalObject["name"] = tmpGameObject.name;
+        mSelfLogicalObject.SetAccessPolicyToFact("alive", AccessPolicyToFact.ForVisible);
+        mSelfLogicalObject.SetAccessPolicyToFact("died", AccessPolicyToFact.ForVisible);
+
+        mSelfLogicalObject["alive"] = true;
+        mSelfLogicalObject["died"] = false;
 
         mSelfEntityId = mSelfLogicalObject.EntityId;
 
@@ -497,6 +502,10 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 mNavMeshAgent.ResetPath();
                 break;
         }
+
+        mSelfLogicalObject["alive"] = false;
+        mSelfLogicalObject["died"] = true;
+
         Task.Run(() => {
             try
             {

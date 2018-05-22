@@ -51,6 +51,11 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         }
     }
 
+    public AccessPolicyToFact GetAccessPolicyToFact(ulong propertyKey)
+    {
+        return mPassiveLogicalObject.GetAccessPolicyToFact(propertyKey);
+    }
+
     public bool IsReady => true;
 
     public bool UseDebugLine

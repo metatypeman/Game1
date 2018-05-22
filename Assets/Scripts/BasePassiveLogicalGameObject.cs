@@ -38,6 +38,11 @@ namespace Assets.Scripts
             }
         }
 
+        public AccessPolicyToFact GetAccessPolicyToFact(ulong propertyKey)
+        {
+            return mPassiveLogicalObject.GetAccessPolicyToFact(propertyKey);
+        }
+
         // Use this for initialization
         void Start()
         {
