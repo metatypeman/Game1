@@ -7,12 +7,12 @@ namespace MyNPCLib.Logical
 {
     public class LogicalStorage : ILogicalStorage
     {
-        public LogicalStorage(IEntityDictionary entityDictionary, ILogicalStorage hostLogicalStorage)
+        public LogicalStorage(IEntityDictionary entityDictionary, ILogicalStorage hostLogicalStorage, StorageOfSpecialEntities storageOfSpecialEntities)
         {
 #if DEBUG
             //LogInstance.Log("LogicalStorage()1");
 #endif
-
+            mStorageOfSpecialEntities = storageOfSpecialEntities;
             mHostLogicalStorage = hostLogicalStorage;
 
 #if DEBUG
@@ -31,7 +31,7 @@ namespace MyNPCLib.Logical
             //LogInstance.Log("LogicalStorage()4");
 #endif
 
-            mLogicalIndexStorage = new LogicalIndexStorage();
+            mLogicalIndexStorage = new LogicalIndexStorage(mStorageOfSpecialEntities);
 
 #if DEBUG
             //LogInstance.Log("LogicalStorage()5");
@@ -74,6 +74,7 @@ namespace MyNPCLib.Logical
         private IEntityDictionary mEntityDictionary;
         private StorageOfPassiveLogicalObjects mStorageOfPassiveLogicalObjects;
         private LogicalIndexStorage mLogicalIndexStorage;
+        private StorageOfSpecialEntities mStorageOfSpecialEntities;
 
         public void PutPropertyValueAsIndex(ulong entityId, ulong propertyId, object value)
         {
@@ -82,6 +83,24 @@ namespace MyNPCLib.Logical
 #endif
 
             mLogicalIndexStorage.PutPropertyValueAsIndex(entityId, propertyId, value);
+        }
+
+        public void PutAccessPolicyToFactAsIndex(ulong entityId, ulong propertyId, AccessPolicyToFact value)
+        {
+#if DEBUG
+            //LogInstance.Log($"LogicalStorage PutAccessPolicyToFactAsIndex entityId = {entityId} propertyId = {propertyId} value = {value}");
+#endif
+
+            mLogicalIndexStorage.PutAccessPolicyToFactAsIndex(entityId, propertyId, value);
+        }
+
+        public AccessPolicyToFact GetAccessPolicyToFact(ulong entityId, ulong propertyId)
+        {
+#if DEBUG
+            //LogInstance.Log($"LogicalStorage GetAccessPolicyToFact entityId = {entityId} propertyId = {propertyId}");
+#endif
+
+            return mHostLogicalStorage.GetAccessPolicyToFact(entityId, propertyId);
         }
 
         public IList<ulong> GetEntitiesIdsList(ulong propertyId, object value)
@@ -139,19 +158,6 @@ namespace MyNPCLib.Logical
             mStorageOfPassiveLogicalObjects.SetPropertyValue(entityId, propertyId, value);
         }
 
-        public void SetPropertyValue(IList<ulong> entitiesIdsList, ulong propertyId, object value)
-        {
-#if DEBUG
-            //LogInstance.Log($"LogicalStorage SetPropertyValue entitiesIdsList.Count = {entitiesIdsList.Count} propertyId = {propertyId} value = {value}");
-            //foreach (var entityId in entitiesIdsList)
-            //{
-            //    LogInstance.Log($"LogicalStorage SetPropertyValue entityId = {entityId}");
-            //}
-#endif
-
-            mStorageOfPassiveLogicalObjects.SetPropertyValue(entitiesIdsList, propertyId, value);
-        }
-
         public object GetPropertyValue(ulong entityId, ulong propertyId)
         {
 #if DEBUG
@@ -162,26 +168,31 @@ namespace MyNPCLib.Logical
 
             if(result == null)
             {
+                var policy = mHostLogicalStorage.GetAccessPolicyToFact(entityId, propertyId);
+
+                switch(policy)
+                {
+                    case AccessPolicyToFact.Public:
+                        break;
+
+                    case AccessPolicyToFact.ForVisible:
+                        if(!mStorageOfSpecialEntities.IsVisible(entityId))
+                        {
+                            return null;
+                        }
+                        break;
+
+                    case AccessPolicyToFact.Private:
+                        if(entityId != mStorageOfSpecialEntities.SelfEntityId)
+                        {
+                            return null;
+                        }
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(policy), policy, null);
+                }
+
                 return mHostLogicalStorage.GetPropertyValue(entityId, propertyId);
-            }
-
-            return result;
-        }
-
-        public object GetPropertyValue(IList<ulong> entitiesIdsList, ulong propertyId)
-        {
-#if DEBUG
-            //LogInstance.Log($"LogicalStorage GetPropertyValue entitiesIdsList.Count = {entitiesIdsList.Count} propertyId = {propertyId}");
-            //foreach (var entityId in entitiesIdsList)
-            //{
-            //    LogInstance.Log($"LogicalStorage GetPropertyValue entityId = {entityId}");
-            //}
-#endif
-            var result = mStorageOfPassiveLogicalObjects.GetPropertyValue(entitiesIdsList, propertyId);
-
-            if(result == null)
-            {
-                return mHostLogicalStorage.GetPropertyValue(entitiesIdsList, propertyId);
             }
 
             return result;

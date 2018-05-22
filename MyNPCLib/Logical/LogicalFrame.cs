@@ -17,6 +17,7 @@ namespace MyNPCLib.Logical
 
         private readonly object mValuesDictLockObj = new object();
         private Dictionary<ulong, object> mValuesDict = new Dictionary<ulong, object>();
+        private Dictionary<ulong, AccessPolicyToFact> mPropertiesAccessPolicyToFactDict = new Dictionary<ulong, AccessPolicyToFact>();
 
         public object this [ulong propertyKey]
         {
@@ -42,6 +43,27 @@ namespace MyNPCLib.Logical
             }
         }
 
+        public void SetAccessPolicyToFact(ulong propertyKey, AccessPolicyToFact value)
+        {
+            lock (mValuesDictLockObj)
+            {
+                mPropertiesAccessPolicyToFactDict[propertyKey] = value;
+            }
+        }
+
+        public AccessPolicyToFact GetAccessPolicyToFact(ulong propertyKey)
+        {
+            lock (mValuesDictLockObj)
+            {
+                if(mPropertiesAccessPolicyToFactDict.ContainsKey(propertyKey))
+                {
+                    return mPropertiesAccessPolicyToFactDict[propertyKey];
+                }
+
+                return AccessPolicyToFact.Public;
+            }
+        }
+
         public override string ToString()
         {
             return ToString(0u);
@@ -55,21 +77,25 @@ namespace MyNPCLib.Logical
         public string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(EntityId)} = {EntityId}");
             Dictionary<ulong, object> valuesDict = null;
-            lock(mValuesDictLockObj)
+            Dictionary<ulong, AccessPolicyToFact> propertiesAccessPolicyToFactDict = null;
+
+            lock (mValuesDictLockObj)
             {
                 valuesDict = mValuesDict;
+                propertiesAccessPolicyToFactDict = mPropertiesAccessPolicyToFactDict;
             }
+
             if(valuesDict == null)
             {
                 sb.AppendLine($"{spaces}{nameof(valuesDict)} = null");
             }
             else
             {
-                var nextN = n + 4;
-                var nextSpaces = StringHelper.Spaces(nextN);
                 sb.AppendLine($"{spaces}Begin{nameof(valuesDict)}");
                 foreach (var valueItem in valuesDict)
                 {
@@ -78,6 +104,19 @@ namespace MyNPCLib.Logical
                 sb.AppendLine($"{spaces}End{nameof(valuesDict)}");
             }
 
+            if (propertiesAccessPolicyToFactDict == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(propertiesAccessPolicyToFactDict)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin{nameof(propertiesAccessPolicyToFactDict)}");
+                foreach (var valueItem in valuesDict)
+                {
+                    sb.AppendLine($"{nextSpaces}valueItemKey = {valueItem.Key}; valueItemValue = {valueItem.Value}");
+                }
+                sb.AppendLine($"{spaces}End{nameof(propertiesAccessPolicyToFactDict)}");
+            }
             return sb.ToString();
         }
     }

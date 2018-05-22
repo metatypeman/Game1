@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
-    public class PassiveLogicalObject: IPassiveLogicalObject, IReadOnlyLogicalObject, ILogicalObject
+    public class PassiveLogicalObject : IPassiveLogicalObject, IReadOnlyLogicalObject, ILogicalObject
     {
         public PassiveLogicalObject(IEntityDictionary entityDictionary, ILogicalStorage logicalIndexingBus)
         {
@@ -90,13 +90,48 @@ namespace MyNPCLib.Logical
         {
             var currentValue = mLogicalFrame[propertyKey];
 
-            if(currentValue == value)
+            if (currentValue == value)
             {
                 return;
             }
 
             mLogicalFrame[propertyKey] = value;
             mLogicalIndexingBus.PutPropertyValueAsIndex(mEntityId, propertyKey, value);
+        }
+
+        public void SetAccessPolicyToFact(ulong propertyKey, AccessPolicyToFact value)
+        {
+            NSetAccessPolicyToFact(propertyKey, value);
+        }
+
+        public void SetAccessPolicyToFact(string propertyName, AccessPolicyToFact value)
+        {
+            var propertyKey = mEntityDictionary.GetKey(propertyName);
+            NSetAccessPolicyToFact(propertyKey, value);
+        }
+
+        private void NSetAccessPolicyToFact(ulong propertyKey, AccessPolicyToFact value)
+        {
+            var currentPopicy = mLogicalFrame.GetAccessPolicyToFact(propertyKey);
+
+            if (currentPopicy == value)
+            {
+                return;
+            }
+
+            mLogicalFrame.SetAccessPolicyToFact(propertyKey, value);
+            mLogicalIndexingBus.PutAccessPolicyToFactAsIndex(mEntityId, propertyKey, value);
+        }
+
+        public AccessPolicyToFact GetAccessPolicyToFact(ulong propertyKey)
+        {
+            return mLogicalFrame.GetAccessPolicyToFact(propertyKey);
+        }
+
+        public AccessPolicyToFact GetAccessPolicyToFact(string propertyName)
+        {
+            var propertyKey = mEntityDictionary.GetKey(propertyName);
+            return mLogicalFrame.GetAccessPolicyToFact(propertyKey);
         }
     }
 }

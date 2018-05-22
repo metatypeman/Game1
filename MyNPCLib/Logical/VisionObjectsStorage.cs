@@ -52,6 +52,8 @@ namespace MyNPCLib.Logical
                             item.Value.VisionItems = new List<IVisionItem>();
                         }
 
+                        mStorageOfSpecialEntities.SetVisibleEntitiesId(new List<ulong>());
+
                         return result;
                     }
 
@@ -87,6 +89,8 @@ namespace MyNPCLib.Logical
 
                         result.Add(item);
                     }
+
+                    mStorageOfSpecialEntities.SetVisibleEntitiesId(visibleEntitiesIdList);
 
                     foreach (var item in mVisibleObjectsImplDict)
                     {

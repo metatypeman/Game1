@@ -8,5 +8,6 @@ namespace MyNPCLib.Logical
     {
         ulong EntityId { get; }
         object this[ulong propertyKey] { get; }
+        AccessPolicyToFact GetAccessPolicyToFact(ulong propertyKey);
     }
 }

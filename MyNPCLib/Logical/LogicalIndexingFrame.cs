@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.Logical
@@ -17,6 +18,7 @@ namespace MyNPCLib.Logical
         private readonly object mValuesDictLockObj = new object();
         private Dictionary<object, List<ulong>> mValuesDict = new Dictionary<object, List<ulong>>();
         private Dictionary<ulong, object> mEntitiesDict = new Dictionary<ulong, object>();
+        private Dictionary<ulong, AccessPolicyToFact> mEntitiesAccessPolicyToFactDict = new Dictionary<ulong, AccessPolicyToFact>();
 
         public IList<ulong> Get(object key)
         {
@@ -37,14 +39,14 @@ namespace MyNPCLib.Logical
             {
                 object oldValue = null;
 
-                if(mEntitiesDict.ContainsKey(entityId))
+                if (mEntitiesDict.ContainsKey(entityId))
                 {
                     oldValue = mEntitiesDict[entityId];
                 }
 
                 mEntitiesDict[entityId] = key;
 
-                if(oldValue != null)
+                if (oldValue != null)
                 {
                     if (mValuesDict.ContainsKey(oldValue))
                     {
@@ -52,11 +54,11 @@ namespace MyNPCLib.Logical
                     }
                 }
 
-                if(mValuesDict.ContainsKey(key))
+                if (mValuesDict.ContainsKey(key))
                 {
                     var entitiesIdsList = mValuesDict[key];
 
-                    if(!entitiesIdsList.Contains(entityId))
+                    if (!entitiesIdsList.Contains(entityId))
                     {
                         entitiesIdsList.Add(entityId);
                     }
@@ -67,6 +69,35 @@ namespace MyNPCLib.Logical
                     mValuesDict[key] = entitiesIdsList;
                     entitiesIdsList.Add(entityId);
                 }
+            }
+        }
+
+        public void SetAccessPolicyToFact(ulong entityId, AccessPolicyToFact value)
+        {
+            lock (mValuesDictLockObj)
+            {
+                mEntitiesAccessPolicyToFactDict[entityId] = value;
+            }              
+        }
+
+        public AccessPolicyToFact GetAccessPolicyToFact(ulong entityId)
+        {
+            lock (mValuesDictLockObj)
+            {
+                if(mEntitiesAccessPolicyToFactDict.ContainsKey(entityId))
+                {
+                    return mEntitiesAccessPolicyToFactDict[entityId];
+                }
+
+                return AccessPolicyToFact.Public;
+            }
+        }
+
+        public IDictionary<ulong, AccessPolicyToFact> GetAccessPolicyToFact(IList<ulong> entitiesIdList)
+        {
+            lock (mValuesDictLockObj)
+            {
+                return mEntitiesAccessPolicyToFactDict.Where(p => entitiesIdList.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value);
             }
         }
 

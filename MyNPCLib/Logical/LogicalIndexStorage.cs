@@ -8,10 +8,19 @@ namespace MyNPCLib.Logical
 {
     public class LogicalIndexStorage: ILogicalStorage
     {
+        public LogicalIndexStorage()
+        {
+        }
+
+        public LogicalIndexStorage(StorageOfSpecialEntities storageOfSpecialEntities)
+        {
+            mStorageOfSpecialEntities = storageOfSpecialEntities;
+        }
+
         private readonly object mLockObj = new object();
-        private Dictionary<ulong, LogicalIndexingFrame> mDataDict = new Dictionary<ulong, LogicalIndexingFrame>();
-        private Dictionary<ulong, IReadOnlyLogicalObject> mObjectsDict = new Dictionary<ulong, IReadOnlyLogicalObject>();
-        private Dictionary<int, IReadOnlyLogicalObject> mObjectsByInstanceIdAsKeyDict = new Dictionary<int, IReadOnlyLogicalObject>();
+        private Dictionary<ulong, LogicalIndexingFrame> mDataDict { get; set; } = new Dictionary<ulong, LogicalIndexingFrame>();
+        private Dictionary<ulong, IReadOnlyLogicalObject> mObjectsDict { get; set; } = new Dictionary<ulong, IReadOnlyLogicalObject>();
+        private StorageOfSpecialEntities mStorageOfSpecialEntities;
 
         public event Action OnChanged;
 
@@ -58,17 +67,7 @@ namespace MyNPCLib.Logical
 
             lock(mLockObj)
             {
-                LogicalIndexingFrame indexingFrame = null;
-
-                if (mDataDict.ContainsKey(propertyId))
-                {
-                    indexingFrame = mDataDict[propertyId];
-                }
-                else
-                {
-                    indexingFrame = new LogicalIndexingFrame(propertyId);
-                    mDataDict[propertyId] = indexingFrame;
-                }
+                var indexingFrame = NGetOrCreateLogicalIndexingFrameByPropertyId(propertyId);
 
                 indexingFrame.Set(value, entityId);
 
@@ -87,6 +86,45 @@ namespace MyNPCLib.Logical
             }
         }
 
+        public void PutAccessPolicyToFactAsIndex(ulong entityId, ulong propertyId, AccessPolicyToFact value)
+        {
+#if DEBUG
+            LogInstance.Log($"PutAccessPolicyToFactAsIndex PutPropertyValue entityId = {entityId} propertyId = {propertyId} value = {value}");
+#endif
+            lock(mLockObj)
+            {
+                var indexingFrame = NGetOrCreateLogicalIndexingFrameByPropertyId(propertyId);
+                indexingFrame.SetAccessPolicyToFact(entityId, value);
+            }
+        }
+
+        public AccessPolicyToFact GetAccessPolicyToFact(ulong entityId, ulong propertyId)
+        {
+            lock (mLockObj)
+            {
+                if (mDataDict.ContainsKey(propertyId))
+                {
+                    var targetIndexingFrame = mDataDict[propertyId];
+                    return targetIndexingFrame.GetAccessPolicyToFact(entityId);
+                }
+
+                return AccessPolicyToFact.Public;
+            }
+        }
+
+        private LogicalIndexingFrame NGetOrCreateLogicalIndexingFrameByPropertyId(ulong propertyId)
+        {
+            if (mDataDict.ContainsKey(propertyId))
+            {
+                return mDataDict[propertyId];
+            }
+
+            var indexingFrame = new LogicalIndexingFrame(propertyId);
+            mDataDict[propertyId] = indexingFrame;
+
+            return indexingFrame;
+        }
+
         public IList<ulong> GetEntitiesIdsList(ulong propertyId, object value)
         {
 #if DEBUG
@@ -98,7 +136,60 @@ namespace MyNPCLib.Logical
                 if(mDataDict.ContainsKey(propertyId))
                 {
                     var targetIndexingFrame = mDataDict[propertyId];
-                    return targetIndexingFrame.Get(value);
+                    var entitiesIdList = targetIndexingFrame.Get(value);
+
+                    if(mStorageOfSpecialEntities == null)
+                    {
+                        return entitiesIdList;
+                    }
+
+                    var policiesDict = targetIndexingFrame.GetAccessPolicyToFact(entitiesIdList);
+
+                    if(policiesDict.Count == 0)
+                    {
+                        return entitiesIdList;
+                    }
+
+                    var finalEntitiesIdList = new List<ulong>();
+
+                    var visibleEntitiesIdList = mStorageOfSpecialEntities.GetVisibleEntitiesId();
+
+                    foreach (var entityId in entitiesIdList)
+                    {
+                        if(policiesDict.ContainsKey(entityId))
+                        {
+                            var policy = policiesDict[entityId];
+
+                            switch(policy)
+                            {
+                                case AccessPolicyToFact.Public:
+                                    finalEntitiesIdList.Add(entityId);
+                                    break;
+
+                                case AccessPolicyToFact.ForVisible:
+                                    if(visibleEntitiesIdList.Contains(entityId))
+                                    {
+                                        finalEntitiesIdList.Add(entityId);
+                                    }
+                                    break;
+
+                                case AccessPolicyToFact.Private:
+                                    if(entityId == mStorageOfSpecialEntities.SelfEntityId)
+                                    {
+                                        finalEntitiesIdList.Add(entityId);
+                                    }
+                                    break;
+
+                                default: throw new ArgumentOutOfRangeException(nameof(policy), policy, null);
+                            }
+                            
+                            continue;
+                        }
+
+                        finalEntitiesIdList.Add(entityId);
+                    }
+
+                    return finalEntitiesIdList;
                 }
 
                 return new List<ulong>();
@@ -122,10 +213,6 @@ namespace MyNPCLib.Logical
         {
         }
 
-        public void SetPropertyValue(IList<ulong> entitiesIdsList, ulong propertyId, object value)
-        {
-        }
-
         public object GetPropertyValue(ulong entityId, ulong propertyId)
         {
 #if DEBUG
@@ -142,39 +229,6 @@ namespace MyNPCLib.Logical
 
                 return null;
             }             
-        }
-
-        public object GetPropertyValue(IList<ulong> entitiesIdsList, ulong propertyId)
-        {
-#if DEBUG
-            LogInstance.Log($"LogicalIndexStorage GetPropertyValue entitiesIdsList.Count = {entitiesIdsList.Count} propertyId = {propertyId}");
-            foreach (var entityId in entitiesIdsList)
-            {
-                LogInstance.Log($"LogicalIndexStorage GetPropertyValue entityId = {entityId}");
-            }
-#endif
-
-            List<IReadOnlyLogicalObject> targetLogicalObjects = null;
-
-            lock (mLockObj)
-            {
-
-                targetLogicalObjects = mObjectsDict.Where(p => entitiesIdsList.Contains(p.Key)).Select(p => p.Value).ToList();
-            }
-
-            foreach(var logicalObject in targetLogicalObjects)
-            {
-                var value = logicalObject[propertyId];
-
-                if(value == null)
-                {
-                    continue;
-                }
-
-                return value;
-            }
-
-            return null;
         }
     }
 }

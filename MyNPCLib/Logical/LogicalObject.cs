@@ -250,7 +250,7 @@ namespace MyNPCLib.Logical
 
         protected override void ConcreteSetProperty(ulong propertyKey, object value)
         {
-            mSource.SetPropertyValue(mCurrentEnitiesIdList, propertyKey, value);
+            mSource.SetPropertyValue(mPrimaryEntityId, propertyKey, value);
         }
 
         private object NGetProperty(ulong propertyKey)
@@ -269,7 +269,7 @@ namespace MyNPCLib.Logical
 
         protected override object ConcreteGetPropertyFromStorage(ulong propertyKey)
         {
-            return mSource.GetPropertyValue(mCurrentEnitiesIdList, propertyKey);
+            return mSource.GetPropertyValue(mPrimaryEntityId, propertyKey);
         }
 
         public override string PropertiesToSting(uint n)

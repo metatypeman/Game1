@@ -78,7 +78,7 @@ namespace MyNPCLib
 
             mStorageOfSpecialEntities.SelfEntityId = mNPCHostContext.SelfEntityId;
 
-            mLogicalStorage = new LogicalStorage(mEntityDictionary, mNPCHostContext.HostLogicalStorage);
+            mLogicalStorage = new LogicalStorage(mEntityDictionary, mNPCHostContext.HostLogicalStorage, mStorageOfSpecialEntities);
 
             mVisionObjectsStorage.LogicalStorage = mLogicalStorage;
 

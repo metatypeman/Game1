@@ -240,7 +240,9 @@ namespace TmpSandBox
 
             var npcHostContext = new StubOfNPCHostContext();
 
-            var visionObjectsStorage = new VisionObjectsStorage(globalEntityDictionary, npcHostContext, systemPropertiesDictionary);
+            var storageOfSpecialEntities = new StorageOfSpecialEntities();
+            storageOfSpecialEntities.SelfEntityId = npcHostContext.SelfEntityId;
+           var visionObjectsStorage = new VisionObjectsStorage(globalEntityDictionary, npcHostContext, systemPropertiesDictionary, storageOfSpecialEntities);
 
             var queryStr = "!((name=helen|name=ann)&class=girl)";
             var logicalObject = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
