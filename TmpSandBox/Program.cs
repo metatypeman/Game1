@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using TmpSandBox.NPCBehaviour;
-using TmpSandBox.TstSmartObj;
 
 namespace TmpSandBox
 {
@@ -27,10 +26,10 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTRange();
+            TSTConceptualGraphs();
+            //TSTRange();
             //TSTLexer();
             //TSTLogicalAST();
-            //TSTLogicalObject();
             //TSTCancelTask_2();
             //TSTCancelTask();
             //TSTMyNPCContext();
@@ -38,6 +37,13 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTConceptualGraphs()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTConceptualGraphs");
+
+            NLog.LogManager.GetCurrentClassLogger().Info("End TSTConceptualGraphs");
         }
 
         private static void TSTRange()
@@ -301,29 +307,6 @@ namespace TmpSandBox
             {
                 NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2_1) entityId = {entityId}");
             }*/
-        }
-
-        private static void TSTLogicalObject()
-        {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTLogicalObject");
-
-            var logicalContext = new LogicalContext();
-
-            var logicalObject = logicalContext.Get("name = helen");
-
-            var visibleObj = new TestedVisibleItem();
-
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalObject (logicalObject == visibleObj) = {logicalObject == visibleObj}");
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalObject (visibleObj == logicalObject) = {visibleObj == logicalObject}");
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalObject logicalObject['a'] = {logicalObject["a"]}");
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalObject logicalObject['a', 16] = {logicalObject["a", 16]}");
-
-            var getProperty = logicalObject.GetProperty("name");
-
-            var c = new C();
-            var b = new B();
-
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalObject (b == c) = {b == c}");
         }
 
         private static Dictionary<int, CancellationToken> mCancelationTokenDict = new Dictionary<int, CancellationToken>();
