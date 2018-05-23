@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TmpSandBox.TSTConceptualGraphs
 {
-    public class TSTLocalLogicalStorage: ITSTLogicalStorage
+    public class TSTPredicateSentence
     {
     }
 }

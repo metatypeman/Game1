@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using TmpSandBox.NPCBehaviour;
+using TmpSandBox.TSTConceptualGraphs;
 
 namespace TmpSandBox
 {
@@ -42,6 +43,13 @@ namespace TmpSandBox
         private static void TSTConceptualGraphs()
         {
             NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTConceptualGraphs");
+
+            var parser = new TSTConceptualGraphParser();
+            var globalStorage = new TSTGlobalLogicalStorage();
+
+            var nlText = "Go to far waypoint.";
+
+            var graph = parser.Parse(nlText);
 
             NLog.LogManager.GetCurrentClassLogger().Info("End TSTConceptualGraphs");
         }
