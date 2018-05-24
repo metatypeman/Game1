@@ -53,38 +53,61 @@ namespace TmpSandBox
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs nlText = {nlText}");
 
+            //I get a conceptual graph by some text of natural language.
             var graph = parser.Parse(nlText);
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs graph = {graph}");
 
+            //I get a query by the conceptual graph.
+            //The query is a special storage which contains this conceptual graph.
+            //We can get information about this conceptual graph by making queries to the storage.
+            //The global storage is as parent for the storage.
+            //So read-queries can get information what is related with the storage but it contains only in global storage.
             var queryStorage = globalStorage.Query(graph);
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs queryStorage = {queryStorage}");
 
+            //I get a conceptual graph from storage.
+            //In this case it is a query-storage.
+            //But all of kinds of storages can return a conceptual graph by this way.
+            //If the storage contains one graph it is that graph.
+            //It the storage contains two or more graphs it is undetermined graph of contained in ths storage.
+            //Check kind of storage before using this method.
             var conceptualGraphFromQueryStorage = queryStorage.GetConceptualGraph();
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs conceptualGraphFromQueryStorage = {conceptualGraphFromQueryStorage}");
 
+            //The information which is containde in the storage can be peresented in many different ways.
+            //Olso as gnu clay sentence (my own format).
             var gnuClaySentenceFromQueryStorage = queryStorage.GetGnuClaySentence();
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs gnuClaySentenceFromQueryStorage = {gnuClaySentenceFromQueryStorage}");
 
+            //The information which is containde in the storage can be peresented in many different ways.
+            //Olso as sdandard predicate sentence.
             var predicateSentenceFromQueryStorage = queryStorage.GetPredicateSentence();
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs predicateSentenceFromQueryStorage = {predicateSentenceFromQueryStorage}");
 
+            //Add all information from `queryStorage` to `globalStorage`.
+            //This information remains in `queryStorage`.
+            //I will have duplicating of this information in both storages.
             globalStorage.Accept(queryStorage);
 
+            //I can add directly a conceptual graph, gnu clay sentence or sdandard predicate sentence to any storage.
             globalStorage.Accept(predicateSentenceFromQueryStorage);
 
+            //I create an empty storage which is based on `globalStorage` as its parent.
             var fork_1 = globalStorage.Fork();
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs fork_1 = {fork_1}");
 
+            //I create an empty storage which is based on `fork_1` as its parent.
             var fork_2 = fork_1.Fork();
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs fork_2 = {fork_2}");
 
+            //I create an empty storage which is based on `queryStorage` as its parent.
             var fork_3 = queryStorage.Fork();
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs fork_3 = {fork_3}");
