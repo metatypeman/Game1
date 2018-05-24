@@ -5,13 +5,13 @@ using MyNPCLib;
 
 namespace TmpSandBox.TSTConceptualGraphs
 {
-    public class TSTLocalLogicalStorage: TSTBaseLogicalStorage
+    public class TSTQueryLogicalStorage : TSTBaseLogicalStorage
     {
-        public override TSTKindOfLogicalStorage Kind => TSTKindOfLogicalStorage.Local;
+        public override TSTKindOfLogicalStorage Kind => TSTKindOfLogicalStorage.Query;
 
         public override ITSTLogicalStorage Fork()
         {
-            var localStorage = new TSTLocalLogicalStorage();
+            var localStorage = new TSTQueryLogicalStorage();
 
             return localStorage;
         }

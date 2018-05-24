@@ -47,9 +47,47 @@ namespace TmpSandBox
             var parser = new TSTConceptualGraphParser();
             var globalStorage = new TSTGlobalLogicalStorage();
 
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs globalStorage = {globalStorage}");
+
             var nlText = "Go to far waypoint.";
 
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs nlText = {nlText}");
+
             var graph = parser.Parse(nlText);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs graph = {graph}");
+
+            var queryStorage = globalStorage.Query(graph);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs queryStorage = {queryStorage}");
+
+            var conceptualGraphFromQueryStorage = queryStorage.GetConceptualGraph();
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs conceptualGraphFromQueryStorage = {conceptualGraphFromQueryStorage}");
+
+            var gnuClaySentenceFromQueryStorage = queryStorage.GetGnuClaySentence();
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs gnuClaySentenceFromQueryStorage = {gnuClaySentenceFromQueryStorage}");
+
+            var predicateSentenceFromQueryStorage = queryStorage.GetPredicateSentence();
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs predicateSentenceFromQueryStorage = {predicateSentenceFromQueryStorage}");
+
+            globalStorage.Accept(queryStorage);
+
+            globalStorage.Accept(predicateSentenceFromQueryStorage);
+
+            var fork_1 = globalStorage.Fork();
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs fork_1 = {fork_1}");
+
+            var fork_2 = fork_1.Fork();
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs fork_2 = {fork_2}");
+
+            var fork_3 = queryStorage.Fork();
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs fork_3 = {fork_3}");
 
             NLog.LogManager.GetCurrentClassLogger().Info("End TSTConceptualGraphs");
         }
