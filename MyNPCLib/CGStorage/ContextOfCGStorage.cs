@@ -6,5 +6,22 @@ namespace MyNPCLib.CGStorage
 {
     public class ContextOfCGStorage
     {
+        public ContextOfCGStorage(IEntityDictionary entityDictionary)
+        {
+            mEntityDictionary = entityDictionary;
+        }
+
+        private IEntityDictionary mEntityDictionary;
+
+        public IEntityDictionary EntityDictionary => mEntityDictionary;
+
+        private GlobalCGStorage mGlobalCGStorage;
+
+        public GlobalCGStorage GlobalCGStorage => mGlobalCGStorage;
+
+        public void Init()
+        {
+            mGlobalCGStorage = new GlobalCGStorage(this);
+        }
     }
 }

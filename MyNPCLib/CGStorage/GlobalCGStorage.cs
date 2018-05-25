@@ -6,6 +6,11 @@ namespace MyNPCLib.CGStorage
 {
     public class GlobalCGStorage: BaseCGStorage
     {
+        public GlobalCGStorage(ContextOfCGStorage context)
+            : base(context)
+        {
+        }
+
         public override KindOfCGStorage Kind => KindOfCGStorage.Global;
     }
 }

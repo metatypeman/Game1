@@ -6,6 +6,11 @@ namespace MyNPCLib.CGStorage
 {
     public class QueryCGStorage : BaseCGStorage
     {
+        public QueryCGStorage(ContextOfCGStorage context)
+            : base(context)
+        {
+        }
+
         public override KindOfCGStorage Kind => KindOfCGStorage.Query;
     }
 }

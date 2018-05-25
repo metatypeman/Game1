@@ -4,17 +4,8 @@ using System.Text;
 
 namespace MyNPCLib.CGStorage
 {
-    public abstract class BaseCGStorage: ICGStorage
+    public class ConceptualGraph : IObjectToString
     {
-        protected BaseCGStorage(ContextOfCGStorage context)
-        {
-            mContext = context;
-        }
-
-        private ContextOfCGStorage mContext;
-
-        public abstract KindOfCGStorage Kind { get; }
-
         public override string ToString()
         {
             return ToString(0u);
@@ -25,11 +16,11 @@ namespace MyNPCLib.CGStorage
             return this.GetDefaultToStringInformation(n);
         }
 
-        public virtual string PropertiesToSting(uint n)
+        public string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+
             return sb.ToString();
         }
     }

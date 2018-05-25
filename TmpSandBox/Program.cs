@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.CGStorage;
 using MyNPCLib.Logical;
 using MyNPCLib.Parser;
 using System;
@@ -27,7 +28,8 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTConceptualGraphs();
+            TSTConceptualGraph_2();
+            //TSTConceptualGraphs();
             //TSTRange();
             //TSTLexer();
             //TSTLogicalAST();
@@ -38,6 +40,18 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTConceptualGraph_2()
+        {
+            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTConceptualGraphs_2");
+
+            var globalEntityDictionary = new EntityDictionary();
+
+            var context = new ContextOfCGStorage(globalEntityDictionary);
+            context.Init();
+
+            NLog.LogManager.GetCurrentClassLogger().Info("End TSTConceptualGraphs_2");
         }
 
         private static void TSTConceptualGraphs()

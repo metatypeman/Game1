@@ -6,6 +6,11 @@ namespace MyNPCLib.CGStorage
 {
     public class ShardingCGStorage : BaseCGStorage
     {
+        public ShardingCGStorage(ContextOfCGStorage context)
+            : base(context)
+        {
+        }
+
         public override KindOfCGStorage Kind => KindOfCGStorage.Sharding;
     }
 }

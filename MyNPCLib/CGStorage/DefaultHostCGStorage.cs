@@ -6,6 +6,11 @@ namespace MyNPCLib.CGStorage
 {
     public class DefaultHostCGStorage : BaseCGStorage
     {
+        public DefaultHostCGStorage(ContextOfCGStorage context)
+            : base(context)
+        {
+        }
+
         public override KindOfCGStorage Kind => KindOfCGStorage.Host;
     }
 }
