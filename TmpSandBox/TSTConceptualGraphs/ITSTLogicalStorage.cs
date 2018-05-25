@@ -16,8 +16,8 @@ namespace TmpSandBox.TSTConceptualGraphs
         TSTPredicateSentence GetPredicateSentence();
         ITSTLogicalStorage Fork();
         void Accept(ITSTLogicalStorage storage);
-        //void Accept(TSTConceptualGraph graph);
-        //void Accept(TSTGnuClaySentence sentence);
-        //void Accept(TSTPredicateSentence sentence);
+        void Accept(TSTConceptualGraph graph);
+        void Accept(TSTGnuClaySentence sentence);
+        void Accept(TSTPredicateSentence sentence);
     }
 }

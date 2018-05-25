@@ -6,6 +6,7 @@ namespace MyNPCLib
 {
     public interface IEntityDictionary
     {
+        string Name { get; }
         ulong GetKey(string name);
     }
 }
