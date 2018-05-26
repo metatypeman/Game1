@@ -51,6 +51,40 @@ namespace TmpSandBox
             var context = new ContextOfCGStorage(globalEntityDictionary);
             context.Init();
 
+            var graph = new ConceptualGraph();
+            graph.Name = "#1";
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 graph = {graph}");
+
+            var graph_2 = new ConceptualGraph();
+            graph_2.Name = "#2";
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 graph_2 = {graph_2}");
+
+            var concept = new ConceptCGNode();    
+            concept.Name = "dog";
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 concept = {concept}");
+
+            concept.Parent = graph;
+
+            var relation = new RelationCGNode();
+            relation.Name = "color";
+            relation.Parent = graph;
+
+            var concept_2 = new ConceptCGNode();
+            concept_2.Name = "black";
+            concept_2.Parent = graph;
+
+            //relation.AddInputNode(concept);
+            concept_2.AddInputNode(relation);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 concept = {concept}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 relation = {relation}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 concept_2 = {concept_2}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 graph = {graph}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 graph_2 = {graph_2}");
+
             NLog.LogManager.GetCurrentClassLogger().Info("End TSTConceptualGraphs_2");
         }
 
