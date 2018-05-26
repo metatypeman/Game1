@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.CGStorage
@@ -17,6 +18,8 @@ namespace MyNPCLib.CGStorage
                 return mChildren;
             }
         }
+
+        public override IList<ICGNode> ChildrenNodes => mChildren.Cast<ICGNode>().ToList();
 
         public void AddChild(BaseCGNode child)
         {

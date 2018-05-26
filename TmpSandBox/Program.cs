@@ -1,5 +1,6 @@
 ﻿using MyNPCLib;
 using MyNPCLib.CGStorage;
+using MyNPCLib.Dot;
 using MyNPCLib.Logical;
 using MyNPCLib.Parser;
 using System;
@@ -84,6 +85,10 @@ namespace TmpSandBox
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 concept_2 = {concept_2}");
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 graph = {graph}");
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 graph_2 = {graph_2}");
+
+            var dotStr = DotConverter.ConvertToString(graph);
+
+            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 dotStr = {dotStr}");
 
             NLog.LogManager.GetCurrentClassLogger().Info("End TSTConceptualGraphs_2");
         }

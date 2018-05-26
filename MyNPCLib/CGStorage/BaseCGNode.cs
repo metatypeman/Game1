@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.CGStorage
@@ -55,10 +56,12 @@ namespace MyNPCLib.CGStorage
             }
         }
 
+        public virtual IList<ICGNode> ChildrenNodes => new List<ICGNode>();
+
         private IList<BaseCGNode> mInputsNodes = new List<BaseCGNode>();
         private IList<BaseCGNode> mOutputsNodes = new List<BaseCGNode>();
 
-        public IList<BaseCGNode> InputsNodes
+        public IList<BaseCGNode> Inputs
         {
             get
             {
@@ -66,13 +69,17 @@ namespace MyNPCLib.CGStorage
             }
         }
 
-        public IList<BaseCGNode> OutputsNodes
+        public IList<ICGNode> InputNodes => mInputsNodes.Cast<ICGNode>().ToList();
+
+        public IList<BaseCGNode> Outputs
         {
             get
             {
                 return mOutputsNodes;
             }
         }
+
+        public IList<ICGNode> OutputNodes => mOutputsNodes.Cast<ICGNode>().ToList();
 
         internal void NAddInputNode(BaseCGNode node)
         {
@@ -134,19 +141,19 @@ namespace MyNPCLib.CGStorage
                 sb.AppendLine($"{spaces}End {nameof(Parent)}");
             }
 
-            sb.AppendLine($"{spaces}Begin {nameof(InputsNodes)}");
-            foreach(var inputNode in InputsNodes)
+            sb.AppendLine($"{spaces}Begin {nameof(Inputs)}");
+            foreach(var inputNode in Inputs)
             {
                 sb.Append(inputNode.ToStringAsShortBrief(nextN));
             }
-            sb.AppendLine($"{spaces}End {nameof(InputsNodes)}");
+            sb.AppendLine($"{spaces}End {nameof(Inputs)}");
 
-            sb.AppendLine($"{spaces}Begin {nameof(OutputsNodes)}");
-            foreach(var outputNode in OutputsNodes)
+            sb.AppendLine($"{spaces}Begin {nameof(Outputs)}");
+            foreach(var outputNode in Outputs)
             {
                 sb.Append(outputNode.ToStringAsShortBrief(nextN));
             }
-            sb.AppendLine($"{spaces}End {nameof(OutputsNodes)}");
+            sb.AppendLine($"{spaces}End {nameof(Outputs)}");
             return sb.ToString();
         }
 
