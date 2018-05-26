@@ -76,7 +76,7 @@ namespace TmpSandBox
             concept_2.Name = "black";
             concept_2.Parent = graph;
 
-            //relation.AddInputNode(concept);
+            relation.AddInputNode(concept);
             concept_2.AddInputNode(relation);
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 concept = {concept}");

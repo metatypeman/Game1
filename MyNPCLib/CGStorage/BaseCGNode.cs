@@ -56,7 +56,7 @@ namespace MyNPCLib.CGStorage
         }
 
         private IList<BaseCGNode> mInputsNodes = new List<BaseCGNode>();
-        private IList<BaseCGNode> mOutpusNodes = new List<BaseCGNode>();
+        private IList<BaseCGNode> mOutputsNodes = new List<BaseCGNode>();
 
         public IList<BaseCGNode> InputsNodes
         {
@@ -66,11 +66,43 @@ namespace MyNPCLib.CGStorage
             }
         }
 
-        public IList<BaseCGNode> OutpusNodes
+        public IList<BaseCGNode> OutputsNodes
         {
             get
             {
-                return mOutpusNodes;
+                return mOutputsNodes;
+            }
+        }
+
+        internal void NAddInputNode(BaseCGNode node)
+        {
+            if(!mInputsNodes.Contains(node))
+            {
+                mInputsNodes.Add(node);
+            }
+        }
+
+        internal void NRemoveInputNode(BaseCGNode node)
+        {
+            if (mInputsNodes.Contains(node))
+            {
+                mInputsNodes.Remove(node);
+            }
+        }
+
+        internal void NAddOutputNode(BaseCGNode node)
+        {
+            if (!mOutputsNodes.Contains(node))
+            {
+                mOutputsNodes.Add(node);
+            }
+        }
+
+        internal void NRemoveOutputNode(BaseCGNode node)
+        {
+            if (mOutputsNodes.Contains(node))
+            {
+                mOutputsNodes.Remove(node);
             }
         }
 
@@ -109,12 +141,12 @@ namespace MyNPCLib.CGStorage
             }
             sb.AppendLine($"{spaces}End {nameof(InputsNodes)}");
 
-            sb.AppendLine($"{spaces}Begin {nameof(OutpusNodes)}");
-            foreach(var outputNode in OutpusNodes)
+            sb.AppendLine($"{spaces}Begin {nameof(OutputsNodes)}");
+            foreach(var outputNode in OutputsNodes)
             {
                 sb.Append(outputNode.ToStringAsShortBrief(nextN));
             }
-            sb.AppendLine($"{spaces}End {nameof(OutpusNodes)}");
+            sb.AppendLine($"{spaces}End {nameof(OutputsNodes)}");
             return sb.ToString();
         }
 
