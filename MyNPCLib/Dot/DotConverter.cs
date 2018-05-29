@@ -30,7 +30,7 @@ namespace MyNPCLib.Dot
 
             using (var fs = File.OpenWrite(fileName))
             {
-                using (var writer = new StreamWriter(fs))
+                using (var writer = new StreamWriter(fs, Encoding.UTF8))
                 {
                     writer.Write(dotStr);
                     fs.Flush();
