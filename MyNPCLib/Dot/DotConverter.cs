@@ -1,6 +1,7 @@
 ﻿using MyNPCLib.CGStorage;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace MyNPCLib.Dot
@@ -16,6 +17,25 @@ namespace MyNPCLib.Dot
             tmpMainLeaf.Run();
 
             return tmpMainLeaf.Text;
+        }
+
+        public static void DumpToFile(ICGNode node, string fileName)
+        {
+            var dotStr = ConvertToString(node);
+
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
+
+            using (var fs = File.OpenWrite(fileName))
+            {
+                using (var writer = new StreamWriter(fs))
+                {
+                    writer.Write(dotStr);
+                    fs.Flush();
+                }
+            }
         }
     }
 }
