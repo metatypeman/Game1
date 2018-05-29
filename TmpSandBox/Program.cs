@@ -5,6 +5,7 @@ using MyNPCLib.Logical;
 using MyNPCLib.Parser;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
@@ -29,7 +30,8 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTConceptualGraph_2();
+            TSTEntityLogging();
+            //TSTConceptualGraph_2();
             //TSTConceptualGraphs();
             //TSTRange();
             //TSTLexer();
@@ -41,6 +43,56 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        [MethodForLoggingSupport]
+        private static string GetClassFullName()
+        {
+            var className = string.Empty;
+            Type declaringType = null;
+            //var framesToSkip = 2;
+            var framesToSkip = 0;
+
+            while (true)
+            {
+                var frame = new StackFrame(framesToSkip, false);
+
+                var method = frame.GetMethod();
+
+                var attribute = method?.GetCustomAttribute<MethodForLoggingSupportAttribute>();
+
+                declaringType = method?.DeclaringType;
+
+                LogInstance.Log($"method?.Name = {method?.Name} framesToSkip = {framesToSkip}");
+                LogInstance.Log($"declaringType?.FullName = {declaringType?.FullName} framesToSkip = {framesToSkip}");
+                LogInstance.Log($"(attribute == null) = {attribute == null}");
+
+                if (declaringType == null)
+                {
+                    break;
+                }
+
+                if (declaringType.Module.Name.Equals("mscorlib.dll", StringComparison.OrdinalIgnoreCase))
+                {
+                    break;
+                }
+
+                framesToSkip++;
+                className = declaringType.FullName;
+            }
+
+            return className;
+        }
+
+        private static void TSTEntityLogging()
+        {
+            var tmpName = GetClassFullName();
+
+            LogInstance.Log($"tmpName = {tmpName}");
+
+            var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
+
+            LogInstance.Log($"tmpCallInfo = {tmpCallInfo}");
         }
 
         private static void TSTConceptualGraph_2()

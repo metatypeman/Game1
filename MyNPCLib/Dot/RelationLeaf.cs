@@ -14,7 +14,7 @@ namespace MyNPCLib.Dot
             Name = Context.GetNodeName();
             Context.RegLeaf(mNode, this);
         }
-
+        
         private ICGNode mNode;
 
         public ICGNode Node

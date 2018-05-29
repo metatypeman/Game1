@@ -21,6 +21,7 @@ namespace MyNPCLib
             }
         }
 
+        [MethodForLoggingSupport]
         public static void Log(string message)
         {
             lock (mLockObj)
@@ -29,6 +30,7 @@ namespace MyNPCLib
             }
         }
 
+        [MethodForLoggingSupport]
         public static void Error(string message)
         {
             lock (mLockObj)
@@ -37,6 +39,7 @@ namespace MyNPCLib
             }
         }
 
+        [MethodForLoggingSupport]
         public static void Warning(string message)
         {
             lock (mLockObj)
