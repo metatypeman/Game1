@@ -7,6 +7,11 @@ namespace MyNPCLib
 {
     public class NPCThingProcess : BaseCommonNPCProcessWithEvents
     {
+        public NPCThingProcess(IEntityLogger entityLogger)
+            : base(entityLogger)
+        {
+        }
+
         public override StateOfNPCProcess State
         {
             get

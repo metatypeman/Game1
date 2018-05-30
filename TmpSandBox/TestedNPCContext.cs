@@ -11,5 +11,9 @@ namespace TmpSandBox
 
     public class TestedNPCContext : BaseNPCContext
     {
+        public TestedNPCContext()
+            : base(null)
+        {
+        }
     }
 }

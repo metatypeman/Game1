@@ -9,8 +9,9 @@ namespace MyNPCLib
 {
     public class NPCBodyResourcesManager: INPCBodyResourcesManager
     {
-        public NPCBodyResourcesManager(IIdFactory idFactory, IEntityDictionary entityDictionary, INPCHostContext npcHostContext, INPCContext context)
+        public NPCBodyResourcesManager(IEntityLogger entityLogger, IIdFactory idFactory, IEntityDictionary entityDictionary, INPCHostContext npcHostContext, INPCContext context)
         {
+            mEntityLogger = entityLogger;
             mIdFactory = idFactory;
             mEntityDictionary = entityDictionary;
             mNPCBodyHost = npcHostContext.BodyHost;
@@ -19,6 +20,7 @@ namespace MyNPCLib
         }
 
         #region private members
+        private IEntityLogger mEntityLogger;
         private IIdFactory mIdFactory;
         private IEntityDictionary mEntityDictionary;
         private INPCBodyHost mNPCBodyHost;
@@ -26,6 +28,24 @@ namespace MyNPCLib
         private object mStateLockObj = new object();
         private StateOfNPCContext mState = StateOfNPCContext.Created;
         #endregion
+
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
 
         private void OnHumanoidStatesChanged(IList<HumanoidStateKind> changedStates)
         {
@@ -41,12 +61,12 @@ namespace MyNPCLib
                 try
                 {
 #if DEBUG
-                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged Begin changedStates");
+                    //Log($"Begin changedStates");
                     //foreach (var changedState in changedStates)
                     //{
-                    //    LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged changedState = {changedState}");
+                    //    Log($"changedState = {changedState}");
                     //}
-                    //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged End changedStates");
+                    //Log($"End changedStates");
 #endif
 
                     lock (mDataLockObj)
@@ -106,14 +126,14 @@ namespace MyNPCLib
                         displacedProcessesIdList = displacedProcessesIdList.Distinct().ToList();
 
 #if DEBUG
-                        //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged displacedProcessesIdList.Count = {displacedProcessesIdList.Count}");
-                        //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged before mTasksDict.Count = {mTasksDict.Count}");
+                        //Log($"displacedProcessesIdList.Count = {displacedProcessesIdList.Count}");
+                        //Log($"before mTasksDict.Count = {mTasksDict.Count}");
 #endif
 
                         foreach (var displacedProcessId in displacedProcessesIdList)
                         {
 #if DEBUG
-                            //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged displacedProcessId = {displacedProcessId}");
+                            //Log($"displacedProcessId = {displacedProcessId}");
 #endif
 
                             var targetTask = mProcessesDict[displacedProcessId];
@@ -122,14 +142,14 @@ namespace MyNPCLib
                         }
 
 #if DEBUG
-                        //LogInstance.Log($"NPCBodyResourcesManager OnHumanoidStatesChanged after mTasksDict.Count = {mTasksDict.Count}");
+                        //Log($"after mTasksDict.Count = {mTasksDict.Count}");
 #endif
                     }
                 }
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Error($"NPCBodyResourcesManager OnHumanoidStatesChanged e = {e}");
+                    Error($"e = {e}");
 #endif
                 }
             });
@@ -156,7 +176,7 @@ namespace MyNPCLib
         public INPCProcess Send(IHumanoidBodyCommand command)
         {
 #if DEBUG
-            LogInstance.Log($"NPCBodyResourcesManager Send command = {command}");
+            Log($"command = {command}");
 #endif
 
             lock (mStateLockObj)
@@ -197,7 +217,7 @@ namespace MyNPCLib
         private void NExecute(IHumanoidBodyCommand command, ProxyForNPCResourceProcess process)
         {
 #if DEBUG
-            LogInstance.Log($"NPCBodyResourcesManager Begin NExecute command = {command}");
+            Log($"Begin command = {command}");
 #endif
             try
             {
@@ -206,12 +226,12 @@ namespace MyNPCLib
                 var targetState = CreateTargetState(command);
 
 #if DEBUG
-                LogInstance.Log($"NPCBodyResourcesManager NExecute targetState = {targetState}");
+                Log($"targetState = {targetState}");
 #endif
                 var resolution = CreateResolution(mNPCBodyHost.States, targetState, processId);
 
 #if DEBUG
-                LogInstance.Log($"NPCBodyResourcesManager NExecute resolution = {resolution}");
+                Log($"resolution = {resolution}");
 #endif
 
                 var kindOfResolution = resolution.KindOfResult;
@@ -228,7 +248,7 @@ namespace MyNPCLib
                             var kindOfResolutionOfContext = mContext.ApproveNPCResourceProcessExecute(resolution);
 
 #if UNITY_EDITOR
-                        //LogInstance.Log($"NPCBodyResourcesManager Execute kindOfResolutionOfContext = {kindOfResolutionOfContext}");
+                        //Log($"kindOfResolutionOfContext = {kindOfResolutionOfContext}");
 #endif
 
                             switch (kindOfResolutionOfContext)
@@ -253,7 +273,7 @@ namespace MyNPCLib
             catch (OperationCanceledException)
             {
 #if DEBUG
-                LogInstance.Error("NPCBodyResourcesManager NExecute catch(OperationCanceledException)");
+                Error("catch(OperationCanceledException)");
 #endif
             }
             catch (Exception e)
@@ -261,7 +281,7 @@ namespace MyNPCLib
                 process.State = StateOfNPCProcess.Faulted;
 
 #if DEBUG
-                LogInstance.Error($"End NPCBodyResourcesManager NExecute e = {e}");
+                Error($"End e = {e}");
 #endif
             }
             finally
@@ -272,14 +292,14 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            LogInstance.Log($"NPCBodyResourcesManager End NExecute command = {command}");
+            Log($"End command = {command}");
 #endif
         }
 
         private TargetStateOfHumanoidBody CreateTargetState(IHumanoidBodyCommand command)
         {
 #if DEBUG
-            LogInstance.Log($"NPCBodyResourcesManager CreateTargetState command = {command}");
+            Log($"command = {command}");
 #endif
 
             var result = new TargetStateOfHumanoidBody();
@@ -379,7 +399,7 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            LogInstance.Log($"NPCBodyResourcesManager CreateTargetState result = {result}");
+            Log($"result = {result}");
 #endif
 
             return result;
@@ -388,9 +408,9 @@ namespace MyNPCLib
         private NPCBodyResourcesResolution CreateResolution(IStatesOfHumanoidBodyHost sourceState, TargetStateOfHumanoidBody targetState, ulong processId)
         {
 #if DEBUG
-            LogInstance.Log($"NPCBodyResourcesManager CreateResolution sourceState = {sourceState}");
-            LogInstance.Log($"NPCBodyResourcesManager CreateResolution targetState = {targetState}");
-            LogInstance.Log($"NPCBodyResourcesManager CreateResolution processId = {processId}");
+            Log($"sourceState = {sourceState}");
+            Log($"targetState = {targetState}");
+            Log($"processId = {processId}");
             //DumpProcesses();
 #endif
 
@@ -505,7 +525,7 @@ namespace MyNPCLib
                     }
 
 #if DEBUG
-                    LogInstance.Log($"NPCBodyResourcesManager CreateResolution targetHandsState = {targetHandsState}");
+                    Log($"targetHandsState = {targetHandsState}");
 #endif
 
                     if (mHandsState.Count == 0)
@@ -617,8 +637,8 @@ namespace MyNPCLib
                 }
 
 #if DEBUG
-                LogInstance.Log("NPCBodyResourcesManager CreateResolution NEXT");
-                LogInstance.Log("End NPCBodyResourcesManager CreateResolution");
+                Log("NEXT");
+                Log("End");
 #endif
                 return result;
             }
@@ -640,63 +660,63 @@ namespace MyNPCLib
         {
             lock (mDataLockObj)
             {
-                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses Begin {nameof(mHState)}");
+                Log($"Begin {nameof(mHState)}");
                 foreach (var item in mHState)
                 {
-                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses {nameof(item)} = {item}");
+                    Log($"{nameof(item)} = {item}");
                 }
-                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses End {nameof(mHState)}");
+                Log($"End {nameof(mHState)}");
 
-                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses Begin {nameof(mTargetPosition)}");
+                Log($"Begin {nameof(mTargetPosition)}");
                 foreach (var item in mTargetPosition)
                 {
-                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses {nameof(item)} = {item}");
+                    Log($"{nameof(item)} = {item}");
                 }
-                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses End {nameof(mTargetPosition)}");
+                Log($"End {nameof(mTargetPosition)}");
 
-                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses Begin {nameof(mVState)}");
+                Log($"Begin {nameof(mVState)}");
                 foreach (var item in mVState)
                 {
-                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses {nameof(item)} = {item}");
+                    Log($"{nameof(item)} = {item}");
                 }
-                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses End {nameof(mVState)}");
+                Log($"End {nameof(mVState)}");
 
-                LogInstance.Log($"NPCBodyResourcesManager DumpProcesses Begin {nameof(mHandsState)}");
+                Log($"Begin {nameof(mHandsState)}");
                 foreach (var item in mHandsState)
                 {
-                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses item = {item}");
+                    Log($"item = {item}");
                 }
-                LogInstance.Log("NPCBodyResourcesManager DumpProcesses End mHandsState");
+                Log("End mHandsState");
 
-                LogInstance.Log("NPCBodyResourcesManager DumpProcesses Begin mHandsActionState");
+                Log("Begin mHandsActionState");
                 foreach (var item in mHandsActionState)
                 {
-                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses item = {item}");
+                    Log($"item = {item}");
                 }
-                LogInstance.Log("NPCBodyResourcesManager DumpProcesses End mHandsActionState");
+                Log("End mHandsActionState");
 
-                LogInstance.Log("NPCBodyResourcesManager DumpProcesses Begin mHeadState");
+                Log("Begin mHeadState");
                 foreach (var item in mHeadState)
                 {
-                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses item = {item}");
+                    Log($"item = {item}");
                 }
-                LogInstance.Log("NPCBodyResourcesManager DumpProcesses End mHeadState");
+                Log("End mHeadState");
 
-                LogInstance.Log("NPCBodyResourcesManager DumpProcesses Begin mTargetHeadPosition");
+                Log("Begin mTargetHeadPosition");
                 foreach (var item in mTargetHeadPosition)
                 {
-                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses item = {item}");
+                    Log($"item = {item}");
                 }
-                LogInstance.Log("NPCBodyResourcesManager DumpProcesses End mTargetHeadPosition");
-                LogInstance.Log("NPCBodyResourcesManager DumpProcesses Begin mProcessesDict");
+                Log("End mTargetHeadPosition");
+                Log("Begin mProcessesDict");
                 foreach (var kvpItem in mProcessesDict)
                 {
                     var productId = kvpItem.Key;
                     var task = kvpItem.Value;
 
-                    LogInstance.Log($"NPCBodyResourcesManager DumpProcesses productId = {productId} task = {task}");
+                    Log($"productId = {productId} task = {task}");
                 }
-                LogInstance.Log("NPCBodyResourcesManager DumpProcesses End mProcessesDict");
+                Log("End mProcessesDict");
             }
         }
 #endif
@@ -704,20 +724,20 @@ namespace MyNPCLib
         private void ProcessAllow(TargetStateOfHumanoidBody targetState, ulong processId, ProxyForNPCResourceProcess process, NPCResourcesResolutionKind resolutionKind)
         {
 #if DEBUG
-            //LogInstance.Log($"NPCBodyResourcesManager ProcessAllow targetState = {targetState}");
-            //LogInstance.Log($"NPCBodyResourcesManager ProcessAllow processId = {processId}");
+            //Log($"targetState = {targetState}");
+            //Log($"processId = {processId}");
 #endif
 
             RegProcessId(targetState, processId, process, resolutionKind);
 
 #if DEBUG
-            LogInstance.Log("NPCBodyResourcesManager ProcessAllow before mNPCBodyHost.ExecuteAsync");
+            Log("before mNPCBodyHost.ExecuteAsync");
 #endif
 
             mNPCBodyHost.Execute(targetState);
 
 #if DEBUG
-            LogInstance.Log("NPCBodyResourcesManager ProcessAllow after mNPCBodyHost.ExecuteAsync");
+            Log("after mNPCBodyHost.ExecuteAsync");
 #endif
 
             process.State = StateOfNPCProcess.Running;
@@ -932,7 +952,7 @@ namespace MyNPCLib
                     foreach (var displacedProcessId in displacedProcessesIdList)
                     {
 #if DEBUG
-                        //LogInstance.Log($"NPCBodyResourcesManager CreateTargetState displacedProcessId = {displacedProcessId}");
+                        //Log($"displacedProcessId = {displacedProcessId}");
 #endif
 
                         RemoveProcessId(displacedProcessId);
@@ -940,13 +960,13 @@ namespace MyNPCLib
                 }
 
 #if DEBUG
-                //LogInstance.Log($"NPCBodyResourcesManager CreateTargetState before mTasksDict.Count = {mTasksDict.Count}");
+                //Log($"before mTasksDict.Count = {mTasksDict.Count}");
 #endif
 
                 mProcessesDict[processId] = process;
 
 #if DEBUG
-                //LogInstance.Log($"NPCBodyResourcesManager CreateTargetState after mTasksDict.Count = {mTasksDict.Count}");
+                //Log($"after mTasksDict.Count = {mTasksDict.Count}");
 #endif
             }
         }
@@ -954,7 +974,7 @@ namespace MyNPCLib
         private void ProcessForbiden(ProxyForNPCResourceProcess process)
         {
 #if DEBUG
-            //LogInstance.Log($"NPCBodyResourcesManager ProcessForbiden npcMeshTask = {npcMeshTask}");
+            //Log($"npcMeshTask = {npcMeshTask}");
 #endif
 
             process.State = StateOfNPCProcess.Canceled;
@@ -963,7 +983,7 @@ namespace MyNPCLib
         public void UnRegProcess(ulong processId)
         {
 #if DEBUG
-            LogInstance.Log($"NPCBodyResourcesManager UnRegProcess processId = {processId}");
+            Log($"processId = {processId}");
 #endif
 
             lock (mStateLockObj)
@@ -1043,7 +1063,7 @@ namespace MyNPCLib
         public void Dispose()
         {
 #if DEBUG
-            LogInstance.Log("NPCBodyResourcesManager Dispose");
+            Log("Begin");
 #endif
 
             lock (mStateLockObj)

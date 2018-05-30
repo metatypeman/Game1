@@ -7,13 +7,37 @@ namespace MyNPCLib.Logical
 {
     public class StorageOfPassiveLogicalObjects
     {
+        public StorageOfPassiveLogicalObjects(IEntityLogger entityLogger)
+        {
+            mEntityLogger = entityLogger;
+        }
+
+        private IEntityLogger mEntityLogger;
         private readonly object mLockObj = new object();
         private Dictionary<ulong, LogicalFrame> mObjectsDict = new Dictionary<ulong, LogicalFrame>();
 
-        public void SetPropertyValue(ulong entityId, ulong propertyId, object value)
+        [MethodForLoggingSupport]
+        protected void Log(string message)
         {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
+
+        public void SetPropertyValue(ulong entityId, ulong propertyId, object value)
+        {        
 #if DEBUG
-            LogInstance.Log($"StorageOfPassiveLogicalObjects StorageOfPassiveLogicalObjects entityId = {entityId} propertyId = {propertyId} value = {value}");
+            Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
             lock (mLockObj)
             {
@@ -37,17 +61,17 @@ namespace MyNPCLib.Logical
         public void SetPropertyValue(IList<ulong> entitiesIdsList, ulong propertyId, object value)
         {
 #if DEBUG
-            LogInstance.Log($"StorageOfPassiveLogicalObjects SetPropertyValue entitiesIdsList.Count = {entitiesIdsList.Count} propertyId = {propertyId} value = {value}");
+            Log($"entitiesIdsList.Count = {entitiesIdsList.Count} propertyId = {propertyId} value = {value}");
             foreach (var entityId in entitiesIdsList)
             {
-                LogInstance.Log($"StorageOfPassiveLogicalObjects entityId = {entityId}");
+                Log($"entityId = {entityId}");
             }
 #endif
 
             foreach (var entityId in entitiesIdsList)
             {
 #if DEBUG
-                LogInstance.Log($"StorageOfPassiveLogicalObjects entityId = {entityId}");
+                Log($"entityId = {entityId}");
 #endif
 
                 SetPropertyValue(entityId, propertyId, value);
@@ -57,7 +81,7 @@ namespace MyNPCLib.Logical
         public object GetPropertyValue(ulong entityId, ulong propertyId)
         {
 #if DEBUG
-            LogInstance.Log($"StorageOfPassiveLogicalObjects GetPropertyValue entityId = {entityId} propertyId = {propertyId}");
+            Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
 
             lock (mLockObj)
@@ -75,10 +99,10 @@ namespace MyNPCLib.Logical
         public object GetPropertyValue(IList<ulong> entitiesIdsList, ulong propertyId)
         {
 #if DEBUG
-            LogInstance.Log($"StorageOfPassiveLogicalObjects GetPropertyValue entitiesIdsList.Count = {entitiesIdsList.Count} propertyId = {propertyId}");
+            Log($"entitiesIdsList.Count = {entitiesIdsList.Count} propertyId = {propertyId}");
             foreach (var entityId in entitiesIdsList)
             {
-                LogInstance.Log($"StorageOfPassiveLogicalObjects GetPropertyValue entityId = {entityId}");
+                Log($"entityId = {entityId}");
             }
 #endif
 

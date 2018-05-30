@@ -68,7 +68,7 @@ namespace MyNPCLib
 
             var result = BuildLogString(marker, now, KindOfLogLevel.LOG, tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
 
-            throw new NotImplementedException();
+            LogInstance.Raw(result);
         }
 
         [MethodForLoggingSupport]
@@ -90,7 +90,7 @@ namespace MyNPCLib
 
             var result = BuildLogString(marker, now, KindOfLogLevel.ERROR, tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
 
-            throw new NotImplementedException();
+            LogInstance.Raw(result);
         }
 
         [MethodForLoggingSupport]
@@ -112,7 +112,7 @@ namespace MyNPCLib
 
             var result = BuildLogString(marker, now, KindOfLogLevel.WARNING, tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
 
-            throw new NotImplementedException();
+            LogInstance.Raw(result);
         }
 
         private string BuildLogString(string marker, DateTime dateTime, KindOfLogLevel level, string className, string methodName, string message)

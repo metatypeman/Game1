@@ -7,53 +7,73 @@ namespace MyNPCLib.Logical
 {
     public class LogicalStorage : ILogicalStorage
     {
-        public LogicalStorage(IEntityDictionary entityDictionary, ILogicalStorage hostLogicalStorage, StorageOfSpecialEntities storageOfSpecialEntities)
+        public LogicalStorage(IEntityLogger entityLogger, IEntityDictionary entityDictionary, ILogicalStorage hostLogicalStorage, StorageOfSpecialEntities storageOfSpecialEntities)
         {
+            mEntityLogger = entityLogger;
+
 #if DEBUG
-            //LogInstance.Log("LogicalStorage()1");
+            //Log("1");
 #endif
             mStorageOfSpecialEntities = storageOfSpecialEntities;
             mHostLogicalStorage = hostLogicalStorage;
 
 #if DEBUG
-            //LogInstance.Log("LogicalStorage()2");
+            //Log("2");
 #endif
 
             mEntityDictionary = entityDictionary;
 
 #if DEBUG
-            //LogInstance.Log("LogicalStorage()3");
+            //Log("3");
 #endif
 
-            mStorageOfPassiveLogicalObjects = new StorageOfPassiveLogicalObjects();
+            mStorageOfPassiveLogicalObjects = new StorageOfPassiveLogicalObjects(entityLogger);
 
 #if DEBUG
-            //LogInstance.Log("LogicalStorage()4");
+            //Log("4");
 #endif
 
-            mLogicalIndexStorage = new LogicalIndexStorage(mStorageOfSpecialEntities);
+            mLogicalIndexStorage = new LogicalIndexStorage(entityLogger, mStorageOfSpecialEntities);
 
 #if DEBUG
-            //LogInstance.Log("LogicalStorage()5");
+            //Log("5");
 #endif
             mLogicalIndexStorage.OnChanged += MHostLogicalStorage_OnChanged;
 
 #if DEBUG
-            //LogInstance.Log("LogicalStorage()6");
-            //LogInstance.Log($"LogicalStorage() (mHostLogicalStorage == null) = {mHostLogicalStorage == null}");
+            //Log("6");
+            //Log($"(mHostLogicalStorage == null) = {mHostLogicalStorage == null}");
 #endif
 
             mHostLogicalStorage.OnChanged += MHostLogicalStorage_OnChanged;
 
 #if DEBUG
-            //LogInstance.Log("LogicalStorage()7");
+            //Log("7");
 #endif
+        }
+
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
         }
 
         private void MHostLogicalStorage_OnChanged()
         {
 #if DEBUG
-            //LogInstance.Log("LogicalStorage MHostLogicalStorage_OnChanged");
+            //Log("Begin");
 #endif
             Task.Run(() =>
             {
@@ -64,12 +84,13 @@ namespace MyNPCLib.Logical
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"LogicalStorage MHostLogicalStorage_OnChanged e = {e}");
+                    Error($"e = {e}");
 #endif
                 }
             });
         }
 
+        private IEntityLogger mEntityLogger;
         private ILogicalStorage mHostLogicalStorage;
         private IEntityDictionary mEntityDictionary;
         private StorageOfPassiveLogicalObjects mStorageOfPassiveLogicalObjects;
@@ -79,7 +100,7 @@ namespace MyNPCLib.Logical
         public void PutPropertyValueAsIndex(ulong entityId, ulong propertyId, object value)
         {
 #if DEBUG
-            //LogInstance.Log($"LogicalStorage PutPropertyValue entityId = {entityId} propertyId = {propertyId} value = {value}");
+            //Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
 
             mLogicalIndexStorage.PutPropertyValueAsIndex(entityId, propertyId, value);
@@ -88,7 +109,7 @@ namespace MyNPCLib.Logical
         public void PutAccessPolicyToFactAsIndex(ulong entityId, ulong propertyId, AccessPolicyToFact value)
         {
 #if DEBUG
-            //LogInstance.Log($"LogicalStorage PutAccessPolicyToFactAsIndex entityId = {entityId} propertyId = {propertyId} value = {value}");
+            //Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
 
             mLogicalIndexStorage.PutAccessPolicyToFactAsIndex(entityId, propertyId, value);
@@ -97,7 +118,7 @@ namespace MyNPCLib.Logical
         public AccessPolicyToFact GetAccessPolicyToFact(ulong entityId, ulong propertyId)
         {
 #if DEBUG
-            //LogInstance.Log($"LogicalStorage GetAccessPolicyToFact entityId = {entityId} propertyId = {propertyId}");
+            //Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
 
             return mHostLogicalStorage.GetAccessPolicyToFact(entityId, propertyId);
@@ -106,7 +127,7 @@ namespace MyNPCLib.Logical
         public IList<ulong> GetEntitiesIdsList(ulong propertyId, object value)
         {
 #if DEBUG
-            //LogInstance.Log($"LogicalStorage GetEntitiesIdsList propertyId = {propertyId} value = {value}");
+            //Log($"propertyId = {propertyId} value = {value}");
 #endif
 
             return mLogicalIndexStorage.GetEntitiesIdsList(propertyId, value);
@@ -115,7 +136,7 @@ namespace MyNPCLib.Logical
         public IList<ulong> GetAllEntitiesIdsList()
         {
 #if DEBUG
-            //LogInstance.Log("LogicalStorage GetAllEntitiesIdsList");
+            //Log("Begin");
 #endif
 
             return mLogicalIndexStorage.GetAllEntitiesIdsList();
@@ -124,7 +145,7 @@ namespace MyNPCLib.Logical
         public IList<ulong> GetEntitiesIdList(BaseQueryResolverASTNode plan)
         {
 #if DEBUG
-            //LogInstance.Log("LogicalStorage GetEntitiesIdList");
+            //Log("Begin");
 #endif
 
             var entitiesIdList = plan.GetEntitiesIdList(mLogicalIndexStorage);
@@ -152,7 +173,7 @@ namespace MyNPCLib.Logical
         public void SetPropertyValue(ulong entityId, ulong propertyId, object value)
         {
 #if DEBUG
-            //LogInstance.Log($"LogicalStorage SetPropertyValue entityId = {entityId} propertyId = {propertyId} value = {value}");
+            //Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
 
             mStorageOfPassiveLogicalObjects.SetPropertyValue(entityId, propertyId, value);
@@ -161,7 +182,7 @@ namespace MyNPCLib.Logical
         public object GetPropertyValue(ulong entityId, ulong propertyId)
         {
 #if DEBUG
-            //LogInstance.Log($"LogicalStorage GetPropertyValue entityId = {entityId} propertyId = {propertyId}");
+            //Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
           
             var result = mStorageOfPassiveLogicalObjects.GetPropertyValue(entityId, propertyId);

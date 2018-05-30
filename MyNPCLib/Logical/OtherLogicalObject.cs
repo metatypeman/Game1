@@ -6,8 +6,8 @@ namespace MyNPCLib.Logical
 {
     public abstract class OtherLogicalObject : BaseAbstractLogicalObject
     {
-        protected OtherLogicalObject(SystemPropertiesDictionary systemPropertiesDictionary)
-            : base(systemPropertiesDictionary)
+        protected OtherLogicalObject(IEntityLogger entityLogger, SystemPropertiesDictionary systemPropertiesDictionary)
+            : base(entityLogger, systemPropertiesDictionary)
         {
         }
 
@@ -16,7 +16,7 @@ namespace MyNPCLib.Logical
         protected object CommonGetProperty(ulong propertyKey)
         {
 #if DEBUG
-            //LogInstance.Log($"VisionObject NGetProperty propertyKey = {propertyKey}");
+            //Log($"propertyKey = {propertyKey}");
 #endif
 
             var kindOfSystemProperty = GetKindOfSystemProperty(propertyKey);
@@ -51,7 +51,7 @@ namespace MyNPCLib.Logical
         private object GetGlobalPosition(ulong propertyKey)
         {
 #if DEBUG
-            //LogInstance.Log($"VisionObject GetGlobalPosition propertyKey = {propertyKey} (CurrentVisionObjectImpl == null) = {CurrentVisionObjectImpl == null}");
+            //Log($"propertyKey = {propertyKey} (CurrentVisionObjectImpl == null) = {CurrentVisionObjectImpl == null}");
 #endif
 
             if(CurrentVisionObjectImpl == null)

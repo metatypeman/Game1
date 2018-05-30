@@ -38,7 +38,7 @@ namespace TmpSandBox
             //TSTLogicalAST();
             //TSTCancelTask_2();
             //TSTCancelTask();
-            //TSTMyNPCContext();
+            TSTMyNPCContext();
             //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
@@ -93,6 +93,15 @@ namespace TmpSandBox
             var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
 
             LogInstance.Log($"tmpCallInfo = {tmpCallInfo}");
+
+            var entityLogger = new EntityLogger();
+            entityLogger.Marker = Guid.NewGuid().ToString("D");
+
+            entityLogger.Log("1 :)");
+
+            entityLogger.Enabled = true;
+
+            entityLogger.Log("2 :)");
         }
 
         private static void TSTConceptualGraph_2()
@@ -420,12 +429,16 @@ namespace TmpSandBox
 
             var npcHostContext = new StubOfNPCHostContext();
 
+            var entityLogger = new EntityLogger();
+            entityLogger.Marker = Guid.NewGuid().ToString("D");
+            entityLogger.Enabled = true;
+
             var storageOfSpecialEntities = new StorageOfSpecialEntities();
             storageOfSpecialEntities.SelfEntityId = npcHostContext.SelfEntityId;
-           var visionObjectsStorage = new VisionObjectsStorage(globalEntityDictionary, npcHostContext, systemPropertiesDictionary, storageOfSpecialEntities);
+            var visionObjectsStorage = new VisionObjectsStorage(entityLogger, globalEntityDictionary, npcHostContext, systemPropertiesDictionary, storageOfSpecialEntities);
 
             var queryStr = "!((name=helen|name=ann)&class=girl)";
-            var logicalObject = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
+            var logicalObject = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
 
             var entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
@@ -447,7 +460,7 @@ namespace TmpSandBox
                 NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2) entityId = {entityId}");
             }
 
-            var logicalObject_2 = new MyNPCLib.Logical.LogicalObject(queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
+            var logicalObject_2 = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
 
             entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
@@ -599,7 +612,11 @@ namespace TmpSandBox
 
             var indexingStorage = stubOfHumanoidBodyController.LogicalIndexStorageImpl;
 
-            var context = new MyNPCContext(globalEntityDictionary, stubOfHumanoidBodyController);
+            var entityLogger = new EntityLogger();
+            entityLogger.Marker = Guid.NewGuid().ToString("D");
+            entityLogger.Enabled = true;
+
+            var context = new MyNPCContext(entityLogger, globalEntityDictionary, stubOfHumanoidBodyController);
             context.Bootstrap();
 
             Thread.Sleep(1000);
@@ -821,7 +838,12 @@ namespace TmpSandBox
 
             var npcProcessInfoCache = new NPCProcessInfoCache();
             var globalEntityDictionary = new EntityDictionary();
-            var tmpContext = new TmpConcreteNPCContext(globalEntityDictionary, npcProcessInfoCache);
+
+            var entityLogger = new EntityLogger();
+            entityLogger.Marker = Guid.NewGuid().ToString("D");
+            entityLogger.Enabled = true;
+
+            var tmpContext = new TmpConcreteNPCContext(entityLogger, globalEntityDictionary, npcProcessInfoCache);
 
             var command = new NPCCommand();
             command.Name = "SomeName";

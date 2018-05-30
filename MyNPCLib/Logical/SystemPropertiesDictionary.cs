@@ -26,7 +26,7 @@ namespace MyNPCLib.Logical
         public KindOfSystemProperties GetKindOfSystemProperty(ulong propertyKey)
         {
 #if DEBUG
-            LogInstance.Log($"SystemPropertiesDictionary GetKindOfSystemProperty propertyKey = {propertyKey}");
+            //LogInstance.Log($"propertyKey = {propertyKey}");
 #endif
 
             if(mPropertiesMap.ContainsKey(propertyKey))

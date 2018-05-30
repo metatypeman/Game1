@@ -9,8 +9,10 @@ namespace MyNPCLib
 {
     public class BaseNPCContext : INPCContext
     {
-        public BaseNPCContext(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, INPCHostContext npcHostContext = null, QueriesCache queriesCache = null)
+        public BaseNPCContext(IEntityLogger entityLogger, IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, INPCHostContext npcHostContext = null, QueriesCache queriesCache = null)
         {
+            mEntityLogger = entityLogger;
+
             if (entityDictionary == null)
             {
                 mEntityDictionary = new EntityDictionary();
@@ -30,7 +32,7 @@ namespace MyNPCLib
             }
             
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext npcHostContext.SelfEntityId = {npcHostContext.SelfEntityId} npcHostContext.IsReady = {npcHostContext.IsReady}");
+            Log($"npcHostContext.SelfEntityId = {npcHostContext.SelfEntityId} npcHostContext.IsReady = {npcHostContext.IsReady}");
 #endif
 
             mIdFactory = new IdFactory();
@@ -40,16 +42,16 @@ namespace MyNPCLib
             npcHostContext.OnReady += NpcHostContext_OnReady;
             npcHostContext.BodyHost.OnDie += BodyHost_OnDie;
 
-            mBodyResourcesManager = new NPCBodyResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, this);
-            mRightHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Right, this);
-            mLeftHandResourcesManager = new NPCHandResourcesManager(mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Left, this);
-            mStorageOfNPCProcesses = new StorageOfNPCProcesses(mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
+            mBodyResourcesManager = new NPCBodyResourcesManager(mEntityLogger, mIdFactory, mEntityDictionary, npcHostContext, this);
+            mRightHandResourcesManager = new NPCHandResourcesManager(mEntityLogger, mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Right, this);
+            mLeftHandResourcesManager = new NPCHandResourcesManager(mEntityLogger, mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Left, this);
+            mStorageOfNPCProcesses = new StorageOfNPCProcesses(mEntityLogger, mIdFactory, mEntityDictionary, npcProcessInfoCache, this);
 
             mSystemPropertiesDictionary = new SystemPropertiesDictionary(mEntityDictionary);
 
             mStorageOfSpecialEntities = new StorageOfSpecialEntities();
 
-            mVisionObjectsStorage = new VisionObjectsStorage(mEntityDictionary, npcHostContext, mSystemPropertiesDictionary, mStorageOfSpecialEntities);
+            mVisionObjectsStorage = new VisionObjectsStorage(mEntityLogger, mEntityDictionary, npcHostContext, mSystemPropertiesDictionary, mStorageOfSpecialEntities);
 
             if (mNPCHostContext.IsReady)
             {
@@ -57,14 +59,32 @@ namespace MyNPCLib
             }
         }
 
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
+
         private void NpcHostContext_OnReady()
         {
 #if DEBUG
-            LogInstance.Log("BaseNPCContext NpcHostContext_OnReady");
+            Log("Begin");
 #endif
 
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext NpcHostContext_OnReady mNPCHostContext.SelfEntityId = {mNPCHostContext.SelfEntityId} mNPCHostContext.IsReady = {mNPCHostContext.IsReady}");
+            Log($"mNPCHostContext.SelfEntityId = {mNPCHostContext.SelfEntityId} mNPCHostContext.IsReady = {mNPCHostContext.IsReady}");
 #endif
 
             InitLogicalSubSystem();
@@ -73,23 +93,23 @@ namespace MyNPCLib
         private void InitLogicalSubSystem()
         {
 #if DEBUG
-            LogInstance.Log("BaseNPCContext InitLogicalSubSystem");
+            Log("Begin");
 #endif
 
             mStorageOfSpecialEntities.SelfEntityId = mNPCHostContext.SelfEntityId;
 
-            mLogicalStorage = new LogicalStorage(mEntityDictionary, mNPCHostContext.HostLogicalStorage, mStorageOfSpecialEntities);
+            mLogicalStorage = new LogicalStorage(mEntityLogger, mEntityDictionary, mNPCHostContext.HostLogicalStorage, mStorageOfSpecialEntities);
 
             mVisionObjectsStorage.LogicalStorage = mLogicalStorage;
 
 #if DEBUG
-            LogInstance.Log("BaseNPCContext InitLogicalSubSystem NEXT");
+            Log("NEXT");
 #endif
 
-            mSelfLogicalObject = new SelfLogicalObject(mEntityDictionary, mLogicalStorage, mSystemPropertiesDictionary, mNPCHostContext);
+            mSelfLogicalObject = new SelfLogicalObject(mEntityLogger, mEntityDictionary, mLogicalStorage, mSystemPropertiesDictionary, mNPCHostContext);
 
 #if DEBUG
-            LogInstance.Log("BaseNPCContext InitLogicalSubSystem NEXT NEXT");
+            Log("NEXT NEXT");
 #endif
 
             lock (mIsReadyLockObj)
@@ -106,6 +126,7 @@ namespace MyNPCLib
         }
 
         #region private members
+        private IEntityLogger mEntityLogger;
         private INPCHostContext mNPCHostContext;
         private readonly IdFactory mIdFactory;
         private readonly IEntityDictionary mEntityDictionary;
@@ -167,7 +188,7 @@ namespace MyNPCLib
         public bool AddTypeOfProcess(Type type)
         {
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext AddTypeOfProcess type = {type?.FullName}");
+            //Log($"type = {type?.FullName}");
 #endif
 
             lock (mStateLockObj)
@@ -189,7 +210,7 @@ namespace MyNPCLib
         public void Bootstrap(Type type)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext Bootstrap type = {type?.FullName}");
+            Log($"type = {type?.FullName}");
 #endif
 
             lock(mIsReadyLockObj)
@@ -216,7 +237,7 @@ namespace MyNPCLib
         private void TryDelayedBootstrap()
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext TryDelayedBootstrap mNeedDelayedBootstrap = {mNeedDelayedBootstrap}");
+            Log($"mNeedDelayedBootstrap = {mNeedDelayedBootstrap}");
 #endif
 
             lock (mNeedDelayedBootstrapLockObj)
@@ -233,7 +254,7 @@ namespace MyNPCLib
         private void NBootstrap(Type type)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext NBootstrap type = {type?.FullName}");
+            Log($"type = {type?.FullName}");
 #endif
 
             lock (mStateLockObj)
@@ -264,7 +285,7 @@ namespace MyNPCLib
             var npcProcessInfo = mStorageOfNPCProcesses.StorageOfNPCProcessInfo.GetNPCProcessInfo(type);
 
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext NBootstrap type = {type?.FullName}");
+            //Log($"type = {type?.FullName}");
 #endif
 
             if (npcProcessInfo == null)
@@ -277,7 +298,7 @@ namespace MyNPCLib
             command.Priority = NPCProcessPriorities.Highest;
 
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext NBootstrap command = {command}");
+            //Log($"command = {command}");
 #endif
 
             Send(command);
@@ -290,7 +311,7 @@ namespace MyNPCLib
         public INPCProcess Send(INPCCommand command)
         {
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext Send command = {command}");
+            //Log($"command = {command}");
 #endif
 
             lock (mStateLockObj)
@@ -309,7 +330,7 @@ namespace MyNPCLib
             var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, mEntityDictionary);
 
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext Send internalCommand = {internalCommand}");
+            //Log($"internalCommand = {internalCommand}");
 #endif
 
             var npcProcess = mStorageOfNPCProcesses.GetProcess(internalCommand);
@@ -325,7 +346,7 @@ namespace MyNPCLib
         public void RegProcess(INPCProcess process, ulong parentProcessId)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext RegProcess process.Id = {process.Id} parentProcessId = {parentProcessId}");
+            Log($"process.Id = {process.Id} parentProcessId = {parentProcessId}");
 #endif
             lock (mStateLockObj)
             {
@@ -383,7 +404,7 @@ namespace MyNPCLib
         public void UnRegProcess(INPCProcess process)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext UnRegProcess process.Id = {process.Id}");
+            Log($"process.Id = {process.Id}");
 #endif
 
             lock (mStateLockObj)
@@ -447,7 +468,7 @@ namespace MyNPCLib
         public INPCProcess GetParentProcess(ulong childProcessId)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext GetParentProcess childProcessId = {childProcessId}");
+            Log($"childProcessId = {childProcessId}");
 #endif
 
             lock (mStateLockObj)
@@ -464,26 +485,26 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext GetParentProcess childProcessId = {childProcessId} NEXT");
+            Log($"childProcessId = {childProcessId} NEXT");
 #endif
 
             lock (mProcessesDictLockObj)
             {
 #if DEBUG
-                LogInstance.Log($"BaseNPCContext GetParentProcess childProcessId = {childProcessId} NEXT NEXT");
+                Log($"childProcessId = {childProcessId} NEXT NEXT");
 #endif
 
                 if (mChildParentDict.ContainsKey(childProcessId))
                 {
 #if DEBUG
-                    LogInstance.Log("BaseNPCContext GetParentProcess mChildParentDict.ContainsKey(childProcessId)");
+                    Log("mChildParentDict.ContainsKey(childProcessId)");
 #endif
 
                     var parentId = mChildParentDict[childProcessId];
 
 #if DEBUG
-                    LogInstance.Log($"BaseNPCContext GetParentProcess parentId = {parentId}");
-                    LogInstance.Log($"BaseNPCContext GetParentProcess mProcessesDict.ContainsKey(parentId) = {mProcessesDict.ContainsKey(parentId)}");
+                    Log($"parentId = {parentId}");
+                    Log($"mProcessesDict.ContainsKey(parentId) = {mProcessesDict.ContainsKey(parentId)}");
 #endif
                     if(mProcessesDict.ContainsKey(parentId))
                     {
@@ -498,13 +519,13 @@ namespace MyNPCLib
         public NPCResourcesResolutionKind ApproveNPCResourceProcessExecute(BaseNPCResourcesResolution existingsNPCResourcesResulution)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext ApproveNPCResourceProcessExecute existingsNPCResourcesResulution = {existingsNPCResourcesResulution}");
+            Log($"existingsNPCResourcesResulution = {existingsNPCResourcesResulution}");
 #endif
 
             var kind = existingsNPCResourcesResulution.Kind;
 
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext ApproveNPCResourceProcessExecute kind = {kind}");
+            Log($"kind = {kind}");
 #endif
 
             switch (kind)
@@ -514,7 +535,7 @@ namespace MyNPCLib
 
                 case NPCResourceKind.Hand:
 #if DEBUG
-                    LogInstance.Log("BaseNPCContext ApproveNPCResourceProcessExecute case NPCResourceKind.Hand");
+                    Log("case NPCResourceKind.Hand");
 #endif
 
                     return ApproveNPCHandResourceProcessExecute(existingsNPCResourcesResulution.ToHandResourcesResulution());
@@ -571,18 +592,18 @@ namespace MyNPCLib
             var targetPriority = targetProcessInfo.GlobalPriority;
 
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext ApproveNPCBodyResourceProcessExecute targetPriority = {targetPriority}");
+            //Log($"targetPriority = {targetPriority}");
 #endif
             foreach (var existingProcessesId in tmpExistingProcessesIdList)
             {
 #if DEBUG
-                //LogInstance.Log($"BaseNPCContext ApproveNPCBodyResourceProcessExecute existingProcessesId = {existingProcessesId}");
+                //Log($"existingProcessesId = {existingProcessesId}");
 #endif
 
                 var currentProcessInfo = mProcessesDict[existingProcessesId];
 
 #if DEBUG
-                //LogInstance.Log($"BaseNPCContext ApproveNPCBodyResourceProcessExecute currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
+                //Log($"currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
 #endif
 
                 if (currentProcessInfo.GlobalPriority > targetPriority)
@@ -597,46 +618,46 @@ namespace MyNPCLib
         private NPCResourcesResolutionKind ApproveNPCHandResourceProcessExecute(NPCHandResourcesResolution existingsNPCResourcesResulution)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute existingsNPCResourcesResulution = {existingsNPCResourcesResulution}");
+            Log($"existingsNPCResourcesResulution = {existingsNPCResourcesResulution}");
 #endif
 
             var targetProcessId = existingsNPCResourcesResulution.TargetProcessId;
 
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute targetProcessId = {targetProcessId}");
-            LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute mProcessesDict.Count = {mProcessesDict.Count}");
-            LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute mProcessesDict.ContainsKey(targetProcessId) = {mProcessesDict.ContainsKey(targetProcessId)}");
+            Log($"targetProcessId = {targetProcessId}");
+            Log($"mProcessesDict.Count = {mProcessesDict.Count}");
+            Log($"mProcessesDict.ContainsKey(targetProcessId) = {mProcessesDict.ContainsKey(targetProcessId)}");
 #endif
-
+ 
             var targetProcessInfo = mProcessesDict[targetProcessId];
 
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute targetProcessInfo == null = {targetProcessInfo == null}");
+            Log($"targetProcessInfo == null = {targetProcessInfo == null}");
 #endif
 
             var targetPriority = targetProcessInfo.GlobalPriority;
 
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute targetPriority = {targetPriority}");
+            Log($"targetPriority = {targetPriority}");
 #endif
 
             foreach (var existingProcessesId in existingsNPCResourcesResulution.CurrentProcessesId)
             {
 #if DEBUG
-                LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute existingProcessesId = {existingProcessesId}");
+                Log($"existingProcessesId = {existingProcessesId}");
 #endif
                 if(mProcessesDict.ContainsKey(existingProcessesId))
                 {
                     var currentProcessInfo = mProcessesDict[existingProcessesId];
 
 #if DEBUG
-                    LogInstance.Log($"BaseNPCContext ApproveNPCHandResourceProcessExecute currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
+                    Log($"currentProcessInfo.GlobalPriority = {currentProcessInfo.GlobalPriority}");
 #endif
 
                     if (currentProcessInfo.GlobalPriority > targetPriority)
                     {
 #if DEBUG
-                        LogInstance.Log("BaseNPCContext ApproveNPCHandResourceProcessExecute currentProcessInfo.GlobalPriority > targetPriority");
+                        Log("currentProcessInfo.GlobalPriority > targetPriority");
 #endif
 
                         return NPCResourcesResolutionKind.Forbiden;
@@ -645,7 +666,7 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            LogInstance.Log("BaseNPCContext ApproveNPCHandResourceProcessExecute return NPCResourcesResolutionKind.Allow");
+            Log("return NPCResourcesResolutionKind.Allow");
 #endif
 
             return NPCResourcesResolutionKind.Allow;
@@ -676,7 +697,7 @@ namespace MyNPCLib
         public void RegCancellationToken(int taskId, CancellationToken token)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext RegCancellationToken taskId = {taskId}");
+            Log($"taskId = {taskId}");
 #endif
             lock (mCancelationTokenDictLockObj)
             {
@@ -692,7 +713,7 @@ namespace MyNPCLib
         public CancellationToken? GetCancellationToken(int taskId)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext GetCancellationToken taskId = {taskId}");
+            Log($"taskId = {taskId}");
 #endif
             lock (mCancelationTokenDictLockObj)
             {
@@ -708,7 +729,7 @@ namespace MyNPCLib
         public void UnRegCancellationToken(int taskId)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext UnRegCancellationToken taskId = {taskId}");
+            Log($"taskId = {taskId}");
 #endif
             lock (mCancelationTokenDictLockObj)
             {
@@ -744,9 +765,9 @@ namespace MyNPCLib
         public BaseAbstractLogicalObject GetLogicalObject(string query)
         {
 #if DEBUG
-            LogInstance.Log($"BaseNPCContext GetLogicalObject query = {query}");
+            Log($"GetLogicalObject query = {query}");
 #endif
-            return new LogicalObject(query, mEntityDictionary, mLogicalStorage, mQueriesCache, mSystemPropertiesDictionary, mVisionObjectsStorage);
+            return new LogicalObject(mEntityLogger, query, mEntityDictionary, mLogicalStorage, mQueriesCache, mSystemPropertiesDictionary, mVisionObjectsStorage);
         }
 
         public IList<VisionObject> VisibleObjects
@@ -760,7 +781,7 @@ namespace MyNPCLib
         public void Dispose()
         {
 #if DEBUG
-            //LogInstance.Log("BaseNPCContext Dispose");
+            //Log("Begin");
 #endif
 
             lock (mStateLockObj)

@@ -7,14 +7,16 @@ namespace MyNPCLib.Logical
 {
     public class VisionObjectsStorage
     {
-        public VisionObjectsStorage(IEntityDictionary entityDictionary, INPCHostContext npcHostContext, SystemPropertiesDictionary systemPropertiesDictionary, StorageOfSpecialEntities storageOfSpecialEntities)
+        public VisionObjectsStorage(IEntityLogger entityLogger, IEntityDictionary entityDictionary, INPCHostContext npcHostContext, SystemPropertiesDictionary systemPropertiesDictionary, StorageOfSpecialEntities storageOfSpecialEntities)
         {
+            mEntityLogger = entityLogger;
             mNPCHostContext = npcHostContext;
             mEntityDictionary = entityDictionary;
             mSystemPropertiesDictionary = systemPropertiesDictionary;
             mStorageOfSpecialEntities = storageOfSpecialEntities;
         }
 
+        private IEntityLogger mEntityLogger;
         private readonly INPCHostContext mNPCHostContext;
         private readonly IEntityDictionary mEntityDictionary;
         private ILogicalStorage mLogicalStorage;
@@ -23,6 +25,24 @@ namespace MyNPCLib.Logical
         private Dictionary<ulong, VisionObject> mVisibleObjectsDict = new Dictionary<ulong, VisionObject>();
         private Dictionary<ulong, VisionObjectImpl> mVisibleObjectsImplDict = new Dictionary<ulong, VisionObjectImpl>();
         private StorageOfSpecialEntities mStorageOfSpecialEntities;
+
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
 
         public ILogicalStorage LogicalStorage
         {
@@ -39,7 +59,7 @@ namespace MyNPCLib.Logical
                 var hostVisibleObjectsList = mNPCHostContext.VisibleObjects;
 
 #if DEBUG
-                //LogInstance.Log($"VisionObjectsStorage VisibleObjects hostVisibleObjectsList.Count = {hostVisibleObjectsList?.Count}");
+                //Log($"hostVisibleObjectsList.Count = {hostVisibleObjectsList?.Count}");
 #endif
                 var result = new List<VisionObject>();
 
@@ -62,7 +82,7 @@ namespace MyNPCLib.Logical
                     foreach (var hostVisibleObject in hostVisibleObjectsList)
                     {
 #if DEBUG
-                        //LogInstance.Log($"VisionObjectsStorage VisibleObjects hostVisibleObject = {hostVisibleObject}");
+                        //Log($"hostVisibleObject = {hostVisibleObject}");
 #endif
 
                         var entityId = hostVisibleObject.EntityId;
@@ -82,7 +102,7 @@ namespace MyNPCLib.Logical
                         else
                         {
                             var impl = new VisionObjectImpl(entityId, hostVisibleObject.VisionItems);
-                            item = new VisionObject(entityId, impl, mEntityDictionary, mLogicalStorage, mSystemPropertiesDictionary);
+                            item = new VisionObject(mEntityLogger, entityId, impl, mEntityDictionary, mLogicalStorage, mSystemPropertiesDictionary);
                             mVisibleObjectsDict[entityId] = item;
                             mVisibleObjectsImplDict[entityId] = impl;
                         }

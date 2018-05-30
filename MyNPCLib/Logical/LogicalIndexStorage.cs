@@ -8,21 +8,42 @@ namespace MyNPCLib.Logical
 {
     public class LogicalIndexStorage: ILogicalStorage
     {
-        public LogicalIndexStorage()
+        public LogicalIndexStorage(IEntityLogger entityLogger)
         {
+            mEntityLogger = entityLogger;
         }
 
-        public LogicalIndexStorage(StorageOfSpecialEntities storageOfSpecialEntities)
+        public LogicalIndexStorage(IEntityLogger entityLogger, StorageOfSpecialEntities storageOfSpecialEntities)
         {
+            mEntityLogger = entityLogger;
             mStorageOfSpecialEntities = storageOfSpecialEntities;
         }
 
+        private IEntityLogger mEntityLogger;
         private readonly object mLockObj = new object();
         private Dictionary<ulong, LogicalIndexingFrame> mDataDict { get; set; } = new Dictionary<ulong, LogicalIndexingFrame>();
         private Dictionary<ulong, IReadOnlyLogicalObject> mObjectsDict { get; set; } = new Dictionary<ulong, IReadOnlyLogicalObject>();
         private StorageOfSpecialEntities mStorageOfSpecialEntities;
 
         public event Action OnChanged;
+
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
 
         public void RegisterObject(IReadOnlyLogicalObject value)
         {
@@ -62,7 +83,7 @@ namespace MyNPCLib.Logical
         public void PutPropertyValueAsIndex(ulong entityId, ulong propertyId, object value)
         {
 #if DEBUG
-            LogInstance.Log($"LogicalIndexStorage PutPropertyValue entityId = {entityId} propertyId = {propertyId} value = {value}");
+            Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
 
             lock(mLockObj)
@@ -79,7 +100,7 @@ namespace MyNPCLib.Logical
                     catch(Exception e)
                     {
 #if DEBUG
-                        LogInstance.Log($"LogicalIndexStorage PutPropertyValue e = {e}");
+                        Error($"e = {e}");
 #endif
                     }              
                 });           
@@ -89,7 +110,7 @@ namespace MyNPCLib.Logical
         public void PutAccessPolicyToFactAsIndex(ulong entityId, ulong propertyId, AccessPolicyToFact value)
         {
 #if DEBUG
-            LogInstance.Log($"PutAccessPolicyToFactAsIndex PutPropertyValue entityId = {entityId} propertyId = {propertyId} value = {value}");
+            Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
             lock(mLockObj)
             {
@@ -128,7 +149,7 @@ namespace MyNPCLib.Logical
         public IList<ulong> GetEntitiesIdsList(ulong propertyId, object value)
         {
 #if DEBUG
-            LogInstance.Log($"LogicalIndexStorage GetEntitiesIdsList propertyId = {propertyId} value = {value}");
+            Log($"propertyId = {propertyId} value = {value}");
 #endif
 
             lock (mLockObj)
@@ -216,7 +237,7 @@ namespace MyNPCLib.Logical
         public object GetPropertyValue(ulong entityId, ulong propertyId)
         {
 #if DEBUG
-            LogInstance.Log($"LogicalIndexStorage GetPropertyValue entityId = {entityId} propertyId = {propertyId}");
+            Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
 
             lock (mLockObj)

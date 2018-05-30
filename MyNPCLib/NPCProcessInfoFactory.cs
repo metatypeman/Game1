@@ -8,16 +8,36 @@ namespace MyNPCLib
 {
     public class NPCProcessInfoFactory
     {
-        public NPCProcessInfoFactory(IEntityDictionary entityDictionary)
+        public NPCProcessInfoFactory(IEntityLogger entityLogger, IEntityDictionary entityDictionary)
         {
+            mEntityLogger = entityLogger;
             mEntityDictionary = entityDictionary;
             mTypeInfoOfBaseNPCProcess = typeof(BaseNPCProcess).GetTypeInfo();
         }
 
         #region private members
+        private IEntityLogger mEntityLogger;
         private IEntityDictionary mEntityDictionary;
         private TypeInfo mTypeInfoOfBaseNPCProcess;
         #endregion
+
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
 
         public NPCProcessInfo CreateInfo(Type type)
         {
@@ -83,7 +103,7 @@ namespace MyNPCLib
                 var parametersList = method.GetParameters();
 
 #if DEBUG
-                //LogInstance.Log($"CreateInfoOfConcreteProcess method.Name = {method.Name}");
+                //Log($"method.Name = {method.Name}");
 #endif
                 foreach (var parameter in parametersList)
                 {
@@ -92,7 +112,7 @@ namespace MyNPCLib
                     var defaultValue = parameter.DefaultValue;
                     var parameterKey = mEntityDictionary.GetKey(parameterName);
 #if DEBUG
-                    //LogInstance.Log($"CreateInfoOfConcreteProcess parameter.Name = {parameter.Name} parameter.ParameterType.FullName = {parameter.ParameterType.FullName} parameterKey = {parameterKey} defaultValue = {defaultValue} defaultValue.GetType().FullName = {defaultValue.GetType().FullName}");
+                    //Log($"parameter.Name = {parameter.Name} parameter.ParameterType.FullName = {parameter.ParameterType.FullName} parameterKey = {parameterKey} defaultValue = {defaultValue} defaultValue.GetType().FullName = {defaultValue.GetType().FullName}");
 #endif
 
                     entryPointInfo.ParametersMap[parameterName] = parameterType;

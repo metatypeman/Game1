@@ -6,8 +6,8 @@ namespace MyNPCLib.Logical
 {
     public class SelfLogicalObject : BaseAbstractLogicalObject
     {
-        public SelfLogicalObject(IEntityDictionary entityDictionary, ILogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary, INPCHostContext npcHostContext)
-             : base(systemPropertiesDictionary)
+        public SelfLogicalObject(IEntityLogger entityLogger, IEntityDictionary entityDictionary, ILogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary, INPCHostContext npcHostContext)
+             : base(entityLogger, systemPropertiesDictionary)
         {
             mSelfEntityId = npcHostContext.SelfEntityId;
             mEntityDictionary = entityDictionary;
@@ -28,7 +28,7 @@ namespace MyNPCLib.Logical
             get
             {
 #if DEBUG
-                LogInstance.Log($"SelfLogicalObject this get propertyKey = {propertyKey}");
+                Log($"propertyKey = {propertyKey}");
 #endif
 
                 return NGetProperty(propertyKey);
@@ -37,7 +37,7 @@ namespace MyNPCLib.Logical
             set
             {
 #if DEBUG
-                LogInstance.Log($"SelfLogicalObject this set propertyKey = {propertyKey} value = {value}");
+                Log($"propertyKey = {propertyKey} value = {value}");
 #endif
 
                 NSetProperty(propertyKey, value);

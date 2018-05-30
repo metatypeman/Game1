@@ -6,16 +6,18 @@ namespace MyNPCLib
 {
     public class StorageOfNPCProcesses : IDisposable
     {
-        public StorageOfNPCProcesses(IIdFactory idFactory, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCContext context)
+        public StorageOfNPCProcesses(IEntityLogger entityLogger, IIdFactory idFactory, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCContext context)
         {
+            mEntityLogger = entityLogger;
             mContext = context;
             mIdFactory = idFactory;
             mEntityDictionary = entityDictionary;
-            mStorageOfNPCProcessInfo = new StorageOfNPCProcessInfo(entityDictionary, npcProcessInfoCache);
-            mActivatorOfNPCProcessEntryPointInfo = new ActivatorOfNPCProcessEntryPointInfo();
+            mStorageOfNPCProcessInfo = new StorageOfNPCProcessInfo(entityLogger,entityDictionary, npcProcessInfoCache);
+            mActivatorOfNPCProcessEntryPointInfo = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
         }
 
         #region private members
+        private IEntityLogger mEntityLogger;
         private INPCContext mContext;
         private IIdFactory mIdFactory;
         private IEntityDictionary mEntityDictionary;
@@ -29,10 +31,28 @@ namespace MyNPCLib
         public StorageOfNPCProcessInfo StorageOfNPCProcessInfo => mStorageOfNPCProcessInfo;
         public ActivatorOfNPCProcessEntryPointInfo ActivatorOfNPCProcessEntryPointInfo => mActivatorOfNPCProcessEntryPointInfo;
 
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
+
         public bool AddTypeOfProcess(Type type)
         {
 #if DEBUG
-            //LogInstance.Log($"StorageOfNPCProcesses AddTypeOfProcess type = {type?.FullName}");
+            //Log($"type = {type?.FullName}");
 #endif
 
             lock (mDisposeLockObj)
@@ -49,7 +69,7 @@ namespace MyNPCLib
         public BaseNPCProcessInvocablePackage GetProcess(NPCInternalCommand command)
         {
 #if DEBUG
-            LogInstance.Log($"StorageOfNPCProcesses GetProcess command = {command}");
+            Log($"command = {command}");
 #endif
 
             lock (mDisposeLockObj)
@@ -68,7 +88,7 @@ namespace MyNPCLib
             var processInfo = mStorageOfNPCProcessInfo.GetNPCProcessInfo(command.Key);
 
 #if DEBUG
-            //LogInstance.Log($"StorageOfNPCProcesses GetProcess processInfo = {processInfo}");
+            //Log($"processInfo = {processInfo}");
 #endif
 
             if(processInfo == null)
@@ -127,11 +147,13 @@ namespace MyNPCLib
         private BaseNPCProcess CreateInstanceByProcessInfo(NPCProcessInfo npcProcessInfo, float priority, NPCProcessStartupMode startupMode)
         {
             var instance = (BaseNPCProcess)Activator.CreateInstance(npcProcessInfo.Type);
+
             instance.Id = mIdFactory.GetNewId();
             instance.Context = mContext;
             instance.Info = npcProcessInfo;
             instance.LocalPriority = priority;
             instance.StartupMode = startupMode;
+            instance.EntityLogger = mEntityLogger;
 
             if(startupMode == NPCProcessStartupMode.Singleton)
             {

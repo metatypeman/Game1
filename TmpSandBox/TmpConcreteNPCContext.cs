@@ -7,8 +7,8 @@ namespace TmpSandBox
 {
     public class TmpConcreteNPCContext: BaseNPCContext
     {
-        public TmpConcreteNPCContext(IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null)
-            : base(entityDictionary, npcProcessInfoCache)
+        public TmpConcreteNPCContext(IEntityLogger entityLogger, IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null)
+            : base(entityLogger, entityDictionary, npcProcessInfoCache)
         {
             AddTypeOfProcess<TmpConcreteNPCProcess>();
             AddTypeOfProcess<TestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess>();

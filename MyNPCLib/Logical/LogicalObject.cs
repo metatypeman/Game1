@@ -9,11 +9,11 @@ namespace MyNPCLib.Logical
     {
         public override bool IsConcrete => false;
 
-        public LogicalObject(string query, IEntityDictionary entityDictionary, ILogicalStorage source, QueriesCache queriesCache, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
-            : base (systemPropertiesDictionary)
+        public LogicalObject(IEntityLogger entityLogger, string query, IEntityDictionary entityDictionary, ILogicalStorage source, QueriesCache queriesCache, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
+            : base (entityLogger, systemPropertiesDictionary)
         {
 #if DEBUG
-            LogInstance.Log($"Begin LogicalObject query = {query}");
+            Log($"Begin query = {query}");
 #endif
             mEntityDictionary = entityDictionary;
             mVisionObjectsStorage = visionObjectsStorage;
@@ -23,7 +23,7 @@ namespace MyNPCLib.Logical
             mPlan = queriesCache.CreatePlan(query);
 
 #if DEBUG
-            LogInstance.Log($"End LogicalObject query = {query}");
+            Log($"End query = {query}");
 #endif
         }
 
@@ -32,7 +32,7 @@ namespace MyNPCLib.Logical
         private void MSource_OnChanged()
         {
 #if DEBUG
-            LogInstance.Log("LogicalObject MSource_OnChanged");
+            Log("Begin");
 #endif
 
             lock (mCurrentEnitiesIdListLockObj)

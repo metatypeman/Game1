@@ -8,11 +8,70 @@ namespace MyNPCLib
 {
     public class ActivatorOfNPCProcessEntryPointInfo
     {
+        public ActivatorOfNPCProcessEntryPointInfo(IEntityLogger entityLogger)
+        {
+            mEntityLogger = entityLogger;
+        }
+
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            lock (mEntityLoggerLockObj)
+            {
+                mEntityLogger?.Log(message);
+            }          
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            lock (mEntityLoggerLockObj)
+            {
+                mEntityLogger?.Error(message);
+            }        
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            lock (mEntityLoggerLockObj)
+            {
+                mEntityLogger?.Warning(message);
+            }            
+        }
+
+        private readonly object mEntityLoggerLockObj = new object();
+        private IEntityLogger mEntityLogger;
+
+        public IEntityLogger EntityLogger
+        {
+            get
+            {
+                lock (mEntityLoggerLockObj)
+                {
+                    return mEntityLogger;
+                }
+            }
+
+            set
+            {
+                lock (mEntityLoggerLockObj)
+                {
+                    if (mEntityLogger == value)
+                    {
+                        return;
+                    }
+
+                    mEntityLogger = value;
+                }
+            }
+        }
+
         public float GetRankByTypesOfParameters(Type typeOfArgument, Type typeOfParameter)
         {
 #if DEBUG
-            //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints typeOfArgument = {typeOfArgument?.FullName}");
-            //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints typeOfParameter = {typeOfParameter?.FullName}");
+            //Log($"typeOfArgument = {typeOfArgument?.FullName}");
+            //Log($"typeOfParameter = {typeOfParameter?.FullName}");
 #endif
 
             if(typeOfArgument == null)
@@ -56,8 +115,8 @@ namespace MyNPCLib
         public List<RankedNPCProcessEntryPointInfo> GetRankedEntryPoints(NPCProcessInfo npcProcessInfo, Dictionary<ulong, object> paramsOfCommand)
         {
 #if DEBUG
-            //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints npcProcessInfo = {npcProcessInfo}");
-            //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints paramsOfCommand = {paramsOfCommand?.Count}");
+            //Log($"npcProcessInfo = {npcProcessInfo}");
+            //Log($"paramsOfCommand = {paramsOfCommand?.Count}");
 #endif
 
             if (npcProcessInfo == null)
@@ -87,8 +146,8 @@ namespace MyNPCLib
             foreach(var entryPoint in entryPointsList)
             {
 #if DEBUG
-                //LogInstance.Log("ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints ------------------------------------------------------------------------");
-                //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints entryPoint = {entryPoint}");
+                //Log("------------------------------------------------------------------------");
+                //Log($"entryPoint = {entryPoint}");
 #endif
 
                 var indexedParametersMap = entryPoint.IndexedParametersMap;
@@ -103,7 +162,7 @@ namespace MyNPCLib
                 foreach(var argumentKVPItem in indexedParametersMap)
                 {
 #if DEBUG
-                    //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints argumentKVPItem.Key = {argumentKVPItem.Key} argumentKVPItem.Value = {argumentKVPItem.Value}");
+                    //Log($"argumentKVPItem.Key = {argumentKVPItem.Key} argumentKVPItem.Value = {argumentKVPItem.Value}");
 #endif
 
                     var key = argumentKVPItem.Key;
@@ -139,13 +198,13 @@ namespace MyNPCLib
                     }
                     
 #if DEBUG
-                    //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints paramType = {paramType?.FullName}");
+                    //Log($"paramType = {paramType?.FullName}");
 #endif
 
                     var currentRank = GetRankByTypesOfParameters(argumentType, paramType);
 
 #if DEBUG
-                    //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints currentRank = {currentRank}");
+                    //Log($"currentRank = {currentRank}");
 #endif
 
                     if(currentRank == 0f)
@@ -173,7 +232,7 @@ namespace MyNPCLib
                     continue;
                 }
 #if DEBUG
-                //LogInstance.Log($"ActivatorOfNPCProcessEntryPointInfo GetRankedEntryPoints NEXT rank = {rank} indexedParametersMap.Count = {indexedParametersMap.Count} foundParameters = {foundParameters}");
+                //Log($"NEXT rank = {rank} indexedParametersMap.Count = {indexedParametersMap.Count} foundParameters = {foundParameters}");
 #endif
 
                 var item = new RankedNPCProcessEntryPointInfo();

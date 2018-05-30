@@ -7,11 +7,13 @@ namespace MyNPCLib.Logical
 {
     public abstract class BaseAbstractLogicalObject : ILogicalObject, IObjectToString
     {
-        protected BaseAbstractLogicalObject(SystemPropertiesDictionary systemPropertiesDictionary)
+        protected BaseAbstractLogicalObject(IEntityLogger entityLogger, SystemPropertiesDictionary systemPropertiesDictionary)
         {
+            mEntityLogger = entityLogger;
             mSystemPropertiesDictionary = systemPropertiesDictionary;
         }
 
+        private IEntityLogger mEntityLogger;
         private readonly SystemPropertiesDictionary mSystemPropertiesDictionary;
 
         public abstract IList<ulong> CurrentEntitiesIdList { get; }
@@ -20,10 +22,28 @@ namespace MyNPCLib.Logical
         public abstract object this[ulong propertyKey] { get; set; }
         public abstract object this[string propertyName] { get; set; }
 
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
+
         protected KindOfSystemProperties GetKindOfSystemProperty(ulong propertyKey)
         {
 #if DEBUG
-            LogInstance.Log($"BaseAbstractLogicalObject GetKindOfSystemProperty propertyKey = {propertyKey}");
+            Log($"propertyKey = {propertyKey}");
 #endif
 
             return mSystemPropertiesDictionary.GetKindOfSystemProperty(propertyKey);
@@ -40,7 +60,7 @@ namespace MyNPCLib.Logical
             catch (Exception e)
             {
 #if DEBUG
-                LogInstance.Log($"BaseAbstractLogicalObject GetValue<T> propertyKey = {propertyKey} e = {e}");
+                Error($"propertyKey = {propertyKey} e = {e}");
 #endif
             }
 
@@ -58,7 +78,7 @@ namespace MyNPCLib.Logical
             catch (Exception e)
             {
 #if DEBUG
-                LogInstance.Log($"BaseAbstractLogicalObject GetValue<T> propertyName = {propertyName} e = {e}");
+                Error($"propertyName = {propertyName} e = {e}");
 #endif
             }
 
@@ -87,7 +107,7 @@ namespace MyNPCLib.Logical
         private static bool NEqual(BaseAbstractLogicalObject item1, BaseAbstractLogicalObject item2)
         {
 #if DEBUG
-            //LogInstance.Log("BaseAbstractLogicalObject NEqual");
+            //LogInstance.Log("Begin");
 #endif
             if(ReferenceEquals(item1, item2))
             {
@@ -108,7 +128,7 @@ namespace MyNPCLib.Logical
             var item2IsConcrete = item2.IsConcrete;
 
 #if DEBUG
-            //LogInstance.Log($"BaseAbstractLogicalObject NEqual NEXT item1IsConcrete = {item1IsConcrete} item2IsConcrete = {item2IsConcrete}");
+            //LogInstance.Log($"NEXT item1IsConcrete = {item1IsConcrete} item2IsConcrete = {item2IsConcrete}");
 #endif
 
             if(item1IsConcrete)
@@ -131,33 +151,33 @@ namespace MyNPCLib.Logical
             var entitiesIdListOfItem1 = item1.CurrentEntitiesIdList;
 
 #if DEBUG
-            //LogInstance.Log($"BaseAbstractLogicalObject NEqual entitiesIdListOfItem1.Count = {entitiesIdListOfItem1.Count}");
+            //LogInstance.Log($"entitiesIdListOfItem1.Count = {entitiesIdListOfItem1.Count}");
             //foreach (var entityId in entitiesIdListOfItem1)
             //{
-            //    LogInstance.Log($"BaseAbstractLogicalObject NEqual entityId = {entityId}");
+            //    LogInstance.Log($"entityId = {entityId}");
             //}
 #endif
 
             var entitiesIdListOfItem2 = item2.CurrentEntitiesIdList;
 
 #if DEBUG
-            //LogInstance.Log($"BaseAbstractLogicalObject NEqual entitiesIdListOfItem2.Count = {entitiesIdListOfItem2.Count}");
+            //LogInstance.Log($"entitiesIdListOfItem2.Count = {entitiesIdListOfItem2.Count}");
             //foreach (var entityId in entitiesIdListOfItem2)
             //{
-            //    LogInstance.Log($"BaseAbstractLogicalObject NEqual entityId = {entityId}");
+            //    LogInstance.Log($"entityId = {entityId}");
             //}
 #endif
 
             if(entitiesIdListOfItem1.Count == entitiesIdListOfItem2.Count)
             {
 #if DEBUG
-                //LogInstance.Log("BaseAbstractLogicalObject NEqual entitiesIdListOfItem1.Count == entitiesIdListOfItem2.Count");
+                //LogInstance.Log("entitiesIdListOfItem1.Count == entitiesIdListOfItem2.Count");
 #endif
 
                 var exceptList = entitiesIdListOfItem1.Except(entitiesIdListOfItem2);
 
 #if DEBUG
-                //LogInstance.Log($"BaseAbstractLogicalObject NEqual exceptList.Count() = {exceptList.Count()}");
+                //LogInstance.Log($"exceptList.Count() = {exceptList.Count()}");
 #endif
 
                 if(exceptList.Count() == 0)
@@ -169,7 +189,7 @@ namespace MyNPCLib.Logical
             }
 
 #if DEBUG
-            //LogInstance.Log("BaseAbstractLogicalObject NEqual NEXT NEXT");
+            //LogInstance.Log("NEXT NEXT");
 #endif
 
             IList<ulong> bigerList = null;
@@ -199,7 +219,7 @@ namespace MyNPCLib.Logical
         public static bool operator == (BaseAbstractLogicalObject item1, BaseAbstractLogicalObject item2)
         {
 #if DEBUG
-            //LogInstance.Log("BaseAbstractLogicalObject ==");
+            //LogInstance.Log("==");
 #endif
             return NEqual(item1, item2);
         }
@@ -207,7 +227,7 @@ namespace MyNPCLib.Logical
         public static bool operator !=(BaseAbstractLogicalObject item1, BaseAbstractLogicalObject item2)
         {
 #if DEBUG
-            //LogInstance.Log("BaseAbstractLogicalObject !=");
+            //LogInstance.Log("!=");
 #endif
             return !NEqual(item1, item2);
         }

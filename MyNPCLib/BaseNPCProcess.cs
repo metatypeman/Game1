@@ -15,10 +15,16 @@ namespace MyNPCLib
 
         #region private members
         private ulong mId;
-        private ActivatorOfNPCProcessEntryPointInfo mActivator = new ActivatorOfNPCProcessEntryPointInfo();
+        private ActivatorOfNPCProcessEntryPointInfo mActivator = new ActivatorOfNPCProcessEntryPointInfo(null);
         private List<BaseCommonNPCProcess> mListOfProxes = new List<BaseCommonNPCProcess>();
         private object mListOfProxesLockObj = new object();
         #endregion
+
+        protected override void OnSetEntityLogger()
+        {
+            base.OnSetEntityLogger();
+            mActivator.EntityLogger = EntityLogger;
+        }
 
         public override StateOfNPCProcess State
         {
@@ -85,7 +91,7 @@ namespace MyNPCLib
         }
 
         protected INPCProcess Execute(NPCCommand command)
-        {
+        {f
 #if DEBUG
             LogInstance.Log($"BaseNPCProcess Execute command = {command}");
 #endif
@@ -387,7 +393,7 @@ namespace MyNPCLib
             switch (StartupMode)
             {
                 case NPCProcessStartupMode.Singleton:
-                    proxy = new ProxyForNPCAbstractProcess(mId, Context);
+                    proxy = new ProxyForNPCAbstractProcess(EntityLogger, mId, Context);
                     proxy.StartupMode = StartupMode;
 #if DEBUG
 

@@ -8,6 +8,15 @@ namespace MyNPCLib
 {
     public abstract class BaseCommonNPCProcess : BaseCommonNPCProcessWithEvents
     {
+        protected BaseCommonNPCProcess()
+        {
+        }
+
+        protected BaseCommonNPCProcess(IEntityLogger entityLogger)
+            : base(entityLogger)
+        {
+        }
+
         private INPCContext mContext;
         public INPCContext Context
         {
@@ -114,14 +123,14 @@ namespace MyNPCLib
                 }
 
 #if DEBUG
-                LogInstance.Log("BaseCommonNPCProcess GlobalPriority");
+                Log("Begin");
 #endif
 
                 lock (mPriorityLockObj)
                 {
 
 #if DEBUG
-                    LogInstance.Log("BaseCommonNPCProcess GlobalPriority NEXT");
+                    Log("NEXT");
 #endif
 
                     var result = mLocalPriority;
@@ -129,7 +138,7 @@ namespace MyNPCLib
                     var parentProcess = mContext.GetParentProcess(Id);
 
 #if DEBUG
-                    LogInstance.Log($"BaseCommonNPCProcess GlobalPriority parentProcess == null = {parentProcess == null}");
+                    Log($"parentProcess == null = {parentProcess == null}");
 #endif
 
                     if (parentProcess != null)
@@ -145,7 +154,7 @@ namespace MyNPCLib
         protected void TryAsCancel()
         {
 #if DEBUG
-            LogInstance.Log("BaseCommonNPCProcess TryAsCancel");
+            Log("Begin");
 #endif
 
             var cancelationToken = GetCancellationToken();

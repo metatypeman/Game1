@@ -6,13 +6,15 @@ namespace MyNPCLib
 {
     public class StorageOfNPCProcessInfo : IDisposable
     {
-        public StorageOfNPCProcessInfo(IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache)
+        public StorageOfNPCProcessInfo(IEntityLogger entityLogger, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache)
         {
-            mFactory = new NPCProcessInfoFactory(entityDictionary);
+            mEntityLogger = entityLogger;
+            mFactory = new NPCProcessInfoFactory(entityLogger, entityDictionary);
             mNPCProcessInfoCache = npcProcessInfoCache;
         }
 
         #region private members
+        private IEntityLogger mEntityLogger;
         private object mLockObj = new object();
         private NPCProcessInfoCache mNPCProcessInfoCache;
         private NPCProcessInfoFactory mFactory;
@@ -22,10 +24,28 @@ namespace MyNPCLib
         private bool mIsDisposed;
         #endregion
 
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
+
         public bool AddTypeOfProcess(Type type)
         {
 #if DEBUG
-            //LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess type = {type?.FullName}");
+            //Log($"type = {type?.FullName}");
 #endif
 
             lock (mDisposeLockObj)
@@ -90,7 +110,7 @@ namespace MyNPCLib
         public NPCProcessInfo GetNPCProcessInfo(Type type)
         {
 #if DEBUG
-            //LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess type = {type?.FullName}");
+            //Log($"type = {type?.FullName}");
 #endif
 
             lock (mDisposeLockObj)
@@ -120,7 +140,7 @@ namespace MyNPCLib
         public NPCProcessInfo GetNPCProcessInfo(ulong key)
         {
 #if DEBUG
-            //LogInstance.Log($"StorageOfNPCProcessInfo AddTypeOfProcess key = {key}");
+            //Log($"key = {key}");
 #endif
 
             lock (mDisposeLockObj)

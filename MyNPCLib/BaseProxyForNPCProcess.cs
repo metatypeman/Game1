@@ -7,7 +7,8 @@ namespace MyNPCLib
 {
     public abstract class BaseProxyForNPCProcess : BaseCommonNPCProcess
     {
-        protected BaseProxyForNPCProcess(ulong id, INPCContext context)
+        protected BaseProxyForNPCProcess(IEntityLogger entityLogger, ulong id, INPCContext context)
+            : base(entityLogger)
         {
             mId = id;
             Context = context;

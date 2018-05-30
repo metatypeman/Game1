@@ -6,8 +6,8 @@ namespace MyNPCLib.Logical
 {
     public class VisionObject: OtherLogicalObject
     {
-        public VisionObject(ulong entityId, VisionObjectImpl visionObjectImpl, IEntityDictionary entityDictionary, ILogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary)
-            : base(systemPropertiesDictionary)
+        public VisionObject(IEntityLogger entityLogger, ulong entityId, VisionObjectImpl visionObjectImpl, IEntityDictionary entityDictionary, ILogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary)
+            : base(entityLogger, systemPropertiesDictionary)
         {
             mEntityId = entityId;
             CurrentVisionObjectImpl = visionObjectImpl;
@@ -27,7 +27,7 @@ namespace MyNPCLib.Logical
             get
             {
 #if DEBUG
-                LogInstance.Log($"VisionObject this get propertyKey = {propertyKey}");
+                Log($"propertyKey = {propertyKey}");
 #endif
 
                 return CommonGetProperty(propertyKey);
@@ -36,7 +36,7 @@ namespace MyNPCLib.Logical
             set
             {
 #if DEBUG
-                LogInstance.Log($"VisionObject this set propertyKey = {propertyKey} value = {value}");
+                Log($"propertyKey = {propertyKey} value = {value}");
 #endif
 
                 CommonSetProperty(propertyKey, value);
