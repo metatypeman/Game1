@@ -50,7 +50,7 @@ namespace MyNPCLib.Logical
                 var propertyKey = mEntityDictionary.GetKey(propertyName);
 
 #if DEBUG
-                LogInstance.Log($"VisionObject this get propertyName = {propertyName} propertyKey = {propertyKey}");
+                Log($"propertyName = {propertyName} propertyKey = {propertyKey}");
 #endif
 
                 return CommonGetProperty(propertyKey);
@@ -61,7 +61,7 @@ namespace MyNPCLib.Logical
                 var propertyKey = mEntityDictionary.GetKey(propertyName);
 
 #if DEBUG
-                LogInstance.Log($"VisionObject this set propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
+                Log($"propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
 #endif
 
                 CommonSetProperty(propertyKey, value);

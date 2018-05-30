@@ -6,11 +6,13 @@ namespace MyNPCLib.Logical
 {
     public class LogicalFrame: IReadOnlyLogicalObject, IObjectToString
     {
-        public LogicalFrame(ulong entityId)
+        public LogicalFrame(IEntityLogger entityLogger, ulong entityId)
         {
+            mEntityLogger = entityLogger;
             mEntityId = entityId;
         }
 
+        private IEntityLogger mEntityLogger;
         private ulong mEntityId;
 
         public ulong EntityId => mEntityId;
@@ -18,6 +20,24 @@ namespace MyNPCLib.Logical
         private readonly object mValuesDictLockObj = new object();
         private Dictionary<ulong, object> mValuesDict = new Dictionary<ulong, object>();
         private Dictionary<ulong, AccessPolicyToFact> mPropertiesAccessPolicyToFactDict = new Dictionary<ulong, AccessPolicyToFact>();
+
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
 
         public object this [ulong propertyKey]
         {

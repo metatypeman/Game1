@@ -53,7 +53,7 @@ namespace MyNPCLib.Logical
         private void FindPrimaryEntityId()
         {
 #if DEBUG
-            //LogInstance.Log("Begin LogicalObject FindPrimaryEntityId");
+            //Log("Begin");
 #endif
 
             lock (mPrimaryEntityIdLockObj)
@@ -64,7 +64,7 @@ namespace MyNPCLib.Logical
                     CurrentVisionObjectImpl = null;
 
 #if DEBUG
-                    //LogInstance.Log("LogicalObject FindPrimaryEntityId mCurrentEnitiesIdList.Count == 0");
+                    //Log("mCurrentEnitiesIdList.Count == 0");
 #endif
 
                     return;
@@ -77,7 +77,7 @@ namespace MyNPCLib.Logical
                     if(mPrimaryEntityId == newPrimaryEntityId)
                     {
 #if DEBUG
-                        //LogInstance.Log($"LogicalObject FindPrimaryEntityId mCurrentEnitiesIdList.Count == 1 mPrimaryEntityId == newPrimaryEntityId newPrimaryEntityId = {newPrimaryEntityId}");
+                        //Log($"mCurrentEnitiesIdList.Count == 1 mPrimaryEntityId == newPrimaryEntityId newPrimaryEntityId = {newPrimaryEntityId}");
 #endif
                         if(CurrentVisionObjectImpl == null)
                         {
@@ -91,7 +91,7 @@ namespace MyNPCLib.Logical
                     CurrentVisionObjectImpl = mVisionObjectsStorage.GetVisionObjectImpl(mPrimaryEntityId);
 
 #if DEBUG
-                    //LogInstance.Log($"LogicalObject FindPrimaryEntityId mCurrentEnitiesIdList.Count == 1 ff mPrimaryEntityId = {mPrimaryEntityId}");
+                    //Log($"mCurrentEnitiesIdList.Count == 1 ff mPrimaryEntityId = {mPrimaryEntityId}");
 #endif
 
                     return;
@@ -105,7 +105,7 @@ namespace MyNPCLib.Logical
                     CurrentVisionObjectImpl = null;
 
 #if DEBUG
-                    //LogInstance.Log($"LogicalObject FindPrimaryEntityId implsDict.Count == 0 mPrimaryEntityId = {mPrimaryEntityId}");
+                    //Log($"implsDict.Count == 0 mPrimaryEntityId = {mPrimaryEntityId}");
 #endif
 
                     return;
@@ -114,7 +114,7 @@ namespace MyNPCLib.Logical
                 if(implsDict.ContainsKey(mPrimaryEntityId))
                 {
 #if DEBUG
-                    //LogInstance.Log("LogicalObject FindPrimaryEntityId implsDict.ContainsKey(mPrimaryEntityId)");
+                    //Log("implsDict.ContainsKey(mPrimaryEntityId)");
 #endif
 
                     return;
@@ -126,7 +126,7 @@ namespace MyNPCLib.Logical
                 CurrentVisionObjectImpl = firstImplItem.Value;
 
 #if DEBUG
-                //LogInstance.Log($"End LogicalObject FindPrimaryEntityId mPrimaryEntityId = {mPrimaryEntityId}");
+                //Log($"End mPrimaryEntityId = {mPrimaryEntityId}");
 #endif
             }
         }
@@ -136,7 +136,7 @@ namespace MyNPCLib.Logical
             get
             {
 #if DEBUG
-                //LogInstance.Log("Begin LogicalObject CurrentEnitiesIdList");
+                //Log("Begin");
 #endif
 
                 lock (mCurrentEnitiesIdListLockObj)
@@ -153,7 +153,7 @@ namespace MyNPCLib.Logical
             get
             {
 #if DEBUG
-                //LogInstance.Log($"LogicalObject CurrentEntityId CurrentEntitiesIdList?.Count = {CurrentEntitiesIdList?.Count}");
+                //Log($"CurrentEntitiesIdList?.Count = {CurrentEntitiesIdList?.Count}");
 #endif
 
                 lock (mCurrentEnitiesIdListLockObj)
@@ -168,7 +168,7 @@ namespace MyNPCLib.Logical
         private void UpdateCurrentEnitiesIdList()
         {
 #if DEBUG
-            //LogInstance.Log("Begin LogicalObject UpdateCurrentEnitiesIdList");
+            //Log("Begin");
 #endif
 
             if(!mNeedUpdateEnitiesIdList)
@@ -184,7 +184,7 @@ namespace MyNPCLib.Logical
             FindPrimaryEntityId();
 
 #if DEBUG
-            //LogInstance.Log("End LogicalObject UpdateCurrentEnitiesIdList");
+            //Log("End");
 #endif
         }
 
@@ -193,7 +193,7 @@ namespace MyNPCLib.Logical
             get
             {
 #if DEBUG
-                //LogInstance.Log($"LogicalObject this get propertyKey = {propertyKey}");
+                //Log($"propertyKey = {propertyKey}");
 #endif
 
                 return NGetProperty(propertyKey);
@@ -202,7 +202,7 @@ namespace MyNPCLib.Logical
             set
             {
 #if DEBUG
-                //LogInstance.Log($"LogicalObject this set propertyKey = {propertyKey} value = {value}");
+                //Log($"propertyKey = {propertyKey} value = {value}");
 #endif
 
                 NSetProperty(propertyKey, value);
@@ -216,7 +216,7 @@ namespace MyNPCLib.Logical
                 var propertyKey = mEntityDictionary.GetKey(propertyName);
 
 #if DEBUG
-                //LogInstance.Log($"LogicalObject this get propertyName = {propertyName} propertyKey = {propertyKey}");
+                //Log($"propertyName = {propertyName} propertyKey = {propertyKey}");
 #endif
 
                 return NGetProperty(propertyKey);
@@ -227,7 +227,7 @@ namespace MyNPCLib.Logical
                 var propertyKey = mEntityDictionary.GetKey(propertyName);
 
 #if DEBUG
-                //LogInstance.Log($"LogicalObject this set propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
+                //Log($"propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
 #endif
 
                 NSetProperty(propertyKey, value);
@@ -237,7 +237,7 @@ namespace MyNPCLib.Logical
         private void NSetProperty(ulong propertyKey, object value)
         {
 #if DEBUG
-            //LogInstance.Log($"LogicalObject NSetProperty propertyKey = {propertyKey} value = {value}");
+            //Log($"propertyKey = {propertyKey} value = {value}");
 #endif
 
             lock (mCurrentEnitiesIdListLockObj)
@@ -256,7 +256,7 @@ namespace MyNPCLib.Logical
         private object NGetProperty(ulong propertyKey)
         {
 #if DEBUG
-            //LogInstance.Log($"LogicalObject NGetProperty propertyKey = {propertyKey}");
+            //Log($"propertyKey = {propertyKey}");
 #endif
 
             lock (mCurrentEnitiesIdListLockObj)

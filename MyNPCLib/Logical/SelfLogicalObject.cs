@@ -51,7 +51,7 @@ namespace MyNPCLib.Logical
                 var propertyKey = mEntityDictionary.GetKey(propertyName);
 
 #if DEBUG
-                LogInstance.Log($"SelfLogicalObject this get propertyName = {propertyName} propertyKey = {propertyKey}");
+                Log($"propertyName = {propertyName} propertyKey = {propertyKey}");
 #endif
 
                 return NGetProperty(propertyKey);
@@ -62,7 +62,7 @@ namespace MyNPCLib.Logical
                 var propertyKey = mEntityDictionary.GetKey(propertyName);
 
 #if DEBUG
-                LogInstance.Log($"SelfLogicalObject this set propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
+                Log($"propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
 #endif
 
                 NSetProperty(propertyKey, value);
@@ -72,7 +72,7 @@ namespace MyNPCLib.Logical
         private void NSetProperty(ulong propertyKey, object value)
         {
 #if DEBUG
-            LogInstance.Log($"SelfLogicalObject NSetProperty propertyKey = {propertyKey} value = {value}");
+            Log($"propertyKey = {propertyKey} value = {value}");
 #endif
 
             if(GetKindOfSystemProperty(propertyKey) != KindOfSystemProperties.Undefined)
@@ -86,7 +86,7 @@ namespace MyNPCLib.Logical
         private object NGetProperty(ulong propertyKey)
         {
 #if DEBUG
-            LogInstance.Log($"SelfLogicalObject NGetProperty propertyKey = {propertyKey}");
+            Log($"propertyKey = {propertyKey}");
 #endif
             var kindOfSystemProperty = GetKindOfSystemProperty(propertyKey);
 
