@@ -37,5 +37,11 @@ namespace TmpSandBox
 
             NLog.LogManager.GetCurrentClassLogger().Warn(result);
         }
+
+        [MethodForLoggingSupport]
+        public void Raw(string message)
+        {
+            NLog.LogManager.GetCurrentClassLogger().Warn(message);
+        }
     }
 }

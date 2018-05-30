@@ -9,6 +9,7 @@ namespace MyNPCLib
         void Log(string message);
         void Error(string message);
         void Warning(string message);
+        void Raw(string message);
     }
 
     public static class LogInstance
@@ -45,6 +46,15 @@ namespace MyNPCLib
             lock (mLockObj)
             {
                 mILogProxy?.Warning(message);
+            }
+        }
+
+        [MethodForLoggingSupport]
+        public static void Raw(string message)
+        {
+            lock (mLockObj)
+            {
+                mILogProxy?.Raw(message);
             }
         }
 
