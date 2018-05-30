@@ -66,6 +66,8 @@ namespace MyNPCLib
             var now = DateTime.Now;
             var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
 
+            var result = BuildLogString(marker, now, KindOfLogLevel.LOG, tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
+
             throw new NotImplementedException();
         }
 
@@ -85,6 +87,8 @@ namespace MyNPCLib
 
             var now = DateTime.Now;
             var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
+
+            var result = BuildLogString(marker, now, KindOfLogLevel.ERROR, tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
 
             throw new NotImplementedException();
         }
@@ -106,12 +110,14 @@ namespace MyNPCLib
             var now = DateTime.Now;
             var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
 
+            var result = BuildLogString(marker, now, KindOfLogLevel.WARNING, tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
+
             throw new NotImplementedException();
         }
 
         private string BuildLogString(string marker, DateTime dateTime, KindOfLogLevel level, string className, string methodName, string message)
         {
-
+            return $"{dateTime}|>>{marker}<<|{level.ToString()}|{className}|{methodName}|{message}";
         }
     }
 }
