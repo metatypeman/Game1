@@ -54,18 +54,58 @@ namespace MyNPCLib
         {
             var marker = string.Empty;
 
+            lock(mLockObj)
+            {
+                if(!mEnabled)
+                {
+                    return;
+                }
+                marker = mMarker;
+            }
+
+            var now = DateTime.Now;
+            var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
+
             throw new NotImplementedException();
         }
 
         [MethodForLoggingSupport]
         public void Error(string message)
         {
+            var marker = string.Empty;
+
+            lock (mLockObj)
+            {
+                if (!mEnabled)
+                {
+                    return;
+                }
+                marker = mMarker;
+            }
+
+            var now = DateTime.Now;
+            var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
+
             throw new NotImplementedException();
         }
 
         [MethodForLoggingSupport]
         public void Warning(string message)
         {
+            var marker = string.Empty;
+
+            lock (mLockObj)
+            {
+                if (!mEnabled)
+                {
+                    return;
+                }
+                marker = mMarker;
+            }
+
+            var now = DateTime.Now;
+            var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
+
             throw new NotImplementedException();
         }
 
