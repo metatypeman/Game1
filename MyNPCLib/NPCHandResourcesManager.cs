@@ -99,7 +99,7 @@ namespace MyNPCLib
 
             var id = mIdFactory.GetNewId();
 
-            var process = new ProxyForNPCResourceProcess(id, mContext);
+            var process = new ProxyForNPCResourceProcess(mEntityLogger, id, mContext);
             process.LocalPriority = command.Priority;
 
             var cs = new CancellationTokenSource();

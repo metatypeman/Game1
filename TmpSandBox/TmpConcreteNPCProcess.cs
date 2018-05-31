@@ -12,27 +12,27 @@ namespace TmpSandBox
     {
         public TmpConcreteNPCProcess()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("TmpConcreteNPCProcess");
+            LogInstance.Log("Begin");
         }
 
         private void Main()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Main");
+            Log("Begin");
         }
 
         private void Main(int arg)
         {
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main arg = {arg}");
+            Log($"arg = {arg}");
         }
 
         public void Main(string arg)
         {
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main arg = {arg}");
+            Log($"arg = {arg}");
         }
 
         protected void Main(bool arg)
         {
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main arg = {arg}");
+            Log($"arg = {arg}");
         }
     }
 
@@ -40,12 +40,12 @@ namespace TmpSandBox
     {
         public TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess");
+            Log("Begin");
         }
 
         public void Main()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main");
+            Log("Begin");
         }
 
         public void Main(int someArgument, bool secondArgument = false)
@@ -83,11 +83,11 @@ namespace TmpSandBox
     {
         public void Main(int someArgument = 12)
         {
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main someArgument = {someArgument}");
+            Log($"someArgument = {someArgument}");
 
             //Thread.Sleep(10000);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"End Main someArgument = {someArgument}");
+            Log($"End someArgument = {someArgument}");
         }
     }
 

@@ -318,7 +318,7 @@ namespace MyNPCLib
             {
                 if (mState == StateOfNPCContext.Destroyed)
                 {
-                    return new NotValidAbstractNPCProcess(this);
+                    return new NotValidAbstractNPCProcess(mEntityLogger, this);
                 }
 
                 if (mState != StateOfNPCContext.Working)
@@ -337,7 +337,7 @@ namespace MyNPCLib
 
             if (npcProcess == null)
             {
-                return new NotValidAbstractNPCProcess(this);
+                return new NotValidAbstractNPCProcess(mEntityLogger, this);
             }
 
             return npcProcess.RunAsync();

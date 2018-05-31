@@ -11,8 +11,8 @@ namespace TmpSandBox
 
     public class TestedNPCContext : BaseNPCContext
     {
-        public TestedNPCContext()
-            : base(null)
+        public TestedNPCContext(IEntityLogger entityLogger)
+            : base(entityLogger)
         {
         }
     }

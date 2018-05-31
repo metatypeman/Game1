@@ -9,7 +9,7 @@ namespace TmpSandBox.NPCBehaviour
     {
         public MyBlackBoard()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("MyBlackBoard");
+            LogInstance.Log("Begin");
         }
 
         public int TstValue { get; set; }
@@ -18,7 +18,7 @@ namespace TmpSandBox.NPCBehaviour
         {
             base.Bootstrap();
 
-            NLog.LogManager.GetCurrentClassLogger().Info("Bootstrap");
+            Log("Begin");
         }
     }
 }

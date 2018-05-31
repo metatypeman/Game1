@@ -7,8 +7,8 @@ namespace MyNPCLib
 {
     public class NotValidAbstractNPCProcess : BaseNotValidNPCProcess
     {
-        public NotValidAbstractNPCProcess(INPCContext context)
-            : base(context)
+        public NotValidAbstractNPCProcess(IEntityLogger entityLogger, INPCContext context)
+            : base(entityLogger, context)
         {
         }
 

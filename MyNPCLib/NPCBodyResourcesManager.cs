@@ -183,13 +183,13 @@ namespace MyNPCLib
             {
                 if (mState != StateOfNPCContext.Working)
                 {
-                    return new NotValidResourceNPCProcess(mContext);
+                    return new NotValidResourceNPCProcess(mEntityLogger, mContext);
                 }
             }
 
             var id = mIdFactory.GetNewId();
 
-            var process = new ProxyForNPCResourceProcess(id, mContext);
+            var process = new ProxyForNPCResourceProcess(mEntityLogger, id, mContext);
 
             var cs = new CancellationTokenSource();
 

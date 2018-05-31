@@ -11,9 +11,9 @@ namespace TmpSandBox.NPCBehaviour
     {
         protected override void Awake()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin Awake");
+            Log("Begin");
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"Awake BlackBoard.TstValue = {BlackBoard.TstValue}");
+            Log($"BlackBoard.TstValue = {BlackBoard.TstValue}");
 
             var trigger = CreateTrigger(() => {
                 if (BlackBoard.TstValue == 12)
@@ -27,11 +27,12 @@ namespace TmpSandBox.NPCBehaviour
             trigger.OnFire += Trigger_OnFire;
             trigger.OnResetCondition += Trigger_OnResetCondition;
 
-            NLog.LogManager.GetCurrentClassLogger().Info("End Awake");
+            Log("End");
         }
+
         private void Trigger_OnFire()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Trigger_OnFire");
+            Log("Begin");
 
             Thread.Sleep(1000);
 
@@ -40,20 +41,19 @@ namespace TmpSandBox.NPCBehaviour
 
         private void Trigger_OnResetCondition()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Trigger_OnResetCondition");
+            Log("Begin");
         }
 
         private void Main()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin Main");
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main Id = {Id}");
-            //NLog.LogManager.GetCurrentClassLogger().Info($"Main ");
+            Log("Begin");
+            Log($"Id = {Id}");
 
             var currnetProcessId = Id;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main currnetProcessId = {currnetProcessId}");
+            Log($"currnetProcessId = {currnetProcessId}");
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main BlackBoard.TstValue = {BlackBoard.TstValue}");
+            Log($"BlackBoard.TstValue = {BlackBoard.TstValue}");
 
             BlackBoard.TstValue = 12;
 
@@ -67,14 +67,14 @@ namespace TmpSandBox.NPCBehaviour
 
             Wait(childProcess);
 
-            NLog.LogManager.GetCurrentClassLogger().Info("Main End Wait(childProcess)");
+            Log("End Wait(childProcess)");
 
-            NLog.LogManager.GetCurrentClassLogger().Info("End Main");
+            Log("End");
         }
 
         private void ChildProcess_OnStateChanged(INPCProcess sender, StateOfNPCProcess state)
         {
-            NLog.LogManager.GetCurrentClassLogger().Info($"ChildProcess_OnStateChanged sender.Id = {sender.Id} state = {state}");
+            Log($"sender.Id = {sender.Id} state = {state}");
         }
     }
 }

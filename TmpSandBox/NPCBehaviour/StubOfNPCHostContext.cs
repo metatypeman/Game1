@@ -53,17 +53,42 @@ namespace TmpSandBox.NPCBehaviour
 
     public class StubOfNPCHandHost: INPCHandHost
     {
+        public StubOfNPCHandHost(IEntityLogger entityLogger)
+        {
+            mEntityLogger = entityLogger;
+        }
+
+        private IEntityLogger mEntityLogger;
+
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
+
         public INPCProcess Send(INPCCommand command)
         {
-            NLog.LogManager.GetCurrentClassLogger().Info($"Beging Send command = {command}");
+            Log($"Beging command = {command}");
 
-            var process = new NPCThingProcess();
+            var process = new NPCThingProcess(mEntityLogger);
             process.State = StateOfNPCProcess.Running;
 
             Task.Run(() => {
                 try
                 {
-                    NLog.LogManager.GetCurrentClassLogger().Info($"Send Task.Run command = {command}");
+                    Log($"Task.Run command = {command}");
 
                     process.State = StateOfNPCProcess.Running;
 
@@ -71,22 +96,22 @@ namespace TmpSandBox.NPCBehaviour
 
                     process.State = StateOfNPCProcess.RanToCompletion;
 
-                    NLog.LogManager.GetCurrentClassLogger().Info($"Send Task.Run command = {command}");
+                    Log($"Task.Run command = {command}");
                 }
                 catch(Exception e)
                 {
-                    NLog.LogManager.GetCurrentClassLogger().Info($"Send Task.Run e = {e}");
+                    Error($"Task.Run e = {e}");
                 }
             });
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"End Send command = {command}");
+            Log($"End command = {command}");
 
             return process;
         }
 
         public object Get(string propertyName)
         {
-            NLog.LogManager.GetCurrentClassLogger().Info($"Get propertyName = {propertyName}");
+            Log($"propertyName = {propertyName}");
 
             return "The Beatles!!!";
         }
@@ -96,19 +121,22 @@ namespace TmpSandBox.NPCBehaviour
     {
         public StubOfNPCHostContext(IEntityLogger entityLogger, IEntityDictionary entityDictionary = null)
         {
-            if(entityDictionary == null)
+            mEntityLogger = entityLogger;
+
+            if (entityDictionary == null)
             {
                 entityDictionary = new EntityDictionary();
             }
 
             mBodyHost = new StubOfNPCBodyHost();
-            mRightHandHost = new StubOfNPCHandHost();
-            mLeftHandHost = new StubOfNPCHandHost();
+            mRightHandHost = new StubOfNPCHandHost(entityLogger);
+            mLeftHandHost = new StubOfNPCHandHost(entityLogger);
             LogicalIndexStorageImpl = new LogicalIndexStorage(entityLogger);
-            mSelfLogicalObject = new PassiveLogicalObject(entityDictionary, LogicalIndexStorageImpl);
+            mSelfLogicalObject = new PassiveLogicalObject(entityLogger, entityDictionary, LogicalIndexStorageImpl);
             LogicalIndexStorageImpl.RegisterObject(mSelfLogicalObject);
         }
 
+        private IEntityLogger mEntityLogger;
         private StubOfNPCBodyHost mBodyHost;
         private StubOfNPCHandHost mRightHandHost;
         private StubOfNPCHandHost mLeftHandHost;
@@ -123,11 +151,29 @@ namespace TmpSandBox.NPCBehaviour
         public bool IsReady => mBodyHost.IsReady;
         public event Action OnReady;
 
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
+
         public IList<IHostVisionObject> VisibleObjects
         {
             get
             {
-                NLog.LogManager.GetCurrentClassLogger().Info("VisibleObjects");
+                Log("Begin");
 
                 var result = new List<IHostVisionObject>();
 

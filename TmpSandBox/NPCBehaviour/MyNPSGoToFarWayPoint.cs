@@ -11,12 +11,12 @@ namespace TmpSandBox.NPCBehaviour
     {
         private void Main()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin Main");
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main BlackBoard.TstValue = {BlackBoard.TstValue}");
+            Log("Begin");
+            Log($"BlackBoard.TstValue = {BlackBoard.TstValue}");
 
             var currnetProcessId = Id;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main currnetProcessId = {currnetProcessId}");
+            Log($"currnetProcessId = {currnetProcessId}");
 
             var bodyCommand = new HumanoidHStateCommand();
             bodyCommand.State = HumanoidHState.Run;
@@ -38,26 +38,26 @@ namespace TmpSandBox.NPCBehaviour
 
             var tmpResult = Context.DefaultHand.Get("FireMode");
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpResult = {tmpResult}");
+            Log($"tmpResult = {tmpResult}");
 
             tmpResult = GetDefaultHandProperty("FireMode");
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpResult (2) = {tmpResult}");
+            Log($"tmpResult (2) = {tmpResult}");
 
             tmpResult = GetDefaultHandProperty<object>("FireMode");
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpResult (3) = {tmpResult}");
+            Log($"tmpResult (3) = {tmpResult}");
 
             var tmpStrRes = GetDefaultHandProperty<string>("FireMode");
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"Main tmpStrRes = {tmpStrRes}");
+            Log($"tmpStrRes = {tmpStrRes}");
 
-            NLog.LogManager.GetCurrentClassLogger().Info("End Main");
+            Log("End");
         }
 
         private void Process_OnStateChanged(INPCProcess sender, StateOfNPCProcess state)
         {
-            NLog.LogManager.GetCurrentClassLogger().Info($"Process_OnStateChanged sender.Id = {sender.Id} state = {state}");
+            Log($"sender.Id = {sender.Id} state = {state}");
         }
     }
 }

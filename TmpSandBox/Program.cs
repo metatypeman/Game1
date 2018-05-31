@@ -366,27 +366,30 @@ namespace TmpSandBox
             NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTLogicalAST");
 
             var globalEntityDictionary = new EntityDictionary();
+            var entityLogger = new EntityLogger();
+            entityLogger.Marker = Guid.NewGuid().ToString("D");
+            entityLogger.Enabled = true;
 
-            var indexingStorage = new LogicalIndexStorage();
+            var indexingStorage = new LogicalIndexStorage(entityLogger);
 
             var namePropertyId = globalEntityDictionary.GetKey("name");
             var classPropertyId = globalEntityDictionary.GetKey("class");
 
-            var passiveLogicalObject = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
+            var passiveLogicalObject = new PassiveLogicalObject(entityLogger, globalEntityDictionary, indexingStorage);
 
             indexingStorage.RegisterObject(passiveLogicalObject);
 
             passiveLogicalObject[namePropertyId] = "helen";
             passiveLogicalObject[classPropertyId] = "girl";
 
-            var passiveLogicalObject_2 = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
+            var passiveLogicalObject_2 = new PassiveLogicalObject(entityLogger, globalEntityDictionary, indexingStorage);
 
             indexingStorage.RegisterObject(passiveLogicalObject_2);
 
             passiveLogicalObject_2[namePropertyId] = "ann";
             passiveLogicalObject_2[classPropertyId] = "girl";
 
-            var passiveLogicalObject_3 = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
+            var passiveLogicalObject_3 = new PassiveLogicalObject(entityLogger, globalEntityDictionary, indexingStorage);
 
             indexingStorage.RegisterObject(passiveLogicalObject_3);
 
@@ -427,11 +430,7 @@ namespace TmpSandBox
 
             var systemPropertiesDictionary = new SystemPropertiesDictionary(globalEntityDictionary);
 
-            var npcHostContext = new StubOfNPCHostContext();
-
-            var entityLogger = new EntityLogger();
-            entityLogger.Marker = Guid.NewGuid().ToString("D");
-            entityLogger.Enabled = true;
+            var npcHostContext = new StubOfNPCHostContext(entityLogger);
 
             var storageOfSpecialEntities = new StorageOfSpecialEntities();
             storageOfSpecialEntities.SelfEntityId = npcHostContext.SelfEntityId;
@@ -608,13 +607,14 @@ namespace TmpSandBox
             NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTMyNPCContext");
 
             var globalEntityDictionary = new EntityDictionary();
-            var stubOfHumanoidBodyController = new StubOfNPCHostContext(globalEntityDictionary);
-
-            var indexingStorage = stubOfHumanoidBodyController.LogicalIndexStorageImpl;
 
             var entityLogger = new EntityLogger();
             entityLogger.Marker = Guid.NewGuid().ToString("D");
             entityLogger.Enabled = true;
+
+            var stubOfHumanoidBodyController = new StubOfNPCHostContext(entityLogger, globalEntityDictionary);
+
+            var indexingStorage = stubOfHumanoidBodyController.LogicalIndexStorageImpl;
 
             var context = new MyNPCContext(entityLogger, globalEntityDictionary, stubOfHumanoidBodyController);
             context.Bootstrap();
@@ -630,21 +630,21 @@ namespace TmpSandBox
             var namePropertyId = globalEntityDictionary.GetKey("name");
             var classPropertyId = globalEntityDictionary.GetKey("class");
 
-            var passiveLogicalObject = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
+            var passiveLogicalObject = new PassiveLogicalObject(entityLogger, globalEntityDictionary, indexingStorage);
 
             indexingStorage.RegisterObject(passiveLogicalObject);
 
             passiveLogicalObject[namePropertyId] = "helen";
             passiveLogicalObject[classPropertyId] = "girl";
 
-            var passiveLogicalObject_2 = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
+            var passiveLogicalObject_2 = new PassiveLogicalObject(entityLogger, globalEntityDictionary, indexingStorage);
 
             indexingStorage.RegisterObject(passiveLogicalObject_2);
 
             passiveLogicalObject_2[namePropertyId] = "ann";
             passiveLogicalObject_2[classPropertyId] = "girl";
 
-            var passiveLogicalObject_3 = new PassiveLogicalObject(globalEntityDictionary, indexingStorage);
+            var passiveLogicalObject_3 = new PassiveLogicalObject(entityLogger, globalEntityDictionary, indexingStorage);
 
             indexingStorage.RegisterObject(passiveLogicalObject_3);
 
@@ -712,11 +712,15 @@ namespace TmpSandBox
 
         private static void TSTStorageOfNPCProcesses()
         {
+            var entityLogger = new EntityLogger();
+            entityLogger.Marker = Guid.NewGuid().ToString("D");
+            entityLogger.Enabled = true;
+
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TmpConcreteNPCProcess);
 
@@ -775,7 +779,11 @@ namespace TmpSandBox
 
         private static void TSTActivatorOfNPCProcessEntryPointInfo()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EntityLogger();
+            entityLogger.Marker = Guid.NewGuid().ToString("D");
+            entityLogger.Enabled = true;
+
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
             var rank = activator.GetRankByTypesOfParameters(typeof(int), typeof(string));
 
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
@@ -802,7 +810,7 @@ namespace TmpSandBox
             NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
 
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -880,13 +888,17 @@ namespace TmpSandBox
         {
             NLog.LogManager.GetCurrentClassLogger().Info("Begin CreateInfoOfConcreteProcess");
 
+            var entityLogger = new EntityLogger();
+            entityLogger.Marker = Guid.NewGuid().ToString("D");
+            entityLogger.Enabled = true;
+
             //var type = typeof(TmpConcreteNPCProcess);
             var type = typeof(TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess);
 
             NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
 
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
 
             NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess npcProcessInfo = {npcProcessInfo}");

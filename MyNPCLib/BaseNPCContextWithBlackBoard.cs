@@ -12,6 +12,7 @@ namespace MyNPCLib
             : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext, queriesCache)
         {
             mBlackBoard = new BlackBoardType();
+            mBlackBoard.EntityLogger = entityLogger;
             mBlackBoard.Context = this;
         }
 

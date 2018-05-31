@@ -6,20 +6,40 @@ namespace MyNPCLib.Logical
 {
     public class PassiveLogicalObject : IPassiveLogicalObject, IReadOnlyLogicalObject, ILogicalObject
     {
-        public PassiveLogicalObject(IEntityDictionary entityDictionary, ILogicalStorage logicalIndexingBus)
+        public PassiveLogicalObject(IEntityLogger entityLogger, IEntityDictionary entityDictionary, ILogicalStorage logicalIndexingBus)
         {
+            mEntityLogger = entityLogger;
             mEntityDictionary = entityDictionary;
             mLogicalIndexingBus = logicalIndexingBus;
 
             var name = Guid.NewGuid().ToString("D");
             mEntityId = mEntityDictionary.GetKey(name);
-            mLogicalFrame = new LogicalFrame(mEntityId);
+            mLogicalFrame = new LogicalFrame(entityLogger, mEntityId);
         }
 
+        private IEntityLogger mEntityLogger;
         private IEntityDictionary mEntityDictionary;
         private ILogicalStorage mLogicalIndexingBus;
         private LogicalFrame mLogicalFrame;
         private ulong mEntityId;
+
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
 
         public ulong EntityId => mEntityId;
         public object this[ulong propertyKey]
@@ -61,7 +81,7 @@ namespace MyNPCLib.Logical
             catch (Exception e)
             {
 #if DEBUG
-                LogInstance.Log($"PassiveLogicalObject GetValue<T> propertyKey = {propertyKey} = {e}");
+                Error($"propertyKey = {propertyKey} = {e}");
 #endif
             }
 
@@ -79,7 +99,7 @@ namespace MyNPCLib.Logical
             catch (Exception e)
             {
 #if DEBUG
-                LogInstance.Log($"PassiveLogicalObject GetValue<T> propertyName = {propertyName} = {e}");
+                Error($"propertyName = {propertyName} = {e}");
 #endif
             }
 

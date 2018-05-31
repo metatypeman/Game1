@@ -49,7 +49,7 @@ namespace MyNPCLib.Logical
                 }
                 else
                 {
-                    logicalObject = new LogicalFrame(entityId);
+                    logicalObject = new LogicalFrame(mEntityLogger, entityId);
                     mObjectsDict[entityId] = logicalObject;
 
                 }
