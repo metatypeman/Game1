@@ -25,6 +25,24 @@ namespace Assets.Scripts
             mInternalBodyHumanoidHost.OnHumanoidStatesChanged += InternalOnHumanoidStatesChanged;
         }
 
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
+
         private void MInternalBodyHumanoidHost_OnReady()
         {
 #if DEBUG
@@ -139,6 +157,24 @@ namespace Assets.Scripts
             mInternalHumanoidHostContext = intenalHostContext;
         }
 
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
+
         private IInternalHumanoidHostContext mInternalHumanoidHostContext;
 
         public INPCProcess Send(INPCCommand command)
@@ -181,6 +217,24 @@ namespace Assets.Scripts
 
             mRightHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
             mLeftHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
         }
 
         private void MBodyHost_OnReady()

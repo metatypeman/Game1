@@ -44,6 +44,33 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private bool mUseIkAnimation;
 
+    [MethodForLoggingSupport]
+    protected void Log(string message)
+    {
+        lock (mEntityLoggerLockObj)
+        {
+            mEntityLogger?.Log(message);
+        }
+    }
+
+    [MethodForLoggingSupport]
+    protected void Error(string message)
+    {
+        lock (mEntityLoggerLockObj)
+        {
+            mEntityLogger?.Error(message);
+        }
+    }
+
+    [MethodForLoggingSupport]
+    protected void Warning(string message)
+    {
+        lock (mEntityLoggerLockObj)
+        {
+            mEntityLogger?.Warning(message);
+        }
+    }
+
     public void CallInMainUI(Action function)
     {
         var invocable = new InvocableInMainThreadObj(function, this);

@@ -16,7 +16,25 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
     private TestedNPCContext mNPCProcessesContext;
 
     private InputKeyHelper mInputKeyHelper;
-    
+
+    [MethodForLoggingSupport]
+    protected void Log(string message)
+    {
+        mEntityLogger?.Log(message);
+    }
+
+    [MethodForLoggingSupport]
+    protected void Error(string message)
+    {
+        mEntityLogger?.Error(message);
+    }
+
+    [MethodForLoggingSupport]
+    protected void Warning(string message)
+    {
+        mEntityLogger?.Warning(message);
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -55,7 +73,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
             }
             catch(Exception e)
             {
-                Debug.Log($"EnemyNPC Start e = {e}");
+                Debug.LogError($"EnemyNPC Start e = {e}");
             }
         });
     }
