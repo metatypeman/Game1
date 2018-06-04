@@ -106,7 +106,7 @@ namespace TmpSandBox
 
         private static void TSTConceptualGraph_2()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTConceptualGraphs_2");
+            LogInstance.Log("Begin");
 
             var globalEntityDictionary = new EntityDictionary();
 
@@ -116,17 +116,17 @@ namespace TmpSandBox
             var graph = new ConceptualGraph();
             graph.Name = "#1";
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 graph = {graph}");
+            LogInstance.Log($"graph = {graph}");
 
             var graph_2 = new ConceptualGraph();
             graph_2.Name = "#2";
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 graph_2 = {graph_2}");
+            LogInstance.Log($"graph_2 = {graph_2}");
 
             var concept = new ConceptCGNode();    
             concept.Name = "dog";
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 concept = {concept}");
+            LogInstance.Log($"concept = {concept}");
 
             concept.Parent = graph;
 
@@ -141,36 +141,36 @@ namespace TmpSandBox
             relation.AddInputNode(concept);
             concept_2.AddInputNode(relation);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 concept = {concept}");
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 relation = {relation}");
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 concept_2 = {concept_2}");
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 graph = {graph}");
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 graph_2 = {graph_2}");
+            LogInstance.Log($"concept = {concept}");
+            LogInstance.Log($"relation = {relation}");
+            LogInstance.Log($"concept_2 = {concept_2}");
+            LogInstance.Log($"graph = {graph}");
+            LogInstance.Log($"graph_2 = {graph_2}");
 
             var dotStr = DotConverter.ConvertToString(graph);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs_2 dotStr = {dotStr}");
+            LogInstance.Log($"dotStr = {dotStr}");
 
-            NLog.LogManager.GetCurrentClassLogger().Info("End TSTConceptualGraphs_2");
+            LogInstance.Log("End");
         }
 
         private static void TSTConceptualGraphs()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTConceptualGraphs");
+            LogInstance.Log("Begin");
 
             var parser = new TSTConceptualGraphParser();
             var globalStorage = new TSTGlobalLogicalStorage();
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs globalStorage = {globalStorage}");
+            LogInstance.Log($"globalStorage = {globalStorage}");
 
             var nlText = "Go to far waypoint.";
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs nlText = {nlText}");
+            LogInstance.Log($"TSTConceptualGraphs nlText = {nlText}");
 
             //I get a conceptual graph by some text of natural language.
             var graph = parser.Parse(nlText);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs graph = {graph}");
+            LogInstance.Log($"graph = {graph}");
 
             //I get a query by the conceptual graph.
             //The query is a special storage which contains this conceptual graph.
@@ -179,7 +179,7 @@ namespace TmpSandBox
             //So read-queries can get information what is related with the storage but it contains only in global storage.
             var queryStorage = globalStorage.Query(graph);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs queryStorage = {queryStorage}");
+            LogInstance.Log($"queryStorage = {queryStorage}");
 
             //I get a conceptual graph from storage.
             //In this case it is a query-storage.
@@ -189,19 +189,19 @@ namespace TmpSandBox
             //Check kind of storage before using this method.
             var conceptualGraphFromQueryStorage = queryStorage.GetConceptualGraph();
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs conceptualGraphFromQueryStorage = {conceptualGraphFromQueryStorage}");
+            LogInstance.Log($"conceptualGraphFromQueryStorage = {conceptualGraphFromQueryStorage}");
 
             //The information which is containde in the storage can be peresented in many different ways.
             //Olso as gnu clay sentence (my own format).
             var gnuClaySentenceFromQueryStorage = queryStorage.GetGnuClaySentence();
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs gnuClaySentenceFromQueryStorage = {gnuClaySentenceFromQueryStorage}");
+            LogInstance.Log($"gnuClaySentenceFromQueryStorage = {gnuClaySentenceFromQueryStorage}");
 
             //The information which is containde in the storage can be peresented in many different ways.
             //Olso as sdandard predicate sentence.
             var predicateSentenceFromQueryStorage = queryStorage.GetPredicateSentence();
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs predicateSentenceFromQueryStorage = {predicateSentenceFromQueryStorage}");
+            LogInstance.Log($"predicateSentenceFromQueryStorage = {predicateSentenceFromQueryStorage}");
 
             //Add all information from `queryStorage` to `globalStorage`.
             //This information remains in `queryStorage`.
@@ -214,156 +214,156 @@ namespace TmpSandBox
             //I create an empty storage which is based on `globalStorage` as its parent.
             var fork_1 = globalStorage.Fork();
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs fork_1 = {fork_1}");
+            LogInstance.Log($"fork_1 = {fork_1}");
 
             //I create an empty storage which is based on `fork_1` as its parent.
             var fork_2 = fork_1.Fork();
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs fork_2 = {fork_2}");
+            LogInstance.Log($"fork_2 = {fork_2}");
 
             //I create an empty storage which is based on `queryStorage` as its parent.
             var fork_3 = queryStorage.Fork();
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTConceptualGraphs fork_3 = {fork_3}");
+            LogInstance.Log($"fork_3 = {fork_3}");
 
-            NLog.LogManager.GetCurrentClassLogger().Info("End TSTConceptualGraphs");
+            LogInstance.Log("End");
         }
 
         private static void TSTRange()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTRange");
+            LogInstance.Log("Begin");
 
             var list = ListHelper.GetRange(0, 90, 5);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
+            LogInstance.Log($"list.Count = {list.Count}");
             foreach(var item in list)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
+                LogInstance.Log($"item = {item}");
             }
             list = ListHelper.GetRange(90, 0, 5);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
+            LogInstance.Log($"list.Count = {list.Count}");
             foreach (var item in list)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
+                LogInstance.Log($"item = {item}");
             }
             list = ListHelper.GetRange(-90, 0, 5);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
+            LogInstance.Log($"list.Count = {list.Count}");
             foreach (var item in list)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
+                LogInstance.Log($"item = {item}");
             }
             list = ListHelper.GetRange(90, 90, 5);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
+            LogInstance.Log($"list.Count = {list.Count}");
             foreach (var item in list)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
+                LogInstance.Log($"item = {item}");
             }
             list = ListHelper.GetRange(10, 90, 0);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
+            LogInstance.Log($"list.Count = {list.Count}");
             foreach (var item in list)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
+                LogInstance.Log($"item = {item}");
             }
             list = ListHelper.GetRange(0, -90, 5);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange list.Count = {list.Count}");
+            LogInstance.Log($"list.Count = {list.Count}");
             foreach (var item in list)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTRange item = {item}");
+                LogInstance.Log($"item = {item}");
             }
 
-            NLog.LogManager.GetCurrentClassLogger().Info("End TSTRange");
+            LogInstance.Log("End");
         }
 
         private static void TSTLexer()
         {
             var queryStr = "!((name='helen'|name='ann')&class='girl')";
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"queryStr = {queryStr}");
 
             //var lexer = new Lexer(queryStr);
             //Token token = null;
             //while ((token = lexer.GetToken()) != null)
             //{
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer token = {token}");
+            //    LogInstance.Log($"token = {token}");
             //}
             var globalEntityDictionary = new EntityDictionary();
             var context = new ParserContext(queryStr, globalEntityDictionary);
             //Token token = null;
             //while ((token = context.GetToken()) != null)
             //{
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer token = {token}");
+            //    LogInstance.Log($"token = {token}");
             //}
             //var parser = new LogicalExpressionParser(context);
             //parser.Run();
             var node = LogicalExpressionParserHelper.CreateNode(context);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
-
+            LogInstance.Log($"node = {node}");
+            d
             queryStr = "!((name='helen'&name='ann')|class='girl')";
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+            LogInstance.Log($"TSTLexer node = {node}");
 
             queryStr = "(name='helen'&name='ann')|class='girl'";
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
-
+           
             node = LogicalExpressionParserHelper.CreateNode(context);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+            LogInstance.Log($"TSTLexer node = {node}");
 
             queryStr = "class='girl'|(name='helen'&name='ann')";
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+            LogInstance.Log($"TSTLexer node = {node}");
 
             queryStr = "class='girl'&(name='helen'&name='ann')";
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+            LogInstance.Log($"TSTLexer node = {node}");
 
             queryStr = "class='girl'&!(name='helen'&name='ann')";
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+            LogInstance.Log($"TSTLexer node = {node}");
 
             queryStr = "class='girl'|!(name='helen'&name='ann')";
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+            LogInstance.Log($"TSTLexer node = {node}");
 
             queryStr = "!class='girl'";
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+            LogInstance.Log($"TSTLexer node = {node}");
 
             queryStr = "class='girl'";
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLexer node = {node}");
+            LogInstance.Log($"TSTLexer node = {node}");
         }
 
         private static void TSTLogicalAST()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTLogicalAST");
+            LogInstance.Log("Begin TSTLogicalAST");
 
             var globalEntityDictionary = new EntityDictionary();
             var entityLogger = new EntityLogger();
@@ -424,7 +424,7 @@ namespace TmpSandBox
             notNode.OperatorId = KindOfUnaryOperators.Not;
             notNode.Left = andNode;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST notNode = {notNode}");
+            LogInstance.Log($"TSTLogicalAST notNode = {notNode}");
 
             var queryCache = new QueriesCache(globalEntityDictionary);
 
@@ -441,10 +441,10 @@ namespace TmpSandBox
 
             var entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entitiesIdList.Count = {entitiesIdList.Count}");
+            LogInstance.Log($"TSTLogicalAST entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST entityId = {entityId}");
+                LogInstance.Log($"TSTLogicalAST entityId = {entityId}");
             }
 
             passiveLogicalObject_2[classPropertyId] = "boy";
@@ -453,45 +453,45 @@ namespace TmpSandBox
 
             entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2) entitiesIdList.Count = {entitiesIdList.Count}");
+            LogInstance.Log($"TSTLogicalAST (2) entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2) entityId = {entityId}");
+                LogInstance.Log($"TSTLogicalAST (2) entityId = {entityId}");
             }
 
             var logicalObject_2 = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
 
             entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (3) entitiesIdList.Count = {entitiesIdList.Count}");
+            LogInstance.Log($"TSTLogicalAST (3) entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (3) entityId = {entityId}");
+                LogInstance.Log($"TSTLogicalAST (3) entityId = {entityId}");
             }
 
             var resultOfcomparsing = logicalObject == logicalObject_2;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST resultOfcomparsing = {resultOfcomparsing}");
+            LogInstance.Log($"TSTLogicalAST resultOfcomparsing = {resultOfcomparsing}");
 
             resultOfcomparsing = logicalObject_2 == logicalObject;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2) resultOfcomparsing = {resultOfcomparsing}");
+            LogInstance.Log($"TSTLogicalAST (2) resultOfcomparsing = {resultOfcomparsing}");
 
             /*var list1 = new List<int>() { 1 };
             var list2 = new List<int>() { 1, 2 };
 
             var except1_2 = list1.Except(list2).ToList();
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST except1_2.Count = {except1_2.Count}");
+            LogInstance.Log($"TSTLogicalAST except1_2.Count = {except1_2.Count}");
             foreach (var entityId in except1_2)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (1_2) entityId = {entityId}");
+                LogInstance.Log($"TSTLogicalAST (1_2) entityId = {entityId}");
             }
 
             var except2_1 = list2.Except(list1).ToList();
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST except2_1.Count = {except2_1.Count}");
+            LogInstance.Log($"TSTLogicalAST except2_1.Count = {except2_1.Count}");
             foreach (var entityId in except2_1)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTLogicalAST (2_1) entityId = {entityId}");
+                LogInstance.Log($"TSTLogicalAST (2_1) entityId = {entityId}");
             }*/
         }
 
@@ -499,7 +499,7 @@ namespace TmpSandBox
 
         private static void TSTCancelTask_2()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTCancelTask_2");
+            LogInstance.Log("Begin TSTCancelTask_2");
 
             var cs = new CancellationTokenSource();
             var token = cs.Token;
@@ -511,47 +511,47 @@ namespace TmpSandBox
                 {
                     mCancelationTokenDict[Task.CurrentId.Value] = token;
 
-                    NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask_2 Task start");
-                    NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask_2 Task.CurrentId = {Task.CurrentId}");
+                    LogInstance.Log("TSTCancelTask_2 Task start");
+                    LogInstance.Log($"TSTCancelTask_2 Task.CurrentId = {Task.CurrentId}");
 
                     DoWork();
                 }
                 catch(OperationCanceledException)
                 {
-                    NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask_2 catch(OperationCanceledException)");
+                    LogInstance.Log("TSTCancelTask_2 catch(OperationCanceledException)");
                 }
                 catch(Exception e)
                 {
-                    NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask_2 Task e = {e}");
+                    LogInstance.Error($"TSTCancelTask_2 Task e = {e}");
                 }
                 finally
                 {
                     mCancelationTokenDict.Remove(Task.CurrentId.Value);
-                    NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask_2 finally");
+                    LogInstance.Log($"TSTCancelTask_2 finally");
                 }
             }, token);
 
             tmpTask.Start();
 
-            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask_2 started");
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask_2 tmpTask.Id = {tmpTask.Id}");
+            LogInstance.Log("TSTCancelTask_2 started");
+            LogInstance.Log($"TSTCancelTask_2 tmpTask.Id = {tmpTask.Id}");
 
             Thread.Sleep(1000);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask_2 mCancelationTokenDict.Count = {mCancelationTokenDict.Count}");
+            LogInstance.Log($"TSTCancelTask_2 mCancelationTokenDict.Count = {mCancelationTokenDict.Count}");
 
             cs.Cancel();
 
-            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask_2 Canceled");
+            LogInstance.Log("TSTCancelTask_2 Canceled");
 
             cs.Cancel();
 
-            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask_2 Canceled twice");
+            LogInstance.Log("TSTCancelTask_2 Canceled twice");
 
             Thread.Sleep(1000);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask after mCancelationTokenDict.Count = {mCancelationTokenDict.Count}");
-            NLog.LogManager.GetCurrentClassLogger().Info("End TSTCancelTask_2");
+            LogInstance.Log($"TSTCancelTask after mCancelationTokenDict.Count = {mCancelationTokenDict.Count}");
+            LogInstance.Log("End TSTCancelTask_2");
         }
 
         private static void DoWork()
@@ -562,7 +562,7 @@ namespace TmpSandBox
 
             while (true)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"DoWork Task n = {n}");
+                LogInstance.Log($"DoWork Task n = {n}");
                 n++;
 
                 token.ThrowIfCancellationRequested();
@@ -571,7 +571,7 @@ namespace TmpSandBox
 
         private static void TSTCancelTask()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTCancelTask");
+            LogInstance.Log("Begin TSTCancelTask");
 
             Thread tmpThread = null;
 
@@ -582,29 +582,29 @@ namespace TmpSandBox
 
                 while(true)
                 {
-                    NLog.LogManager.GetCurrentClassLogger().Info($"TSTCancelTask Task n = {n}");
+                    LogInstance.Log($"TSTCancelTask Task n = {n}");
                     n++;
                 }
             });
 
             tmpTask.Start();
 
-            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask started");
+            LogInstance.Log("TSTCancelTask started");
 
             Thread.Sleep(1000);
 
             tmpThread.Abort();
 
-            NLog.LogManager.GetCurrentClassLogger().Info("TSTCancelTask aborted");
+            LogInstance.Log("TSTCancelTask aborted");
 
             Thread.Sleep(1000);
 
-            NLog.LogManager.GetCurrentClassLogger().Info("End TSTCancelTask");
+            LogInstance.Log("End TSTCancelTask");
         }
 
         private static void TSTMyNPCContext()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin TSTMyNPCContext");
+            LogInstance.Log("Begin TSTMyNPCContext");
 
             var globalEntityDictionary = new EntityDictionary();
 
@@ -657,52 +657,52 @@ namespace TmpSandBox
 
             var entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext entitiesIdList.Count = {entitiesIdList.Count}");
+            LogInstance.Log($"TSTMyNPCContext entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext entityId = {entityId}");
+                LogInstance.Log($"TSTMyNPCContext entityId = {entityId}");
             }
 
             var logicalObject_2 = context.GetLogicalObject(queryStr);
 
             var entitiesIdList_2 = logicalObject_2.CurrentEntitiesIdList;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext entitiesIdList_2.Count = {entitiesIdList_2.Count}");
+            LogInstance.Log($"TSTMyNPCContext entitiesIdList_2.Count = {entitiesIdList_2.Count}");
             foreach (var entityId in entitiesIdList)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext entityId = {entityId}");
+                LogInstance.Log($"TSTMyNPCContext entityId = {entityId}");
             }
 
             var resultOfcomparsing = logicalObject == logicalObject_2;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext resultOfcomparsing = {resultOfcomparsing}");
+            LogInstance.Log($"TSTMyNPCContext resultOfcomparsing = {resultOfcomparsing}");
 
             var name = logicalObject["name"];
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext name = {name}");
+            LogInstance.Log($"TSTMyNPCContext name = {name}");
 
             logicalObject["name"] = 12;
 
             name = logicalObject["name"];
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext name (2) = {name}");
+            LogInstance.Log($"TSTMyNPCContext name (2) = {name}");
 
             resultOfcomparsing = context.SelfLogicalObject == logicalObject;
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext resultOfcomparsing (2) = {resultOfcomparsing}");
+            LogInstance.Log($"TSTMyNPCContext resultOfcomparsing (2) = {resultOfcomparsing}");
 
             var visibleItems = context.VisibleObjects;
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext visibleItems.Count = {visibleItems.Count}");
+            LogInstance.Log($"TSTMyNPCContext visibleItems.Count = {visibleItems.Count}");
             foreach (var visibleItem in visibleItems)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext visibleItem = {visibleItem}");
+                LogInstance.Log($"TSTMyNPCContext visibleItem = {visibleItem}");
                 var posOfVisibleItem = visibleItem["global position"];
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext posOfVisibleItem = {posOfVisibleItem}");
+                LogInstance.Log($"TSTMyNPCContext posOfVisibleItem = {posOfVisibleItem}");
             }
 
             var pos = context.SelfLogicalObject["global position"];
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTMyNPCContext pos = {pos}");
+            LogInstance.Log($"TSTMyNPCContext pos = {pos}");
 
             while (true)
             {
@@ -726,55 +726,55 @@ namespace TmpSandBox
 
             var result = storage.AddTypeOfProcess(type);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses result = {result}");
+            LogInstance.Log($"TSTStorageOfNPCProcesses result = {result}");
 
             var command = new NPCCommand();
             command.Name = "test";
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses command = {command}");
+            LogInstance.Log($"TSTStorageOfNPCProcesses command = {command}");
 
             var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses internalCommand = {internalCommand}");
+            LogInstance.Log($"TSTStorageOfNPCProcesses internalCommand = {internalCommand}");
 
             var process = storage.GetProcess(internalCommand);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) = {process == null}");
+            LogInstance.Log($"TSTStorageOfNPCProcesses (process == null) = {process == null}");
 
             process = storage.GetProcess(internalCommand);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
+            LogInstance.Log($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
 
             process.RunAsync();
 
-            NLog.LogManager.GetCurrentClassLogger().Info("TSTStorageOfNPCProcesses -----------------------------------------------");
+            LogInstance.Log("TSTStorageOfNPCProcesses -----------------------------------------------");
 
             //type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
 
             //result = storage.AddTypeOfProcess(type);
 
-            //NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses result = {result}");
+            //LogInstance.Log($"TSTStorageOfNPCProcesses result = {result}");
 
             //command = new NPCCommand();
             //command.Name = "SomeName";
 
-            //NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses command = {command}");
+            //LogInstance.Log($"TSTStorageOfNPCProcesses command = {command}");
 
             //internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
 
-            //NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses internalCommand = {internalCommand}");
+            //LogInstance.Log($"TSTStorageOfNPCProcesses internalCommand = {internalCommand}");
 
             //process = storage.GetProcess(internalCommand);
 
-            //NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) = {process == null}");
+            //LogInstance.Log($"TSTStorageOfNPCProcesses (process == null) = {process == null}");
 
             //process = storage.GetProcess(internalCommand);
 
-            //NLog.LogManager.GetCurrentClassLogger().Info($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
+            //LogInstance.Log($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
 
             Thread.Sleep(10000);
 
-            NLog.LogManager.GetCurrentClassLogger().Info("End TSTStorageOfNPCProcesses");
+            LogInstance.Log("End TSTStorageOfNPCProcesses");
         }
 
         private static void TSTActivatorOfNPCProcessEntryPointInfo()
@@ -786,28 +786,28 @@ namespace TmpSandBox
             var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
             var rank = activator.GetRankByTypesOfParameters(typeof(int), typeof(string));
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo typeof(int?).FullName = {typeof(int?).FullName}");
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo System.Nullable = {typeof(int?).FullName.StartsWith("System.Nullable")}");
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo typeof(int?).IsClass = {typeof(int?).IsClass}");
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo typeof(string).IsClass = {typeof(string).IsClass}");
+            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo typeof(int?).FullName = {typeof(int?).FullName}");
+            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo System.Nullable = {typeof(int?).FullName.StartsWith("System.Nullable")}");
+            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo typeof(int?).IsClass = {typeof(int?).IsClass}");
+            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo typeof(string).IsClass = {typeof(string).IsClass}");
 
             rank = activator.GetRankByTypesOfParameters(typeof(int?), typeof(int));
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
 
             rank = activator.GetRankByTypesOfParameters(typeof(string), null);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
 
             rank = activator.GetRankByTypesOfParameters(typeof(int?), null);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
 
             rank = activator.GetRankByTypesOfParameters(typeof(int), null);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
 
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
@@ -821,10 +821,10 @@ namespace TmpSandBox
             var paramsDict = new Dictionary<ulong, object>() { { arg1Key, true }, { arg2Key, 12 } };
             var result = activator.GetRankedEntryPoints(npcProcessInfo, paramsDict);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo result.Count = {result.Count}");
+            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo result.Count = {result.Count}");
             foreach(var tmpItem in result)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo tmpItem = {tmpItem}");
+                LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo tmpItem = {tmpItem}");
             }
 
             type = typeof(TestedNPCProcessInfoWithOneEntryPointWithArgsAndWithoutAttributesNPCProcess);
@@ -833,16 +833,16 @@ namespace TmpSandBox
             paramsDict = new Dictionary<ulong, object>() { { 1ul, true }, { 2ul, 12 } };
             result = activator.GetRankedEntryPoints(npcProcessInfo, paramsDict);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo result.Count = {result.Count}");
+            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo result.Count = {result.Count}");
             foreach (var tmpItem in result)
             {
-                NLog.LogManager.GetCurrentClassLogger().Info($"TSTActivatorOfNPCProcessEntryPointInfo tmpItem = {tmpItem}");
+                LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo tmpItem = {tmpItem}");
             }
         }
 
         private static void CreateContextAndProcessesCase1()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin CreateContextAndProcessesCase1");
+            LogInstance.Log("Begin CreateContextAndProcessesCase1");
 
             var npcProcessInfoCache = new NPCProcessInfoCache();
             var globalEntityDictionary = new EntityDictionary();
@@ -869,7 +869,7 @@ namespace TmpSandBox
             //}
             //catch(Exception e)
             //{
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"CreateContextAndProcessesCase1 e = {e}");
+            //    LogInstance.Log($"CreateContextAndProcessesCase1 e = {e}");
             //}
 
             //try
@@ -878,15 +878,15 @@ namespace TmpSandBox
             //}
             //catch (Exception e)
             //{
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"CreateContextAndProcessesCase1 e = {e}");
+            //    LogInstance.Log($"CreateContextAndProcessesCase1 e = {e}");
             //}
 
-            NLog.LogManager.GetCurrentClassLogger().Info("End CreateContextAndProcessesCase1");
+            LogInstance.Log("End CreateContextAndProcessesCase1");
         }
 
         private static void CreateInfoOfConcreteProcess()
         {
-            NLog.LogManager.GetCurrentClassLogger().Info("Begin CreateInfoOfConcreteProcess");
+            LogInstance.Log("Begin CreateInfoOfConcreteProcess");
 
             var entityLogger = new EntityLogger();
             entityLogger.Marker = Guid.NewGuid().ToString("D");
@@ -895,39 +895,39 @@ namespace TmpSandBox
             //var type = typeof(TmpConcreteNPCProcess);
             var type = typeof(TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
+            LogInstance.Log($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
 
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess npcProcessInfo = {npcProcessInfo}");
+            LogInstance.Log($"CreateInfoOfConcreteProcess npcProcessInfo = {npcProcessInfo}");
 
             var method_1 = npcProcessInfo.EntryPointsInfoList.Single(p => p.ParametersMap.Count == 0);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess method_1 = {method_1}");
+            LogInstance.Log($"CreateInfoOfConcreteProcess method_1 = {method_1}");
 
             var method_2 = npcProcessInfo.EntryPointsInfoList.SingleOrDefault(p => p.ParametersMap.Count == 2 && p.ParametersMap.ContainsValue(typeof(int)) && p.ParametersMap.ContainsValue(typeof(bool)));
-            NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess method_2 = {method_2}");
+            LogInstance.Log($"CreateInfoOfConcreteProcess method_2 = {method_2}");
 
             var method_3 = npcProcessInfo.EntryPointsInfoList.SingleOrDefault(p => p.ParametersMap.Count == 2 && p.ParametersMap.Values.Count(x => x == typeof(int)) == 2);
-            NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess method_3 = {method_3}");
+            LogInstance.Log($"CreateInfoOfConcreteProcess method_3 = {method_3}");
 
             //type = typeof(Program);
-            //NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
+            //LogInstance.Log($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
 
             //npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
 
-            //NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess npcProcessInfo = {npcProcessInfo}");
+            //LogInstance.Log($"CreateInfoOfConcreteProcess npcProcessInfo = {npcProcessInfo}");
 
-            NLog.LogManager.GetCurrentClassLogger().Info("End CreateInfoOfConcreteProcess");
+            LogInstance.Log("End CreateInfoOfConcreteProcess");
 
             type = typeof(TestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess);
-            NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
+            LogInstance.Log($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
 
             npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"CreateInfoOfConcreteProcess npcProcessInfo = {npcProcessInfo}");
+            LogInstance.Log($"CreateInfoOfConcreteProcess npcProcessInfo = {npcProcessInfo}");
         }
     }
 }
