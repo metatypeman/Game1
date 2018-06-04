@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.CG;
 using MyNPCLib.CGStorage;
 using MyNPCLib.Dot;
 using MyNPCLib.Logical;

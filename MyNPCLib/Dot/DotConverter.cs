@@ -1,6 +1,4 @@
-﻿using MyNPCLib.CGStorage;
-using System;
-using System.Collections.Generic;
+﻿using MyNPCLib.CG;
 using System.IO;
 using System.Text;
 

@@ -1,8 +1,6 @@
-﻿using MyNPCLib.CGStorage;
-using System;
+﻿using MyNPCLib.CG;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MyNPCLib.Dot
 {

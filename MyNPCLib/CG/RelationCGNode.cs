@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.CGStorage
+namespace MyNPCLib.CG
 {
     public class RelationCGNode : BaseCGNode
     {
