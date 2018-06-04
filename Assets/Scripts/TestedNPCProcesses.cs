@@ -16,7 +16,7 @@ namespace Assets.Scripts
         protected override void Awake()
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedBootNPCProcess Awake");
+            Log("Begin");
 #endif
 
             var command = TestedInspectingNPCProcess.CreateCommand();
@@ -27,7 +27,7 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedBootNPCProcess Main");
+            Log("Begin");
 #endif
         }
     }
@@ -39,23 +39,23 @@ namespace Assets.Scripts
         protected override void Awake()
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedInspectingNPCProcess Awake");
+            Log("Begin");
 #endif
 
             //var targetObject = GetLogicalObject("name='TrafficBarrierRed'");
             var targetObject = Context.GetLogicalObject("name='Ethan'");
 
 #if UNITY_EDITOR
-            Debug.Log("TestedInspectingNPCProcess Awake NEXT");
+            Log("NEXT");
 #endif
 
             var trigger = CreateTrigger(() => {
 #if UNITY_EDITOR
                 //var visibleObjects = BlackBoard.VisibleObjects;
-                //Debug.Log($"TestedInspectingNPCProcess Trigger visibleObjects.Count = {visibleObjects.Count}");
+                //Log($"Trigger visibleObjects.Count = {visibleObjects.Count}");
                 //foreach (var tmpVisibleObject in visibleObjects)
                 //{
-                //    Debug.Log($"TestedInspectingNPCProcess Trigger tmpVisibleObject = {tmpVisibleObject}");
+                //    Log($"Trigger tmpVisibleObject = {tmpVisibleObject}");
                 //}
 #endif
 
@@ -66,10 +66,10 @@ namespace Assets.Scripts
 
 #if UNITY_EDITOR
 
-                //Debug.Log($"TestedInspectingNPCProcess Trigger visibleObjects.Count = {visibleObjects.Count}");
+                //Log($"Trigger visibleObjects.Count = {visibleObjects.Count}");
                 //foreach(var tmpVisibleObject in visibleObjects)
                 //{
-                //    Debug.Log($"TestedInspectingNPCProcess Trigger tmpVisibleObject.InstanceID = {tmpVisibleObject.InstanceID} tmpVisibleObject.GameObject != null = {tmpVisibleObject.GameObject != null} tmpVisibleObject.GameObject?.Name = {tmpVisibleObject.GameObject?.Name}");
+                //    Log($"Trigger tmpVisibleObject.InstanceID = {tmpVisibleObject.InstanceID} tmpVisibleObject.GameObject != null = {tmpVisibleObject.GameObject != null} tmpVisibleObject.GameObject?.Name = {tmpVisibleObject.GameObject?.Name}");
                 //}
 #endif
 
@@ -95,17 +95,17 @@ namespace Assets.Scripts
         private void Trigger_OnFire()
         {
 #if UNITY_EDITOR
-            Debug.LogError("TestedInspectingNPCProcess Trigger_OnFire");
+            Error("Begin");
             var targetObject = Context.GetLogicalObject("name='Ethan'");
             var targetPosition = targetObject.GetValue<System.Numerics.Vector3?>("global position");
-            Debug.LogError($"TestedInspectingNPCProcess Trigger_OnFire targetPosition = {targetPosition}");
+            Error($"targetPosition = {targetPosition}");
 #endif
         }
 
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedInspectingNPCProcess Main");
+            Log("Begin");
 #endif
         }
     }
@@ -125,7 +125,7 @@ namespace Assets.Scripts
         private void Main(KeyCode key)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TestedKeyListenerNPCProcess Main key = {key}");
+            Log($"key = {key}");
 #endif
 
             switch(key)
@@ -177,7 +177,7 @@ namespace Assets.Scripts
                         var ethan = Context.GetLogicalObject("name='Ethan'");
                         
 #if UNITY_EDITOR
-                        Debug.Log($"TestedKeyListenerNPCProcess Main ethan = {ethan}");
+                        Log($"ethan = {ethan}");
 #endif
                        
                         var command = TestedFireToEthanNPCProcess.CreateCommand(ethan);
@@ -211,7 +211,7 @@ namespace Assets.Scripts
                         var rifle = Context.GetLogicalObject("name='M4A1 Sopmod'");
                         
 #if UNITY_EDITOR
-                        Debug.Log($"TestedKeyListenerNPCProcess Main rifle = {rifle}");
+                        Log($"rifle = {rifle}");
 #endif
 
                         var tmpB = Context.GetLogicalObject("name='TrafficBarrierHazards (1)'");
@@ -219,7 +219,7 @@ namespace Assets.Scripts
                         //var tmpP = tmpB.GetValue<System.Numerics.Vector3?>("global position");
 
 #if UNITY_EDITOR
-                        //Debug.Log($"TestedKeyListenerNPCProcess Main tmpP = {tmpP}");
+                        //Log($"tmpP = {tmpP}");
 #endif
 
                         if (rifle == null)
@@ -237,7 +237,7 @@ namespace Assets.Scripts
                         var instanceIdOfRifle = BlackBoard.EntityOfRifle;
                         
 #if UNITY_EDITOR
-            Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
+                        Log($"instanceIdOfRifle = {instanceIdOfRifle}");
 #endif
 
                         if(instanceIdOfRifle == null)
@@ -255,7 +255,7 @@ namespace Assets.Scripts
                         var instanceIdOfRifle = BlackBoard.EntityOfRifle;
                         
 #if UNITY_EDITOR
-            Debug.Log($"TestedKeyListenerNPCProcess Main instanceIdOfRifle = {instanceIdOfRifle}");
+                        Log($"instanceIdOfRifle = {instanceIdOfRifle}");
 #endif                        
                         if(instanceIdOfRifle == null)
                         {
@@ -286,7 +286,7 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("TestedGoToEnemyBaseNPCProcess Main");
+            Log("Begin");
 #endif
             var targetWayPoint = Context.GetLogicalObject($"name='FarWaypoint'&class='waypoint'");
             //var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
@@ -301,7 +301,7 @@ namespace Assets.Scripts
             moveCommand.TargetPosition = targetWayPoint.GetValue<System.Numerics.Vector3?>("global position");
 
 #if UNITY_EDITOR
-            Debug.Log($"TestedGoToEnemyBaseNPCProcess Main moveCommand = {moveCommand}");
+            Log($"moveCommand = {moveCommand}");
 #endif
 
             var childProcess = ExecuteBody(moveCommand);
@@ -323,14 +323,14 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TestedRunAwayNPCProcess Main");
+            Log("Begin");
 #endif
 
             var targetName = "Cube_1";
             GoToTargetWayPoint(targetName);
 
 #if UNITY_EDITOR
-            Debug.Log("End TestedRunAwayNPCProcess Main");
+            Log("End");
 #endif
         }
     }
@@ -349,7 +349,7 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TestedRunAtOurBaseNPCProcess Main");
+            Log("Begin");
 #endif
 
             for (var n = 1; n <= 3; n++)
@@ -357,13 +357,13 @@ namespace Assets.Scripts
                 var targetName = $"Cube_{n}";
 
 #if UNITY_EDITOR
-                //Debug.Log($"TestedRunAtOurBaseNPCProcess Main targetName = {targetName}");
+                //Log($"targetName = {targetName}");
 #endif
 
                 GoToTargetWayPoint(targetName);
 
 #if UNITY_EDITOR
-                //Debug.Log($"TestedRunAtOurBaseNPCProcess Main goal '{targetName}' had achieved!!!!");
+                //Log($"goal '{targetName}' had achieved!!!!");
 #endif
             }
 
@@ -377,7 +377,7 @@ namespace Assets.Scripts
             GoToTargetWayPoint(targetName2);
             
 #if UNITY_EDITOR
-            Debug.Log("End TestedRunAtOurBaseNPCProcess Main");
+            Log("End");
 #endif
         }
     }
@@ -396,7 +396,7 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TestedSimpleAimNPCProcess Main");
+            Log("Begin");
 #endif
 
             var tmpCommand = new HumanoidHandsActionStateCommand();
@@ -405,7 +405,7 @@ namespace Assets.Scripts
             var tmpTask = ExecuteBody(tmpCommand);
 
 #if UNITY_EDITOR
-            Debug.Log("End TestedSimpleAimNPCProcess Main");
+            Log("End");
 #endif
         }    
     }
@@ -425,7 +425,7 @@ namespace Assets.Scripts
         private void Main(BaseAbstractLogicalObject enemy)
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TestedFireToEthanNPCProcess Main enemy = {enemy}");
+            Log($"Begin enemy = {enemy}"); f
 #endif
 
 #if UNITY_EDITOR

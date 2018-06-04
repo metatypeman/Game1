@@ -14,7 +14,7 @@ namespace Assets.Scripts
         public override void Bootstrap()
         {
 #if UNITY_EDITOR
-            LogInstance.Log("TestedBlackBoard Bootstrap");
+            Log("TestedBlackBoard Bootstrap");
 #endif
         }
     

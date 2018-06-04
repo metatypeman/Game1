@@ -40,7 +40,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
     {
         var commonLevelHost = LevelCommonHostFactory.Get();
 
-        Debug.Log($"EnemyNPC (commonLevelHost == null) = {commonLevelHost == null}");
+        Log($"(commonLevelHost == null) = {commonLevelHost == null}");
 
         var internalBodyHost = GetComponent<IInternalBodyHumanoidHost>();
 

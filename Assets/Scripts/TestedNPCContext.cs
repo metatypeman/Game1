@@ -10,8 +10,8 @@ namespace Assets.Scripts
 {
     public class TestedNPCContext: BaseNPCContextWithBlackBoard<TestedBlackBoard>
     {
-        public TestedNPCContext(IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCHostContext npcHostContext, QueriesCache queriesCache)
-            : base(entityDictionary, npcProcessInfoCache, npcHostContext, queriesCache)
+        public TestedNPCContext(IEntityLogger entityLogger, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCHostContext npcHostContext, QueriesCache queriesCache)
+            : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext, queriesCache)
         {
             AddTypeOfProcess<TestedBootNPCProcess>();
             AddTypeOfProcess<TestedKeyListenerNPCProcess>();
