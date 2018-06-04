@@ -711,7 +711,7 @@ namespace TmpSandBox
         }
 
         private static void TSTStorageOfNPCProcesses()
-        {d
+        {
             var entityLogger = new EntityLogger();
             entityLogger.Marker = Guid.NewGuid().ToString("D");
             entityLogger.Enabled = true;
@@ -726,28 +726,28 @@ namespace TmpSandBox
 
             var result = storage.AddTypeOfProcess(type);
 
-            LogInstance.Log($"TSTStorageOfNPCProcesses result = {result}");
+            LogInstance.Log($"result = {result}");
 
             var command = new NPCCommand();
             command.Name = "test";
 
-            LogInstance.Log($"TSTStorageOfNPCProcesses command = {command}");
+            LogInstance.Log($"command = {command}");
 
             var internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
 
-            LogInstance.Log($"TSTStorageOfNPCProcesses internalCommand = {internalCommand}");
+            LogInstance.Log($"internalCommand = {internalCommand}");
 
             var process = storage.GetProcess(internalCommand);
 
-            LogInstance.Log($"TSTStorageOfNPCProcesses (process == null) = {process == null}");
+            LogInstance.Log($"(process == null) = {process == null}");
 
             process = storage.GetProcess(internalCommand);
 
-            LogInstance.Log($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
+            LogInstance.Log($"(process == null) (2) = {process == null}");
 
             process.RunAsync();
 
-            LogInstance.Log("TSTStorageOfNPCProcesses -----------------------------------------------");
+            LogInstance.Log("-----------------------------------------------");
 
             //type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
 
@@ -758,23 +758,23 @@ namespace TmpSandBox
             //command = new NPCCommand();
             //command.Name = "SomeName";
 
-            //LogInstance.Log($"TSTStorageOfNPCProcesses command = {command}");
+            //LogInstance.Log($"command = {command}");
 
             //internalCommand = NPCCommandHelper.ConvertICommandToInternalCommand(command, globalEntityDictionary);
 
-            //LogInstance.Log($"TSTStorageOfNPCProcesses internalCommand = {internalCommand}");
+            //LogInstance.Log($"internalCommand = {internalCommand}");
 
             //process = storage.GetProcess(internalCommand);
 
-            //LogInstance.Log($"TSTStorageOfNPCProcesses (process == null) = {process == null}");
+            //LogInstance.Log($"(process == null) = {process == null}");
 
             //process = storage.GetProcess(internalCommand);
 
-            //LogInstance.Log($"TSTStorageOfNPCProcesses (process == null) (2) = {process == null}");
+            //LogInstance.Log($"(process == null) (2) = {process == null}");
 
             Thread.Sleep(10000);
 
-            LogInstance.Log("End TSTStorageOfNPCProcesses");
+            LogInstance.Log("End");
         }
 
         private static void TSTActivatorOfNPCProcessEntryPointInfo()
@@ -786,28 +786,28 @@ namespace TmpSandBox
             var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
             var rank = activator.GetRankByTypesOfParameters(typeof(int), typeof(string));
 
-            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+            LogInstance.Log($"rank = {rank}");
 
-            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo typeof(int?).FullName = {typeof(int?).FullName}");
-            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo System.Nullable = {typeof(int?).FullName.StartsWith("System.Nullable")}");
-            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo typeof(int?).IsClass = {typeof(int?).IsClass}");
-            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo typeof(string).IsClass = {typeof(string).IsClass}");
+            LogInstance.Log($"typeof(int?).FullName = {typeof(int?).FullName}");
+            LogInstance.Log($"System.Nullable = {typeof(int?).FullName.StartsWith("System.Nullable")}");
+            LogInstance.Log($"typeof(int?).IsClass = {typeof(int?).IsClass}");
+            LogInstance.Log($"typeof(string).IsClass = {typeof(string).IsClass}");
 
             rank = activator.GetRankByTypesOfParameters(typeof(int?), typeof(int));
 
-            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+            LogInstance.Log($"rank = {rank}");
 
             rank = activator.GetRankByTypesOfParameters(typeof(string), null);
 
-            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+            LogInstance.Log($"rank = {rank}");
 
             rank = activator.GetRankByTypesOfParameters(typeof(int?), null);
 
-            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+            LogInstance.Log($"rank = {rank}");
 
             rank = activator.GetRankByTypesOfParameters(typeof(int), null);
 
-            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo rank = {rank}");
+            LogInstance.Log($"rank = {rank}");
 
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
@@ -821,10 +821,10 @@ namespace TmpSandBox
             var paramsDict = new Dictionary<ulong, object>() { { arg1Key, true }, { arg2Key, 12 } };
             var result = activator.GetRankedEntryPoints(npcProcessInfo, paramsDict);
 
-            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo result.Count = {result.Count}");
+            LogInstance.Log($"result.Count = {result.Count}");
             foreach(var tmpItem in result)
             {
-                LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo tmpItem = {tmpItem}");
+                LogInstance.Log($"tmpItem = {tmpItem}");
             }
 
             type = typeof(TestedNPCProcessInfoWithOneEntryPointWithArgsAndWithoutAttributesNPCProcess);
@@ -833,16 +833,16 @@ namespace TmpSandBox
             paramsDict = new Dictionary<ulong, object>() { { 1ul, true }, { 2ul, 12 } };
             result = activator.GetRankedEntryPoints(npcProcessInfo, paramsDict);
 
-            LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo result.Count = {result.Count}");
+            LogInstance.Log($"result.Count = {result.Count}");
             foreach (var tmpItem in result)
             {
-                LogInstance.Log($"TSTActivatorOfNPCProcessEntryPointInfo tmpItem = {tmpItem}");
+                LogInstance.Log($"tmpItem = {tmpItem}");
             }
         }
 
         private static void CreateContextAndProcessesCase1()
         {
-            LogInstance.Log("Begin CreateContextAndProcessesCase1");
+            LogInstance.Log("Begin");
 
             var npcProcessInfoCache = new NPCProcessInfoCache();
             var globalEntityDictionary = new EntityDictionary();
@@ -869,7 +869,7 @@ namespace TmpSandBox
             //}
             //catch(Exception e)
             //{
-            //    LogInstance.Log($"CreateContextAndProcessesCase1 e = {e}");
+            //    LogInstance.Log($"e = {e}");
             //}
 
             //try
@@ -878,15 +878,15 @@ namespace TmpSandBox
             //}
             //catch (Exception e)
             //{
-            //    LogInstance.Log($"CreateContextAndProcessesCase1 e = {e}");
+            //    LogInstance.Log($"e = {e}");
             //}
 
-            LogInstance.Log("End CreateContextAndProcessesCase1");
+            LogInstance.Log("End");
         }
 
         private static void CreateInfoOfConcreteProcess()
         {
-            LogInstance.Log("Begin CreateInfoOfConcreteProcess");
+            LogInstance.Log("Begin");
 
             var entityLogger = new EntityLogger();
             entityLogger.Marker = Guid.NewGuid().ToString("D");
@@ -895,39 +895,39 @@ namespace TmpSandBox
             //var type = typeof(TmpConcreteNPCProcess);
             var type = typeof(TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess);
 
-            LogInstance.Log($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
+            LogInstance.Log($"type.FullName = {type.FullName}");
 
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
 
-            LogInstance.Log($"CreateInfoOfConcreteProcess npcProcessInfo = {npcProcessInfo}");
+            LogInstance.Log($"npcProcessInfo = {npcProcessInfo}");
 
             var method_1 = npcProcessInfo.EntryPointsInfoList.Single(p => p.ParametersMap.Count == 0);
 
-            LogInstance.Log($"CreateInfoOfConcreteProcess method_1 = {method_1}");
+            LogInstance.Log($"method_1 = {method_1}");
 
             var method_2 = npcProcessInfo.EntryPointsInfoList.SingleOrDefault(p => p.ParametersMap.Count == 2 && p.ParametersMap.ContainsValue(typeof(int)) && p.ParametersMap.ContainsValue(typeof(bool)));
-            LogInstance.Log($"CreateInfoOfConcreteProcess method_2 = {method_2}");
+            LogInstance.Log($"method_2 = {method_2}");
 
             var method_3 = npcProcessInfo.EntryPointsInfoList.SingleOrDefault(p => p.ParametersMap.Count == 2 && p.ParametersMap.Values.Count(x => x == typeof(int)) == 2);
-            LogInstance.Log($"CreateInfoOfConcreteProcess method_3 = {method_3}");
+            LogInstance.Log($"method_3 = {method_3}");
 
             //type = typeof(Program);
-            //LogInstance.Log($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
+            //LogInstance.Log($"type.FullName = {type.FullName}");
 
             //npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
 
-            //LogInstance.Log($"CreateInfoOfConcreteProcess npcProcessInfo = {npcProcessInfo}");
-
-            LogInstance.Log("End CreateInfoOfConcreteProcess");
+            //LogInstance.Log($"npcProcessInfo = {npcProcessInfo}");
 
             type = typeof(TestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess);
-            LogInstance.Log($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
+            LogInstance.Log($"type.FullName = {type.FullName}");
 
             npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
 
-            LogInstance.Log($"CreateInfoOfConcreteProcess npcProcessInfo = {npcProcessInfo}");
+            LogInstance.Log($"npcProcessInfo = {npcProcessInfo}");
+
+            LogInstance.Log("End");
         }
     }
 }
