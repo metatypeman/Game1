@@ -295,75 +295,75 @@ namespace TmpSandBox
             //parser.Run();
             var node = LogicalExpressionParserHelper.CreateNode(context);
             LogInstance.Log($"node = {node}");
-            d
+            
             queryStr = "!((name='helen'&name='ann')|class='girl')";
-            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"TSTLexer node = {node}");
+            LogInstance.Log($"node = {node}");
 
             queryStr = "(name='helen'&name='ann')|class='girl'";
-            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
            
             node = LogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"TSTLexer node = {node}");
+            LogInstance.Log($"node = {node}");
 
             queryStr = "class='girl'|(name='helen'&name='ann')";
-            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"TSTLexer node = {node}");
+            LogInstance.Log($"node = {node}");
 
             queryStr = "class='girl'&(name='helen'&name='ann')";
-            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"TSTLexer node = {node}");
+            LogInstance.Log($"node = {node}");
 
             queryStr = "class='girl'&!(name='helen'&name='ann')";
-            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"TSTLexer node = {node}");
+            LogInstance.Log($"node = {node}");
 
             queryStr = "class='girl'|!(name='helen'&name='ann')";
-            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"TSTLexer node = {node}");
+            LogInstance.Log($"node = {node}");
 
             queryStr = "!class='girl'";
-            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"TSTLexer node = {node}");
+            LogInstance.Log($"node = {node}");
 
             queryStr = "class='girl'";
-            LogInstance.Log($"TSTLexer queryStr = {queryStr}");
+            LogInstance.Log($"queryStr = {queryStr}");
 
             context = new ParserContext(queryStr, globalEntityDictionary);
 
             node = LogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"TSTLexer node = {node}");
+            LogInstance.Log($"node = {node}");
         }
 
         private static void TSTLogicalAST()
         {
-            LogInstance.Log("Begin TSTLogicalAST");
+            LogInstance.Log("Begin");
 
             var globalEntityDictionary = new EntityDictionary();
             var entityLogger = new EntityLogger();
@@ -424,7 +424,7 @@ namespace TmpSandBox
             notNode.OperatorId = KindOfUnaryOperators.Not;
             notNode.Left = andNode;
 
-            LogInstance.Log($"TSTLogicalAST notNode = {notNode}");
+            LogInstance.Log($"notNode = {notNode}");
 
             var queryCache = new QueriesCache(globalEntityDictionary);
 
@@ -441,10 +441,10 @@ namespace TmpSandBox
 
             var entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
-            LogInstance.Log($"TSTLogicalAST entitiesIdList.Count = {entitiesIdList.Count}");
+            LogInstance.Log($"entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
             {
-                LogInstance.Log($"TSTLogicalAST entityId = {entityId}");
+                LogInstance.Log($"entityId = {entityId}");
             }
 
             passiveLogicalObject_2[classPropertyId] = "boy";
@@ -453,45 +453,45 @@ namespace TmpSandBox
 
             entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
-            LogInstance.Log($"TSTLogicalAST (2) entitiesIdList.Count = {entitiesIdList.Count}");
+            LogInstance.Log($"(2) entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
             {
-                LogInstance.Log($"TSTLogicalAST (2) entityId = {entityId}");
+                LogInstance.Log($"(2) entityId = {entityId}");
             }
 
             var logicalObject_2 = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
 
             entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
-            LogInstance.Log($"TSTLogicalAST (3) entitiesIdList.Count = {entitiesIdList.Count}");
+            LogInstance.Log($"(3) entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
             {
-                LogInstance.Log($"TSTLogicalAST (3) entityId = {entityId}");
+                LogInstance.Log($"(3) entityId = {entityId}");
             }
 
             var resultOfcomparsing = logicalObject == logicalObject_2;
 
-            LogInstance.Log($"TSTLogicalAST resultOfcomparsing = {resultOfcomparsing}");
+            LogInstance.Log($"resultOfcomparsing = {resultOfcomparsing}");
 
             resultOfcomparsing = logicalObject_2 == logicalObject;
 
-            LogInstance.Log($"TSTLogicalAST (2) resultOfcomparsing = {resultOfcomparsing}");
+            LogInstance.Log($"(2) resultOfcomparsing = {resultOfcomparsing}");
 
             /*var list1 = new List<int>() { 1 };
             var list2 = new List<int>() { 1, 2 };
 
             var except1_2 = list1.Except(list2).ToList();
-            LogInstance.Log($"TSTLogicalAST except1_2.Count = {except1_2.Count}");
+            LogInstance.Log($"except1_2.Count = {except1_2.Count}");
             foreach (var entityId in except1_2)
             {
-                LogInstance.Log($"TSTLogicalAST (1_2) entityId = {entityId}");
+                LogInstance.Log($"(1_2) entityId = {entityId}");
             }
 
             var except2_1 = list2.Except(list1).ToList();
-            LogInstance.Log($"TSTLogicalAST except2_1.Count = {except2_1.Count}");
+            LogInstance.Log($"except2_1.Count = {except2_1.Count}");
             foreach (var entityId in except2_1)
             {
-                LogInstance.Log($"TSTLogicalAST (2_1) entityId = {entityId}");
+                LogInstance.Log($"(2_1) entityId = {entityId}");
             }*/
         }
 
@@ -499,7 +499,7 @@ namespace TmpSandBox
 
         private static void TSTCancelTask_2()
         {
-            LogInstance.Log("Begin TSTCancelTask_2");
+            LogInstance.Log("Begin");
 
             var cs = new CancellationTokenSource();
             var token = cs.Token;
@@ -511,47 +511,47 @@ namespace TmpSandBox
                 {
                     mCancelationTokenDict[Task.CurrentId.Value] = token;
 
-                    LogInstance.Log("TSTCancelTask_2 Task start");
-                    LogInstance.Log($"TSTCancelTask_2 Task.CurrentId = {Task.CurrentId}");
+                    LogInstance.Log("Task start");
+                    LogInstance.Log($"Task.CurrentId = {Task.CurrentId}");
 
                     DoWork();
                 }
                 catch(OperationCanceledException)
                 {
-                    LogInstance.Log("TSTCancelTask_2 catch(OperationCanceledException)");
+                    LogInstance.Log("catch(OperationCanceledException)");
                 }
                 catch(Exception e)
                 {
-                    LogInstance.Error($"TSTCancelTask_2 Task e = {e}");
+                    LogInstance.Error($"Task e = {e}");
                 }
                 finally
                 {
                     mCancelationTokenDict.Remove(Task.CurrentId.Value);
-                    LogInstance.Log($"TSTCancelTask_2 finally");
+                    LogInstance.Log($"finally");
                 }
             }, token);
 
             tmpTask.Start();
 
-            LogInstance.Log("TSTCancelTask_2 started");
-            LogInstance.Log($"TSTCancelTask_2 tmpTask.Id = {tmpTask.Id}");
+            LogInstance.Log("started");
+            LogInstance.Log($"tmpTask.Id = {tmpTask.Id}");
 
             Thread.Sleep(1000);
 
-            LogInstance.Log($"TSTCancelTask_2 mCancelationTokenDict.Count = {mCancelationTokenDict.Count}");
+            LogInstance.Log($"mCancelationTokenDict.Count = {mCancelationTokenDict.Count}");
 
             cs.Cancel();
 
-            LogInstance.Log("TSTCancelTask_2 Canceled");
+            LogInstance.Log("Canceled");
 
             cs.Cancel();
 
-            LogInstance.Log("TSTCancelTask_2 Canceled twice");
+            LogInstance.Log("Canceled twice");
 
             Thread.Sleep(1000);
 
-            LogInstance.Log($"TSTCancelTask after mCancelationTokenDict.Count = {mCancelationTokenDict.Count}");
-            LogInstance.Log("End TSTCancelTask_2");
+            LogInstance.Log($"after mCancelationTokenDict.Count = {mCancelationTokenDict.Count}");
+            LogInstance.Log("End");
         }
 
         private static void DoWork()
@@ -562,7 +562,7 @@ namespace TmpSandBox
 
             while (true)
             {
-                LogInstance.Log($"DoWork Task n = {n}");
+                LogInstance.Log($"n = {n}");
                 n++;
 
                 token.ThrowIfCancellationRequested();
@@ -571,7 +571,7 @@ namespace TmpSandBox
 
         private static void TSTCancelTask()
         {
-            LogInstance.Log("Begin TSTCancelTask");
+            LogInstance.Log("Begin");
 
             Thread tmpThread = null;
 
@@ -582,29 +582,29 @@ namespace TmpSandBox
 
                 while(true)
                 {
-                    LogInstance.Log($"TSTCancelTask Task n = {n}");
+                    LogInstance.Log($"Task n = {n}");
                     n++;
                 }
             });
 
             tmpTask.Start();
 
-            LogInstance.Log("TSTCancelTask started");
+            LogInstance.Log("started");
 
             Thread.Sleep(1000);
 
             tmpThread.Abort();
 
-            LogInstance.Log("TSTCancelTask aborted");
+            LogInstance.Log("aborted");
 
             Thread.Sleep(1000);
 
-            LogInstance.Log("End TSTCancelTask");
+            LogInstance.Log("End");
         }
 
         private static void TSTMyNPCContext()
         {
-            LogInstance.Log("Begin TSTMyNPCContext");
+            LogInstance.Log("Begin");
 
             var globalEntityDictionary = new EntityDictionary();
 
@@ -657,52 +657,52 @@ namespace TmpSandBox
 
             var entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
-            LogInstance.Log($"TSTMyNPCContext entitiesIdList.Count = {entitiesIdList.Count}");
+            LogInstance.Log($"entitiesIdList.Count = {entitiesIdList.Count}");
             foreach (var entityId in entitiesIdList)
             {
-                LogInstance.Log($"TSTMyNPCContext entityId = {entityId}");
+                LogInstance.Log($"entityId = {entityId}");
             }
 
             var logicalObject_2 = context.GetLogicalObject(queryStr);
 
             var entitiesIdList_2 = logicalObject_2.CurrentEntitiesIdList;
 
-            LogInstance.Log($"TSTMyNPCContext entitiesIdList_2.Count = {entitiesIdList_2.Count}");
+            LogInstance.Log($"entitiesIdList_2.Count = {entitiesIdList_2.Count}");
             foreach (var entityId in entitiesIdList)
             {
-                LogInstance.Log($"TSTMyNPCContext entityId = {entityId}");
+                LogInstance.Log($"entityId = {entityId}");
             }
 
             var resultOfcomparsing = logicalObject == logicalObject_2;
 
-            LogInstance.Log($"TSTMyNPCContext resultOfcomparsing = {resultOfcomparsing}");
+            LogInstance.Log($"resultOfcomparsing = {resultOfcomparsing}");
 
             var name = logicalObject["name"];
 
-            LogInstance.Log($"TSTMyNPCContext name = {name}");
+            LogInstance.Log($"name = {name}");
 
             logicalObject["name"] = 12;
 
             name = logicalObject["name"];
 
-            LogInstance.Log($"TSTMyNPCContext name (2) = {name}");
+            LogInstance.Log($"name (2) = {name}");
 
             resultOfcomparsing = context.SelfLogicalObject == logicalObject;
 
-            LogInstance.Log($"TSTMyNPCContext resultOfcomparsing (2) = {resultOfcomparsing}");
+            LogInstance.Log($"resultOfcomparsing (2) = {resultOfcomparsing}");
 
             var visibleItems = context.VisibleObjects;
-            LogInstance.Log($"TSTMyNPCContext visibleItems.Count = {visibleItems.Count}");
+            LogInstance.Log($"visibleItems.Count = {visibleItems.Count}");
             foreach (var visibleItem in visibleItems)
             {
-                LogInstance.Log($"TSTMyNPCContext visibleItem = {visibleItem}");
+                LogInstance.Log($"visibleItem = {visibleItem}");
                 var posOfVisibleItem = visibleItem["global position"];
-                LogInstance.Log($"TSTMyNPCContext posOfVisibleItem = {posOfVisibleItem}");
+                LogInstance.Log($"posOfVisibleItem = {posOfVisibleItem}");
             }
 
             var pos = context.SelfLogicalObject["global position"];
 
-            LogInstance.Log($"TSTMyNPCContext pos = {pos}");
+            LogInstance.Log($"pos = {pos}");
 
             while (true)
             {
@@ -711,7 +711,7 @@ namespace TmpSandBox
         }
 
         private static void TSTStorageOfNPCProcesses()
-        {
+        {d
             var entityLogger = new EntityLogger();
             entityLogger.Marker = Guid.NewGuid().ToString("D");
             entityLogger.Enabled = true;
