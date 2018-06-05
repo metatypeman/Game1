@@ -16,39 +16,52 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
     private TestedNPCContext mNPCProcessesContext;
 
     private InputKeyHelper mInputKeyHelper;
+    private IInternalBodyHumanoidHost mInternalBodyHumanoidHost;
+
+    private readonly object mEntityLoggerLockObj = new object();
+    private IEntityLogger mEntityLogger;
 
     [MethodForLoggingSupport]
     protected void Log(string message)
     {
-        mEntityLogger?.Log(message);
+        lock (mEntityLoggerLockObj)
+        {
+            mEntityLogger?.Log(message);
+        }
     }
 
     [MethodForLoggingSupport]
     protected void Error(string message)
     {
-        mEntityLogger?.Error(message);
+        lock (mEntityLoggerLockObj)
+        {
+            mEntityLogger?.Error(message);
+        }
     }
 
     [MethodForLoggingSupport]
     protected void Warning(string message)
     {
-        mEntityLogger?.Warning(message);
+        lock (mEntityLoggerLockObj)
+        {
+            mEntityLogger?.Warning(message);
+        }
     }
 
     // Use this for initialization
     void Start()
     {
-        var commonLevelHost = LevelCommonHostFactory.Get();
-
-        Log($"(commonLevelHost == null) = {commonLevelHost == null}");
-
         var internalBodyHost = GetComponent<IInternalBodyHumanoidHost>();
 
-        var hostContext = new TestedNPCHostContext(internalBodyHost);
-        mNPCProcessesContext = new TestedNPCContext(commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext, commonLevelHost.QueriesCache);
-
-        mNPCProcessesContext.Bootstrap();
-        
+        if(internalBodyHost.IsReady)
+        {        
+            CreateNPCHostContext();
+        }
+        else
+        {
+            internalBodyHost.OnReady += InternalBodyHost_OnReady;
+        }
+  
         mInputKeyHelper = new InputKeyHelper();
         mInputKeyHelper.AddListener(KeyCode.F, OnFPressAction);
         mInputKeyHelper.AddListener(KeyCode.G, OnGPressAction);
@@ -69,13 +82,35 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
             {
                 var gameObj = ThreadSafeGameObj();
 
-                Debug.Log($"EnemyNPC Start gameObj = {gameObj}");
+                Log($"gameObj = {gameObj}");
             }
             catch(Exception e)
             {
-                Debug.LogError($"EnemyNPC Start e = {e}");
+                Error($"e = {e}");
             }
         });
+    }
+
+    private void InternalBodyHost_OnReady()
+    {
+        CreateNPCHostContext();
+    }
+
+    public void CreateNPCHostContext()
+    {
+        lock (mEntityLoggerLockObj)
+        {
+            mEntityLogger = mInternalBodyHumanoidHost.EntityLogger;
+        }
+
+        var commonLevelHost = LevelCommonHostFactory.Get();
+
+        Log($"(commonLevelHost == null) = {commonLevelHost == null}");
+
+        var hostContext = new TestedNPCHostContext(mInternalBodyHumanoidHost);
+        mNPCProcessesContext = new TestedNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext, commonLevelHost.QueriesCache);
+
+        mNPCProcessesContext.Bootstrap();
     }
 
     public void SetInvocableObj(IInvocableInMainThreadObj invokableObj)
@@ -91,16 +126,16 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         var invocableWithoutResult = new InvocableInMainThreadObj(() =>
         {
             var gunBody = GameObject.Find("M4A1 Sopmod");
-            Debug.Log($"EnemyNPC fun = () gunBody.name = {gunBody.name}");
+            Log($"fun = () gunBody.name = {gunBody.name}");
             var position = gunBody.transform.position;
-            Debug.Log($"EnemyNPC End fun = () position = {position}");
+            Log($"End fun = () position = {position}");
         }, this);
 
         invocableWithoutResult.Run();
 
         var invocable = new InvocableInMainThreadObj<string>(() => {
             var gunBody = GameObject.Find("M4A1 Sopmod");
-            Debug.Log($"EnemyNPC End fun = () gunBody.name = {gunBody.name}");
+            Log($"End fun = () gunBody.name = {gunBody.name}");
             return gunBody.name;
         }, this);
 
@@ -145,124 +180,124 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
     private void OnQPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnQPressAction key = {key}");
+        Log($"key = {key}");
         
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnQPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command);
     }
 
     private void OnJPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnJPressAction key = {key}");
+        Log($"key = {key}");
         
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnJPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command);
     }
 
     private void OnBPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnBPressAction key = {key}");
+        Log($"key = {key}");
 
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnBPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command);
     }
 
     private void OnMPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnMPressAction key = {key}");
+        Log($"key = {key}");
 
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnMPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command);
     }
 
     private void OnFPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnFPressAction key = {key}");
+        Log($"key = {key}");
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnFPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command);
     }
 
     private void OnGPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnGPressAction key = {key}");
+        Log($"key = {key}");
 
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnGPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command);
     }
 
     private void OnKPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnKPressAction key = {key}");
+        Log($"key = {key}");
 
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnKPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command);
     }
 
     private void OnNPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnNPressAction key = {key}");
+        Log($"key = {key}");
 
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnNPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command);
     }
 
     private void OnHPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnHPressAction key = {key}");
+        Log($"key = {key}");
 
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnHPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command); 
     }
 
     private void OnLPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnLPressAction key = {key}");
+        Log($"key = {key}");
 
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnLPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command);
     }
 
     private void OnIPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnIPressAction key = {key}");        
+        Log($"key = {key}");        
         var _target = GameObject.Find("Ethan");
 
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnIPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command);
     }
 
     private void OnPPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnPPressAction key = {key}");
+        Log($"key = {key}");
 
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnPPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command);
     }
     
     private void OnUPressAction(KeyCode key)
     {
-        Debug.Log($"EnemyNPC OnUPressAction key = {key}");
+        Log($"key = {key}");
 
         var command = KeyToNPCCommandConverter.Convert(key);
-        Debug.Log($"EnemyNPC OnUPressAction command = {command}");
+        Log($"command = {command}");
         mNPCProcessesContext.Send(command);
     }
 
     void OnDestroy()
     {
-        //Debug.Log("OnDestroy");
+        //Log("Begin");
         mNPCProcessesContext?.Dispose();   
     }
 }

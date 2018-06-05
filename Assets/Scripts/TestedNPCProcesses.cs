@@ -425,15 +425,15 @@ namespace Assets.Scripts
         private void Main(BaseAbstractLogicalObject enemy)
         {
 #if UNITY_EDITOR
-            Log($"Begin enemy = {enemy}"); f
+            Log($"Begin enemy = {enemy}");
 #endif
 
 #if UNITY_EDITOR
             var isAlive = enemy.GetValue<bool?>("alive");
-            Debug.LogError($"TestedFireToEthanNPCProcess Main isAlive = {isAlive}");
+            Error($"isAlive = {isAlive}");
 
             var isDied = enemy.GetValue<bool?>("died");
-            Debug.LogError($"TestedFireToEthanNPCProcess Main isDied = {isDied}");
+            Error($"isDied = {isDied}");
 #endif
 
             var searchNearCommand = TestedSearchNearNPCProcess.CreateCommand(enemy, 100);
@@ -446,8 +446,8 @@ namespace Assets.Scripts
             var targetPosition = enemy.GetValue<System.Numerics.Vector3?>("global position");
 
 #if UNITY_EDITOR
-            Debug.Log($"Begin TestedFireToEthanNPCProcess Main enemy = {enemy}");
-            Debug.LogError($"TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
+            Log($"enemy = {enemy}");
+            Error($"targetPosition = {targetPosition}");
 #endif
 
             if (targetPosition == null)
@@ -457,10 +457,10 @@ namespace Assets.Scripts
 
 #if UNITY_EDITOR
             isAlive = enemy.GetValue<bool?>("alive");
-            Debug.LogError($"TestedFireToEthanNPCProcess Main isAlive (2) = {isAlive}");
+            Error($"isAlive (2) = {isAlive}");
 
             isDied = enemy.GetValue<bool?>("died");
-            Debug.LogError($"TestedFireToEthanNPCProcess Main isDied (2) = {isDied}");
+            Error($"isDied (2) = {isDied}");
 #endif
 
             var tmpCommand = new HumanoidHStateCommand();
@@ -481,21 +481,21 @@ namespace Assets.Scripts
 
 #if UNITY_EDITOR
             isAlive = enemy.GetValue<bool?>("alive");
-            Debug.LogError($"TestedFireToEthanNPCProcess Main isAlive (3) = {isAlive}");
+            Error($"isAlive (3) = {isAlive}");
 
             isDied = enemy.GetValue<bool?>("died");
-            Debug.LogError($"TestedFireToEthanNPCProcess Main isDied (3) = {isDied}");
+            Error($"isDied (3) = {isDied}");
 #endif
 
 #if UNITY_EDITOR
-            Debug.Log($"End TestedFireToEthanNPCProcess Main targetPosition = {targetPosition}");
+            Log($"End targetPosition = {targetPosition}");
 #endif
         }
 
         private void TmpTask_OnStateChanged(INPCProcess sender, StateOfNPCProcess state)
         {
             //Debug.Log($"TestedSearchNearNPCProcess TmpTask_OnStateChanged sender.Id = {sender.Id} state = {state}");
-            Debug.LogWarning($"TestedFireToEthanNPCProcess TmpTask_OnStateChanged sender.Id = {sender.Id} state = {state}");
+            Warning($"sender.Id = {sender.Id} state = {state}");
         }
     }
 
@@ -526,63 +526,63 @@ namespace Assets.Scripts
         private void Main(BaseAbstractLogicalObject entity)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TestedSearchNearNPCProcess Main entity = {entity}");
-            Debug.Log($"TestedSearchNearNPCProcess Main Id = {Id}");
+            Log($"entity = {entity}");
+            Log($"Id = {Id}");
 #endif
 
             Main(entity, DEFAULT_ANGLE, DEFAULT_ANGLE, DEFAULT_DELTA);
 
 #if UNITY_EDITOR
-            Debug.Log("End TestedSearchNearNPCProcess Main");
+            Log("End");
 #endif
         }
 
         private void Main(BaseAbstractLogicalObject entity, float angle)
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TestedSearchNearNPCProcess Main entity = {angle}");
-            Debug.Log($"TestedSearchNearNPCProcess Main enemy = {entity}");
-            Debug.Log($"TestedSearchNearNPCProcess Main Id = {Id}");
-            Debug.Log($"TestedSearchNearNPCProcess Begin Rotate to Angle angle = {angle} Id = {Id}");
+            Log($"Begin entity = {angle}");
+            Log($"enemy = {entity}");
+            Log($"Id = {Id}");
+            Log($"Rotate to Angle angle = {angle} Id = {Id}");
 #endif
 
             Main(entity, angle, angle, DEFAULT_DELTA);
 
 #if UNITY_EDITOR
-            Debug.Log("End TestedSearchNearNPCProcess Main");
+            Log("End");
 #endif
         }
 
         private void Main(BaseAbstractLogicalObject entity, float leftAngle, float rightAngle)
         {
 #if UNITY_EDITOR        
-            Debug.Log($"TestedSearchNearNPCProcess Main entity = {entity}");
-            Debug.Log($"Begin TestedSearchNearNPCProcess Main leftAngle = {leftAngle}");
-            Debug.Log($"Begin TestedSearchNearNPCProcess Main rightAngle = {rightAngle}");
-            Debug.Log($"TestedSearchNearNPCProcess Main Id = {Id}");
+            Log($"entity = {entity}");
+            Log($"leftAngle = {leftAngle}");
+            Log($"rightAngle = {rightAngle}");
+            Log($"Id = {Id}");
 #endif
 
             Main(entity, leftAngle, rightAngle, DEFAULT_DELTA);
 
 #if UNITY_EDITOR
-            Debug.Log("End TestedSearchNearNPCProcess Main");
+            Log("End");
 #endif
         }
 
         private void Main(BaseAbstractLogicalObject entity, float leftAngle, float rightAngle, float delta)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TestedSearchNearNPCProcess Main entity = {entity}");
-            Debug.Log($"Begin TestedSearchNearNPCProcess Main leftAngle = {leftAngle}");
-            Debug.Log($"Begin TestedSearchNearNPCProcess Main rightAngle = {rightAngle}");
-            Debug.Log($"Begin TestedSearchNearNPCProcess Main delta = {delta}");
-            Debug.Log($"TestedSearchNearNPCProcess Main Id = {Id}");
+            Log($"entity = {entity}");
+            Log($"leftAngle = {leftAngle}");
+            Log($"rightAngle = {rightAngle}");
+            Log($"delta = {delta}");
+            Log($"Id = {Id}");
 #endif
 
             var targetPosition = entity.GetValue<System.Numerics.Vector3?>("global position");
 
 #if UNITY_EDITOR
-            Debug.Log($"TestedSearchNearNPCProcess Main targetPosition = {targetPosition}");
+            Log($"targetPosition = {targetPosition}");
 #endif
 
             if (targetPosition.HasValue)
@@ -600,13 +600,13 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("TestedSearchNearNPCProcess Main NEXT");
+            Log("NEXT");
 #endif
 
             if (leftAngle > 0f)
             {
 #if UNITY_EDITOR
-                Debug.Log($"TestedSearchNearNPCProcess Main Begin left while");
+                Log("Begin left while");
 #endif
 
                 if(RotateTo(entity, leftAngle, delta))
@@ -615,7 +615,7 @@ namespace Assets.Scripts
                 }
 
 #if UNITY_EDITOR
-                Debug.Log($"TestedSearchNearNPCProcess Main End left while");
+                Log("End left while");
 #endif
 
             }
@@ -623,7 +623,7 @@ namespace Assets.Scripts
             if (rightAngle > 0f)
             {
 #if UNITY_EDITOR
-                Debug.Log($"TestedSearchNearNPCProcess Main Begin right while");
+                Log("Begin right while");
 #endif
                 if (leftAngle > 0f)
                 {
@@ -640,28 +640,28 @@ namespace Assets.Scripts
                 }
 
 #if UNITY_EDITOR
-                Debug.Log($"TestedSearchNearNPCProcess Main End left while");
+                Log("End left while");
 #endif
             }
 
 #if UNITY_EDITOR
-            Debug.Log("End TestedSearchNearNPCProcess Main");
+            Log("End");
 #endif
         }
 
         private bool RotateTo(BaseAbstractLogicalObject entity, float angle, float delta)
         {
 #if UNITY_EDITOR
-            Debug.Log($"TestedSearchNearNPCProcess RotateTo entity = {entity}");
-            Debug.Log($"Begin TestedSearchNearNPCProcess RotateTo angle = {angle}");
-            Debug.Log($"Begin TestedSearchNearNPCProcess RotateTo delta = {delta}");
-            Debug.Log($"TestedSearchNearNPCProcess RotateTo Id = {Id}");
+            Log($"entity = {entity}");
+            Log($"angle = {angle}");
+            Log($"delta = {delta}");
+            Log($"Id = {Id}");
 #endif
 
             var anglesList = ListHelper.GetRange(0, angle, delta);
 
 #if UNITY_EDITOR
-            Debug.Log($"TestedSearchNearNPCProcess RotateTowhile anglesList.Count = {anglesList.Count}");
+            Log($"anglesList.Count = {anglesList.Count}");
 #endif
 
             var cmdDelta = delta;
@@ -672,13 +672,13 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log($"TestedSearchNearNPCProcess RotateTowhile cmdDelta = {cmdDelta}");
+            Log($"cmdDelta = {cmdDelta}");
 #endif
 
             var targetPosition = entity.GetValue<System.Numerics.Vector3?>("global position");
 
 #if UNITY_EDITOR
-            Debug.Log($"TestedSearchNearNPCProcess Main targetPosition = {targetPosition}");
+            Log($"targetPosition = {targetPosition}");
 #endif
 
             if (targetPosition.HasValue)
@@ -689,7 +689,7 @@ namespace Assets.Scripts
             foreach (var currentAngle in anglesList)
             {
 #if UNITY_EDITOR
-                Debug.Log($"TestedSearchNearNPCProcess RotateTowhile currentAngle = {currentAngle}");
+                Log($"currentAngle = {currentAngle}");
 #endif
 
                 var tmpCommand = new HumanoidHStateCommand();
@@ -703,7 +703,7 @@ namespace Assets.Scripts
                 var targetPosition_1 = entity.GetValue<System.Numerics.Vector3?>("global position");
 
 #if UNITY_EDITOR
-                Debug.Log($"TestedSearchNearNPCProcess Main targetPosition_1 = {targetPosition_1}");
+                Log($"targetPosition_1 = {targetPosition_1}");
 #endif
 
                 if(targetPosition_1.HasValue)
@@ -713,7 +713,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("End TestedSearchNearNPCProcess RotateTo");
+            Log("End");
 #endif
 
             return false;
@@ -721,8 +721,7 @@ namespace Assets.Scripts
 
         private void TmpTask_OnStateChanged(INPCProcess sender, StateOfNPCProcess state)
         {
-            //Debug.Log($"TestedSearchNearNPCProcess TmpTask_OnStateChanged sender.Id = {sender.Id} state = {state}");
-            Debug.LogWarning($"TestedSearchNearNPCProcess TmpTask_OnStateChanged sender.Id = {sender.Id} state = {state}");
+            Warning($"sender.Id = {sender.Id} state = {state}");
         }
     }
 
@@ -741,7 +740,7 @@ namespace Assets.Scripts
         private void Main(float angle)
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TestedRotateNPCProcess Main angle = {angle}");
+            Log($"Begin angle = {angle}");
 #endif
 
             var tmpCommand = new HumanoidHStateCommand();
@@ -751,7 +750,7 @@ namespace Assets.Scripts
             var tmpTask = ExecuteBody(tmpCommand);
 
 #if UNITY_EDITOR
-            Debug.Log($"End TestedRotateNPCProcess Main angle = {angle}");
+            Log($"End angle = {angle}");
 #endif
         }    
     }
@@ -771,7 +770,7 @@ namespace Assets.Scripts
         private void Main(float angle)
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TestedRotateHeadNPCProcess Main angle = {angle}");
+            Log($"Begin angle = {angle}");
 #endif
 
             var tmpCommand = new HumanoidHeadStateCommand();
@@ -781,7 +780,7 @@ namespace Assets.Scripts
             var tmpTask = ExecuteBody(tmpCommand);
 
 #if UNITY_EDITOR
-            Debug.Log($"End TestedRotateHeadNPCProcess Main angle = {angle}");
+            Log($"End angle = {angle}");
 #endif
         }    
     }
@@ -800,7 +799,7 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TestedHeadToForvardNPCProcess Main");
+            Log("Begin");
 #endif
 
             var tmpCommand = new HumanoidHeadStateCommand();
@@ -808,7 +807,7 @@ namespace Assets.Scripts
             var tmpTask = ExecuteBody(tmpCommand);
 
 #if UNITY_EDITOR
-            Debug.Log("End TestedHeadToForvardNPCProcess Main");
+            Log("End");
 #endif
         }    
     }
@@ -827,7 +826,7 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TestedMoveNPCProcess Main");
+            Log("Begin");
 #endif
 
             var tmpCommand = new HumanoidHStateCommand();
@@ -836,7 +835,7 @@ namespace Assets.Scripts
             var tmpTask = ExecuteBody(tmpCommand);
 
 #if UNITY_EDITOR
-            Debug.Log("End TestedMoveNPCProcess Main");
+            Log("End");
 #endif
         }    
     }
@@ -856,7 +855,7 @@ namespace Assets.Scripts
         private void Main(BaseAbstractLogicalObject thing)
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TestedTakeFromSurfaceNPCProcess Main thing = {thing}");
+            Log($"Begin thing = {thing}");
 #endif
 
             var tmpCommand = new HumanoidThingsCommand();
@@ -866,14 +865,14 @@ namespace Assets.Scripts
 
             tmpTask.OnRanToCompletionChanged += (INPCProcess sender) => {
 #if UNITY_EDITOR
-                //Debug.Log("TestedTakeFromSurfaceNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
+                //Log("tmpTask.OnStateChangedToRanToCompletion");
 #endif
 
                 BlackBoard.EntityOfRifle = thing;
             };
 
 #if UNITY_EDITOR
-            Debug.Log($"End TestedTakeFromSurfaceNPCProcess Main thing = {thing}");
+            Log($"End thing = {thing}");
 #endif
         }
     }
@@ -893,7 +892,7 @@ namespace Assets.Scripts
         private void Main(BaseAbstractLogicalObject thing)
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TestedHideRifleToBagPackNPCProcess Main thing = {thing}");
+            Log($"Begin thing = {thing}");
 #endif
 
             var tmpCommand = new HumanoidThingsCommand();
@@ -903,13 +902,12 @@ namespace Assets.Scripts
 
             tmpTask.OnRanToCompletionChanged += (INPCProcess sender) => {
 #if UNITY_EDITOR
-                //Debug.Log("TestedHideRifleToBagPackNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
+                //Log("tmpTask.OnStateChangedToRanToCompletion");
 #endif
-
             };
             
 #if UNITY_EDITOR
-            Debug.Log($"End TestedHideRifleToBagPackNPCProcess Main thing = {thing}");
+            Log($"End thing = {thing}");
 #endif
         }   
     }
@@ -929,7 +927,7 @@ namespace Assets.Scripts
         private void Main(BaseAbstractLogicalObject thing)
         {
 #if UNITY_EDITOR
-            Debug.Log($"Begin TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main thing = {thing}");
+            Log($"Begin thing = {thing}");
 #endif
 
             var tmpCommand = new HumanoidThingsCommand();
@@ -939,12 +937,12 @@ namespace Assets.Scripts
 
             tmpTask.OnRanToCompletionChanged += (INPCProcess sender) => {
 #if UNITY_EDITOR
-                //Debug.Log("TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main tmpTask.OnStateChangedToRanToCompletion");
+                //Log("tmpTask.OnStateChangedToRanToCompletion");
 #endif
             };
 
 #if UNITY_EDITOR
-            Debug.Log($"End TestedThrowOutToSurfaceRifleToSurfaceNPCProcess Main thing = {thing}");
+            Log($"End thing = {thing}");
 #endif
         }   
     }
@@ -963,13 +961,13 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TestedStartShootingNPCProcess Main");
+            Log("Begin");
 #endif
 
             var fireMode = GetDefaultHandProperty<FireMode?>("FireMode");
 
 #if UNITY_EDITOR
-            Debug.Log($"TestedStartShootingNPCProcess Main fireMode = {fireMode}");
+            Log($"fireMode = {fireMode}");
 #endif
 
             if(fireMode.HasValue)
@@ -989,14 +987,14 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            Debug.Log("End TestedStartShootingNPCProcess Main");
+            Log("End");
 #endif
         }
 
         private void MultipleShooting()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TestedStartShootingNPCProcess ");
+            Log("Begin");
 #endif
 
             var command = new NPCCommand();
@@ -1005,20 +1003,18 @@ namespace Assets.Scripts
             ExecuteDefaultHand(command);
 
 #if UNITY_EDITOR
-            Debug.Log("End TestedStartShootingNPCProcess ");
+            Log("End");
 #endif
         }
 
         private void SingleShoting()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TestedStartShootingNPCProcess ");
+            Log("Begin");
 #endif
 
-
-
 #if UNITY_EDITOR
-            Debug.Log("End TestedStartShootingNPCProcess ");
+            Log("End ");
 #endif
         }
     }
@@ -1037,7 +1033,7 @@ namespace Assets.Scripts
         private void Main()
         {
 #if UNITY_EDITOR
-            Debug.Log("Begin TestedStopShootingNPCProcess Main");
+            Log("Begin");
 #endif
 
             var command = new NPCCommand();
@@ -1046,7 +1042,7 @@ namespace Assets.Scripts
             ExecuteDefaultHand(command);
 
 #if UNITY_EDITOR
-            Debug.Log("End TestedStopShootingNPCProcess Main");
+            Log("End");
 #endif
         }
     }

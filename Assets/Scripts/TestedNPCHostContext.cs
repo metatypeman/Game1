@@ -46,7 +46,7 @@ namespace Assets.Scripts
         private void MInternalBodyHumanoidHost_OnReady()
         {
 #if DEBUG
-            LogInstance.Log("TestedNPCBodyHost MInternalBodyHumanoidHost_OnReady");
+            Log("Begin");
 #endif
             Task.Run(() => {
                 try
@@ -55,7 +55,7 @@ namespace Assets.Scripts
                 }catch(Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"TestedNPCBodyHost MInternalBodyHumanoidHost_OnReady e = {e}");
+                    Error($"e = {e}");
 #endif
                 }
             });
@@ -73,7 +73,7 @@ namespace Assets.Scripts
                 catch(Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"TestedNPCBodyHost MInternalBodyHumanoidHost_OnDie e = {e}");
+                    Error($"e = {e}");
 #endif
                 }            
             });
@@ -108,7 +108,7 @@ namespace Assets.Scripts
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"TestedNPCBodyHost InternalOnHumanoidStatesChanged e = {e}");
+                    Error($"e = {e}");
 #endif
                 }
             });
@@ -120,19 +120,19 @@ namespace Assets.Scripts
         public void Execute(TargetStateOfHumanoidBody targetState)
         {
 #if DEBUG
-            LogInstance.Log($"TestedNPCBodyHost Execute targetState = {targetState}");
+            Log($"targetState = {targetState}");
 #endif
 
             var internalTargetStateOfHumanoidBody = InternalTargetStateOfHumanoidControllerConverter.ConvertToInternal(targetState);
 
 #if DEBUG
-            LogInstance.Log($"TestedNPCBodyHost ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
+            Log($"internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
 #endif
 
             mInternalBodyHumanoidHost.Execute(internalTargetStateOfHumanoidBody);
 
 #if DEBUG
-            LogInstance.Log($"TestedNPCBodyHost End ExecuteAsync internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
+            Log($"End internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
 #endif
         }
         
@@ -179,7 +179,7 @@ namespace Assets.Scripts
 
         public INPCProcess Send(INPCCommand command)
         {
-            LogInstance.Log($"Begin TestedNPCHandHost Send command = {command}");
+            Log($"Begin command = {command}");
 
             if(mInternalHumanoidHostContext.RightHandThing != null)
             {
@@ -194,7 +194,7 @@ namespace Assets.Scripts
         public object Get(string propertyName)
         {
 #if DEBUG
-            LogInstance.Log($"TestedNPCHandHost Get propertyName = {propertyName}");
+            Log($"propertyName = {propertyName}");
 #endif
             if (mInternalHumanoidHostContext.RightHandThing != null)
             {
@@ -240,7 +240,7 @@ namespace Assets.Scripts
         private void MBodyHost_OnReady()
         {
 #if DEBUG
-            LogInstance.Log("TestedNPCHostContext MBodyHost_OnReady");
+            Log("Begin");
 #endif
 
             Task.Run(() => {
@@ -250,7 +250,7 @@ namespace Assets.Scripts
                 }catch(Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"TestedNPCHostContext MBodyHost_OnReady e = {e}");
+                    Error($"e = {e}");
 #endif
                 }
             });       

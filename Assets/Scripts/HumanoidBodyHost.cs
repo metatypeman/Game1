@@ -44,31 +44,36 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private bool mUseIkAnimation;
 
+    private readonly object mEntityLoggerLockObj = new object();
+    private IEntityLogger mEntityLogger;
+
+    public IEntityLogger EntityLogger
+    {
+        get
+        {
+            lock (mEntityLoggerLockObj)
+            {
+                return mEntityLogger;
+            }
+        }
+    }
+
     [MethodForLoggingSupport]
     protected void Log(string message)
     {
-        lock (mEntityLoggerLockObj)
-        {
-            mEntityLogger?.Log(message);
-        }
+        mEntityLogger?.Log(message);
     }
 
     [MethodForLoggingSupport]
     protected void Error(string message)
     {
-        lock (mEntityLoggerLockObj)
-        {
-            mEntityLogger?.Error(message);
-        }
+        mEntityLogger?.Error(message);
     }
 
     [MethodForLoggingSupport]
     protected void Warning(string message)
     {
-        lock (mEntityLoggerLockObj)
-        {
-            mEntityLogger?.Warning(message);
-        }
+        mEntityLogger?.Warning(message);
     }
 
     public void CallInMainUI(Action function)
@@ -162,6 +167,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     // Use this for initialization
     void Start ()
     {
+        mEntityLogger
+
         var commonLevelHost = LevelCommonHostFactory.Get();
         mLogicalObjectsBus = commonLevelHost.LogicalObjectsBus;
         mHandThingsBus = commonLevelHost.HandThingsBus;
@@ -169,7 +176,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         var tmpGameObject = gameObject;
         var instanceId = tmpGameObject.GetInstanceID();
 
-        mSelfLogicalObject = new PassiveLogicalObject(commonLevelHost.EntityDictionary, mLogicalObjectsBus);
+        mSelfLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, mLogicalObjectsBus);
         mLogicalObjectsBus.RegisterObject(instanceId, mSelfLogicalObject);
 
         mSelfLogicalObject["name"] = tmpGameObject.name;
@@ -236,13 +243,13 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Error($"HumanoidBodyHost Start e = {e}");
+                    Error($"e = {e}");
 #endif
                 }              
             });
         }
 #if DEBUG
-        LogInstance.Log("End HumanoidBodyHost Start");
+        Log("End");
 #endif
     }
 
@@ -284,12 +291,12 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void EmitOnHumanoidStatesChanged(params HumanoidStateKind[] changedStates)
     {
 #if DEBUG
-        //LogInstance.Log($"HumanoidBodyHost EmitOnHumanoidStatesChanged Begin changedStates");
+        //Log($"Begin changedStates");
         //foreach (var changedState in changedStates)
         //{
-        //    LogInstance.Log($"HumanoidBodyHost OnHumanoidStatesChanged changedState = {changedState}");
+        //    Log($"changedState = {changedState}");
         //}
-        //LogInstance.Log($"HumanoidBodyHost EmitOnHumanoidStatesChanged End changedStates");
+        //Log($"End changedStates");
 #endif
 
         Task.Run(() => {
@@ -300,7 +307,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
             catch (Exception e)
             {
 #if DEBUG
-                LogInstance.Error($"HumanoidBodyHost EmitOnHumanoidStatesChanged e = {e}");
+                Error($"e = {e}");
 #endif
             }
         });
@@ -325,13 +332,13 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void NExecute(InternalTargetStateOfHumanoidController targetState)
     {
 #if DEBUG
-        Debug.Log($"HumanoidBodyHost NExecute targetState = {targetState}");
+        Log($"targetState = {targetState}");
 #endif
 
         var newState = CreateTargetState(mStates, targetState);
 
 #if DEBUG
-        Debug.Log($"HumanoidBodyHost NExecute newState = {newState}");
+        Log($"newState = {newState}");
 #endif
 
         if (newState.KindOfThingsCommand != KindOfHumanoidThingsCommand.Undefined && newState.EntityIdOfThing != 0)
@@ -347,7 +354,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void ExecuteThingsCommand(InternalStatesOfHumanoidController targetState)
     {
 #if DEBUG
-        //Debug.Log($"HumanoidBodyHost ExecuteThingsCommand targetState = {targetState}");
+        //Log($"targetState = {targetState}");
 #endif
 
         var kindOfThingsCommand = targetState.KindOfThingsCommand;
@@ -392,8 +399,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private InternalStatesOfHumanoidController CreateTargetState(InternalStatesOfHumanoidController sourceState, InternalTargetStateOfHumanoidController targetState)
     {
 #if DEBUG
-        //Debug.Log($"HumanoidBodyHost CreateTargetState sourceState = {sourceState}");
-        //Debug.Log($"HumanoidBodyHost CreateTargetState targetState = {targetState}");
+        //Log($"sourceState = {sourceState}");
+        //Log($"targetState = {targetState}");
 #endif
 
         var result = sourceState.Clone();
@@ -541,7 +548,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
             catch (Exception e)
             {
 #if DEBUG
-                LogInstance.Error($"HumanoidBodyHost Die e = {e}");
+                Error($"e = {e}");
 #endif
             }
         });
@@ -552,13 +559,13 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void ApplyTargetState(InternalStatesOfHumanoidController targetState)
     {
 #if DEBUG
-        Debug.Log($"HumanoidBodyHost ApplyTargetState targetState = {targetState}");
+        Log($"targetState = {targetState}");
 #endif
 
         var targetBehaviourFlags = CreateBehaviourFlags(targetState);
 
 #if DEBUG
-        //Debug.Log($"HumanoidBodyHost ApplyTargetState targetBehaviourFlags = {targetBehaviourFlags}");
+        //Log($"targetBehaviourFlags = {targetBehaviourFlags}");
 #endif
 
         mStates.Append(targetState);
@@ -572,7 +579,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         UpdateAnimator();
 
 #if DEBUG
-        Debug.Log($"HumanoidBodyHost ApplyInternalStates mStates = {mStates}");
+        Log($"mStates = {mStates}");
 #endif
 
         var hState = mStates.HState;
@@ -596,14 +603,14 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                         mNavMeshAgent.ResetPath();
 
 #if DEBUG
-                        //Debug.Log($"HumanoidBodyHost ApplyInternalStates mStates.TargetPosition = {mStates.TargetPosition}");
+                        //Log($"mStates.TargetPosition = {mStates.TargetPosition}");
 #endif
                         var direction = transform.TransformDirection(mStates.TargetPosition.Value);
                         mStates.TargetPosition = transform.position + direction;
 
 #if DEBUG
-                        //Debug.Log($"HumanoidBodyHost ApplyInternalStates transform.position = {transform.position}");
-                        //Debug.Log($"HumanoidBodyHost ApplyInternalStates after mStates.TargetPosition = {mStates.TargetPosition}");
+                        //Log($"transform.position = {transform.position}");
+                        //Log($"after mStates.TargetPosition = {mStates.TargetPosition}");
 #endif
 
                         mNavMeshAgent.SetDestination(mStates.TargetPosition.Value);
@@ -660,7 +667,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     mAbsBodyAngleDelta = Math.Abs(mBodyAngleDelta);
 
 #if DEBUG
-                    Debug.Log("HumanoidBodyHost ApplyInternalStates case HumanoidHState.Rotate");
+                    Log("case HumanoidHState.Rotate");
 #endif
                 }
                 break;
@@ -714,7 +721,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
             var correctingAngle = mAimCorrector.GetCorrectingAngle(targetPos);
 
 #if DEBUG
-            //Debug.Log($"HumanoidBodyHost ApplyInternalStates correctingAngle = {correctingAngle}");
+            //Log($"correctingAngle = {correctingAngle}");
 #endif
 
             if (Mathf.Abs(correctingAngle) > 8)
@@ -729,7 +736,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void UpdateAnimator()
     {
 #if DEBUG
-        //Debug.Log("HumanoidBodyHost UpdateAnimator");
+        //Log("Begin");
 #endif
         mAnimator.SetBool("hasRifle", mBehaviourFlags.HasRifle);
         mAnimator.SetBool("walk", mBehaviourFlags.Walk);
@@ -740,7 +747,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     public void ApplyAchieveDestinationOfMoving()
     {
 #if DEBUG
-        Debug.Log("HumanoidBodyHost ApplyAchieveDestinationOfMoving");
+        Log("Begin");
 #endif
 
         mStates.HState = HumanoidHState.Stop;
@@ -765,7 +772,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     void Update ()
     {
 #if DEBUG
-        //Debug.Log("HumanoidBodyHost Update mNavMeshAgent.pathStatus = " + mNavMeshAgent.pathStatus + " mNavMeshAgent.isOnOffMeshLink = " + mNavMeshAgent.isOnOffMeshLink + " mNavMeshAgent.isStopped = " + mNavMeshAgent.isStopped + " mNavMeshAgent.nextPosition = " + mNavMeshAgent.nextPosition);
+        //Log("mNavMeshAgent.pathStatus = " + mNavMeshAgent.pathStatus + " mNavMeshAgent.isOnOffMeshLink = " + mNavMeshAgent.isOnOffMeshLink + " mNavMeshAgent.isStopped = " + mNavMeshAgent.isStopped + " mNavMeshAgent.nextPosition = " + mNavMeshAgent.nextPosition);
 #endif
         if (mBehaviourFlags.IsDead)
         {
@@ -801,20 +808,20 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     var tmpDelta = mTargetBodyAngle - newAngle;
 
 #if DEBUG
-                    //Debug.Log($"HumanoidBodyHost Update mBodyAngleDelta = {mBodyAngleDelta}");
-                    //Debug.Log($"HumanoidBodyHost Update tmpDelta = {tmpDelta}");
+                    //Log($"mBodyAngleDelta = {mBodyAngleDelta}");
+                    //Log($"tmpDelta = {tmpDelta}");
 #endif
 
                     var tmpAbsDelta = Math.Abs(tmpDelta);
 
 #if DEBUG
-                    //Debug.Log($"HumanoidBodyHost Update tmpAbsDelta = {tmpAbsDelta}");
+                    //Log($"tmpAbsDelta = {tmpAbsDelta}");
 #endif
 
                     if (tmpAbsDelta >= mAbsBodyAngleDelta)
                     {
 #if DEBUG
-                        //Debug.Log("HumanoidBodyHost Update tmpAbsDelta >= mAbsBodyAngleDelta");
+                        //Log("tmpAbsDelta >= mAbsBodyAngleDelta");
 #endif
                         transform.rotation = Quaternion.Euler(0, mBodyAngleDelta, 0) * transform.rotation;
                         mCurrentBodyAngle = newAngle;
@@ -822,7 +829,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     else
                     {
 #if DEBUG
-                        //Debug.Log("HumanoidBodyHost Update tmpAbsDelta < mAbsBodyAngleDelta");
+                        //Log("tmpAbsDelta < mAbsBodyAngleDelta");
 #endif
                         transform.rotation = Quaternion.Euler(0, tmpDelta, 0) * transform.rotation;
                         mCurrentBodyAngle = mTargetBodyAngle;
@@ -831,8 +838,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     }
 
 #if DEBUG
-                    //Debug.Log($"HumanoidBodyHost Update mCurrentBodyAngle = {mCurrentBodyAngle}");
-                    //Debug.Log($"HumanoidBodyHost Update mNeedBodyChanges = {mNeedBodyChanges}");
+                    //Log($"mCurrentBodyAngle = {mCurrentBodyAngle}");
+                    //Log($"mNeedBodyChanges = {mNeedBodyChanges}");
 #endif
 
                     if (!mNeedBodyChanges)
@@ -871,8 +878,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     var oldY = Head.position.y;
 
 #if DEBUG
-                    //Debug.Log($"HumanoidBodyHost Update oldY = {oldY}");
-                    //Debug.Log($"HumanoidBodyHost Update Head.localPosition.y = {Head.localPosition.y}");
+                    //Log($"oldY = {oldY}");
+                    //Log($"Head.localPosition.y = {Head.localPosition.y}");
 #endif
 
                     var newPosition = globalDirection + transform.position;

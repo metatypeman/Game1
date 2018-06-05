@@ -11,6 +11,7 @@ namespace Assets.Scripts
 {
     public interface IInternalBodyHumanoidHost: IInvokingInMainThread
     {
+        IEntityLogger EntityLogger { get; }
         void Execute(InternalTargetStateOfHumanoidController targetState);
         InternalStatesOfHumanoidController States { get; }
         event HumanoidStatesChangedAction OnHumanoidStatesChanged;
