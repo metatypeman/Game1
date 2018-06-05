@@ -10,6 +10,10 @@ namespace MyNPCLib.InternalCG
         public override BaseInternalConceptCGNode AsGraphOrConceptNode => this;
         public KindOfInternalGraphOrConceptNode KindOfGraphOrConcept { get; set; } = KindOfInternalGraphOrConceptNode.Undefined;
         public int? Power { get; set; }
+        public KindOfTense Tense { get; set; } = KindOfTense.Undefined;
+        public KindOfAspect Aspect { get; set; } = KindOfAspect.Undefined;
+        public bool? Conditional { get; set; }
+        public KindOfVoice Voice { get; set; } = KindOfVoice.Undefined;
 
         public void AddInputNode(InternalRelationCGNode node)
         {
@@ -41,6 +45,10 @@ namespace MyNPCLib.InternalCG
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(KindOfGraphOrConcept)} = {KindOfGraphOrConcept}");
             sb.AppendLine($"{spaces}{nameof(Power)} = {Power}");
+            sb.AppendLine($"{spaces}{nameof(Tense)} = {Tense}");
+            sb.AppendLine($"{spaces}{nameof(Aspect)} = {Aspect}");
+            sb.AppendLine($"{spaces}{nameof(Conditional)} = {Conditional}");
+            sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
             sb.Append(base.PropertiesToSting(n));
             return sb.ToString();
         }
@@ -51,6 +59,10 @@ namespace MyNPCLib.InternalCG
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(KindOfGraphOrConcept)} = {KindOfGraphOrConcept}");
             sb.AppendLine($"{spaces}{nameof(Power)} = {Power}");
+            sb.AppendLine($"{spaces}{nameof(Tense)} = {Tense}");
+            sb.AppendLine($"{spaces}{nameof(Aspect)} = {Aspect}");
+            sb.AppendLine($"{spaces}{nameof(Conditional)} = {Conditional}");
+            sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
             sb.Append(base.PropertiesToShortSting(n));
             return sb.ToString();
         }
