@@ -11,6 +11,7 @@ namespace MyNPCLib.InternalCG
         public abstract KindOfCGNode Kind { get; }
         public string Name { get; set; }
         public ulong Key { get; set; }
+        public bool IsNegation { get; set; }
         public virtual bool IsConceptualGraph => false;
         public virtual InternalConceptualGraph AsConceptualGraph => null;
         public virtual bool IsConceptNode => false;
@@ -123,6 +124,41 @@ namespace MyNPCLib.InternalCG
             }
         }
 
+        private IList<BaseInternalCGNode> mAnnotations = new List<BaseInternalCGNode>();
+        public IList<BaseInternalCGNode> Annotations
+        {
+            get
+            {
+                return mAnnotations;
+            }
+        }
+
+        public void AddAnnotation(BaseInternalCGNode annotation)
+        {
+            if(annotation == null)
+            {
+                return;
+            }
+
+            if (!mAnnotations.Contains(annotation))
+            {
+                mAnnotations.Add(annotation);
+            }
+        }
+
+        public void RemoveAnnotation(BaseInternalCGNode annotation)
+        {
+            if (annotation == null)
+            {
+                return;
+            }
+
+            if (mAnnotations.Contains(annotation))
+            {
+                mAnnotations.Remove(annotation);
+            }
+        }
+
         public override string ToString()
         {
             return ToString(0u);
@@ -140,7 +176,8 @@ namespace MyNPCLib.InternalCG
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
-            sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");     
+            sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            sb.AppendLine($"{spaces}{nameof(IsNegation)} = {IsNegation}");
             if (Parent == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Parent)} = null");
@@ -165,6 +202,12 @@ namespace MyNPCLib.InternalCG
                 sb.Append(outputNode.PropertiesToShortSting(nextN));
             }
             sb.AppendLine($"{spaces}End {nameof(Outputs)}");
+            sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+            foreach(var annotation in Annotations)
+            {
+                sb.Append(annotation.ToString(nextN));
+            }
+            sb.AppendLine($"{spaces}End {nameof(Annotations)}");
             return sb.ToString();
         }
 
