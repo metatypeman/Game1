@@ -9,6 +9,14 @@ namespace MyNPCLib.InternalCG
     /// </summary>
     public enum KindOfMood
     {
-        Undefined
+        Undefined,
+        Indicative,
+        Subjunctive,
+        Imperative,
+        Jussive,
+        Potential,
+        Hypothetical,
+        Hortative,
+        Optative
     }
 }
