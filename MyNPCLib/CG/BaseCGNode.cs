@@ -157,15 +157,12 @@ namespace MyNPCLib.CG
             return sb.ToString();
         }
 
-        public string ToStringAsShortBrief(uint n)
+        public string PropertiesToShortSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
-            var nameOfType = GetType().FullName;
-            sb.AppendLine($"{spaces}Begin {nameOfType}");
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
-            sb.AppendLine($"{spaces}End {nameOfType}");
             return sb.ToString();
         }
     }

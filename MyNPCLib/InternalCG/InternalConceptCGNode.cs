@@ -8,5 +8,7 @@ namespace MyNPCLib.InternalCG
     public class InternalConceptCGNode: BaseInternalConceptCGNode
     {
         public override KindOfCGNode Kind => KindOfCGNode.Concept;
+        public override bool IsConceptNode => true;
+        public override InternalConceptCGNode AsConceptNode => this;
     }
 }

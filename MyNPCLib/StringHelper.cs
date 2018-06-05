@@ -33,5 +33,16 @@ namespace MyNPCLib
             sb.AppendLine($"{spaces}End {nameOfType}");
             return sb.ToString();
         }
+
+        public static string GetDefaultToShortStringInformation(this IShortObjectToString targetObject, uint n)
+        {
+            var spaces = Spaces(n);
+            var sb = new StringBuilder();
+            var nameOfType = targetObject.GetType().FullName;
+            sb.AppendLine($"{spaces}Begin {nameOfType}");
+            sb.Append(targetObject.PropertiesToShortSting(n));
+            sb.AppendLine($"{spaces}End {nameOfType}");
+            return sb.ToString();
+        }
     }
 }

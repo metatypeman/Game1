@@ -8,6 +8,8 @@ namespace MyNPCLib.InternalCG
 {
     public class InternalConceptualGraph: BaseInternalConceptCGNode
     {
+        public override bool IsConceptualGraph => true;
+        public override InternalConceptualGraph AsConceptualGraph => this;
         public override KindOfCGNode Kind => KindOfCGNode.Graph;
 
         private IList<BaseInternalCGNode> mChildren = new List<BaseInternalCGNode>();

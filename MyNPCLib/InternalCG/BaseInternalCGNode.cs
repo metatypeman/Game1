@@ -10,6 +10,15 @@ namespace MyNPCLib.InternalCG
     {
         public abstract KindOfCGNode Kind { get; }
         public string Name { get; set; }
+        public ulong Key { get; set; }
+        public virtual bool IsConceptualGraph => false;
+        public virtual InternalConceptualGraph AsConceptualGraph => null;
+        public virtual bool IsConceptNode => false;
+        public virtual InternalConceptCGNode AsConceptNode => null;
+        public virtual bool IsRelationNode => false;
+        public virtual InternalRelationCGNode AsRelationNode => null;
+        public virtual bool IsGraphOrConceptNode => false;
+        public virtual BaseInternalConceptCGNode AsGraphOrConceptNode => null;
 
         private InternalConceptualGraph mParent;
 
@@ -131,6 +140,7 @@ namespace MyNPCLib.InternalCG
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");     
             if (Parent == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Parent)} = null");
@@ -138,35 +148,42 @@ namespace MyNPCLib.InternalCG
             else
             {
                 sb.AppendLine($"{spaces}Begin {nameof(Parent)}");
-                sb.Append(Parent.ToStringAsShortBrief(nextN));
+                sb.Append(Parent.PropertiesToShortSting(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Parent)}");
             }
 
             sb.AppendLine($"{spaces}Begin {nameof(Inputs)}");
             foreach (var inputNode in Inputs)
             {
-                sb.Append(inputNode.ToStringAsShortBrief(nextN));
+                sb.Append(inputNode.PropertiesToShortSting(nextN));
             }
             sb.AppendLine($"{spaces}End {nameof(Inputs)}");
 
             sb.AppendLine($"{spaces}Begin {nameof(Outputs)}");
             foreach (var outputNode in Outputs)
             {
-                sb.Append(outputNode.ToStringAsShortBrief(nextN));
+                sb.Append(outputNode.PropertiesToShortSting(nextN));
             }
             sb.AppendLine($"{spaces}End {nameof(Outputs)}");
             return sb.ToString();
         }
 
-        public string ToStringAsShortBrief(uint n)
+        public string ToShortString()
+        {
+            return ToShortString(0u);
+        }
+
+        public string ToShortString(uint n)
+        {
+            return this.GetDefaultToShortStringInformation(n);
+        }
+
+        public virtual string PropertiesToShortSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
-            var nameOfType = GetType().FullName;
-            sb.AppendLine($"{spaces}Begin {nameOfType}");
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
-            sb.AppendLine($"{spaces}End {nameOfType}");
             return sb.ToString();
         }
     }

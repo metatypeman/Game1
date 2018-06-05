@@ -8,6 +8,8 @@ namespace MyNPCLib.InternalCG
     public class InternalRelationCGNode: BaseInternalCGNode
     {
         public override KindOfCGNode Kind => KindOfCGNode.Relation;
+        public override bool IsRelationNode => true;
+        public override InternalRelationCGNode AsRelationNode => this;
 
         public void AddInputNode(BaseInternalConceptCGNode node)
         {
