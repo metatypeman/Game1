@@ -78,7 +78,7 @@ namespace MyNPCLib.CG
             sb.AppendLine($"{spaces}Begin {nameof(Children)}");
             foreach(var child in Children)
             {
-                sb.Append(child.ToStringAsShortBrief(nextN));
+                sb.Append(child.PropertiesToShortSting(nextN));
             }
             sb.AppendLine($"{spaces}End {nameof(Children)}");
             return sb.ToString();

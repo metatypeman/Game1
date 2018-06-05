@@ -137,24 +137,34 @@ namespace MyNPCLib.CG
             else
             {
                 sb.AppendLine($"{spaces}Begin {nameof(Parent)}");
-                sb.Append(Parent.ToStringAsShortBrief(nextN));
+                sb.Append(Parent.PropertiesToShortSting(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Parent)}");
             }
 
             sb.AppendLine($"{spaces}Begin {nameof(Inputs)}");
             foreach(var inputNode in Inputs)
             {
-                sb.Append(inputNode.ToStringAsShortBrief(nextN));
+                sb.Append(inputNode.PropertiesToShortSting(nextN));
             }
             sb.AppendLine($"{spaces}End {nameof(Inputs)}");
 
             sb.AppendLine($"{spaces}Begin {nameof(Outputs)}");
             foreach(var outputNode in Outputs)
             {
-                sb.Append(outputNode.ToStringAsShortBrief(nextN));
+                sb.Append(outputNode.PropertiesToShortSting(nextN));
             }
             sb.AppendLine($"{spaces}End {nameof(Outputs)}");
             return sb.ToString();
+        }
+
+        public string ToShortString()
+        {
+            return ToShortString(0u);
+        }
+
+        public string ToShortString(uint n)
+        {
+            return this.GetDefaultToShortStringInformation(n);
         }
 
         public string PropertiesToShortSting(uint n)
