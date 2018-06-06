@@ -46,10 +46,8 @@ namespace Assets.Scripts
         // Use this for initialization
         void Start()
         {
-            //var gameInfo = MyGameObjectFactory.CreateByComponent(this);
-
 #if UNITY_EDITOR
-            //Debug.Log("BasePassiveLogicalGameObject Start");
+            //LogInstance.Log("Begin");
 #endif
 
             var commonLevelHost = LevelCommonHostFactory.Get();
