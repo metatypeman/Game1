@@ -10,12 +10,32 @@ namespace MyNPCLib
 
     public class BaseTrigger : IChildComponentOfNPCProcess, ITrigger
     {
-        public BaseTrigger(PredicateOfTrigger predicate, int timeout = 1000)
+        public BaseTrigger(IEntityLogger entityLogger, PredicateOfTrigger predicate, int timeout = 1000)
         {
+            mEntityLogger = entityLogger;
             mPredicate = predicate;
             mTimeOut = timeout;
         }
 
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
+
+        private IEntityLogger mEntityLogger;
         private readonly PredicateOfTrigger mPredicate;
         private readonly int mTimeOut;
         private readonly object mStateLockObj = new object();
@@ -26,7 +46,7 @@ namespace MyNPCLib
         public void Start()
         {
 #if DEBUG
-            LogInstance.Log($"Begin BaseTrigger Start");
+            Log($"Begin");
 #endif
             lock (mStateLockObj)
             {
@@ -44,27 +64,27 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            LogInstance.Log($"BaseTrigger Start NEXT");
+            Log($"NEXT");
             try
             {
-                LogInstance.Log($"BaseTrigger Start NEXT {mPredicate.Invoke()}");
+                Log($"NEXT {mPredicate.Invoke()}");
             }catch(Exception e)
             {
-                LogInstance.Log($"BaseTrigger Start NEXT e = {e}");
+                Error($"e = {e}");
             }    
 #endif
 
             TryStartNRun();
 
 #if DEBUG
-            LogInstance.Log($"End BaseTrigger Start");
+            Log($"End");
 #endif
         }
 
         public void Stop()
         {
 #if DEBUG
-            //LogInstance.Log($"BaseTrigger Stop");
+            //Log($"Begin");
 #endif
             lock (mStateLockObj)
             {
@@ -86,7 +106,7 @@ namespace MyNPCLib
                 mNeedRun = false;
             }
 #if DEBUG
-            //LogInstance.Log($"BaseTrigger Stop NEXT");
+            //Log($"End");
 #endif
         }
 
@@ -98,7 +118,7 @@ namespace MyNPCLib
             add
             {
 #if DEBUG
-                //LogInstance.Log($"BaseTrigger OnFire add");
+                //Log($"Begin");
 #endif
 
                 lock (mStateLockObj)
@@ -135,7 +155,7 @@ namespace MyNPCLib
             add
             {
 #if DEBUG
-                //LogInstance.Log($"BaseTrigger OnResetCondition add");
+                //Log($"Begin");
 #endif
 
                 lock (mStateLockObj)
@@ -203,7 +223,7 @@ namespace MyNPCLib
                 }catch(Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"BaseTrigger TryStartNRun e = {e}");
+                    Error($"e = {e}");
 #endif
                 }
             });
@@ -246,13 +266,13 @@ namespace MyNPCLib
         private void NRun()
         {
 #if DEBUG
-            //LogInstance.Log($"BaseTrigger NRun");
+            //Log($"Begin");
 #endif
 
-            while(true)
+            while (true)
             {
 #if DEBUG
-                //LogInstance.Log("BaseTrigger NRun while(true) ----");
+                //Log("while(true) ----");
 #endif
                 Thread.Sleep(mTimeOut);
 
@@ -267,7 +287,7 @@ namespace MyNPCLib
                 var currentResult = mPredicate();
 
 #if DEBUG
-                //LogInstance.Log($"BaseTrigger NRun currentResult = {currentResult} mLastResult = {mLastResult}");
+                //Log($"currentResult = {currentResult} mLastResult = {mLastResult}");
 #endif
 
                 if(mLastResult != currentResult)
@@ -284,7 +304,7 @@ namespace MyNPCLib
                             catch (Exception e)
                             {
 #if DEBUG
-                                LogInstance.Log($"BaseTrigger NRun e = {e}");
+                                Error($"e = {e}");
 #endif
                             }
                         });
@@ -299,7 +319,7 @@ namespace MyNPCLib
                             catch (Exception e)
                             {
 #if DEBUG
-                                LogInstance.Log($"BaseTrigger NRun e = {e}");
+                                Error($"e = {e}");
 #endif
                             }
                         });
@@ -311,7 +331,7 @@ namespace MyNPCLib
 public void Dispose()
         {
 #if DEBUG
-            //LogInstance.Log($"BaseTrigger Dispose");
+            //Log($"Begin");
 #endif
 
             lock (mStateLockObj)

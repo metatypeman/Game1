@@ -710,7 +710,7 @@ namespace MyNPCLib
 
         public ITrigger CreateTrigger(PredicateOfTrigger predicate, int timeout = 1000)
         {
-            var trigger = new BaseTrigger(predicate, timeout);
+            var trigger = new BaseTrigger(EntityLogger, predicate, timeout);
             AddChildComponent(trigger);
             trigger.Start();
             return trigger;
