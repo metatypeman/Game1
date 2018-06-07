@@ -107,7 +107,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         Log($"(commonLevelHost == null) = {commonLevelHost == null}");
 
-        var hostContext = new TestedNPCHostContext(mInternalBodyHumanoidHost);
+        var hostContext = new TestedNPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
         mNPCProcessesContext = new TestedNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext, commonLevelHost.QueriesCache);
 
         mNPCProcessesContext.Bootstrap();
@@ -202,7 +202,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command);
+        mNPCProcessesContext?.Send(command);
     }
 
     private void OnMPressAction(KeyCode key)
@@ -211,7 +211,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command);
+        mNPCProcessesContext?.Send(command);
     }
 
     private void OnFPressAction(KeyCode key)

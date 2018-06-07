@@ -12,7 +12,7 @@ namespace Assets.Scripts
     {
         public LogicalObjectsBus()
         {
-            mLogicalIndexStorage = new LogicalIndexStorage();
+            mLogicalIndexStorage = new LogicalIndexStorage(null);
             mLogicalIndexStorage.OnChanged += MLogicalIndexStorage_OnChanged;
         }
 
@@ -26,7 +26,7 @@ namespace Assets.Scripts
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"LogicalObjectsBus MLogicalIndexStorage_OnChanged e = {e}");
+                    LogInstance.Error($"e = {e}");
 #endif
                 }
             });          
@@ -105,7 +105,7 @@ namespace Assets.Scripts
         public void PutAccessPolicyToFactAsIndex(ulong entityId, ulong propertyId, AccessPolicyToFact value)
         {
 #if DEBUG
-            //LogInstance.Log($"LogicalObjectsBus PutAccessPolicyToFactAsIndex entityId = {entityId} propertyId = {propertyId} value = {value}");
+            //LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
 
             mLogicalIndexStorage.PutAccessPolicyToFactAsIndex(entityId, propertyId, value);
@@ -114,7 +114,7 @@ namespace Assets.Scripts
         public AccessPolicyToFact GetAccessPolicyToFact(ulong entityId, ulong propertyId)
         {
 #if DEBUG
-            //LogInstance.Log($"LogicalObjectsBus GetAccessPolicyToFact entityId = {entityId} propertyId = {propertyId}");
+            //LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
 
             return mLogicalIndexStorage.GetAccessPolicyToFact(entityId, propertyId);

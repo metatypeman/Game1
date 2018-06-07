@@ -12,8 +12,9 @@ namespace Assets.Scripts
 {
     public class TestedNPCBodyHost : INPCBodyHost
     {
-        public TestedNPCBodyHost(IInternalHumanoidHostContext intenalHostContext, IInternalBodyHumanoidHost internalBodyHumanoidHost)
+        public TestedNPCBodyHost(IEntityLogger entityLogger, IInternalHumanoidHostContext intenalHostContext, IInternalBodyHumanoidHost internalBodyHumanoidHost)
         {
+            mEntityLogger = entityLogger;
             mInternalHumanoidHostContext = intenalHostContext;
             mInternalBodyHumanoidHost = internalBodyHumanoidHost;
 
@@ -24,6 +25,8 @@ namespace Assets.Scripts
             mStates = new ProxyForStatesOfHumanoidBodyHost(mInternalBodyHumanoidHost);
             mInternalBodyHumanoidHost.OnHumanoidStatesChanged += InternalOnHumanoidStatesChanged;
         }
+
+        private IEntityLogger mEntityLogger;
 
         [MethodForLoggingSupport]
         protected void Log(string message)
@@ -152,10 +155,13 @@ namespace Assets.Scripts
 
     public class TestedNPCHandHost : INPCHandHost
     {
-        public TestedNPCHandHost(IInternalHumanoidHostContext intenalHostContext)
+        public TestedNPCHandHost(IEntityLogger entityLogger, IInternalHumanoidHostContext intenalHostContext)
         {
+            mEntityLogger = entityLogger;
             mInternalHumanoidHostContext = intenalHostContext;
         }
+
+        private IEntityLogger mEntityLogger;
 
         [MethodForLoggingSupport]
         protected void Log(string message)
@@ -186,7 +192,7 @@ namespace Assets.Scripts
                 return mInternalHumanoidHostContext.RightHandThing.Send(command);
             }
 
-            var process = new NPCThingProcess();
+            var process = new NPCThingProcess(mEntityLogger);
             process.State = StateOfNPCProcess.Faulted;
             return process;
         }
@@ -207,17 +213,21 @@ namespace Assets.Scripts
 
     public class TestedNPCHostContext: INPCHostContext
     {
-        public TestedNPCHostContext(IInternalBodyHumanoidHost internalBodyHumanoidHost)
+        public TestedNPCHostContext(IEntityLogger entityLogger, IInternalBodyHumanoidHost internalBodyHumanoidHost)
         {
+            mEntityLogger = entityLogger;
+
             mInternalBodyHumanoidHost = internalBodyHumanoidHost;
             mInternalHumanoidHostContext = new InternalHumanoidHostContext();
 
-            mBodyHost = new TestedNPCBodyHost(mInternalHumanoidHostContext, internalBodyHumanoidHost);
+            mBodyHost = new TestedNPCBodyHost(entityLogger, mInternalHumanoidHostContext, internalBodyHumanoidHost);
             mBodyHost.OnReady += MBodyHost_OnReady;
 
-            mRightHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
-            mLeftHandHost = new TestedNPCHandHost(mInternalHumanoidHostContext);
+            mRightHandHost = new TestedNPCHandHost(entityLogger, mInternalHumanoidHostContext);
+            mLeftHandHost = new TestedNPCHandHost(entityLogger, mInternalHumanoidHostContext);
         }
+
+        private IEntityLogger mEntityLogger;
 
         [MethodForLoggingSupport]
         protected void Log(string message)

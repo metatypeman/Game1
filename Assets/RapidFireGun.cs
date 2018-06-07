@@ -87,7 +87,8 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     void Start() {
         var commonLevelHost = LevelCommonHostFactory.Get();
 
-        mPassiveLogicalObject = new PassiveLogicalObject(commonLevelHost.EntityDictionary, commonLevelHost.LogicalObjectsBus);
+        //TODO fix me!
+        mPassiveLogicalObject = new PassiveLogicalObject(null, commonLevelHost.EntityDictionary, commonLevelHost.LogicalObjectsBus);
 
         var entityId = mPassiveLogicalObject.EntityId;
 
@@ -458,7 +459,8 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         Debug.Log($"RapidFireGun Send command = {command}");
 #endif
 
-        var process = new NPCThingProcess();
+        //TODO fix me!
+        var process = new NPCThingProcess(null);
 
         var commandName = command.Name;
 

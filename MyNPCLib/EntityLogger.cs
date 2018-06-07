@@ -28,7 +28,7 @@ namespace MyNPCLib
             }
         }
 
-        public bool mEnabled;
+        private bool mEnabled;
 
         public bool Enabled
         {
