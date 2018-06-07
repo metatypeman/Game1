@@ -8,10 +8,11 @@ namespace MyNPCLib.PersistLogicalData
     /// Represents instance of rule (or fact) in the storage.
     /// </summary>
     [Serializable]
-    public class RuleInstance: IObjectToString, IShortObjectToString
+    public class RuleInstance : IObjectToString, IShortObjectToString
     {
         public string Name { get; set; }
         public ulong Key { get; set; }
+        public EntitiesConditions EntitiesConditions { get; set; }
         public bool IsPart_1_Active { get; set; }
         public bool IsPart_2_Active { get; set; }
         public RulePart Part_1 { get; set; }
@@ -34,6 +35,17 @@ namespace MyNPCLib.PersistLogicalData
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            if(EntitiesConditions == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(EntitiesConditions)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(EntitiesConditions)}");
+                sb.Append(EntitiesConditions.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(EntitiesConditions)}");
+            }
+
             sb.AppendLine($"{spaces}{nameof(IsPart_1_Active)} = {IsPart_1_Active}");
             sb.AppendLine($"{spaces}{nameof(IsPart_2_Active)} = {IsPart_2_Active}");
             if(Part_1 == null)
@@ -77,6 +89,16 @@ namespace MyNPCLib.PersistLogicalData
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            if (EntitiesConditions == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(EntitiesConditions)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(EntitiesConditions)}");
+                sb.Append(EntitiesConditions.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(EntitiesConditions)}");
+            }
             sb.AppendLine($"{spaces}{nameof(IsPart_1_Active)} = {IsPart_1_Active}");
             sb.AppendLine($"{spaces}{nameof(IsPart_2_Active)} = {IsPart_2_Active}");
             if (Part_1 == null)

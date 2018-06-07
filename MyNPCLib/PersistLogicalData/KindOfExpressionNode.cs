@@ -35,7 +35,12 @@ namespace MyNPCLib.PersistLogicalData
         Relation,
 
         /// <summary>
-        /// Represents an entity.
+        /// Represents an common concept
+        /// </summary>
+        Concept,
+
+        /// <summary>
+        /// Represents an entity like #1.
         /// </summary>
         EntityRef,
 
@@ -43,6 +48,7 @@ namespace MyNPCLib.PersistLogicalData
         /// Represents a condition for linking to an entity (or many entities).
         /// </summary>
         EntityCondition,
+
         /// <summary>
         /// Represents a variable.
         /// </summary>
@@ -51,6 +57,11 @@ namespace MyNPCLib.PersistLogicalData
         /// <summary>
         /// Represents a value.
         /// </summary>
-        Value
+        Value,
+
+        /// <summary>
+        /// Represents an other fact or rule
+        /// </summary>
+        Fact
     }
 }
