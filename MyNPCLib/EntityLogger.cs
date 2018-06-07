@@ -4,6 +4,7 @@ using System.Text;
 
 namespace MyNPCLib
 {
+    [Serializable]
     public class EntityLogger: IEntityLogger
     {
         private readonly object mLockObj = new object();
