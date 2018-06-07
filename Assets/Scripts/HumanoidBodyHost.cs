@@ -12,51 +12,6 @@ using UnityEngine.AI;
 [RequireComponent(typeof(EnemyRayScaner))]
 public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInternalHumanoid/*, IInternalLogicalObject*/
 {
-    private bool mEnabledLogging;
-
-    [SerializeField]
-    public bool EnabledLogging
-    {
-        get
-        {
-            return mEnabledLogging;
-        }
-
-        set
-        {
-            lock (mEntityLoggerLockObj)
-            {
-                mEnabledLogging = value;
-                if (mEntityLogger != null)
-                {
-                    mEntityLogger.Enabled = value;
-                }
-            }
-        }
-    }
-
-    private string mLoggerMarker;
-
-    public string LoggerMarker
-    {
-        get
-        {
-            return mLoggerMarker;
-        }
-
-        set
-        {
-            lock (mEntityLoggerLockObj)
-            {
-                mLoggerMarker = value;
-                if (mEntityLogger != null)
-                {
-                    mEntityLogger.Marker = value;
-                }
-            }
-        }
-    }
-
     private Rigidbody mRigidbody;
     private Animator mAnimator;
     private NavMeshAgent mNavMeshAgent;
@@ -89,45 +44,33 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private bool mUseIkAnimation;
 
-    private readonly object mEntityLoggerLockObj = new object();
-    private EntityLogger mEntityLogger;
+    [SerializeField]
+    private EntityLogger mEntityLogger = new EntityLogger();
 
     public IEntityLogger EntityLogger
     {
         get
         {
-            lock (mEntityLoggerLockObj)
-            {
-                return mEntityLogger;
-            }
+            return mEntityLogger;
         }
     }
 
     [MethodForLoggingSupport]
     protected void Log(string message)
     {
-        lock (mEntityLoggerLockObj)
-        {
-            mEntityLogger?.Log(message);
-        }      
+        mEntityLogger?.Log(message);     
     }
 
     [MethodForLoggingSupport]
     protected void Error(string message)
     {
-        lock (mEntityLoggerLockObj)
-        {
-            mEntityLogger?.Error(message);
-        }     
+        mEntityLogger?.Error(message);   
     }
 
     [MethodForLoggingSupport]
     protected void Warning(string message)
     {
-        lock (mEntityLoggerLockObj)
-        {
-            mEntityLogger?.Warning(message);
-        }       
+        mEntityLogger?.Warning(message);      
     }
 
     public void CallInMainUI(Action function)
@@ -221,13 +164,6 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     // Use this for initialization
     void Start ()
     {
-        lock (mEntityLoggerLockObj)
-        {
-            mEntityLogger = new EntityLogger();
-            mEntityLogger.Enabled = mEnabledLogging;
-            mEntityLogger.Marker = mLoggerMarker;
-        }
-
 #if DEBUG
         Log("Begin");
 #endif
