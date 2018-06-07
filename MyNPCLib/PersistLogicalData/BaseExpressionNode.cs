@@ -21,6 +21,18 @@ namespace MyNPCLib.PersistLogicalData
         public virtual OperatorAndExpressionNode AsOperatorAnd => null;
         public virtual bool IsOperatorOr => false;
         public virtual OperatorOrExpressionNode AsOperatorOr => null;
+        public virtual bool IsBaseRef => false;
+        public virtual BaseRefExpressionNode AsBaseRef => null;
+        public virtual bool IsConcept => false;
+        public virtual ConceptExpressionNode AsConcept => null;
+        public virtual bool IsEntityRef => false;
+        public virtual EntityRefExpressionNode AsEntityRef => null;
+        public virtual bool IsEntityCondition => false;
+        public virtual EntityConditionExpressionNode AsEntityCondition => null;
+        public virtual bool IsVar => false;
+        public virtual VarExpressionNode AsVar => null;
+        public virtual bool IsFact => false;
+        public virtual FactExpressionNode AsFact => null;
 
         public override string ToString()
         {

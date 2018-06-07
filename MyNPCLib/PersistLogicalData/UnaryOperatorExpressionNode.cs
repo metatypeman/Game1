@@ -4,6 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.PersistLogicalData
 {
+    [Serializable]
     public abstract class UnaryOperatorExpressionNode: BaseExpressionNode
     {
         public BaseExpressionNode Left { get; set; }

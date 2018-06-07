@@ -4,6 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.PersistLogicalData
 {
+    [Serializable]
     public class OperatorOrExpressionNode: BinaryOperatorExpressionNode
     {
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Or;
