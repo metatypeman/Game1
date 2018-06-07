@@ -17,6 +17,10 @@ namespace MyNPCLib.PersistLogicalData
         public virtual OperatorNotExpressionNode AsOperatorNot => null;
         public virtual bool IsBinaryOperator => false;
         public virtual BinaryOperatorExpressionNode AsBinaryOperator => null;
+        public virtual bool IsOperatorAnd => false;
+        public virtual OperatorAndExpressionNode AsOperatorAnd => null;
+        public virtual bool IsOperatorOr => false;
+        public virtual OperatorOrExpressionNode AsOperatorOr => null;
 
         public override string ToString()
         {
