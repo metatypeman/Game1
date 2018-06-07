@@ -9,7 +9,7 @@ namespace MyNPCLib.Logical
         public static BaseQueryResolverASTNode CreatePlan(BaseQueryASTNode queryNode)
         {
 #if DEBUG
-            LogInstance.Log($"QueryResolverASTNodeFactory CreatePlan queryNode = {queryNode}");
+            LogInstance.Log($"queryNode = {queryNode}");
 #endif
 
             return CreateNode(queryNode);
@@ -18,7 +18,7 @@ namespace MyNPCLib.Logical
         private static BaseQueryResolverASTNode CreateNode(BaseQueryASTNode queryNode)
         {
 #if DEBUG
-            LogInstance.Log($"QueryResolverASTNodeFactory CreateNode queryNode = {queryNode}");
+            LogInstance.Log($"queryNode = {queryNode}");
 #endif
 
             var kind = queryNode.Kind;
@@ -41,7 +41,7 @@ namespace MyNPCLib.Logical
         private static BaseQueryResolverASTNode CreateResolverOfConditionOfQueryASTNode(ConditionOfQueryASTNode queryNode)
         {
 #if DEBUG
-            LogInstance.Log($"QueryResolverASTNodeFactory CreateResolverOfConditionOfQueryASTNode queryNode = {queryNode}");
+            LogInstance.Log($"queryNode = {queryNode}");
 #endif
 
             var result = new ResolverOfConditionOfQueryASTNode(queryNode);
@@ -52,7 +52,7 @@ namespace MyNPCLib.Logical
         private static BaseQueryResolverASTNode CreateResolverOfBinaryOperatorOfQueryASTNode(BinaryOperatorOfQueryASTNode queryNode)
         {
 #if DEBUG
-            LogInstance.Log($"QueryResolverASTNodeFactory CreateResolverOfBinaryOperatorOfQueryASTNode queryNode = {queryNode}");
+            LogInstance.Log($"queryNode = {queryNode}");
 #endif
 
             var operatorKind = queryNode.OperatorId;
@@ -81,7 +81,7 @@ namespace MyNPCLib.Logical
         private static BaseQueryResolverASTNode CreateResolverOfUnaryOperatorOfQueryASTNode(UnaryOperatorOfQueryASTNode queryNode)
         {
 #if DEBUG
-            LogInstance.Log($"QueryResolverASTNodeFactory CreateResolverOfUnaryOperatorOfQueryASTNode queryNode = {queryNode}");
+            LogInstance.Log($"queryNode = {queryNode}");
 #endif
 
             var operatorKind = queryNode.OperatorId;

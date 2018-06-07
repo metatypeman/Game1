@@ -14,7 +14,7 @@ namespace MyNPCLib.Parser
         protected override void OnRun()
         {
 #if DEBUG
-            LogInstance.Log($"LogicalExpressionParser OnRun CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}`");
+            LogInstance.Log($"CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}`");
 #endif
 
             switch (CurrToken.TokenKind)

@@ -45,7 +45,7 @@ namespace MyNPCLib.Parser
                 mCurrentPos++;
 
 #if DEBUG
-                //LogInstance.Log($"Lexer this GetToken tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
+                //LogInstance.Log($"tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
 #endif
 
                 switch (mLexerState)

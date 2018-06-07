@@ -19,7 +19,7 @@ namespace MyNPCLib
         public override NPCBodyResourcesResolution ToBodyResourcesResulution()
         {
 #if DEBUG
-            LogInstance.Log("NPCBodyResourcesResolution ToBodyResourcesResulution()");
+            LogInstance.Log("Begin");
 #endif
 
             return this;

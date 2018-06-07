@@ -9,7 +9,7 @@ namespace MyNPCLib.Logical
         public IList<ulong> GetEntitiesIdList(ILogicalStorage source)
         {
 #if DEBUG
-            LogInstance.Log("BaseQueryResolverASTNode GetEntitiesIdList");
+            LogInstance.Log("Begin");
 #endif
 
             var queryExecutingCard = new QueryExecutingCard();
@@ -17,7 +17,7 @@ namespace MyNPCLib.Logical
             FillExecutingCard(queryExecutingCard, source);
 
 #if DEBUG
-            LogInstance.Log($"BaseQueryResolverASTNode GetEntitiesIdList queryExecutingCard = {queryExecutingCard}");
+            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
 
             if (queryExecutingCard.EntitiesIdList == null)

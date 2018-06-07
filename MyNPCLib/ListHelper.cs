@@ -24,7 +24,7 @@ namespace MyNPCLib
         public static IList<float> GetRange(float begin, float end, float delta)
         {
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext GetRange begin = {begin} end = {end} delta = {delta}");
+            //LogInstance.Log($"begin = {begin} end = {end} delta = {delta}");
 #endif
 
             var result = new List<float>();
@@ -50,7 +50,7 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            //LogInstance.Log($"BaseNPCContext GetRange NEXT delta = {delta}");
+            //LogInstance.Log($"NEXT delta = {delta}");
 #endif
 
             var currentValue = begin;
@@ -60,19 +60,19 @@ namespace MyNPCLib
             while (true)
             {
 #if DEBUG
-                //LogInstance.Log($"BaseNPCContext GetRange currentValue = {currentValue}");
+                //LogInstance.Log($"currentValue = {currentValue}");
 #endif
 
                 var newValue = currentValue + delta;
 
 #if DEBUG
-                //LogInstance.Log($"BaseNPCContext GetRange newValue = {newValue}");
+                //LogInstance.Log($"newValue = {newValue}");
 #endif
 
                 var currentAbsDelta = Math.Abs(end - newValue);
 
 #if DEBUG
-                //LogInstance.Log($"BaseNPCContext GetRange currentAbsDelta = {currentAbsDelta} absDelta = {absDelta}");
+                //LogInstance.Log($"currentAbsDelta = {currentAbsDelta} absDelta = {absDelta}");
 #endif
 
                 if(currentAbsDelta >= absDelta)

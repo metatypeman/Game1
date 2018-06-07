@@ -39,7 +39,7 @@ namespace MyNPCLib.Parser
         protected override void OnRun()
         {
 #if DEBUG
-            //LogInstance.Log($"AndNodeParser OnRun mState = {mState} CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}` mClosingToken = {mClosingToken}");
+            //LogInstance.Log($"mState = {mState} CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}` mClosingToken = {mClosingToken}");
 #endif
             switch (mState)
             {
@@ -56,7 +56,7 @@ namespace MyNPCLib.Parser
                                 mState = State.ArterRigthNode;
 
 #if DEBUG
-                                //LogInstance.Log($"AndNodeParser OnRun result = {result}");
+                                //LogInstance.Log($"result = {result}");
 #endif
                             }
                             break;
@@ -70,7 +70,7 @@ namespace MyNPCLib.Parser
                                 mState = State.ArterRigthNode;
 
 #if DEBUG
-                                //LogInstance.Log($"OrNodeParser OnRun result = {result}");
+                                //LogInstance.Log($"result = {result}");
 #endif
                             }
                             break;
@@ -84,7 +84,7 @@ namespace MyNPCLib.Parser
                                 mState = State.ArterRigthNode;
 
 #if DEBUG
-                                //LogInstance.Log($"AndNodeParser OnRun result = {result}");
+                                //LogInstance.Log($"result = {result}");
 #endif
                             }
                             break;

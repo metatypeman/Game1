@@ -10,7 +10,7 @@ namespace MyNPCLib.Logical
         public static BaseQueryASTNode CreateASTNode(string queryString, IEntityDictionary entityDictionary)
         {
 #if DEBUG
-            //LogInstance.Log($"QueryASTNodeFactory CreateASTNode queryString = {queryString}");
+            //LogInstance.Log($"queryString = {queryString}");
 #endif
 
             var context = new ParserContext(queryString, entityDictionary);
@@ -18,7 +18,7 @@ namespace MyNPCLib.Logical
             var node = LogicalExpressionParserHelper.CreateNode(context);
 
 #if DEBUG
-            //LogInstance.Log($"QueryASTNodeFactory CreateASTNode node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             return node;
@@ -28,7 +28,7 @@ namespace MyNPCLib.Logical
         public static BaseQueryASTNode CreateFakeASTNodeCase_1(IEntityDictionary entityDictionary)
         {
 #if DEBUG
-            LogInstance.Log("QueryASTNodeFactory CreateFakeASTNodeCase_1");
+            LogInstance.Log("Begin");
 #endif
             var namePropertyId = entityDictionary.GetKey("name");
             var classPropertyId = entityDictionary.GetKey("class");
@@ -60,7 +60,7 @@ namespace MyNPCLib.Logical
             notNode.Left = andNode;
 
 #if DEBUG
-            LogInstance.Log($"QueryASTNodeFactory CreateFakeASTNodeCase_1 notNode = {notNode}");
+            LogInstance.Log($"notNode = {notNode}");
 #endif
 
             return notNode;
@@ -69,7 +69,7 @@ namespace MyNPCLib.Logical
         public static BaseQueryASTNode CreateFakeASTNodeCase_2(IEntityDictionary entityDictionary)
         {
 #if DEBUG
-            LogInstance.Log("QueryASTNodeFactory CreateFakeASTNodeCase_2");
+            LogInstance.Log("Begin");
 #endif
             var namePropertyId = entityDictionary.GetKey("name");
             var classPropertyId = entityDictionary.GetKey("class");
@@ -97,7 +97,7 @@ namespace MyNPCLib.Logical
             andNode.Right = conditionNode_1;
 
 #if DEBUG
-            LogInstance.Log($"QueryASTNodeFactory CreateFakeASTNodeCase_2 andNode = {andNode}");
+            LogInstance.Log($"andNode = {andNode}");
 #endif
 
             return andNode;

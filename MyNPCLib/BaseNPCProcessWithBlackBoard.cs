@@ -22,7 +22,7 @@ namespace MyNPCLib
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"BaseNPCProcessWithBlackBoard OnSetContext e = {e}");
+                    Error($"e = {e}");
 #endif
                 }
             });

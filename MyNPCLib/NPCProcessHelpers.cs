@@ -9,11 +9,11 @@ namespace MyNPCLib
         public static void RegProcess(INPCContext context, INPCProcess npcProcess, NPCProcessStartupMode startupMode, KindOfLinkingToInitiator kindOfLinkingToInitiator, ulong parentProcessId, bool isProxy)
         {
 #if DEBUG
-            //LogInstance.Log($"NPCProcessHelpers RegProcess npcProcess.Id = {npcProcess.Id}");
-            //LogInstance.Log($"NPCProcessHelpers RegProcess startupMode = {startupMode}");
-            //LogInstance.Log($"NPCProcessHelpers RegProcess kindOfLinkingToInitiator = {kindOfLinkingToInitiator}");
-            //LogInstance.Log($"NPCProcessHelpers RegProcess parentProcessId = {parentProcessId}");
-            //LogInstance.Log($"NPCProcessHelpers RegProcess isProxy = {isProxy}");
+            //LogInstance.Log($"npcProcess.Id = {npcProcess.Id}");
+            //LogInstance.Log($"startupMode = {startupMode}");
+            //LogInstance.Log($"kindOfLinkingToInitiator = {kindOfLinkingToInitiator}");
+            //LogInstance.Log($"parentProcessId = {parentProcessId}");
+            //LogInstance.Log($"isProxy = {isProxy}");
 #endif
 
             var targetStartupMode = NPCProcessStartupMode.NewInstance;
@@ -44,7 +44,7 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            //LogInstance.Log($"NPCProcessHelpers RegProcess targetStartupMode = {targetStartupMode}");
+            //LogInstance.Log($"targetStartupMode = {targetStartupMode}");
 #endif
 
             switch (targetStartupMode)

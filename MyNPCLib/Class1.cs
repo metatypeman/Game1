@@ -20,7 +20,7 @@ namespace MyNPCLib
                 catch (Exception e)
                 {
 #if DEBUG
-                    LogInstance.Log($"Class1 Run e = {e}");
+                    LogInstance.Error($"e = {e}");
 #endif
                 }
             });
@@ -34,7 +34,7 @@ namespace MyNPCLib
 
         public void PrintType(Type type)
         {
-            LogInstance.Log($"CreateInfoOfConcreteProcess type.FullName = {type.FullName}");
+            LogInstance.Log($"type.FullName = {type.FullName}");
 
             var typeInfo = type.GetTypeInfo();
 
@@ -42,23 +42,23 @@ namespace MyNPCLib
 
             var atrrribute = typeInfo.GetCustomAttribute<NPCProcessStartupModeAttribute>();
 
-            LogInstance.Log($"CreateInfoOfConcreteProcess atrrribute.StartupMode = {atrrribute.StartupMode}");
+            LogInstance.Log($"atrrribute.StartupMode = {atrrribute.StartupMode}");
 
             var attribute2 = typeInfo.GetCustomAttribute<ObsoleteAttribute>();
 
-            LogInstance.Log($"CreateInfoOfConcreteProcess (attribute2 == null) = {attribute2 == null}");
+            LogInstance.Log($"(attribute2 == null) = {attribute2 == null}");
 
             var mainMethods = typeInfo.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
             foreach (var method in mainMethods)
             {
-                LogInstance.Log($"CreateInfoOfConcreteProcess method.Name = {method.Name}");
+                LogInstance.Log($"method.Name = {method.Name}");
 
                 var parametersList = method.GetParameters();
 
                 foreach (var parameter in parametersList)
                 {
-                    LogInstance.Log($"CreateInfoOfConcreteProcess parameter.Name = {parameter.Name} parameter.ParameterType.FullName = {parameter.ParameterType.FullName}");
+                    LogInstance.Log($"parameter.Name = {parameter.Name} parameter.ParameterType.FullName = {parameter.ParameterType.FullName}");
                 }
             }
 
@@ -73,14 +73,14 @@ namespace MyNPCLib
 
         public IList<int> GetItems()
         {
-            LogInstance.Log("GetItems");
+            LogInstance.Log("Begin");
 
             return new List<int>();
         }
 
         public void TSTCancelTask()
         {
-            LogInstance.Log("Begin TSTCancelTask");
+            LogInstance.Log("Begin");
 
             Thread tmpThread = null;
 
@@ -91,24 +91,24 @@ namespace MyNPCLib
 
                 while (true)
                 {
-                    LogInstance.Log($"TSTCancelTask Task n = {n}");
+                    LogInstance.Log($"Task n = {n}");
                     n++;
                 }
             });
 
             tmpTask.Start();
 
-            LogInstance.Log("TSTCancelTask started");
+            LogInstance.Log("started");
 
             Thread.Sleep(1000);
 
             //tmpThread.
 
-            LogInstance.Log("TSTCancelTask aborted");
+            LogInstance.Log("aborted");
 
             Thread.Sleep(1000);
 
-            LogInstance.Log("End TSTCancelTask");
+            LogInstance.Log("End");
         }
 
         public Vector3 GetVector()

@@ -10,7 +10,7 @@ namespace MyNPCLib.Logical
         public override void FillExecutingCard(QueryExecutingCard queryExecutingCard, ILogicalStorage source)
         {
 #if DEBUG
-            LogInstance.Log("ResolverOfAndBinaryOperatorOfQueryASTNode FillExecutingCard");
+            LogInstance.Log("Begin");
 #endif
 
             var leftExecutionCard = new QueryExecutingCard();
@@ -18,7 +18,7 @@ namespace MyNPCLib.Logical
             Left.FillExecutingCard(leftExecutionCard, source);
 
 #if DEBUG
-            LogInstance.Log($"ResolverOfAndBinaryOperatorOfQueryASTNode FillExecutingCard leftExecutionCard = {leftExecutionCard}");
+            LogInstance.Log($"leftExecutionCard = {leftExecutionCard}");
 #endif
 
             var rightExecutionCard = new QueryExecutingCard();
@@ -26,7 +26,7 @@ namespace MyNPCLib.Logical
             Right.FillExecutingCard(rightExecutionCard, source);
 
 #if DEBUG
-            LogInstance.Log($"ResolverOfAndBinaryOperatorOfQueryASTNode FillExecutingCard rightExecutionCard = {rightExecutionCard}");
+            LogInstance.Log($"rightExecutionCard = {rightExecutionCard}");
 #endif
 
             var result = leftExecutionCard.EntitiesIdList.Intersect(rightExecutionCard.EntitiesIdList).ToList();
@@ -34,7 +34,7 @@ namespace MyNPCLib.Logical
             queryExecutingCard.EntitiesIdList = result;
 
 #if DEBUG
-            LogInstance.Log("ResolverOfAndBinaryOperatorOfQueryASTNode FillExecutingCard NEXT");
+            LogInstance.Log("End");
 #endif
         }
     }

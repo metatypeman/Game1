@@ -754,7 +754,7 @@ namespace TmpSandBox
 
             //result = storage.AddTypeOfProcess(type);
 
-            //LogInstance.Log($"TSTStorageOfNPCProcesses result = {result}");
+            //LogInstance.Log($"result = {result}");
 
             //command = new NPCCommand();
             //command.Name = "SomeName";

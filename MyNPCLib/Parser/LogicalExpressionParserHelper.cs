@@ -12,7 +12,7 @@ namespace MyNPCLib.Parser
             var currentToken = context.GetToken();
 
 #if DEBUG
-            //LogInstance.Log($"LogicalExpressionParserHelper CreateNode currentToken = {currentToken}");
+            //LogInstance.Log($"currentToken = {currentToken}");
 #endif
 
             if(currentToken == null)

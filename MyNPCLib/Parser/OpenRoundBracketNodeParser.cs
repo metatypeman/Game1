@@ -33,7 +33,7 @@ namespace MyNPCLib.Parser
         protected override void OnRun()
         {
 #if DEBUG
-            //LogInstance.Log($"OpenRoundBracketNodeParser OnRun mState = {mState} CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}`");
+            //LogInstance.Log($"mState = {mState} CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}`");
 #endif
 
             switch(mState)
@@ -60,7 +60,7 @@ namespace MyNPCLib.Parser
 
                         default:
 #if DEBUG
-                            LogInstance.Log($"OpenRoundBracketNodeParser OnRun mResult = {mResult}");
+                            LogInstance.Log($"mResult = {mResult}");
 #endif
                             throw new UnexpectedTokenException(CurrToken);
                     }
@@ -89,7 +89,7 @@ namespace MyNPCLib.Parser
 
                         default:
 #if DEBUG
-                            LogInstance.Log($"OpenRoundBracketNodeParser OnRun mResult = {mResult}");
+                            LogInstance.Log($"mResult = {mResult}");
 #endif
                             throw new UnexpectedTokenException(CurrToken);
                     }
