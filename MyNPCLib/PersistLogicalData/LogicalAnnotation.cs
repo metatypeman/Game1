@@ -5,12 +5,11 @@ using System.Text;
 namespace MyNPCLib.PersistLogicalData
 {
     [Serializable]
-    public class RulePart : ILogicalyAnnotated, IObjectToString, IShortObjectToString
+    public class LogicalAnnotation : ILogicalyAnnotated, IRefToRecord, IObjectToString, IShortObjectToString
     {
-        public bool IsActive { get; set; }
-        public RuleInstance Parent { get; set; }
-        public RulePart NextPart { get; set; }
-        public BaseExpressionNode Expression { get; set; }
+        public string Name { get; set; }
+        public ulong Key { get; set; }
+
         public IList<LogicalAnnotation> Annotations { get; set; }
 
         public override string ToString()
@@ -28,41 +27,8 @@ namespace MyNPCLib.PersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(IsActive)} = {IsActive}");
-
-            if(Parent == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(Parent)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(Parent)}");
-                sb.Append(Parent.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(Parent)}");
-            }
-
-            if(NextPart == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(NextPart)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(NextPart)}");
-                sb.Append(NextPart.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(NextPart)}");
-            }
-
-            if (Expression == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(Expression)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(Expression)}");
-                sb.Append(Expression.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(Expression)}");
-            }
-
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             if (Annotations == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
@@ -70,13 +36,12 @@ namespace MyNPCLib.PersistLogicalData
             else
             {
                 sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
-                foreach(var annotation in Annotations)
+                foreach (var annotation in Annotations)
                 {
                     sb.Append(annotation.ToShortString(nextN));
                 }
                 sb.AppendLine($"{spaces}End {nameof(Annotations)}");
             }
-
             return sb.ToString();
         }
 
@@ -95,19 +60,8 @@ namespace MyNPCLib.PersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(IsActive)} = {IsActive}");
-
-            if (Expression == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(Expression)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(Expression)}");
-                sb.Append(Expression.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(Expression)}");
-            }
-
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             if (Annotations == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Annotations)} = null");

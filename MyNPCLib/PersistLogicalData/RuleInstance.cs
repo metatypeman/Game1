@@ -8,7 +8,7 @@ namespace MyNPCLib.PersistLogicalData
     /// Represents instance of rule (or fact) in the storage.
     /// </summary>
     [Serializable]
-    public class RuleInstance : IObjectToString, IShortObjectToString
+    public class RuleInstance : ILogicalyAnnotated, IRefToRecord, IObjectToString, IShortObjectToString
     {
         public string Name { get; set; }
         public ulong Key { get; set; }
@@ -17,6 +17,7 @@ namespace MyNPCLib.PersistLogicalData
         public bool IsPart_2_Active { get; set; }
         public RulePart Part_1 { get; set; }
         public RulePart Part_2 { get; set; }
+        public IList<LogicalAnnotation> Annotations { get; set; }
 
         public override string ToString()
         {
@@ -68,6 +69,20 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(Part_2)}");
                 sb.Append(Part_2.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Part_2)}");
+            }
+
+            if (Annotations == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+                foreach (var annotation in Annotations)
+                {
+                    sb.Append(annotation.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Annotations)}");
             }
             return sb.ToString();
         }
@@ -122,6 +137,21 @@ namespace MyNPCLib.PersistLogicalData
                 sb.Append(Part_2.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Part_2)}");
             }
+
+            if (Annotations == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+                foreach (var annotation in Annotations)
+                {
+                    sb.Append(annotation.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Annotations)}");
+            }
+
             return sb.ToString();
         }
     }

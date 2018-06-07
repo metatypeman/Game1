@@ -60,6 +60,11 @@ namespace MyNPCLib.PersistLogicalData
         Value,
 
         /// <summary>
+        /// Represents a fuzzy logic value.
+        /// </summary>
+        FuzzyLogicValue,
+
+        /// <summary>
         /// Represents an other fact or rule
         /// </summary>
         Fact
