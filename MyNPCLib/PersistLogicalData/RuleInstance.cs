@@ -17,6 +17,14 @@ namespace MyNPCLib.PersistLogicalData
         public bool IsPart_2_Active { get; set; }
         public RulePart Part_1 { get; set; }
         public RulePart Part_2 { get; set; }
+        DesirableFuzzyModality
+        NecessityFuzzyModality
+        IntentionallyFuzzyModality
+        RealityFuzzyModality
+        PossibilityFuzzyModality
+        ProbabilityFuzzyModality
+        MoralQualityFuzzyModality
+        QuantityQualityFuzzyModality
         public IList<LogicalAnnotation> Annotations { get; set; }
 
         public override string ToString()
