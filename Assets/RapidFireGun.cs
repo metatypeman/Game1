@@ -37,6 +37,24 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     private PassiveLogicalObject mPassiveLogicalObject;
     #endregion
 
+    [MethodForLoggingSupport]
+    protected void Log(string message)
+    {
+        mEntityLogger?.Log(message);
+    }
+
+    [MethodForLoggingSupport]
+    protected void Error(string message)
+    {
+        mEntityLogger?.Error(message);
+    }
+
+    [MethodForLoggingSupport]
+    protected void Warning(string message)
+    {
+        mEntityLogger?.Warning(message);
+    }
+
     public ulong EntityId => mPassiveLogicalObject.EntityId;
     public object this[ulong propertyKey]
     {
@@ -87,8 +105,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     void Start() {
         var commonLevelHost = LevelCommonHostFactory.Get();
 
-        //TODO fix me!
-        mPassiveLogicalObject = new PassiveLogicalObject(null, commonLevelHost.EntityDictionary, commonLevelHost.LogicalObjectsBus);
+        mPassiveLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.LogicalObjectsBus);
 
         var entityId = mPassiveLogicalObject.EntityId;
 
@@ -459,8 +476,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         Debug.Log($"RapidFireGun Send command = {command}");
 #endif
 
-        //TODO fix me!
-        var process = new NPCThingProcess(null);
+        var process = new NPCThingProcess(mEntityLogger);
 
         var commandName = command.Name;
 

@@ -12,6 +12,9 @@ using UnityEngine.AI;
 [RequireComponent(typeof(EnemyRayScaner))]
 public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInternalHumanoid/*, IInternalLogicalObject*/
 {
+    public bool EnableLogging = false;
+    public string Marker = $"#{Guid.NewGuid().ToString("D")}";
+
     private Rigidbody mRigidbody;
     private Animator mAnimator;
     private NavMeshAgent mNavMeshAgent;
@@ -44,7 +47,6 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private bool mUseIkAnimation;
 
-    [SerializeField]
     private EntityLogger mEntityLogger = new EntityLogger();
 
     public IEntityLogger EntityLogger
@@ -159,11 +161,44 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         }
     }
 
-    public event Action OnReady;
+    private event Action mOnReady;
+    public event Action OnReady
+    {
+        add
+        {
+            lock (mIsReadyLockObj)
+            {
+                mOnReady += value;
+                if(mIsReady)
+                {
+                    Task.Run(() => {
+                        try
+                        {
+                            value();
+                        }
+                        catch (Exception e)
+                        {
+#if DEBUG
+                            Error($"e = {e}");
+#endif
+                        }
+                    });
+                }
+            }
+        }
+
+        remove
+        {
+            mOnReady -= value;
+        }
+    }
 
     // Use this for initialization
     void Start ()
     {
+        mEntityLogger.Enabled = EnableLogging;
+        mEntityLogger.Marker = Marker;
+
 #if DEBUG
         Log("Begin");
 #endif
@@ -237,7 +272,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
             Task.Run(() => {
                 try
                 {
-                    OnReady?.Invoke();
+                    mOnReady?.Invoke();
                 }
                 catch (Exception e)
                 {
@@ -770,6 +805,9 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     // Update is called once per frame
     void Update ()
     {
+        mEntityLogger.Enabled = EnableLogging;
+        mEntityLogger.Marker = Marker;
+
 #if DEBUG
         //Log("mNavMeshAgent.pathStatus = " + mNavMeshAgent.pathStatus + " mNavMeshAgent.isOnOffMeshLink = " + mNavMeshAgent.isOnOffMeshLink + " mNavMeshAgent.isStopped = " + mNavMeshAgent.isStopped + " mNavMeshAgent.nextPosition = " + mNavMeshAgent.nextPosition);
 #endif

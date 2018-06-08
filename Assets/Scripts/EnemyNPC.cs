@@ -53,14 +53,9 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
     {
         var internalBodyHost = GetComponent<IInternalBodyHumanoidHost>();
 
-        if(internalBodyHost.IsReady)
-        {        
-            CreateNPCHostContext();
-        }
-        else
-        {
-            internalBodyHost.OnReady += InternalBodyHost_OnReady;
-        }
+        mInternalBodyHumanoidHost = internalBodyHost;
+
+        internalBodyHost.OnReady += InternalBodyHost_OnReady;
   
         mInputKeyHelper = new InputKeyHelper();
         mInputKeyHelper.AddListener(KeyCode.F, OnFPressAction);
@@ -103,14 +98,28 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
             mEntityLogger = mInternalBodyHumanoidHost.EntityLogger;
         }
 
-        var commonLevelHost = LevelCommonHostFactory.Get();
+        CallInMainUI(() => {
+            var commonLevelHost = LevelCommonHostFactory.Get();
 
-        Log($"(commonLevelHost == null) = {commonLevelHost == null}");
+            Log($"(commonLevelHost == null) = {commonLevelHost == null}");
 
-        var hostContext = new TestedNPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
-        mNPCProcessesContext = new TestedNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext, commonLevelHost.QueriesCache);
+            var hostContext = new TestedNPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
+            mNPCProcessesContext = new TestedNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext, commonLevelHost.QueriesCache);
 
-        mNPCProcessesContext.Bootstrap();
+            mNPCProcessesContext.Bootstrap();
+        });
+    }
+
+    private void CallInMainUI(Action function)
+    {
+        var invocable = new InvocableInMainThreadObj(function, this);
+        invocable.Run();
+    }
+
+    private TResult CallInMainUI<TResult>(Func<TResult> function)
+    {
+        var invocable = new InvocableInMainThreadObj<TResult>(function, this);
+        return invocable.Run();
     }
 
     public void SetInvocableObj(IInvocableInMainThreadObj invokableObj)
@@ -184,7 +193,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command);
+        mNPCProcessesContext?.Send(command);
     }
 
     private void OnJPressAction(KeyCode key)
@@ -193,7 +202,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command);
+        mNPCProcessesContext?.Send(command);
     }
 
     private void OnBPressAction(KeyCode key)
@@ -219,7 +228,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         Log($"key = {key}");
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command);
+        mNPCProcessesContext?.Send(command);
     }
 
     private void OnGPressAction(KeyCode key)
@@ -228,7 +237,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command);
+        mNPCProcessesContext?.Send(command);
     }
 
     private void OnKPressAction(KeyCode key)
@@ -237,7 +246,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command);
+        mNPCProcessesContext?.Send(command);
     }
 
     private void OnNPressAction(KeyCode key)
@@ -246,7 +255,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command);
+        mNPCProcessesContext?.Send(command);
     }
 
     private void OnHPressAction(KeyCode key)
@@ -255,7 +264,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command); 
+        mNPCProcessesContext?.Send(command); 
     }
 
     private void OnLPressAction(KeyCode key)
@@ -264,17 +273,16 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command);
+        mNPCProcessesContext?.Send(command);
     }
 
     private void OnIPressAction(KeyCode key)
     {
         Log($"key = {key}");        
-        var _target = GameObject.Find("Ethan");
 
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command);
+        mNPCProcessesContext?.Send(command);
     }
 
     private void OnPPressAction(KeyCode key)
@@ -283,7 +291,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command);
+        mNPCProcessesContext?.Send(command);
     }
     
     private void OnUPressAction(KeyCode key)
@@ -292,7 +300,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
         var command = KeyToNPCCommandConverter.Convert(key);
         Log($"command = {command}");
-        mNPCProcessesContext.Send(command);
+        mNPCProcessesContext?.Send(command);
     }
 
     void OnDestroy()
