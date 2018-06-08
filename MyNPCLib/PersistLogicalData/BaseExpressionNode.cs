@@ -33,6 +33,12 @@ namespace MyNPCLib.PersistLogicalData
         public virtual VarExpressionNode AsVar => null;
         public virtual bool IsFact => false;
         public virtual FactExpressionNode AsFact => null;
+        public virtual bool IsRelation => false;
+        public virtual RelationExpressionNode AsRelation => null;
+        public virtual bool IsValue => false;
+        public virtual ValueExpressionNode AsValue => null;
+        public virtual bool IsFuzzyLogicValue => false;
+        public virtual FuzzyLogicValueExpressionNode AsFuzzyLogicValue => null;
 
         public override string ToString()
         {
