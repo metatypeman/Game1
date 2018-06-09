@@ -17,10 +17,12 @@ namespace MyNPCLib.PersistLogicalData
         public bool IsPart_2_Active { get; set; }
         public RulePart Part_1 { get; set; }
         public RulePart Part_2 { get; set; }
+        public NotContradictPart NotContradict { get; set; }
         public DesirableFuzzyModality DesirableModality { get; set; }
         public NecessityFuzzyModality NecessityModality { get; set; }
         public ImperativeFuzzyModality ImperativeModality { get; set; }
         public IntentionallyFuzzyModality IntentionallyModality { get; set; }
+        public PriorityFuzzyModality PriorityModality { get; set; }
         public RealityFuzzyModality RealityModality { get; set; }
         public PossibilityFuzzyModality PossibilityModality { get; set; }
         public ProbabilityFuzzyModality ProbabilityModality { get; set; }
@@ -79,7 +81,17 @@ namespace MyNPCLib.PersistLogicalData
                 sb.Append(Part_2.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Part_2)}");
             }
-
+            if (NotContradict == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NotContradict)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NotContradict)}");
+                sb.Append(NotContradict.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(NotContradict)}");
+            }
+            
             if (DesirableModality == null)
             {
                 sb.AppendLine($"{spaces}{nameof(DesirableModality)} = null");
@@ -123,7 +135,17 @@ namespace MyNPCLib.PersistLogicalData
                 sb.Append(IntentionallyModality.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(IntentionallyModality)}");
             }
-
+            if (PriorityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(PriorityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(PriorityModality)}");
+                sb.Append(PriorityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(PriorityModality)}");
+            }
+            
             if (RealityModality == null)
             {
                 sb.AppendLine($"{spaces}{nameof(RealityModality)} = null");
@@ -245,7 +267,16 @@ namespace MyNPCLib.PersistLogicalData
                 sb.Append(Part_2.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Part_2)}");
             }
-
+            if (NotContradict == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NotContradict)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NotContradict)}");
+                sb.Append(NotContradict.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(NotContradict)}");
+            }
             if (DesirableModality == null)
             {
                 sb.AppendLine($"{spaces}{nameof(DesirableModality)} = null");
@@ -288,6 +319,17 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(IntentionallyModality)}");
                 sb.Append(IntentionallyModality.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(IntentionallyModality)}");
+            }
+
+            if (PriorityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(PriorityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(PriorityModality)}");
+                sb.Append(PriorityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(PriorityModality)}");
             }
 
             if (RealityModality == null)

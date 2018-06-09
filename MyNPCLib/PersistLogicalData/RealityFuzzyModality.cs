@@ -7,5 +7,6 @@ namespace MyNPCLib.PersistLogicalData
     [Serializable]
     public class RealityFuzzyModality : FuzzyModality
     {
+        public override KindOfModality Kind => KindOfModality.Reality;
     }
 }

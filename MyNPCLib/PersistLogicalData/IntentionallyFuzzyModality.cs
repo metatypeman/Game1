@@ -7,5 +7,6 @@ namespace MyNPCLib.PersistLogicalData
     [Serializable]
     public class IntentionallyFuzzyModality : FuzzyModality
     {
+        public override KindOfModality Kind => KindOfModality.Intentionally;
     }
 }

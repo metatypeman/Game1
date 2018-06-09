@@ -33,6 +33,16 @@ namespace MyNPCLib.PersistLogicalData
         Intentionally,
 
         /// <summary>
+        /// Represents external power.
+        /// </summary>
+        Imperative,
+
+        /// <summary>
+        /// Represents priority of the fact (rule).
+        /// </summary>
+        Priority,
+
+        /// <summary>
         /// This fact (rule) is real in the world or not.
         /// </summary>
         Reality,

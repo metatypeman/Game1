@@ -5,8 +5,8 @@ using System.Text;
 namespace MyNPCLib.PersistLogicalData
 {
     [Serializable]
-    public class ProbabilityFuzzyModality : FuzzyModality
+    public class PriorityFuzzyModality : FuzzyModality
     {
-        public override KindOfModality Kind => KindOfModality.Probability;
+        public override KindOfModality Kind => KindOfModality.Priority;
     }
 }
