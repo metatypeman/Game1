@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.PersistLogicalData
 {
-    class DesirableFuzzyModality : FuzzyModality
+    public class DesirableFuzzyModality : FuzzyModality
     {
     }
 }

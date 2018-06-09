@@ -17,15 +17,15 @@ namespace MyNPCLib.PersistLogicalData
         public bool IsPart_2_Active { get; set; }
         public RulePart Part_1 { get; set; }
         public RulePart Part_2 { get; set; }
-        DesirableFuzzyModality
-        NecessityFuzzyModality
-        ImperativeFuzzyModality
-        IntentionallyFuzzyModality
-        RealityFuzzyModality
-        PossibilityFuzzyModality
-        ProbabilityFuzzyModality
-        MoralQualityFuzzyModality
-        QuantityQualityFuzzyModality
+        public DesirableFuzzyModality DesirableModality { get; set; }
+        public NecessityFuzzyModality NecessityModality { get; set; }
+        public ImperativeFuzzyModality ImperativeModality { get; set; }
+        public IntentionallyFuzzyModality IntentionallyModality { get; set; }
+        public RealityFuzzyModality RealityModality { get; set; }
+        public PossibilityFuzzyModality PossibilityModality { get; set; }
+        public ProbabilityFuzzyModality ProbabilityModality { get; set; }
+        public MoralQualityFuzzyModality MoralQualityModality { get; set; }
+        public QuantityQualityFuzzyModality QuantityQualityModality { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
 
         public override string ToString()
@@ -78,6 +78,105 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(Part_2)}");
                 sb.Append(Part_2.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Part_2)}");
+            }
+
+            if (DesirableModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DesirableModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(DesirableModality)}");
+                sb.Append(DesirableModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(DesirableModality)}");
+            }
+
+            if (NecessityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NecessityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NecessityModality)}");
+                sb.Append(NecessityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(NecessityModality)}");
+            }
+
+            if (ImperativeModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(ImperativeModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(ImperativeModality)}");
+                sb.Append(ImperativeModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(ImperativeModality)}");
+            }
+
+            if (IntentionallyModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(IntentionallyModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(IntentionallyModality)}");
+                sb.Append(IntentionallyModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(IntentionallyModality)}");
+            }
+
+            if (RealityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(RealityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(RealityModality)}");
+                sb.Append(RealityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(RealityModality)}");
+            }
+
+            if (PossibilityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(PossibilityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(PossibilityModality)}");
+                sb.Append(PossibilityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(PossibilityModality)}");
+            }
+
+            if (ProbabilityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(ProbabilityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(ProbabilityModality)}");
+                sb.Append(ProbabilityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(ProbabilityModality)}");
+            }
+
+            if (MoralQualityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(MoralQualityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(MoralQualityModality)}");
+                sb.Append(MoralQualityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(MoralQualityModality)}");
+            }
+
+            if (QuantityQualityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(QuantityQualityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(QuantityQualityModality)}");
+                sb.Append(QuantityQualityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(QuantityQualityModality)}");
             }
 
             if (Annotations == null)
@@ -145,6 +244,105 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(Part_2)}");
                 sb.Append(Part_2.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Part_2)}");
+            }
+
+            if (DesirableModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DesirableModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(DesirableModality)}");
+                sb.Append(DesirableModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(DesirableModality)}");
+            }
+
+            if (NecessityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NecessityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NecessityModality)}");
+                sb.Append(NecessityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(NecessityModality)}");
+            }
+
+            if (ImperativeModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(ImperativeModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(ImperativeModality)}");
+                sb.Append(ImperativeModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(ImperativeModality)}");
+            }
+
+            if (IntentionallyModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(IntentionallyModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(IntentionallyModality)}");
+                sb.Append(IntentionallyModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(IntentionallyModality)}");
+            }
+
+            if (RealityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(RealityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(RealityModality)}");
+                sb.Append(RealityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(RealityModality)}");
+            }
+
+            if (PossibilityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(PossibilityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(PossibilityModality)}");
+                sb.Append(PossibilityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(PossibilityModality)}");
+            }
+
+            if (ProbabilityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(ProbabilityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(ProbabilityModality)}");
+                sb.Append(ProbabilityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(ProbabilityModality)}");
+            }
+
+            if (MoralQualityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(MoralQualityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(MoralQualityModality)}");
+                sb.Append(MoralQualityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(MoralQualityModality)}");
+            }
+
+            if (QuantityQualityModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(QuantityQualityModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(QuantityQualityModality)}");
+                sb.Append(QuantityQualityModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(QuantityQualityModality)}");
             }
 
             if (Annotations == null)
