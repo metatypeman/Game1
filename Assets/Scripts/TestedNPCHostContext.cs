@@ -54,7 +54,7 @@ namespace Assets.Scripts
             Task.Run(() => {
                 try
                 {
-                    OnReady?.Invoke();
+                    mOnReady?.Invoke();
                 }catch(Exception e)
                 {
 #if DEBUG
@@ -150,7 +150,34 @@ namespace Assets.Scripts
         }
 
         public bool IsReady => mInternalBodyHumanoidHost.IsReady;
-        public event Action OnReady;
+        private event Action mOnReady;
+        public event Action OnReady
+        {
+            add
+            {
+                mOnReady += value;
+                if (mInternalBodyHumanoidHost.IsReady)
+                {
+                    Task.Run(() => {
+                        try
+                        {
+                            value();
+                        }
+                        catch (Exception e)
+                        {
+#if DEBUG
+                            Error($"e = {e}");
+#endif
+                        }
+                    });
+                }
+            }
+
+            remove
+            {
+                mOnReady -= value;
+            }
+        }
     }
 
     public class TestedNPCHandHost : INPCHandHost
@@ -256,7 +283,7 @@ namespace Assets.Scripts
             Task.Run(() => {
                 try
                 {
-                    OnReady?.Invoke();
+                    mOnReady?.Invoke();
                 }catch(Exception e)
                 {
 #if DEBUG
@@ -278,7 +305,34 @@ namespace Assets.Scripts
         public ILogicalStorage HostLogicalStorage => mInternalBodyHumanoidHost.HostLogicalStorage;
         public ulong SelfEntityId => mInternalBodyHumanoidHost.SelfEntityId;
         public bool IsReady => mBodyHost.IsReady;
-        public event Action OnReady;
+        private event Action mOnReady;
+        public event Action OnReady
+        {
+            add
+            {
+                mOnReady += value;
+                if (mBodyHost.IsReady)
+                {
+                    Task.Run(() => {
+                        try
+                        {
+                            value();
+                        }
+                        catch (Exception e)
+                        {
+#if DEBUG
+                            Error($"e = {e}");
+#endif
+                        }
+                    });
+                }
+            }
+
+            remove
+            {
+                mOnReady -= value;
+            }
+        }
 
         public IList<IHostVisionObject> VisibleObjects => mInternalBodyHumanoidHost.VisibleObjects;
         public Vector3 GlobalPosition => mInternalBodyHumanoidHost.GlobalPosition;
