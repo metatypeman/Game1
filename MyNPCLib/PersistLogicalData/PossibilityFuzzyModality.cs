@@ -4,6 +4,8 @@ using System.Text;
 
 namespace MyNPCLib.PersistLogicalData
 {
+
+    [Serializable]
     public class PossibilityFuzzyModality : FuzzyModality
     {
     }
