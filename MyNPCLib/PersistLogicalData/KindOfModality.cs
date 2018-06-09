@@ -57,6 +57,8 @@ namespace MyNPCLib.PersistLogicalData
         /// </summary>
         Probability,
 
+        CertaintyFactor,
+
         /// <summary>
         /// 1 is good, 0 is bad.
         /// </summary>

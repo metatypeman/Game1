@@ -26,6 +26,7 @@ namespace MyNPCLib.PersistLogicalData
         public RealityFuzzyModality RealityModality { get; set; }
         public PossibilityFuzzyModality PossibilityModality { get; set; }
         public ProbabilityFuzzyModality ProbabilityModality { get; set; }
+        public CertaintyFactorFuzzyModality CertaintyFactor { get; set; }
         public MoralQualityFuzzyModality MoralQualityModality { get; set; }
         public QuantityQualityFuzzyModality QuantityQualityModality { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
@@ -178,7 +179,17 @@ namespace MyNPCLib.PersistLogicalData
                 sb.Append(ProbabilityModality.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(ProbabilityModality)}");
             }
-
+            if (CertaintyFactor == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(CertaintyFactor)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(CertaintyFactor)}");
+                sb.Append(CertaintyFactor.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(CertaintyFactor)}");
+            }
+            
             if (MoralQualityModality == null)
             {
                 sb.AppendLine($"{spaces}{nameof(MoralQualityModality)} = null");
@@ -363,6 +374,17 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(ProbabilityModality)}");
                 sb.Append(ProbabilityModality.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(ProbabilityModality)}");
+            }
+
+            if (CertaintyFactor == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(CertaintyFactor)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(CertaintyFactor)}");
+                sb.Append(CertaintyFactor.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(CertaintyFactor)}");
             }
 
             if (MoralQualityModality == null)
