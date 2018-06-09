@@ -19,6 +19,7 @@ namespace MyNPCLib.PersistLogicalData
         public RulePart Part_2 { get; set; }
         DesirableFuzzyModality
         NecessityFuzzyModality
+        ImperativeFuzzyModality
         IntentionallyFuzzyModality
         RealityFuzzyModality
         PossibilityFuzzyModality

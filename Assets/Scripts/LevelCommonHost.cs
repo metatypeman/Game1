@@ -11,10 +11,10 @@ namespace Assets.Scripts
         public void Awake()
         {
 #if UNITY_EDITOR
-            Debug.Log("LevelCommonHost Awake");
-
             var logInstance = new LogProxyForDebug();
             LogInstance.SetLogProxy(logInstance);
+
+            LogInstance.Log("Begin");
 #endif
 
             mEntityDictionary = new EntityDictionary();

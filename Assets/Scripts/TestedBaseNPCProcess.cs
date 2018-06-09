@@ -13,7 +13,7 @@ namespace Assets.Scripts
         protected void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
         {
 #if UNITY_EDITOR
-            //Debug.Log($"TestedRunAwayNPCProcess Begin GoToTargetWayPoint nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
+            //Log($"Begin nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
 #endif
 
             var targetWayPoint = Context.GetLogicalObject($"name='{nameOfThisWaypoint}'&class='waypoint'");
@@ -25,12 +25,12 @@ namespace Assets.Scripts
                 moveCommand.TargetPosition = targetWayPoint.GetValue<Vector3?>("global position");
 
 #if UNITY_EDITOR
-                //Debug.Log($"TestedRunAwayNPCProcess GoToTargetWayPoint moveCommand = {moveCommand}");
+                //Log($"moveCommand = {moveCommand}");
 #endif
                 var tmpTask = ExecuteBody(moveCommand);
                 //mTmpTask = tmpTask;
 #if UNITY_EDITOR
-                //Debug.Log($"TestedRunAwayNPCProcess GoToTargetWayPoint tmpTask = {tmpTask}");
+                //Log($"tmpTask = {tmpTask}");
 #endif
 
                 if (withWaiting)
@@ -40,7 +40,7 @@ namespace Assets.Scripts
             }
 
 #if UNITY_EDITOR
-            //Debug.Log("End TestedRunAwayNPCProcess GoToTargetWayPoint");
+            //Log("End");
 #endif
         }
     }

@@ -840,7 +840,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     var newAngle = mCurrentBodyAngle + mBodyAngleDelta;
 
 #if DEBUG
-                    Debug.Log($"HumanoidBodyHost Update newAngle = {newAngle}");
+                    Log($"newAngle = {newAngle}");
 #endif
                     var tmpDelta = mTargetBodyAngle - newAngle;
 

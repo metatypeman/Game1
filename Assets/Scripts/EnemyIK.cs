@@ -21,8 +21,7 @@ public class EnemyIK : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-        //Debug.Log("Update Update");
-        
+        //LogInstance.Log("Begin");
     }
 
     void OnAnimatorIK(int layerIndex)

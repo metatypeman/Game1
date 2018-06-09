@@ -10,6 +10,8 @@ using UnityEngine;
 public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
 {
     #region Public Fields
+    public bool EnableLogging = false;
+    public string Marker = $"#{Guid.NewGuid().ToString("D")}";
     [SerializeField]
     public GameObject Body;
     [SerializeField]
@@ -23,6 +25,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     #endregion
 
     #region Private Fields
+    private EntityLogger mEntityLogger = new EntityLogger();
     private Transform mGunEndTransform;
     private ParticleSystem mGunParticles;
     private LineRenderer mGunLine;
@@ -103,6 +106,9 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
 
     // Use this for initialization
     void Start() {
+        mEntityLogger.Enabled = EnableLogging;
+        mEntityLogger.Marker = Marker;
+
         var commonLevelHost = LevelCommonHostFactory.Get();
 
         mPassiveLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.LogicalObjectsBus);
@@ -211,6 +217,9 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
 
     // Update is called once per frame
     void Update() {
+        mEntityLogger.Enabled = EnableLogging;
+        mEntityLogger.Marker = Marker;
+
         if (mUseDebugLine)
         {
             mGunLine.enabled = true;
@@ -290,7 +299,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
             }
             catch(Exception e)
             {
-                Debug.Log($"RapidFireGun NotifyAboutFire e = {e}");
+                Error($"e = {e}");
             }          
         });
     }
@@ -368,7 +377,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     public bool SetToHandsOfHumanoid(IInternalHumanoid humanoid, IInternalHumanoidHostContext internalContext)
     {
 #if UNITY_EDITOR
-        //Debug.Log("Begin RapidFireGun SetToHandsOfHumanoid");
+        //Log("Begin");
 #endif
 
         var targetParent = humanoid.RightHandWP.transform;
@@ -376,7 +385,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         if(Body.transform.parent == targetParent)
         {
 #if UNITY_EDITOR
-            //Debug.Log("RapidFireGun SetToHandsOfHumanoid Body.transform.parent == targetParent");
+            //Log("Body.transform.parent == targetParent");
 #endif
 
             return true;
@@ -403,7 +412,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         Body.gameObject.SetActive(true);
 
 #if UNITY_EDITOR
-        //Debug.Log("End RapidFireGun SetToHandsOfHumanoid");
+        //Log("End");
 #endif
 
         return true;
@@ -412,13 +421,13 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     public bool SetAsAloneAndHide()
     {
 #if UNITY_EDITOR
-        //Debug.Log("Begin RapidFireGun SetAsAloneAndHide");
+        //Log("Begin");
 #endif
 
         if(Body.transform.parent == null && !Body.gameObject.activeSelf)
         {
 #if UNITY_EDITOR
-            //Debug.Log("RapidFireGun  SetAsAloneAndHide Body.transform.parent == null && !Body.gameObject.activeSelf");
+            //Log("RBody.transform.parent == null && !Body.gameObject.activeSelf");
 #endif
 
             return true;
@@ -428,7 +437,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         Body.gameObject.SetActive(false);
 
 #if UNITY_EDITOR
-        //Debug.Log("End RapidFireGun SetAsAloneAndHide");
+        //Log("End");
 #endif
 
         return true;
@@ -437,13 +446,13 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     public bool ThrowOutToSurface()
     {
 #if UNITY_EDITOR
-        //Debug.Log("Begin RapidFireGun ThrowOutToSurface");
+        //Log("Begin");
 #endif
 
         if (Body.transform.parent == null && Body.gameObject.activeSelf)
         {
 #if UNITY_EDITOR
-            //Debug.Log("RapidFireGun ThrowOutToSurface Body.transform.parent == null && Body.gameObject.activeSelf");
+            //Log("Body.transform.parent == null && Body.gameObject.activeSelf");
 #endif
 
             return true;
@@ -464,7 +473,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         }
 
 #if UNITY_EDITOR
-        //Debug.Log("End RapidFireGun ThrowOutToSurface");
+        //Log("End");
 #endif
 
         return true;
@@ -473,7 +482,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     public INPCProcess Send(INPCCommand command)
     {
 #if UNITY_EDITOR
-        Debug.Log($"RapidFireGun Send command = {command}");
+        Log($"command = {command}");
 #endif
 
         var process = new NPCThingProcess(mEntityLogger);
@@ -519,7 +528,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     public object Get(string propertyName)
     {
 #if UNITY_EDITOR
-        Debug.Log($"RapidFireGun Get propertyName = {propertyName}");
+        Log($"propertyName = {propertyName}");
 #endif
 
         if(propertyName == "FireMode")

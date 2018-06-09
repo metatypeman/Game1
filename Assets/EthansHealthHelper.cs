@@ -23,16 +23,16 @@ public class EthansHealthHelper : MonoBehaviour, ITargetOfShoot
     public void SetHit(RaycastHit shootHit, int damagePerShot)
     {
 #if UNITY_EDITOR
-        //Debug.Log($"EthansHelthsHelper SetHit damagePerShot = {damagePerShot}");
+        //LogInstance.Log($"damagePerShot = {damagePerShot}");
 #endif
 
         Health -= damagePerShot;
 
 #if UNITY_EDITOR
-        //Debug.Log($"EthansHelthsHelper SetHit Health = {Health}");
+        //LogInstance.Log($"Health = {Health}");
 #endif
 
-        if(Health <= 0)
+        if (Health <= 0)
         {
             mEnemyController.Die();
         }

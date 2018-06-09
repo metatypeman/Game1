@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using MyNPCLib;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class TrafficBarrierRedInfo : BasePassiveLogicalGameObject
     protected override void OnInitFacts()
     {
 #if UNITY_EDITOR
-        Debug.Log($"TrafficBarrierRedInfo OnInitFacts EntityId = {EntityId}");
+        Log($"EntityId = {EntityId}");
 #endif
 
         base.OnInitFacts();

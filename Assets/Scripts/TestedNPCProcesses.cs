@@ -494,7 +494,7 @@ namespace Assets.Scripts
 
         private void TmpTask_OnStateChanged(INPCProcess sender, StateOfNPCProcess state)
         {
-            //Debug.Log($"TestedSearchNearNPCProcess TmpTask_OnStateChanged sender.Id = {sender.Id} state = {state}");
+            //Log($"sender.Id = {sender.Id} state = {state}");
             Warning($"sender.Id = {sender.Id} state = {state}");
         }
     }

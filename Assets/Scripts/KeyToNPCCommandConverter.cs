@@ -13,7 +13,7 @@ namespace Assets.Scripts
         public static INPCCommand Convert(KeyCode key)
         {
 #if UNITY_EDITOR
-            //Debug.Log($"KeyToNPCCommandConverter Convert key = {key}");
+            //LogInstance.Log($"key = {key}");
 #endif
 
             var command = new NPCCommand();

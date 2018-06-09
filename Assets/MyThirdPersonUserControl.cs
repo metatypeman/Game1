@@ -21,16 +21,16 @@ public class MyThirdPersonUserControl : MonoBehaviour {
         //}
         //else
         //{
-        //    Debug.LogWarning("Warning: no main camera found. Third person character needs a Camera tagged \"MainCamera\", for camera-relative controls.", gameObject);
+        //    LogInstance.Warning("Warning: no main camera found. Third person character needs a Camera tagged \"MainCamera\", for camera-relative controls.", gameObject);
         //    // we use self-relative controls in this case, which probably isn't what the user wants, but hey, we warned them!
         //}
 
         //// get the third person character ( this should never be null due to require component )
         //m_Character = GetComponent<MyThirdPersonCharacter>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
         //if (!m_Jump)
         //{
         //    m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
@@ -40,7 +40,7 @@ public class MyThirdPersonUserControl : MonoBehaviour {
     // Fixed update is called in sync with physics
     private void FixedUpdate()
     {
-//        Debug.LogWarning("FixedUpdate");
+//        LogInstance.Warning("Begin");
 
 //        // read inputs
 //        var h = CrossPlatformInputManager.GetAxis("Horizontal");

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using MyNPCLib.Logical;
+using MyNPCLib;
 
 namespace Assets.Scripts
 {
@@ -22,6 +23,28 @@ namespace Assets.Scripts
             }
         }
 
+        public bool EnableLogging = false;
+        public string Marker = $"#{Guid.NewGuid().ToString("D")}";
+
+        [MethodForLoggingSupport]
+        protected void Log(string message)
+        {
+            mEntityLogger?.Log(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Error(string message)
+        {
+            mEntityLogger?.Error(message);
+        }
+
+        [MethodForLoggingSupport]
+        protected void Warning(string message)
+        {
+            mEntityLogger?.Warning(message);
+        }
+
+        private EntityLogger mEntityLogger = new EntityLogger();
         private PassiveLogicalGameObjectOptions mOptions;
         private PassiveLogicalObject mPassiveLogicalObject;
         public ulong EntityId => mPassiveLogicalObject.EntityId;
@@ -46,13 +69,16 @@ namespace Assets.Scripts
         // Use this for initialization
         void Start()
         {
+            mEntityLogger.Enabled = EnableLogging;
+            mEntityLogger.Marker = Marker;
+
 #if UNITY_EDITOR
-            //LogInstance.Log("Begin");
+            //Log("Begin");
 #endif
 
             var commonLevelHost = LevelCommonHostFactory.Get();
 
-            mPassiveLogicalObject = new PassiveLogicalObject(null, commonLevelHost.EntityDictionary, commonLevelHost.LogicalObjectsBus);
+            mPassiveLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.LogicalObjectsBus);
 
             var tmpGameObject = gameObject;
             var instanceId = tmpGameObject.GetInstanceID();
@@ -67,6 +93,13 @@ namespace Assets.Scripts
             OnInitFacts();
 
             commonLevelHost.LogicalObjectsBus.RegisterObject(instanceId, this);
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            mEntityLogger.Enabled = EnableLogging;
+            mEntityLogger.Marker = Marker;
         }
 
         protected object this[string propertyName]

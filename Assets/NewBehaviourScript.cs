@@ -11,32 +11,32 @@ public class NewBehaviourScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("NewBehaviourScript Update");
+        //LogInstance.Log("Begin");
     }
 
     void OnBecameVisible()
     {
-        //Debug.Log("NewBehaviourScript OnBecameVisible");
+        //LogInstance.Log("Begin");
     }
 
     void OnBecameInvisible()
     {
-        //Debug.Log("NewBehaviourScript OnBecameInvisible");
+        //LogInstance.Log("Begin");
     }
 
     void OnWillRenderObject()
     {
         //var currentCamera = Camera.current;
-        //Debug.Log($"NewBehaviourScript OnWillRenderObject currentCamera.name = '{currentCamera.name}' currentCamera.GetInstanceID() = {currentCamera.GetInstanceID()} Time.deltaTime = {Time.deltaTime}");
+        //LogInstance.Log($"currentCamera.name = '{currentCamera.name}' currentCamera.GetInstanceID() = {currentCamera.GetInstanceID()} Time.deltaTime = {Time.deltaTime}");
     }
 
     private void FixedUpdate()
     {
-        //Debug.Log("NewBehaviourScript FixedUpdate");
+        //LogInstance.Log("Begin");
     }
 
     private void LateUpdate()
     {
-        //Debug.Log("NewBehaviourScript LateUpdate");
+        //LogInstance.Log("Begin");
     }
 }

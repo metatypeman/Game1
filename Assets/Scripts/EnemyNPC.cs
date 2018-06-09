@@ -181,7 +181,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("EnemyNPC Update");
+        //Log("Begin");
         mInputKeyHelper.Update();
         ProcessInvocable();
         //mGunBody.SetActive(false);
