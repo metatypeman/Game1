@@ -10,8 +10,12 @@ namespace MyNPCLib.PersistLogicalData
     [Serializable]
     public class RuleInstance : ILogicalyAnnotated, IRefToRecord, IObjectToString, IShortObjectToString
     {
+        public string DictionaryName { get; set; }
         public string Name { get; set; }
         public ulong Key { get; set; }
+        public string ModuleName { get; set; }
+        public ulong ModuleKey { get; set; }
+        public BaseExpressionNode BelongToEntity { get; set; }
         public EntitiesConditions EntitiesConditions { get; set; }
         public bool IsPart_1_Active { get; set; }
         public bool IsPart_2_Active { get; set; }
@@ -24,7 +28,6 @@ namespace MyNPCLib.PersistLogicalData
         public IntentionallyFuzzyModality IntentionallyModality { get; set; }
         public PriorityFuzzyModality PriorityModality { get; set; }
         public RealityFuzzyModality RealityModality { get; set; }
-        public PossibilityFuzzyModality PossibilityModality { get; set; }
         public ProbabilityFuzzyModality ProbabilityModality { get; set; }
         public CertaintyFactorFuzzyModality CertaintyFactor { get; set; }
         public MoralQualityFuzzyModality MoralQualityModality { get; set; }
@@ -45,10 +48,25 @@ namespace MyNPCLib.PersistLogicalData
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
-            var sb = new StringBuilder();
+            var sb = new StringBuilder();           
+            sb.AppendLine($"{spaces}{nameof(DictionaryName)} = {DictionaryName}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
-            if(EntitiesConditions == null)
+            sb.AppendLine($"{spaces}{nameof(ModuleName)} = {ModuleName}");
+            sb.AppendLine($"{spaces}{nameof(ModuleKey)} = {ModuleKey}");
+            
+            if (BelongToEntity == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(BelongToEntity)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(BelongToEntity)}");
+                sb.Append(BelongToEntity.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(BelongToEntity)}");
+            }
+
+            if (EntitiesConditions == null)
             {
                 sb.AppendLine($"{spaces}{nameof(EntitiesConditions)} = null");
             }
@@ -158,17 +176,6 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}End {nameof(RealityModality)}");
             }
 
-            if (PossibilityModality == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(PossibilityModality)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(PossibilityModality)}");
-                sb.Append(PossibilityModality.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(PossibilityModality)}");
-            }
-
             if (ProbabilityModality == null)
             {
                 sb.AppendLine($"{spaces}{nameof(ProbabilityModality)} = null");
@@ -243,8 +250,23 @@ namespace MyNPCLib.PersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(DictionaryName)} = {DictionaryName}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            sb.AppendLine($"{spaces}{nameof(ModuleName)} = {ModuleName}");
+            sb.AppendLine($"{spaces}{nameof(ModuleKey)} = {ModuleKey}");
+
+            if (BelongToEntity == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(BelongToEntity)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(BelongToEntity)}");
+                sb.Append(BelongToEntity.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(BelongToEntity)}");
+            }
+
             if (EntitiesConditions == null)
             {
                 sb.AppendLine($"{spaces}{nameof(EntitiesConditions)} = null");
@@ -352,17 +374,6 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(RealityModality)}");
                 sb.Append(RealityModality.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(RealityModality)}");
-            }
-
-            if (PossibilityModality == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(PossibilityModality)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(PossibilityModality)}");
-                sb.Append(PossibilityModality.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(PossibilityModality)}");
             }
 
             if (ProbabilityModality == null)
