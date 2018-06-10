@@ -1,9 +1,11 @@
 ﻿using MyNPCLib;
 using MyNPCLib.CG;
 using MyNPCLib.CGStorage;
+using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.Dot;
 using MyNPCLib.Logical;
 using MyNPCLib.Parser;
+using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,7 +33,8 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTEntityLogging();
+            TSTRuleInstance();
+            //TSTEntityLogging();
             //TSTConceptualGraph_2();
             //TSTConceptualGraphs();
             //TSTRange();
@@ -39,11 +42,33 @@ namespace TmpSandBox
             //TSTLogicalAST();
             //TSTCancelTask_2();
             //TSTCancelTask();
-            TSTMyNPCContext();
+            //TSTMyNPCContext();
             //TSTStorageOfNPCProcesses();
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTRuleInstance()
+        {
+            LogInstance.Log("Begin");
+
+            var globalEntityDictionary = new EntityDictionary();
+
+            LogInstance.Log($"globalEntityDictionary.Name = {globalEntityDictionary.Name}");
+
+            var ruleInstance = new RuleInstance();
+            ruleInstance.DictionaryName = globalEntityDictionary.Name;
+            ruleInstance.Name = "#1";
+            ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
+
+            LogInstance.Log($"ruleInstance = {ruleInstance}");
+
+            var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+
+            LogInstance.Log($"debugStr = {debugStr}");
+
+            LogInstance.Log("End");
         }
 
         [MethodForLoggingSupport]
