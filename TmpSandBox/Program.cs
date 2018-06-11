@@ -1,6 +1,7 @@
 ﻿using MyNPCLib;
 using MyNPCLib.CG;
 using MyNPCLib.CGStorage;
+using MyNPCLib.ConvertingPersistLogicalDataToIndexing;
 using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.Dot;
 using MyNPCLib.Logical;
@@ -72,7 +73,13 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
+            var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
 
+            LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+
+            debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+
+            LogInstance.Log($"debugStr = {debugStr}");
 
             var searcher = new LogicalSearcher(context);
 
