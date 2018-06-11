@@ -2,17 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib
+namespace MyNPCLib.LogicalSearchEngine
 {
-    public interface IObjectToString
+    public class LogicalSearchResult: IObjectToString
     {
-        string ToString(uint n);
-        string PropertiesToSting(uint n);
-    }
-}
-
-/*
- public override string ToString()
+        public override string ToString()
         {
             return ToString(0u);
         }
@@ -29,4 +23,5 @@ namespace MyNPCLib
             var sb = new StringBuilder();
             return sb.ToString();
         }
-*/
+    }
+}

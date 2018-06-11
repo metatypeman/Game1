@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MyNPCLib.LogicalSearchEngine
 {
-    public class LogicalSearchContext: IObjectToString
+    public class LogicalSearchOptions : IObjectToString
     {
         public IndexedRuleInstance QueryExpression { get; set; }
 

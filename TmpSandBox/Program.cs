@@ -4,6 +4,7 @@ using MyNPCLib.CGStorage;
 using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.Dot;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.Parser;
 using MyNPCLib.PersistLogicalData;
 using System;
@@ -57,6 +58,9 @@ namespace TmpSandBox
 
             LogInstance.Log($"globalEntityDictionary.Name = {globalEntityDictionary.Name}");
 
+            var context = new ContextOfCGStorage(globalEntityDictionary);
+            context.Init();
+
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
             ruleInstance.Name = "#1";
@@ -67,6 +71,16 @@ namespace TmpSandBox
             var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
 
             LogInstance.Log($"debugStr = {debugStr}");
+
+
+
+            var searcher = new LogicalSearcher(context);
+
+            var searchOptions = new LogicalSearchOptions();
+
+            var rearchResult = searcher.Run(searchOptions);
+
+            LogInstance.Log($"rearchResult = {rearchResult}");
 
             LogInstance.Log("End");
         }
