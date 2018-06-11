@@ -28,7 +28,7 @@ namespace MyNPCLib.LogicalSearchEngine
 #if DEBUG
             LogInstance.Log($"context = {context}");
 #endif
-
+            
 #if DEBUG
             LogInstance.Log("End");
 #endif
