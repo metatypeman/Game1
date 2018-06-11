@@ -8,6 +8,7 @@ namespace MyNPCLib.LogicalSearchEngine
     public class LogicalSearchOptions : IObjectToString
     {
         public IndexedRuleInstance QueryExpression { get; set; }
+        public IList<SettingsOfStorageForSearchingInThisSession> DataSourcesSettings { get; set; }
 
         public override string ToString()
         {
@@ -33,6 +34,19 @@ namespace MyNPCLib.LogicalSearchEngine
                 sb.AppendLine($"{spaces}Begin {nameof(QueryExpression)}");
                 sb.Append(QueryExpression.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(QueryExpression)}");
+            }
+            if (DataSourcesSettings == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DataSourcesSettings)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(DataSourcesSettings)}");
+                foreach (var dataSourceSettings in DataSourcesSettings)
+                {
+                    sb.Append(dataSourceSettings.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(DataSourcesSettings)}");
             }
             return sb.ToString();
         }

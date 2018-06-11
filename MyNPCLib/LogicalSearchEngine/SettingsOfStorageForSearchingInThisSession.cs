@@ -10,6 +10,7 @@ namespace MyNPCLib.LogicalSearchEngine
         public ICGStorage Storage { get; set; }
         public bool UseProductions { get; set; }
         public int MaxDeph { get; set; }
+        public int Priority { get; set; }
 
         public override string ToString()
         {

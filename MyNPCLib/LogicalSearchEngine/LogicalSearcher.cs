@@ -1,6 +1,7 @@
 ﻿using MyNPCLib.CGStorage;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.LogicalSearchEngine
@@ -24,6 +25,8 @@ namespace MyNPCLib.LogicalSearchEngine
             var result = new LogicalSearchResult();
 
             var context = new LogicalSearchContext();
+            context.QueryExpression = options.QueryExpression;
+            context.DataSourcesSettings = options.DataSourcesSettings.GroupBy(p => p.Priority).ToDictionary(p => p.Key, p => (IList<SettingsOfStorageForSearchingInThisSession>)p.ToList());
 
 #if DEBUG
             LogInstance.Log($"context = {context}");

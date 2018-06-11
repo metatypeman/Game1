@@ -8,6 +8,7 @@ namespace MyNPCLib.LogicalSearchEngine
     public class LogicalSearchContext: IObjectToString
     {
         public IndexedRuleInstance QueryExpression { get; set; }
+        public IDictionary<int, IList<SettingsOfStorageForSearchingInThisSession>> DataSourcesSettings { get; set; }
 
         public override string ToString()
         {
@@ -23,6 +24,7 @@ namespace MyNPCLib.LogicalSearchEngine
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
+            var nextNSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             if (QueryExpression == null)
             {
@@ -33,6 +35,26 @@ namespace MyNPCLib.LogicalSearchEngine
                 sb.AppendLine($"{spaces}Begin {nameof(QueryExpression)}");
                 sb.Append(QueryExpression.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(QueryExpression)}");
+            }
+
+            if (DataSourcesSettings == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DataSourcesSettings)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(DataSourcesSettings)}");
+                var doubleNext = nextN + 4;
+                foreach (var dataSourceSettingsGroup in DataSourcesSettings)
+                {
+                    sb.AppendLine($"{nextNSpaces}PriorityOfGroup = {dataSourceSettingsGroup.Key}");
+                    sb.AppendLine($"{nextNSpaces}Count Items in Group = {dataSourceSettingsGroup.Value.Count}");
+                    foreach (var dataSourceSettings in dataSourceSettingsGroup.Value)
+                    {
+                        sb.Append(dataSourceSettings.ToString(doubleNext));
+                    }
+                }
+                sb.AppendLine($"{spaces}End {nameof(DataSourcesSettings)}");
             }
             return sb.ToString();
         }
