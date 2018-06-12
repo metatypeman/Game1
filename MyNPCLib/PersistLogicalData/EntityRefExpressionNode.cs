@@ -10,5 +10,6 @@ namespace MyNPCLib.PersistLogicalData
         public override KindOfExpressionNode Kind => KindOfExpressionNode.EntityRef;
         public override bool IsEntityRef => true;
         public override EntityRefExpressionNode AsEntityRef => this;
+
     }
 }

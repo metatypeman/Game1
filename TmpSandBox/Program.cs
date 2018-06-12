@@ -75,6 +75,40 @@ namespace TmpSandBox
 
             commonPersistLogicalData.RuleInstancesList.Add(ruleInstance);
 
+            var rulePart_1 = new RulePart();
+            rulePart_1.Parent = ruleInstance;
+            ruleInstance.Part_1 = rulePart_1;
+
+            var rulePart_2 = new RulePart();
+            rulePart_2.Parent = ruleInstance;
+            ruleInstance.Part_2 = rulePart_2;
+
+            rulePart_1.NextPart = rulePart_2;
+            rulePart_2.NextPart = rulePart_1;
+
+            rulePart_1.IsActive = true;
+            ruleInstance.IsPart_1_Active = true;
+            rulePart_2.IsActive = true;
+            ruleInstance.IsPart_2_Active = true;
+
+            var expr_1 = new OperatorNotExpressionNode();
+            rulePart_1.Expression = expr_1;
+            var expr_2 = new OperatorAndExpressionNode();
+            expr_1.Left = expr_2;
+            var expr3 = new RelationExpressionNode();
+            expr_2.Left = expr3;
+            expr3.Params = new List<BaseExpressionNode>();
+
+            var relationName = "isa";
+            var relationKey = globalEntityDictionary.GetKey(relationName);
+            expr3.Name = relationName;
+            expr3.Key = relationKey;
+
+            var param_1 = new EntityRefExpressionNode();
+            expr3.Params.Add(param_1);
+            param_1.Name = "#2";
+            param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
+
             LogInstance.Log($"ruleInstance = {ruleInstance}");
 
             var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);

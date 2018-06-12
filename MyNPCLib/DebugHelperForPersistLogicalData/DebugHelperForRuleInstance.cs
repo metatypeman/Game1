@@ -5,19 +5,81 @@ using System.Text;
 
 namespace MyNPCLib.DebugHelperForPersistLogicalData
 {
+    public class ContextForDebugHelperForRuleInstance
+    {
+        public string MainView { get; set; }
+    }
+
     public static class DebugHelperForRuleInstance
     {
-        public static string ToString(RuleInstance source)
+        private static string ToString(ContextForDebugHelperForRuleInstance context)
         {
-            return ToString(source, 0u);
+            var sb = new StringBuilder();
+            return sb.ToString();
         }
 
-        public static string ToString(RuleInstance source, uint n)
+        public static string ToString(RuleInstance source)
         {
-            var spaces = StringHelper.Spaces(n);
+            var context = new ContextForDebugHelperForRuleInstance();
+            context.MainView = ToString(source, context);
+            return ToString(context);
+        }
 
+        private static string ToString(RuleInstance source, ContextForDebugHelperForRuleInstance context)
+        {
             var sb = new StringBuilder();
-            sb.Append($"{{:{source.Name}:}}");//tmp
+            sb.Append($"{{:{source.Name}");
+            if(source.Part_1 != null || source.Part_2 != null)
+            {
+                var markBetweenParts = GetMarkBetweenParts(source);
+
+                if(source.Part_1 != null)
+                {
+                    sb.Append(ToString(source.Part_1, context));
+                }
+                
+                sb.Append(markBetweenParts);
+
+                if (source.Part_2 != null)
+                {
+                    sb.Append(ToString(source.Part_2, context));
+                }
+            }
+            sb.Append(":}}");
+            return sb.ToString();
+        }
+
+        private static string GetMarkBetweenParts(RuleInstance source)
+        {
+            if(source.Part_1 == null || source.Part_2 == null)
+            {
+                return string.Empty;
+            }
+
+            if(source.IsPart_1_Active && source.IsPart_2_Active)
+            {
+                return "<->";
+            }
+
+            if(source.IsPart_1_Active)
+            {
+                return "->";
+            }
+
+            return "<-";
+        }
+
+        public static string ToString(RulePart source)
+        {
+            var context = new ContextForDebugHelperForRuleInstance();
+            context.MainView = ToString(source, context);
+            return ToString(context);
+        }
+
+        private static string ToString(RulePart source, ContextForDebugHelperForRuleInstance context)
+        {
+            var sb = new StringBuilder();
+            sb.Append($"{{}}");
             return sb.ToString();
         }
     }
