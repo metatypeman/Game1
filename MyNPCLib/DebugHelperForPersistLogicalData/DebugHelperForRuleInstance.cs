@@ -8,6 +8,7 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
     public class ContextForDebugHelperForRuleInstance
     {
         public string MainView { get; set; }
+        public List<string> AnnotationsViews { get; set; } = new List<string>();
     }
 
     public static class DebugHelperForRuleInstance
@@ -15,6 +16,11 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         private static string ToString(ContextForDebugHelperForRuleInstance context)
         {
             var sb = new StringBuilder();
+            if(context.AnnotationsViews.Count == 0)
+            {
+                return context.MainView;
+            }
+
             return sb.ToString();
         }
 
@@ -82,5 +88,7 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
             sb.Append($"{{}}");
             return sb.ToString();
         }
+
+        public static string 
     }
 }
