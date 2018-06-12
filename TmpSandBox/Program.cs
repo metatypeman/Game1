@@ -109,6 +109,22 @@ namespace TmpSandBox
             param_1.Name = "#2";
             param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
 
+            var param_2 = new ConceptExpressionNode();
+            expr3.Params.Add(param_2);
+            param_2.Name = "dog";
+            param_2.Key = globalEntityDictionary.GetKey(param_1.Name);
+
+            var relation2 = new RelationExpressionNode();
+            expr_2.Right = relation2;
+            relation2.Params = new List<BaseExpressionNode>();
+            relation2.Name = "smile";
+            relation2.Key = globalEntityDictionary.GetKey(relation2.Name);
+
+            var param_3 = new ConceptExpressionNode();
+            relation2.Params.Add(param_3);
+            param_3.Name = "tree";
+            param_3.Key = globalEntityDictionary.GetKey(param_3.Name);
+
             LogInstance.Log($"ruleInstance = {ruleInstance}");
 
             var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
