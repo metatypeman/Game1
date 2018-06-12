@@ -17,7 +17,7 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
             var spaces = StringHelper.Spaces(n);
 
             var sb = new StringBuilder();
-            sb.Append("... :(");//tmp
+            sb.Append($"{{:{source.Name}:}}");//tmp
             return sb.ToString();
         }
     }

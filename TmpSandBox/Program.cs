@@ -4,10 +4,12 @@ using MyNPCLib.CGStorage;
 using MyNPCLib.ConvertingPersistLogicalDataToIndexing;
 using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.Dot;
+using MyNPCLib.IndexedPersistLogicalData;
 using MyNPCLib.Logical;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.Parser;
 using MyNPCLib.PersistLogicalData;
+using MyNPCLib.PersistLogicalDataStorage;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -62,10 +64,16 @@ namespace TmpSandBox
             var context = new ContextOfCGStorage(globalEntityDictionary);
             context.Init();
 
+            var commonPersistLogicalData = new CommonPersistLogicalData();
+            commonPersistLogicalData.RuleInstancesList = new List<RuleInstance>();
+            commonPersistLogicalData.IndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
+
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
             ruleInstance.Name = "#1";
             ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
+
+            commonPersistLogicalData.RuleInstancesList.Add(ruleInstance);
 
             LogInstance.Log($"ruleInstance = {ruleInstance}");
 
@@ -74,6 +82,8 @@ namespace TmpSandBox
             LogInstance.Log($"debugStr = {debugStr}");
 
             var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+
+            commonPersistLogicalData.IndexedRuleInstancesDict[indexedRuleInstance.Key] = indexedRuleInstance;
 
             LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 
