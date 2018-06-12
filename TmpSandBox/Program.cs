@@ -72,8 +72,15 @@ namespace TmpSandBox
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
             ruleInstance.Name = "#1";
             ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
+            ruleInstance.ModuleName = "#simple_module";
+            ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
 
             commonPersistLogicalData.RuleInstancesList.Add(ruleInstance);
+
+            var belongToEntityExpression = new EntityRefExpressionNode();
+            ruleInstance.BelongToEntity = belongToEntityExpression;
+            belongToEntityExpression.Name = "cat";
+            belongToEntityExpression.Key = globalEntityDictionary.GetKey(belongToEntityExpression.Name);
 
             var rulePart_1 = new RulePart();
             rulePart_1.Parent = ruleInstance;
@@ -135,6 +142,31 @@ namespace TmpSandBox
             relationForPart_2.Params.Add(param_4);
             param_4.Name = "car";
             param_4.Key = globalEntityDictionary.GetKey(param_4.Name);
+
+            var notContradictPart = new NotContradictPart();
+            ruleInstance.NotContradict = notContradictPart;
+            notContradictPart.Parent = ruleInstance;
+
+            var study_hard_relation = new RelationExpressionNode();
+            notContradictPart.Expression = study_hard_relation;
+            study_hard_relation.Params = new List<BaseExpressionNode>();
+
+            study_hard_relation.Name = "study_hard";
+            study_hard_relation.Key = globalEntityDictionary.GetKey(study_hard_relation.Name);
+
+            var param_5 = new VarExpressionNode();
+            study_hard_relation.Params.Add(param_5);
+
+            param_5.Name = "@X";
+            param_5.Key = globalEntityDictionary.GetKey(param_5.Name);
+
+            var cF = new CertaintyFactorFuzzyModality();
+            ruleInstance.CertaintyFactor = cF;
+            cF.Parent = ruleInstance;
+
+            var cFExpression = new ValueExpressionNode();
+            cF.Expression = cFExpression;
+            cFExpression.Value = 0.5f;
 
             LogInstance.Log($"ruleInstance = {ruleInstance}");
 

@@ -1,6 +1,7 @@
 ﻿using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace MyNPCLib.DebugHelperForPersistLogicalData
@@ -34,7 +35,18 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         private static string ToString(RuleInstance source, ContextForDebugHelperForRuleInstance context)
         {
             var sb = new StringBuilder();
-            sb.Append($"{{:{source.Name}");
+            sb.Append($"{{: {source.Name}");
+
+            if (!string.IsNullOrWhiteSpace(source.ModuleName))
+            {
+                sb.Append($" :):{{{source.ModuleName}}}");
+            }
+
+            if(source.BelongToEntity != null)
+            {
+                sb.Append($" :)):{{{ToString(source.BelongToEntity, context)}}}");
+            }
+
             if(source.Part_1 != null || source.Part_2 != null)
             {
                 var markBetweenParts = GetMarkBetweenParts(source);
@@ -51,6 +63,62 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                     sb.Append(ToString(source.Part_2, context));
                 }
             }
+
+            if(source.NotContradict != null)
+            {
+                sb.Append(ToString(source.NotContradict, context));
+            }
+
+            if (source.DesirableModality != null)
+            {
+                sb.Append(ToString(source.DesirableModality, context));
+            }
+
+            if (source.NecessityModality != null)
+            {
+                sb.Append(ToString(source.NecessityModality, context));
+            }
+
+            if (source.ImperativeModality != null)
+            {
+                sb.Append(ToString(source.ImperativeModality, context));
+            }
+
+            if (source.IntentionallyModality != null)
+            {
+                sb.Append(ToString(source.IntentionallyModality, context));
+            }
+
+            if (source.PriorityModality != null)
+            {
+                sb.Append(ToString(source.PriorityModality, context));
+            }
+
+            if (source.RealityModality != null)
+            {
+                sb.Append(ToString(source.RealityModality, context));
+            }
+
+            if (source.ProbabilityModality != null)
+            {
+                sb.Append(ToString(source.ProbabilityModality, context));
+            }
+
+            if (source.CertaintyFactor != null)
+            {
+                sb.Append(ToString(source.CertaintyFactor, context));
+            }
+
+            if (source.MoralQualityModality != null)
+            {
+                sb.Append(ToString(source.MoralQualityModality, context));
+            }
+
+            if (source.QuantityQualityModality != null)
+            {
+                sb.Append(ToString(source.QuantityQualityModality, context));
+            }
+
             sb.Append(":}}");
             return sb.ToString();
         }
@@ -85,13 +153,13 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         private static string ToString(RulePart source, ContextForDebugHelperForRuleInstance context)
         {
             var sb = new StringBuilder();
-            sb.Append("{");
+            sb.Append(" {");
 
             if(source.Expression != null)
             {
                 sb.Append(ToString(source.Expression, context));
             }
-            sb.Append("}");
+            sb.Append("} ");
             return sb.ToString();
         }
 
@@ -197,12 +265,34 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
 
         private static string VarToString(VarExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
-            throw new NotImplementedException();
+            return source.Name;
         }
 
+        private static Type mStringType = typeof(string);
+        private static Type mFloatType = typeof(float);
+        private static CultureInfo mCultureInfo = new CultureInfo("en-us");
         private static string ValueToString(ValueExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
-            throw new NotImplementedException();
+            var value = source.Value;
+
+            if(value == null)
+            {
+                return "NULL";
+            }
+
+            var typeOfValue = value.GetType();
+
+            if(typeOfValue == mStringType)
+            {
+                return $"'{value}'";
+            }
+
+            if(typeOfValue == mFloatType)
+            {
+                return ((float)value).ToString(mCultureInfo);
+            }
+
+            return value.ToString();
         }
 
         private static string FuzzyLogicValueToString(FuzzyLogicValueExpressionNode source, ContextForDebugHelperForRuleInstance context)
@@ -211,6 +301,75 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         }
 
         private static string FactToString(FactExpressionNode source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ToString(NotContradictPart source, ContextForDebugHelperForRuleInstance context)
+        {
+            var sb = new StringBuilder();
+            sb.Append("^:{");
+            if(source.Expression != null)
+            {
+                sb.Append(ToString(source.Expression, context));
+            }
+            sb.Append("}");
+            return sb.ToString();
+        }
+
+        private static string ToString(DesirableFuzzyModality source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ToString(NecessityFuzzyModality source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ToString(ImperativeFuzzyModality source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ToString(IntentionallyFuzzyModality source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ToString(PriorityFuzzyModality source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ToString(RealityFuzzyModality source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ToString(ProbabilityFuzzyModality source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ToString(CertaintyFactorFuzzyModality source, ContextForDebugHelperForRuleInstance context)
+        {
+            var sb = new StringBuilder();
+            sb.Append("!:{");
+            if (source.Expression != null)
+            {
+                sb.Append(ToString(source.Expression, context));
+            }
+            sb.Append("}");
+            return sb.ToString();
+        }
+
+        private static string ToString(MoralQualityFuzzyModality source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ToString(QuantityQualityFuzzyModality source, ContextForDebugHelperForRuleInstance context)
         {
             throw new NotImplementedException();
         }
