@@ -30,12 +30,38 @@ namespace MyNPCLib.LogicalSearchEngine
 
 #if DEBUG
             LogInstance.Log($"context = {context}");
+            LogInstance.Log($"context.DataSourcesSettings.Count = {context.DataSourcesSettings.Count}");
 #endif
-            
+            foreach (var dataSourceSettingsGroup in context.DataSourcesSettings)
+            {
+#if DEBUG
+                LogInstance.Log($"dataSourceSettingsGroup.Key = {dataSourceSettingsGroup.Key}");
+                LogInstance.Log($"dataSourceSettingsGroup.Value.Count = {dataSourceSettingsGroup.Value.Count}");
+#endif
+                foreach (var dataSourceSettings in dataSourceSettingsGroup.Value)
+                {
+                    RunStorage(context, dataSourceSettings);
+                }
+            }
+
 #if DEBUG
             LogInstance.Log("End");
 #endif
             return result;
+        }
+
+        private void RunStorage(LogicalSearchContext context, SettingsOfStorageForSearchingInThisSession dataSourceSettings)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+            LogInstance.Log($"dataSourceSettings = {dataSourceSettings}");
+#endif
+
+            var storage = dataSourceSettings.Storage;
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
         }
     }
 }

@@ -84,6 +84,13 @@ namespace TmpSandBox
             var searcher = new LogicalSearcher(context);
 
             var searchOptions = new LogicalSearchOptions();
+            var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
+            globalStorageOptions.Storage = context.GlobalCGStorage;
+            globalStorageOptions.MaxDeph = null;
+            globalStorageOptions.UseProductions = true;
+            globalStorageOptions.Priority = 1;
+
+            searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
 
             var rearchResult = searcher.Run(searchOptions);
 
