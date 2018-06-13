@@ -40,11 +40,13 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
             if (!string.IsNullOrWhiteSpace(source.ModuleName))
             {
                 sb.Append($" :):{{{source.ModuleName}}}");
+                sb.Append(ToString(source.Annotations, context));
             }
 
             if(source.BelongToEntity != null)
             {
                 sb.Append($" :)):{{{ToString(source.BelongToEntity, context)}}}");
+                sb.Append(ToString(source.Annotations, context));
             }
 
             if(source.EntitiesConditions != null)
@@ -135,12 +137,30 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
             }
 
             sb.Append(":}}");
+            sb.Append(ToString(source.Annotations, context));
             return sb.ToString();
         }
 
         private static string ToString(EntitiesConditions source, ContextForDebugHelperForRuleInstance context)
         {
-            throw new NotImplementedException();
+            var items = source.Items;
+
+            if (ListHelper.IsEmpty(items))
+            {
+                return string.Empty;
+            }
+
+            var paramsViewsList = new List<string>();
+
+            foreach (var item in items)
+            {
+                paramsViewsList.Add($"{item.VariableName}:{item.Name}");
+            }
+
+            var sb = new StringBuilder();
+            sb.Append($"(:{string.Join(",", paramsViewsList)}:)");
+            sb.Append(ToString(source.Annotations, context));
+            return sb.ToString();
         }
 
         private static string ToString(KindOfQuantifier quantifier)
@@ -176,7 +196,10 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 paramsViewsList.Add($"{ToString(item.Quantifier)}{item.Name}");
             }
 
-            return $"({string.Join(",", paramsViewsList)})";
+            var sb = new StringBuilder();
+            sb.Append($"({string.Join(",", paramsViewsList)})");
+            sb.Append(ToString(source.Annotations, context));
+            return sb.ToString();
         }
 
         private static string GetMarkBetweenParts(RuleInstance source)
@@ -216,6 +239,7 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 sb.Append(ToString(source.Expression, context));
             }
             sb.Append("} ");
+            sb.Append(ToString(source.Annotations, context));
             return sb.ToString();
         }
 
@@ -304,54 +328,78 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 sb.Append(paramsStr);
             }
             sb.Append(")");
+            sb.Append(ToString(source.Annotations, context));
             return sb.ToString();
         }
 
         private static string ConceptToString(ConceptExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
-            return source.Name;
+            var sb = new StringBuilder();
+            sb.Append(source.Name);
+            sb.Append(ToString(source.Annotations, context));
+            return source.Name.ToString();
         }
 
         private static string EntityRefToString(EntityRefExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
-            return source.Name;
+            var sb = new StringBuilder();
+            sb.Append(source.Name);
+            sb.Append(ToString(source.Annotations, context));
+            return source.Name.ToString();
         }
 
         private static string EntityConditionToString(EntityConditionExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            sb.Append(source.Name);
+            sb.Append(ToString(source.Annotations, context));
+            return source.Name.ToString();
         }
 
         private static string VarToString(VarExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
-            return source.Name;
+            var sb = new StringBuilder();
+            sb.Append(source.Name);
+            sb.Append(ToString(source.Annotations, context));
+            return sb.ToString();
         }
 
         private static string QuestionVarToString(QuestionVarExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            sb.Append(source.Name);
+            sb.Append(ToString(source.Annotations, context));
+            return source.Name.ToString();
+        }
+
+        private static string ValueToString(ValueExpressionNode source, ContextForDebugHelperForRuleInstance context)
+        {
+            var sb = new StringBuilder();
+            sb.Append(NValueToString(source, context));
+            sb.Append(ToString(source.Annotations, context));
+            return sb.ToString();
         }
 
         private static Type mStringType = typeof(string);
         private static Type mFloatType = typeof(float);
         private static CultureInfo mCultureInfo = new CultureInfo("en-us");
-        private static string ValueToString(ValueExpressionNode source, ContextForDebugHelperForRuleInstance context)
+        private static string NValueToString(ValueExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
             var value = source.Value;
 
-            if(value == null)
+            if (value == null)
             {
                 return "NULL";
             }
 
             var typeOfValue = value.GetType();
 
-            if(typeOfValue == mStringType)
+            if (typeOfValue == mStringType)
             {
                 return $"'{value}'";
             }
 
-            if(typeOfValue == mFloatType)
+            if (typeOfValue == mFloatType)
             {
                 return ((float)value).ToString(mCultureInfo);
             }
@@ -366,12 +414,23 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
 
         private static string FactToString(FactExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            sb.Append(source.Name);
+            sb.Append(ToString(source.Annotations, context));
+            return source.Name.ToString();
         }
 
         private static string ToString(IfConditionsPart source, ContextForDebugHelperForRuleInstance context)
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            sb.Append("^^:{");
+            if (source.Expression != null)
+            {
+                sb.Append(ToString(source.Expression, context));
+            }
+            sb.Append("}");
+            sb.Append(ToString(source.Annotations, context));
+            return sb.ToString();
         }
 
         private static string ToString(NotContradictPart source, ContextForDebugHelperForRuleInstance context)
@@ -383,6 +442,7 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 sb.Append(ToString(source.Expression, context));
             }
             sb.Append("}");
+            sb.Append(ToString(source.Annotations, context));
             return sb.ToString();
         }
 
@@ -430,6 +490,7 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 sb.Append(ToString(source.Expression, context));
             }
             sb.Append("}");
+            sb.Append(ToString(source.Annotations, context));
             return sb.ToString();
         }
 
@@ -441,6 +502,23 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         private static string ToString(QuantityQualityFuzzyModality source, ContextForDebugHelperForRuleInstance context)
         {
             throw new NotImplementedException();
+        }
+
+        private static string ToString(IList<LogicalAnnotation> annotations, ContextForDebugHelperForRuleInstance context)
+        {
+            if (ListHelper.IsEmpty(annotations))
+            {
+                return string.Empty;
+            }
+
+            var annotationsViewsList = new List<string>();
+
+            foreach (var annotation in annotations)
+            {
+                annotationsViewsList.Add($"{annotation.Name}{ToString(annotation.Annotations, context)}");
+            }
+
+            return $"[:{string.Join(",", annotationsViewsList)}:]";
         }
     }
 }

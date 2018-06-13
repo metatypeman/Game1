@@ -85,6 +85,24 @@ namespace TmpSandBox
             belongToEntityExpression.Name = "cat";
             belongToEntityExpression.Key = globalEntityDictionary.GetKey(belongToEntityExpression.Name);
 
+            var entitiesConditions = new EntitiesConditions();
+            ruleInstance.EntitiesConditions = entitiesConditions;
+            entitiesConditions.Items = new List<EntityConditionItem>();
+
+            var entityCondition_1 = new EntityConditionItem();
+            entitiesConditions.Items.Add(entityCondition_1);
+            entityCondition_1.Name = "#123";
+            entityCondition_1.Key = globalEntityDictionary.GetKey(entityCondition_1.Name);
+            entityCondition_1.VariableName = "#@R";
+            entityCondition_1.VariableKey = globalEntityDictionary.GetKey(entityCondition_1.VariableName);
+
+            var entityCondition_2 = new EntityConditionItem();
+            entitiesConditions.Items.Add(entityCondition_2);
+            entityCondition_2.Name = "#124";
+            entityCondition_2.Key = globalEntityDictionary.GetKey(entityCondition_2.Name);
+            entityCondition_2.VariableName = "#@T";
+            entityCondition_2.VariableKey = globalEntityDictionary.GetKey(entityCondition_2.VariableName);
+
             var variablesQuantification = new VariablesQuantificationPart();
             ruleInstance.VariablesQuantification = variablesQuantification;
             variablesQuantification.Items = new List<VarExpressionNode>();
@@ -94,6 +112,12 @@ namespace TmpSandBox
             varQuant_1.Name = "@X";
             varQuant_1.Key = globalEntityDictionary.GetKey(varQuant_1.Name);
             variablesQuantification.Items.Add(varQuant_1);
+
+            var varQuant_2 = new VarExpressionNode();
+            varQuant_2.Quantifier = KindOfQuantifier.Universal;
+            varQuant_2.Name = "@Z";
+            varQuant_2.Key = globalEntityDictionary.GetKey(varQuant_2.Name);
+            variablesQuantification.Items.Add(varQuant_2);
 
             var rulePart_1 = new RulePart();
             rulePart_1.Parent = ruleInstance;
@@ -181,12 +205,17 @@ namespace TmpSandBox
             cF.Expression = cFExpression;
             cFExpression.Value = 0.5f;
 
-            cFExpression.Annotations = new List<LogicalAnnotation>();
+            cF.Annotations = new List<LogicalAnnotation>();
 
-            var annotationForCF = new LogicalAnnotation();
-            cFExpression.Annotations.Add(annotationForCF);
-            annotationForCF.Name = "#annotation_1";
-            annotationForCF.Key = globalEntityDictionary.GetKey(annotationForCF.Name);
+            var annotationForCF_1 = new LogicalAnnotation();
+            cF.Annotations.Add(annotationForCF_1);
+            annotationForCF_1.Name = "#annotation_1";
+            annotationForCF_1.Key = globalEntityDictionary.GetKey(annotationForCF_1.Name);
+
+            var annotationForCF_2 = new LogicalAnnotation();
+            cF.Annotations.Add(annotationForCF_2);
+            annotationForCF_2.Name = "#annotation_2";
+            annotationForCF_2.Key = globalEntityDictionary.GetKey(annotationForCF_2.Name);
 
             LogInstance.Log($"ruleInstance = {ruleInstance}");
 
