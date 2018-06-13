@@ -52,7 +52,12 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 sb.Append(ToString(source.EntitiesConditions, context));
             }
 
-            if(source.Part_1 != null || source.Part_2 != null)
+            if(source.VariablesQuantification != null)
+            {
+                sb.Append(ToString(source.VariablesQuantification, context));
+            }
+            
+            if (source.Part_1 != null || source.Part_2 != null)
             {
                 var markBetweenParts = GetMarkBetweenParts(source);
 
@@ -136,6 +141,42 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         private static string ToString(EntitiesConditions source, ContextForDebugHelperForRuleInstance context)
         {
             throw new NotImplementedException();
+        }
+
+        private static string ToString(KindOfQuantifier quantifier)
+        {
+            switch(quantifier)
+            {
+                case KindOfQuantifier.Undefined:
+                    return string.Empty;
+
+                case KindOfQuantifier.Universal:
+                    return "∀";
+
+                case KindOfQuantifier.Existential:
+                    return "∃";
+
+                default: throw new ArgumentOutOfRangeException(nameof(quantifier), quantifier, null);
+            }
+        }
+
+        private static string ToString(VariablesQuantificationPart source, ContextForDebugHelperForRuleInstance context)
+        {
+            var items = source.Items;
+
+            if(ListHelper.IsEmpty(items))
+            {
+                return string.Empty;
+            }
+
+            var paramsViewsList = new List<string>();
+
+            foreach(var item in items)
+            {
+                paramsViewsList.Add($"{ToString(item.Quantifier)}{item.Name}");
+            }
+
+            return $"({string.Join(",", paramsViewsList)})";
         }
 
         private static string GetMarkBetweenParts(RuleInstance source)

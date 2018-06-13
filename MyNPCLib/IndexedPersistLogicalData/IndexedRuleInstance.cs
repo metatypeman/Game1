@@ -12,6 +12,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public RuleInstance Origin { get; set; }
         public ulong ModuleKey { get; set; }
         public IndexedBelongToEntity BelongToEntity { get; set; }
+        public IndexedVariablesQuantificationPart VariablesQuantification { get; set; }
         public IndexedEntitiesConditions EntitiesConditions { get; set; }
         public bool IsPart_1_Active { get; set; }
         public bool IsPart_2_Active { get; set; }
@@ -69,6 +70,17 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.Append(BelongToEntity.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(BelongToEntity)}");
             }
+            if (VariablesQuantification == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VariablesQuantification)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VariablesQuantification)}");
+                sb.Append(VariablesQuantification.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(VariablesQuantification)}");
+            }
+
             if (EntitiesConditions == null)
             {
                 sb.AppendLine($"{spaces}{nameof(EntitiesConditions)} = null");
@@ -274,6 +286,16 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(BelongToEntity)}");
                 sb.Append(BelongToEntity.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(BelongToEntity)}");
+            }
+            if (VariablesQuantification == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VariablesQuantification)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VariablesQuantification)}");
+                sb.Append(VariablesQuantification.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(VariablesQuantification)}");
             }
             if (EntitiesConditions == null)
             {

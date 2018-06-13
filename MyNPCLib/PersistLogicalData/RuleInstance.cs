@@ -17,6 +17,7 @@ namespace MyNPCLib.PersistLogicalData
         public ulong ModuleKey { get; set; }
         public BaseExpressionNode BelongToEntity { get; set; }
         public EntitiesConditions EntitiesConditions { get; set; }
+        public VariablesQuantificationPart VariablesQuantification { get; set; }
         public bool IsPart_1_Active { get; set; }
         public bool IsPart_2_Active { get; set; }
         public RulePart Part_1 { get; set; }
@@ -66,7 +67,17 @@ namespace MyNPCLib.PersistLogicalData
                 sb.Append(BelongToEntity.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(BelongToEntity)}");
             }
-
+            if (VariablesQuantification == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VariablesQuantification)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VariablesQuantification)}");
+                sb.Append(VariablesQuantification.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(VariablesQuantification)}");
+            }
+            
             if (EntitiesConditions == null)
             {
                 sb.AppendLine($"{spaces}{nameof(EntitiesConditions)} = null");
@@ -278,6 +289,17 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(BelongToEntity)}");
                 sb.Append(BelongToEntity.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(BelongToEntity)}");
+            }
+
+            if (VariablesQuantification == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VariablesQuantification)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VariablesQuantification)}");
+                sb.Append(VariablesQuantification.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(VariablesQuantification)}");
             }
 
             if (EntitiesConditions == null)

@@ -6,9 +6,9 @@ using System.Text;
 namespace MyNPCLib.IndexedPersistLogicalData
 {
     [Serializable]
-    public class IndexedEntitiesConditions : IObjectToString, IShortObjectToString
+    public class IndexedVariablesQuantificationPart : IObjectToString, IShortObjectToString
     {
-        public EntitiesConditions Origin { get; set; }
+        public VariablesQuantificationPart Origin { get; set; }
 
         public override string ToString()
         {

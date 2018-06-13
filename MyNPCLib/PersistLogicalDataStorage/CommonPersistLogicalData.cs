@@ -9,7 +9,7 @@ namespace MyNPCLib.PersistLogicalDataStorage
     [Serializable]
     public class CommonPersistLogicalData
     {
+        public string DictionaryName { get; set; }
         public IList<RuleInstance> RuleInstancesList { get; set; }
-        public IDictionary<ulong, IndexedRuleInstance> IndexedRuleInstancesDict { get; set; }
     }
 }

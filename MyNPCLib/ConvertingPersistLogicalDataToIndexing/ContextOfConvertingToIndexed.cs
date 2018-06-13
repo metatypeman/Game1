@@ -11,6 +11,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
         public IDictionary<RuleInstance, IndexedRuleInstance> RuleInstancesDict = new Dictionary<RuleInstance, IndexedRuleInstance>();
         public IDictionary<BaseExpressionNode, IndexedBelongToEntity> BelongToEntityDict = new Dictionary<BaseExpressionNode, IndexedBelongToEntity>();
         public IDictionary<EntitiesConditions, IndexedEntitiesConditions> EntitiesConditionsDict = new Dictionary<EntitiesConditions, IndexedEntitiesConditions>();
+        public IDictionary<VariablesQuantificationPart, IndexedVariablesQuantificationPart> VariablesQuantificationPartDict = new Dictionary<VariablesQuantificationPart, IndexedVariablesQuantificationPart>();
         public IDictionary<RulePart, IndexedRulePart> RulePartDict = new Dictionary<RulePart, IndexedRulePart>();
         public IDictionary<IfConditionsPart, IndexedIfConditionsPart> IfConditionsPartDict = new Dictionary<IfConditionsPart, IndexedIfConditionsPart>();
         public IDictionary<NotContradictPart, IndexedNotContradictPart> NotContradictPartDict = new Dictionary<NotContradictPart, IndexedNotContradictPart>();

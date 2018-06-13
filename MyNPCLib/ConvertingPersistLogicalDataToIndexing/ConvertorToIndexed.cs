@@ -39,6 +39,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
                 result.EntitiesConditions = ConvertEntitiesConditions(source.EntitiesConditions, context);
             }
 
+            if (source.VariablesQuantification != null)
+            {
+                result.VariablesQuantification = ConvertVariablesQuantification(source.VariablesQuantification, context);
+            }
+
             result.IsPart_1_Active = source.IsPart_1_Active;
             result.IsPart_2_Active = source.IsPart_2_Active;
 
@@ -124,6 +129,21 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 
             var result = new IndexedBelongToEntity();
             context.BelongToEntityDict[source] = result;
+
+            result.Origin = source;
+
+            return result;
+        }
+
+        private static IndexedVariablesQuantificationPart ConvertVariablesQuantification(VariablesQuantificationPart source, ContextOfConvertingToIndexed context)
+        {          
+            if (context.VariablesQuantificationPartDict.ContainsKey(source))
+            {
+                return context.VariablesQuantificationPartDict[source];
+            }
+
+            var result = new IndexedVariablesQuantificationPart();
+            context.VariablesQuantificationPartDict[source] = result;
 
             result.Origin = source;
 

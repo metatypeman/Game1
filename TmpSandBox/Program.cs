@@ -66,7 +66,10 @@ namespace TmpSandBox
 
             var commonPersistLogicalData = new CommonPersistLogicalData();
             commonPersistLogicalData.RuleInstancesList = new List<RuleInstance>();
-            commonPersistLogicalData.IndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
+
+            var commonPersistIndexedLogicalData = new CommonPersistIndexedLogicalData();
+
+            commonPersistIndexedLogicalData.IndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
 
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
@@ -81,6 +84,16 @@ namespace TmpSandBox
             ruleInstance.BelongToEntity = belongToEntityExpression;
             belongToEntityExpression.Name = "cat";
             belongToEntityExpression.Key = globalEntityDictionary.GetKey(belongToEntityExpression.Name);
+
+            var variablesQuantification = new VariablesQuantificationPart();
+            ruleInstance.VariablesQuantification = variablesQuantification;
+            variablesQuantification.Items = new List<VarExpressionNode>();
+
+            var varQuant_1 = new VarExpressionNode();
+            varQuant_1.Quantifier = KindOfQuantifier.Universal;
+            varQuant_1.Name = "@X";
+            varQuant_1.Key = globalEntityDictionary.GetKey(varQuant_1.Name);
+            variablesQuantification.Items.Add(varQuant_1);
 
             var rulePart_1 = new RulePart();
             rulePart_1.Parent = ruleInstance;
@@ -168,6 +181,13 @@ namespace TmpSandBox
             cF.Expression = cFExpression;
             cFExpression.Value = 0.5f;
 
+            cFExpression.Annotations = new List<LogicalAnnotation>();
+
+            var annotationForCF = new LogicalAnnotation();
+            cFExpression.Annotations.Add(annotationForCF);
+            annotationForCF.Name = "#annotation_1";
+            annotationForCF.Key = globalEntityDictionary.GetKey(annotationForCF.Name);
+
             LogInstance.Log($"ruleInstance = {ruleInstance}");
 
             var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
@@ -176,7 +196,7 @@ namespace TmpSandBox
 
             var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
 
-            commonPersistLogicalData.IndexedRuleInstancesDict[indexedRuleInstance.Key] = indexedRuleInstance;
+            commonPersistIndexedLogicalData.IndexedRuleInstancesDict[indexedRuleInstance.Key] = indexedRuleInstance;
 
             LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 
