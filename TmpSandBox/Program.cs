@@ -65,12 +65,53 @@ namespace TmpSandBox
             context.Init();
 
             var commonPersistLogicalData = new CommonPersistLogicalData();
+            commonPersistLogicalData.DictionaryName = globalEntityDictionary.Name;
             commonPersistLogicalData.RuleInstancesList = new List<RuleInstance>();
 
             var commonPersistIndexedLogicalData = new CommonPersistIndexedLogicalData();
 
             commonPersistIndexedLogicalData.IndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
 
+            //var ruleInstance = CreateFirstRuleInstance(globalEntityDictionary);
+            var ruleInstance = CreateSimpleFact(globalEntityDictionary);
+            commonPersistLogicalData.RuleInstancesList.Add(ruleInstance);
+
+            LogInstance.Log($"ruleInstance = {ruleInstance}");
+
+            var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+
+            LogInstance.Log($"debugStr = {debugStr}");
+
+            var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+
+            commonPersistIndexedLogicalData.IndexedRuleInstancesDict[indexedRuleInstance.Key] = indexedRuleInstance;
+
+            LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+
+            debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+
+            LogInstance.Log($"debugStr = {debugStr}");
+
+            var searcher = new LogicalSearcher(context);
+
+            var searchOptions = new LogicalSearchOptions();
+            var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
+            globalStorageOptions.Storage = context.GlobalCGStorage;
+            globalStorageOptions.MaxDeph = null;
+            globalStorageOptions.UseProductions = true;
+            globalStorageOptions.Priority = 1;
+
+            searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+
+            var rearchResult = searcher.Run(searchOptions);
+
+            LogInstance.Log($"rearchResult = {rearchResult}");
+
+            LogInstance.Log("End");
+        }
+
+        private static RuleInstance CreateSimpleFact(IEntityDictionary globalEntityDictionary)
+        {
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
             ruleInstance.Name = "#1";
@@ -78,7 +119,19 @@ namespace TmpSandBox
             ruleInstance.ModuleName = "#simple_module";
             ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
 
-            commonPersistLogicalData.RuleInstancesList.Add(ruleInstance);
+            //son(Piter,$X1)
+
+            return ruleInstance;
+        }
+
+        private static RuleInstance CreateFirstRuleInstance(IEntityDictionary globalEntityDictionary)
+        {
+            var ruleInstance = new RuleInstance();
+            ruleInstance.DictionaryName = globalEntityDictionary.Name;
+            ruleInstance.Name = "#1";
+            ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
+            ruleInstance.ModuleName = "#simple_module";
+            ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
 
             var belongToEntityExpression = new EntityRefExpressionNode();
             ruleInstance.BelongToEntity = belongToEntityExpression;
@@ -217,38 +270,7 @@ namespace TmpSandBox
             annotationForCF_2.Name = "#annotation_2";
             annotationForCF_2.Key = globalEntityDictionary.GetKey(annotationForCF_2.Name);
 
-            LogInstance.Log($"ruleInstance = {ruleInstance}");
-
-            var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
-
-            LogInstance.Log($"debugStr = {debugStr}");
-
-            var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
-
-            commonPersistIndexedLogicalData.IndexedRuleInstancesDict[indexedRuleInstance.Key] = indexedRuleInstance;
-
-            LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
-
-            debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
-
-            LogInstance.Log($"debugStr = {debugStr}");
-
-            var searcher = new LogicalSearcher(context);
-
-            var searchOptions = new LogicalSearchOptions();
-            var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
-            globalStorageOptions.Storage = context.GlobalCGStorage;
-            globalStorageOptions.MaxDeph = null;
-            globalStorageOptions.UseProductions = true;
-            globalStorageOptions.Priority = 1;
-
-            searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
-
-            var rearchResult = searcher.Run(searchOptions);
-
-            LogInstance.Log($"rearchResult = {rearchResult}");
-
-            LogInstance.Log("End");
+            return ruleInstance;
         }
 
         [MethodForLoggingSupport]
