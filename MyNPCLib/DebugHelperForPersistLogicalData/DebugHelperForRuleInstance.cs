@@ -47,6 +47,11 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 sb.Append($" :)):{{{ToString(source.BelongToEntity, context)}}}");
             }
 
+            if(source.EntitiesConditions != null)
+            {
+                sb.Append(ToString(source.EntitiesConditions, context));
+            }
+
             if(source.Part_1 != null || source.Part_2 != null)
             {
                 var markBetweenParts = GetMarkBetweenParts(source);
@@ -64,7 +69,12 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 }
             }
 
-            if(source.NotContradict != null)
+            if (source.IfConditions != null)
+            {
+                sb.Append(ToString(source.IfConditions, context));
+            }
+
+            if (source.NotContradict != null)
             {
                 sb.Append(ToString(source.NotContradict, context));
             }
@@ -121,6 +131,11 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
 
             sb.Append(":}}");
             return sb.ToString();
+        }
+
+        private static string ToString(EntitiesConditions source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
         }
 
         private static string GetMarkBetweenParts(RuleInstance source)
@@ -200,6 +215,9 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 case KindOfExpressionNode.Var:
                     return VarToString(source.AsVar, context);
 
+                case KindOfExpressionNode.QuestionVar:
+                    return QuestionVarToString(source.AsQuestionVar, context);
+
                 case KindOfExpressionNode.Value:
                     return ValueToString(source.AsValue, context);
 
@@ -268,6 +286,11 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
             return source.Name;
         }
 
+        private static string QuestionVarToString(QuestionVarExpressionNode source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
+        }
+
         private static Type mStringType = typeof(string);
         private static Type mFloatType = typeof(float);
         private static CultureInfo mCultureInfo = new CultureInfo("en-us");
@@ -301,6 +324,11 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         }
 
         private static string FactToString(FactExpressionNode source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ToString(IfConditionsPart source, ContextForDebugHelperForRuleInstance context)
         {
             throw new NotImplementedException();
         }

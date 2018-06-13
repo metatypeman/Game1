@@ -55,6 +55,11 @@ namespace MyNPCLib.PersistLogicalData
         Var,
 
         /// <summary>
+        /// Represents variable for qerstion like '?X'.
+        /// </summary>
+        QuestionVar,
+
+        /// <summary>
         /// Represents a value.
         /// </summary>
         Value,

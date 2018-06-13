@@ -31,6 +31,8 @@ namespace MyNPCLib.PersistLogicalData
         public virtual EntityConditionExpressionNode AsEntityCondition => null;
         public virtual bool IsVar => false;
         public virtual VarExpressionNode AsVar => null;
+        public virtual bool IsQuestionVar => false;
+        public virtual QuestionVarExpressionNode AsQuestionVar => null;
         public virtual bool IsFact => false;
         public virtual FactExpressionNode AsFact => null;
         public virtual bool IsRelation => false;

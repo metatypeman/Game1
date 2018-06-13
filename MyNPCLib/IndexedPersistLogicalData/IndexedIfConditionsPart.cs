@@ -6,10 +6,10 @@ using System.Text;
 namespace MyNPCLib.IndexedPersistLogicalData
 {
     [Serializable]
-    public class IndexedNotContradictPart : IObjectToString, IShortObjectToString
+    public class IndexedIfConditionsPart : IObjectToString, IShortObjectToString
     {
-        public NotContradictPart Origin { get; set; }
-        
+        public IfConditionsPart Origin { get; set; }
+
         public override string ToString()
         {
             return ToString(0u);

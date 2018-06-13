@@ -21,6 +21,7 @@ namespace MyNPCLib.PersistLogicalData
         public bool IsPart_2_Active { get; set; }
         public RulePart Part_1 { get; set; }
         public RulePart Part_2 { get; set; }
+        public IfConditionsPart IfConditions { get; set; }
         public NotContradictPart NotContradict { get; set; }
         public DesirableFuzzyModality DesirableModality { get; set; }
         public NecessityFuzzyModality NecessityModality { get; set; }
@@ -100,6 +101,18 @@ namespace MyNPCLib.PersistLogicalData
                 sb.Append(Part_2.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Part_2)}");
             }
+
+            if (IfConditions == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(IfConditions)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(IfConditions)}");
+                sb.Append(IfConditions.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(IfConditions)}");
+            }
+            
             if (NotContradict == null)
             {
                 sb.AppendLine($"{spaces}{nameof(NotContradict)} = null");
@@ -300,6 +313,18 @@ namespace MyNPCLib.PersistLogicalData
                 sb.Append(Part_2.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Part_2)}");
             }
+
+            if (IfConditions == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(IfConditions)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(IfConditions)}");
+                sb.Append(IfConditions.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(IfConditions)}");
+            }
+
             if (NotContradict == null)
             {
                 sb.AppendLine($"{spaces}{nameof(NotContradict)} = null");

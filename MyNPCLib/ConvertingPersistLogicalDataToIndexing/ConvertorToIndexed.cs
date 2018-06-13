@@ -52,7 +52,12 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
                 result.Part_2 = ConvertRulePart(source.Part_2, context);
             }
 
-            if(source.NotContradict != null)
+            if(source.IfConditions != null)
+            {
+                result.IfConditions = ConvertIfConditionsPart(source.IfConditions, context);
+            }
+            
+            if (source.NotContradict != null)
             {
                 result.NotContradict = ConvertNotContradictPart(source.NotContradict, context);
             }
@@ -160,6 +165,21 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             {
                 result.NextPart = ConvertRulePart(source.NextPart, context);
             }
+
+            return result;
+        }
+
+        private static IndexedIfConditionsPart ConvertIfConditionsPart(IfConditionsPart source, ContextOfConvertingToIndexed context)
+        {
+            if(context.IfConditionsPartDict.ContainsKey(source))
+            {
+                return context.IfConditionsPartDict[source];
+            }
+
+            var result = new IndexedIfConditionsPart();
+            context.IfConditionsPartDict[source] = result;
+
+            result.Origin = source;
 
             return result;
         }
