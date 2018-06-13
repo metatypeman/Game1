@@ -39,13 +39,13 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
 
             if (!string.IsNullOrWhiteSpace(source.ModuleName))
             {
-                sb.Append($" :):{{{source.ModuleName}}}");
+                sb.Append($" $:{{{source.ModuleName}}}");
                 sb.Append(ToString(source.Annotations, context));
             }
 
             if(source.BelongToEntity != null)
             {
-                sb.Append($" :)):{{{ToString(source.BelongToEntity, context)}}}");
+                sb.Append($" $$:{{{ToString(source.BelongToEntity, context)}}}");
                 sb.Append(ToString(source.Annotations, context));
             }
 
