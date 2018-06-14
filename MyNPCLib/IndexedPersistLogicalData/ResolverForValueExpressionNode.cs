@@ -1,23 +1,32 @@
-﻿using System;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.PersistLogicalData;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.PersistLogicalData
+namespace MyNPCLib.IndexedPersistLogicalData
 {
     [Serializable]
-    public class ValueExpressionNode : BaseExpressionNode
+    public class ResolverForValueExpressionNode : ResolverForBaseExpressionNode
     {
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Value;
-        public override bool IsValue => true;
-        public override ValueExpressionNode AsValue => this;
         public object Value { get; set; }
+
+        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+            throw new NotImplementedException();
+        }
 
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
             sb.Append(base.PropertiesToSting(n));
+            sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
             return sb.ToString();
         }
 
@@ -25,8 +34,8 @@ namespace MyNPCLib.PersistLogicalData
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
             sb.Append(base.PropertiesToShortSting(n));
+            sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
             return sb.ToString();
         }
     }

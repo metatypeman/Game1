@@ -185,10 +185,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
                 result.NextPart = ConvertRulePart(source.NextPart, context);
             }
 
-            if(source.Expression != null)
-            {
-                result.Expression = ConvertExpressionNode(source.Expression, context);
-            }
+            result.Expression = ConvertExpressionNode(source.Expression, context);
 
             return result;
         }
@@ -247,9 +244,13 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             return result;
         }
 
-        /*
-                    return ConvertOrNode(source.AsOperatorOr, context);
-         */
+        private static ResolverForOperatorOrExpressionNode ConvertOrNode(OperatorOrExpressionNode source, ContextOfConvertingToIndexed context)
+        {
+            var result = new ResolverForOperatorOrExpressionNode();
+            result.Left = ConvertExpressionNode(source.Left, context);
+            result.Right = ConvertExpressionNode(source.Right, context);
+            return result;
+        }
 
         private static ResolverForOperatorNotExpressionNode ConvertNotNode(OperatorNotExpressionNode source, ContextOfConvertingToIndexed context)
         {
@@ -257,17 +258,73 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.Left = ConvertExpressionNode(source.Left, context);
             return result;
         }
-        /*
-                    return ConvertRelationNode(source.AsRelation, context);
-                    return ConvertConceptNode(source.AsConcept, context);
-                    return ConvertEntityRefNode(source.AsEntityRef, context);
-                    return ConvertEntityConditionNode(source.AsEntityCondition, context);
-                    return ConvertVarNode(source.AsVar, context);
-                    return ConvertQuestionVarNode(source.AsQuestionVar, context);
-                    return ConvertValueNode(source.AsValue, context);
-                    return ConvertFuzzyLogicValueNode(source.AsFuzzyLogicValue, context);
-                    return ConvertFactNode(source.AsFact, context); 
-        */
+
+        private static ResolverForRelationExpressionNode ConvertRelationNode(RelationExpressionNode source, ContextOfConvertingToIndexed context)
+        {
+            var result = new ResolverForRelationExpressionNode();
+            result.Key = source.Key;
+            var parametersList = new List<ResolverForBaseExpressionNode>();
+            foreach (var param in source.Params)
+            {
+                var resultParam = ConvertExpressionNode(param, context);
+            }
+            return result;
+        }
+
+        private static ResolverForConceptExpressionNode ConvertConceptNode(ConceptExpressionNode source, ContextOfConvertingToIndexed context)
+        {
+            var result = new ResolverForConceptExpressionNode();
+            result.Key = source.Key;
+            return result;
+        }
+
+        private static ResolverForEntityRefExpressionNode ConvertEntityRefNode(EntityRefExpressionNode source, ContextOfConvertingToIndexed context)
+        {
+            var result = new ResolverForEntityRefExpressionNode();
+            result.Key = source.Key;
+            return result;
+        }
+
+        private static ResolverForEntityConditionExpressionNode ConvertEntityConditionNode(EntityConditionExpressionNode source, ContextOfConvertingToIndexed context)
+        {
+            var result = new ResolverForEntityConditionExpressionNode();
+            result.Key = source.Key;
+            return result;
+        }
+
+        private static ResolverForVarExpressionNode ConvertVarNode(VarExpressionNode source, ContextOfConvertingToIndexed context)
+        {
+            var result = new ResolverForVarExpressionNode();
+            result.Key = source.Key;
+            return result;
+        }
+
+        private static ResolverForQuestionVarExpressionNode ConvertQuestionVarNode(QuestionVarExpressionNode source, ContextOfConvertingToIndexed context)
+        {
+            var result = new ResolverForQuestionVarExpressionNode();
+            result.Key = source.Key;
+            return result;
+        }
+
+        private static ResolverForValueExpressionNode ConvertValueNode(ValueExpressionNode source, ContextOfConvertingToIndexed context)
+        {
+            var result = new ResolverForValueExpressionNode();
+            result.Value = source.Value;
+            return result;
+        }
+
+        private static ResolverForFuzzyLogicValueExpressionNode ConvertFuzzyLogicValueNode(FuzzyLogicValueExpressionNode source, ContextOfConvertingToIndexed context)
+        {
+            var result = new ResolverForFuzzyLogicValueExpressionNode();
+            return result;
+        }
+
+        private static ResolverForFactExpressionNode ConvertFactNode(FactExpressionNode source, ContextOfConvertingToIndexed context)
+        {
+            var result = new ResolverForFactExpressionNode();
+            result.Key = source.Key;
+            return result;
+        }
 
         private static IndexedIfConditionsPart ConvertIfConditionsPart(IfConditionsPart source, ContextOfConvertingToIndexed context)
         {
@@ -280,7 +337,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             context.IfConditionsPartDict[source] = result;
 
             result.Origin = source;
-
+            result.Expression = ConvertExpressionNode(source.Expression, context);
             return result;
         }
 
@@ -295,7 +352,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             context.NotContradictPartDict[source] = result;
 
             result.Origin = source;
-
+            result.Expression = ConvertExpressionNode(source.Expression, context);
             return result;
         }
 

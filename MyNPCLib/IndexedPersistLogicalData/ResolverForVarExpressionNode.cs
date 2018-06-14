@@ -1,23 +1,32 @@
-﻿using System;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.PersistLogicalData;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.PersistLogicalData
+namespace MyNPCLib.IndexedPersistLogicalData
 {
     [Serializable]
-    public class VarExpressionNode : BaseRefExpressionNode
+    public class ResolverForVarExpressionNode : ResolverForBaseExpressionNode
     {
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Var;
-        public KindOfQuantifier Quantifier { get; set; }
-        public override bool IsVar => true;
-        public override VarExpressionNode AsVar => this;
+        public ulong Key { get; set; }
+
+        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+            throw new NotImplementedException();
+        }
 
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToSting(n));
-            sb.AppendLine($"{spaces}{nameof(Quantifier)} = {Quantifier}");
+            sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             return sb.ToString();
         }
 
@@ -26,7 +35,7 @@ namespace MyNPCLib.PersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToShortSting(n));
-            sb.AppendLine($"{spaces}{nameof(Quantifier)} = {Quantifier}");
+            sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             return sb.ToString();
         }
     }

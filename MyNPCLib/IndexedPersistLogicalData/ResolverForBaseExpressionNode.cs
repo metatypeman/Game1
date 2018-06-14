@@ -26,7 +26,9 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public virtual string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
-            return $"{spaces}{nameof(Kind)} = {Kind}";
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            return sb.ToString();
         }
 
         public string ToShortString()
@@ -42,7 +44,9 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public virtual string PropertiesToShortSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
-            return $"{spaces}{nameof(Kind)} = {Kind}";
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            return sb.ToString();
         }
     }
 }

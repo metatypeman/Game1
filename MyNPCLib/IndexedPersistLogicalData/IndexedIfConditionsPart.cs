@@ -9,6 +9,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
     public class IndexedIfConditionsPart : IObjectToString, IShortObjectToString
     {
         public IfConditionsPart Origin { get; set; }
+        public ResolverForBaseExpressionNode Expression { get; set; }
 
         public override string ToString()
         {
@@ -34,6 +35,16 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(Origin)}");
                 sb.Append(Origin.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Origin)}");
+            }
+            if (Expression == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Expression)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Expression)}");
+                sb.Append(Expression.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Expression)}");
             }
             return sb.ToString();
         }
@@ -62,6 +73,16 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(Origin)}");
                 sb.Append(Origin.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Origin)}");
+            }
+            if (Expression == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Expression)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Expression)}");
+                sb.Append(Expression.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Expression)}");
             }
             return sb.ToString();
         }
