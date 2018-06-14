@@ -209,12 +209,12 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 return string.Empty;
             }
 
-            if(source.IsPart_1_Active && source.IsPart_2_Active)
+            if(source.Part_1.IsActive && source.Part_2.IsActive)
             {
                 return "<->";
             }
 
-            if(source.IsPart_1_Active)
+            if(source.Part_1.IsActive)
             {
                 return "->";
             }

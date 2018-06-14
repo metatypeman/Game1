@@ -18,8 +18,6 @@ namespace MyNPCLib.PersistLogicalData
         public BaseExpressionNode BelongToEntity { get; set; }
         public EntitiesConditions EntitiesConditions { get; set; }
         public VariablesQuantificationPart VariablesQuantification { get; set; }
-        public bool IsPart_1_Active { get; set; }
-        public bool IsPart_2_Active { get; set; }
         public RulePart Part_1 { get; set; }
         public RulePart Part_2 { get; set; }
         public IfConditionsPart IfConditions { get; set; }
@@ -89,8 +87,6 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}End {nameof(EntitiesConditions)}");
             }
 
-            sb.AppendLine($"{spaces}{nameof(IsPart_1_Active)} = {IsPart_1_Active}");
-            sb.AppendLine($"{spaces}{nameof(IsPart_2_Active)} = {IsPart_2_Active}");
             if(Part_1 == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Part_1)} = null");
@@ -312,8 +308,7 @@ namespace MyNPCLib.PersistLogicalData
                 sb.Append(EntitiesConditions.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(EntitiesConditions)}");
             }
-            sb.AppendLine($"{spaces}{nameof(IsPart_1_Active)} = {IsPart_1_Active}");
-            sb.AppendLine($"{spaces}{nameof(IsPart_2_Active)} = {IsPart_2_Active}");
+
             if (Part_1 == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Part_1)} = null");

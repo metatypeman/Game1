@@ -19,7 +19,6 @@ namespace MyNPCLib.Logical
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(OperatorId)} = {OperatorId}");
             if (Left == null)
             {

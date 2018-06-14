@@ -88,9 +88,15 @@ namespace TmpSandBox
 
             LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 
-            debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+            var query = CreateSimpleQuery(globalEntityDictionary);
+
+            LogInstance.Log($"query = {query}");
+
+            debugStr = DebugHelperForRuleInstance.ToString(query);
 
             LogInstance.Log($"debugStr = {debugStr}");
+
+            var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
 
             var searcher = new LogicalSearcher(context);
 
@@ -102,6 +108,8 @@ namespace TmpSandBox
             globalStorageOptions.Priority = 1;
 
             searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+
+            searchOptions.QueryExpression = indexedQuery;
 
             var rearchResult = searcher.Run(searchOptions);
 
@@ -118,6 +126,70 @@ namespace TmpSandBox
             ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
             ruleInstance.ModuleName = "#simple_module";
             ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
+
+            var rulePart_1 = new RulePart();
+            rulePart_1.Parent = ruleInstance;
+            ruleInstance.Part_1 = rulePart_1;
+
+            rulePart_1.IsActive = true;
+
+            var expr3 = new RelationExpressionNode();
+            rulePart_1.Expression = expr3;
+            expr3.Params = new List<BaseExpressionNode>();
+
+            var relationName = "son";
+            var relationKey = globalEntityDictionary.GetKey(relationName);
+            expr3.Name = relationName;
+            expr3.Key = relationKey;
+
+            var param_1 = new EntityRefExpressionNode();
+            expr3.Params.Add(param_1);
+            param_1.Name = "#Piter";
+            param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
+
+            var param_2 = new EntityRefExpressionNode();
+            expr3.Params.Add(param_2);
+            param_2.Name = "#Tom";
+            param_2.Key = globalEntityDictionary.GetKey(param_1.Name);
+
+            //son(#Piter,#Tom)
+
+            return ruleInstance;
+        }
+
+        private static RuleInstance CreateSimpleQuery(IEntityDictionary globalEntityDictionary)
+        {
+            var ruleInstance = new RuleInstance();
+            ruleInstance.DictionaryName = globalEntityDictionary.Name;
+            ruleInstance.Name = "#1";
+            ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
+            ruleInstance.ModuleName = "#simple_module";
+            ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
+
+            var rulePart_1 = new RulePart();
+            rulePart_1.Parent = ruleInstance;
+            ruleInstance.Part_1 = rulePart_1;
+
+            rulePart_1.IsActive = true;
+
+            var expr3 = new RelationExpressionNode();
+            rulePart_1.Expression = expr3;
+            expr3.Params = new List<BaseExpressionNode>();
+
+            var relationName = "son";
+            var relationKey = globalEntityDictionary.GetKey(relationName);
+            expr3.Name = relationName;
+            expr3.Key = relationKey;
+
+            var param_1 = new QuestionVarExpressionNode();
+            expr3.Params.Add(param_1);
+            param_1.Name = "?X";
+            param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
+
+            var param_2 = new EntityRefExpressionNode();
+            expr3.Params.Add(param_2);
+            param_2.Name = "#Tom";
+            param_2.Key = globalEntityDictionary.GetKey(param_1.Name);
 
             //son(Piter,$X1)
 
@@ -184,9 +256,7 @@ namespace TmpSandBox
             rulePart_2.NextPart = rulePart_1;
 
             rulePart_1.IsActive = true;
-            ruleInstance.IsPart_1_Active = true;
             rulePart_2.IsActive = true;
-            ruleInstance.IsPart_2_Active = true;
 
             var expr_1 = new OperatorNotExpressionNode();
             rulePart_1.Expression = expr_1;
