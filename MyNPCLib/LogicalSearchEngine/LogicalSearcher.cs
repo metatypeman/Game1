@@ -56,8 +56,10 @@ namespace MyNPCLib.LogicalSearchEngine
             LogInstance.Log("Begin");
             LogInstance.Log($"dataSourceSettings = {dataSourceSettings}");
 #endif
-
+            var queryExpression = context.QueryExpression;
             var storage = dataSourceSettings.Storage;
+
+            var 
 
 #if DEBUG
             LogInstance.Log("End");
