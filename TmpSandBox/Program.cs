@@ -72,13 +72,21 @@ namespace TmpSandBox
 
             commonPersistIndexedLogicalData.IndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
 
+            var exampleRuleInstance = CreateFirstRuleInstance(globalEntityDictionary);
+
+            LogInstance.Log($"ruleInstance = {exampleRuleInstance}");
+
+            var debugStr = DebugHelperForRuleInstance.ToString(exampleRuleInstance);
+
+            LogInstance.Log($"debugStr = {debugStr}");
+
             //var ruleInstance = CreateFirstRuleInstance(globalEntityDictionary);
             var ruleInstance = CreateSimpleFact(globalEntityDictionary);
             commonPersistLogicalData.RuleInstancesList.Add(ruleInstance);
 
             LogInstance.Log($"ruleInstance = {ruleInstance}");
 
-            var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+            debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
 
             LogInstance.Log($"debugStr = {debugStr}");
 
@@ -257,6 +265,16 @@ namespace TmpSandBox
 
             rulePart_1.IsActive = true;
             rulePart_2.IsActive = true;
+
+            var variablesQuantification_1 = new VariablesQuantificationPart();
+            rulePart_1.VariablesQuantification = variablesQuantification_1;
+            variablesQuantification_1.Items = new List<VarExpressionNode>();
+
+            var varQuant_3 = new VarExpressionNode();
+            varQuant_3.Quantifier = KindOfQuantifier.Existential;
+            varQuant_3.Name = "@X";
+            varQuant_3.Key = globalEntityDictionary.GetKey(varQuant_3.Name);
+            variablesQuantification_1.Items.Add(varQuant_3);
 
             var expr_1 = new OperatorNotExpressionNode();
             rulePart_1.Expression = expr_1;

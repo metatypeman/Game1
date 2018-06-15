@@ -185,6 +185,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
                 result.NextPart = ConvertRulePart(source.NextPart, context);
             }
 
+            if(source.VariablesQuantification != null)
+            {
+                result.VariablesQuantification = ConvertVariablesQuantification(source.VariablesQuantification, context);
+            }
+
             result.Expression = ConvertExpressionNode(source.Expression, context);
 
             return result;

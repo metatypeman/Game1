@@ -10,6 +10,7 @@ namespace MyNPCLib.PersistLogicalData
         public bool IsActive { get; set; }
         public RuleInstance Parent { get; set; }
         public RulePart NextPart { get; set; }
+        public VariablesQuantificationPart VariablesQuantification { get; set; }
         public BaseExpressionNode Expression { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
 
@@ -50,6 +51,17 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(NextPart)}");
                 sb.Append(NextPart.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(NextPart)}");
+            }
+
+            if (VariablesQuantification == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VariablesQuantification)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VariablesQuantification)}");
+                sb.Append(VariablesQuantification.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(VariablesQuantification)}");
             }
 
             if (Expression == null)
@@ -96,6 +108,17 @@ namespace MyNPCLib.PersistLogicalData
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(IsActive)} = {IsActive}");
+
+            if (VariablesQuantification == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VariablesQuantification)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VariablesQuantification)}");
+                sb.Append(VariablesQuantification.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(VariablesQuantification)}");
+            }
 
             if (Expression == null)
             {

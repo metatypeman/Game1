@@ -59,7 +59,7 @@ namespace MyNPCLib.LogicalSearchEngine
             var queryExpression = context.QueryExpression;
             var storage = dataSourceSettings.Storage;
 
-            var 
+            //var 
 
 #if DEBUG
             LogInstance.Log("End");

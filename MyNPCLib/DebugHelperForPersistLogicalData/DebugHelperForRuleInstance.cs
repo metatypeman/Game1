@@ -233,10 +233,18 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         {
             var sb = new StringBuilder();
             sb.Append(" {");
-
-            if(source.Expression != null)
+            if (source.VariablesQuantification != null)
+            {
+                sb.Append(ToString(source.VariablesQuantification, context));
+                sb.Append("(");
+            }
+            if (source.Expression != null)
             {
                 sb.Append(ToString(source.Expression, context));
+            }
+            if (source.VariablesQuantification != null)
+            {
+                sb.Append(")");
             }
             sb.Append("} ");
             sb.Append(ToString(source.Annotations, context));

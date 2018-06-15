@@ -12,6 +12,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public bool IsActive { get; set; }
         public IndexedRuleInstance Parent { get; set; }
         public IndexedRulePart NextPart { get; set; }
+        public IndexedVariablesQuantificationPart VariablesQuantification { get; set; }
         public ResolverForBaseExpressionNode Expression { get; set; }
 
         public override string ToString()
@@ -63,6 +64,17 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}End {nameof(NextPart)}");
             }
 
+            if (VariablesQuantification == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VariablesQuantification)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VariablesQuantification)}");
+                sb.Append(VariablesQuantification.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(VariablesQuantification)}");
+            }
+
             if (Expression == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Expression)} = null");
@@ -103,6 +115,16 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}End {nameof(Origin)}");
             }
             sb.AppendLine($"{spaces}{nameof(IsActive)} = {IsActive}");
+            if (VariablesQuantification == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VariablesQuantification)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VariablesQuantification)}");
+                sb.Append(VariablesQuantification.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(VariablesQuantification)}");
+            }
             if (Expression == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Expression)} = null");

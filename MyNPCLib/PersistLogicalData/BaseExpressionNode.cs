@@ -8,9 +8,7 @@ namespace MyNPCLib.PersistLogicalData
     public abstract class BaseExpressionNode : ILogicalyAnnotated, IObjectToString, IShortObjectToString
     {
         public abstract KindOfExpressionNode Kind { get; }
-
         public IList<LogicalAnnotation> Annotations { get; set; }
-
         public virtual bool IsUnaryOperator => false;
         public virtual UnaryOperatorExpressionNode UnaryOperator => null;
         public virtual bool IsOperatorNot => false;
