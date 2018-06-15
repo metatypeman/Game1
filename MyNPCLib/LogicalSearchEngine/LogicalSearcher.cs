@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.IndexedPersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,7 +60,14 @@ namespace MyNPCLib.LogicalSearchEngine
             var queryExpression = context.QueryExpression;
             var storage = dataSourceSettings.Storage;
 
-            //var 
+            var contextForQueryExecutingCard = new ContextOfQueryExecutingCardForIndexedPersistLogicalData();
+            contextForQueryExecutingCard.QueryExpression = queryExpression;
+            contextForQueryExecutingCard.UseProductions = dataSourceSettings.UseProductions;
+            contextForQueryExecutingCard.MaxDeph = dataSourceSettings.MaxDeph;
+
+            var queryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
+
+            queryExpression.FillExecutingCard(queryExecutingCard, storage, contextForQueryExecutingCard);
 
 #if DEBUG
             LogInstance.Log("End");

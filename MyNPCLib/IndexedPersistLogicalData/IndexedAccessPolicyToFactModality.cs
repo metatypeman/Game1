@@ -1,5 +1,4 @@
-﻿using MyNPCLib.CGStorage;
-using MyNPCLib.PersistLogicalData;
+﻿using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,19 +6,11 @@ using System.Text;
 namespace MyNPCLib.IndexedPersistLogicalData
 {
     [Serializable]
-    public class IndexedIfConditionsPart : IObjectToString, IShortObjectToString
+    public class IndexedAccessPolicyToFactModality: IObjectToString, IShortObjectToString
     {
-        public IfConditionsPart Origin { get; set; }
+        public AccessPolicyToFactModality Origin { get; set; }
+        public KindOfAccessPolicyToFact Kind { get; set; }
         public ResolverForBaseExpressionNode Expression { get; set; }
-
-        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
-        {
-#if DEBUG
-            LogInstance.Log("Begin");
-#endif
-
-            throw new NotImplementedException();
-        }
 
         public override string ToString()
         {
@@ -35,7 +26,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
-            var sb = new StringBuilder();
+            var sb = new StringBuilder();         
             if (Origin == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Origin)} = null");
@@ -46,6 +37,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.Append(Origin.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Origin)}");
             }
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             if (Expression == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Expression)} = null");
@@ -74,6 +66,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             if (Origin == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Origin)} = null");
@@ -84,6 +77,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.Append(Origin.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Origin)}");
             }
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             if (Expression == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Expression)} = null");

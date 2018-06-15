@@ -11,7 +11,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
     {
         public abstract KindOfExpressionNode Kind { get; }
 
-        public abstract void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source);
+        public abstract void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context);
 
         public override string ToString()
         {

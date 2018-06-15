@@ -1,16 +1,14 @@
-﻿using MyNPCLib.CGStorage;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.LogicalSearchEngine
+namespace MyNPCLib.IndexedPersistLogicalData
 {
-    public class SettingsOfStorageForSearchingInThisSession: IObjectToString
+    public class ContextOfQueryExecutingCardForIndexedPersistLogicalData: IObjectToString
     {
-        public ICGStorage Storage { get; set; }
+        public IndexedRuleInstance QueryExpression { get; set; }
         public bool UseProductions { get; set; }
         public int? MaxDeph { get; set; }
-        public int Priority { get; set; }
 
         public override string ToString()
         {
@@ -27,19 +25,18 @@ namespace MyNPCLib.LogicalSearchEngine
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            if (Storage == null)
+            if (QueryExpression == null)
             {
-                sb.AppendLine($"{spaces}{nameof(Storage)} = null");
+                sb.AppendLine($"{spaces}{nameof(QueryExpression)} = null");
             }
             else
             {
-                sb.AppendLine($"{spaces}Begin {nameof(Storage)}");
-                sb.Append(Storage.ToString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(Storage)}");
+                sb.AppendLine($"{spaces}Begin {nameof(QueryExpression)}");
+                sb.Append(QueryExpression.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(QueryExpression)}");
             }
             sb.AppendLine($"{spaces}{nameof(UseProductions)} = {UseProductions}");
             sb.AppendLine($"{spaces}{nameof(MaxDeph)} = {MaxDeph}");
-            sb.AppendLine($"{spaces}{nameof(Priority)} = {Priority}");
             return sb.ToString();
         }
     }

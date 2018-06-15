@@ -13,7 +13,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
         public ulong Key { get; set; }
 
-        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source)
+        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
 #if DEBUG
             LogInstance.Log("Begin");

@@ -1,4 +1,5 @@
-﻿using MyNPCLib.PersistLogicalData;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,15 @@ namespace MyNPCLib.IndexedPersistLogicalData
     {
         public NotContradictPart Origin { get; set; }
         public ResolverForBaseExpressionNode Expression { get; set; }
+
+        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+            throw new NotImplementedException();
+        }
 
         public override string ToString()
         {

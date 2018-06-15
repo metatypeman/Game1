@@ -1,25 +1,15 @@
-﻿using MyNPCLib.CGStorage;
-using MyNPCLib.PersistLogicalData;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.IndexedPersistLogicalData
+namespace MyNPCLib.PersistLogicalData
 {
     [Serializable]
-    public class IndexedIfConditionsPart : IObjectToString, IShortObjectToString
+    public class AccessPolicyToFactModality: ILogicalyAnnotated, IObjectToString, IShortObjectToString
     {
-        public IfConditionsPart Origin { get; set; }
-        public ResolverForBaseExpressionNode Expression { get; set; }
-
-        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
-        {
-#if DEBUG
-            LogInstance.Log("Begin");
-#endif
-
-            throw new NotImplementedException();
-        }
+        public KindOfAccessPolicyToFact Kind { get; set; }
+        public BaseExpressionNode Expression { get; set; }
+        public IList<LogicalAnnotation> Annotations { get; set; }
 
         public override string ToString()
         {
@@ -36,16 +26,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            if (Origin == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(Origin)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(Origin)}");
-                sb.Append(Origin.ToString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(Origin)}");
-            }
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             if (Expression == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Expression)} = null");
@@ -55,6 +36,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(Expression)}");
                 sb.Append(Expression.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Expression)}");
+            }
+
+            if (Annotations == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+                foreach (var annotation in Annotations)
+                {
+                    sb.Append(annotation.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Annotations)}");
             }
             return sb.ToString();
         }
@@ -74,16 +69,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            if (Origin == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(Origin)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(Origin)}");
-                sb.Append(Origin.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(Origin)}");
-            }
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             if (Expression == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Expression)} = null");
@@ -93,6 +79,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(Expression)}");
                 sb.Append(Expression.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Expression)}");
+            }
+
+            if (Annotations == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+                foreach (var annotation in Annotations)
+                {
+                    sb.Append(annotation.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Annotations)}");
             }
             return sb.ToString();
         }

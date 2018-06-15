@@ -66,7 +66,12 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
                 result.NotContradict = ConvertNotContradictPart(source.NotContradict, context);
             }
 
-            if(source.DesirableModality != null)
+            if(source.AccessPolicyToFactModality != null)
+            {
+                result.AccessPolicyToFactModality = ConvertAccessPolicyToFactModality(source.AccessPolicyToFactModality, context);
+            }
+            
+            if (source.DesirableModality != null)
             {
                 result.DesirableModality = ConvertDesirableFuzzyModality(source.DesirableModality, context);
             }
@@ -361,6 +366,23 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             return result;
         }
 
+        private static IndexedAccessPolicyToFactModality ConvertAccessPolicyToFactModality(AccessPolicyToFactModality source, ContextOfConvertingToIndexed context)
+        {
+            if(context.AccessPolicyToFactModalityDict.ContainsKey(source))
+            {
+                return context.AccessPolicyToFactModalityDict[source];
+            }
+
+            var result = new IndexedAccessPolicyToFactModality();
+            context.AccessPolicyToFactModalityDict[source] = result;
+            result.Kind = source.Kind;
+            if(source.Expression != null)
+            {
+                result.Expression = ConvertExpressionNode(source.Expression, context);
+            }
+            return result;
+        }
+            
         private static IndexedDesirableFuzzyModality ConvertDesirableFuzzyModality(DesirableFuzzyModality source, ContextOfConvertingToIndexed context)
         {
             if(context.DesirableFuzzyModalityDict.ContainsKey(source))

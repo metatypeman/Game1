@@ -11,7 +11,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
     {
         public override KindOfExpressionNode Kind => KindOfExpressionNode.FuzzyLogicValue;
 
-        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source)
+        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
 #if DEBUG
             LogInstance.Log("Begin");

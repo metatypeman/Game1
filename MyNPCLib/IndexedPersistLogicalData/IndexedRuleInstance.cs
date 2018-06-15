@@ -1,4 +1,5 @@
-﻿using MyNPCLib.PersistLogicalData;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +21,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IndexedRulePart Part_2 { get; set; }
         public IndexedIfConditionsPart IfConditions { get; set; }
         public IndexedNotContradictPart NotContradict { get; set; }
+        public IndexedAccessPolicyToFactModality AccessPolicyToFactModality { get; set; }
         public IndexedDesirableFuzzyModality DesirableModality { get; set; }
         public IndexedNecessityFuzzyModality NecessityModality { get; set; }
         public IndexedImperativeFuzzyModality ImperativeModality { get; set; }
@@ -30,6 +32,15 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IndexedCertaintyFactorFuzzyModality CertaintyFactor { get; set; }
         public IndexedMoralQualityFuzzyModality MoralQualityModality { get; set; }
         public IndexedQuantityQualityFuzzyModality QuantityQualityModality { get; set; }
+
+        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+            throw new NotImplementedException();
+        }
 
         public override string ToString()
         {
@@ -136,6 +147,17 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(NotContradict)}");
                 sb.Append(NotContradict.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(NotContradict)}");
+            }
+
+            if (AccessPolicyToFactModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(AccessPolicyToFactModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(AccessPolicyToFactModality)}");
+                sb.Append(AccessPolicyToFactModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(AccessPolicyToFactModality)}");
             }
 
             if (DesirableModality == null)
@@ -353,6 +375,18 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.Append(NotContradict.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(NotContradict)}");
             }
+
+            if (AccessPolicyToFactModality == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(AccessPolicyToFactModality)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(AccessPolicyToFactModality)}");
+                sb.Append(AccessPolicyToFactModality.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(AccessPolicyToFactModality)}");
+            }
+
             if (DesirableModality == null)
             {
                 sb.AppendLine($"{spaces}{nameof(DesirableModality)} = null");

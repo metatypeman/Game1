@@ -15,6 +15,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
         public IDictionary<RulePart, IndexedRulePart> RulePartDict = new Dictionary<RulePart, IndexedRulePart>();
         public IDictionary<IfConditionsPart, IndexedIfConditionsPart> IfConditionsPartDict = new Dictionary<IfConditionsPart, IndexedIfConditionsPart>();
         public IDictionary<NotContradictPart, IndexedNotContradictPart> NotContradictPartDict = new Dictionary<NotContradictPart, IndexedNotContradictPart>();
+        public IDictionary<AccessPolicyToFactModality, IndexedAccessPolicyToFactModality> AccessPolicyToFactModalityDict = new Dictionary<AccessPolicyToFactModality, IndexedAccessPolicyToFactModality>();
         public IDictionary<DesirableFuzzyModality, IndexedDesirableFuzzyModality> DesirableFuzzyModalityDict = new Dictionary<DesirableFuzzyModality, IndexedDesirableFuzzyModality>();
         public IDictionary<NecessityFuzzyModality, IndexedNecessityFuzzyModality> NecessityFuzzyModalityDict = new Dictionary<NecessityFuzzyModality, IndexedNecessityFuzzyModality>();
         public IDictionary<ImperativeFuzzyModality, IndexedImperativeFuzzyModality> ImperativeFuzzyModalityDict = new Dictionary<ImperativeFuzzyModality, IndexedImperativeFuzzyModality>();

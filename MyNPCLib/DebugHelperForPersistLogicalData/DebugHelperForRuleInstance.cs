@@ -86,6 +86,11 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 sb.Append(ToString(source.NotContradict, context));
             }
 
+            if(source.AccessPolicyToFactModality != null)
+            {
+                sb.Append(ToString(source.AccessPolicyToFactModality, context));
+            }
+
             if (source.DesirableModality != null)
             {
                 sb.Append(ToString(source.DesirableModality, context));
@@ -452,6 +457,11 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
             sb.Append("}");
             sb.Append(ToString(source.Annotations, context));
             return sb.ToString();
+        }
+
+        private static string ToString(AccessPolicyToFactModality source, ContextForDebugHelperForRuleInstance context)
+        {
+            throw new NotImplementedException();
         }
 
         private static string ToString(DesirableFuzzyModality source, ContextForDebugHelperForRuleInstance context)
