@@ -39,6 +39,43 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log("Begin");
 #endif
 
+            if (IfConditions != null)
+            {
+                var queryExecutingCardForIfConditions = new QueryExecutingCardForIndexedPersistLogicalData();
+                IfConditions.FillExecutingCard(queryExecutingCardForIfConditions, source, context);
+
+#if DEBUG
+                LogInstance.Log($"queryExecutingCardForIfConditions = {queryExecutingCardForIfConditions}");
+#endif
+            }
+
+            if (IsPart_1_Active)
+            {
+                var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
+                Part_1.FillExecutingCard(queryExecutingCardForPart_1, source, context);
+#if DEBUG
+                LogInstance.Log($"queryExecutingCardForPart_1 = {queryExecutingCardForPart_1}");
+#endif
+            }
+
+            if (IsPart_2_Active)
+            {
+                var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
+                Part_2.FillExecutingCard(queryExecutingCardForPart_2, source, context);
+#if DEBUG
+                LogInstance.Log($"queryExecutingCardForPart_2 = {queryExecutingCardForPart_2}");
+#endif
+            }
+
+            if (NotContradict != null)
+            {
+                var queryExecutingCardForNotContradict = new QueryExecutingCardForIndexedPersistLogicalData();
+                NotContradict.FillExecutingCard(queryExecutingCardForNotContradict, source, context);
+#if DEBUG
+                LogInstance.Log($"queryExecutingCardForNotContradict = {queryExecutingCardForNotContradict}");
+#endif
+            }
+
             throw new NotImplementedException();
         }
 

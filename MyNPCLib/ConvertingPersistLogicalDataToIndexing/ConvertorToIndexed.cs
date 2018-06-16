@@ -277,7 +277,9 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             foreach (var param in source.Params)
             {
                 var resultParam = ConvertExpressionNode(param, context);
+                parametersList.Add(resultParam);
             }
+            result.Params = parametersList;
             return result;
         }
 

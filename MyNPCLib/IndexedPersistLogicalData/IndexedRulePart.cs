@@ -22,6 +22,32 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log("Begin");
 #endif
 
+            var queryExecutingCardForExpression = new QueryExecutingCardForIndexedPersistLogicalData();
+
+            Expression.FillExecutingCard(queryExecutingCardForExpression, source, context);
+
+#if DEBUG
+            LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        public void FillExecutingCardForCallingFromRelation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        public void FillExecutingCardForCallingFromOtherPart(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
             throw new NotImplementedException();
         }
 

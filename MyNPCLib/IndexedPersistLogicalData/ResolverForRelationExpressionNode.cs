@@ -16,7 +16,18 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            LogInstance.Log($"Begin Key = {Key}");
+            LogInstance.Log($"Params.Count = {Params.Count}");
+            foreach (var param in Params)
+            {
+                LogInstance.Log($"param = {param}");
+            }
+#endif
+
+            var indexedRulePartsList = source.GetIndexedRulePartByKeyOfRelation(Key);
+
+#if DEBUG
+            LogInstance.Log($"indexedRulePartsList.Count = {indexedRulePartsList.Count}");
 #endif
 
             throw new NotImplementedException();

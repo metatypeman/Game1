@@ -70,6 +70,10 @@ namespace MyNPCLib.LogicalSearchEngine
             queryExpression.FillExecutingCard(queryExecutingCard, storage, contextForQueryExecutingCard);
 
 #if DEBUG
+            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
+#endif
+
+#if DEBUG
             LogInstance.Log("End");
 #endif
         }
