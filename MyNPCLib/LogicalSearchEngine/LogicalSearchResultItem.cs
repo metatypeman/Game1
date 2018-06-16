@@ -5,10 +5,10 @@ using System.Text;
 
 namespace MyNPCLib.LogicalSearchEngine
 {
-    public class LogicalSearchResult: IObjectToString
+    public class LogicalSearchResultItem : IObjectToString
     {
         public IndexedRuleInstance QueryExpression { get; set; }
-        public IList<LogicalSearchResultItem> Items { get; set; }
+        public IList<ResultOfVarOfQueryToRelation> ResultOfVarOfQueryToRelationList { get; set; }
 
         public override string ToString()
         {
@@ -35,18 +35,18 @@ namespace MyNPCLib.LogicalSearchEngine
                 sb.Append(QueryExpression.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(QueryExpression)}");
             }
-            if (Items == null)
+            if (ResultOfVarOfQueryToRelationList == null)
             {
-                sb.AppendLine($"{spaces}{nameof(Items)} = null");
+                sb.AppendLine($"{spaces}{nameof(ResultOfVarOfQueryToRelationList)} = null");
             }
             else
             {
-                sb.AppendLine($"{spaces}Begin {nameof(Items)}");
-                foreach (var item in Items)
+                sb.AppendLine($"{spaces}Begin {nameof(ResultOfVarOfQueryToRelationList)}");
+                foreach (var resultOfVarOfQueryToRelation in ResultOfVarOfQueryToRelationList)
                 {
-                    sb.Append(item.ToString(nextN));
+                    sb.Append(resultOfVarOfQueryToRelation.ToString(nextN));
                 }
-                sb.AppendLine($"{spaces}End {nameof(Items)}");
+                sb.AppendLine($"{spaces}End {nameof(ResultOfVarOfQueryToRelationList)}");
             }
             return sb.ToString();
         }

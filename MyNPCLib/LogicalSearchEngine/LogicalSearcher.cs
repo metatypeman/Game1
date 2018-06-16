@@ -24,6 +24,7 @@ namespace MyNPCLib.LogicalSearchEngine
 #endif
 
             var result = new LogicalSearchResult();
+            result.QueryExpression = options.QueryExpression;
 
             var context = new LogicalSearchContext();
             context.QueryExpression = options.QueryExpression;
@@ -33,6 +34,9 @@ namespace MyNPCLib.LogicalSearchEngine
             LogInstance.Log($"context = {context}");
             LogInstance.Log($"context.DataSourcesSettings.Count = {context.DataSourcesSettings.Count}");
 #endif
+
+            var resultItemsList = new List<LogicalSearchResultItem>();
+
             foreach (var dataSourceSettingsGroup in context.DataSourcesSettings)
             {
 #if DEBUG
@@ -41,17 +45,19 @@ namespace MyNPCLib.LogicalSearchEngine
 #endif
                 foreach (var dataSourceSettings in dataSourceSettingsGroup.Value)
                 {
-                    RunStorage(context, dataSourceSettings);
+                    var resultItemsFromStorageList = RunStorage(context, dataSourceSettings);
+                    resultItemsList.AddRange(resultItemsFromStorageList);
                 }
             }
 
+            result.Items = resultItemsList;
 #if DEBUG
             LogInstance.Log("End");
 #endif
             return result;
         }
 
-        private void RunStorage(LogicalSearchContext context, SettingsOfStorageForSearchingInThisSession dataSourceSettings)
+        private IList<LogicalSearchResultItem> RunStorage(LogicalSearchContext context, SettingsOfStorageForSearchingInThisSession dataSourceSettings)
         {
 #if DEBUG
             LogInstance.Log("Begin");
@@ -73,9 +79,21 @@ namespace MyNPCLib.LogicalSearchEngine
             LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
 
+            var result = new List<LogicalSearchResultItem>();
+
+            foreach (var resultOfQueryToRelation in queryExecutingCard.ResultsOfQueryToRelationList)
+            {
+                var resultItem = new LogicalSearchResultItem();
+                resultItem.QueryExpression = queryExpression;
+                resultItem.ResultOfVarOfQueryToRelationList = resultOfQueryToRelation.ResultOfVarOfQueryToRelationList;
+                result.Add(resultItem);
+            }
+
 #if DEBUG
             LogInstance.Log("End");
 #endif
+
+            return result;
         }
     }
 }
