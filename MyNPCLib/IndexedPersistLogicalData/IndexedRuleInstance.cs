@@ -9,6 +9,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
     [Serializable]
     public class IndexedRuleInstance: IObjectToString, IShortObjectToString
     {
+        public KindOfRuleInstance Kind { get; set; }
         public ulong Key { get; set; }
         public RuleInstance Origin { get; set; }
         public ulong ModuleKey { get; set; }
@@ -93,7 +94,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
-            var sb = new StringBuilder();
+            var sb = new StringBuilder();       
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             
             if (Origin == null)
@@ -322,6 +324,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             
             if (Origin == null)

@@ -24,10 +24,16 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
 #endif
 
-            var indexedRulePartsList = source.GetIndexedRulePartByKeyOfRelation(Key);
+            var indexedRulePartsOfFactsList = source.GetIndexedRulePartOfFactsByKeyOfRelation(Key);
 
 #if DEBUG
-            LogInstance.Log($"indexedRulePartsList.Count = {indexedRulePartsList.Count}");
+            LogInstance.Log($"indexedRulePartsOfFactsList?.Count = {indexedRulePartsOfFactsList?.Count}");
+#endif
+
+            var indexedRulePartsWithOneRelationWithVarsList = source.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key);
+
+#if DEBUG
+            LogInstance.Log($"indexedRulePartsWithOneRelationWithVarsList?.Count = {indexedRulePartsWithOneRelationWithVarsList?.Count}");
 #endif
 
             throw new NotImplementedException();

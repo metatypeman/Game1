@@ -80,6 +80,10 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
+            var indexedExampleRuleInstance = ConvertorToIndexed.ConvertRuleInstance(exampleRuleInstance);
+
+            LogInstance.Log($"indexedExampleRuleInstance = {indexedExampleRuleInstance}");
+
             //var ruleInstance = CreateFirstRuleInstance(globalEntityDictionary);
             var ruleInstance = CreateSimpleFact(globalEntityDictionary);
             commonPersistLogicalData.RuleInstancesList.Add(ruleInstance);
@@ -119,9 +123,9 @@ namespace TmpSandBox
 
             searchOptions.QueryExpression = indexedQuery;
 
-            var rearchResult = searcher.Run(searchOptions);
+            //var rearchResult = searcher.Run(searchOptions);
 
-            LogInstance.Log($"rearchResult = {rearchResult}");
+            //LogInstance.Log($"rearchResult = {rearchResult}");
 
             LogInstance.Log("End");
         }

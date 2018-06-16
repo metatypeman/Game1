@@ -25,7 +25,9 @@ namespace MyNPCLib.CGStorage
         //It is temporary public for construction time. It will be private after complete construction.
         public IDictionary<ulong, IndexedRuleInstance> mIndexedRuleInstancesDict { get; set; }
         //It is temporary public for construction time. It will be private after complete construction.
-        public IDictionary<ulong, IList<IndexedRulePart>> mIndexedRulePartsDict { get; set; }
+        public IDictionary<ulong, IList<IndexedRulePart>> mIndexedRulePartsOfFactsDict { get; set; }
+        //It is temporary public for construction time. It will be private after complete construction.
+        public IDictionary<ulong, IList<IndexedRulePart>> mIndexedRulePartsWithOneRelationWithVarsDict { get; set; }
 
         public void Init()
         {
@@ -33,17 +35,31 @@ namespace MyNPCLib.CGStorage
             {
                 mRuleInstancesList = new List<RuleInstance>();
                 mIndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
-                mIndexedRulePartsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
+                mIndexedRulePartsOfFactsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
+                mIndexedRulePartsWithOneRelationWithVarsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
             }
         }
 
-        public IList<IndexedRulePart> GetIndexedRulePartByKeyOfRelation(ulong key)
+        public IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
             lock (mDataLockObj)
             {
-                if(mIndexedRulePartsDict.ContainsKey(key))
+                if (mIndexedRulePartsOfFactsDict.ContainsKey(key))
                 {
-                    return mIndexedRulePartsDict[key];
+                    return mIndexedRulePartsOfFactsDict[key];
+                }
+
+                return null;
+            }
+        }
+
+        public IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key)
+        {
+            lock (mDataLockObj)
+            {
+                if (mIndexedRulePartsWithOneRelationWithVarsDict.ContainsKey(key))
+                {
+                    return mIndexedRulePartsWithOneRelationWithVarsDict[key];
                 }
 
                 return null;
