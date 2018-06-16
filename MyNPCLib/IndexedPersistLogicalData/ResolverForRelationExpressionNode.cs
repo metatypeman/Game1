@@ -68,7 +68,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"indexedRulePartsWithOneRelationWithVarsList?.Count = {indexedRulePartsWithOneRelationWithVarsList?.Count}");
 #endif
 
-            if(indexedRulePartsWithOneRelationWithVarsList != null)
+            if(indexedRulePartsWithOneRelationWithVarsList != null && context.UseProductions)
             {
                 throw new NotImplementedException();
             }
