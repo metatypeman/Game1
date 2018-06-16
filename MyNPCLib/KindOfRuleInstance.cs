@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.IndexedPersistLogicalData
+namespace MyNPCLib
 {
     public enum KindOfRuleInstance
     {
+        Undefined,
         Fact,
         Rule,
-        EntityCondition
+        EntityCondition,
+        QuestionVars
     }
 }

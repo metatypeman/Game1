@@ -9,6 +9,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
     [Serializable]
     public class ResolverForFuzzyLogicValueExpressionNode : ResolverForBaseExpressionNode
     {
+        public FuzzyLogicValueExpressionNode ConcreteOrigin { get; set; }
+        public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.FuzzyLogicValue;
 
         public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)

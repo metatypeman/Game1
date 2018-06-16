@@ -11,10 +11,13 @@ namespace MyNPCLib.IndexedPersistLogicalData
     {
         public RulePart Origin { get; set; }
         public bool IsActive { get; set; }
+        public bool HasVars { get; set; }
+        public bool HasQuestionVars { get; set; }
         public IndexedRuleInstance Parent { get; set; }
         public IndexedRulePart NextPart { get; set; }
         public IndexedVariablesQuantificationPart VariablesQuantification { get; set; }
         public ResolverForBaseExpressionNode Expression { get; set; }
+        public IDictionary<ulong, IList<ResolverForRelationExpressionNode>> RelationsDict { get; set; }
 
         public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
@@ -30,16 +33,121 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");
 #endif
 
-            throw new NotImplementedException();
+            foreach (var resultOfQueryToRelation in queryExecutingCardForExpression.ResultsOfQueryToRelationList)
+            {
+                queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+            }
         }
 
         public void FillExecutingCardForCallingFromRelation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
 
-            throw new NotImplementedException();
+            var targetRelationsList = RelationsDict[queryExecutingCard.TargetRelation];
+
+#if DEBUG
+            LogInstance.Log($"targetRelationsList.Count = {targetRelationsList.Count}");
+#endif
+
+            foreach(var targetRelation in targetRelationsList)
+            {
+                if(targetRelation.CountParams != queryExecutingCard.CountParams)
+                {
+                    continue;
+                }
+#if DEBUG
+                LogInstance.Log($"targetRelation = {targetRelation}");
+#endif
+
+                var paramsListOfTargetRelation = targetRelation.ConcreteOrigin.Params;
+
+                var isFit = true;
+
+                foreach (var knownInfo in queryExecutingCard.KnownInfoList)
+                {
+#if DEBUG
+                    LogInstance.Log($"knownInfo = {knownInfo}");
+#endif
+
+                    var paramOfTargetRelation = paramsListOfTargetRelation[knownInfo.Position];
+
+#if DEBUG
+                    LogInstance.Log($"paramOfTargetRelation = {paramOfTargetRelation}");
+#endif
+
+                    var resultOfComparison = CompareKnownInfoAndExpressionNode(knownInfo, paramOfTargetRelation);
+
+#if DEBUG
+                    LogInstance.Log($"resultOfComparison = {resultOfComparison}");
+#endif
+
+                    if(!resultOfComparison)
+                    {
+                        isFit = false;
+                        break;
+                    }
+                }
+
+#if DEBUG
+                LogInstance.Log($"isFit = {isFit}");
+#endif
+
+                if(isFit)
+                {
+                    var resultOfQueryToRelation = new ResultOfQueryToRelation();
+                    resultOfQueryToRelation.IndexedRulePart = this;
+                    resultOfQueryToRelation.IndexedRuleInstance = Parent;
+
+                    foreach (var varItem in queryExecutingCard.VarsInfoList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"varItem = {varItem}");
+#endif
+
+                        var paramOfTargetRelation = paramsListOfTargetRelation[varItem.Position];
+
+#if DEBUG
+                        LogInstance.Log($"paramOfTargetRelation = {paramOfTargetRelation}");
+#endif
+
+                        var resultOfVarOfQueryToRelation = new ResultOfVarOfQueryToRelation();
+                        resultOfVarOfQueryToRelation.KeyOfVar = varItem.KeyOfVar;
+                        resultOfVarOfQueryToRelation.FoundExpression = paramOfTargetRelation;
+                        resultOfQueryToRelation.ResultOfVarOfQueryToRelationList.Add(resultOfVarOfQueryToRelation);
+                    }
+
+                    queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+                }
+            }
+        }
+
+        private bool CompareKnownInfoAndExpressionNode(QueryExecutingCardAboutKnownInfo knownInfo, BaseExpressionNode expressionNode)
+        {
+            var knownInfoExpression = knownInfo.Expression;
+
+            if (knownInfoExpression.IsBaseRef == expressionNode.IsBaseRef)
+            {
+                if(knownInfo.Key == expressionNode.AsBaseRef.Key)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            if(knownInfo.Kind == KindOfExpressionNode.Value && expressionNode.Kind == KindOfExpressionNode.Value)
+            {
+                if(knownInfo.Value == expressionNode.AsValue.Value)
+                {
+                    return true;
+                }
+
+                return true;
+            }
+
+            return true;
         }
 
         public void FillExecutingCardForCallingFromOtherPart(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
@@ -65,6 +173,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
+            var nextNSpace = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             if (Origin == null)
             {
@@ -77,6 +186,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}End {nameof(Origin)}");
             }
             sb.AppendLine($"{spaces}{nameof(IsActive)} = {IsActive}");
+            sb.AppendLine($"{spaces}{nameof(HasVars)} = {HasVars}");
+            sb.AppendLine($"{spaces}{nameof(HasQuestionVars)} = {HasQuestionVars}");
 
             if (Parent == null)
             {
@@ -121,7 +232,26 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.Append(Expression.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Expression)}");
             }
-
+            if (RelationsDict == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(RelationsDict)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(RelationsDict)}");
+                var nextNextN = nextN + 4;
+                foreach (var relationsKVPItem in RelationsDict)
+                {
+                    sb.AppendLine($"{nextNSpace}key of relation = {relationsKVPItem.Key}");
+                    var tmpRelationsList = relationsKVPItem.Value;
+                    sb.AppendLine($"{nextNSpace}count of relations = {tmpRelationsList.Count}");
+                    foreach(var relation in tmpRelationsList)
+                    {
+                        sb.Append(relation.ToShortString(nextNextN));
+                    }
+                }
+                sb.AppendLine($"{spaces}End {nameof(RelationsDict)}");
+            }
             return sb.ToString();
         }
 
@@ -139,6 +269,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
+            var nextNSpace = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             if (Origin == null)
             {
@@ -150,7 +281,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.Append(Origin.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Origin)}");
             }
+
             sb.AppendLine($"{spaces}{nameof(IsActive)} = {IsActive}");
+            sb.AppendLine($"{spaces}{nameof(HasVars)} = {HasVars}");
+            sb.AppendLine($"{spaces}{nameof(HasQuestionVars)} = {HasQuestionVars}");
+
             if (VariablesQuantification == null)
             {
                 sb.AppendLine($"{spaces}{nameof(VariablesQuantification)} = null");
@@ -161,6 +296,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.Append(VariablesQuantification.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(VariablesQuantification)}");
             }
+
             if (Expression == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Expression)} = null");
@@ -170,6 +306,27 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(Expression)}");
                 sb.Append(Expression.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Expression)}");
+            }
+
+            if (RelationsDict == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(RelationsDict)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(RelationsDict)}");
+                var nextNextN = nextN + 4;
+                foreach (var relationsKVPItem in RelationsDict)
+                {
+                    sb.AppendLine($"{nextNSpace}key of relation = {relationsKVPItem.Key}");
+                    var tmpRelationsList = relationsKVPItem.Value;
+                    sb.AppendLine($"{nextNSpace}count of relations = {tmpRelationsList.Count}");
+                    foreach (var relation in tmpRelationsList)
+                    {
+                        sb.Append(relation.ToShortString(nextNextN));
+                    }
+                }
+                sb.AppendLine($"{spaces}End {nameof(RelationsDict)}");
             }
             return sb.ToString();
         }

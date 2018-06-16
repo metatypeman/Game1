@@ -11,6 +11,7 @@ namespace MyNPCLib.PersistLogicalData
     public class RuleInstance : ILogicalyAnnotated, IRefToRecord, IObjectToString, IShortObjectToString
     {
         public string DictionaryName { get; set; }
+        public KindOfRuleInstance Kind { get; set; }
         public string Name { get; set; }
         public ulong Key { get; set; }
         public string ModuleName { get; set; }
@@ -51,6 +52,7 @@ namespace MyNPCLib.PersistLogicalData
             var nextN = n + 4;
             var sb = new StringBuilder();           
             sb.AppendLine($"{spaces}{nameof(DictionaryName)} = {DictionaryName}");
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             sb.AppendLine($"{spaces}{nameof(ModuleName)} = {ModuleName}");
@@ -282,6 +284,7 @@ namespace MyNPCLib.PersistLogicalData
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(DictionaryName)} = {DictionaryName}");
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             sb.AppendLine($"{spaces}{nameof(ModuleName)} = {ModuleName}");

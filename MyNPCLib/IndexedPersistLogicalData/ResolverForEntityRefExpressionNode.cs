@@ -9,8 +9,9 @@ namespace MyNPCLib.IndexedPersistLogicalData
     [Serializable]
     public class ResolverForEntityRefExpressionNode : ResolverForBaseExpressionNode
     {
+        public EntityRefExpressionNode ConcreteOrigin { get; set; }
+        public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.EntityRef;
-
         public ulong Key { get; set; }
 
         public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)

@@ -9,6 +9,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
     [Serializable]
     public class ResolverForFactExpressionNode : ResolverForBaseExpressionNode
     {
+        public FactExpressionNode ConcreteOrigin { get; set; }
+        public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Fact;
         public ulong Key { get; set; }
 

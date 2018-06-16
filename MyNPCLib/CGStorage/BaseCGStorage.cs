@@ -2,6 +2,7 @@
 using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.CGStorage
@@ -37,6 +38,73 @@ namespace MyNPCLib.CGStorage
                 mIndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
                 mIndexedRulePartsOfFactsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
                 mIndexedRulePartsWithOneRelationWithVarsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
+            }
+        }
+
+        //It is temporary public for construction time. It will be private after complete construction.
+        public void NSetIndexedRuleInstanceToIndexData(IndexedRuleInstance indexedRuleInstance)
+        {
+            lock (mDataLockObj)
+            {
+                mIndexedRuleInstancesDict[indexedRuleInstance.Key] = indexedRuleInstance;
+
+                var kind = indexedRuleInstance.Kind;
+
+                switch(kind)
+                {
+                    case KindOfRuleInstance.Fact:
+                        {
+                            if(indexedRuleInstance.IsPart_1_Active)
+                            {
+                                NAddIndexedRulePartToKeysOfRelationsIndex(mIndexedRulePartsOfFactsDict, indexedRuleInstance.Part_1);
+                            }
+                            else
+                            {
+                                NAddIndexedRulePartToKeysOfRelationsIndex(mIndexedRulePartsOfFactsDict, indexedRuleInstance.Part_2);
+                            }
+                        }
+                        break;
+
+                    case KindOfRuleInstance.Rule:
+                        {
+                            var part_1 = indexedRuleInstance.Part_1;
+
+                            if(part_1.HasVars && !part_1.HasQuestionVars && part_1.RelationsDict.Count == 1)
+                            {
+                                NAddIndexedRulePartToKeysOfRelationsIndex(mIndexedRulePartsWithOneRelationWithVarsDict, part_1);
+                            }
+
+                            var part_2 = indexedRuleInstance.Part_2;
+
+                            if (part_2.HasVars && !part_2.HasQuestionVars && part_2.RelationsDict.Count == 1)
+                            {
+                                NAddIndexedRulePartToKeysOfRelationsIndex(mIndexedRulePartsWithOneRelationWithVarsDict, part_2);
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        private void NAddIndexedRulePartToKeysOfRelationsIndex(IDictionary<ulong, IList<IndexedRulePart>> indexData, IndexedRulePart indexedRulePart)
+        {
+            var keysOfRelationsList = indexedRulePart.RelationsDict.Keys.ToList();
+
+            foreach(var keyOfRelastion in keysOfRelationsList)
+            {
+                if(indexData.ContainsKey(keyOfRelastion))
+                {
+                    var tmpList = indexData[keyOfRelastion];
+                    if(!tmpList.Contains(indexedRulePart))
+                    {
+                        tmpList.Add(indexedRulePart);
+                    }
+                }
+                else
+                {
+                    var tmpList = new List<IndexedRulePart>() { indexedRulePart };
+                    indexData[keyOfRelastion] = tmpList;
+                }
             }
         }
 

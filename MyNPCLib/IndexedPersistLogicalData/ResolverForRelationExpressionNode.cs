@@ -9,9 +9,14 @@ namespace MyNPCLib.IndexedPersistLogicalData
     [Serializable]
     public class ResolverForRelationExpressionNode: ResolverForBaseExpressionNode
     {
+        public RelationExpressionNode ConcreteOrigin { get; set; }
+        public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Relation;
         public ulong Key { get; set; }
+        public int CountParams { get; set; }
         public IList<ResolverForBaseExpressionNode> Params { get; set; }
+        public IList<QueryExecutingCardAboutVar> VarsInfoList { get; set; }
+        public IList<QueryExecutingCardAboutKnownInfo> KnownInfoList { get; set; }
 
         public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
@@ -30,13 +35,48 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"indexedRulePartsOfFactsList?.Count = {indexedRulePartsOfFactsList?.Count}");
 #endif
 
+            if (indexedRulePartsOfFactsList != null)
+            {
+                foreach (var indexedRulePartsOfFacts in indexedRulePartsOfFactsList)
+                {
+#if DEBUG
+                    LogInstance.Log($"this = {this}");
+                    //LogInstance.Log($"indexedRulePartsOfFacts = {indexedRulePartsOfFacts}");
+#endif
+                    var queryExecutingCardForTargetFact = new QueryExecutingCardForIndexedPersistLogicalData();
+                    queryExecutingCardForTargetFact.TargetRelation = Key;
+                    queryExecutingCardForTargetFact.CountParams = CountParams;
+                    queryExecutingCardForTargetFact.VarsInfoList = VarsInfoList;
+                    queryExecutingCardForTargetFact.KnownInfoList = KnownInfoList;
+
+                    indexedRulePartsOfFacts.FillExecutingCardForCallingFromRelation(queryExecutingCardForTargetFact, source, context);
+
+#if DEBUG
+                    LogInstance.Log($"queryExecutingCardForTargetFact = {queryExecutingCardForTargetFact}");
+#endif
+
+                    foreach (var resultOfQueryToRelation in queryExecutingCardForTargetFact.ResultsOfQueryToRelationList)
+                    {
+                        queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+                    }
+                }
+            }
+
             var indexedRulePartsWithOneRelationWithVarsList = source.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key);
 
 #if DEBUG
             LogInstance.Log($"indexedRulePartsWithOneRelationWithVarsList?.Count = {indexedRulePartsWithOneRelationWithVarsList?.Count}");
 #endif
 
-            throw new NotImplementedException();
+            if(indexedRulePartsWithOneRelationWithVarsList != null)
+            {
+                throw new NotImplementedException();
+            }
+
+#if DEBUG
+            //LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
+#endif
+
         }
 
         public override string PropertiesToSting(uint n)
@@ -45,6 +85,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            sb.AppendLine($"{spaces}{nameof(CountParams)} = {CountParams}");
             if (Params == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Params)} = null");
@@ -57,6 +98,32 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     sb.Append(param.ToShortString(nextN));
                 }
                 sb.AppendLine($"{spaces}End {nameof(Params)}");
+            }
+            if (VarsInfoList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VarsInfoList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VarsInfoList)}");
+                foreach (var varItem in VarsInfoList)
+                {
+                    sb.Append(varItem.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(VarsInfoList)}");
+            }
+            if (KnownInfoList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(KnownInfoList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(KnownInfoList)}");
+                foreach (var knownInfo in KnownInfoList)
+                {
+                    sb.Append(knownInfo.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(KnownInfoList)}");
             }
             sb.Append(base.PropertiesToSting(n));
             return sb.ToString();
@@ -68,6 +135,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            sb.AppendLine($"{spaces}{nameof(CountParams)} = {CountParams}");
             if (Params == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Params)} = null");
@@ -80,6 +148,32 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     sb.Append(param.ToShortString(nextN));
                 }
                 sb.AppendLine($"{spaces}End {nameof(Params)}");
+            }
+            if (VarsInfoList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VarsInfoList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VarsInfoList)}");
+                foreach (var varItem in VarsInfoList)
+                {
+                    sb.Append(varItem.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(VarsInfoList)}");
+            }
+            if (KnownInfoList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(KnownInfoList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(KnownInfoList)}");
+                foreach (var knownInfo in KnownInfoList)
+                {
+                    sb.Append(knownInfo.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(KnownInfoList)}");
             }
             sb.Append(base.PropertiesToShortSting(n));
             return sb.ToString();

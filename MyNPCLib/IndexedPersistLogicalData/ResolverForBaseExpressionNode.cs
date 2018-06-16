@@ -10,6 +10,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
     public abstract class ResolverForBaseExpressionNode: IObjectToString, IShortObjectToString
     {
         public abstract KindOfExpressionNode Kind { get; }
+        public abstract BaseExpressionNode Origin { get; }
 
         public abstract void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context);
 
@@ -26,8 +27,19 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public virtual string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            if (Origin == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Origin)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Origin)}");
+                sb.Append(Origin.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Origin)}");
+            }
             return sb.ToString();
         }
 
@@ -44,8 +56,19 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public virtual string PropertiesToShortSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            if (Origin == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Origin)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Origin)}");
+                sb.Append(Origin.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Origin)}");
+            }
             return sb.ToString();
         }
     }

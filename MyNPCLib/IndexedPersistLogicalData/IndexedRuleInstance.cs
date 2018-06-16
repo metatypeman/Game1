@@ -50,6 +50,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
             }
 
+            var resultsOfQueryToRelationList = new List<ResultOfQueryToRelation>();
+
             if (IsPart_1_Active)
             {
                 var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
@@ -57,6 +59,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
                 LogInstance.Log($"queryExecutingCardForPart_1 = {queryExecutingCardForPart_1}");
 #endif
+
+                foreach (var resultOfQueryToRelation in queryExecutingCardForPart_1.ResultsOfQueryToRelationList)
+                {
+                    resultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+                }        
             }
 
             if (IsPart_2_Active)
@@ -66,6 +73,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
                 LogInstance.Log($"queryExecutingCardForPart_2 = {queryExecutingCardForPart_2}");
 #endif
+
+                foreach (var resultOfQueryToRelation in queryExecutingCardForPart_2.ResultsOfQueryToRelationList)
+                {
+                    resultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+                }
             }
 
             if (NotContradict != null)
@@ -77,7 +89,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
             }
 
-            throw new NotImplementedException();
+            queryExecutingCard.ResultsOfQueryToRelationList = resultsOfQueryToRelationList;
         }
 
         public override string ToString()

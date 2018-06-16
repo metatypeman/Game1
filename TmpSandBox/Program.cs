@@ -72,17 +72,17 @@ namespace TmpSandBox
 
             commonPersistIndexedLogicalData.IndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
 
-            var exampleRuleInstance = CreateFirstRuleInstance(globalEntityDictionary);
+            //var exampleRuleInstance = CreateFirstRuleInstance(globalEntityDictionary);
 
-            LogInstance.Log($"ruleInstance = {exampleRuleInstance}");
+            //LogInstance.Log($"ruleInstance = {exampleRuleInstance}");
 
-            var debugStr = DebugHelperForRuleInstance.ToString(exampleRuleInstance);
+            //var debugStr = DebugHelperForRuleInstance.ToString(exampleRuleInstance);
 
-            LogInstance.Log($"debugStr = {debugStr}");
+            //LogInstance.Log($"debugStr = {debugStr}");
 
-            var indexedExampleRuleInstance = ConvertorToIndexed.ConvertRuleInstance(exampleRuleInstance);
+            //var indexedExampleRuleInstance = ConvertorToIndexed.ConvertRuleInstance(exampleRuleInstance);
 
-            LogInstance.Log($"indexedExampleRuleInstance = {indexedExampleRuleInstance}");
+            //LogInstance.Log($"indexedExampleRuleInstance = {indexedExampleRuleInstance}");
 
             //var ruleInstance = CreateFirstRuleInstance(globalEntityDictionary);
             var ruleInstance = CreateSimpleFact(globalEntityDictionary);
@@ -90,13 +90,15 @@ namespace TmpSandBox
 
             LogInstance.Log($"ruleInstance = {ruleInstance}");
 
-            debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+            var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
 
             LogInstance.Log($"debugStr = {debugStr}");
 
             var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
 
             commonPersistIndexedLogicalData.IndexedRuleInstancesDict[indexedRuleInstance.Key] = indexedRuleInstance;
+
+            context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
 
             LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 
@@ -123,9 +125,9 @@ namespace TmpSandBox
 
             searchOptions.QueryExpression = indexedQuery;
 
-            //var rearchResult = searcher.Run(searchOptions);
+            var rearchResult = searcher.Run(searchOptions);
 
-            //LogInstance.Log($"rearchResult = {rearchResult}");
+            LogInstance.Log($"rearchResult = {rearchResult}");
 
             LogInstance.Log("End");
         }
@@ -134,6 +136,7 @@ namespace TmpSandBox
         {
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
+            ruleInstance.Kind = KindOfRuleInstance.Fact;
             ruleInstance.Name = "#1";
             ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
             ruleInstance.ModuleName = "#simple_module";
@@ -162,7 +165,7 @@ namespace TmpSandBox
             var param_2 = new EntityRefExpressionNode();
             expr3.Params.Add(param_2);
             param_2.Name = "#Tom";
-            param_2.Key = globalEntityDictionary.GetKey(param_1.Name);
+            param_2.Key = globalEntityDictionary.GetKey(param_2.Name);
 
             //son(#Piter,#Tom)
 
@@ -173,6 +176,7 @@ namespace TmpSandBox
         {
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
+            ruleInstance.Kind = KindOfRuleInstance.QuestionVars;
             ruleInstance.Name = "#1";
             ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
             ruleInstance.ModuleName = "#simple_module";
@@ -201,7 +205,7 @@ namespace TmpSandBox
             var param_2 = new EntityRefExpressionNode();
             expr3.Params.Add(param_2);
             param_2.Name = "#Tom";
-            param_2.Key = globalEntityDictionary.GetKey(param_1.Name);
+            param_2.Key = globalEntityDictionary.GetKey(param_2.Name);
 
             //son(Piter,$X1)
 

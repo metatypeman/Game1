@@ -9,6 +9,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
     [Serializable]
     public class ResolverForQuestionVarExpressionNode : ResolverForBaseExpressionNode
     {
+        public QuestionVarExpressionNode ConcreteOrigin { get; set; }
+        public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.QuestionVar;
         public ulong Key { get; set; }
 

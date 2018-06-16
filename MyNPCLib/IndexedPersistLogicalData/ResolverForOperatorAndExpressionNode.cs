@@ -9,6 +9,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
     [Serializable]
     public class ResolverForOperatorAndExpressionNode: ResolverForBinaryOperatorExpressionNode
     {
+        public OperatorAndExpressionNode ConcreteOrigin { get; set; }
+        public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.And;
 
         public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
