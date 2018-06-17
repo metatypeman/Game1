@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,10 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IList<QueryExecutingCardAboutVar> VarsInfoList { get; set; }
         public IList<QueryExecutingCardAboutKnownInfo> KnownInfoList { get; set; }
 
-        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
+        public override void FillExecutingCardForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
 #if DEBUG
-            LogInstance.Log($"Begin Key = {Key}");
+            LogInstance.Log($"Key = {Key}");
             LogInstance.Log($"Params.Count = {Params.Count}");
             foreach (var param in Params)
             {
@@ -49,7 +50,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     queryExecutingCardForTargetFact.VarsInfoList = VarsInfoList;
                     queryExecutingCardForTargetFact.KnownInfoList = KnownInfoList;
 
-                    indexedRulePartsOfFacts.FillExecutingCardForCallingFromRelation(queryExecutingCardForTargetFact, source, context);
+                    indexedRulePartsOfFacts.FillExecutingCardForCallingFromRelationForFact(queryExecutingCardForTargetFact, source, context);
 
 #if DEBUG
                     LogInstance.Log($"queryExecutingCardForTargetFact = {queryExecutingCardForTargetFact}");
@@ -66,6 +67,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
             //LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
 
+        }
+
+        public override void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        {
+#if DEBUG
+            LogInstance.Log($"Key = {Key}");
+            LogInstance.Log($"Params.Count = {Params.Count}");
+            foreach (var param in Params)
+            {
+                LogInstance.Log($"param = {param}");
+            }
+#endif
+
+            throw new NotImplementedException();
         }
 
         public override string PropertiesToSting(uint n)

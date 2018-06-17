@@ -127,7 +127,7 @@ namespace TmpSandBox
 
             var rearchResult = searcher.Run(searchOptions);
 
-            LogInstance.Log($"rearchResult = {rearchResult}");
+            //LogInstance.Log($"rearchResult = {rearchResult}");
 
             var targetSearchResultItem = rearchResult.Items.FirstOrDefault();
 
@@ -135,7 +135,7 @@ namespace TmpSandBox
             {
                 var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
 
-                LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
+                //LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
 
                 debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
 

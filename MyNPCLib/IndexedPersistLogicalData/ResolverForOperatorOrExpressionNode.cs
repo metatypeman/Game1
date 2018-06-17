@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,16 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Or;
 
-        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
+        public override void FillExecutingCardForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        public override void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
 #if DEBUG
             LogInstance.Log("Begin");

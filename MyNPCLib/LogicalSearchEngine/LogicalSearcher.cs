@@ -22,11 +22,13 @@ namespace MyNPCLib.LogicalSearchEngine
             LogInstance.Log($"options = {options}");
 #endif
 
+            var queryExpression = options.QueryExpression;
+
             var result = new LogicalSearchResult();
-            result.QueryExpression = options.QueryExpression;
+            result.QueryExpression = queryExpression;
 
             var context = new LogicalSearchContext();
-            context.QueryExpression = options.QueryExpression;
+            context.QueryExpression = queryExpression;
             context.DataSourcesSettings = options.DataSourcesSettings.GroupBy(p => p.Priority).ToDictionary(p => p.Key, p => (IList<SettingsOfStorageForSearchingInThisSession>)p.ToList());
             context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList = options.DataSourcesSettings.Where(p => p.UseProductions).OrderBy(p => p.Priority).ToList();
 
@@ -45,7 +47,7 @@ namespace MyNPCLib.LogicalSearchEngine
 #endif
                 foreach (var dataSourceSettings in dataSourceSettingsGroup.Value)
                 {
-                    var resultItemsFromStorageList = RunStorage(context, dataSourceSettings);
+                    var resultItemsFromStorageList = RunSearchingFactsInStorage(context, dataSourceSettings);
                     resultItemsList.AddRange(resultItemsFromStorageList);
                 }
             }
@@ -53,7 +55,16 @@ namespace MyNPCLib.LogicalSearchEngine
             if(context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList.Any())
             {
                 LogInstance.Log("Begin ProcessingProduction");
-                throw new NotImplementedException();
+
+                var queryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
+
+                queryExpression.FillExecutingCardForProduction(queryExecutingCard, context);
+
+#if DEBUG
+                LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
+#endif
+
+                //throw new NotImplementedException();
             }
 
             result.Items = resultItemsList;
@@ -63,7 +74,7 @@ namespace MyNPCLib.LogicalSearchEngine
             return result;
         }
 
-        private IList<LogicalSearchResultItem> RunStorage(LogicalSearchContext context, SettingsOfStorageForSearchingInThisSession dataSourceSettings)
+        private IList<LogicalSearchResultItem> RunSearchingFactsInStorage(LogicalSearchContext context, SettingsOfStorageForSearchingInThisSession dataSourceSettings)
         {
 #if DEBUG
             LogInstance.Log("Begin");
@@ -79,7 +90,7 @@ namespace MyNPCLib.LogicalSearchEngine
 
             var queryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
 
-            queryExpression.FillExecutingCard(queryExecutingCard, storage, contextForQueryExecutingCard);
+            queryExpression.FillExecutingCardForFacts(queryExecutingCard, storage, contextForQueryExecutingCard);
 
 #if DEBUG
             LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");

@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public abstract KindOfExpressionNode Kind { get; }
         public abstract BaseExpressionNode Origin { get; }
 
-        public abstract void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context);
-
+        public abstract void FillExecutingCardForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context);
+        public abstract void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context);
         public override string ToString()
         {
             return ToString(0u);

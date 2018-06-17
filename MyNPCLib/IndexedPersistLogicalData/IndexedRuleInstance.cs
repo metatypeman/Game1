@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
@@ -34,28 +35,28 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IndexedMoralQualityFuzzyModality MoralQualityModality { get; set; }
         public IndexedQuantityQualityFuzzyModality QuantityQualityModality { get; set; }
 
-        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
+        public void FillExecutingCardForFacts(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
 #if DEBUG
             LogInstance.Log("Begin");
 #endif
 
-            if (IfConditions != null)
-            {
-                var queryExecutingCardForIfConditions = new QueryExecutingCardForIndexedPersistLogicalData();
-                IfConditions.FillExecutingCard(queryExecutingCardForIfConditions, source, context);
+//            if (IfConditions != null)
+//            {
+//                var queryExecutingCardForIfConditions = new QueryExecutingCardForIndexedPersistLogicalData();
+//                IfConditions.FillExecutingCard(queryExecutingCardForIfConditions, source, context);
 
-#if DEBUG
-                LogInstance.Log($"queryExecutingCardForIfConditions = {queryExecutingCardForIfConditions}");
-#endif
-            }
+//#if DEBUG
+//                LogInstance.Log($"queryExecutingCardForIfConditions = {queryExecutingCardForIfConditions}");
+//#endif
+//            }
 
             var resultsOfQueryToRelationList = new List<ResultOfQueryToRelation>();
 
             if (IsPart_1_Active)
             {
                 var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
-                Part_1.FillExecutingCard(queryExecutingCardForPart_1, source, context);
+                Part_1.FillExecutingCardForFacts(queryExecutingCardForPart_1, source, context);
 #if DEBUG
                 LogInstance.Log($"queryExecutingCardForPart_1 = {queryExecutingCardForPart_1}");
 #endif
@@ -69,7 +70,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             if (IsPart_2_Active)
             {
                 var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
-                Part_2.FillExecutingCard(queryExecutingCardForPart_2, source, context);
+                Part_2.FillExecutingCardForFacts(queryExecutingCardForPart_2, source, context);
 #if DEBUG
                 LogInstance.Log($"queryExecutingCardForPart_2 = {queryExecutingCardForPart_2}");
 #endif
@@ -80,16 +81,46 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 }
             }
 
-            if (NotContradict != null)
-            {
-                var queryExecutingCardForNotContradict = new QueryExecutingCardForIndexedPersistLogicalData();
-                NotContradict.FillExecutingCard(queryExecutingCardForNotContradict, source, context);
+//            if (NotContradict != null)
+//            {
+//                var queryExecutingCardForNotContradict = new QueryExecutingCardForIndexedPersistLogicalData();
+//                NotContradict.FillExecutingCard(queryExecutingCardForNotContradict, source, context);
+//#if DEBUG
+//                LogInstance.Log($"queryExecutingCardForNotContradict = {queryExecutingCardForNotContradict}");
+//#endif
+//            }
+
+            queryExecutingCard.ResultsOfQueryToRelationList = resultsOfQueryToRelationList;
+        }
+
+        public void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        {
 #if DEBUG
-                LogInstance.Log($"queryExecutingCardForNotContradict = {queryExecutingCardForNotContradict}");
+            LogInstance.Log("Begin");
+#endif
+
+            var resultsOfQueryToRelationList = new List<ResultOfQueryToRelation>();
+
+            if (IsPart_1_Active)
+            {
+                var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
+                Part_1.FillExecutingCardForProduction(queryExecutingCardForPart_1, context);
+#if DEBUG
+                LogInstance.Log($"queryExecutingCardForPart_1 = {queryExecutingCardForPart_1}");
 #endif
             }
 
-            queryExecutingCard.ResultsOfQueryToRelationList = resultsOfQueryToRelationList;
+            if (IsPart_2_Active)
+            {
+                var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
+                Part_2.FillExecutingCardForProduction(queryExecutingCardForPart_2, context);
+#if DEBUG
+                LogInstance.Log($"queryExecutingCardForPart_2 = {queryExecutingCardForPart_2}");
+#endif
+            }
+#if DEBUG
+            LogInstance.Log("End");
+#endif
         }
 
         public override string ToString()

@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public ResolverForBaseExpressionNode Expression { get; set; }
         public IDictionary<ulong, IList<ResolverForRelationExpressionNode>> RelationsDict { get; set; }
 
-        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
+        public void FillExecutingCardForFacts(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
 #if DEBUG
             LogInstance.Log("Begin");
@@ -27,7 +28,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
             var queryExecutingCardForExpression = new QueryExecutingCardForIndexedPersistLogicalData();
 
-            Expression.FillExecutingCard(queryExecutingCardForExpression, source, context);
+            Expression.FillExecutingCardForFact(queryExecutingCardForExpression, source, context);
 
 #if DEBUG
             LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");
@@ -39,7 +40,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
         }
 
-        public void FillExecutingCardForCallingFromRelation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
+        public void FillExecutingCardForCallingFromRelationForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
 #if DEBUG
             LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
@@ -158,6 +159,26 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
 
             throw new NotImplementedException();
+        }
+
+        public void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+            var queryExecutingCardForExpression = new QueryExecutingCardForIndexedPersistLogicalData();
+
+            Expression.FillExecutingCardForProduction(queryExecutingCardForExpression, context);
+
+#if DEBUG
+            LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");
+#endif
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
+            //throw new NotImplementedException();
         }
 
         public override string ToString()
