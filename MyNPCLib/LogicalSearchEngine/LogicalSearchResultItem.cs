@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.IndexedPersistLogicalData;
+using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,8 +8,30 @@ namespace MyNPCLib.LogicalSearchEngine
 {
     public class LogicalSearchResultItem : IObjectToString
     {
+        public LogicalSearchResultItem(IEntityDictionary entityDictionary)
+        {
+            mEntityDictionary = entityDictionary;
+        }
+        private IEntityDictionary mEntityDictionary;
         public IndexedRuleInstance QueryExpression { get; set; }
         public IList<ResultOfVarOfQueryToRelation> ResultOfVarOfQueryToRelationList { get; set; }
+        private readonly object mRuleInstanceLockObj = new object();
+        private RuleInstance mRuleInstance;
+        public RuleInstance RuleInstance
+        {
+            get
+            {
+                lock(mRuleInstanceLockObj)
+                {
+                    if(mRuleInstance == null)
+                    {
+                        mRuleInstance = ConvertorToCompleteRuleInstance.Convert(this, mEntityDictionary);
+                    }
+
+                    return mRuleInstance;
+                }
+            }
+        }
 
         public override string ToString()
         {

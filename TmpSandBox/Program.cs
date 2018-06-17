@@ -133,7 +133,7 @@ namespace TmpSandBox
 
             if(targetSearchResultItem != null)
             {
-                var completeFoundRuleInstance = ConvertorToCompleteRuleInstance.Convert(targetSearchResultItem, globalEntityDictionary);
+                var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
 
                 LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
 

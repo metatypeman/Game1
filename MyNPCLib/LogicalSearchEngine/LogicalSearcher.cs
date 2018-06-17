@@ -78,12 +78,12 @@ namespace MyNPCLib.LogicalSearchEngine
 #if DEBUG
             LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
-
+            var entityDictionary = mContextOfCGStorage.EntityDictionary;
             var result = new List<LogicalSearchResultItem>();
 
             foreach (var resultOfQueryToRelation in queryExecutingCard.ResultsOfQueryToRelationList)
             {
-                var resultItem = new LogicalSearchResultItem();
+                var resultItem = new LogicalSearchResultItem(entityDictionary);
                 resultItem.QueryExpression = queryExpression;
                 resultItem.ResultOfVarOfQueryToRelationList = resultOfQueryToRelation.ResultOfVarOfQueryToRelationList;
                 result.Add(resultItem);
