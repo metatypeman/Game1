@@ -19,7 +19,6 @@ namespace MyNPCLib.LogicalSearchEngine
         public LogicalSearchResult Run(LogicalSearchOptions options)
         {
 #if DEBUG
-            LogInstance.Log("Begin");
             LogInstance.Log($"options = {options}");
 #endif
 
@@ -29,6 +28,7 @@ namespace MyNPCLib.LogicalSearchEngine
             var context = new LogicalSearchContext();
             context.QueryExpression = options.QueryExpression;
             context.DataSourcesSettings = options.DataSourcesSettings.GroupBy(p => p.Priority).ToDictionary(p => p.Key, p => (IList<SettingsOfStorageForSearchingInThisSession>)p.ToList());
+            context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList = options.DataSourcesSettings.Where(p => p.UseProductions).OrderBy(p => p.Priority).ToList();
 
 #if DEBUG
             LogInstance.Log($"context = {context}");
@@ -48,6 +48,12 @@ namespace MyNPCLib.LogicalSearchEngine
                     var resultItemsFromStorageList = RunStorage(context, dataSourceSettings);
                     resultItemsList.AddRange(resultItemsFromStorageList);
                 }
+            }
+
+            if(context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList.Any())
+            {
+                LogInstance.Log("Begin ProcessingProduction");
+                throw new NotImplementedException();
             }
 
             result.Items = resultItemsList;

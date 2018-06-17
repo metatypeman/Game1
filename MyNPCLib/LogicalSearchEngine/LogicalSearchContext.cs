@@ -9,12 +9,13 @@ namespace MyNPCLib.LogicalSearchEngine
     {
         public IndexedRuleInstance QueryExpression { get; set; }
         public IDictionary<int, IList<SettingsOfStorageForSearchingInThisSession>> DataSourcesSettings { get; set; }
+        public IList<SettingsOfStorageForSearchingInThisSession> DataSourcesSettingsOrderedByPriorityAndUseProductionsList { get; set; }
 
         public override string ToString()
         {
             return ToString(0u);
         }
-
+        
         public string ToString(uint n)
         {
             return this.GetDefaultToStringInformation(n);

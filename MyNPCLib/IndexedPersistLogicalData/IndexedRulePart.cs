@@ -100,6 +100,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     resultOfQueryToRelation.IndexedRulePart = this;
                     resultOfQueryToRelation.IndexedRuleInstance = Parent;
 
+
                     foreach (var varItem in queryExecutingCard.VarsInfoList)
                     {
 #if DEBUG

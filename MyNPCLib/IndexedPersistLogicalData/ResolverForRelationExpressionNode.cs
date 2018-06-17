@@ -62,17 +62,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 }
             }
 
-            var indexedRulePartsWithOneRelationWithVarsList = source.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key);
-
-#if DEBUG
-            LogInstance.Log($"indexedRulePartsWithOneRelationWithVarsList?.Count = {indexedRulePartsWithOneRelationWithVarsList?.Count}");
-#endif
-
-            if(indexedRulePartsWithOneRelationWithVarsList != null && context.UseProductions)
-            {
-                throw new NotImplementedException();
-            }
-
 #if DEBUG
             //LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
