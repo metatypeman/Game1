@@ -141,7 +141,7 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 sb.Append(ToString(source.QuantityQualityModality, context));
             }
 
-            sb.Append(":}}");
+            sb.Append(":}");
             sb.Append(ToString(source.Annotations, context));
             return sb.ToString();
         }

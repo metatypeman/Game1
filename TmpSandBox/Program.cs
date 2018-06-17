@@ -129,6 +129,19 @@ namespace TmpSandBox
 
             LogInstance.Log($"rearchResult = {rearchResult}");
 
+            var targetSearchResultItem = rearchResult.Items.FirstOrDefault();
+
+            if(targetSearchResultItem != null)
+            {
+                var completeFoundRuleInstance = ConvertorToCompleteRuleInstance.Convert(targetSearchResultItem, globalEntityDictionary);
+
+                LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
+
+                debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
+
+                LogInstance.Log($"debugStr = {debugStr}");
+            }
+
             LogInstance.Log("End");
         }
 
