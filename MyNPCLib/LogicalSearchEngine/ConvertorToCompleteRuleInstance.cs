@@ -19,7 +19,7 @@ namespace MyNPCLib.LogicalSearchEngine
             var result = new RuleInstance();
             result.DictionaryName = entityDictionary.Name;
             result.Kind = KindOfRuleInstance.Fact;
-            var name = $"#{Guid.NewGuid().ToString("D")}";
+            var name = NamesHelper.CreateEntityName();
             result.Name = name;
             result.Key = entityDictionary.GetKey(name);
             result.ModuleName = queryExpression.ModuleName;

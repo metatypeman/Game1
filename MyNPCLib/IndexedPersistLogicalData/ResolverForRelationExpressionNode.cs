@@ -80,7 +80,56 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
 #endif
 
+            var indexedRulePartWithOneRelationsList = GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key, context);
+
+#if DEBUG
+            LogInstance.Log($"indexedRulePartWithOneRelationsList?.Count = {indexedRulePartWithOneRelationsList?.Count}");
+#endif
+            if(indexedRulePartWithOneRelationsList.Count > 0)
+            {
+                foreach (var indexedRulePartsOfRule in indexedRulePartWithOneRelationsList)
+                {
+#if DEBUG
+                    LogInstance.Log($"this = {this}");
+                    LogInstance.Log($"indexedRulePartsOfRule = {indexedRulePartsOfRule}");
+#endif
+
+                    var queryExecutingCardForTargetRule = new QueryExecutingCardForIndexedPersistLogicalData();
+                    queryExecutingCardForTargetRule.TargetRelation = Key;
+                    queryExecutingCardForTargetRule.CountParams = CountParams;
+                    queryExecutingCardForTargetRule.VarsInfoList = VarsInfoList;
+                    queryExecutingCardForTargetRule.KnownInfoList = KnownInfoList;
+
+                    indexedRulePartsOfRule.FillExecutingCardForCallingFromRelationForProduction(queryExecutingCardForTargetRule, context);
+
+#if DEBUG
+                    LogInstance.Log($"queryExecutingCardForTargetRule = {queryExecutingCardForTargetRule}");
+#endif
+                }
+            }
+
             throw new NotImplementedException();
+        }
+
+        private IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key, LogicalSearchContext context)
+        {
+            var result = new List<IndexedRulePart>();
+
+            var dataSourcesSettingsOrderedByPriorityAndUseProductionsList = context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList;
+
+            foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityAndUseProductionsList)
+            {
+                var indexedRulePartWithOneRelationsList = dataSourcesSettings.Storage.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key);
+
+                if(indexedRulePartWithOneRelationsList == null)
+                {
+                    continue;
+                }
+
+                result.AddRange(indexedRulePartWithOneRelationsList);
+            }
+
+            return result;
         }
 
         public override string PropertiesToSting(uint n)

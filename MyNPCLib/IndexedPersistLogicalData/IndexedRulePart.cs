@@ -152,15 +152,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
             return true;
         }
 
-        public void FillExecutingCardForCallingFromOtherPart(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
-        {
-#if DEBUG
-            LogInstance.Log("Begin");
-#endif
-
-            throw new NotImplementedException();
-        }
-
         public void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
 #if DEBUG
@@ -179,6 +170,50 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log("End");
 #endif
             //throw new NotImplementedException();
+        }
+
+        public void FillExecutingCardForCallingFromRelationForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        {
+#if DEBUG
+            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
+#endif
+
+            var targetRelationsList = RelationsDict[queryExecutingCard.TargetRelation];
+
+#if DEBUG
+            LogInstance.Log($"targetRelationsList.Count = {targetRelationsList.Count}");
+#endif
+
+            if(targetRelationsList.Count != 1)
+            {
+                return;
+            }
+
+            var queryExecutingCardForNextPart = new QueryExecutingCardForIndexedPersistLogicalData();
+            NextPart.FillExecutingCardForCallingFromOtherPart(queryExecutingCardForNextPart, context);
+
+#if DEBUG
+            LogInstance.Log($"queryExecutingCardForNextPart = {queryExecutingCardForNextPart}");
+#endif
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
+            throw new NotImplementedException();
+        }
+
+        public void FillExecutingCardForCallingFromOtherPart(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
+            throw new NotImplementedException();
         }
 
         public override string ToString()
