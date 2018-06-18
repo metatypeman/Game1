@@ -208,7 +208,12 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log("Begin");
 #endif
 
+            var queryExecutingCardForExpression = new QueryExecutingCardForIndexedPersistLogicalData();
+            Expression.FillExecutingCardForProduction(queryExecutingCardForExpression, context);
 
+#if DEBUG
+            LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");
+#endif
 
 #if DEBUG
             LogInstance.Log("End");

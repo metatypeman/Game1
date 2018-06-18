@@ -29,6 +29,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log("Begin");
 #endif
 
+            var leftQueryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
+            Left.FillExecutingCardForProduction(leftQueryExecutingCard, context);
+
+#if DEBUG
+            LogInstance.Log($"leftQueryExecutingCard = {leftQueryExecutingCard}");
+#endif
+
+            var rightQueryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
+            Right.FillExecutingCardForProduction(rightQueryExecutingCard, context);
+
+#if DEBUG
+            LogInstance.Log($"rightQueryExecutingCard = {rightQueryExecutingCard}");
+#endif
+
             throw new NotImplementedException();
         }
     }
