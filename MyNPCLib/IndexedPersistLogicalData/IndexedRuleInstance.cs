@@ -35,6 +35,38 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IndexedMoralQualityFuzzyModality MoralQualityModality { get; set; }
         public IndexedQuantityQualityFuzzyModality QuantityQualityModality { get; set; }
 
+        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+            var resultsOfQueryToRelationList = new List<ResultOfQueryToRelation>();
+
+            if (IsPart_1_Active)
+            {
+                var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
+                Part_1.FillExecutingCard(queryExecutingCardForPart_1, context);
+#if DEBUG
+                LogInstance.Log($"queryExecutingCardForPart_1 = {queryExecutingCardForPart_1}");
+#endif
+            }
+
+            if (IsPart_2_Active)
+            {
+                var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
+                Part_2.FillExecutingCard(queryExecutingCardForPart_2, context);
+#if DEBUG
+                LogInstance.Log($"queryExecutingCardForPart_2 = {queryExecutingCardForPart_2}");
+#endif
+            }
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
+        }
+
+        [Obsolete]
         public void FillExecutingCardForFacts(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
 #if DEBUG
@@ -93,6 +125,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             queryExecutingCard.ResultsOfQueryToRelationList = resultsOfQueryToRelationList;
         }
 
+        [Obsolete]
         public void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
 #if DEBUG

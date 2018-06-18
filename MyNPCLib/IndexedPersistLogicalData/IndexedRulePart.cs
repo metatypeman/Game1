@@ -20,6 +20,26 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public ResolverForBaseExpressionNode Expression { get; set; }
         public IDictionary<ulong, IList<ResolverForRelationExpressionNode>> RelationsDict { get; set; }
 
+        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+            var queryExecutingCardForExpression = new QueryExecutingCardForIndexedPersistLogicalData();
+
+            Expression.FillExecutingCard(queryExecutingCardForExpression, context);
+
+#if DEBUG
+            LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");
+#endif
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
+        }
+
+        [Obsolete]
         public void FillExecutingCardForFacts(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
 #if DEBUG
@@ -40,6 +60,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
         }
 
+        [Obsolete]
         public void FillExecutingCardForCallingFromRelationForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
 #if DEBUG
@@ -125,6 +146,91 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
         }
 
+        public void FillExecutingCardForCallingFromRelationForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        {
+#if DEBUG
+            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
+#endif
+
+            var targetRelationsList = RelationsDict[queryExecutingCard.TargetRelation];
+
+#if DEBUG
+            LogInstance.Log($"targetRelationsList.Count = {targetRelationsList.Count}");
+#endif
+
+            foreach (var targetRelation in targetRelationsList)
+            {
+                if (targetRelation.CountParams != queryExecutingCard.CountParams)
+                {
+                    continue;
+                }
+#if DEBUG
+                LogInstance.Log($"targetRelation = {targetRelation}");
+#endif
+
+                var paramsListOfTargetRelation = targetRelation.ConcreteOrigin.Params;
+
+                var isFit = true;
+
+                foreach (var knownInfo in queryExecutingCard.KnownInfoList)
+                {
+#if DEBUG
+                    LogInstance.Log($"knownInfo = {knownInfo}");
+#endif
+
+                    var paramOfTargetRelation = paramsListOfTargetRelation[knownInfo.Position];
+
+#if DEBUG
+                    LogInstance.Log($"paramOfTargetRelation = {paramOfTargetRelation}");
+#endif
+
+                    var resultOfComparison = CompareKnownInfoAndExpressionNode(knownInfo, paramOfTargetRelation);
+
+#if DEBUG
+                    LogInstance.Log($"resultOfComparison = {resultOfComparison}");
+#endif
+
+                    if (!resultOfComparison)
+                    {
+                        isFit = false;
+                        break;
+                    }
+                }
+
+#if DEBUG
+                LogInstance.Log($"isFit = {isFit}");
+#endif
+
+                if (isFit)
+                {
+                    var resultOfQueryToRelation = new ResultOfQueryToRelation();
+                    resultOfQueryToRelation.IndexedRulePart = this;
+                    resultOfQueryToRelation.IndexedRuleInstance = Parent;
+
+
+                    foreach (var varItem in queryExecutingCard.VarsInfoList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"varItem = {varItem}");
+#endif
+
+                        var paramOfTargetRelation = paramsListOfTargetRelation[varItem.Position];
+
+#if DEBUG
+                        LogInstance.Log($"paramOfTargetRelation = {paramOfTargetRelation}");
+#endif
+
+                        var resultOfVarOfQueryToRelation = new ResultOfVarOfQueryToRelation();
+                        resultOfVarOfQueryToRelation.KeyOfVar = varItem.KeyOfVar;
+                        resultOfVarOfQueryToRelation.FoundExpression = paramOfTargetRelation;
+                        resultOfQueryToRelation.ResultOfVarOfQueryToRelationList.Add(resultOfVarOfQueryToRelation);
+                    }
+
+                    queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+                }
+            }
+        }
+
         private bool CompareKnownInfoAndExpressionNode(QueryExecutingCardAboutKnownInfo knownInfo, BaseExpressionNode expressionNode)
         {
             var knownInfoExpression = knownInfo.Expression;
@@ -152,6 +258,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             return true;
         }
 
+        [Obsolete]
         public void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
 #if DEBUG
@@ -199,7 +306,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
             LogInstance.Log("End");
 #endif
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void FillExecutingCardForCallingFromOtherPart(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
@@ -209,7 +316,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
 
             var queryExecutingCardForExpression = new QueryExecutingCardForIndexedPersistLogicalData();
-            Expression.FillExecutingCardForProduction(queryExecutingCardForExpression, context);
+            Expression.FillExecutingCard(queryExecutingCardForExpression, context);
 
 #if DEBUG
             LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");

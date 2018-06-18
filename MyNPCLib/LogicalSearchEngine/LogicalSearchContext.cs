@@ -8,7 +8,7 @@ namespace MyNPCLib.LogicalSearchEngine
     public class LogicalSearchContext: IObjectToString
     {
         public IndexedRuleInstance QueryExpression { get; set; }
-        public IDictionary<int, IList<SettingsOfStorageForSearchingInThisSession>> DataSourcesSettings { get; set; }
+        public IList<SettingsOfStorageForSearchingInThisSession> DataSourcesSettingsOrderedByPriorityList { get; set; }
         public IList<SettingsOfStorageForSearchingInThisSession> DataSourcesSettingsOrderedByPriorityAndUseProductionsList { get; set; }
 
         public override string ToString()
@@ -37,25 +37,18 @@ namespace MyNPCLib.LogicalSearchEngine
                 sb.Append(QueryExpression.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(QueryExpression)}");
             }
-
-            if (DataSourcesSettings == null)
+            if (DataSourcesSettingsOrderedByPriorityAndUseProductionsList == null)
             {
-                sb.AppendLine($"{spaces}{nameof(DataSourcesSettings)} = null");
+                sb.AppendLine($"{spaces}{nameof(DataSourcesSettingsOrderedByPriorityAndUseProductionsList)} = null");
             }
             else
             {
-                sb.AppendLine($"{spaces}Begin {nameof(DataSourcesSettings)}");
-                var doubleNext = nextN + 4;
-                foreach (var dataSourceSettingsGroup in DataSourcesSettings)
+                sb.AppendLine($"{spaces}Begin {nameof(DataSourcesSettingsOrderedByPriorityAndUseProductionsList)}");
+                foreach (var dataSourcesSettings in DataSourcesSettingsOrderedByPriorityAndUseProductionsList)
                 {
-                    sb.AppendLine($"{nextNSpaces}PriorityOfGroup = {dataSourceSettingsGroup.Key}");
-                    sb.AppendLine($"{nextNSpaces}Count Items in Group = {dataSourceSettingsGroup.Value.Count}");
-                    foreach (var dataSourceSettings in dataSourceSettingsGroup.Value)
-                    {
-                        sb.Append(dataSourceSettings.ToString(doubleNext));
-                    }
+                    sb.Append(dataSourcesSettings.ToString(nextN));
                 }
-                sb.AppendLine($"{spaces}End {nameof(DataSourcesSettings)}");
+                sb.AppendLine($"{spaces}End {nameof(DataSourcesSettingsOrderedByPriorityAndUseProductionsList)}");
             }
             return sb.ToString();
         }

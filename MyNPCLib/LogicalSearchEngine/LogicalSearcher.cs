@@ -29,43 +29,22 @@ namespace MyNPCLib.LogicalSearchEngine
 
             var context = new LogicalSearchContext();
             context.QueryExpression = queryExpression;
-            context.DataSourcesSettings = options.DataSourcesSettings.GroupBy(p => p.Priority).ToDictionary(p => p.Key, p => (IList<SettingsOfStorageForSearchingInThisSession>)p.ToList());
-            context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList = options.DataSourcesSettings.Where(p => p.UseProductions).OrderBy(p => p.Priority).ToList();
+            context.DataSourcesSettingsOrderedByPriorityList = options.DataSourcesSettings.OrderBy(p => p.Priority).ToList();
+            context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList = context.DataSourcesSettingsOrderedByPriorityList.Where(p => p.UseProductions).ToList();
 
 #if DEBUG
             LogInstance.Log($"context = {context}");
-            LogInstance.Log($"context.DataSourcesSettings.Count = {context.DataSourcesSettings.Count}");
 #endif
 
             var resultItemsList = new List<LogicalSearchResultItem>();
 
-            foreach (var dataSourceSettingsGroup in context.DataSourcesSettings)
-            {
-#if DEBUG
-                LogInstance.Log($"dataSourceSettingsGroup.Key = {dataSourceSettingsGroup.Key}");
-                LogInstance.Log($"dataSourceSettingsGroup.Value.Count = {dataSourceSettingsGroup.Value.Count}");
-#endif
-                foreach (var dataSourceSettings in dataSourceSettingsGroup.Value)
-                {
-                    var resultItemsFromStorageList = RunSearchingFactsInStorage(context, dataSourceSettings);
-                    resultItemsList.AddRange(resultItemsFromStorageList);
-                }
-            }
+            var queryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
 
-            if(context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList.Any())
-            {
-                LogInstance.Log("Begin ProcessingProduction");
-
-                var queryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
-
-                queryExpression.FillExecutingCardForProduction(queryExecutingCard, context);
+            queryExpression.FillExecutingCard(queryExecutingCard, context);
 
 #if DEBUG
-                LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
+            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
-
-                //throw new NotImplementedException();
-            }
 
             result.Items = resultItemsList;
 #if DEBUG

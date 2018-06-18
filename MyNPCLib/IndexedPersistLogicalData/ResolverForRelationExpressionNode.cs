@@ -19,6 +19,85 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IList<QueryExecutingCardAboutVar> VarsInfoList { get; set; }
         public IList<QueryExecutingCardAboutKnownInfo> KnownInfoList { get; set; }
 
+        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        {
+#if DEBUG
+            LogInstance.Log($"Key = {Key}");
+            LogInstance.Log($"Params.Count = {Params.Count}");
+            foreach (var param in Params)
+            {
+                LogInstance.Log($"param = {param}");
+            }
+#endif
+
+            var indexedRulePartsOfFactsList = GetIndexedRulePartOfFactsByKeyOfRelation(Key, context);
+
+#if DEBUG
+            LogInstance.Log($"indexedRulePartsOfFactsList?.Count = {indexedRulePartsOfFactsList?.Count}");
+#endif
+
+            if(indexedRulePartsOfFactsList.Count > 0)
+            {
+                foreach (var indexedRulePartsOfFacts in indexedRulePartsOfFactsList)
+                {
+#if DEBUG
+                    LogInstance.Log($"this = {this}");
+                    //LogInstance.Log($"indexedRulePartsOfFacts = {indexedRulePartsOfFacts}");
+#endif
+                    var queryExecutingCardForTargetFact = new QueryExecutingCardForIndexedPersistLogicalData();
+                    queryExecutingCardForTargetFact.TargetRelation = Key;
+                    queryExecutingCardForTargetFact.CountParams = CountParams;
+                    queryExecutingCardForTargetFact.VarsInfoList = VarsInfoList;
+                    queryExecutingCardForTargetFact.KnownInfoList = KnownInfoList;
+
+                    indexedRulePartsOfFacts.FillExecutingCardForCallingFromRelationForFact(queryExecutingCardForTargetFact, context);
+
+#if DEBUG
+                    LogInstance.Log($"queryExecutingCardForTargetFact = {queryExecutingCardForTargetFact}");
+#endif
+
+                    foreach (var resultOfQueryToRelation in queryExecutingCardForTargetFact.ResultsOfQueryToRelationList)
+                    {
+                        queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+                    }
+                }
+            }
+
+            var indexedRulePartWithOneRelationsList = GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key, context);
+
+#if DEBUG
+            LogInstance.Log($"indexedRulePartWithOneRelationsList?.Count = {indexedRulePartWithOneRelationsList?.Count}");
+#endif
+
+            if(indexedRulePartWithOneRelationsList.Count > 0)
+            {
+                foreach (var indexedRulePartsOfRule in indexedRulePartWithOneRelationsList)
+                {
+#if DEBUG
+                    LogInstance.Log($"this = {this}");
+                    LogInstance.Log($"indexedRulePartsOfRule = {indexedRulePartsOfRule}");
+#endif
+
+                    var queryExecutingCardForTargetRule = new QueryExecutingCardForIndexedPersistLogicalData();
+                    queryExecutingCardForTargetRule.TargetRelation = Key;
+                    queryExecutingCardForTargetRule.CountParams = CountParams;
+                    queryExecutingCardForTargetRule.VarsInfoList = VarsInfoList;
+                    queryExecutingCardForTargetRule.KnownInfoList = KnownInfoList;
+
+                    indexedRulePartsOfRule.FillExecutingCardForCallingFromRelationForProduction(queryExecutingCardForTargetRule, context);
+
+#if DEBUG
+                    LogInstance.Log($"queryExecutingCardForTargetRule = {queryExecutingCardForTargetRule}");
+#endif
+                }
+            }
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
+        }
+
+        [Obsolete]
         public override void FillExecutingCardForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
         {
 #if DEBUG
@@ -69,6 +148,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
         }
 
+        [Obsolete]
         public override void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
 #if DEBUG
@@ -109,6 +189,27 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
 
             throw new NotImplementedException();
+        }
+
+        private IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key, LogicalSearchContext context)
+        {
+            var result = new List<IndexedRulePart>();
+
+            var dataSourcesSettingsOrderedByPriorityList = context.DataSourcesSettingsOrderedByPriorityList;
+
+            foreach(var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
+            {
+                var indexedRulePartsOfFactsList = dataSourcesSettings.Storage.GetIndexedRulePartOfFactsByKeyOfRelation(key);
+
+                if(indexedRulePartsOfFactsList == null)
+                {
+                    continue;
+                }
+
+                result.AddRange(indexedRulePartsOfFactsList);
+            }
+
+            return result;
         }
 
         private IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key, LogicalSearchContext context)
