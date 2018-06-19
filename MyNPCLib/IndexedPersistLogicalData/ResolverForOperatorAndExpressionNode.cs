@@ -17,7 +17,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
 
             var leftQueryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
@@ -32,8 +32,40 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
 #if DEBUG
             LogInstance.Log($"rightQueryExecutingCard = {rightQueryExecutingCard}");
+            LogInstance.Log($"leftQueryExecutingCard.ToBriefString() = {leftQueryExecutingCard.ToBriefString()}");
+            LogInstance.Log($"rightQueryExecutingCard.ToBriefString() = {rightQueryExecutingCard.ToBriefString()}");
 #endif
 
+            var resultsOfQueryToRelationList = new List<ResultOfQueryToRelation>();
+            var leftQueryExecutingCardResultsOfQueryToRelationList = leftQueryExecutingCard.ResultsOfQueryToRelationList;
+
+            if (leftQueryExecutingCardResultsOfQueryToRelationList.Count == 0)
+            {
+                return;
+            }
+
+            var rightQueryExecutingCardResultsOfQueryToRelationList = rightQueryExecutingCard.ResultsOfQueryToRelationList;
+
+            if(rightQueryExecutingCardResultsOfQueryToRelationList.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var leftResultOfQueryToRelation in leftQueryExecutingCardResultsOfQueryToRelationList)
+            {
+#if DEBUG
+                LogInstance.Log($"leftResultOfQueryToRelation.ToBriefString() = {leftResultOfQueryToRelation.ToBriefString()}");
+#endif
+
+                foreach (var rightResultOfQueryToRelation in rightQueryExecutingCard.ResultsOfQueryToRelationList)
+                {
+#if DEBUG
+                    LogInstance.Log($"rightResultOfQueryToRelation.ToBriefString() = {rightResultOfQueryToRelation.ToBriefString()}");
+#endif
+                }
+            }
+
+            throw new NotImplementedException();
 #if DEBUG
             LogInstance.Log("End");
 #endif

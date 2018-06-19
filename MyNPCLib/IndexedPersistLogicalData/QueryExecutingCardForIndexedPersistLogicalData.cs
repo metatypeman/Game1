@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.IndexedPersistLogicalData
 {
-    public class QueryExecutingCardForIndexedPersistLogicalData : IObjectToString
+    public class QueryExecutingCardForIndexedPersistLogicalData : IObjectToString, IObjectToBriefString
     {
         public ulong TargetRelation { get; set; }
         public int CountParams { get; set; }
@@ -65,6 +65,37 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 foreach (var resultOfQueryToRelation in ResultsOfQueryToRelationList)
                 {
                     sb.Append(resultOfQueryToRelation.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(ResultsOfQueryToRelationList)}");
+            }
+            return sb.ToString();
+        }
+
+        public string ToBriefString()
+        {
+            return ToBriefString(0u);
+        }
+
+        public string ToBriefString(uint n)
+        {
+            return this.GetDefaultToBriefStringInformation(n);
+        }
+
+        public string PropertiesToBriefSting(uint n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var sb = new StringBuilder();
+            if (ResultsOfQueryToRelationList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(ResultsOfQueryToRelationList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(ResultsOfQueryToRelationList)}");
+                foreach (var resultOfQueryToRelation in ResultsOfQueryToRelationList)
+                {
+                    sb.Append(resultOfQueryToRelation.ToBriefString(nextN));
                 }
                 sb.AppendLine($"{spaces}End {nameof(ResultsOfQueryToRelationList)}");
             }

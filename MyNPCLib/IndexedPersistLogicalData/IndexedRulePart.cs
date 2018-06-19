@@ -3,6 +3,7 @@ using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.IndexedPersistLogicalData
@@ -296,23 +297,44 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 return;
             }
 
+            var targetRelation = targetRelationsList.First();
+
+#if DEBUG
+            LogInstance.Log($"targetRelation = {targetRelation}");
+#endif
+
+            if(targetRelation.Params.Count != queryExecutingCard.CountParams)
+            {
+                return;
+            }
+
+#if DEBUG
+            LogInstance.Log($"targetRelation.VarsInfoList.Count = {targetRelation.VarsInfoList.Count}");
+            foreach(var varInfo in targetRelation.VarsInfoList)
+            {
+                LogInstance.Log($"varInfo = {varInfo}");
+            }
+#endif
+
             var queryExecutingCardForNextPart = new QueryExecutingCardForIndexedPersistLogicalData();
+            queryExecutingCardForNextPart.VarsInfoList = targetRelation.VarsInfoList;
             NextPart.FillExecutingCardForCallingFromOtherPart(queryExecutingCardForNextPart, context);
 
 #if DEBUG
             LogInstance.Log($"queryExecutingCardForNextPart = {queryExecutingCardForNextPart}");
 #endif
 
+            throw new NotImplementedException();
+
 #if DEBUG
             LogInstance.Log("End");
-#endif
-            //throw new NotImplementedException();
+#endif           
         }
 
         public void FillExecutingCardForCallingFromOtherPart(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
 
             var queryExecutingCardForExpression = new QueryExecutingCardForIndexedPersistLogicalData();
@@ -321,11 +343,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
             LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");
 #endif
+            throw new NotImplementedException();
 
 #if DEBUG
             LogInstance.Log("End");
-#endif
-            throw new NotImplementedException();
+#endif         
         }
 
         public override string ToString()

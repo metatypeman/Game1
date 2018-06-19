@@ -28,6 +28,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
             {
                 LogInstance.Log($"param = {param}");
             }
+            LogInstance.Log($"VarsInfoList.Count = {VarsInfoList.Count}");
+            foreach (var varInfo in VarsInfoList)
+            {
+                LogInstance.Log($"varInfo = {varInfo}");
+            }
 #endif
 
             var indexedRulePartsOfFactsList = GetIndexedRulePartOfFactsByKeyOfRelation(Key, context);
@@ -89,6 +94,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
                     LogInstance.Log($"queryExecutingCardForTargetRule = {queryExecutingCardForTargetRule}");
 #endif
+
+                    foreach (var resultOfQueryToRelation in queryExecutingCardForTargetRule.ResultsOfQueryToRelationList)
+                    {
+                        queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+                    }
                 }
             }
 

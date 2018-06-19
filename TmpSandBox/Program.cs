@@ -255,7 +255,7 @@ namespace TmpSandBox
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
             ruleInstance.Kind = KindOfRuleInstance.Fact;
-            ruleInstance.Name = "#1";
+            ruleInstance.Name = NamesHelper.CreateEntityName();
             ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
             ruleInstance.ModuleName = "#simple_module";
             ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
@@ -295,7 +295,7 @@ namespace TmpSandBox
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
             ruleInstance.Kind = KindOfRuleInstance.Fact;
-            ruleInstance.Name = "#1";
+            ruleInstance.Name = NamesHelper.CreateEntityName();
             ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
             ruleInstance.ModuleName = "#simple_module";
             ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
@@ -335,7 +335,7 @@ namespace TmpSandBox
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
             ruleInstance.Kind = KindOfRuleInstance.Fact;
-            ruleInstance.Name = "#1";
+            ruleInstance.Name = NamesHelper.CreateEntityName();
             ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
             ruleInstance.ModuleName = "#simple_module";
             ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
@@ -370,7 +370,7 @@ namespace TmpSandBox
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
             ruleInstance.Kind = KindOfRuleInstance.QuestionVars;
-            ruleInstance.Name = "#1";
+            ruleInstance.Name = NamesHelper.CreateEntityName();
             ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
             ruleInstance.ModuleName = "#simple_module";
             ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
