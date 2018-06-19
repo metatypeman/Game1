@@ -6,10 +6,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
 {
     public class ResultOfQueryToRelation : IObjectToString, IObjectToBriefString
     {
-        public IndexedRuleInstance IndexedRuleInstance { get; set; }
-        public IndexedRulePart IndexedRulePart { get; set; }
         public IList<ResultOfVarOfQueryToRelation> ResultOfVarOfQueryToRelationList { get; set; } = new List<ResultOfVarOfQueryToRelation>();
-
+        
         public override string ToString()
         {
             return ToString(0u);
@@ -25,26 +23,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            if (IndexedRuleInstance == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(IndexedRuleInstance)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(IndexedRuleInstance)}");
-                sb.Append(IndexedRuleInstance.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(IndexedRuleInstance)}");
-            }
-            if (IndexedRulePart == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(IndexedRulePart)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(IndexedRulePart)}");
-                sb.Append(IndexedRulePart.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(IndexedRulePart)}");
-            }
             if (ResultOfVarOfQueryToRelationList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(ResultOfVarOfQueryToRelationList)} = null");
@@ -76,7 +54,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}IndexedRuleInstance.Key = {IndexedRuleInstance.Key}");
             if (ResultOfVarOfQueryToRelationList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(ResultOfVarOfQueryToRelationList)} = null");

@@ -120,9 +120,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 if(isFit)
                 {
                     var resultOfQueryToRelation = new ResultOfQueryToRelation();
-                    resultOfQueryToRelation.IndexedRulePart = this;
-                    resultOfQueryToRelation.IndexedRuleInstance = Parent;
-
 
                     foreach (var varItem in queryExecutingCard.VarsInfoList)
                     {
@@ -140,6 +137,16 @@ namespace MyNPCLib.IndexedPersistLogicalData
                         resultOfVarOfQueryToRelation.KeyOfVar = varItem.KeyOfVar;
                         resultOfVarOfQueryToRelation.FoundExpression = paramOfTargetRelation;
                         resultOfQueryToRelation.ResultOfVarOfQueryToRelationList.Add(resultOfVarOfQueryToRelation);
+
+                        var originInfo = new OriginOfVarOfQueryToRelation();
+                        originInfo.IndexedRuleInstance = Parent;
+                        originInfo.IndexedRulePart = this;
+
+                        var keyOfRuleInstance = Parent.Key;
+
+                        originInfo.KeyOfRuleInstance = keyOfRuleInstance;
+
+                        resultOfVarOfQueryToRelation.OriginDict[keyOfRuleInstance] = originInfo;
                     }
 
                     queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
@@ -205,9 +212,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 if (isFit)
                 {
                     var resultOfQueryToRelation = new ResultOfQueryToRelation();
-                    resultOfQueryToRelation.IndexedRulePart = this;
-                    resultOfQueryToRelation.IndexedRuleInstance = Parent;
-
 
                     foreach (var varItem in queryExecutingCard.VarsInfoList)
                     {
@@ -225,6 +229,16 @@ namespace MyNPCLib.IndexedPersistLogicalData
                         resultOfVarOfQueryToRelation.KeyOfVar = varItem.KeyOfVar;
                         resultOfVarOfQueryToRelation.FoundExpression = paramOfTargetRelation;
                         resultOfQueryToRelation.ResultOfVarOfQueryToRelationList.Add(resultOfVarOfQueryToRelation);
+
+                        var originInfo = new OriginOfVarOfQueryToRelation();
+                        originInfo.IndexedRuleInstance = Parent;
+                        originInfo.IndexedRulePart = this;
+
+                        var keyOfRuleInstance = Parent.Key;
+
+                        originInfo.KeyOfRuleInstance = keyOfRuleInstance;
+
+                        resultOfVarOfQueryToRelation.OriginDict[keyOfRuleInstance] = originInfo;
                     }
 
                     queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
