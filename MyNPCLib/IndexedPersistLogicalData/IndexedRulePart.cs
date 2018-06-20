@@ -287,9 +287,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 return;
             }
 
+            var targetRelationVarsInfoList = targetRelation.VarsInfoList;
+
 #if DEBUG
-            LogInstance.Log($"targetRelation.VarsInfoList.Count = {targetRelation.VarsInfoList.Count}");
-            foreach(var varInfo in targetRelation.VarsInfoList)
+            LogInstance.Log($"targetRelationVarsInfoList.Count = {targetRelationVarsInfoList.Count}");
+            foreach(var varInfo in targetRelationVarsInfoList)
             {
                 LogInstance.Log($"varInfo = {varInfo}");
             }
@@ -297,6 +299,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
             var queryExecutingCardForNextPart = new QueryExecutingCardForIndexedPersistLogicalData();
             queryExecutingCardForNextPart.VarsInfoList = targetRelation.VarsInfoList;
+            queryExecutingCardForNextPart.KnownInfoList = queryExecutingCard.KnownInfoList;
             queryExecutingCardForNextPart.SenderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
             queryExecutingCardForNextPart.SenderIndexedRulePart = this;
             NextPart.FillExecutingCardForCallingFromOtherPart(queryExecutingCardForNextPart, context);
@@ -311,6 +314,34 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString()}");
             LogInstance.Log($"queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString()}");
 #endif
+
+            var resultsOfQueryToRelationList = queryExecutingCardForNextPart.ResultsOfQueryToRelationList;
+
+            if (resultsOfQueryToRelationList.Count > 0)
+            {
+                var varsInfoList = queryExecutingCard.VarsInfoList;
+                var targetRelationVarsInfoDictByPosition = targetRelationVarsInfoList.ToDictionary(p => p.Position, p => p.KeyOfVar);
+
+                foreach (var resultOfQueryToRelation in resultsOfQueryToRelationList)
+                {
+#if DEBUG
+                    LogInstance.Log($"resultOfQueryToRelation = {resultOfQueryToRelation}");
+#endif
+
+                    foreach (var varInfo in varsInfoList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"varInfo = {varInfo}");
+#endif
+
+                        var targetKeyOfVar = targetRelationVarsInfoDictByPosition[varInfo.Position];
+
+#if DEBUG
+                        LogInstance.Log($"targetKeyOfVar = {targetKeyOfVar}");
+#endif
+                    }
+                }
+            }
 
             throw new NotImplementedException();
 
@@ -328,6 +359,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var queryExecutingCardForExpression = new QueryExecutingCardForIndexedPersistLogicalData();
             queryExecutingCardForExpression.SenderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
             queryExecutingCardForExpression.SenderIndexedRulePart = this;
+            queryExecutingCardForExpression.KnownInfoList = queryExecutingCard.KnownInfoList;
             Expression.FillExecutingCard(queryExecutingCardForExpression, context);
 
 #if DEBUG

@@ -124,6 +124,16 @@ namespace TmpSandBox
 
             context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFact_2);
 
+            var fact_2_2 = CreateSimpleFact_2_2(globalEntityDictionary);
+
+            debugStr = DebugHelperForRuleInstance.ToString(fact_2_2);
+
+            LogInstance.Log($"debugStr = {debugStr}");
+
+            var indexedFact_2_2 = ConvertorToIndexed.ConvertRuleInstance(fact_2_2);
+
+            context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFact_2_2);
+
             var fact_3 = CreateSimpleFact_3(globalEntityDictionary);
 
             debugStr = DebugHelperForRuleInstance.ToString(fact_3);
@@ -133,6 +143,16 @@ namespace TmpSandBox
             var indexedFact_3 = ConvertorToIndexed.ConvertRuleInstance(fact_3);
 
             context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFact_3);
+
+            var fact_3_2 = CreateSimpleFact_3_2(globalEntityDictionary);
+
+            debugStr = DebugHelperForRuleInstance.ToString(fact_3_2);
+
+            LogInstance.Log($"debugStr = {debugStr}");
+
+            var indexedFact_3_2 = ConvertorToIndexed.ConvertRuleInstance(fact_3_2);
+
+            context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFact_3_2);
 
             var query = CreateSimpleQuery(globalEntityDictionary);
 
@@ -330,6 +350,46 @@ namespace TmpSandBox
             return ruleInstance;
         }
 
+        private static RuleInstance CreateSimpleFact_2_2(IEntityDictionary globalEntityDictionary)
+        {
+            var ruleInstance = new RuleInstance();
+            ruleInstance.DictionaryName = globalEntityDictionary.Name;
+            ruleInstance.Kind = KindOfRuleInstance.Fact;
+            ruleInstance.Name = NamesHelper.CreateEntityName();
+            ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
+            ruleInstance.ModuleName = "#simple_module";
+            ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
+
+            var rulePart_1 = new RulePart();
+            rulePart_1.Parent = ruleInstance;
+            ruleInstance.Part_1 = rulePart_1;
+
+            rulePart_1.IsActive = true;
+
+            var expr3 = new RelationExpressionNode();
+            rulePart_1.Expression = expr3;
+            expr3.Params = new List<BaseExpressionNode>();
+
+            var relationName = "parent";
+            var relationKey = globalEntityDictionary.GetKey(relationName);
+            expr3.Name = relationName;
+            expr3.Key = relationKey;
+
+            var param_1 = new EntityRefExpressionNode();
+            expr3.Params.Add(param_1);
+            param_1.Name = "#George";
+            param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
+
+            var param_2 = new EntityRefExpressionNode();
+            expr3.Params.Add(param_2);
+            param_2.Name = "#Bob";
+            param_2.Key = globalEntityDictionary.GetKey(param_2.Name);
+
+            //parent(#George, #Bob)
+
+            return ruleInstance;
+        }
+
         private static RuleInstance CreateSimpleFact_3(IEntityDictionary globalEntityDictionary)
         {
             var ruleInstance = new RuleInstance();
@@ -361,6 +421,41 @@ namespace TmpSandBox
             param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
 
             //male(#John)
+
+            return ruleInstance;
+        }
+
+        private static RuleInstance CreateSimpleFact_3_2(IEntityDictionary globalEntityDictionary)
+        {
+            var ruleInstance = new RuleInstance();
+            ruleInstance.DictionaryName = globalEntityDictionary.Name;
+            ruleInstance.Kind = KindOfRuleInstance.Fact;
+            ruleInstance.Name = NamesHelper.CreateEntityName();
+            ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
+            ruleInstance.ModuleName = "#simple_module";
+            ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
+
+            var rulePart_1 = new RulePart();
+            rulePart_1.Parent = ruleInstance;
+            ruleInstance.Part_1 = rulePart_1;
+
+            rulePart_1.IsActive = true;
+
+            var expr3 = new RelationExpressionNode();
+            rulePart_1.Expression = expr3;
+            expr3.Params = new List<BaseExpressionNode>();
+
+            var relationName = "male";
+            var relationKey = globalEntityDictionary.GetKey(relationName);
+            expr3.Name = relationName;
+            expr3.Key = relationKey;
+
+            var param_1 = new EntityRefExpressionNode();
+            expr3.Params.Add(param_1);
+            param_1.Name = "#Bob";
+            param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
+
+            //male(#Bob)
 
             return ruleInstance;
         }
