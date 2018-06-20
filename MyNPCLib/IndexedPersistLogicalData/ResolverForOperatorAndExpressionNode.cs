@@ -21,7 +21,13 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
 
+            var senderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
+            var senderIndexedRulePart = queryExecutingCard.SenderIndexedRulePart;
+            
             var leftQueryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
+            leftQueryExecutingCard.SenderIndexedRuleInstance = senderIndexedRuleInstance;
+            leftQueryExecutingCard.SenderIndexedRulePart = senderIndexedRulePart;
+            leftQueryExecutingCard.SenderExpressionNode = Origin;
             Left.FillExecutingCard(leftQueryExecutingCard, context);
 
 #if DEBUG
@@ -35,11 +41,14 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 return;
             }
 
-            var resultsOfQueryToRelationList = new List<ResultOfQueryToRelation>();
+            var resultsOfQueryToRelationList = queryExecutingCard.ResultsOfQueryToRelationList;
 
             foreach (var leftResultOfQueryToRelation in leftQueryExecutingCardResultsOfQueryToRelationList)
             {
                 var rightQueryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
+                rightQueryExecutingCard.SenderIndexedRuleInstance = senderIndexedRuleInstance;
+                rightQueryExecutingCard.SenderIndexedRulePart = senderIndexedRulePart;
+                rightQueryExecutingCard.SenderExpressionNode = Origin;
                 Right.FillExecutingCard(rightQueryExecutingCard, context);
 
 #if DEBUG
@@ -91,7 +100,9 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     }
 #endif
 
-                    if(intersectOfVarsKeysList.Count == 0)
+                    var isFit = true;
+
+                    if (intersectOfVarsKeysList.Count == 0)
                     {
                         var resultItem = new ResultOfQueryToRelation();
                         foreach(var varItem in leftVarsList)
@@ -108,11 +119,17 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     }
                     else
                     {
+                        var leftVarsDict = new Dictionary<ulong, ResultOfVarOfQueryToRelation>();
                         var resultItem = new ResultOfQueryToRelation();
                         foreach (var varItem in leftVarsList)
                         {
-                            if(!intersectOfVarsKeysList.Contains(varItem.KeyOfVar))
+                            var keyOfVars = varItem.KeyOfVar;
+                            if (intersectOfVarsKeysList.Contains(keyOfVars))
                             {
+                                leftVarsDict[keyOfVars] = varItem;
+                            }
+                            else
+                            { 
                                 resultItem.ResultOfVarOfQueryToRelationList.Add(varItem);
                                 continue;
                             }
@@ -120,8 +137,46 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
                         foreach (var varItem in rightVarsList)
                         {
-                            if (!intersectOfVarsKeysList.Contains(varItem.KeyOfVar))
+                            var keyOfVars = varItem.KeyOfVar;
+                            if (intersectOfVarsKeysList.Contains(keyOfVars))
                             {
+                                var leftVarItem = leftVarsDict[keyOfVars];
+
+#if DEBUG
+                                LogInstance.Log($"varItem = {varItem}");
+                                LogInstance.Log($"leftVarItem = {leftVarItem}");
+#endif
+                                var resultOfComparison = ExpressionNodeHelper.Compare(varItem.FoundExpression, leftVarItem.FoundExpression);
+
+#if DEBUG
+                                LogInstance.Log($"resultOfComparison = {resultOfComparison}");
+#endif
+
+                                if(resultOfComparison)
+                                {
+                                    var originItemsDict = varItem.OriginDict;
+                                    var leftVarOriginItemsDict = leftVarItem.OriginDict;
+
+                                    foreach (var originItems in originItemsDict)
+                                    {
+                                        var tmpKeyOfOrigin = originItems.Key;
+
+                                        if(!leftVarOriginItemsDict.ContainsKey(tmpKeyOfOrigin))
+                                        {
+                                            leftVarOriginItemsDict[tmpKeyOfOrigin] = originItems.Value;
+                                        }
+                                    }
+
+                                    resultItem.ResultOfVarOfQueryToRelationList.Add(leftVarItem);
+                                }
+                                else
+                                {
+                                    isFit = false;
+                                    break;
+                                }                           
+                            }
+                            else
+                            { 
                                 resultItem.ResultOfVarOfQueryToRelationList.Add(varItem);
                                 continue;
                             }
@@ -129,7 +184,13 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
 #if DEBUG
                         LogInstance.Log($"resultItem = {resultItem}");
+                        LogInstance.Log($"isFit = {isFit}");
 #endif
+
+                        if(isFit)
+                        {
+                            resultsOfQueryToRelationList.Add(resultItem);
+                        }
                     }
                 }
             }
@@ -138,7 +199,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
 
-            throw new NotImplementedException();
 #if DEBUG
             LogInstance.Log("End");
 #endif

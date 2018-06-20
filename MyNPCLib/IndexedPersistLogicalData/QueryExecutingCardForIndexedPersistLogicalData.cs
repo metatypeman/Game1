@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyNPCLib.DebugHelperForPersistLogicalData;
+using MyNPCLib.PersistLogicalData;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,6 +13,53 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IList<QueryExecutingCardAboutVar> VarsInfoList { get; set; }
         public IList<QueryExecutingCardAboutKnownInfo> KnownInfoList { get; set; }
         public IList<ResultOfQueryToRelation> ResultsOfQueryToRelationList { get; set; } = new List<ResultOfQueryToRelation>();
+        public IndexedRuleInstance SenderIndexedRuleInstance { get; set; }
+        public IndexedRulePart SenderIndexedRulePart { get; set; }
+        public BaseExpressionNode SenderExpressionNode { get; set; }
+
+        public string GetSenderIndexedRuleInstanceHumanizeDbgString()
+        {
+            if(SenderIndexedRuleInstance == null)
+            {
+                return string.Empty;
+            }
+
+            var origin = SenderIndexedRuleInstance.Origin;
+
+            if(origin == null)
+            {
+                return string.Empty;
+            }
+
+            return DebugHelperForRuleInstance.ToString(origin);
+        }
+
+        public string GetSenderIndexedRulePartHumanizeDbgString()
+        {
+            if (SenderIndexedRulePart == null)
+            {
+                return string.Empty;
+            }
+
+            var origin = SenderIndexedRulePart.Origin;
+
+            if (origin == null)
+            {
+                return string.Empty;
+            }
+
+            return DebugHelperForRuleInstance.ToString(origin);
+        }
+
+        public string GetSenderExpressionNodeHumanizeDbgString()
+        {
+            if (SenderExpressionNode == null)
+            {
+                return string.Empty;
+            }
+
+            return DebugHelperForRuleInstance.ToString(SenderExpressionNode);
+        }
 
         public override string ToString()
         {

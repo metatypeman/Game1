@@ -35,6 +35,9 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
 #endif
 
+            var senderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
+            var senderIndexedRulePart = queryExecutingCard.SenderIndexedRulePart;
+            
             var indexedRulePartsOfFactsList = GetIndexedRulePartOfFactsByKeyOfRelation(Key, context);
 
 #if DEBUG
@@ -54,6 +57,9 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     queryExecutingCardForTargetFact.CountParams = CountParams;
                     queryExecutingCardForTargetFact.VarsInfoList = VarsInfoList;
                     queryExecutingCardForTargetFact.KnownInfoList = KnownInfoList;
+                    queryExecutingCardForTargetFact.SenderIndexedRuleInstance = senderIndexedRuleInstance;
+                    queryExecutingCardForTargetFact.SenderIndexedRulePart = senderIndexedRulePart;
+                    queryExecutingCardForTargetFact.SenderExpressionNode = Origin;
 
                     indexedRulePartsOfFacts.FillExecutingCardForCallingFromRelationForFact(queryExecutingCardForTargetFact, context);
 
@@ -88,6 +94,9 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     queryExecutingCardForTargetRule.CountParams = CountParams;
                     queryExecutingCardForTargetRule.VarsInfoList = VarsInfoList;
                     queryExecutingCardForTargetRule.KnownInfoList = KnownInfoList;
+                    queryExecutingCardForTargetRule.SenderIndexedRuleInstance = senderIndexedRuleInstance;
+                    queryExecutingCardForTargetRule.SenderIndexedRulePart = senderIndexedRulePart;
+                    queryExecutingCardForTargetRule.SenderExpressionNode = Origin;
 
                     indexedRulePartsOfRule.FillExecutingCardForCallingFromRelationForProduction(queryExecutingCardForTargetRule, context);
 

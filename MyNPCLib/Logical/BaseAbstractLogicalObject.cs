@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
-    public abstract class BaseAbstractLogicalObject : ILogicalObject, IObjectToString
+    public abstract class BaseAbstractLogicalObject : IEquatable<BaseAbstractLogicalObject>, ILogicalObject, IObjectToString
     {
         protected BaseAbstractLogicalObject(IEntityLogger entityLogger, SystemPropertiesDictionary systemPropertiesDictionary)
         {
@@ -214,6 +214,11 @@ namespace MyNPCLib.Logical
             }
 
             return false;
+        }
+
+        public bool Equals(BaseAbstractLogicalObject other)
+        {
+            return NEqual(this, other);
         }
 
         public static bool operator == (BaseAbstractLogicalObject item1, BaseAbstractLogicalObject item2)

@@ -46,6 +46,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
             if (IsPart_1_Active)
             {
                 var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
+                queryExecutingCardForPart_1.SenderIndexedRuleInstance = this;
+
                 Part_1.FillExecutingCard(queryExecutingCardForPart_1, context);
 #if DEBUG
                 LogInstance.Log($"queryExecutingCardForPart_1 = {queryExecutingCardForPart_1}");
@@ -55,6 +57,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             if (IsPart_2_Active)
             {
                 var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
+                queryExecutingCardForPart_2.SenderIndexedRuleInstance = this;
                 Part_2.FillExecutingCard(queryExecutingCardForPart_2, context);
 #if DEBUG
                 LogInstance.Log($"queryExecutingCardForPart_2 = {queryExecutingCardForPart_2}");
@@ -123,37 +126,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
 //            }
 
             queryExecutingCard.ResultsOfQueryToRelationList = resultsOfQueryToRelationList;
-        }
-
-        [Obsolete]
-        public void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
-        {
-#if DEBUG
-            LogInstance.Log("Begin");
-#endif
-
-            var resultsOfQueryToRelationList = new List<ResultOfQueryToRelation>();
-
-            if (IsPart_1_Active)
-            {
-                var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
-                Part_1.FillExecutingCardForProduction(queryExecutingCardForPart_1, context);
-#if DEBUG
-                LogInstance.Log($"queryExecutingCardForPart_1 = {queryExecutingCardForPart_1}");
-#endif
-            }
-
-            if (IsPart_2_Active)
-            {
-                var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
-                Part_2.FillExecutingCardForProduction(queryExecutingCardForPart_2, context);
-#if DEBUG
-                LogInstance.Log($"queryExecutingCardForPart_2 = {queryExecutingCardForPart_2}");
-#endif
-            }
-#if DEBUG
-            LogInstance.Log("End");
-#endif
         }
 
         public override string ToString()
