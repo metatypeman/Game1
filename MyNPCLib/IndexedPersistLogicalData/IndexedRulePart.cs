@@ -297,9 +297,27 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
 #endif
 
+            var targetRelationVarsInfoDictByPosition = targetRelationVarsInfoList.ToDictionary(p => p.Position, p => p.KeyOfVar);
+
+            var mergingResult = QueryExecutingCardAboutKnownInfoHelper.Merge(targetRelation.KnownInfoList, targetRelationVarsInfoList, queryExecutingCard.KnownInfoList);
+            if(!mergingResult.IsSuccess)
+            {
+                return;
+            }
+
+            var targetKnownInfoList = mergingResult.KnownInfoList;
+
+#if DEBUG
+            LogInstance.Log($"targetKnownInfoList.Count = {targetKnownInfoList.Count}");
+            foreach(var tmpKnownInfo in targetKnownInfoList)
+            {
+                LogInstance.Log($"tmpKnownInfo = {tmpKnownInfo}");
+            }          
+#endif
+
             var queryExecutingCardForNextPart = new QueryExecutingCardForIndexedPersistLogicalData();
             queryExecutingCardForNextPart.VarsInfoList = targetRelation.VarsInfoList;
-            queryExecutingCardForNextPart.KnownInfoList = queryExecutingCard.KnownInfoList;
+            queryExecutingCardForNextPart.KnownInfoList = targetKnownInfoList;
             queryExecutingCardForNextPart.SenderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
             queryExecutingCardForNextPart.SenderIndexedRulePart = this;
             NextPart.FillExecutingCardForCallingFromOtherPart(queryExecutingCardForNextPart, context);
@@ -320,8 +338,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             if (resultsOfQueryToRelationList.Count > 0)
             {
                 var varsInfoList = queryExecutingCard.VarsInfoList;
-                var targetRelationVarsInfoDictByPosition = targetRelationVarsInfoList.ToDictionary(p => p.Position, p => p.KeyOfVar);
-
+                
                 foreach (var resultOfQueryToRelation in resultsOfQueryToRelationList)
                 {
 #if DEBUG

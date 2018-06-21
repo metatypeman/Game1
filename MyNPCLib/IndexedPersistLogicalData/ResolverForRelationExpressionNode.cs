@@ -33,6 +33,10 @@ namespace MyNPCLib.IndexedPersistLogicalData
             {
                 LogInstance.Log($"varInfo = {varInfo}");
             }
+            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
+            LogInstance.Log($"queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString() = {queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString()}");
 #endif
 
             var senderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
@@ -44,7 +48,24 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"indexedRulePartsOfFactsList?.Count = {indexedRulePartsOfFactsList?.Count}");
 #endif
 
-            if(indexedRulePartsOfFactsList.Count > 0)
+            var mergingResult = QueryExecutingCardAboutKnownInfoHelper.Merge(KnownInfoList, VarsInfoList, queryExecutingCard.KnownInfoList);
+
+            if (!mergingResult.IsSuccess)
+            {
+                return;
+            }
+
+            var targetKnownInfoList = mergingResult.KnownInfoList;
+
+#if DEBUG
+            LogInstance.Log($"targetKnownInfoList.Count = {targetKnownInfoList.Count}");
+            foreach (var tmpKnownInfo in targetKnownInfoList)
+            {
+                LogInstance.Log($"tmpKnownInfo = {tmpKnownInfo}");
+            }
+#endif
+
+            if (indexedRulePartsOfFactsList.Count > 0)
             {
                 foreach (var indexedRulePartsOfFacts in indexedRulePartsOfFactsList)
                 {
@@ -56,7 +77,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     queryExecutingCardForTargetFact.TargetRelation = Key;
                     queryExecutingCardForTargetFact.CountParams = CountParams;
                     queryExecutingCardForTargetFact.VarsInfoList = VarsInfoList;
-                    queryExecutingCardForTargetFact.KnownInfoList = KnownInfoList;
+                    queryExecutingCardForTargetFact.KnownInfoList = targetKnownInfoList;
                     queryExecutingCardForTargetFact.SenderIndexedRuleInstance = senderIndexedRuleInstance;
                     queryExecutingCardForTargetFact.SenderIndexedRulePart = senderIndexedRulePart;
                     queryExecutingCardForTargetFact.SenderExpressionNode = Origin;
@@ -93,7 +114,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     queryExecutingCardForTargetRule.TargetRelation = Key;
                     queryExecutingCardForTargetRule.CountParams = CountParams;
                     queryExecutingCardForTargetRule.VarsInfoList = VarsInfoList;
-                    queryExecutingCardForTargetRule.KnownInfoList = KnownInfoList;
+                    queryExecutingCardForTargetRule.KnownInfoList = targetKnownInfoList;
                     queryExecutingCardForTargetRule.SenderIndexedRuleInstance = senderIndexedRuleInstance;
                     queryExecutingCardForTargetRule.SenderIndexedRulePart = senderIndexedRulePart;
                     queryExecutingCardForTargetRule.SenderExpressionNode = Origin;
@@ -112,6 +133,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
 
 #if DEBUG
+            LogInstance.Log($"^^^^^^queryExecutingCard = {queryExecutingCard}");
             LogInstance.Log("End");
 #endif
         }

@@ -28,6 +28,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             leftQueryExecutingCard.SenderIndexedRuleInstance = senderIndexedRuleInstance;
             leftQueryExecutingCard.SenderIndexedRulePart = senderIndexedRulePart;
             leftQueryExecutingCard.SenderExpressionNode = Origin;
+            leftQueryExecutingCard.KnownInfoList = queryExecutingCard.KnownInfoList;
             Left.FillExecutingCard(leftQueryExecutingCard, context);
 
 #if DEBUG
@@ -49,6 +50,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 rightQueryExecutingCard.SenderIndexedRuleInstance = senderIndexedRuleInstance;
                 rightQueryExecutingCard.SenderIndexedRulePart = senderIndexedRulePart;
                 rightQueryExecutingCard.SenderExpressionNode = Origin;
+                rightQueryExecutingCard.KnownInfoList = queryExecutingCard.KnownInfoList;
                 Right.FillExecutingCard(rightQueryExecutingCard, context);
 
 #if DEBUG

@@ -39,7 +39,6 @@ namespace MyNPCLib.LogicalSearchEngine
             var resultItemsList = new List<LogicalSearchResultItem>();
 
             var queryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
-
             queryExpression.FillExecutingCard(queryExecutingCard, context);
 
 #if DEBUG
