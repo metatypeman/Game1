@@ -7,19 +7,24 @@ namespace MyNPCLib.IndexedPersistLogicalData
 {
     public static class QueryExecutingCardAboutKnownInfoHelper
     {
-        public static MergingResultOfTwoQueryExecutingCardAboutKnownInfoLists Merge(IList<QueryExecutingCardAboutKnownInfo> internalKnownInfoList, IList<QueryExecutingCardAboutVar> internalVarsInfoList, IList<QueryExecutingCardAboutKnownInfo> externalKnownInfoList)
+        public static MergingResultOfTwoQueryExecutingCardAboutKnownInfoLists Merge(IList<QueryExecutingCardAboutKnownInfo> internalKnownInfoList, IList<QueryExecutingCardAboutVar> internalVarsInfoList, IList<QueryExecutingCardAboutKnownInfo> externalKnownInfoList, bool inPartFromRelationForProduction)
         {
             var result = new MergingResultOfTwoQueryExecutingCardAboutKnownInfoLists();
             var targetKnownInfoList = new List<QueryExecutingCardAboutKnownInfo>();
 
-            if(ListHelper.IsEmpty(externalKnownInfoList))
+#if DEBUG
+            LogInstance.Log($"inPartFromRelationForProduction = {inPartFromRelationForProduction}");
+#endif
+
+            if (ListHelper.IsEmpty(externalKnownInfoList))
             {
                 targetKnownInfoList = internalKnownInfoList.ToList();
             }
             else
             {
                 var currentKnownInfoDict = internalKnownInfoList.ToDictionary(p => p.Position, p => p);
-                var targetRelationVarsInfoDictByPosition = internalVarsInfoList.ToDictionary(p => p.Position, p => p.KeyOfVar);
+                var targetRelationVarsInfoDictByPosition = internalVarsInfoList.ToDictionary(p => p.Position, p => p);
+                var targetRelationVarsInfoDictByKeyOfVar = internalVarsInfoList.ToDictionary(p => p.KeyOfVar, p => p);
 
 #if DEBUG
                 LogInstance.Log($"currentKnownInfoDict.Count = {currentKnownInfoDict.Count}");
@@ -31,21 +36,87 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
                     LogInstance.Log($"initialKnownInfo = {initialKnownInfo}");
 #endif
-
-                    if (currentKnownInfoDict.Count == 0)
+                    if(inPartFromRelationForProduction)
                     {
-                        var existingKeyOfVar = targetRelationVarsInfoDictByPosition[initialKnownInfo.Position];
+                        var position = initialKnownInfo.Position;
 
 #if DEBUG
-                        LogInstance.Log($"existingKeyOfVar = {existingKeyOfVar}");
+                        LogInstance.Log($"position = {position}");
 #endif
 
-                        targetKnownInfoList.Add(initialKnownInfo);
+                        if (position.HasValue)
+                        {
+                            var existingVar = targetRelationVarsInfoDictByPosition[position.Value];
+
+#if DEBUG
+                            LogInstance.Log($"existingVar = {existingVar}");
+#endif
+
+                            var resultKnownInfo = initialKnownInfo.Clone();
+                            resultKnownInfo.KeyOfVar = existingVar.KeyOfVar;
+                            targetKnownInfoList.Add(resultKnownInfo);
+                        }
+                        else
+                        {
+                            throw new NotImplementedException();
+                        }
                     }
                     else
                     {
-                        throw new NotImplementedException();
+                        var keyOfVar = initialKnownInfo.KeyOfVar;
+
+#if DEBUG
+                        LogInstance.Log($"keyOfVar = {keyOfVar}");
+#endif
+
+                        if(keyOfVar.HasValue)
+                        {
+                            var keyOfVarValue = keyOfVar.Value;
+
+                            if(targetRelationVarsInfoDictByKeyOfVar.ContainsKey(keyOfVarValue))
+                            {
+                                var existingVar = targetRelationVarsInfoDictByKeyOfVar[keyOfVarValue];
+
+#if DEBUG
+                                LogInstance.Log($"existingVar = {existingVar}");
+#endif
+
+                                var resultKnownInfo = initialKnownInfo.Clone();
+                                resultKnownInfo.KeyOfVar = keyOfVar;
+                                resultKnownInfo.Position = existingVar.Position;
+                                targetKnownInfoList.Add(resultKnownInfo);
+                            }
+                        }
+                        else
+                        {
+                            throw new NotImplementedException();
+                        }                
                     }
+//                    if (currentKnownInfoDict.Count == 0)
+//                    {
+//                        var position = initialKnownInfo.Position;
+
+//                        if(position.HasValue)
+//                        {
+//                            var existingVar = targetRelationVarsInfoDictByPosition[position.Value];
+
+//#if DEBUG
+//                            LogInstance.Log($"existingVar = {existingVar}");
+//#endif
+
+//                            var resultKnownInfo = initialKnownInfo.Clone();
+//                            resultKnownInfo.KeyOfVar = existingVar.KeyOfVar;
+//                            targetKnownInfoList.Add(resultKnownInfo);
+//                        }
+//                        else
+//                        {
+//                            throw new NotImplementedException();
+//                        }
+//                    }
+//                    else
+//                    {
+//                        throw new NotImplementedException();
+//                    }
                 }
             }
 

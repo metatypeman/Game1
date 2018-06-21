@@ -18,7 +18,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IList<ResolverForBaseExpressionNode> Params { get; set; }
         public IList<QueryExecutingCardAboutVar> VarsInfoList { get; set; }
         public IList<QueryExecutingCardAboutKnownInfo> KnownInfoList { get; set; }
-
+        
         public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
 #if DEBUG
@@ -37,6 +37,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString() = {queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString()}");
             LogInstance.Log($"queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString()}");
             LogInstance.Log($"queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString()}");
+            LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}"); 
 #endif
 
             var senderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
@@ -48,7 +49,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"indexedRulePartsOfFactsList?.Count = {indexedRulePartsOfFactsList?.Count}");
 #endif
 
-            var mergingResult = QueryExecutingCardAboutKnownInfoHelper.Merge(KnownInfoList, VarsInfoList, queryExecutingCard.KnownInfoList);
+            var mergingResult = QueryExecutingCardAboutKnownInfoHelper.Merge(KnownInfoList, VarsInfoList, queryExecutingCard.KnownInfoList, false);
 
             if (!mergingResult.IsSuccess)
             {
@@ -85,7 +86,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     indexedRulePartsOfFacts.FillExecutingCardForCallingFromRelationForFact(queryExecutingCardForTargetFact, context);
 
 #if DEBUG
-                    LogInstance.Log($"queryExecutingCardForTargetFact = {queryExecutingCardForTargetFact}");
+                    LogInstance.Log($"++++++queryExecutingCardForTargetFact = {queryExecutingCardForTargetFact}");
 #endif
 
                     foreach (var resultOfQueryToRelation in queryExecutingCardForTargetFact.ResultsOfQueryToRelationList)
@@ -94,6 +95,10 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     }
                 }
             }
+
+#if DEBUG
+            LogInstance.Log($"~~~~~~~~~~~~~~~~~queryExecutingCard = {queryExecutingCard}");
+#endif
 
             var indexedRulePartWithOneRelationsList = GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key, context);
 
@@ -122,7 +127,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     indexedRulePartsOfRule.FillExecutingCardForCallingFromRelationForProduction(queryExecutingCardForTargetRule, context);
 
 #if DEBUG
-                    LogInstance.Log($"queryExecutingCardForTargetRule = {queryExecutingCardForTargetRule}");
+                    LogInstance.Log($"&&&&&&&&&&&&&&&&&queryExecutingCardForTargetRule = {queryExecutingCardForTargetRule}");
 #endif
 
                     foreach (var resultOfQueryToRelation in queryExecutingCardForTargetRule.ResultsOfQueryToRelationList)

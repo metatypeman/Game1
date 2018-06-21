@@ -11,8 +11,19 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public KindOfExpressionNode Kind { get; set; }
         public ulong Key { get; set; }
         public object Value { get; set; }
-        public int Position { get; set; }
+        public ulong? KeyOfVar { get; set; }
+        public int? Position { get; set; }
         public BaseExpressionNode Expression { get; set; }
+
+        public QueryExecutingCardAboutKnownInfo Clone()
+        {
+            var result = new QueryExecutingCardAboutKnownInfo();
+            result.Kind = Kind;
+            result.Key = Key;
+            result.Value = Value;
+            result.Expression = Expression;
+            return result;
+        }
 
         public override string ToString()
         {
@@ -32,6 +43,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
+            sb.AppendLine($"{spaces}{nameof(KeyOfVar)} = {KeyOfVar}");
             sb.AppendLine($"{spaces}{nameof(Position)} = {Position}");
             if (Expression == null)
             {

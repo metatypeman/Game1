@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using System;
@@ -12,12 +13,23 @@ namespace MyNPCLib.IndexedPersistLogicalData
     {
         public abstract KindOfExpressionNode Kind { get; }
         public abstract BaseExpressionNode Origin { get; }
-
+        
         public abstract void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context);
         [Obsolete]
         public abstract void FillExecutingCardForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context);
         [Obsolete]
         public abstract void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context);
+
+        public string GetHumanizeDbgString()
+        {
+            if(Origin == null)
+            {
+                return string.Empty;
+            }
+
+            return DebugHelperForRuleInstance.ToString(Origin);
+        }
+
         public override string ToString()
         {
             return ToString(0u);

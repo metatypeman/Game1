@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using System;
@@ -96,20 +97,29 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
                     LogInstance.Log($"knownInfo = {knownInfo}");
 #endif
+                    var position = knownInfo.Position;
 
-                    var paramOfTargetRelation = paramsListOfTargetRelation[knownInfo.Position];
-
-#if DEBUG
-                    LogInstance.Log($"paramOfTargetRelation = {paramOfTargetRelation}");
-#endif
-
-                    var resultOfComparison = CompareKnownInfoAndExpressionNode(knownInfo, paramOfTargetRelation);
+                    if(position.HasValue)
+                    {
+                        var paramOfTargetRelation = paramsListOfTargetRelation[position.Value];
 
 #if DEBUG
-                    LogInstance.Log($"resultOfComparison = {resultOfComparison}");
+                        LogInstance.Log($"paramOfTargetRelation = {paramOfTargetRelation}");
 #endif
 
-                    if(!resultOfComparison)
+                        var resultOfComparison = CompareKnownInfoAndExpressionNode(knownInfo, paramOfTargetRelation);
+
+#if DEBUG
+                        LogInstance.Log($"resultOfComparison = {resultOfComparison}");
+#endif
+
+                        if (!resultOfComparison)
+                        {
+                            isFit = false;
+                            break;
+                        }
+                    }
+                    else
                     {
                         isFit = false;
                         break;
@@ -188,20 +198,29 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
                     LogInstance.Log($"knownInfo = {knownInfo}");
 #endif
+                    var position = knownInfo.Position;
 
-                    var paramOfTargetRelation = paramsListOfTargetRelation[knownInfo.Position];
-
-#if DEBUG
-                    LogInstance.Log($"paramOfTargetRelation = {paramOfTargetRelation}");
-#endif
-
-                    var resultOfComparison = CompareKnownInfoAndExpressionNode(knownInfo, paramOfTargetRelation);
+                    if(position.HasValue)
+                    {
+                        var paramOfTargetRelation = paramsListOfTargetRelation[position.Value];
 
 #if DEBUG
-                    LogInstance.Log($"resultOfComparison = {resultOfComparison}");
+                        LogInstance.Log($"paramOfTargetRelation = {paramOfTargetRelation}");
 #endif
 
-                    if (!resultOfComparison)
+                        var resultOfComparison = CompareKnownInfoAndExpressionNode(knownInfo, paramOfTargetRelation);
+
+#if DEBUG
+                        LogInstance.Log($"resultOfComparison = {resultOfComparison}");
+#endif
+
+                        if (!resultOfComparison)
+                        {
+                            isFit = false;
+                            break;
+                        }
+                    }
+                    else
                     {
                         isFit = false;
                         break;
@@ -299,7 +318,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
             var targetRelationVarsInfoDictByPosition = targetRelationVarsInfoList.ToDictionary(p => p.Position, p => p.KeyOfVar);
 
-            var mergingResult = QueryExecutingCardAboutKnownInfoHelper.Merge(targetRelation.KnownInfoList, targetRelationVarsInfoList, queryExecutingCard.KnownInfoList);
+            var mergingResult = QueryExecutingCardAboutKnownInfoHelper.Merge(targetRelation.KnownInfoList, targetRelationVarsInfoList, queryExecutingCard.KnownInfoList, true);
             if(!mergingResult.IsSuccess)
             {
                 return;
@@ -308,7 +327,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var targetKnownInfoList = mergingResult.KnownInfoList;
 
 #if DEBUG
-            LogInstance.Log($"targetKnownInfoList.Count = {targetKnownInfoList.Count}");
+            LogInstance.Log($"########################targetKnownInfoList.Count = {targetKnownInfoList.Count}");
             foreach(var tmpKnownInfo in targetKnownInfoList)
             {
                 LogInstance.Log($"tmpKnownInfo = {tmpKnownInfo}");
@@ -360,6 +379,10 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 }
             }
 
+#if DEBUG
+            LogInstance.Log($"+++++++++queryExecutingCard = {queryExecutingCard}");
+#endif
+
             throw new NotImplementedException();
 
 #if DEBUG
@@ -387,6 +410,16 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
             LogInstance.Log("End");
 #endif         
+        }
+
+        public string GetHumanizeDbgString()
+        {
+            if (Origin == null)
+            {
+                return string.Empty;
+            }
+
+            return DebugHelperForRuleInstance.ToString(Origin);
         }
 
         public override string ToString()

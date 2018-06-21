@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using System;
@@ -126,6 +127,16 @@ namespace MyNPCLib.IndexedPersistLogicalData
 //            }
 
             queryExecutingCard.ResultsOfQueryToRelationList = resultsOfQueryToRelationList;
+        }
+
+        public string GetHumanizeDbgString()
+        {
+            if (Origin == null)
+            {
+                return string.Empty;
+            }
+
+            return DebugHelperForRuleInstance.ToString(Origin);
         }
 
         public override string ToString()
