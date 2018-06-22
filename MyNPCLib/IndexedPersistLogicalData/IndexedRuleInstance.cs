@@ -38,10 +38,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
         public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
-#if DEBUG
-            LogInstance.Log("Begin");
-#endif
-
             var resultsOfQueryToRelationList = new List<ResultOfQueryToRelation>();
 
             if (IsPart_1_Active)
@@ -50,9 +46,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 queryExecutingCardForPart_1.SenderIndexedRuleInstance = this;
 
                 Part_1.FillExecutingCard(queryExecutingCardForPart_1, context);
-#if DEBUG
-                LogInstance.Log($"queryExecutingCardForPart_1 = {queryExecutingCardForPart_1}");
-#endif
 
                 foreach (var resultOfQueryToRelation in queryExecutingCardForPart_1.ResultsOfQueryToRelationList)
                 {
@@ -65,78 +58,12 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
                 queryExecutingCardForPart_2.SenderIndexedRuleInstance = this;
                 Part_2.FillExecutingCard(queryExecutingCardForPart_2, context);
-#if DEBUG
-                LogInstance.Log($"queryExecutingCardForPart_2 = {queryExecutingCardForPart_2}");
-#endif
 
                 foreach (var resultOfQueryToRelation in queryExecutingCardForPart_2.ResultsOfQueryToRelationList)
                 {
                     queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
                 }
             }
-
-#if DEBUG
-            LogInstance.Log("End");
-#endif
-        }
-
-        [Obsolete]
-        public void FillExecutingCardForFacts(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
-        {
-#if DEBUG
-            LogInstance.Log("Begin");
-#endif
-
-//            if (IfConditions != null)
-//            {
-//                var queryExecutingCardForIfConditions = new QueryExecutingCardForIndexedPersistLogicalData();
-//                IfConditions.FillExecutingCard(queryExecutingCardForIfConditions, source, context);
-
-//#if DEBUG
-//                LogInstance.Log($"queryExecutingCardForIfConditions = {queryExecutingCardForIfConditions}");
-//#endif
-//            }
-
-            var resultsOfQueryToRelationList = new List<ResultOfQueryToRelation>();
-
-            if (IsPart_1_Active)
-            {
-                var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
-                Part_1.FillExecutingCardForFacts(queryExecutingCardForPart_1, source, context);
-#if DEBUG
-                LogInstance.Log($"queryExecutingCardForPart_1 = {queryExecutingCardForPart_1}");
-#endif
-
-                foreach (var resultOfQueryToRelation in queryExecutingCardForPart_1.ResultsOfQueryToRelationList)
-                {
-                    resultsOfQueryToRelationList.Add(resultOfQueryToRelation);
-                }        
-            }
-
-            if (IsPart_2_Active)
-            {
-                var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
-                Part_2.FillExecutingCardForFacts(queryExecutingCardForPart_2, source, context);
-#if DEBUG
-                LogInstance.Log($"queryExecutingCardForPart_2 = {queryExecutingCardForPart_2}");
-#endif
-
-                foreach (var resultOfQueryToRelation in queryExecutingCardForPart_2.ResultsOfQueryToRelationList)
-                {
-                    resultsOfQueryToRelationList.Add(resultOfQueryToRelation);
-                }
-            }
-
-//            if (NotContradict != null)
-//            {
-//                var queryExecutingCardForNotContradict = new QueryExecutingCardForIndexedPersistLogicalData();
-//                NotContradict.FillExecutingCard(queryExecutingCardForNotContradict, source, context);
-//#if DEBUG
-//                LogInstance.Log($"queryExecutingCardForNotContradict = {queryExecutingCardForNotContradict}");
-//#endif
-//            }
-
-            queryExecutingCard.ResultsOfQueryToRelationList = resultsOfQueryToRelationList;
         }
 
         public string GetHumanizeDbgString()

@@ -17,10 +17,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
         public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
-#if DEBUG
-            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
-#endif
-
             var senderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
             var senderIndexedRulePart = queryExecutingCard.SenderIndexedRulePart;
             
@@ -30,10 +26,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
             leftQueryExecutingCard.SenderExpressionNode = Origin;
             leftQueryExecutingCard.KnownInfoList = queryExecutingCard.KnownInfoList;
             Left.FillExecutingCard(leftQueryExecutingCard, context);
-
-#if DEBUG
-            LogInstance.Log($"leftQueryExecutingCard = {leftQueryExecutingCard}");
-#endif
 
             var leftQueryExecutingCardResultsOfQueryToRelationList = leftQueryExecutingCard.ResultsOfQueryToRelationList;
 
@@ -53,12 +45,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 rightQueryExecutingCard.KnownInfoList = queryExecutingCard.KnownInfoList;
                 Right.FillExecutingCard(rightQueryExecutingCard, context);
 
-#if DEBUG
-                LogInstance.Log($"rightQueryExecutingCard = {rightQueryExecutingCard}");
-                LogInstance.Log($"leftQueryExecutingCard.ToBriefString() = {leftQueryExecutingCard.ToBriefString()}");
-                LogInstance.Log($"rightQueryExecutingCard.ToBriefString() = {rightQueryExecutingCard.ToBriefString()}");
-#endif
-
                 var rightQueryExecutingCardResultsOfQueryToRelationList = rightQueryExecutingCard.ResultsOfQueryToRelationList;
 
                 if (rightQueryExecutingCardResultsOfQueryToRelationList.Count == 0)
@@ -71,36 +57,9 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
                 foreach (var rightResultOfQueryToRelation in rightQueryExecutingCardResultsOfQueryToRelationList)
                 {
-#if DEBUG
-                    LogInstance.Log($"rightResultOfQueryToRelation.ToBriefString() = {rightResultOfQueryToRelation.ToBriefString()}");
-#endif
-
                     var rightVarsList = rightResultOfQueryToRelation.ResultOfVarOfQueryToRelationList;
                     var rightVarsKeysList = rightVarsList.Select(p => p.KeyOfVar).Distinct().ToList();
-
-#if DEBUG
-                    LogInstance.Log($"leftVarsKeysList.Count = {leftVarsKeysList.Count}");
-                    foreach(var leftVarKey in leftVarsKeysList)
-                    {
-                        LogInstance.Log($"leftVarKey = {leftVarKey}");
-                    }
-                    
-                    LogInstance.Log($"rightVarsKeysList.Count = {rightVarsKeysList.Count}");
-                    foreach(var rightVarKey in rightVarsKeysList)
-                    {
-                        LogInstance.Log($"rightVarKey = {rightVarKey}");
-                    }
-#endif
-
                     var intersectOfVarsKeysList = leftVarsKeysList.Intersect(rightVarsKeysList).ToList();
-
-#if DEBUG
-                    LogInstance.Log($"intersectOfVarsKeysList.Count = {intersectOfVarsKeysList.Count}");
-                    foreach (var intersectOfVarKey in intersectOfVarsKeysList)
-                    {
-                        LogInstance.Log($"intersectOfVarKey = {intersectOfVarKey}");
-                    }
-#endif
 
                     var isFit = true;
 
@@ -143,16 +102,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                             if (intersectOfVarsKeysList.Contains(keyOfVars))
                             {
                                 var leftVarItem = leftVarsDict[keyOfVars];
-
-#if DEBUG
-                                LogInstance.Log($"varItem = {varItem}");
-                                LogInstance.Log($"leftVarItem = {leftVarItem}");
-#endif
                                 var resultOfComparison = ExpressionNodeHelper.Compare(varItem.FoundExpression, leftVarItem.FoundExpression);
-
-#if DEBUG
-                                LogInstance.Log($"resultOfComparison = {resultOfComparison}");
-#endif
 
                                 if(resultOfComparison)
                                 {
@@ -184,11 +134,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
                             }
                         }
 
-#if DEBUG
-                        LogInstance.Log($"resultItem = {resultItem}");
-                        LogInstance.Log($"isFit = {isFit}");
-#endif
-
                         if(isFit)
                         {
                             resultsOfQueryToRelationList.Add(resultItem);
@@ -196,48 +141,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     }
                 }
             }
-
-#if DEBUG
-            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
-#endif
-
-#if DEBUG
-            LogInstance.Log("End");
-#endif
-        }
-
-        [Obsolete]
-        public override void FillExecutingCardForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
-        {
-#if DEBUG
-            LogInstance.Log("Begin");
-#endif
-
-            throw new NotImplementedException();
-        }
-
-        [Obsolete]
-        public override void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
-        {
-#if DEBUG
-            LogInstance.Log("Begin");
-#endif
-
-            var leftQueryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
-            Left.FillExecutingCardForProduction(leftQueryExecutingCard, context);
-
-#if DEBUG
-            LogInstance.Log($"leftQueryExecutingCard = {leftQueryExecutingCard}");
-#endif
-
-            var rightQueryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
-            Right.FillExecutingCardForProduction(rightQueryExecutingCard, context);
-
-#if DEBUG
-            LogInstance.Log($"rightQueryExecutingCard = {rightQueryExecutingCard}");
-#endif
-
-            throw new NotImplementedException();
         }
     }
 }

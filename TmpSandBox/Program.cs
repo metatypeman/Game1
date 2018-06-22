@@ -179,7 +179,7 @@ namespace TmpSandBox
 
             var rearchResult = searcher.Run(searchOptions);
 
-            LogInstance.Log($"rearchResult = {rearchResult}");
+            //LogInstance.Log($"rearchResult = {rearchResult}");
 
             var targetSearchResultItemsList = rearchResult.Items;
 

@@ -24,25 +24,5 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log("End");
 #endif
         }
-
-        [Obsolete]
-        public override void FillExecutingCardForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context)
-        {
-#if DEBUG
-            LogInstance.Log("Begin");
-#endif
-
-            throw new NotImplementedException();
-        }
-
-        [Obsolete]
-        public override void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
-        {
-#if DEBUG
-            LogInstance.Log("Begin");
-#endif
-
-            throw new NotImplementedException();
-        }
     }
 }

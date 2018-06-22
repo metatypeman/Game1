@@ -15,10 +15,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public abstract BaseExpressionNode Origin { get; }
         
         public abstract void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context);
-        [Obsolete]
-        public abstract void FillExecutingCardForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage source, ContextOfQueryExecutingCardForIndexedPersistLogicalData context);
-        [Obsolete]
-        public abstract void FillExecutingCardForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context);
 
         public string GetHumanizeDbgString()
         {

@@ -12,10 +12,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var result = new MergingResultOfTwoQueryExecutingCardAboutKnownInfoLists();
             var targetKnownInfoList = new List<QueryExecutingCardAboutKnownInfo>();
 
-#if DEBUG
-            LogInstance.Log($"inPartFromRelationForProduction = {inPartFromRelationForProduction}");
-#endif
-
             if (ListHelper.IsEmpty(externalKnownInfoList))
             {
                 targetKnownInfoList = internalKnownInfoList.ToList();
@@ -26,32 +22,15 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 var targetRelationVarsInfoDictByPosition = internalVarsInfoList.ToDictionary(p => p.Position, p => p);
                 var targetRelationVarsInfoDictByKeyOfVar = internalVarsInfoList.ToDictionary(p => p.KeyOfVar, p => p);
 
-#if DEBUG
-                LogInstance.Log($"currentKnownInfoDict.Count = {currentKnownInfoDict.Count}");
-                LogInstance.Log($"externalKnownInfoList.Count = {externalKnownInfoList.Count}");
-#endif
-
                 foreach (var initialKnownInfo in externalKnownInfoList)
                 {
-#if DEBUG
-                    LogInstance.Log($"initialKnownInfo = {initialKnownInfo}");
-#endif
                     if(inPartFromRelationForProduction)
                     {
                         var position = initialKnownInfo.Position;
 
-#if DEBUG
-                        LogInstance.Log($"position = {position}");
-#endif
-
                         if (position.HasValue)
                         {
                             var existingVar = targetRelationVarsInfoDictByPosition[position.Value];
-
-#if DEBUG
-                            LogInstance.Log($"existingVar = {existingVar}");
-#endif
-
                             var resultKnownInfo = initialKnownInfo.Clone();
                             resultKnownInfo.KeyOfVar = existingVar.KeyOfVar;
                             targetKnownInfoList.Add(resultKnownInfo);
@@ -64,11 +43,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     else
                     {
                         var keyOfVar = initialKnownInfo.KeyOfVar;
-
-#if DEBUG
-                        LogInstance.Log($"keyOfVar = {keyOfVar}");
-#endif
-
                         if(keyOfVar.HasValue)
                         {
                             var keyOfVarValue = keyOfVar.Value;
@@ -76,11 +50,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
                             if(targetRelationVarsInfoDictByKeyOfVar.ContainsKey(keyOfVarValue))
                             {
                                 var existingVar = targetRelationVarsInfoDictByKeyOfVar[keyOfVarValue];
-
-#if DEBUG
-                                LogInstance.Log($"existingVar = {existingVar}");
-#endif
-
                                 var resultKnownInfo = initialKnownInfo.Clone();
                                 resultKnownInfo.KeyOfVar = keyOfVar;
                                 resultKnownInfo.Position = existingVar.Position;
@@ -92,31 +61,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
                             throw new NotImplementedException();
                         }                
                     }
-//                    if (currentKnownInfoDict.Count == 0)
-//                    {
-//                        var position = initialKnownInfo.Position;
-
-//                        if(position.HasValue)
-//                        {
-//                            var existingVar = targetRelationVarsInfoDictByPosition[position.Value];
-
-//#if DEBUG
-//                            LogInstance.Log($"existingVar = {existingVar}");
-//#endif
-
-//                            var resultKnownInfo = initialKnownInfo.Clone();
-//                            resultKnownInfo.KeyOfVar = existingVar.KeyOfVar;
-//                            targetKnownInfoList.Add(resultKnownInfo);
-//                        }
-//                        else
-//                        {
-//                            throw new NotImplementedException();
-//                        }
-//                    }
-//                    else
-//                    {
-//                        throw new NotImplementedException();
-//                    }
                 }
             }
 
