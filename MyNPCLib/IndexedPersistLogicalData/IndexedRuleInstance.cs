@@ -53,6 +53,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
                 LogInstance.Log($"queryExecutingCardForPart_1 = {queryExecutingCardForPart_1}");
 #endif
+
+                foreach (var resultOfQueryToRelation in queryExecutingCardForPart_1.ResultsOfQueryToRelationList)
+                {
+                    queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+                }
             }
 
             if (IsPart_2_Active)
@@ -63,6 +68,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
                 LogInstance.Log($"queryExecutingCardForPart_2 = {queryExecutingCardForPart_2}");
 #endif
+
+                foreach (var resultOfQueryToRelation in queryExecutingCardForPart_2.ResultsOfQueryToRelationList)
+                {
+                    queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+                }
             }
 
 #if DEBUG

@@ -129,7 +129,9 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
                     LogInstance.Log($"&&&&&&&&&&&&&&&&&queryExecutingCardForTargetRule = {queryExecutingCardForTargetRule}");
 #endif
-
+#if DEBUG
+                    LogInstance.Log($"!!!!!!!!!!!!!!!!!!queryExecutingCard = {queryExecutingCard}");
+#endif
                     foreach (var resultOfQueryToRelation in queryExecutingCardForTargetRule.ResultsOfQueryToRelationList)
                     {
                         queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
@@ -139,6 +141,13 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
 #if DEBUG
             LogInstance.Log($"^^^^^^queryExecutingCard = {queryExecutingCard}");
+            LogInstance.Log($"queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString() = {queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString()}");
+            LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
+
+            //throw new NotImplementedException();
+
             LogInstance.Log("End");
 #endif
         }

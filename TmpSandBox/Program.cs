@@ -179,11 +179,11 @@ namespace TmpSandBox
 
             var rearchResult = searcher.Run(searchOptions);
 
-            //LogInstance.Log($"rearchResult = {rearchResult}");
+            LogInstance.Log($"rearchResult = {rearchResult}");
 
-            var targetSearchResultItem = rearchResult.Items.FirstOrDefault();
+            var targetSearchResultItemsList = rearchResult.Items;
 
-            if (targetSearchResultItem != null)
+            foreach(var targetSearchResultItem in targetSearchResultItemsList)
             {
                 var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
 

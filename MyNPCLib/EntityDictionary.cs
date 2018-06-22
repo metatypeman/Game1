@@ -14,6 +14,7 @@ namespace MyNPCLib
         private object mLockObj = new object();
         private string mName;
         private Dictionary<string, ulong> mCaseInsensitiveWordsDict = new Dictionary<string, ulong>();
+        private Dictionary<ulong, string> mCaseInsensitiveBackWordsDict = new Dictionary<ulong, string>();
         private ulong mCurrIndex;
 
         public string Name => mName;
@@ -36,7 +37,20 @@ namespace MyNPCLib
 
                 mCurrIndex++;
                 mCaseInsensitiveWordsDict[name] = mCurrIndex;
+                mCaseInsensitiveBackWordsDict[mCurrIndex] = name;
                 return mCurrIndex;
+            }
+        }
+
+        public string GetName(ulong key)
+        {
+            lock (mLockObj)
+            {
+                if(mCaseInsensitiveBackWordsDict.ContainsKey(key))
+                {
+                    return mCaseInsensitiveBackWordsDict[key];
+                }
+                return string.Empty;
             }
         }
     }

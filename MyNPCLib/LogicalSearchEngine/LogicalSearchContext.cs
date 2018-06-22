@@ -8,6 +8,7 @@ namespace MyNPCLib.LogicalSearchEngine
     public class LogicalSearchContext: IObjectToString
     {
         public IndexedRuleInstance QueryExpression { get; set; }
+        public IEntityDictionary EntityDictionary { get; set; }
         public IList<SettingsOfStorageForSearchingInThisSession> DataSourcesSettingsOrderedByPriorityList { get; set; }
         public IList<SettingsOfStorageForSearchingInThisSession> DataSourcesSettingsOrderedByPriorityAndUseProductionsList { get; set; }
 

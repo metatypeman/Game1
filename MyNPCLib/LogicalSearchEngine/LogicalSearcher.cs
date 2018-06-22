@@ -27,8 +27,11 @@ namespace MyNPCLib.LogicalSearchEngine
             var result = new LogicalSearchResult();
             result.QueryExpression = queryExpression;
 
+            var entityDictionary = mContextOfCGStorage.EntityDictionary;
+
             var context = new LogicalSearchContext();
             context.QueryExpression = queryExpression;
+            context.EntityDictionary = entityDictionary;
             context.DataSourcesSettingsOrderedByPriorityList = options.DataSourcesSettings.OrderBy(p => p.Priority).ToList();
             context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList = context.DataSourcesSettingsOrderedByPriorityList.Where(p => p.UseProductions).ToList();
 
@@ -44,6 +47,14 @@ namespace MyNPCLib.LogicalSearchEngine
 #if DEBUG
             LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
+
+            foreach (var resultOfQueryToRelation in queryExecutingCard.ResultsOfQueryToRelationList)
+            {
+                var resultItem = new LogicalSearchResultItem(entityDictionary);
+                resultItem.QueryExpression = queryExpression;
+                resultItem.ResultOfVarOfQueryToRelationList = resultOfQueryToRelation.ResultOfVarOfQueryToRelationList;
+                resultItemsList.Add(resultItem);
+            }
 
             result.Items = resultItemsList;
 #if DEBUG

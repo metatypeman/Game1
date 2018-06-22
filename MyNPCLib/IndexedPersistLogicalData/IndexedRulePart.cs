@@ -39,6 +39,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");
 #endif
 
+            foreach (var resultOfQueryToRelation in queryExecutingCardForExpression.ResultsOfQueryToRelationList)
+            {
+                queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+            }
+
 #if DEBUG
             LogInstance.Log("End");
 #endif
@@ -357,25 +362,67 @@ namespace MyNPCLib.IndexedPersistLogicalData
             if (resultsOfQueryToRelationList.Count > 0)
             {
                 var varsInfoList = queryExecutingCard.VarsInfoList;
-                
+
+                var backKeysDict = new Dictionary<ulong, ulong>();
+
+                foreach (var varInfo in varsInfoList)
+                {
+#if DEBUG
+                    LogInstance.Log($"varInfo = {varInfo}");
+#endif
+
+                    var targetInternalKeyOfVar = targetRelationVarsInfoDictByPosition[varInfo.Position];
+
+#if DEBUG
+                    LogInstance.Log($"targetInternalKeyOfVar = {targetInternalKeyOfVar}");
+#endif
+
+                    backKeysDict[targetInternalKeyOfVar] = varInfo.KeyOfVar;
+                }
+
                 foreach (var resultOfQueryToRelation in resultsOfQueryToRelationList)
                 {
 #if DEBUG
                     LogInstance.Log($"resultOfQueryToRelation = {resultOfQueryToRelation}");
 #endif
+                    var newResultOfQueryToRelation = new ResultOfQueryToRelation();
+                    var newResultOfVarOfQueryToRelationList = new List<ResultOfVarOfQueryToRelation>();
 
-                    foreach (var varInfo in varsInfoList)
+                    foreach (var resultOfVarOfQueryToRelation in resultOfQueryToRelation.ResultOfVarOfQueryToRelationList)
                     {
-#if DEBUG
-                        LogInstance.Log($"varInfo = {varInfo}");
-#endif
-
-                        var targetKeyOfVar = targetRelationVarsInfoDictByPosition[varInfo.Position];
+                        var internalKeyOfVar = resultOfVarOfQueryToRelation.KeyOfVar;
 
 #if DEBUG
-                        LogInstance.Log($"targetKeyOfVar = {targetKeyOfVar}");
+                        LogInstance.Log($"internalKeyOfVar = {internalKeyOfVar}/'{context.EntityDictionary.GetName(internalKeyOfVar)}'");
+                        
 #endif
+
+                        if (backKeysDict.ContainsKey(internalKeyOfVar))
+                        {
+                            var externalKeyOfVar = backKeysDict[internalKeyOfVar];
+
+#if DEBUG
+                            LogInstance.Log($"externalKeyOfVar = {externalKeyOfVar}/'{context.EntityDictionary.GetName(externalKeyOfVar)}'");
+                            LogInstance.Log($"resultOfVarOfQueryToRelation before = {resultOfVarOfQueryToRelation}");
+#endif
+
+                            resultOfVarOfQueryToRelation.KeyOfVar = externalKeyOfVar;
+
+#if DEBUG
+                            LogInstance.Log($"resultOfVarOfQueryToRelation after = {resultOfVarOfQueryToRelation}");
+#endif
+
+                            newResultOfVarOfQueryToRelationList.Add(resultOfVarOfQueryToRelation);
+                        }
                     }
+
+                    if(newResultOfVarOfQueryToRelationList.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    newResultOfQueryToRelation.ResultOfVarOfQueryToRelationList = newResultOfVarOfQueryToRelationList;
+                    queryExecutingCard.ResultsOfQueryToRelationList.Add(newResultOfQueryToRelation);
                 }
             }
 
@@ -383,7 +430,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"+++++++++queryExecutingCard = {queryExecutingCard}");
 #endif
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
 
 #if DEBUG
             LogInstance.Log("End");

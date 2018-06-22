@@ -8,5 +8,6 @@ namespace MyNPCLib
     {
         string Name { get; }
         ulong GetKey(string name);
+        string GetName(ulong key);
     }
 }
