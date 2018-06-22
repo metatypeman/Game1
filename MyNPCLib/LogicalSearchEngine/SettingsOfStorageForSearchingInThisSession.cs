@@ -8,6 +8,7 @@ namespace MyNPCLib.LogicalSearchEngine
     public class SettingsOfStorageForSearchingInThisSession: IObjectToString
     {
         public ICGStorage Storage { get; set; }
+        public bool UseFacts { get; set; }
         public bool UseProductions { get; set; }
         public int? MaxDeph { get; set; }
         public int Priority { get; set; }
@@ -37,6 +38,7 @@ namespace MyNPCLib.LogicalSearchEngine
                 sb.Append(Storage.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Storage)}");
             }
+            sb.AppendLine($"{spaces}{nameof(UseFacts)} = {UseFacts}");
             sb.AppendLine($"{spaces}{nameof(UseProductions)} = {UseProductions}");
             sb.AppendLine($"{spaces}{nameof(MaxDeph)} = {MaxDeph}");
             sb.AppendLine($"{spaces}{nameof(Priority)} = {Priority}");

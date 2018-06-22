@@ -86,7 +86,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         {
             var result = new List<IndexedRulePart>();
 
-            var dataSourcesSettingsOrderedByPriorityList = context.DataSourcesSettingsOrderedByPriorityList;
+            var dataSourcesSettingsOrderedByPriorityList = context.DataSourcesSettingsOrderedByPriorityAndUseFactsList;
 
             foreach(var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
             {

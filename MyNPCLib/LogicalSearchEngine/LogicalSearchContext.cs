@@ -9,7 +9,7 @@ namespace MyNPCLib.LogicalSearchEngine
     {
         public IndexedRuleInstance QueryExpression { get; set; }
         public IEntityDictionary EntityDictionary { get; set; }
-        public IList<SettingsOfStorageForSearchingInThisSession> DataSourcesSettingsOrderedByPriorityList { get; set; }
+        public IList<SettingsOfStorageForSearchingInThisSession> DataSourcesSettingsOrderedByPriorityAndUseFactsList { get; set; }
         public IList<SettingsOfStorageForSearchingInThisSession> DataSourcesSettingsOrderedByPriorityAndUseProductionsList { get; set; }
 
         public override string ToString()

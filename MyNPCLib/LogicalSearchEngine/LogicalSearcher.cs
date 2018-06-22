@@ -28,8 +28,10 @@ namespace MyNPCLib.LogicalSearchEngine
             var context = new LogicalSearchContext();
             context.QueryExpression = queryExpression;
             context.EntityDictionary = entityDictionary;
-            context.DataSourcesSettingsOrderedByPriorityList = options.DataSourcesSettings.OrderBy(p => p.Priority).ToList();
-            context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList = context.DataSourcesSettingsOrderedByPriorityList.Where(p => p.UseProductions).ToList();
+
+            var dataSourcesSettingsOrderedByPriorityList = options.DataSourcesSettings.OrderBy(p => p.Priority).ToList();
+            context.DataSourcesSettingsOrderedByPriorityAndUseFactsList = dataSourcesSettingsOrderedByPriorityList.Where(p => p.UseFacts).ToList();
+            context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList = dataSourcesSettingsOrderedByPriorityList.Where(p => p.UseProductions).ToList();
 
             var resultItemsList = new List<LogicalSearchResultItem>();
 
