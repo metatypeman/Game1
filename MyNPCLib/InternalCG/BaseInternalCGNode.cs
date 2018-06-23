@@ -229,5 +229,24 @@ namespace MyNPCLib.InternalCG
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             return sb.ToString();
         }
+
+        public string ToBriefString()
+        {
+            return ToBriefString(0u);
+        }
+
+        public string ToBriefString(uint n)
+        {
+            return this.GetDefaultToBriefStringInformation(n);
+        }
+
+        public string PropertiesToBriefSting(uint n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            return sb.ToString();
+        }
     }
 }

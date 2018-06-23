@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.CG
 {
-    public interface ICGNode: IObjectToString, IShortObjectToString
+    public interface ICGNode: IObjectToString, IShortObjectToString, IObjectToBriefString
     {
         KindOfCGNode Kind { get;  }
         string Name { get; set; }

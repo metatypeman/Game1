@@ -11,6 +11,126 @@ namespace MyNPCLib.CG
 
         private IList<BaseCGNode> mChildren = new List<BaseCGNode>();
 
+        private readonly object mPrevGraphLockObj = new object();
+        private ConceptualGraph mPrevGraph;       
+        internal void NSetPrevGraph(ConceptualGraph graph)
+        {
+            lock(mPrevGraphLockObj)
+            {
+                if(mPrevGraph == graph)
+                {
+                    return;
+                }
+
+                mPrevGraph = graph;
+            }
+        }
+
+        internal void NResetPrevGraph(ConceptualGraph graph)
+        {
+            lock (mPrevGraphLockObj)
+            {
+                if (mPrevGraph == graph)
+                {
+                    mPrevGraph = null;
+                }
+            }
+        }
+
+        private readonly object mNextGraphLockObj = new object();
+        private ConceptualGraph mNextGraph;
+        internal void NSetNextGraph(ConceptualGraph graph)
+        {
+            lock(mNextGraphLockObj)
+            {
+                if(mNextGraph == graph)
+                {
+                    return;
+                }
+
+                mNextGraph = graph;
+            }
+        }
+
+        internal void NResetNextGraph(ConceptualGraph graph)
+        {
+            lock (mNextGraphLockObj)
+            {
+                if (mNextGraph == graph)
+                {
+                    mNextGraph = null;
+                }
+            }
+        }
+
+        public ConceptualGraph PrevGraph
+        {
+            get
+            {
+                lock (mPrevGraphLockObj)
+                {
+                    return mPrevGraph;
+                }
+            }
+
+            set
+            {
+                lock (mPrevGraphLockObj)
+                {
+                    if(mPrevGraph == value)
+                    {
+                        return;
+                    }
+                
+                    if(mPrevGraph != null)
+                    {
+                        mPrevGraph.NResetNextGraph(this);
+                    }
+
+                    mPrevGraph = value;
+                    
+                    if(mPrevGraph != null)
+                    {
+                        mPrevGraph.NSetNextGraph(this);
+                    }
+                }
+            }
+        }
+        
+        public ConceptualGraph NextGraph
+        {
+            get
+            {
+                lock (mNextGraphLockObj)
+                {
+                    return mNextGraph;
+                }
+            }
+
+            set
+            {
+                lock (mNextGraphLockObj)
+                {
+                    if(mNextGraph == value)
+                    {
+                        return;
+                    }
+
+                    if(mNextGraph != null)
+                    {
+                        mNextGraph.NResetPrevGraph(this);
+                    }
+
+                    mNextGraph = value;
+
+                    if (mNextGraph != null)
+                    {
+                        mNextGraph.NSetPrevGraph(this);
+                    }
+                }
+            }
+        }
+
         public IList<BaseCGNode> Children
         {
             get
@@ -81,6 +201,26 @@ namespace MyNPCLib.CG
                 sb.Append(child.PropertiesToShortSting(nextN));
             }
             sb.AppendLine($"{spaces}End {nameof(Children)}");
+            if (PrevGraph == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(PrevGraph)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(PrevGraph)}");
+                sb.Append(PrevGraph.ToBriefString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(PrevGraph)}");
+            }
+            if (NextGraph == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NextGraph)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NextGraph)}");
+                sb.Append(NextGraph.ToBriefString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(NextGraph)}");
+            }
             return sb.ToString();
         }
     }
