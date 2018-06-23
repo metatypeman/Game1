@@ -10,9 +10,11 @@ using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.Parser;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.PersistLogicalDataStorage;
+using OpenNLP.Tools.Parser;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
@@ -37,7 +39,8 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTRuleInstance();
+            TSTParseNLText();
+            //TSTRuleInstance();
             //TSTEntityLogging();
             //TSTConceptualGraph_2();
             //TSTConceptualGraphs();
@@ -51,6 +54,64 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTParseNLText()
+        {
+            var path = Directory.GetCurrentDirectory();
+
+            LogInstance.Log($"Hello World! path = {path}");
+
+            var sentence = "- Sorry Mrs Hudson, I'll skip the tea.";
+
+            ParseSentence(sentence);
+
+            sentence = "Kill the dog!";
+
+            ParseSentence(sentence);
+
+            sentence = "This is a green forest.";
+
+            ParseSentence(sentence);
+
+            sentence = "The third story arc centers on the longstanding brotherhood charged with defending the realm against the ancient threats of the fierce peoples and legendary creatures that lie far north, and an impending winter that threatens the realm.";
+
+            ParseSentence(sentence);
+        }
+
+        private static void ParseSentence(string sentence)
+        {
+            LogInstance.Log($"sentence = '{sentence}'");
+
+            var path = Directory.GetCurrentDirectory();
+
+            var relativePath = "bin/Debug/netcoreapp2.0/Resources/Models/";
+
+            var modelPath = Path.Combine(path, relativePath);
+
+            LogInstance.Log($"modelPath = {modelPath}");
+
+            //var modelPath = "c:/Users/Сергей/Source/Repos/KillingApp/KillingApp/bin/Debug/Resources/Models/";
+
+            var parser = new EnglishTreebankParser(modelPath);
+            var node = parser.DoParse(sentence);
+
+            DisplayNode(0u, node);
+        }
+
+        private static void DisplayNode(uint n, Parse node)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+
+            LogInstance.Log($"{spaces}node.Type = {node.Type} node.Value = {node.Value}");
+
+            var children = node.GetChildren();
+
+            foreach (var child in children)
+            {
+                DisplayNode(nextN, child);
+            }
         }
 
         private static void TSTRuleInstance()

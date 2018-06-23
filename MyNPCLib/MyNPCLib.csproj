@@ -15,4 +15,10 @@
     <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OpenNLPForNS\OpenNLPForNS.csproj" />
+    <ProjectReference Include="..\SharpEntropyForNS\SharpEntropyForNS.csproj" />
+    <ProjectReference Include="..\SharpWordNetForNS\SharpWordNetForNS.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -15,7 +15,7 @@ namespace TstNLP
 
             NLog.LogManager.GetCurrentClassLogger().Info($"Hello World! path = {path}");
 
-            var sentence = "- Sorry Mrs Hudson, I'll skiip the tea.";
+            var sentence = "- Sorry Mrs Hudson, I'll skip the tea.";
 
             ParseSentence(sentence);
 

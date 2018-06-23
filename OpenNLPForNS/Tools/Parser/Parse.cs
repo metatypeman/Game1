@@ -94,12 +94,12 @@ namespace OpenNLP.Tools.Parser
 
 	    public string Value
 	    {
-            get { return this.Text.Substring(this.Span.Start, this.Span.Length()); }
+            get { return Text.Substring(Span.Start, Span.Length()); }
 	    }
 
 	    public bool IsLeaf
 	    {
-            get { return !this.GetChildren().Any(); }
+            get { return !GetChildren().Any(); }
 	    }
 
 		/// <summary>
@@ -247,11 +247,11 @@ namespace OpenNLP.Tools.Parser
 			}
 
 			var testParse = (Parse) o;
-			if (this.Probability > testParse.Probability)
+			if (Probability > testParse.Probability)
 			{
 				return - 1;
 			}
-			else if (this.Probability < testParse.Probability)
+			else if (Probability < testParse.Probability)
 			{
 				return 1;
 			}
