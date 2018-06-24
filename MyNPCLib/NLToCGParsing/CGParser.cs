@@ -119,7 +119,7 @@ namespace MyNPCLib.NLToCGParsing
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
 
-            LogInstance.Log($"{spaces}Begin node.Type = {node.Type} node.Value = {node.Value} node.Label = {node.Label} node.IsPosTag = {node.IsPosTag} = {node.IsLeaf} node.IsComplete = {node.IsComplete}");
+            LogInstance.Log($"{spaces}Begin node.Type = {node.Type} node.Value = {node.Value} node.Label = {node.Label} node.IsPosTag = {node.IsPosTag} node.IsLeaf = {node.IsLeaf} node.IsComplete = {node.IsComplete}");
 
             var children = node.GetChildren();
 

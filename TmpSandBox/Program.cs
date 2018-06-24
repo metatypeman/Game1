@@ -98,6 +98,17 @@ namespace TmpSandBox
     
             result = parser.Run(paragraph);
             LogInstance.Log($"result = {result}");
+
+            paragraph = "The dog likes man.";
+
+            result = parser.Run(paragraph);
+            LogInstance.Log($"result = {result}");
+
+            paragraph = "Does the dog like man?";
+
+            result = parser.Run(paragraph);
+            LogInstance.Log($"result = {result}");
+
             LogInstance.Log("End");
         }
 

@@ -120,8 +120,8 @@ namespace OpenNLP.Tools.Parser
 		/// </returns>
 		public virtual string[] GetContext(Parse[] constituents, int index)
 		{
-			List<string> features = new List<string>(100);
-			int constituentCount = constituents.Length;
+			var features = new List<string>(100);
+			var constituentCount = constituents.Length;
 			
 			//default 
 			features.Add("default");
@@ -152,7 +152,7 @@ namespace OpenNLP.Tools.Parser
 			}
 			
 			// cons(-2), cons(-1), cons(0), cons(1), cons(2)
-			string previousPreviousConstituent = MakeConstituent(previousPreviousParse, - 2);
+			var previousPreviousConstituent = MakeConstituent(previousPreviousParse, - 2);
 			string previousConstituent = MakeConstituent(previousParse, - 1);
 			string currentConstituent = MakeConstituent(currentParse, 0);
 			string nextConstituent = MakeConstituent(nextParse, 1);
