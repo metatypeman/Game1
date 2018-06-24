@@ -7,6 +7,7 @@ using MyNPCLib.Dot;
 using MyNPCLib.IndexedPersistLogicalData;
 using MyNPCLib.Logical;
 using MyNPCLib.LogicalSearchEngine;
+using MyNPCLib.NLToCGParsing;
 using MyNPCLib.Parser;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.PersistLogicalDataStorage;
@@ -58,45 +59,70 @@ namespace TmpSandBox
 
         private static void TSTParseNLText()
         {
-            var path = Directory.GetCurrentDirectory();
+            //var path = Directory.GetCurrentDirectory();
 
-            LogInstance.Log($"Hello World! path = {path}");
+            //LogInstance.Log($"path = {path}");
 
-            var sentence = "- Sorry Mrs Hudson, I'll skip the tea.";
+            //var relativePath = "Resources/Models/";
 
-            ParseSentence(sentence);
+            //var modelPath = Path.Combine(path, relativePath);
 
-            sentence = "Kill the dog!";
+            //LogInstance.Log($"modelPath = {modelPath}");
 
-            ParseSentence(sentence);
+            //mParser = new EnglishTreebankParser(modelPath);
 
-            sentence = "This is a green forest.";
+            //var sentence = "- Sorry Mrs Hudson, I'll skip the tea.";
 
-            ParseSentence(sentence);
+            //ParseSentence(sentence);
 
-            sentence = "The third story arc centers on the longstanding brotherhood charged with defending the realm against the ancient threats of the fierce peoples and legendary creatures that lie far north, and an impending winter that threatens the realm.";
+            //sentence = "Kill the dog!";
 
-            ParseSentence(sentence);
+            //ParseSentence(sentence);
+
+            //sentence = "This is a green forest.";
+
+            //ParseSentence(sentence);
+
+            //sentence = "The third story arc centers on the longstanding brotherhood charged with defending the realm against the ancient threats of the fierce peoples and legendary creatures that lie far north, and an impending winter that threatens the realm.";
+
+            //ParseSentence(sentence);
+
+            var parser = new CGParser();
+
+            var paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
+
+            var result = parser.Run(paragraph);
+            LogInstance.Log($"result = {result}");
+
+            paragraph = "Kill the dog!";
+    
+            result = parser.Run(paragraph);
+            LogInstance.Log($"result = {result}");
+            LogInstance.Log("End");
         }
+
+        private static EnglishTreebankParser mParser;
 
         private static void ParseSentence(string sentence)
         {
             LogInstance.Log($"sentence = '{sentence}'");
 
-            var path = Directory.GetCurrentDirectory();
+            //var path = Directory.GetCurrentDirectory();
 
-            var relativePath = "bin/Debug/netcoreapp2.0/Resources/Models/";
+            //LogInstance.Log($"path = {path}");
 
-            var modelPath = Path.Combine(path, relativePath);
+            //var relativePath = "Resources/Models/";
 
-            LogInstance.Log($"modelPath = {modelPath}");
+            //var modelPath = Path.Combine(path, relativePath);
 
-            //var modelPath = "c:/Users/Сергей/Source/Repos/KillingApp/KillingApp/bin/Debug/Resources/Models/";
+            //LogInstance.Log($"modelPath = {modelPath}");
 
-            var parser = new EnglishTreebankParser(modelPath);
-            var node = parser.DoParse(sentence);
-
+            //var parser = new EnglishTreebankParser(modelPath);
+            //var node = parser.DoParse(sentence);
+            var node = mParser.DoParse(sentence);
             DisplayNode(0u, node);
+
+            LogInstance.Log("End");
         }
 
         private static void DisplayNode(uint n, Parse node)
@@ -104,7 +130,7 @@ namespace TmpSandBox
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
 
-            LogInstance.Log($"{spaces}node.Type = {node.Type} node.Value = {node.Value}");
+            LogInstance.Log($"{spaces}Begin node.Type = {node.Type} node.Value = {node.Value}");
 
             var children = node.GetChildren();
 
@@ -112,6 +138,7 @@ namespace TmpSandBox
             {
                 DisplayNode(nextN, child);
             }
+            LogInstance.Log($"{spaces}End node.Type = {node.Type} node.Value = {node.Value}");
         }
 
         private static void TSTRuleInstance()

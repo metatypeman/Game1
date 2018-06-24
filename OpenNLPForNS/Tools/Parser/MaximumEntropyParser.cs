@@ -236,8 +236,8 @@ namespace OpenNLP.Tools.Parser
 			Parse guessParse = null;
 			double bestComplete = - 100000; //approximating -infinity/0 in ln domain
             
-            var buildProbabilities = new double[this.buildModel.OutcomeCount];
-            var checkProbabilities = new double[this.checkModel.OutcomeCount];
+            var buildProbabilities = new double[buildModel.OutcomeCount];
+            var checkProbabilities = new double[checkModel.OutcomeCount];
 
 			while (parses.Count < m && derivationLength < maxDerivationLength)
 			{
@@ -246,7 +246,7 @@ namespace OpenNLP.Tools.Parser
 				{
 					int derivationsProcessed = 0;
 
-					foreach (Parse currentParse in oldDerivationsHeap)
+					foreach (var currentParse in oldDerivationsHeap)
 					{
 						derivationsProcessed++;
 						if (derivationsProcessed >= k) 

@@ -26,10 +26,11 @@ namespace MyNPCLib
         public static string GetDefaultToStringInformation(this IObjectToString targetObject, uint n)
         {
             var spaces = Spaces(n);
+            var nextN = n + 4;
             var sb = new StringBuilder();
             var nameOfType = targetObject.GetType().FullName;
             sb.AppendLine($"{spaces}Begin {nameOfType}");
-            sb.Append(targetObject.PropertiesToSting(n));
+            sb.Append(targetObject.PropertiesToSting(nextN));
             sb.AppendLine($"{spaces}End {nameOfType}");
             return sb.ToString();
         }
@@ -37,10 +38,11 @@ namespace MyNPCLib
         public static string GetDefaultToShortStringInformation(this IShortObjectToString targetObject, uint n)
         {
             var spaces = Spaces(n);
+            var nextN = n + 4;
             var sb = new StringBuilder();
             var nameOfType = targetObject.GetType().FullName;
             sb.AppendLine($"{spaces}Begin {nameOfType}");
-            sb.Append(targetObject.PropertiesToShortSting(n));
+            sb.Append(targetObject.PropertiesToShortSting(nextN));
             sb.AppendLine($"{spaces}End {nameOfType}");
             return sb.ToString();
         }
@@ -48,10 +50,11 @@ namespace MyNPCLib
         public static string GetDefaultToBriefStringInformation(this IObjectToBriefString targetObject, uint n)
         {
             var spaces = Spaces(n);
+            var nextN = n + 4;
             var sb = new StringBuilder();
             var nameOfType = targetObject.GetType().FullName;
             sb.AppendLine($"{spaces}Begin {nameOfType}");
-            sb.Append(targetObject.PropertiesToBriefSting(n));
+            sb.Append(targetObject.PropertiesToBriefSting(nextN));
             sb.AppendLine($"{spaces}End {nameOfType}");
             return sb.ToString();
         }
