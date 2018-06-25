@@ -3,6 +3,7 @@ using OpenNLP.Tools.Parser;
 using OpenNLP.Tools.SentenceDetect;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -15,30 +16,39 @@ namespace MyNPCLib.NLToCGParsing
             var path = Directory.GetCurrentDirectory();
 #if DEBUG
             LogInstance.Log($"path = {path}");
+
+            //LogInstance.Log(Process.GetCurrentProcess().StartInfo.FileName);
+            //LogInstance.Log(AppDomain.CurrentDomain.BaseDirectory);
 #endif
-            
-            var englishSDNbinRelativePath = "Resources/Models/EnglishSD.nbin";
 
-            var modelPath = Path.Combine(path, englishSDNbinRelativePath);
+            //var englishSDNbinRelativePath = "Resources/Models/EnglishSD.nbin";
 
+            //var modelPath = Path.Combine(path, englishSDNbinRelativePath);
+            var modelPath = OpenNLPPathsHelper.EnglishSDnbinPath;
 #if DEBUG
             LogInstance.Log($"modelPath = {modelPath}");
 #endif
 
             mSentenceDetector = new EnglishMaximumEntropySentenceDetector(modelPath);
 
-            var relativePath = "Resources/Models/";
-            modelPath = Path.Combine(path, relativePath);
+            //var relativePath = "Resources/Models/";
+            //modelPath = Path.Combine(path, relativePath);
+            modelPath = OpenNLPPathsHelper.ModelsPath;
 
 #if DEBUG
             LogInstance.Log($"modelPath = {modelPath}");
 #endif
 
             mTreebankParser = new EnglishTreebankParser(modelPath);
+
+            mATNParser = new ATNParser();
+            mSemanticAnalyzer = new SemanticAnalyzer();
         }
 
         private EnglishMaximumEntropySentenceDetector mSentenceDetector;
         private EnglishTreebankParser mTreebankParser;
+        private ATNParser mATNParser;
+        private SemanticAnalyzer mSemanticAnalyzer;
         private readonly object mRunLockObj = new object();
 
         public GCParsingResult Run(string text)
@@ -103,7 +113,14 @@ namespace MyNPCLib.NLToCGParsing
             var node = mTreebankParser.DoParse(text);
 
 #if DEBUG
-            DisplayNode(0u, node);
+            //var dbgStr = OpenNLPParseNodeHelper.ToString(node);
+            //LogInstance.Log($"dbgStr = {dbgStr}");
+#endif
+
+            var sentence = mATNParser.Run(node);
+
+#if DEBUG
+            LogInstance.Log($"sentence = {sentence}");
 #endif
 
 #if DEBUG
@@ -112,23 +129,5 @@ namespace MyNPCLib.NLToCGParsing
             return result;//tmp
 #endif
         }
-
-#if DEBUG
-        private void DisplayNode(uint n, Parse node)
-        {
-            var spaces = StringHelper.Spaces(n);
-            var nextN = n + 4;
-
-            LogInstance.Log($"{spaces}Begin node.Type = {node.Type} node.Value = {node.Value} node.Label = {node.Label} node.IsPosTag = {node.IsPosTag} node.IsLeaf = {node.IsLeaf} node.IsComplete = {node.IsComplete}");
-
-            var children = node.GetChildren();
-
-            foreach (var child in children)
-            {
-                DisplayNode(nextN, child);
-            }
-            LogInstance.Log($"{spaces}End node.Type = {node.Type} node.Value = {node.Value}");
-        }
-#endif
     }
 }

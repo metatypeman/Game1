@@ -40,7 +40,8 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTParseNLText();
+            TSTTextCGParserRunner();
+            //TSTParseNLText();
             //TSTRuleInstance();
             //TSTEntityLogging();
             //TSTConceptualGraph_2();
@@ -55,6 +56,12 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTTextCGParserRunner()
+        {
+            var textCGParserRunner = new TextCGParserRunner();
+            textCGParserRunner.CreateATNStateTree();
         }
 
         private static void TSTParseNLText()
@@ -89,14 +96,14 @@ namespace TmpSandBox
 
             var parser = new CGParser();
 
-            var paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
+            //var paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
 
-            var result = parser.Run(paragraph);
-            LogInstance.Log($"result = {result}");
+            //var result = parser.Run(paragraph);
+            //LogInstance.Log($"result = {result}");
 
-            paragraph = "Kill the dog!";
+            var paragraph = "Kill the dog!";
     
-            result = parser.Run(paragraph);
+            var result = parser.Run(paragraph);
             LogInstance.Log($"result = {result}");
 
             paragraph = "The dog likes man.";
@@ -106,6 +113,10 @@ namespace TmpSandBox
 
             paragraph = "Does the dog like man?";
 
+            result = parser.Run(paragraph);
+            LogInstance.Log($"result = {result}");
+
+            paragraph = "We analyse what our clients may need, develop a new product, produce a sample, improve it and sell it.";
             result = parser.Run(paragraph);
             LogInstance.Log($"result = {result}");
 
@@ -131,25 +142,10 @@ namespace TmpSandBox
             //var parser = new EnglishTreebankParser(modelPath);
             //var node = parser.DoParse(sentence);
             var node = mParser.DoParse(sentence);
-            DisplayNode(0u, node);
+            var dbgStr = OpenNLPParseNodeHelper.ToString(node);
+            LogInstance.Log($"dbgStr = {dbgStr}");
 
             LogInstance.Log("End");
-        }
-
-        private static void DisplayNode(uint n, Parse node)
-        {
-            var spaces = StringHelper.Spaces(n);
-            var nextN = n + 4;
-
-            LogInstance.Log($"{spaces}Begin node.Type = {node.Type} node.Value = {node.Value}");
-
-            var children = node.GetChildren();
-
-            foreach (var child in children)
-            {
-                DisplayNode(nextN, child);
-            }
-            LogInstance.Log($"{spaces}End node.Type = {node.Type} node.Value = {node.Value}");
         }
 
         private static void TSTRuleInstance()
