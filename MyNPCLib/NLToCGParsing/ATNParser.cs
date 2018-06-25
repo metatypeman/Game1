@@ -1,6 +1,7 @@
 ﻿using OpenNLP.Tools.Parser;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.NLToCGParsing
@@ -12,9 +13,11 @@ namespace MyNPCLib.NLToCGParsing
 #if DEBUG
             LogInstance.Log($"node = {OpenNLPParseNodeHelper.ToString(node)}");
 #endif
+            var children = node.GetChildren();
+            var sentenceNode = children.Single();
 
-            //throw new NotImplementedException();
-            var sentence = new Sentence();
+            var atnNode = new ATNSentenceNode(sentenceNode);
+            var sentence = atnNode.Run(); 
             return sentence;
         }
     }

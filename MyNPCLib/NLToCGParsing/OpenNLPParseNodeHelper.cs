@@ -17,7 +17,7 @@ namespace MyNPCLib.NLToCGParsing
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}Begin node.Type = {node.Type} node.Value = {node.Value} node.Label = {node.Label} node.IsPosTag = {node.IsPosTag} node.IsLeaf = {node.IsLeaf} node.IsComplete = {node.IsComplete}");
+            sb.AppendLine($"{spaces}Begin node.Type = {node.Type} node.Value = {node.Value} node.Label = {node.Label} node.IsPosTag = {node.IsPosTag} node.IsLeaf = {node.IsLeaf} node.IsComplete = {node.IsComplete} Probability = {node.Probability}");
             var children = node.GetChildren();
             foreach (var child in children)
             {

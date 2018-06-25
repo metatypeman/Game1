@@ -40,8 +40,8 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTTextCGParserRunner();
-            //TSTParseNLText();
+            //TSTTextCGParserRunner();
+            TSTParseNLText();
             //TSTRuleInstance();
             //TSTEntityLogging();
             //TSTConceptualGraph_2();
@@ -111,7 +111,7 @@ namespace TmpSandBox
             result = parser.Run(paragraph);
             LogInstance.Log($"result = {result}");
 
-            paragraph = "Does the dog like man?";
+            paragraph = "Does not the dog love man?";
 
             result = parser.Run(paragraph);
             LogInstance.Log($"result = {result}");
