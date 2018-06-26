@@ -6,6 +6,7 @@ namespace MyNPCLib.SimpleWordsDict
 {
     public enum TypeOfPronoun
     {
+        Undefined,
         Personal,
         Reflexive,
         Possessive,

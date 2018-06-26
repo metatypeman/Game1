@@ -6,6 +6,7 @@ namespace MyNPCLib.SimpleWordsDict
 {
     public enum GrammaticalNumberOfWord
     {
+        Neuter,
         Singular,
         Plural
     }

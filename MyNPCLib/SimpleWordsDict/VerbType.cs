@@ -19,11 +19,6 @@ namespace MyNPCLib.SimpleWordsDict
         /// <summary>
         /// Past participle
         /// </summary>
-        Form_3,
-
-        /// <summary>
-        /// Present participle
-        /// </summary>
-        IngForm
+        Form_3
     }
 }

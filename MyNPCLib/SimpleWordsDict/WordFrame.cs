@@ -7,8 +7,7 @@ namespace MyNPCLib.SimpleWordsDict
     [Serializable]
     public class WordFrame : IObjectToString
     {
-        public string Name { get; set; }
-        public ulong Key { get; set; }
+        public string Word { get; set; }
         public IList<BaseGrammaticalWordFrame> GrammaticalWordFrames { get; set; }
 
         public override string ToString()
@@ -26,8 +25,7 @@ namespace MyNPCLib.SimpleWordsDict
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
-            sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            sb.AppendLine($"{spaces}{nameof(Word)} = {Word}");
             if (GrammaticalWordFrames == null)
             {
                 sb.AppendLine($"{spaces}{nameof(GrammaticalWordFrames)} = null");

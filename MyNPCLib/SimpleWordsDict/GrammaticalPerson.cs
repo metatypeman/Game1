@@ -6,6 +6,7 @@ namespace MyNPCLib.SimpleWordsDict
 {
     public enum GrammaticalPerson
     {
+        Neuter,
         First,
         Second,
         Third

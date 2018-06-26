@@ -42,7 +42,7 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTWordNet();
+            //TSTWordNet();
             //TSTTextCGParserRunner();
             //TSTParseNLText();
             //TSTRuleInstance();
