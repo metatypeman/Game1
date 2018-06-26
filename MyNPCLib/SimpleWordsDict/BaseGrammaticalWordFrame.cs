@@ -28,7 +28,8 @@ namespace MyNPCLib.SimpleWordsDict
         public virtual ArticleGrammaticalWordFrame AsArticle => null;
         public virtual bool IsNumeral => false;
         public virtual NumeralGrammaticalWordFrame AsNumeral => null;
-
+        public string RootWord { get; set; }
+        public ulong RootWordKey { get; set; }
         public override string ToString()
         {
             return ToString(0u);
@@ -45,6 +46,8 @@ namespace MyNPCLib.SimpleWordsDict
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(PartOfSpeech)} = {PartOfSpeech}");
+            sb.AppendLine($"{spaces}{nameof(RootWord)} = {RootWord}");
+            sb.AppendLine($"{spaces}{nameof(RootWordKey)} = {RootWordKey}");
             return sb.ToString();
         }
     }

@@ -6,6 +6,7 @@ namespace MyNPCLib.SimpleWordsDict
 {
     public enum GrammaticalTenses
     {
+        All,
         Present,
         Past,
         Future,
