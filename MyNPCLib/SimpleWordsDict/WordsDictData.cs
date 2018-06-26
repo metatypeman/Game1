@@ -4,7 +4,9 @@ using System.Text;
 
 namespace MyNPCLib.SimpleWordsDict
 {
-    public class WordsDict
+    [Serializable]
+    public class WordsDictData
     {
+        public IDictionary<string, WordFrame> WordsDict { get; set; }
     }
 }

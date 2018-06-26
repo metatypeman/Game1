@@ -11,6 +11,7 @@ namespace MyNPCLib.SimpleWordsDict
         public override bool IsNoun => true;
         public override NounGrammaticalWordFrame AsNoun => this;
         public bool IsName { get; set; }
+        public bool IsShortForm { get; set; }
         public GrammaticalGender Gender { get; set; } = GrammaticalGender.Neuter;
         public GrammaticalNumberOfWord Number { get; set; } = GrammaticalNumberOfWord.Neuter;
         public bool IsCountable { get; set; }
@@ -22,6 +23,7 @@ namespace MyNPCLib.SimpleWordsDict
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToSting(n));
             sb.AppendLine($"{spaces}{nameof(IsName)} = {IsName}");
+            sb.AppendLine($"{spaces}{nameof(IsShortForm)} = {IsShortForm}");
             sb.AppendLine($"{spaces}{nameof(Gender)} = {Gender}");
             sb.AppendLine($"{spaces}{nameof(Number)} = {Number}");
             sb.AppendLine($"{spaces}{nameof(IsCountable)} = {IsCountable}");
