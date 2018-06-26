@@ -222,7 +222,7 @@ namespace OpenNLP.Tools.Parser
 		/// </returns>
 		public virtual Parse[] FullParse(Parse flatParse, int parseCount)
 		{
-			if (CreateDerivationString) 
+			if (CreateDerivationString)
 			{
 				flatParse.InitializeDerivationBuffer();
 			}

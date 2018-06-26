@@ -12,6 +12,8 @@ using MyNPCLib.Parser;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.PersistLogicalDataStorage;
 using OpenNLP.Tools.Parser;
+using OpenNLP.Tools.PosTagger;
+using SharpWordNet;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,8 +42,9 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
+            TSTWordNet();
             //TSTTextCGParserRunner();
-            TSTParseNLText();
+            //TSTParseNLText();
             //TSTRuleInstance();
             //TSTEntityLogging();
             //TSTConceptualGraph_2();
@@ -56,6 +59,67 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTWordNet()
+        {
+            var modelsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/WordNet/dict/");
+
+            LogInstance.Log($"modelsPath = {modelsPath}");
+
+            var wordNetEngine = new DataFileEngine(modelsPath);
+
+            var lemma = "liked";
+
+            var partsOfSpeechesList = wordNetEngine.GetPartsOfSpeech(lemma);
+            LogInstance.Log($"partsOfSpeechesList.Length = {partsOfSpeechesList.Length}");
+            foreach(var partsOfSpeech in partsOfSpeechesList)
+            {
+                LogInstance.Log($"partsOfSpeech = {partsOfSpeech}");
+                var indexWord = wordNetEngine.GetIndexWord(lemma, partsOfSpeech);
+                LogInstance.Log($"indexWord.PartOfSpeech = {indexWord.PartOfSpeech} indexWord.SynsetOffsets.Length = {indexWord.SynsetOffsets.Length} indexWord.TagSenseCount = {indexWord.TagSenseCount} indexWord.SenseCount = {indexWord.SenseCount}");
+                var baseFormsList = wordNetEngine.GetBaseForms(lemma, partsOfSpeech);
+                LogInstance.Log($"baseFormsList.Length = {baseFormsList.Length}");
+                foreach(var baseForm in baseFormsList)
+                {
+                    LogInstance.Log($"baseForm = {baseForm}");
+                }
+                LogInstance.Log($"indexWord.RelationTypes.Length = {indexWord.RelationTypes.Length}");
+                foreach (var relationType in indexWord.RelationTypes)
+                {
+                    LogInstance.Log($"relationType = {relationType}");
+                }
+                var sinsetsList = wordNetEngine.GetSynsets(lemma, partsOfSpeech);
+                foreach(var sinset in sinsetsList)
+                {
+                    LogInstance.Log($"sinset = {sinset}");
+                }
+                var relationTypesList = wordNetEngine.GetRelationTypes(lemma, partsOfSpeech);
+                foreach (var relationType in relationTypesList)
+                {
+                    LogInstance.Log($"relationType.Name = {relationType.Name}");
+                }
+            }
+            var externalSinsetsList = wordNetEngine.GetSynsets(lemma);
+            foreach (var sinset in externalSinsetsList)
+            {
+                LogInstance.Log($"sinset = {sinset}");
+            }
+            var modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/Models/EnglishPOS.nbin");// "path/to/EnglishPOS.nbin";
+            var tagDictDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/Models/Parser/tagdict"); //"path/to/tagdict/directory";
+            var posTagger = new EnglishMaximumEntropyPosTagger(modelPath, tagDictDir);
+            var tokens = new string[]{ lemma };
+            var pos = posTagger.Tag(tokens);
+            foreach (var p in pos)
+            {
+                LogInstance.Log($"p = {p}");
+            }
+            LogInstance.Log("End");
+        }
+
+        private static object EnglishMaximumEntropyPosTagger(string modelPath, object tagdictDir)
+        {
+            throw new NotImplementedException();
         }
 
         private static void TSTTextCGParserRunner()

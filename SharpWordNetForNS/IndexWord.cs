@@ -34,7 +34,7 @@ namespace SharpWordNet
 
         public int SenseCount
         {
-            get { return this.SynsetOffsets != null ? this.SynsetOffsets.Count() : 0; }
+            get { return SynsetOffsets != null ? SynsetOffsets.Count() : 0; }
         }
 
 	    public int TagSenseCount { get; private set; }
@@ -46,11 +46,11 @@ namespace SharpWordNet
 
 		public IndexWord(string lemma, string partOfSpeech, string[] relationTypes, int[] synsetOffsets, int tagSenseCount)
 		{
-            this.Lemma = lemma;
-            this.PartOfSpeech = partOfSpeech;
-            this.RelationTypes = relationTypes;
-            this.SynsetOffsets = synsetOffsets;
-            this.TagSenseCount = tagSenseCount;
+            Lemma = lemma;
+            PartOfSpeech = partOfSpeech;
+            RelationTypes = relationTypes;
+            SynsetOffsets = synsetOffsets;
+            TagSenseCount = tagSenseCount;
 		}
 	}
 }

@@ -80,9 +80,9 @@ namespace SharpWordNet
 
         public override IndexWord[] GetAllIndexWords(string partOfSpeech)
         {
-            StreamReader searchFile = _dataFileDictionary[partOfSpeech].IndexFile;
+            var searchFile = _dataFileDictionary[partOfSpeech].IndexFile;
             string line;
-            string space = " ";
+            var space = " ";
             var indexWords = new List<IndexWord>();
             searchFile.DiscardBufferedData();
             searchFile.BaseStream.Position = 0;
@@ -113,13 +113,13 @@ namespace SharpWordNet
 
 			foreach (string partOfSpeech in _dataFileDictionary.Keys)
 			{
-                IndexWord indexWord = GetIndexWord(lemma, partOfSpeech);
+                var indexWord = GetIndexWord(lemma, partOfSpeech);
 
                 if (indexWord != null)
 				{
                     foreach (int synsetOffset in indexWord.SynsetOffsets)
 					{
-						Synset synset = CreateSynset(partOfSpeech, synsetOffset);
+						var synset = CreateSynset(partOfSpeech, synsetOffset);
 						synsets.Add(synset);
 					}
 				}	

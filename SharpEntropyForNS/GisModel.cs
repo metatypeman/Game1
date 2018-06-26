@@ -74,7 +74,7 @@ namespace SharpEntropy
 		/// </param>
 		public GisModel(IO.IGisModelReader reader)
 		{
-			this._reader = reader;
+            _reader = reader;
 			_outcomeNames = reader.GetOutcomeLabels();
 			CorrectionConstant = reader.CorrectionConstant;
 			CorrectionParameter = reader.CorrectionParameter;
