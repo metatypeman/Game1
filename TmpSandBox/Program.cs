@@ -67,14 +67,14 @@ namespace TmpSandBox
         {
             LogInstance.Log("Begin");
 
-            var text = "- Sorry Mrs Hudson, I'll skip the tea. be";
-            NTSTATNParsing(text);
+            //var text = "- Sorry Mrs Hudson, I'll skip the tea.";
+            //NTSTATNParsing(text);
 
-            text = "Kill the dog!";
-            NTSTATNParsing(text);
+            //text = "Kill the dog!";
+            //NTSTATNParsing(text);
 
-            text = "This is a green forest 12.";
-            NTSTATNParsing(text);
+            //text = "This is a green forest 12.";
+            //NTSTATNParsing(text);
 
             LogInstance.Log("End");
         }
