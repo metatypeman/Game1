@@ -41,11 +41,31 @@ namespace MyNPCLib.NLToCGParsing
 #if DEBUG
                     LogInstance.Log($"nextToken = {nextToken}");
 #endif
+                    var nextTokenKind = nextToken.Kind;
+
+                    if(nextTokenKind == KindOfATNToken.Word)
+                    {
+                        if(nextToken.Content == "ll")
+                        {
+                            ff
+                        }
+                    }
+                    else
+                    {
+                        mLexer.Recovery(nextToken);
+                    }
                 }
 
                 result.Add(CreateExtendToken(token));
                 return result;
             }
+
+            return ProcessWordToken(token);
+        }
+
+        private IList<ATNExtendToken> ProcessWordToken(ATNToken token)
+        {
+            var result = new List<ATNExtendToken>();
 
             var wordFrame = mWordsDict.GetWordFrame(token.Content);
 
@@ -53,24 +73,19 @@ namespace MyNPCLib.NLToCGParsing
             LogInstance.Log($"wordFrame = {wordFrame}");
 #endif
 
-            if(wordFrame == null || wordFrame.GrammaticalWordFrames.IsEmpty())
+            if (wordFrame == null || wordFrame.GrammaticalWordFrames.IsEmpty())
             {
                 result.Add(CreateExtendToken(token));
                 return result;
             }
 
-            foreach(var grammaticalWordFrame in wordFrame.GrammaticalWordFrames)
+            foreach (var grammaticalWordFrame in wordFrame.GrammaticalWordFrames)
             {
                 var extendsToken = CreateExtendToken(token, grammaticalWordFrame);
                 result.Add(extendsToken);
             }
 
             return result;
-        }
-
-        private IList<ATNExtendToken> ProcessWordToken(ATNToken token)
-        {
-
         }
 
         private ATNExtendToken CreateExtendToken(ATNToken sourceToken)
