@@ -35,6 +35,14 @@ namespace MyNPCLib.NLToCGParsing
 
             if (tokenKind != KindOfATNToken.Word)
             {
+                if(tokenKind == KindOfATNToken.SingleQuotationMark)
+                {
+                    var nextToken = mLexer.GetToken();
+#if DEBUG
+                    LogInstance.Log($"nextToken = {nextToken}");
+#endif
+                }
+
                 result.Add(CreateExtendToken(token));
                 return result;
             }
@@ -58,6 +66,11 @@ namespace MyNPCLib.NLToCGParsing
             }
 
             return result;
+        }
+
+        private IList<ATNExtendToken> ProcessWordToken(ATNToken token)
+        {
+
         }
 
         private ATNExtendToken CreateExtendToken(ATNToken sourceToken)

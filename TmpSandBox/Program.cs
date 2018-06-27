@@ -67,6 +67,8 @@ namespace TmpSandBox
         {
             LogInstance.Log("Begin");
 
+            var text = "I'll skip";
+            NTSTATNParsing(text);
             //var text = "- Sorry Mrs Hudson, I'll skip the tea.";
             //NTSTATNParsing(text);
 
