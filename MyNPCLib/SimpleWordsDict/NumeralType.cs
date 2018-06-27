@@ -6,6 +6,8 @@ namespace MyNPCLib.SimpleWordsDict
 {
     public enum NumeralType
     {
+        Undefined,
+
         /// <summary>
         /// Such as `one`
         /// </summary>

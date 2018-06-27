@@ -11,6 +11,7 @@ using MyNPCLib.NLToCGParsing;
 using MyNPCLib.Parser;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.PersistLogicalDataStorage;
+using MyNPCLib.SimpleWordsDict;
 using OpenNLP.Tools.Parser;
 using OpenNLP.Tools.PosTagger;
 using SharpWordNet;
@@ -42,6 +43,7 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
+            TSTATNParsing();
             //TSTWordNet();
             //TSTTextCGParserRunner();
             //TSTParseNLText();
@@ -59,6 +61,52 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTATNParsing()
+        {
+            LogInstance.Log("Begin");
+
+            var text = "- Sorry Mrs Hudson, I'll skip the tea. be";
+            NTSTATNParsing(text);
+
+            text = "Kill the dog!";
+            NTSTATNParsing(text);
+
+            text = "This is a green forest 12.";
+            NTSTATNParsing(text);
+
+            LogInstance.Log("End");
+        }
+
+        private static void NTSTATNParsing(string text)
+        {
+            LogInstance.Log($"text = {text}");
+
+            var wordsDict = new WordsDict();
+            var extendedLexer = new ATNExtendedLexer(text, wordsDict);
+
+            IList<ATNExtendToken> сlusterOfExtendTokens = null;
+
+            while((сlusterOfExtendTokens = extendedLexer.GetСlusterOfExtendTokens()) != null)
+            {
+                LogInstance.Log($"сlusterOfExtendTokens.Count = {сlusterOfExtendTokens.Count}");
+                foreach(var extendToken in сlusterOfExtendTokens)
+                {
+                    LogInstance.Log($"extendToken = {extendToken}");
+                }
+            }
+
+            //var lexer = new ATNLexer(text);
+
+            //ATNToken token = null;
+
+            //while((token = lexer.GetToken()) != null)
+            //{
+            //    LogInstance.Log($"token = {token}");
+            //}
+
+            LogInstance.Log("End");
         }
 
         private static void TSTWordNet()

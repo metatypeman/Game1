@@ -19,7 +19,20 @@ namespace MyNPCLib.SimpleWordsDict
 
         private static void DefineWords()
         {
+            var wordName = "be";
+            mWordsDictData.WordsDict[wordName] = new WordFrame()
+            {
+                Word = wordName,
+                GrammaticalWordFrames = new List<BaseGrammaticalWordFrame>()
+                {
+                    new VerbGrammaticalWordFrame()
+                    {
+                        IsFormOfToBe = true
+                    }
+                }
+            };
 
+            wordName = "will";
         }
     }
 }

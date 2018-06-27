@@ -10,7 +10,7 @@ namespace MyNPCLib.SimpleWordsDict
         public override GrammaticalPartOfSpeech PartOfSpeech => GrammaticalPartOfSpeech.Numeral;
         public override bool IsNumeral => true;
         public override NumeralGrammaticalWordFrame AsNumeral => this;
-        public NumeralType NumeralType { get; set; }
+        public NumeralType NumeralType { get; set; } = NumeralType.Undefined;
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);

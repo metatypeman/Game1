@@ -1,34 +1,33 @@
-﻿using System;
+﻿using MyNPCLib.Parser;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace MyNPCLib.Parser
+namespace MyNPCLib.NLToCGParsing
 {
-    public class Lexer
+    public class ATNLexer
     {
         private enum LexerState
         {
             Init,
-            InWord,
-            InRichWord
+            InWord
         }
 
-        public Lexer(string text)
+        public ATNLexer(string text)
         {
             mItems = new Queue<char>(text.ToList());
         }
 
         private Queue<char> mItems;
+        private Queue<ATNToken> mRecoveriesTokens = new Queue<ATNToken>();
         private LexerState mLexerState = LexerState.Init;
-        private Queue<Token> mRecoveriesTokens = new Queue<Token>();
         private CultureInfo mCultureInfo = new CultureInfo("en-GB");
-
         private int mCurrentPos;
         private int mCurrentLine = 1;
-        private char mEndStringChar { get; set; }
-        public Token GetToken()
+
+        public ATNToken GetToken()
         {
             if (mRecoveriesTokens.Count > 0)
             {
@@ -46,7 +45,6 @@ namespace MyNPCLib.Parser
 #if DEBUG
                 //LogInstance.Log($"tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
 #endif
-
                 switch (mLexerState)
                 {
                     case LexerState.Init:
@@ -61,7 +59,7 @@ namespace MyNPCLib.Parser
                             }
                             else
                             {
-                                return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+                                return CreateToken(KindOfATNToken.Word, tmpBuffer.ToString());
                             }
                             break;
                         }
@@ -72,34 +70,37 @@ namespace MyNPCLib.Parser
                                 break;
 
                             case '(':
-                                return CreateToken(TokenKind.OpenRoundBracket);
+                                return CreateToken(KindOfATNToken.OpenRoundBracket);
 
                             case ')':
-                                return CreateToken(TokenKind.CloseRoundBracket);
+                                return CreateToken(KindOfATNToken.CloseRoundBracket);
 
-                            case '&':
-                                return CreateToken(TokenKind.And);
+                            case ',':
+                                return CreateToken(KindOfATNToken.Comma);
 
-                            case '|':
-                                return CreateToken(TokenKind.Or);
+                            case ':':
+                                return CreateToken(KindOfATNToken.Colon);
+
+                            case '.':
+                                return CreateToken(KindOfATNToken.Point);
+
+                            case '-':
+                                return CreateToken(KindOfATNToken.Dash);
+
+                            case ';':
+                                return CreateToken(KindOfATNToken.Semicolon);
 
                             case '!':
-                                return CreateToken(TokenKind.Not);
+                                return CreateToken(KindOfATNToken.ExclamationMark);
 
-                            case '=':
-                                return CreateToken(TokenKind.Assing);
-
-                            case '`':
-                                mEndStringChar = tmpChar;
-                                tmpBuffer = new StringBuilder();
-                                mLexerState = LexerState.InRichWord;
-                                break;
+                            case '?':
+                                return CreateToken(KindOfATNToken.QuestionMark);
 
                             case '\'':
-                                mEndStringChar = tmpChar;
-                                tmpBuffer = new StringBuilder();
-                                mLexerState = LexerState.InRichWord;
-                                break;
+                                return CreateToken(KindOfATNToken.SingleQuotationMark);
+
+                            case '"':
+                                return CreateToken(KindOfATNToken.DoubleQuotationMark);
 
                             default:
                                 {
@@ -130,7 +131,7 @@ namespace MyNPCLib.Parser
                             if (mItems.Count == 0)
                             {
                                 mLexerState = LexerState.Init;
-                                return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+                                return CreateToken(KindOfATNToken.Word, tmpBuffer.ToString());
                             }
 
                             var tmpNextChar = mItems.Peek();
@@ -138,27 +139,8 @@ namespace MyNPCLib.Parser
                             if (!char.IsLetterOrDigit(tmpNextChar) && tmpNextChar != '_')
                             {
                                 mLexerState = LexerState.Init;
-                                return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+                                return CreateToken(KindOfATNToken.Word, tmpBuffer.ToString());
                             }
-                        }
-                        break;
-
-                    case LexerState.InRichWord:
-                        switch (tmpChar)
-                        {
-                            case '`':
-                            case '\'':
-                                if(mEndStringChar == tmpChar)
-                                {
-                                    mLexerState = LexerState.Init;
-                                    return CreateToken(TokenKind.Word, tmpBuffer.ToString());
-                                }
-                                tmpBuffer.Append(tmpChar);
-                                break;
-
-                            default:
-                                tmpBuffer.Append(tmpChar);
-                                break;
                         }
                         break;
 
@@ -169,16 +151,23 @@ namespace MyNPCLib.Parser
             return null;
         }
 
-        private Token CreateToken(TokenKind kind, string content = null)
+        private ATNToken CreateToken(KindOfATNToken kind, string content = null)
         {
-            //char tmpNextChar;
-            //int id;
-            var kindOfKeyWord = TokenKind.Unknown;
             var contentLength = 0;
 
-            var result = new Token();
-            result.TokenKind = kind;
-            result.KeyWordTokenKind = kindOfKeyWord;
+            switch(kind)
+            {
+                case KindOfATNToken.Word:
+                    int r;
+                    if(int.TryParse(content, out r))
+                    {
+                        kind = KindOfATNToken.Number;
+                    }
+                    break;
+            }
+
+            var result = new ATNToken();
+            result.Kind = kind;
             result.Content = content;
             result.Pos = mCurrentPos - contentLength;
             result.Line = mCurrentLine;
@@ -186,7 +175,7 @@ namespace MyNPCLib.Parser
             return result;
         }
 
-        public void Recovery(Token token)
+        public void Recovery(ATNToken token)
         {
             mRecoveriesTokens.Enqueue(token);
         }
