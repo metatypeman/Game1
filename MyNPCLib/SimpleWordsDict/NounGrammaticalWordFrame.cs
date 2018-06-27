@@ -16,6 +16,10 @@ namespace MyNPCLib.SimpleWordsDict
         public GrammaticalNumberOfWord Number { get; set; } = GrammaticalNumberOfWord.Neuter;
         public bool IsCountable { get; set; }
         public bool IsGerund { get; set; }
+        /// <summary>
+        /// Example: `father's` is possessive, `father` is not possessive. 
+        /// </summary>
+        public bool IsPossessive { get; set; }
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
@@ -28,6 +32,7 @@ namespace MyNPCLib.SimpleWordsDict
             sb.AppendLine($"{spaces}{nameof(Number)} = {Number}");
             sb.AppendLine($"{spaces}{nameof(IsCountable)} = {IsCountable}");
             sb.AppendLine($"{spaces}{nameof(IsGerund)} = {IsGerund}");
+            sb.AppendLine($"{spaces}{nameof(IsPossessive)} = {IsPossessive}");
             return sb.ToString();
         }
     }

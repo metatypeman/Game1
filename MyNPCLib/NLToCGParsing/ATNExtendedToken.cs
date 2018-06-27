@@ -18,6 +18,7 @@ namespace MyNPCLib.NLToCGParsing
         public GrammaticalNumberOfWord Number { get; set; } = GrammaticalNumberOfWord.Neuter;
         public bool IsCountable { get; set; }
         public bool IsGerund { get; set; }
+        public bool IsPossessive { get; set; }
         public GrammaticalPerson Person { get; set; } = GrammaticalPerson.Neuter;
         public TypeOfPronoun TypeOfPronoun { get; set; } = TypeOfPronoun.Undefined;
         public CaseOfPersonalPronoun CaseOfPersonalPronoun { get; set; } = CaseOfPersonalPronoun.Undefined;
@@ -57,6 +58,7 @@ namespace MyNPCLib.NLToCGParsing
             sb.AppendLine($"{spaces}{nameof(Number)} = {Number}");
             sb.AppendLine($"{spaces}{nameof(IsCountable)} = {IsCountable}");
             sb.AppendLine($"{spaces}{nameof(IsGerund)} = {IsGerund}");
+            sb.AppendLine($"{spaces}{nameof(IsPossessive)} = {IsPossessive}");
             sb.AppendLine($"{spaces}{nameof(Person)} = {Person}");
             sb.AppendLine($"{spaces}{nameof(TypeOfPronoun)} = {TypeOfPronoun}");
             sb.AppendLine($"{spaces}{nameof(CaseOfPersonalPronoun)} = {CaseOfPersonalPronoun}");

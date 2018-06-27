@@ -121,6 +121,7 @@ namespace MyNPCLib.NLToCGParsing
             result.Number = grammaticalWordFrame.Number;
             result.IsCountable = grammaticalWordFrame.IsCountable;
             result.IsGerund = grammaticalWordFrame.IsGerund;
+            result.IsPossessive = grammaticalWordFrame.IsPossessive;
             return result;
         }
 
