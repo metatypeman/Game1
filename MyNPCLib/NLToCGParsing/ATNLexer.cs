@@ -20,135 +20,157 @@ namespace MyNPCLib.NLToCGParsing
             mItems = new Queue<char>(text.ToList());
         }
 
+        private ATNLexer()
+        {
+        }
+
+        private readonly object mLockObj = new object();
         private Queue<char> mItems;
         private Queue<ATNToken> mRecoveriesTokens = new Queue<ATNToken>();
         private LexerState mLexerState = LexerState.Init;
-        private CultureInfo mCultureInfo = new CultureInfo("en-GB");
+        private readonly CultureInfo mCultureInfo = new CultureInfo("en-GB");
         private int mCurrentPos;
         private int mCurrentLine = 1;
 
+        public ATNLexer Fork()
+        {
+            lock (mLockObj)
+            {
+                var result = new ATNLexer();
+                result.mItems = new Queue<char>(mItems.ToList());
+                result.mRecoveriesTokens = new Queue<ATNToken>(mRecoveriesTokens.ToList());
+                result.mLexerState = mLexerState;
+                result.mCurrentPos = mCurrentPos;
+                result.mCurrentLine = mCurrentLine;
+                return result;
+            }
+        }
+
         public ATNToken GetToken()
         {
-            if (mRecoveriesTokens.Count > 0)
+            lock (mLockObj)
             {
-                return mRecoveriesTokens.Dequeue();
-            }
+                if (mRecoveriesTokens.Count > 0)
+                {
+                    return mRecoveriesTokens.Dequeue();
+                }
 
-            StringBuilder tmpBuffer = null;
+                StringBuilder tmpBuffer = null;
 
-            while (mItems.Count > 0)
-            {
-                var tmpChar = mItems.Dequeue();
+                while (mItems.Count > 0)
+                {
+                    var tmpChar = mItems.Dequeue();
 
-                mCurrentPos++;
+                    mCurrentPos++;
 
 #if DEBUG
-                //LogInstance.Log($"tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
+                    //LogInstance.Log($"tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
 #endif
-                switch (mLexerState)
-                {
-                    case LexerState.Init:
-                        if (char.IsLetterOrDigit(tmpChar))
-                        {
-                            tmpBuffer = new StringBuilder();
-                            tmpBuffer.Append(tmpChar);
+                    switch (mLexerState)
+                    {
+                        case LexerState.Init:
+                            if (char.IsLetterOrDigit(tmpChar))
+                            {
+                                tmpBuffer = new StringBuilder();
+                                tmpBuffer.Append(tmpChar);
 
-                            if (char.IsLetterOrDigit(mItems.Peek()))
-                            {
-                                mLexerState = LexerState.InWord;
+                                if (char.IsLetterOrDigit(mItems.Peek()))
+                                {
+                                    mLexerState = LexerState.InWord;
+                                }
+                                else
+                                {
+                                    return CreateToken(KindOfATNToken.Word, tmpBuffer.ToString());
+                                }
+                                break;
                             }
-                            else
+
+                            switch (tmpChar)
                             {
-                                return CreateToken(KindOfATNToken.Word, tmpBuffer.ToString());
+                                case ' ':
+                                    break;
+
+                                case '(':
+                                    return CreateToken(KindOfATNToken.OpenRoundBracket);
+
+                                case ')':
+                                    return CreateToken(KindOfATNToken.CloseRoundBracket);
+
+                                case ',':
+                                    return CreateToken(KindOfATNToken.Comma);
+
+                                case ':':
+                                    return CreateToken(KindOfATNToken.Colon);
+
+                                case '.':
+                                    return CreateToken(KindOfATNToken.Point);
+
+                                case '-':
+                                    return CreateToken(KindOfATNToken.Dash);
+
+                                case ';':
+                                    return CreateToken(KindOfATNToken.Semicolon);
+
+                                case '!':
+                                    return CreateToken(KindOfATNToken.ExclamationMark);
+
+                                case '?':
+                                    return CreateToken(KindOfATNToken.QuestionMark);
+
+                                case '\'':
+                                    return CreateToken(KindOfATNToken.SingleQuotationMark);
+
+                                case '"':
+                                    return CreateToken(KindOfATNToken.DoubleQuotationMark);
+
+                                default:
+                                    {
+                                        var intCharCode = (int)tmpChar;
+
+                                        if (intCharCode == 13)
+                                        {
+                                            break;
+                                        }
+
+                                        if (intCharCode == 10)
+                                        {
+                                            mCurrentPos = 0;
+                                            mCurrentLine++;
+                                            break;
+                                        }
+
+                                        throw new UnexpectedSymbolException(tmpChar);
+                                    }
                             }
                             break;
-                        }
 
-                        switch (tmpChar)
-                        {
-                            case ' ':
-                                break;
+                        case LexerState.InWord:
+                            {
+                                tmpBuffer.Append(tmpChar);
+                                mLexerState = LexerState.InWord;
 
-                            case '(':
-                                return CreateToken(KindOfATNToken.OpenRoundBracket);
-
-                            case ')':
-                                return CreateToken(KindOfATNToken.CloseRoundBracket);
-
-                            case ',':
-                                return CreateToken(KindOfATNToken.Comma);
-
-                            case ':':
-                                return CreateToken(KindOfATNToken.Colon);
-
-                            case '.':
-                                return CreateToken(KindOfATNToken.Point);
-
-                            case '-':
-                                return CreateToken(KindOfATNToken.Dash);
-
-                            case ';':
-                                return CreateToken(KindOfATNToken.Semicolon);
-
-                            case '!':
-                                return CreateToken(KindOfATNToken.ExclamationMark);
-
-                            case '?':
-                                return CreateToken(KindOfATNToken.QuestionMark);
-
-                            case '\'':
-                                return CreateToken(KindOfATNToken.SingleQuotationMark);
-
-                            case '"':
-                                return CreateToken(KindOfATNToken.DoubleQuotationMark);
-
-                            default:
+                                if (mItems.Count == 0)
                                 {
-                                    var intCharCode = (int)tmpChar;
-
-                                    if (intCharCode == 13)
-                                    {
-                                        break;
-                                    }
-
-                                    if (intCharCode == 10)
-                                    {
-                                        mCurrentPos = 0;
-                                        mCurrentLine++;
-                                        break;
-                                    }
-
-                                    throw new UnexpectedSymbolException(tmpChar);
+                                    mLexerState = LexerState.Init;
+                                    return CreateToken(KindOfATNToken.Word, tmpBuffer.ToString());
                                 }
-                        }
-                        break;
 
-                    case LexerState.InWord:
-                        {
-                            tmpBuffer.Append(tmpChar);
-                            mLexerState = LexerState.InWord;
+                                var tmpNextChar = mItems.Peek();
 
-                            if (mItems.Count == 0)
-                            {
-                                mLexerState = LexerState.Init;
-                                return CreateToken(KindOfATNToken.Word, tmpBuffer.ToString());
+                                if (!char.IsLetterOrDigit(tmpNextChar) && tmpNextChar != '_')
+                                {
+                                    mLexerState = LexerState.Init;
+                                    return CreateToken(KindOfATNToken.Word, tmpBuffer.ToString());
+                                }
                             }
+                            break;
 
-                            var tmpNextChar = mItems.Peek();
-
-                            if (!char.IsLetterOrDigit(tmpNextChar) && tmpNextChar != '_')
-                            {
-                                mLexerState = LexerState.Init;
-                                return CreateToken(KindOfATNToken.Word, tmpBuffer.ToString());
-                            }
-                        }
-                        break;
-
-                    default: throw new ArgumentOutOfRangeException(nameof(mLexerState), mLexerState, null);
+                        default: throw new ArgumentOutOfRangeException(nameof(mLexerState), mLexerState, null);
+                    }
                 }
-            }
 
-            return null;
+                return null;
+            }
         }
 
         private ATNToken CreateToken(KindOfATNToken kind, string content = null)
@@ -177,7 +199,10 @@ namespace MyNPCLib.NLToCGParsing
 
         public void Recovery(ATNToken token)
         {
-            mRecoveriesTokens.Enqueue(token);
+            lock (mLockObj)
+            {
+                mRecoveriesTokens.Enqueue(token);
+            }           
         }
 
         /// <summary>
@@ -187,7 +212,10 @@ namespace MyNPCLib.NLToCGParsing
         {
             get
             {
-                return mRecoveriesTokens.Count + mItems.Count;
+                lock (mLockObj)
+                {
+                    return mRecoveriesTokens.Count + mItems.Count;
+                }        
             }
         }
     }

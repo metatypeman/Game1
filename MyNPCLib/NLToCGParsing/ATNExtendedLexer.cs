@@ -13,64 +13,97 @@ namespace MyNPCLib.NLToCGParsing
             mWordsDict = wordsDict;
         }
 
+        private ATNExtendedLexer()
+        {
+        }
+
+        private readonly object mLockObj = new object();
         private ATNLexer mLexer;
         private IWordsDict mWordsDict;
 
-        public IList<ATNExtendToken> GetСlusterOfExtendTokens()
+        public ATNExtendedLexer Fork()
         {
-            var token = mLexer.GetToken();
-
-#if DEBUG
-            LogInstance.Log($"token = {token}");
-#endif
-
-            if(token == null)
+            lock(mLockObj)
             {
-                return null;
-            }
-
-            var result = new List<ATNExtendToken>();
-
-            var tokenKind = token.Kind;
-
-            if (tokenKind != KindOfATNToken.Word)
-            {
-                if(tokenKind == KindOfATNToken.SingleQuotationMark)
-                {
-                    var nextToken = mLexer.GetToken();
-#if DEBUG
-                    LogInstance.Log($"nextToken = {nextToken}");
-#endif
-                    var nextTokenKind = nextToken.Kind;
-
-                    if(nextTokenKind == KindOfATNToken.Word)
-                    {
-                        if(nextToken.Content == "ll")
-                        {
-                            ff
-                        }
-                    }
-                    else
-                    {
-                        mLexer.Recovery(nextToken);
-                    }
-                }
-
-                result.Add(CreateExtendToken(token));
+                var result = new ATNExtendedLexer();
+                result.mWordsDict = mWordsDict;
+                result.mLexer = mLexer.Fork();
                 return result;
             }
+        }
 
-            return ProcessWordToken(token);
+        public IList<ATNExtendToken> GetСlusterOfExtendTokens()
+        {
+            lock (mLockObj)
+            {
+                var token = mLexer.GetToken();
+
+#if DEBUG
+                //LogInstance.Log($"token = {token}");
+#endif
+
+                if (token == null)
+                {
+                    return null;
+                }
+
+                var result = new List<ATNExtendToken>();
+
+                var tokenKind = token.Kind;
+
+                if (tokenKind != KindOfATNToken.Word)
+                {
+                    if (tokenKind == KindOfATNToken.SingleQuotationMark)
+                    {
+                        var nextToken = mLexer.GetToken();
+#if DEBUG
+                        //LogInstance.Log($"nextToken = {nextToken}");
+#endif
+                        var nextTokenKind = nextToken.Kind;
+
+                        if (nextTokenKind == KindOfATNToken.Word)
+                        {
+                            if (nextToken.Content == "ll")
+                            {
+                                token.Content = "will";
+                                token.Kind = KindOfATNToken.Word;
+                                return ProcessWordToken(token);
+                            }
+                            mLexer.Recovery(nextToken);
+                        }
+                        else
+                        {
+                            mLexer.Recovery(nextToken);
+                        }
+                    }
+
+                    result.Add(CreateExtendToken(token));
+                    return result;
+                }
+
+                return ProcessWordToken(token);
+            }
         }
 
         private IList<ATNExtendToken> ProcessWordToken(ATNToken token)
         {
             var result = new List<ATNExtendToken>();
 
-            var wordFrame = mWordsDict.GetWordFrame(token.Content);
+            var tokenContent = token.Content;
 
 #if DEBUG
-            LogInstance.Log($"wordFrame = {wordFrame}");
+            //LogInstance.Log($"tokenContent = {tokenContent}");
+#endif
+
+            if (!mWordsDict.IsName(tokenContent))
+            {
+                tokenContent = tokenContent.ToLower();
+            }
+
+            var wordFrame = mWordsDict.GetWordFrame(tokenContent);
+
+#if DEBUG
+            //LogInstance.Log($"wordFrame = {wordFrame}");
 #endif
 
             if (wordFrame == null || wordFrame.GrammaticalWordFrames.IsEmpty())

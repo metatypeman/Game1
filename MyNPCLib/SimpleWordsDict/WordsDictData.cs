@@ -8,5 +8,6 @@ namespace MyNPCLib.SimpleWordsDict
     public class WordsDictData
     {
         public IDictionary<string, WordFrame> WordsDict { get; set; }
+        public IList<string> NamesList { get; set; }
     }
 }

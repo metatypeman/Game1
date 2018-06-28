@@ -10,9 +10,11 @@ namespace MyNPCLib.SimpleWordsDict
         {
             var data = TmpFactoryOfWordsDictData.Data;//tmp
             mWordsDict = data.WordsDict;
+            mNamesList = data.NamesList;
         }
 
         private IDictionary<string, WordFrame> mWordsDict;
+        private IList<string> mNamesList;
 
         public WordFrame GetWordFrame(string word)
         {
@@ -22,6 +24,16 @@ namespace MyNPCLib.SimpleWordsDict
             }
 
             return null;
+        }
+
+        public bool IsName(string word)
+        {
+            if(mNamesList.Contains(word))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
