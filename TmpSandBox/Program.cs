@@ -43,10 +43,10 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTATNParsing();
+            //TSTATNParsing();
             //TSTWordNet();
             //TSTTextCGParserRunner();
-            //TSTParseNLText();
+            TSTParseNLText();
             //TSTRuleInstance();
             //TSTEntityLogging();
             //TSTConceptualGraph_2();
@@ -67,7 +67,7 @@ namespace TmpSandBox
         {
             LogInstance.Log("Begin");
 
-            var text = "Mrs. I know the dog.";
+            var text = "I know the dog.";
             NTSTATNParsing(text);
 
             //var text = "I'll skip";
@@ -91,9 +91,9 @@ namespace TmpSandBox
             var wordsDict = new WordsDict();
             var extendedLexer = new ATNExtendedLexer(text, wordsDict);
 
-            IList<ATNExtendToken> сlusterOfExtendTokens = null;
+            IList<ATNExtendedToken> сlusterOfExtendTokens = null;
 
-            while((сlusterOfExtendTokens = extendedLexer.GetСlusterOfExtendTokens()) != null)
+            while((сlusterOfExtendTokens = extendedLexer.GetСlusterOfExtendedTokens()) != null)
             {
                 LogInstance.Log($"сlusterOfExtendTokens.Count = {сlusterOfExtendTokens.Count}");
                 foreach(var extendToken in сlusterOfExtendTokens)
@@ -183,7 +183,7 @@ namespace TmpSandBox
 
         private static void TSTParseNLText()
         {
-            //var path = Directory.GetCurrentDirectory();
+            //var path = AppDomain.CurrentDomain.BaseDirectory;
 
             //LogInstance.Log($"path = {path}");
 
@@ -195,7 +195,7 @@ namespace TmpSandBox
 
             //mParser = new EnglishTreebankParser(modelPath);
 
-            //var sentence = "- Sorry Mrs Hudson, I'll skip the tea.";
+            //var sentence = "- Sorry Mrs. Hudson, I'll skip the tea. Kill the dog! This is a green forest.";
 
             //ParseSentence(sentence);
 
@@ -211,31 +211,37 @@ namespace TmpSandBox
 
             //ParseSentence(sentence);
 
-            var parser = new CGParser();
+            var wordsDict = new WordsDict();
+            var parser = new CGParser(wordsDict);
 
             //var paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
 
             //var result = parser.Run(paragraph);
             //LogInstance.Log($"result = {result}");
 
-            var paragraph = "Kill the dog!";
-    
+            //var paragraph = "- Sorry Mrs. Hudson, I'll skip the tea. Kill the dog! This is a green forest. Kill the dog!";
+
+            //var result = parser.Run(paragraph);
+            //LogInstance.Log($"result = {result}");
+
+            var paragraph = "I know the dog.";
+
             var result = parser.Run(paragraph);
             LogInstance.Log($"result = {result}");
 
-            paragraph = "The dog likes man.";
+            //var paragraph = "The dog likes the man.";
 
-            result = parser.Run(paragraph);
-            LogInstance.Log($"result = {result}");
+            //var result = parser.Run(paragraph);
+            //LogInstance.Log($"result = {result}");
 
-            paragraph = "Does not the dog love man?";
+            //paragraph = "Does not the dog love man?";
 
-            result = parser.Run(paragraph);
-            LogInstance.Log($"result = {result}");
+            //result = parser.Run(paragraph);
+            //LogInstance.Log($"result = {result}");
 
-            paragraph = "We analyse what our clients may need, develop a new product, produce a sample, improve it and sell it.";
-            result = parser.Run(paragraph);
-            LogInstance.Log($"result = {result}");
+            //paragraph = "We analyse what our clients may need, develop a new product, produce a sample, improve it and sell it.";
+            //result = parser.Run(paragraph);
+            //LogInstance.Log($"result = {result}");
 
             LogInstance.Log("End");
         }

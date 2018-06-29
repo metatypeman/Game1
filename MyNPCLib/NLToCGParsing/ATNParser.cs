@@ -1,4 +1,5 @@
-﻿using OpenNLP.Tools.Parser;
+﻿using MyNPCLib.SimpleWordsDict;
+using OpenNLP.Tools.Parser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +9,22 @@ namespace MyNPCLib.NLToCGParsing
 {
     public class ATNParser
     {
-        public Sentence Run(Parse node)
+        public ATNParser(IWordsDict wordsDict)
+        {
+            mWordsDict = wordsDict;
+        }
+
+        private IWordsDict mWordsDict;
+
+        public Sentence Run(string text)
         {
 #if DEBUG
-            LogInstance.Log($"node = {OpenNLPParseNodeHelper.ToString(node)}");
+            LogInstance.Log($"text = {text}");
 #endif
-            var children = node.GetChildren();
-            var sentenceNode = children.Single();
 
-            var atnNode = new ATNSentenceNode(sentenceNode);
+            var context = new ContextOfATNParsing(text, mWordsDict);
+
+            var atnNode = new ATNSentenceNode(context);
             var sentence = atnNode.Run(); 
             return sentence;
         }

@@ -5,21 +5,73 @@ using System.Text;
 
 namespace MyNPCLib.NLToCGParsing
 {
-    public class ATNSentenceNode
+    public class ATNSentenceNode: BaseATNParsingNode
     {
-        public ATNSentenceNode(Parse node)
+        public ATNSentenceNode(ContextOfATNParsing context)
+            : base(context)
         {
-#if DEBUG
-            LogInstance.Log($"node.Type = {node.Type} node.Value = {node.Value} node.Label = {node.Label} node.IsPosTag = {node.IsPosTag} node.IsLeaf = {node.IsLeaf} node.IsComplete = {node.IsComplete}");
-#endif
         }
 
         public Sentence Run()
         {
 #if DEBUG
-            var sentence = new Sentence();//tmp
-            return sentence;//tmp
+            LogInstance.Log("Begin");
 #endif
+            
+
+            var сlusterOfExtendedTokens = Context.GetСlusterOfExtendedTokens();
+
+#if DEBUG
+            LogInstance.Log($"сlusterOfExtendedTokens.Count = {сlusterOfExtendedTokens.Count}");
+#endif
+
+            if (сlusterOfExtendedTokens.IsEmpty())
+            {
+                return null;
+            }
+
+            var result = new Sentence();
+
+            foreach (var extendedToken in сlusterOfExtendedTokens)
+            {
+#if DEBUG
+                LogInstance.Log($"extendToken = {extendedToken}");
+#endif
+
+                var goalsList = GetGoals(extendedToken);
+
+#if DEBUG
+                LogInstance.Log($"goalsList.Count = {goalsList.Count}");
+#endif
+
+                foreach(var goal in goalsList)
+                {
+#if DEBUG
+                    LogInstance.Log($"goal = {goal}");
+#endif
+
+                    switch(goal)
+                    {
+                        case GoalOfATNExtendToken.NP:
+                            {
+                                var newContext = Context.Fork();
+                                var npNode = new ATNNPNode(extendedToken, newContext);
+                                var npPhrase = npNode.Run();
+#if DEBUG
+                                LogInstance.Log($"npPhrase = {npPhrase}");
+#endif
+                            }
+                            break;
+
+                        default: throw new ArgumentOutOfRangeException(nameof(goal), goal, null);
+                    }
+                }
+            }
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
+            return result;
         }
     }
 }

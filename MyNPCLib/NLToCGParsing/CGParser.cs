@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CG;
+using MyNPCLib.SimpleWordsDict;
 using OpenNLP.Tools.Parser;
 using OpenNLP.Tools.SentenceDetect;
 using System;
@@ -11,7 +12,7 @@ namespace MyNPCLib.NLToCGParsing
 {
     public class CGParser
     {
-        public CGParser()
+        public CGParser(IWordsDict wordsDict)
         {
             var path = Directory.GetCurrentDirectory();
 #if DEBUG
@@ -31,22 +32,11 @@ namespace MyNPCLib.NLToCGParsing
 
             mSentenceDetector = new EnglishMaximumEntropySentenceDetector(modelPath);
 
-            //var relativePath = "Resources/Models/";
-            //modelPath = Path.Combine(path, relativePath);
-            modelPath = OpenNLPPathsHelper.ModelsPath;
-
-#if DEBUG
-            LogInstance.Log($"modelPath = {modelPath}");
-#endif
-
-            mTreebankParser = new EnglishTreebankParser(modelPath);
-
-            mATNParser = new ATNParser();
+            mATNParser = new ATNParser(wordsDict);
             mSemanticAnalyzer = new SemanticAnalyzer();
         }
 
         private EnglishMaximumEntropySentenceDetector mSentenceDetector;
-        private EnglishTreebankParser mTreebankParser;
         private ATNParser mATNParser;
         private SemanticAnalyzer mSemanticAnalyzer;
         private readonly object mRunLockObj = new object();
@@ -110,14 +100,7 @@ namespace MyNPCLib.NLToCGParsing
             LogInstance.Log($"text = {text}");
 #endif
 
-            var node = mTreebankParser.DoParse(text);
-
-#if DEBUG
-            //var dbgStr = OpenNLPParseNodeHelper.ToString(node);
-            //LogInstance.Log($"dbgStr = {dbgStr}");
-#endif
-
-            var sentence = mATNParser.Run(node);
+            var sentence = mATNParser.Run(text);
 
 #if DEBUG
             LogInstance.Log($"sentence = {sentence}");

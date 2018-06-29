@@ -1,6 +1,7 @@
 ﻿using MyNPCLib.SimpleWordsDict;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.NLToCGParsing
@@ -20,6 +21,7 @@ namespace MyNPCLib.NLToCGParsing
         private readonly object mLockObj = new object();
         private ATNLexer mLexer;
         private IWordsDict mWordsDict;
+        private Queue<IList<ATNExtendedToken>> mRecoveriesTokens = new Queue<IList<ATNExtendedToken>>();
 
         public ATNExtendedLexer Fork()
         {
@@ -28,14 +30,20 @@ namespace MyNPCLib.NLToCGParsing
                 var result = new ATNExtendedLexer();
                 result.mWordsDict = mWordsDict;
                 result.mLexer = mLexer.Fork();
+                result.mRecoveriesTokens = new Queue<IList<ATNExtendedToken>>(mRecoveriesTokens.ToList());
                 return result;
             }
         }
 
-        public IList<ATNExtendToken> GetСlusterOfExtendTokens()
+        public IList<ATNExtendedToken> GetСlusterOfExtendedTokens()
         {
             lock (mLockObj)
             {
+                if (mRecoveriesTokens.Count > 0)
+                {
+                    return mRecoveriesTokens.Dequeue();
+                }
+
                 var token = mLexer.GetToken();
 
 #if DEBUG
@@ -47,7 +55,7 @@ namespace MyNPCLib.NLToCGParsing
                     return null;
                 }
 
-                var result = new List<ATNExtendToken>();
+                var result = new List<ATNExtendedToken>();
 
                 var tokenKind = token.Kind;
 
@@ -85,9 +93,9 @@ namespace MyNPCLib.NLToCGParsing
             }
         }
 
-        private IList<ATNExtendToken> ProcessWordToken(ATNToken token)
+        private IList<ATNExtendedToken> ProcessWordToken(ATNToken token)
         {
-            var result = new List<ATNExtendToken>();
+            var result = new List<ATNExtendedToken>();
 
             var tokenContent = token.Content;
 
@@ -121,9 +129,9 @@ namespace MyNPCLib.NLToCGParsing
             return result;
         }
 
-        private ATNExtendToken CreateExtendToken(ATNToken sourceToken)
+        private ATNExtendedToken CreateExtendToken(ATNToken sourceToken)
         {
-            var result = new ATNExtendToken();
+            var result = new ATNExtendedToken();
             result.Kind = sourceToken.Kind;
             result.Content = sourceToken.Content;
             result.Pos = sourceToken.Pos;
@@ -131,7 +139,7 @@ namespace MyNPCLib.NLToCGParsing
             return result;
         }
 
-        private ATNExtendToken CreateExtendToken(ATNToken sourceToken, BaseGrammaticalWordFrame grammaticalWordFrame)
+        private ATNExtendedToken CreateExtendToken(ATNToken sourceToken, BaseGrammaticalWordFrame grammaticalWordFrame)
         {
             var partOfSpeech = grammaticalWordFrame.PartOfSpeech;
 
@@ -172,7 +180,7 @@ namespace MyNPCLib.NLToCGParsing
             }
         }
 
-        private ATNExtendToken CreateNounExtendToken(ATNToken sourceToken, NounGrammaticalWordFrame grammaticalWordFrame)
+        private ATNExtendedToken CreateNounExtendToken(ATNToken sourceToken, NounGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
             result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
@@ -186,7 +194,7 @@ namespace MyNPCLib.NLToCGParsing
             return result;
         }
 
-        private ATNExtendToken CreatePronounExtendToken(ATNToken sourceToken, PronounGrammaticalWordFrame grammaticalWordFrame)
+        private ATNExtendedToken CreatePronounExtendToken(ATNToken sourceToken, PronounGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
             result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
@@ -199,7 +207,7 @@ namespace MyNPCLib.NLToCGParsing
             return result;
         }
 
-        private ATNExtendToken CreateAdjectiveExtendToken(ATNToken sourceToken, AdjectiveGrammaticalWordFrame grammaticalWordFrame)
+        private ATNExtendedToken CreateAdjectiveExtendToken(ATNToken sourceToken, AdjectiveGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
             result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
@@ -208,7 +216,7 @@ namespace MyNPCLib.NLToCGParsing
             return result;
         }
 
-        private ATNExtendToken CreateVerbExtendToken(ATNToken sourceToken, VerbGrammaticalWordFrame grammaticalWordFrame)
+        private ATNExtendedToken CreateVerbExtendToken(ATNToken sourceToken, VerbGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
             result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
@@ -223,7 +231,7 @@ namespace MyNPCLib.NLToCGParsing
             return result;
         }
 
-        private ATNExtendToken CreateAdverbExtendToken(ATNToken sourceToken, AdverbGrammaticalWordFrame grammaticalWordFrame)
+        private ATNExtendedToken CreateAdverbExtendToken(ATNToken sourceToken, AdverbGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
             result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
@@ -233,28 +241,28 @@ namespace MyNPCLib.NLToCGParsing
             return result;
         }
 
-        private ATNExtendToken CreatePrepositionExtendToken(ATNToken sourceToken, PrepositionGrammaticalWordFrame grammaticalWordFrame)
+        private ATNExtendedToken CreatePrepositionExtendToken(ATNToken sourceToken, PrepositionGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
             result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
             return result;
         }
 
-        private ATNExtendToken CreateConjunctionExtendToken(ATNToken sourceToken, ConjunctionGrammaticalWordFrame grammaticalWordFrame)
+        private ATNExtendedToken CreateConjunctionExtendToken(ATNToken sourceToken, ConjunctionGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
             result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
             return result;
         }
 
-        private ATNExtendToken CreateInterjectionExtendToken(ATNToken sourceToken, InterjectionGrammaticalWordFrame grammaticalWordFrame)
+        private ATNExtendedToken CreateInterjectionExtendToken(ATNToken sourceToken, InterjectionGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
             result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
             return result;
         }
 
-        private ATNExtendToken CreateArticleExtendToken(ATNToken sourceToken, ArticleGrammaticalWordFrame grammaticalWordFrame)
+        private ATNExtendedToken CreateArticleExtendToken(ATNToken sourceToken, ArticleGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
             result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
@@ -263,12 +271,20 @@ namespace MyNPCLib.NLToCGParsing
             return result;
         }
 
-        private ATNExtendToken CreateNumeralExtendToken(ATNToken sourceToken, NumeralGrammaticalWordFrame grammaticalWordFrame)
+        private ATNExtendedToken CreateNumeralExtendToken(ATNToken sourceToken, NumeralGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
             result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
             result.NumeralType = grammaticalWordFrame.NumeralType;
             return result;
+        }
+
+        public void Recovery(IList<ATNExtendedToken> tokensList)
+        {
+            lock (mLockObj)
+            {
+                mRecoveriesTokens.Enqueue(tokensList);
+            }
         }
     }
 }

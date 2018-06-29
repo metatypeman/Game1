@@ -6,6 +6,24 @@ namespace MyNPCLib.NLToCGParsing
 {
     public enum GoalOfATNExtendToken
     {
-        Undefined
+        Undefined,
+        NP,
+        BaseV,
+        V2f,
+        V3f,
+        Ving,
+        FToDo,
+        FToBe,
+        FToHave,
+        Will,
+        Would,
+        Shell,
+        Should,
+        Must,
+        Can,
+        Could,
+        May,
+        Might,
+        Let    
     }
 }

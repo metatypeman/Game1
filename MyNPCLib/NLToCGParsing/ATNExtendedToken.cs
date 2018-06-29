@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MyNPCLib.NLToCGParsing
 {
-    public class ATNExtendToken : IObjectToString
+    public class ATNExtendedToken : IObjectToString
     {
         public KindOfATNToken Kind { get; set; } = KindOfATNToken.Unknown;
         public string Content { get; set; } = string.Empty;
