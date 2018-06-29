@@ -13,6 +13,7 @@ namespace MyNPCLib.NLToCGParsing
         V3f,
         Ving,
         FToDo,
+        Be,
         FToBe,
         FToHave,
         Will,

@@ -16,16 +16,22 @@ namespace TmpSandBox
         public string N_6 = string.Empty;
         public string N_7 = string.Empty;
         public string N_8 = string.Empty;
+        public string Comment = string.Empty;
 
         public override string ToString()
         {
             var sb = new StringBuilder();
+            if(!string.IsNullOrWhiteSpace(Comment))
+            {
+                sb.AppendLine($"/*{Comment}*/");
+            }
+
             if(!string.IsNullOrWhiteSpace(N_1))
             {
                 sb.Append(N_1);
                 if(IsEmptyElems(N_2, N_3, N_4, N_5, N_6, N_7, N_8))
                 {
-                    sb.Append("->End");
+                    sb.AppendLine("->End");
                 }
             }
 
@@ -34,7 +40,7 @@ namespace TmpSandBox
                 sb.Append($"->{N_2}");
                 if (IsEmptyElems(N_3, N_4, N_5, N_6, N_7, N_8))
                 {
-                    sb.Append("->End");
+                    sb.AppendLine("->End");
                 }
             }
 
@@ -43,7 +49,7 @@ namespace TmpSandBox
                 sb.Append($"->{N_3}");
                 if (IsEmptyElems(N_4, N_5, N_6, N_7, N_8))
                 {
-                    sb.Append("->End");
+                    sb.AppendLine("->End");
                 }
             }
 
@@ -52,7 +58,7 @@ namespace TmpSandBox
                 sb.Append($"->{N_4}");
                 if (IsEmptyElems(N_5, N_6, N_7, N_8))
                 {
-                    sb.Append("->End");
+                    sb.AppendLine("->End");
                 }
             }
 
@@ -61,7 +67,7 @@ namespace TmpSandBox
                 sb.Append($"->{N_5}");
                 if (IsEmptyElems(N_6, N_7, N_8))
                 {
-                    sb.Append("->End");
+                    sb.AppendLine("->End");
                 }
             }
 
@@ -70,7 +76,7 @@ namespace TmpSandBox
                 sb.Append($"->{N_6}");
                 if (IsEmptyElems(N_7, N_8))
                 {
-                    sb.Append("->End");
+                    sb.AppendLine("->End");
                 }
             }
 
@@ -79,13 +85,58 @@ namespace TmpSandBox
                 sb.Append($"->{N_7}");
                 if (IsEmptyElems(N_8))
                 {
-                    sb.Append("->End");
+                    sb.AppendLine("->End");
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(N_8))
             {
-                sb.Append($"->{N_8}->End");
+                sb.AppendLine($"->{N_8}->End");
+            }
+            return sb.ToString();
+        }
+
+        public string ToCSharpView()
+        {
+            var sb = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(N_1))
+            {
+                sb.Append(N_1);
+            }
+
+            if (!string.IsNullOrWhiteSpace(N_2))
+            {
+                sb.Append($"_{N_2}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(N_3))
+            {
+                sb.Append($"_{N_3}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(N_4))
+            {
+                sb.Append($"_{N_4}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(N_5))
+            {
+                sb.Append($"_{N_5}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(N_6))
+            {
+                sb.Append($"_{N_6}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(N_7))
+            {
+                sb.Append($"_{N_7}");
+            }
+
+            if (!string.IsNullOrWhiteSpace(N_8))
+            {
+                sb.AppendLine($"_{N_8}");
             }
             return sb.ToString();
         }
@@ -176,46 +227,42 @@ namespace TmpSandBox
         /// <summary>
         /// Do, did, does. Except: done.
         /// </summary>
-        private const string F_to_do = "F_to_do";
+        private const string FToDo = "FToDo";
 
         /// <summary>
         /// Is, am, are, was, were. Except: be, will, shall, should, would, being, been.
         /// </summary>
-        private const string F_to_be = "F_to_be";
+        private const string FToBe = "FToBe";
 
         /// <summary>
         /// Have, has, had.
         /// </summary>
-        private const string F_to_have = "F_to_have";
+        private const string FToHave = "FToHave";
 
         /// <summary>
         /// Word like never.
         /// </summary>
-        private const string Never_W = "Never_W";
+        private const string NeverW = "NeverW";
 
         /// <summary>
         /// Not
         /// </summary>
         private const string Not = "Not";
 
-        /// <summary>
-        /// Question adverb, like: when
-        /// </summary>
-        private const string Q_ADV = "Q_ADV";
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private const string QPP = "QPP";
-
-        /// <summary>
-        /// Question word like: who, what
-        /// </summary>
-        private const string QNP = "QNP";
-
         private const string Will = "Will";
 
-        //private const string PQW = "PQW";
+        private const string Ving = "Ving";
+        private const string V2f = "V2f";
+        private const string V3f = "V3f";
+
+        /// <summary>
+        /// who
+        /// </summary>
+        private const string PSQW = "PSQW";
+        /// <summary>
+        /// what
+        /// </summary>
+        private const string POQW = "POQW";
 
         //private const string Ving = "Ving";
         //private const string V3f = "V3f";
@@ -237,40 +284,37 @@ namespace TmpSandBox
             var nodes = new List<N>() {
                 //**Present Simple
                 //**Past Simple
-                //she helps me
+                //She helps me
                 //The Earth is round.
-                N(NP, VP),
-                //she never helps me
-                N(NP, Never_W, VP),
-                //When you see a big green house -> part of: When you see a big green house, turn left.
-                N(Q_ADV, NP, VP),
-                //Do I play?
-                N(F_to_do, NP, VP),
-                //Do not I play?
-                N(F_to_do, Not, NP, VP),
+                C(N(NP, VP), "She helps me; The Earth is round."), 
                 //I do not play
-                N(NP, F_to_do, Not, VP),
-                //who goes to the house
-                N(QNP, VP),
-                //when he does not go to the house
-                N(Q_ADV, NP, F_to_do, Not, VP),
-                //who does not go to the house
-                N(QNP, F_to_do, Not, VP),
-                //**Future Simple
-                //I will play
-                N(NP, Will, VP),
-                //I will never play
-                N(NP, Will, Never_W, VP),
-                //I will not play.
-                N(NP, Will, Not, VP),
-                //Will not I play?
-                N(Will, Not, NP, VP),
-                //Will I play?
-                N(Will, NP, VP),
-                //When will I play?
-                N(Q_ADV, Will, NP, VP)
-            };
+                //C(N(NP, FToDo, Not, VP), "I do not play"),
+                ////Do I play?
+                //C(N(FToDo, NP, VP), "Do I play?"),
+                ////Who plays it?
+                //C(N(PSQW, VP), "Who plays it?"),
+                ////What does it play?
+                //C(N(POQW, FToDo, NP, VP), "What does it play?"),
 
+                ////**Future Simple
+                ////I will play
+                //C(N(NP, Will, VP), "I will play"),
+                ////Will I play?
+                //C(N(Will, NP, VP), "Will I play?"),
+                ////I will not play
+                //C(N(NP, Will, Not, VP), "I will not play"),
+                ////Who will play it?
+                //C(N(PSQW, Will, VP), "Who will play it?"),
+                ////What will it play?
+                //C(N(POQW, Will, NP, VP), "What will it play?")
+
+                //**Present Continuous
+                //
+                //
+                //
+                //
+            };
+            //C(N(), "")
 #if DEBUG
             LogInstance.Log($"nodes.Count = {nodes.Count}");
             foreach(var node in nodes)
@@ -278,6 +322,8 @@ namespace TmpSandBox
                 LogInstance.Log($"node = {node}");
             }
 #endif
+
+            PrintList(nodes);
 
             //var nodes = new List<N>()
             //{
@@ -404,186 +450,279 @@ namespace TmpSandBox
             //    N(QW, could, NP, V),
             //    N(QW, could, not, NP, V)
             //};
-
-            //var N1List = nodes.GroupBy(p => p.N_1).ToDictionary(p => p.Key, p => p.ToList());
-
-            //var n = 0;
-
-            //var tmpStateSb = new StringBuilder();
-
-            //var tmpProcessingStub = new StringBuilder();
-
-            //foreach (var node in N1List)
-            //{
-            //    var n_1 = node.Key;
-
-            //    var stateName = GetStateName(n_1);
-
-            //    n++;
-
-            //    NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree n_1 = {n_1} stateName = {stateName} n = {n}");
-
-            //    RegStateItem(tmpStateSb, stateName);
-            //    RegProsessingItem(tmpProcessingStub, stateName);
-
-            //    var N2List = node.Value.GroupBy(p => p.N_2).ToDictionary(p => p.Key, p => p.ToList());
-
-            //    foreach (var subNode_2 in N2List)
-            //    {
-            //        var n_2 = subNode_2.Key;
-
-            //        stateName = GetStateName(n_1, n_2);
-
-            //        n++;
-
-            //        NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(1)} n_2 = {n_2} stateName = {stateName} n = {n}");
-
-            //        RegStateItem(tmpStateSb, stateName);
-            //        RegProsessingItem(tmpProcessingStub, stateName);
-
-            //        var items_3 = subNode_2.Value;
-
-            //        if (items_3.Any(p => !string.IsNullOrWhiteSpace(p.N_3)))
-            //        {
-            //            var N3List = subNode_2.Value.GroupBy(p => p.N_3).ToDictionary(p => p.Key, p => p.ToList());
-
-            //            foreach (var subNode_3 in N3List)
-            //            {
-            //                var n_3 = subNode_3.Key;
-
-            //                stateName = GetStateName(n_1, n_2, n_3);
-
-            //                n++;
-
-            //                NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(2)} n_3 = {n_3} stateName = {stateName} n = {n}");
-
-            //                RegStateItem(tmpStateSb, stateName);
-            //                RegProsessingItem(tmpProcessingStub, stateName);
-
-            //                var items_4 = subNode_3.Value;
-
-            //                if (items_4.Any(p => !string.IsNullOrWhiteSpace(p.N_4)))
-            //                {
-            //                    var N4List = items_4.GroupBy(p => p.N_4).ToDictionary(p => p.Key, p => p.ToList());
-
-            //                    foreach (var subNode_4 in N4List)
-            //                    {
-            //                        var n_4 = subNode_4.Key;
-
-            //                        stateName = GetStateName(n_1, n_2, n_3, n_4);
-
-            //                        n++;
-
-            //                        NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(3)} n_4 = {n_4} stateName = {stateName} n = {n}");
-
-            //                        RegStateItem(tmpStateSb, stateName);
-            //                        RegProsessingItem(tmpProcessingStub, stateName);
-
-            //                        var items_5 = subNode_4.Value;
-
-            //                        if (items_5.Any(p => !string.IsNullOrWhiteSpace(p.N_5)))
-            //                        {
-            //                            var N5List = items_5.GroupBy(p => p.N_5).ToDictionary(p => p.Key, p => p.ToList());
-
-            //                            foreach (var subNode_5 in N5List)
-            //                            {
-            //                                var n_5 = subNode_5.Key;
-
-            //                                stateName = GetStateName(n_1, n_2, n_3, n_4, n_5);
-
-            //                                n++;
-
-            //                                NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(4)} n_5 = {n_5} stateName = {stateName} n = {n}");
-
-            //                                RegStateItem(tmpStateSb, stateName);
-            //                                RegProsessingItem(tmpProcessingStub, stateName);
-
-            //                                var items_6 = subNode_5.Value;
-
-            //                                if (items_6.Any(p => !string.IsNullOrWhiteSpace(p.N_6)))
-            //                                {
-            //                                    var N6List = items_6.GroupBy(p => p.N_6).ToDictionary(p => p.Key, p => p.ToList());
-
-            //                                    foreach (var subNode_6 in N6List)
-            //                                    {
-            //                                        var n_6 = subNode_6.Key;
-
-            //                                        stateName = GetStateName(n_1, n_2, n_3, n_4, n_5, n_6);
-
-            //                                        n++;
-
-            //                                        NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(5)} n_6 = {n_6} stateName = {stateName} n = {n}");
-
-            //                                        RegStateItem(tmpStateSb, stateName);
-            //                                        RegProsessingItem(tmpProcessingStub, stateName);
-
-            //                                        var items_7 = subNode_6.Value;
-
-            //                                        if (items_7.Any(p => !string.IsNullOrWhiteSpace(p.N_7)))
-            //                                        {
-            //                                            var N7List = items_7.GroupBy(p => p.N_7).ToDictionary(p => p.Key, p => p.ToList());
-
-            //                                            foreach (var subNode_7 in N7List)
-            //                                            {
-            //                                                var n_7 = subNode_7.Key;
-
-            //                                                stateName = GetStateName(n_1, n_2, n_3, n_4, n_5, n_6, n_7);
-
-            //                                                n++;
-
-            //                                                NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(6)} n_7 = {n_7} stateName = {stateName} n = {n}");
-
-            //                                                RegStateItem(tmpStateSb, stateName);
-            //                                                RegProsessingItem(tmpProcessingStub, stateName);
-
-            //                                                var items_8 = subNode_7.Value;
-
-            //                                                if (items_8.Any(p => !string.IsNullOrWhiteSpace(p.N_8)))
-            //                                                {
-            //                                                    var N8List = items_8.GroupBy(p => p.N_8).ToDictionary(p => p.Key, p => p.ToList());
-
-            //                                                    foreach (var subNode_8 in N8List)
-            //                                                    {
-            //                                                        var n_8 = subNode_8.Key;
-
-            //                                                        stateName = GetStateName(n_1, n_2, n_3, n_4, n_5, n_6, n_7, n_8);
-
-            //                                                        n++;
-
-            //                                                        NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(7)} n_8 = {n_8} stateName = {stateName} n = {n}");
-
-            //                                                        RegStateItem(tmpStateSb, stateName);
-            //                                                        RegProsessingItem(tmpProcessingStub, stateName);
-            //                                                    }
-            //                                                }
-            //                                            }
-            //                                        }
-            //                                    }
-            //                                }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //NLog.LogManager.GetCurrentClassLogger().Info(tmpStateSb.ToString());
-            //NLog.LogManager.GetCurrentClassLogger().Info(tmpProcessingStub.ToString());
         }
 
-        //private static void RegStateItem(StringBuilder sb, string name)
-        //{
-        //    sb.AppendLine($"{name},");
-        //}
+        private void PrintList(List<N> nodes)
+        {
+            var tmpFinalNodesDict = nodes.ToDictionary(p => p.ToCSharpView(), p => p);
 
-        //private static void RegProsessingItem(StringBuilder sb, string name)
-        //{
-        //    sb.AppendLine($"case ATNNodeState.{name}:");
-        //    sb.AppendLine("throw new NotImplementedException();");
-        //    sb.AppendLine(string.Empty);
-        //}
+            var N1List = nodes.GroupBy(p => p.N_1).ToDictionary(p => p.Key, p => p.ToList());
+
+            var n = 0;
+
+            var tmpStateSb = new StringBuilder();
+
+            var tmpProcessingStub = new StringBuilder();
+
+            var tmpComment = string.Empty;
+
+            foreach (var node in N1List)
+            {
+                var n_1 = node.Key;
+
+                var stateName = GetStateName(n_1);
+
+                n++;
+
+                NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree n_1 = {n_1} stateName = {stateName} n = {n}");
+
+                if(tmpFinalNodesDict.ContainsKey(stateName))
+                {
+                    var tmpNode = tmpFinalNodesDict[stateName];
+                    tmpComment = tmpNode.Comment;
+                }
+                else
+                {
+                    tmpComment = string.Empty;
+                }
+
+                RegStateItem(tmpStateSb, stateName, tmpComment);
+                RegProsessingItem(tmpProcessingStub, stateName);
+
+                var N2List = node.Value.GroupBy(p => p.N_2).ToDictionary(p => p.Key, p => p.ToList());
+
+                foreach (var subNode_2 in N2List)
+                {
+                    var n_2 = subNode_2.Key;
+
+                    stateName = GetStateName(n_1, n_2);
+
+                    n++;
+
+                    NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(1)} n_2 = {n_2} stateName = {stateName} n = {n}");
+
+                    if (tmpFinalNodesDict.ContainsKey(stateName))
+                    {
+                        var tmpNode = tmpFinalNodesDict[stateName];
+                        tmpComment = tmpNode.Comment;
+                    }
+                    else
+                    {
+                        tmpComment = string.Empty;
+                    }
+
+                    RegStateItem(tmpStateSb, stateName, tmpComment);
+                    RegProsessingItem(tmpProcessingStub, stateName);
+
+                    var items_3 = subNode_2.Value;
+
+                    if (items_3.Any(p => !string.IsNullOrWhiteSpace(p.N_3)))
+                    {
+                        var N3List = subNode_2.Value.GroupBy(p => p.N_3).ToDictionary(p => p.Key, p => p.ToList());
+
+                        foreach (var subNode_3 in N3List)
+                        {
+                            var n_3 = subNode_3.Key;
+
+                            stateName = GetStateName(n_1, n_2, n_3);
+
+                            n++;
+
+                            NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(2)} n_3 = {n_3} stateName = {stateName} n = {n}");
+
+                            if (tmpFinalNodesDict.ContainsKey(stateName))
+                            {
+                                var tmpNode = tmpFinalNodesDict[stateName];
+                                tmpComment = tmpNode.Comment;
+                            }
+                            else
+                            {
+                                tmpComment = string.Empty;
+                            }
+
+                            RegStateItem(tmpStateSb, stateName, tmpComment);
+                            RegProsessingItem(tmpProcessingStub, stateName);
+
+                            var items_4 = subNode_3.Value;
+
+                            if (items_4.Any(p => !string.IsNullOrWhiteSpace(p.N_4)))
+                            {
+                                var N4List = items_4.GroupBy(p => p.N_4).ToDictionary(p => p.Key, p => p.ToList());
+
+                                foreach (var subNode_4 in N4List)
+                                {
+                                    var n_4 = subNode_4.Key;
+
+                                    stateName = GetStateName(n_1, n_2, n_3, n_4);
+
+                                    n++;
+
+                                    NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(3)} n_4 = {n_4} stateName = {stateName} n = {n}");
+
+                                    if (tmpFinalNodesDict.ContainsKey(stateName))
+                                    {
+                                        var tmpNode = tmpFinalNodesDict[stateName];
+                                        tmpComment = tmpNode.Comment;
+                                    }
+                                    else
+                                    {
+                                        tmpComment = string.Empty;
+                                    }
+
+                                    RegStateItem(tmpStateSb, stateName, tmpComment);
+                                    RegProsessingItem(tmpProcessingStub, stateName);
+
+                                    var items_5 = subNode_4.Value;
+
+                                    if (items_5.Any(p => !string.IsNullOrWhiteSpace(p.N_5)))
+                                    {
+                                        var N5List = items_5.GroupBy(p => p.N_5).ToDictionary(p => p.Key, p => p.ToList());
+
+                                        foreach (var subNode_5 in N5List)
+                                        {
+                                            var n_5 = subNode_5.Key;
+
+                                            stateName = GetStateName(n_1, n_2, n_3, n_4, n_5);
+
+                                            n++;
+
+                                            NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(4)} n_5 = {n_5} stateName = {stateName} n = {n}");
+
+                                            if (tmpFinalNodesDict.ContainsKey(stateName))
+                                            {
+                                                var tmpNode = tmpFinalNodesDict[stateName];
+                                                tmpComment = tmpNode.Comment;
+                                            }
+                                            else
+                                            {
+                                                tmpComment = string.Empty;
+                                            }
+
+                                            RegStateItem(tmpStateSb, stateName, tmpComment);
+                                            RegProsessingItem(tmpProcessingStub, stateName);
+
+                                            var items_6 = subNode_5.Value;
+
+                                            if (items_6.Any(p => !string.IsNullOrWhiteSpace(p.N_6)))
+                                            {
+                                                var N6List = items_6.GroupBy(p => p.N_6).ToDictionary(p => p.Key, p => p.ToList());
+
+                                                foreach (var subNode_6 in N6List)
+                                                {
+                                                    var n_6 = subNode_6.Key;
+
+                                                    stateName = GetStateName(n_1, n_2, n_3, n_4, n_5, n_6);
+
+                                                    n++;
+
+                                                    NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(5)} n_6 = {n_6} stateName = {stateName} n = {n}");
+
+                                                    if (tmpFinalNodesDict.ContainsKey(stateName))
+                                                    {
+                                                        var tmpNode = tmpFinalNodesDict[stateName];
+                                                        tmpComment = tmpNode.Comment;
+                                                    }
+                                                    else
+                                                    {
+                                                        tmpComment = string.Empty;
+                                                    }
+
+                                                    RegStateItem(tmpStateSb, stateName, tmpComment);
+                                                    RegProsessingItem(tmpProcessingStub, stateName);
+
+                                                    var items_7 = subNode_6.Value;
+
+                                                    if (items_7.Any(p => !string.IsNullOrWhiteSpace(p.N_7)))
+                                                    {
+                                                        var N7List = items_7.GroupBy(p => p.N_7).ToDictionary(p => p.Key, p => p.ToList());
+
+                                                        foreach (var subNode_7 in N7List)
+                                                        {
+                                                            var n_7 = subNode_7.Key;
+
+                                                            stateName = GetStateName(n_1, n_2, n_3, n_4, n_5, n_6, n_7);
+
+                                                            n++;
+
+                                                            NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(6)} n_7 = {n_7} stateName = {stateName} n = {n}");
+
+                                                            if (tmpFinalNodesDict.ContainsKey(stateName))
+                                                            {
+                                                                var tmpNode = tmpFinalNodesDict[stateName];
+                                                                tmpComment = tmpNode.Comment;
+                                                            }
+                                                            else
+                                                            {
+                                                                tmpComment = string.Empty;
+                                                            }
+
+                                                            RegStateItem(tmpStateSb, stateName, tmpComment);
+                                                            RegProsessingItem(tmpProcessingStub, stateName);
+
+                                                            var items_8 = subNode_7.Value;
+
+                                                            if (items_8.Any(p => !string.IsNullOrWhiteSpace(p.N_8)))
+                                                            {
+                                                                var N8List = items_8.GroupBy(p => p.N_8).ToDictionary(p => p.Key, p => p.ToList());
+
+                                                                foreach (var subNode_8 in N8List)
+                                                                {
+                                                                    var n_8 = subNode_8.Key;
+
+                                                                    stateName = GetStateName(n_1, n_2, n_3, n_4, n_5, n_6, n_7, n_8);
+
+                                                                    n++;
+
+                                                                    NLog.LogManager.GetCurrentClassLogger().Info($"CreateATNStateTree {Spacer(7)} n_8 = {n_8} stateName = {stateName} n = {n}");
+
+                                                                    if (tmpFinalNodesDict.ContainsKey(stateName))
+                                                                    {
+                                                                        var tmpNode = tmpFinalNodesDict[stateName];
+                                                                        tmpComment = tmpNode.Comment;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        tmpComment = string.Empty;
+                                                                    }
+
+                                                                    RegStateItem(tmpStateSb, stateName, tmpComment);
+                                                                    RegProsessingItem(tmpProcessingStub, stateName);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            NLog.LogManager.GetCurrentClassLogger().Info(tmpStateSb.ToString());
+            NLog.LogManager.GetCurrentClassLogger().Info(tmpProcessingStub.ToString());
+        }
+
+        private static void RegStateItem(StringBuilder sb, string name, string comment)
+        {
+            if(!string.IsNullOrWhiteSpace(comment))
+            {
+                sb.AppendLine("/// <summary>");
+                sb.AppendLine($"/// {comment}");
+                sb.AppendLine("/// </summary>");
+            }
+            sb.AppendLine($"{name},");
+        }
+        
+        private static void RegProsessingItem(StringBuilder sb, string name)
+        {
+            sb.AppendLine($"case ATNNodeState.{name}:");
+            sb.AppendLine("throw new NotImplementedException();");
+            sb.AppendLine(string.Empty);
+        }
 
         private static N N(string n_1)
         {
@@ -685,166 +824,169 @@ namespace TmpSandBox
             return result;
         }
 
-        //private string Spacer(int n)
-        //{
-        //    var tmpSb = new StringBuilder();
+        private static N C(N n, string comment)
+        {
+            n.Comment = comment;
+            return n;
+        }
 
-        //    for (var i = 0; i < n; i++)
-        //    {
-        //        tmpSb.Append(" ");
-        //    }
+        private string Spacer(int n)
+        {
+            var tmpSb = new StringBuilder();
 
-        //    return tmpSb.ToString();
-        //}
+            for (var i = 0; i < n; i++)
+            {
+                tmpSb.Append(" ");
+            }
 
-        //private string GetStateName(string n_1)
-        //{
-        //    return GetNodeName(n_1);
-        //}
+            return tmpSb.ToString();
+        }
 
-        //private string GetStateName(string n_1, string n_2)
-        //{
-        //    return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}";
-        //}
+        private string GetStateName(string n_1)
+        {
+            return GetNodeName(n_1);
+        }
 
-        //private string GetStateName(string n_1, string n_2, string n_3)
-        //{
-        //    return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}_{GetNodeName(n_3)}";
-        //}
+        private string GetStateName(string n_1, string n_2)
+        {
+            return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}";
+        }
 
-        //private string GetStateName(string n_1, string n_2, string n_3, string n_4)
-        //{
-        //    return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}_{GetNodeName(n_3)}_{GetNodeName(n_4)}";
-        //}
+        private string GetStateName(string n_1, string n_2, string n_3)
+        {
+            return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}_{GetNodeName(n_3)}";
+        }
 
-        //private string GetStateName(string n_1, string n_2, string n_3, string n_4, string n_5)
-        //{
-        //    return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}_{GetNodeName(n_3)}_{GetNodeName(n_4)}_{GetNodeName(n_5)}";
-        //}
+        private string GetStateName(string n_1, string n_2, string n_3, string n_4)
+        {
+            return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}_{GetNodeName(n_3)}_{GetNodeName(n_4)}";
+        }
 
-        //private string GetStateName(string n_1, string n_2, string n_3, string n_4, string n_5, string n_6)
-        //{
-        //    return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}_{GetNodeName(n_3)}_{GetNodeName(n_4)}_{GetNodeName(n_5)}_{GetNodeName(n_6)}";
-        //}
+        private string GetStateName(string n_1, string n_2, string n_3, string n_4, string n_5)
+        {
+            return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}_{GetNodeName(n_3)}_{GetNodeName(n_4)}_{GetNodeName(n_5)}";
+        }
 
-        //private string GetStateName(string n_1, string n_2, string n_3, string n_4, string n_5, string n_6, string n_7)
-        //{
-        //    return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}_{GetNodeName(n_3)}_{GetNodeName(n_4)}_{GetNodeName(n_5)}_{GetNodeName(n_6)}_{GetNodeName(n_7)}";
-        //}
+        private string GetStateName(string n_1, string n_2, string n_3, string n_4, string n_5, string n_6)
+        {
+            return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}_{GetNodeName(n_3)}_{GetNodeName(n_4)}_{GetNodeName(n_5)}_{GetNodeName(n_6)}";
+        }
 
-        //private string GetStateName(string n_1, string n_2, string n_3, string n_4, string n_5, string n_6, string n_7, string n_8)
-        //{
-        //    return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}_{GetNodeName(n_3)}_{GetNodeName(n_4)}_{GetNodeName(n_5)}_{GetNodeName(n_6)}_{GetNodeName(n_7)}_{GetNodeName(n_8)}";
-        //}
+        private string GetStateName(string n_1, string n_2, string n_3, string n_4, string n_5, string n_6, string n_7)
+        {
+            return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}_{GetNodeName(n_3)}_{GetNodeName(n_4)}_{GetNodeName(n_5)}_{GetNodeName(n_6)}_{GetNodeName(n_7)}";
+        }
 
-        //private string GetNodeName(string node)
-        //{
-        //    if (node == NP)
-        //    {
-        //        return NP;
-        //    }
+        private string GetStateName(string n_1, string n_2, string n_3, string n_4, string n_5, string n_6, string n_7, string n_8)
+        {
+            return $"{GetNodeName(n_1)}_{GetNodeName(n_2)}_{GetNodeName(n_3)}_{GetNodeName(n_4)}_{GetNodeName(n_5)}_{GetNodeName(n_6)}_{GetNodeName(n_7)}_{GetNodeName(n_8)}";
+        }
 
-        //    if (node == QW)
-        //    {
-        //        return QW;
-        //    }
+        private string GetNodeName(string node)
+        {
+            return node;
 
-        //    if (node == PQW)
-        //    {
-        //        return PQW;
-        //    }
+            //if (node == NP)
+            //{
+            //    return NP;
+            //}
 
-        //    if (node == V)
-        //    {
-        //        return V;
-        //    }
+            //if (node == PQW)
+            //{
+            //    return PQW;
+            //}
 
-        //    if (node == Ving)
-        //    {
-        //        return Ving;
-        //    }
+            //if (node == V)
+            //{
+            //    return V;
+            //}
 
-        //    if (node == V3f)
-        //    {
-        //        return V3f;
-        //    }
+            //if (node == Ving)
+            //{
+            //    return Ving;
+            //}
 
-        //    if (node == to)
-        //    {
-        //        return "To";
-        //    }
+            //if (node == V3f)
+            //{
+            //    return V3f;
+            //}
 
-        //    if (node == not)
-        //    {
-        //        return "Not";
-        //    }
+            //if (node == to)
+            //{
+            //    return "To";
+            //}
 
-        //    if (node == have)
-        //    {
-        //        return "Have";
-        //    }
+            //if (node == not)
+            //{
+            //    return "Not";
+            //}
 
-        //    if (node == will)
-        //    {
-        //        return "Will";
-        //    }
+            //if (node == have)
+            //{
+            //    return "Have";
+            //}
 
-        //    if (node == must)
-        //    {
-        //        return "Must";
-        //    }
+            //if (node == will)
+            //{
+            //    return "Will";
+            //}
 
-        //    if (node == can)
-        //    {
-        //        return "Can";
-        //    }
+            //if (node == must)
+            //{
+            //    return "Must";
+            //}
 
-        //    if (node == _do)
-        //    {
-        //        return "Do";
-        //    }
+            //if (node == can)
+            //{
+            //    return "Can";
+            //}
 
-        //    if (node == may)
-        //    {
-        //        return "May";
-        //    }
+            //if (node == _do)
+            //{
+            //    return "Do";
+            //}
 
-        //    if (node == could)
-        //    {
-        //        return "Could";
-        //    }
+            //if (node == may)
+            //{
+            //    return "May";
+            //}
 
-        //    if (node == might)
-        //    {
-        //        return "Might";
-        //    }
+            //if (node == could)
+            //{
+            //    return "Could";
+            //}
 
-        //    if (node == be)
-        //    {
-        //        return "Be";
-        //    }
+            //if (node == might)
+            //{
+            //    return "Might";
+            //}
 
-        //    if (node == able)
-        //    {
-        //        return "Able";
-        //    }
+            //if (node == be)
+            //{
+            //    return "Be";
+            //}
 
-        //    if (node == F_to_do)
-        //    {
-        //        return "FToDo";
-        //    }
+            //if (node == able)
+            //{
+            //    return "Able";
+            //}
 
-        //    if (node == F_to_be)
-        //    {
-        //        return "FToBe";
-        //    }
+            //if (node == F_to_do)
+            //{
+            //    return "FToDo";
+            //}
 
-        //    if (node == F_to_have)
-        //    {
-        //        return "FToHave";
-        //    }
+            //if (node == F_to_be)
+            //{
+            //    return "FToBe";
+            //}
 
-        //    throw new ArgumentOutOfRangeException(nameof(node), node);
-        //}
+            //if (node == F_to_have)
+            //{
+            //    return "FToHave";
+            //}
+
+            //throw new ArgumentOutOfRangeException(nameof(node), node);
+        }
     }
 }

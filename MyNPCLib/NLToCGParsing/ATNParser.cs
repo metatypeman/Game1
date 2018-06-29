@@ -25,7 +25,9 @@ namespace MyNPCLib.NLToCGParsing
             var context = new ContextOfATNParsing(text, mWordsDict);
 
             var atnNode = new ATNSentenceNode(context);
-            var sentence = atnNode.Run(); 
+            atnNode.Run();
+
+            var sentence = new Sentence();
             return sentence;
         }
     }

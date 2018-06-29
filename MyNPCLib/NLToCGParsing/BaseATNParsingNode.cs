@@ -12,6 +12,14 @@ namespace MyNPCLib.NLToCGParsing
             Context = context;
         }
 
+        public void Run()
+        {
+            NRun();
+            ProcessTasks();
+        }
+
+        protected abstract void NRun();
+
         protected ContextOfATNParsing Context { get; private set; }
         protected IList<GoalOfATNExtendToken> GetGoals(ATNExtendedToken extendedToken)
         {
@@ -46,6 +54,7 @@ namespace MyNPCLib.NLToCGParsing
                                 if(extendedToken.IsGerund)
                                 {
                                     result.Add(GoalOfATNExtendToken.Ving);
+                                    result.Add(GoalOfATNExtendToken.NP);
                                 }
                                 else
                                 {
@@ -88,23 +97,30 @@ namespace MyNPCLib.NLToCGParsing
                                                 {
                                                     if(content == "would")
                                                     {
-                                                        throw new NotImplementedException();
+                                                        result.Add(GoalOfATNExtendToken.Would);
                                                     }
                                                     else
                                                     {
                                                         if(content == "shell")
                                                         {
-                                                            throw new NotImplementedException();
+                                                            result.Add(GoalOfATNExtendToken.Shell);
                                                         }
                                                         else
                                                         {
                                                             if(content == "should")
                                                             {
-                                                                throw new NotImplementedException();
+                                                                result.Add(GoalOfATNExtendToken.Should);
                                                             }
                                                             else
                                                             {
-                                                                throw new NotImplementedException();
+                                                                if(content == "be")
+                                                                {
+                                                                    result.Add(GoalOfATNExtendToken.Be);
+                                                                }
+                                                                else
+                                                                {
+                                                                    result.Add(GoalOfATNExtendToken.FToBe);
+                                                                }
                                                             }
                                                         }
                                                     }                                                 
@@ -112,7 +128,59 @@ namespace MyNPCLib.NLToCGParsing
                                             }
                                             else
                                             {
-                                                throw new NotImplementedException();
+                                                if(extendedToken.IsFormOfToDo)
+                                                {
+                                                    result.Add(GoalOfATNExtendToken.FToDo);
+                                                }
+                                                else
+                                                {
+                                                    if(extendedToken.IsFormOfToHave)
+                                                    {
+                                                        result.Add(GoalOfATNExtendToken.FToHave);
+                                                    }
+                                                    else
+                                                    {
+                                                        if(content == "can")
+                                                        {
+                                                            result.Add(GoalOfATNExtendToken.Can);
+                                                        }
+                                                        else
+                                                        {
+                                                            if (content == "could")
+                                                            {
+                                                                result.Add(GoalOfATNExtendToken.Could);
+                                                            }
+                                                            else
+                                                            {
+                                                                if (content == "must")
+                                                                {
+                                                                    result.Add(GoalOfATNExtendToken.Must);
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (content == "may")
+                                                                    {
+                                                                        result.Add(GoalOfATNExtendToken.May);
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (content == "might")
+                                                                        {
+                                                                            result.Add(GoalOfATNExtendToken.Might);
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if(content == "let")
+                                                                            {
+                                                                                result.Add(GoalOfATNExtendToken.Let);
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }                                         
+                                                    }
+                                                }                     
                                             }                   
                                         }
                                     }                              
@@ -148,6 +216,29 @@ namespace MyNPCLib.NLToCGParsing
             }
 
             return result;
+        }
+
+        private bool mIsUsingContextNext;
+        private List<IATNNodeFactory> mTasksList = new List<IATNNodeFactory>();
+
+        protected void AddTask(IATNNodeFactory factory, bool isUsingContextNext)
+        {
+            if(isUsingContextNext)
+            {
+                mIsUsingContextNext = true;
+            }
+
+            mTasksList.Add(factory);
+        }
+
+        private void ProcessTasks()
+        {
+            if(mTasksList.Count == 0)
+            {
+                return;
+            }
+
+            throw new NotImplementedException();
         }
     }
 }
