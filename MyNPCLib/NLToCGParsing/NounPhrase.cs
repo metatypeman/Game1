@@ -7,6 +7,7 @@ namespace MyNPCLib.NLToCGParsing
     public class NounPhrase : IObjectToString, IShortObjectToString
     {
         public ATNExtendedToken Noun { get; set; }
+        public List<ATNExtendedToken> Determiners { get; set; } = new List<ATNExtendedToken>();
 
         public NounPhrase Fork()
         {
@@ -40,6 +41,19 @@ namespace MyNPCLib.NLToCGParsing
                 sb.Append(Noun.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Noun)}");
             }
+            if (Determiners == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Determiners)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Determiners)}");
+                foreach (var determiner in Determiners)
+                {
+                    sb.Append(determiner.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Determiners)}");
+            }
             return sb.ToString();
         }
 
@@ -67,6 +81,19 @@ namespace MyNPCLib.NLToCGParsing
                 sb.AppendLine($"{spaces}Begin {nameof(Noun)}");
                 sb.Append(Noun.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Noun)}");
+            }
+            if (Determiners == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Determiners)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Determiners)}");
+                foreach (var determiner in Determiners)
+                {
+                    sb.Append(determiner.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Determiners)}");
             }
             return sb.ToString();
         }

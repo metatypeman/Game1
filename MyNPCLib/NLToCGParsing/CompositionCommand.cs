@@ -7,6 +7,11 @@ namespace MyNPCLib.NLToCGParsing
     public enum CompositionCommand
     {
         Undefined,
-        AddToNounPhraseOfSentence
+        AddToNounPhraseOfSentence,
+        AddToVerbPhraseOfSentence,
+        AddToObjectOfVP,
+        PutNounInNP,
+        PutDeterminerInNP,
+        PutVerbInVP
     }
 }

@@ -25,6 +25,7 @@ namespace MyNPCLib.NLToCGParsing
         Could,
         May,
         Might,
-        Let    
+        Let,
+        Point
     }
 }

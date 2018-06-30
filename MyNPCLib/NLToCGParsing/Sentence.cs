@@ -7,6 +7,7 @@ namespace MyNPCLib.NLToCGParsing
     public class Sentence: IObjectToString, IShortObjectToString
     {
         public NounPhrase NounPhrase { get; set; }
+        public VerbPhrase VerbPhrase { get; set; }
 
         public Sentence Fork()
         {
@@ -40,6 +41,16 @@ namespace MyNPCLib.NLToCGParsing
                 sb.Append(NounPhrase.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(NounPhrase)}");
             }
+            if (VerbPhrase == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VerbPhrase)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VerbPhrase)}");
+                sb.Append(VerbPhrase.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(VerbPhrase)}");
+            }
             return sb.ToString();
         }
 
@@ -67,6 +78,16 @@ namespace MyNPCLib.NLToCGParsing
                 sb.AppendLine($"{spaces}Begin {nameof(NounPhrase)}");
                 sb.Append(NounPhrase.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(NounPhrase)}");
+            }
+            if (VerbPhrase == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VerbPhrase)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VerbPhrase)}");
+                sb.Append(VerbPhrase.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(VerbPhrase)}");
             }
             return sb.ToString();
         }

@@ -33,13 +33,15 @@ namespace MyNPCLib.NLToCGParsing
         public enum State
         {
             Init,
-            Noun
+            Noun,
+            Determiner
         }
 
         public enum SubGoal
         {
             Undefined,
-            Noun
+            Noun,
+            Determiner
         }
 
         public ATNNPNode(ATNExtendedToken extendedToken, State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand, ContextOfATNParsing context)
@@ -87,61 +89,121 @@ namespace MyNPCLib.NLToCGParsing
             switch (mInternalState)
             {
                 case State.Init:
-                    mNounPhrase = new NounPhrase();
-                    Context.AddNounPhrase(mNounPhrase);
-                    switch(CompositionCommand)
                     {
-                        case CompositionCommand.AddToNounPhraseOfSentence:
-                            Context.Sentence.NounPhrase = mNounPhrase;
-                            break;
+                        SuppressBornNewNodes = true;
+                        mNounPhrase = new NounPhrase();
+                        Context.AddNounPhrase(mNounPhrase);
+                        switch (CompositionCommand)
+                        {
+                            case CompositionCommand.AddToNounPhraseOfSentence:
+                                Context.Sentence.NounPhrase = mNounPhrase;
+                                break;
+
+                            case CompositionCommand.AddToObjectOfVP:
+                                {
+                                    var tmpVP = Context.PeekCurrentVerbPhrase();
+                                    tmpVP.Object = mNounPhrase;
+                                }              
+                                break;
+
+                            default: throw new ArgumentOutOfRangeException(nameof(CompositionCommand), CompositionCommand, null);
+                        }
+                        var subGoalsList = GetSubGoals(mTargetExtendedToken);
+
+#if DEBUG
+                        LogInstance.Log($"subGoalsList.Count = {subGoalsList.Count}");
+#endif
+
+                        foreach (var subGoal in subGoalsList)
+                        {
+#if DEBUG
+                            LogInstance.Log($"subGoal = {subGoal}");
+#endif
+                            switch (subGoal)
+                            {
+                                case SubGoal.Noun:
+                                    AddTask(new ATNNPNodeFactory(mTargetExtendedToken, ATNNPNode.State.Noun, Goal, CompositionCommand.PutNounInNP));
+                                    break;
+
+                                case SubGoal.Determiner:
+                                    AddTask(new ATNNPNodeFactory(mTargetExtendedToken, ATNNPNode.State.Noun, Goal, CompositionCommand.PutDeterminerInNP));
+                                    break;
+
+                                default: throw new ArgumentOutOfRangeException(nameof(subGoal), subGoal, null);
+                            }
+                        }
                     }
-                    var subGoalsList = GetSubGoals();
+                    break;
 
-                    if (subGoalsList.Count != 1)
+                case State.Noun:
+                    switch (CompositionCommand)
                     {
-                        throw new NotImplementedException();
-                    }
-
-                    var subGoal = subGoalsList.First();
-
-                    switch(subGoal)
-                    {
-                        case SubGoal.Noun:
+                        case CompositionCommand.PutNounInNP:
+                            mNounPhrase = Context.PeekCurrentNounPhrase();
                             mNounPhrase.Noun = mTargetExtendedToken;
                             mInternalState = State.Noun;
                             break;
-                    }
 
+                        case CompositionCommand.PutDeterminerInNP:
+                            mNounPhrase = Context.PeekCurrentNounPhrase();
+                            mNounPhrase.Determiners.Add(mTargetExtendedToken);
+                            mInternalState = State.Determiner;
+                            break;
+
+                        default: throw new ArgumentOutOfRangeException(nameof(CompositionCommand), CompositionCommand, null);
+                    }
+                    break;
+
+                case State.Determiner:
+                    switch (CompositionCommand)
+                    {
+                        case CompositionCommand.PutNounInNP:
+                            mNounPhrase = Context.PeekCurrentNounPhrase();
+                            mNounPhrase.Noun = mTargetExtendedToken;
+                            mInternalState = State.Noun;
+                            break;
+
+                        default: throw new ArgumentOutOfRangeException(nameof(CompositionCommand), CompositionCommand, null);
+                    }
                     break;
 
                 default: throw new ArgumentOutOfRangeException(nameof(mInternalState), mInternalState, null);
             }
 
 #if DEBUG
+            LogInstance.Log($"mNounPhrase = {mNounPhrase}");
             LogInstance.Log("End");
 #endif
         }
 
-        private List<SubGoal> GetSubGoals()
+        private List<SubGoal> GetSubGoals(ATNExtendedToken extendedToken)
         {
             var result = new List<SubGoal>();
 
-            if (mTargetExtendedToken.IsDeterminer)
+            if (extendedToken.IsDeterminer)
             {
-                throw new NotImplementedException();
+                result.Add(SubGoal.Determiner);
             }
             else
             {
-                var partOfSpeech = mTargetExtendedToken.PartOfSpeech;
+                var partOfSpeech = extendedToken.PartOfSpeech;
 
                 switch (partOfSpeech)
                 {
                     case GrammaticalPartOfSpeech.Noun:
-                        throw new NotImplementedException();
+                        if(extendedToken.IsPossessive)
+                        {
+                            throw new NotImplementedException();
+                        }
+                        else
+                        {
+                            result.Add(SubGoal.Noun);
+                        }                      
+                        break;
 
                     case GrammaticalPartOfSpeech.Pronoun:
                         {
-                            var person = mTargetExtendedToken.Person;
+                            var person = extendedToken.Person;
                             switch (person)
                             {
                                 case GrammaticalPerson.First:
@@ -178,6 +240,7 @@ namespace MyNPCLib.NLToCGParsing
                     default: throw new ArgumentOutOfRangeException(nameof(partOfSpeech), partOfSpeech, null);
                 }
             }
+
             return result;
         }
 
@@ -195,6 +258,7 @@ namespace MyNPCLib.NLToCGParsing
 
             if (clusterOfExtendedTokensWithGoals.IsEmpty())
             {
+                PutSentenceToResult();
                 return;
             }
 
@@ -223,6 +287,34 @@ namespace MyNPCLib.NLToCGParsing
                         }
                         break;
 
+                    case GoalOfATNExtendToken.NP:
+                        {
+                            var subGoalsList = GetSubGoals(extendedToken);
+
+#if DEBUG
+                            LogInstance.Log($"subGoalsList.Count = {subGoalsList.Count}");
+#endif
+                            foreach (var subGoal in subGoalsList)
+                            {
+#if DEBUG
+                                LogInstance.Log($"subGoal = {subGoal}");
+#endif
+                                switch (subGoal)
+                                {
+                                    case SubGoal.Noun:
+                                        AddTask(new ATNNPNodeFactory(extendedToken, mInternalState, goal, CompositionCommand.PutNounInNP));
+                                        break;
+
+                                    default: throw new ArgumentOutOfRangeException(nameof(subGoal), subGoal, null);
+                                }
+                            }
+                        }
+                        break;
+
+                    case GoalOfATNExtendToken.Point:
+                        PutSentenceToResult();
+                        break;
+
                     default: throw new ArgumentOutOfRangeException(nameof(goal), goal, null);
                 }
             }
@@ -231,67 +323,5 @@ namespace MyNPCLib.NLToCGParsing
             LogInstance.Log("End");
 #endif
         }
-
-        //        private bool RunItem()
-        //        {
-        //#if DEBUG
-        //            LogInstance.Log($"mTargetExtendedToken = {mTargetExtendedToken}");
-        //#endif
-
-        //            if (mTargetExtendedToken.IsDeterminer)
-        //            {
-        //                throw new NotImplementedException();
-        //            }
-        //            else
-        //            {
-        //                var partOfSpeech = mTargetExtendedToken.PartOfSpeech;
-
-        //                switch (partOfSpeech)
-        //                {
-        //                    case GrammaticalPartOfSpeech.Noun:
-        //                        throw new NotImplementedException();
-
-        //                    case GrammaticalPartOfSpeech.Pronoun:
-        //                        {
-        //                            var person = mTargetExtendedToken.Person;
-        //                            switch(person)
-        //                            {
-        //                                case GrammaticalPerson.First:
-        //                                    mResult.Noun = mTargetExtendedToken;
-        //                                    mHasNoun = true;
-        //                                    return true;
-        //                            }
-        //                            throw new NotImplementedException();
-        //                        }
-        //                        break;
-
-        //                    case GrammaticalPartOfSpeech.Adjective:
-        //                        throw new NotImplementedException();
-
-        //                    case GrammaticalPartOfSpeech.Verb:
-        //                        throw new NotImplementedException();
-
-        //                    case GrammaticalPartOfSpeech.Adverb:
-        //                        throw new NotImplementedException();
-
-        //                    case GrammaticalPartOfSpeech.Preposition:
-        //                        throw new NotImplementedException();
-
-        //                    case GrammaticalPartOfSpeech.Conjunction:
-        //                        throw new NotImplementedException();
-
-        //                    case GrammaticalPartOfSpeech.Interjection:
-        //                        throw new NotImplementedException();
-
-        //                    case GrammaticalPartOfSpeech.Article:
-        //                        throw new NotImplementedException();
-
-        //                    case GrammaticalPartOfSpeech.Numeral:
-        //                        throw new NotImplementedException();
-
-        //                    default: throw new ArgumentOutOfRangeException(nameof(partOfSpeech), partOfSpeech, null);
-        //                }
-        //            }
-        //        }
     }
 }

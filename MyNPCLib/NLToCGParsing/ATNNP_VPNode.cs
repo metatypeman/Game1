@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.SimpleWordsDict;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -30,7 +31,14 @@ namespace MyNPCLib.NLToCGParsing
     {
         public enum State
         {
-            Init
+            Init,
+            Verb
+        }
+
+        public enum SubGoal
+        {
+            Init,
+            Verb
         }
 
         public ATNNP_VPNode(ATNExtendedToken extendedToken, State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand, ContextOfATNParsing context)
@@ -42,14 +50,26 @@ namespace MyNPCLib.NLToCGParsing
 
         private ATNExtendedToken mTargetExtendedToken;
         private State mInternalState = State.Init;
+        private VerbPhrase mVerbPhrase;
 
         protected override void NormalizeCompositionCommand()
         {
 #if DEBUG
-            LogInstance.Log($"CompositionCommand= {CompositionCommand}");
+            LogInstance.Log($"mTargetExtendedToken = {mTargetExtendedToken}");
+            LogInstance.Log($"mInternalState = {mInternalState}");
+            LogInstance.Log($"CompositionCommand = {CompositionCommand}");
 #endif
+            switch (mInternalState)
+            {
+                case State.Init:
+                    CompositionCommand = CompositionCommand.AddToVerbPhraseOfSentence;
+                    break;
 
+                case State.Verb:
+                    break;
 
+                default: throw new ArgumentOutOfRangeException(nameof(mInternalState), mInternalState, null);
+            }
 
 #if DEBUG
             LogInstance.Log("End");
@@ -67,6 +87,48 @@ namespace MyNPCLib.NLToCGParsing
             switch (mInternalState)
             {
                 case State.Init:
+                    {
+                        SuppressBornNewNodes = true;
+                        mVerbPhrase = new VerbPhrase();
+                        Context.AddVerbPhrase(mVerbPhrase);
+                        switch (CompositionCommand)
+                        {
+                            case CompositionCommand.AddToVerbPhraseOfSentence:
+                                Context.Sentence.VerbPhrase = mVerbPhrase;
+                                break;
+
+                            default: throw new ArgumentOutOfRangeException(nameof(CompositionCommand), CompositionCommand, null);
+                        }
+                        var subGoalsList = GetSubGoals(mTargetExtendedToken);
+
+#if DEBUG
+                        LogInstance.Log($"subGoalsList.Count = {subGoalsList.Count}");
+#endif
+
+                        foreach (var subGoal in subGoalsList)
+                        {
+#if DEBUG
+                            LogInstance.Log($"subGoal = {subGoal}");
+#endif
+
+                            switch (subGoal)
+                            {
+                                case SubGoal.Verb:
+                                    AddTask(new ATNNP_VPNodeFactory(mTargetExtendedToken, ATNNP_VPNode.State.Verb, Goal, CompositionCommand.PutVerbInVP));
+                                    break;
+
+                                default: throw new ArgumentOutOfRangeException(nameof(subGoal), subGoal, null);
+                            }
+                        }
+                    }
+                    break;
+
+                case State.Verb:
+                    {
+                        mVerbPhrase = Context.PeekCurrentVerbPhrase();
+                        mVerbPhrase.Verb = mTargetExtendedToken;
+                        mInternalState = State.Verb;
+                    }
                     break;
 
                 default: throw new ArgumentOutOfRangeException(nameof(mInternalState), mInternalState, null);
@@ -77,13 +139,96 @@ namespace MyNPCLib.NLToCGParsing
 #endif
         }
 
+        private List<SubGoal> GetSubGoals(ATNExtendedToken extendedToken)
+        {
+            var result = new List<SubGoal>();
+
+            var partOfSpeech = extendedToken.PartOfSpeech;
+
+            switch (partOfSpeech)
+            {
+                case GrammaticalPartOfSpeech.Noun:
+                    throw new NotImplementedException();
+
+                case GrammaticalPartOfSpeech.Pronoun:
+                    throw new NotImplementedException();
+
+                case GrammaticalPartOfSpeech.Adjective:
+                    throw new NotImplementedException();
+
+                case GrammaticalPartOfSpeech.Verb:
+                    switch(Goal)
+                    {
+                        case GoalOfATNExtendToken.BaseV:
+                            result.Add(SubGoal.Verb);
+                            break;
+
+                        default: throw new ArgumentOutOfRangeException(nameof(Goal), Goal, null);
+                    }
+                    break;
+
+                case GrammaticalPartOfSpeech.Adverb:
+                    throw new NotImplementedException();
+
+                case GrammaticalPartOfSpeech.Preposition:
+                    throw new NotImplementedException();
+
+                case GrammaticalPartOfSpeech.Conjunction:
+                    throw new NotImplementedException();
+
+                case GrammaticalPartOfSpeech.Interjection:
+                    throw new NotImplementedException();
+
+                case GrammaticalPartOfSpeech.Article:
+                    throw new NotImplementedException();
+
+                case GrammaticalPartOfSpeech.Numeral:
+                    throw new NotImplementedException();
+
+                default: throw new ArgumentOutOfRangeException(nameof(partOfSpeech), partOfSpeech, null);
+            }
+
+            return result;
+        }
+
         protected override void BornNewNodes()
         {
 #if DEBUG
             LogInstance.Log("Begin");
 #endif
 
+            var clusterOfExtendedTokensWithGoals = GetСlusterOfExtendedTokensWithGoals();
 
+#if DEBUG
+            LogInstance.Log($"clusterOfExtendedTokensWithGoals.Count = {clusterOfExtendedTokensWithGoals?.Count}");
+#endif
+
+            if (clusterOfExtendedTokensWithGoals.IsEmpty())
+            {
+                return;
+            }
+
+            var state = Context.State;
+
+            foreach (var clusterOfExtendedTokensWithGoalsKVPItem in clusterOfExtendedTokensWithGoals)
+            {
+                var extendedToken = clusterOfExtendedTokensWithGoalsKVPItem.Key;
+                var goal = clusterOfExtendedTokensWithGoalsKVPItem.Value;
+
+#if DEBUG
+                LogInstance.Log($"extendedToken = {extendedToken}");
+                LogInstance.Log($"goal = {goal}");
+#endif
+
+                switch (goal)
+                {
+                    case GoalOfATNExtendToken.NP:
+                        AddTask(new ATNNPNodeFactory(extendedToken, ATNNPNode.State.Init, goal, CompositionCommand.AddToObjectOfVP));
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(goal), goal, null);
+                }
+            }
 
 #if DEBUG
             LogInstance.Log("End");

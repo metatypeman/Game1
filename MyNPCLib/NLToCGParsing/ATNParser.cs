@@ -16,19 +16,29 @@ namespace MyNPCLib.NLToCGParsing
 
         private IWordsDict mWordsDict;
 
-        public Sentence Run(string text)
+        public IList<Sentence> Run(string text)
         {
 #if DEBUG
             LogInstance.Log($"text = {text}");
 #endif
 
-            var context = new ContextOfATNParsing(text, mWordsDict);
+            var commonContext = new CommonContextOfATNParsing();
+            var context = new ContextOfATNParsing(text, mWordsDict, commonContext);
 
             var atnNode = new ATNSentenceNode(context);
             atnNode.Run();
 
-            var sentence = new Sentence();
-            return sentence;
+            var sentencesList = commonContext.SentencesList;
+
+#if DEBUG
+            LogInstance.Log($"sentencesList.Count = {sentencesList.Count}");
+            foreach(var tmpSentences in sentencesList)
+            {
+                LogInstance.Log($"tmpSentences = {tmpSentences}");
+            }
+#endif
+
+            return sentencesList;
         }
     }
 }

@@ -8,8 +8,9 @@ namespace MyNPCLib.NLToCGParsing
 {
     public class ContextOfATNParsing: IObjectToString
     {
-        public ContextOfATNParsing(string text, IWordsDict wordsDict)
+        public ContextOfATNParsing(string text, IWordsDict wordsDict, CommonContextOfATNParsing commonContext)
         {
+            CommonContext = commonContext;
             mATNExtendedLexer = new ATNExtendedLexer(text, wordsDict);
         }
 
@@ -17,28 +18,63 @@ namespace MyNPCLib.NLToCGParsing
         {
         }
 
+        private CommonContextOfATNParsing CommonContext;
         private ATNExtendedLexer mATNExtendedLexer;
         public StateOfATNParsing State { get; set; } = StateOfATNParsing.Undefined;
         public Sentence Sentence { get; set; }
-        public Queue<NounPhrase> OperativeNounPhrasesQueue = new Queue<NounPhrase>();
+        public Stack<NounPhrase> OperativeNounPhrasesStack = new Stack<NounPhrase>();
         public void AddNounPhrase(NounPhrase nounPhrase)
         {
-            OperativeNounPhrasesQueue.Enqueue(nounPhrase);
+            OperativeNounPhrasesStack.Push(nounPhrase);
+        }
+
+        public NounPhrase PeekCurrentNounPhrase()
+        {
+            if(OperativeNounPhrasesStack.Count == 0)
+            {
+                return null;
+            }
+
+            return OperativeNounPhrasesStack.Peek();
+        }
+
+        public Stack<VerbPhrase> OperativeVerbPhraseStack = new Stack<VerbPhrase>();
+
+        public void AddVerbPhrase(VerbPhrase verbPhrase)
+        {
+            OperativeVerbPhraseStack.Push(verbPhrase);
+        }
+
+        public VerbPhrase PeekCurrentVerbPhrase()
+        {
+            if(OperativeVerbPhraseStack.Count == 0)
+            {
+                return null;
+            }
+
+            return OperativeVerbPhraseStack.Peek();
         }
 
         public ContextOfATNParsing Fork()
         {
             var result = new ContextOfATNParsing();
+            result.CommonContext = CommonContext;
             result.mATNExtendedLexer = mATNExtendedLexer.Fork();
             result.State = State;
             result.Sentence = Sentence?.Fork();
-            result.OperativeNounPhrasesQueue = new Queue<NounPhrase>(OperativeNounPhrasesQueue.ToList());
+            result.OperativeNounPhrasesStack = new Stack<NounPhrase>(OperativeNounPhrasesStack.ToList());
+            result.OperativeVerbPhraseStack = new Stack<VerbPhrase>(OperativeVerbPhraseStack.ToList());
             return result;
         }
 
         public IList<ATNExtendedToken> GetСlusterOfExtendedTokens()
         {
             return mATNExtendedLexer.GetСlusterOfExtendedTokens();
+        }
+
+        public void PutSentenceToResult()
+        {
+            CommonContext.AddSentence(Sentence);
         }
 
         public override string ToString()
@@ -66,19 +102,33 @@ namespace MyNPCLib.NLToCGParsing
                 sb.Append(Sentence.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Sentence)}");
             }
-            if (OperativeNounPhrasesQueue == null)
+            if (OperativeNounPhrasesStack == null)
             {
-                sb.AppendLine($"{spaces}{nameof(OperativeNounPhrasesQueue)} = null");
+                sb.AppendLine($"{spaces}{nameof(OperativeNounPhrasesStack)} = null");
             }
             else
             {
-                sb.AppendLine($"{spaces}Begin {nameof(OperativeNounPhrasesQueue)}");
-                var operativeNounPhrasesList = OperativeNounPhrasesQueue.ToList();
+                sb.AppendLine($"{spaces}Begin {nameof(OperativeNounPhrasesStack)}");
+                var operativeNounPhrasesList = OperativeNounPhrasesStack.ToList();
                 foreach (var operativeNounPhrase in operativeNounPhrasesList)
                 {
                     sb.Append(operativeNounPhrase.ToString(nextN));
                 }
-                sb.AppendLine($"{spaces}End {nameof(OperativeNounPhrasesQueue)}");
+                sb.AppendLine($"{spaces}End {nameof(OperativeNounPhrasesStack)}");
+            }
+            if (OperativeVerbPhraseStack == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(OperativeVerbPhraseStack)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(OperativeVerbPhraseStack)}");
+                var operativeVerbPhraseList = OperativeVerbPhraseStack.ToList();
+                foreach (var operativeVerbPhrase in OperativeVerbPhraseStack)
+                {
+                    sb.Append(operativeVerbPhrase.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(OperativeVerbPhraseStack)}");
             }
             return sb.ToString();
         }

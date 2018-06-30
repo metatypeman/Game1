@@ -74,43 +74,50 @@ namespace MyNPCLib.NLToCGParsing
                     LogInstance.Log($"sentence = {sentence}");
 #endif
 
-                    var itemResult = RunSentence(sentence);
-                    itemsList.Add(itemResult);
+                    var itemsResultList = RunSentence(sentence);
 
-                    if(isFirst)
+                    foreach(var itemResult in itemsResultList)
                     {
-                        isFirst = false;
-                        result.FistItem = itemResult;
-                    }
-                    else
-                    {
-                        itemResult.PrevGraph = prevGraph;
-                    }
+                        itemsList.Add(itemResult);
 
-                    prevGraph = itemResult;
+                        if (isFirst)
+                        {
+                            isFirst = false;
+                            result.FistItem = itemResult;
+                        }
+                        else
+                        {
+                            itemResult.PrevGraph = prevGraph;
+                        }
+
+                        prevGraph = itemResult;
+                    } 
                 }
 
                 return result;
             }
         }
 
-        private ConceptualGraph RunSentence(string text)
+        private IList<ConceptualGraph> RunSentence(string text)
         {
 #if DEBUG
             LogInstance.Log($"text = {text}");
 #endif
 
-            var sentence = mATNParser.Run(text);
+            var result = new List<ConceptualGraph>();
+            var sentencesList = mATNParser.Run(text);
 
 #if DEBUG
-            LogInstance.Log($"sentence = {sentence}");
+            LogInstance.Log($"sentencesList.Count = {sentencesList.Count}");
 #endif
-
+            foreach (var tmpSentences in sentencesList)
+            {
 #if DEBUG
-            var result = new ConceptualGraph();//tmp
-            result.Name = NamesHelper.CreateEntityName();//tmp
-            return result;//tmp
+                LogInstance.Log($"tmpSentences = {tmpSentences}");
 #endif
+            }
+
+            return result;
         }
     }
 }

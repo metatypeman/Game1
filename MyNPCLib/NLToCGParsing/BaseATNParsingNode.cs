@@ -29,13 +29,18 @@ namespace MyNPCLib.NLToCGParsing
         {
             NormalizeCompositionCommand();
             ImplementInternalState();
-            BornNewNodes();
+            if(!SuppressBornNewNodes)
+            {
+                BornNewNodes();
+            }
+            
             ProcessTasks();
         }
 
         protected abstract void NormalizeCompositionCommand();
         protected abstract void ImplementInternalState();
         protected abstract void BornNewNodes();
+        protected bool SuppressBornNewNodes { get; set; }
 
         protected IList<KeyValuePair<ATNExtendedToken, GoalOfATNExtendToken>> GetСlusterOfExtendedTokensWithGoals()
         {
@@ -50,7 +55,8 @@ namespace MyNPCLib.NLToCGParsing
 
             foreach (var extendedToken in сlusterOfExtendedTokens)
             {
-                var goalsList = GetGoals(extendedToken);
+                var resultOfGetGoals = GetGoals(extendedToken);
+                var goalsList = resultOfGetGoals.Goals;
 
                 foreach (var goal in goalsList)
                 {
@@ -60,13 +66,16 @@ namespace MyNPCLib.NLToCGParsing
             return result;
         }
 
-        protected IList<GoalOfATNExtendToken> GetGoals(ATNExtendedToken extendedToken)
+        protected ResultOfGetGoals GetGoals(ATNExtendedToken extendedToken)
         {
 #if DEBUG
             LogInstance.Log($"extendedToken = {extendedToken}");
 #endif
 
-            var result = new List<GoalOfATNExtendToken>();
+            var result = new ResultOfGetGoals();
+            result.ExtendedToken = extendedToken;
+            var resultList = new List<GoalOfATNExtendToken>();
+            result.Goals = resultList;
 
             var extendedTokenLind = extendedToken.Kind;
             var partOfSpeech = extendedToken.PartOfSpeech;
@@ -77,23 +86,23 @@ namespace MyNPCLib.NLToCGParsing
                     switch(partOfSpeech)
                     {
                         case GrammaticalPartOfSpeech.Noun:
-                            result.Add(GoalOfATNExtendToken.NP);
+                            resultList.Add(GoalOfATNExtendToken.NP);
                             break;
 
                         case GrammaticalPartOfSpeech.Pronoun:
-                            result.Add(GoalOfATNExtendToken.NP);
+                            resultList.Add(GoalOfATNExtendToken.NP);
                             break;
 
                         case GrammaticalPartOfSpeech.Adjective:
-                            result.Add(GoalOfATNExtendToken.NP);
+                            resultList.Add(GoalOfATNExtendToken.NP);
                             break;
 
                         case GrammaticalPartOfSpeech.Verb:
                             {
                                 if(extendedToken.IsGerund)
                                 {
-                                    result.Add(GoalOfATNExtendToken.Ving);
-                                    result.Add(GoalOfATNExtendToken.NP);
+                                    resultList.Add(GoalOfATNExtendToken.Ving);
+                                    resultList.Add(GoalOfATNExtendToken.NP);
                                 }
                                 else
                                 {
@@ -101,26 +110,26 @@ namespace MyNPCLib.NLToCGParsing
                                     switch (verbType)
                                     {
                                         case VerbType.BaseForm:
-                                            result.Add(GoalOfATNExtendToken.BaseV);
+                                            resultList.Add(GoalOfATNExtendToken.BaseV);
                                             break;
 
                                         case VerbType.Form_2:
-                                            result.Add(GoalOfATNExtendToken.V2f);
+                                            resultList.Add(GoalOfATNExtendToken.V2f);
                                             break;
 
                                         case VerbType.Form_3:
-                                            result.Add(GoalOfATNExtendToken.V3f);
+                                            resultList.Add(GoalOfATNExtendToken.V3f);
                                             break;
                                     }
                                     if(extendedToken.IsFormOfToDo)
                                     {
-                                        result.Add(GoalOfATNExtendToken.FToDo);
+                                        resultList.Add(GoalOfATNExtendToken.FToDo);
                                     }
                                     else
                                     {
                                         if(extendedToken.IsFormOfToHave)
                                         {
-                                            result.Add(GoalOfATNExtendToken.FToHave);
+                                            resultList.Add(GoalOfATNExtendToken.FToHave);
                                         }
                                         else
                                         {
@@ -130,35 +139,35 @@ namespace MyNPCLib.NLToCGParsing
                                             {
                                                 if(content == "will")
                                                 {
-                                                    result.Add(GoalOfATNExtendToken.Will);
+                                                    resultList.Add(GoalOfATNExtendToken.Will);
                                                 }
                                                 else
                                                 {
                                                     if(content == "would")
                                                     {
-                                                        result.Add(GoalOfATNExtendToken.Would);
+                                                        resultList.Add(GoalOfATNExtendToken.Would);
                                                     }
                                                     else
                                                     {
                                                         if(content == "shell")
                                                         {
-                                                            result.Add(GoalOfATNExtendToken.Shell);
+                                                            resultList.Add(GoalOfATNExtendToken.Shell);
                                                         }
                                                         else
                                                         {
                                                             if(content == "should")
                                                             {
-                                                                result.Add(GoalOfATNExtendToken.Should);
+                                                                resultList.Add(GoalOfATNExtendToken.Should);
                                                             }
                                                             else
                                                             {
                                                                 if(content == "be")
                                                                 {
-                                                                    result.Add(GoalOfATNExtendToken.Be);
+                                                                    resultList.Add(GoalOfATNExtendToken.Be);
                                                                 }
                                                                 else
                                                                 {
-                                                                    result.Add(GoalOfATNExtendToken.FToBe);
+                                                                    resultList.Add(GoalOfATNExtendToken.FToBe);
                                                                 }
                                                             }
                                                         }
@@ -169,49 +178,49 @@ namespace MyNPCLib.NLToCGParsing
                                             {
                                                 if(extendedToken.IsFormOfToDo)
                                                 {
-                                                    result.Add(GoalOfATNExtendToken.FToDo);
+                                                    resultList.Add(GoalOfATNExtendToken.FToDo);
                                                 }
                                                 else
                                                 {
                                                     if(extendedToken.IsFormOfToHave)
                                                     {
-                                                        result.Add(GoalOfATNExtendToken.FToHave);
+                                                        resultList.Add(GoalOfATNExtendToken.FToHave);
                                                     }
                                                     else
                                                     {
                                                         if(content == "can")
                                                         {
-                                                            result.Add(GoalOfATNExtendToken.Can);
+                                                            resultList.Add(GoalOfATNExtendToken.Can);
                                                         }
                                                         else
                                                         {
                                                             if (content == "could")
                                                             {
-                                                                result.Add(GoalOfATNExtendToken.Could);
+                                                                resultList.Add(GoalOfATNExtendToken.Could);
                                                             }
                                                             else
                                                             {
                                                                 if (content == "must")
                                                                 {
-                                                                    result.Add(GoalOfATNExtendToken.Must);
+                                                                    resultList.Add(GoalOfATNExtendToken.Must);
                                                                 }
                                                                 else
                                                                 {
                                                                     if (content == "may")
                                                                     {
-                                                                        result.Add(GoalOfATNExtendToken.May);
+                                                                        resultList.Add(GoalOfATNExtendToken.May);
                                                                     }
                                                                     else
                                                                     {
                                                                         if (content == "might")
                                                                         {
-                                                                            result.Add(GoalOfATNExtendToken.Might);
+                                                                            resultList.Add(GoalOfATNExtendToken.Might);
                                                                         }
                                                                         else
                                                                         {
                                                                             if(content == "let")
                                                                             {
-                                                                                result.Add(GoalOfATNExtendToken.Let);
+                                                                                resultList.Add(GoalOfATNExtendToken.Let);
                                                                             }
                                                                         }
                                                                     }
@@ -228,11 +237,11 @@ namespace MyNPCLib.NLToCGParsing
                             break;
 
                         case GrammaticalPartOfSpeech.Adverb:
-                            result.Add(GoalOfATNExtendToken.NP);
+                            resultList.Add(GoalOfATNExtendToken.NP);
                             break;
 
                         case GrammaticalPartOfSpeech.Preposition:
-                            result.Add(GoalOfATNExtendToken.NP);
+                            resultList.Add(GoalOfATNExtendToken.NP);
                             break;
 
                         case GrammaticalPartOfSpeech.Conjunction:
@@ -242,15 +251,19 @@ namespace MyNPCLib.NLToCGParsing
                             throw new NotImplementedException();
 
                         case GrammaticalPartOfSpeech.Article:
-                            result.Add(GoalOfATNExtendToken.NP);
+                            resultList.Add(GoalOfATNExtendToken.NP);
                             break;
 
                         case GrammaticalPartOfSpeech.Numeral:
-                            result.Add(GoalOfATNExtendToken.NP);
+                            resultList.Add(GoalOfATNExtendToken.NP);
                             break;
 
                         default: throw new ArgumentOutOfRangeException(nameof(partOfSpeech), partOfSpeech, null);
                     }
+                    break;
+
+                case KindOfATNToken.Point:
+                    resultList.Add(GoalOfATNExtendToken.Point);
                     break;
             }
 
@@ -303,6 +316,19 @@ namespace MyNPCLib.NLToCGParsing
                 var node = task.Create(newConext);
                 node.Run();
             }
+        }
+
+        protected void PutSentenceToResult()
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+            Context.PutSentenceToResult();
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
         }
     }
 }
