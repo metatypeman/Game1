@@ -9,22 +9,21 @@ namespace MyNPCLib.NLToCGParsing
     public class ATNNPNodeFactory: BaseATNNodeFactory
     {
         public ATNNPNodeFactory(ATNExtendedToken extendedToken, GoalOfATNExtendToken goal)
-            : this(extendedToken, ATNNPNode.State.Init, goal)
+            : this(extendedToken, ATNNPNode.State.Init, goal, CompositionCommand.Undefined)
         {
         }
 
-        public ATNNPNodeFactory(ATNExtendedToken extendedToken, ATNNPNode.State internalState, GoalOfATNExtendToken goal)
-            : base(extendedToken, goal)
+        public ATNNPNodeFactory(ATNExtendedToken extendedToken, ATNNPNode.State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand)
+            : base(extendedToken, goal, compositionCommand)
         {
             mInternalState = internalState;
         }
 
         private ATNNPNode.State mInternalState = ATNNPNode.State.Init;
-        public override int? InternalState => (int)mInternalState;
-
+        
         public override BaseATNParsingNode Create(ContextOfATNParsing context)
         {
-            var result = new ATNNPNode(ExtendedToken, mInternalState, context);
+            var result = new ATNNPNode(ExtendedToken, mInternalState, Goal, CompositionCommand, context);
             return result;
         }
     }
@@ -33,11 +32,18 @@ namespace MyNPCLib.NLToCGParsing
     {
         public enum State
         {
-            Init
+            Init,
+            Noun
         }
 
-        public ATNNPNode(ATNExtendedToken extendedToken, State internalState, ContextOfATNParsing context)
-            : base(context)
+        public enum SubGoal
+        {
+            Undefined,
+            Noun
+        }
+
+        public ATNNPNode(ATNExtendedToken extendedToken, State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand, ContextOfATNParsing context)
+            : base(goal, compositionCommand, context)
         {
             mTargetExtendedToken = extendedToken;
             mInternalState = internalState;
@@ -45,30 +51,67 @@ namespace MyNPCLib.NLToCGParsing
 
         private ATNExtendedToken mTargetExtendedToken;
         private State mInternalState = State.Init;
+        private NounPhrase mNounPhrase;
 
-        protected override void NRun()
+        protected override void NormalizeCompositionCommand()
         {
 #if DEBUG
-            LogInstance.Log($"mTargetExtendedToken = {mTargetExtendedToken} mInternalState= {mInternalState}");
+            LogInstance.Log($"CompositionCommand= {CompositionCommand}");
 #endif
 
-            ImplementInternalState();
-            BornNewNodes();
+            switch (mInternalState)
+            {
+                case State.Init:
+                    switch (CompositionCommand)
+                    {
+                        case CompositionCommand.Undefined:
+                            CompositionCommand = CompositionCommand.AddToNounPhraseOfSentence;
+                            break;
+                    }
+                    break;
+            }
 
 #if DEBUG
             LogInstance.Log("End");
 #endif
         }
 
-        private void ImplementInternalState()
+        protected override void ImplementInternalState()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            LogInstance.Log($"mTargetExtendedToken = {mTargetExtendedToken}");
+            LogInstance.Log($"mInternalState = {mInternalState}");
+            LogInstance.Log($"CompositionCommand = {CompositionCommand}");
 #endif
 
-            switch(mInternalState)
+            switch (mInternalState)
             {
                 case State.Init:
+                    mNounPhrase = new NounPhrase();
+                    Context.AddNounPhrase(mNounPhrase);
+                    switch(CompositionCommand)
+                    {
+                        case CompositionCommand.AddToNounPhraseOfSentence:
+                            Context.Sentence.NounPhrase = mNounPhrase;
+                            break;
+                    }
+                    var subGoalsList = GetSubGoals();
+
+                    if (subGoalsList.Count != 1)
+                    {
+                        throw new NotImplementedException();
+                    }
+
+                    var subGoal = subGoalsList.First();
+
+                    switch(subGoal)
+                    {
+                        case SubGoal.Noun:
+                            mNounPhrase.Noun = mTargetExtendedToken;
+                            mInternalState = State.Noun;
+                            break;
+                    }
+
                     break;
 
                 default: throw new ArgumentOutOfRangeException(nameof(mInternalState), mInternalState, null);
@@ -79,7 +122,66 @@ namespace MyNPCLib.NLToCGParsing
 #endif
         }
 
-        private void BornNewNodes()
+        private List<SubGoal> GetSubGoals()
+        {
+            var result = new List<SubGoal>();
+
+            if (mTargetExtendedToken.IsDeterminer)
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                var partOfSpeech = mTargetExtendedToken.PartOfSpeech;
+
+                switch (partOfSpeech)
+                {
+                    case GrammaticalPartOfSpeech.Noun:
+                        throw new NotImplementedException();
+
+                    case GrammaticalPartOfSpeech.Pronoun:
+                        {
+                            var person = mTargetExtendedToken.Person;
+                            switch (person)
+                            {
+                                case GrammaticalPerson.First:
+                                    result.Add(SubGoal.Noun);
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case GrammaticalPartOfSpeech.Adjective:
+                        throw new NotImplementedException();
+
+                    case GrammaticalPartOfSpeech.Verb:
+                        throw new NotImplementedException();
+
+                    case GrammaticalPartOfSpeech.Adverb:
+                        throw new NotImplementedException();
+
+                    case GrammaticalPartOfSpeech.Preposition:
+                        throw new NotImplementedException();
+
+                    case GrammaticalPartOfSpeech.Conjunction:
+                        throw new NotImplementedException();
+
+                    case GrammaticalPartOfSpeech.Interjection:
+                        throw new NotImplementedException();
+
+                    case GrammaticalPartOfSpeech.Article:
+                        throw new NotImplementedException();
+
+                    case GrammaticalPartOfSpeech.Numeral:
+                        throw new NotImplementedException();
+
+                    default: throw new ArgumentOutOfRangeException(nameof(partOfSpeech), partOfSpeech, null);
+                }
+            }
+            return result;
+        }
+
+        protected override void BornNewNodes()
         {
 #if DEBUG
             LogInstance.Log("Begin");
@@ -129,173 +231,6 @@ namespace MyNPCLib.NLToCGParsing
             LogInstance.Log("End");
 #endif
         }
-
-        //        protected override void NRun()
-        //        {
-        //#if DEBUG
-        //            LogInstance.Log($"mTargetExtendedToken = {mTargetExtendedToken} mState= {mState}");
-        //            var n = 0;
-        //#endif
-
-
-        //            while (true)
-        //            {
-        //                var resultOfIteration = RunItem();
-
-        //                if (resultOfIteration == false)
-        //                {
-        //                    break;
-        //                }
-
-        //                var сlusterOfExtendedTokens = Context.GetСlusterOfExtendedTokens();
-
-        //#if DEBUG
-        //                LogInstance.Log($"сlusterOfExtendedTokens.Count = {сlusterOfExtendedTokens?.Count}");
-        //#endif
-
-        //                if (сlusterOfExtendedTokens.IsEmpty())
-        //                {
-        //                    return;
-        //                }
-
-        //                var state = Context.State;
-
-        //                foreach (var extendedToken in сlusterOfExtendedTokens)
-        //                {
-        //#if DEBUG
-        //                    LogInstance.Log($"extendedToken = {extendedToken}");
-        //#endif
-
-        //                    var goalsList = GetGoals(extendedToken);
-
-        //#if DEBUG
-        //                    LogInstance.Log($"goalsList.Count = {goalsList.Count}");
-        //#endif
-
-        //                    foreach (var goal in goalsList)
-        //                    {
-        //#if DEBUG
-        //                        LogInstance.Log($"goal = {goal}");
-        //#endif
-        //                        switch (goal)
-        //                        {
-        //                            case GoalOfATNExtendToken.BaseV:
-        //                                switch(state)
-        //                                {
-        //                                    case StateOfATNParsing.NP:
-        //                                        AddTask(new ATNNP_VPNodeFactory(extendedToken, goal));
-        //                                        break;
-
-        //                                    default: throw new ArgumentOutOfRangeException(nameof(state), state, null);
-        //                                }
-        //                                break;
-
-        //                            default: throw new ArgumentOutOfRangeException(nameof(goal), goal, null);
-        //                        }
-        //                    }
-        //                }
-
-        //#if DEBUG
-        //                n++;
-
-        //                if (n > 10)
-        //                {
-        //                    break;
-        //                }
-        //#endif
-        //            }
-
-        //#if DEBUG
-        //            LogInstance.Log("End");
-        //#endif
-        //        }
-
-        //        private bool RunItem()
-        //        {
-        //#if DEBUG
-        //            LogInstance.Log($"mTargetExtendedToken = {mTargetExtendedToken}");
-        //#endif
-
-        //            return true;
-        //        }
-        //        private bool mHasNoun;
-        //        private NounPhrase mResult;
-
-        //        public NounPhrase Run()
-        //        {
-        //#if DEBUG
-        //            LogInstance.Log($"mTargetExtendedToken = {mTargetExtendedToken}");
-        //            var n = 0;
-        //#endif
-
-        //            mResult = new NounPhrase();
-
-        //            while(true)
-        //            {
-        //                var resultOfIteration = RunItem();
-
-        //                if(resultOfIteration == false)
-        //                {
-        //                    break;
-        //                }
-
-        //                var сlusterOfExtendedTokens = Context.GetСlusterOfExtendedTokens();
-        //#if DEBUG
-        //                LogInstance.Log($"сlusterOfExtendedTokens.Count = {сlusterOfExtendedTokens?.Count}");
-        //#endif
-
-        //                if(сlusterOfExtendedTokens.IsEmpty())
-        //                {
-        //                    return NTakeResult();
-        //                }
-        //#if DEBUG
-
-        //                foreach (var extendedToken in сlusterOfExtendedTokens)
-        //                {
-        //                    LogInstance.Log($"extendToken = {extendedToken}");
-        //                }
-        //#endif
-
-        //                if(сlusterOfExtendedTokens.Count != 1)
-        //                {
-        //                    throw new NotImplementedException();
-        //                }
-
-        //                mTargetExtendedToken = сlusterOfExtendedTokens.Single();
-
-        //                var goalsList = GetGoals(mTargetExtendedToken);
-
-        //#if DEBUG
-        //                LogInstance.Log($"goalsList.Count = {goalsList.Count}");
-        //                foreach (var goal in goalsList)
-        //                {
-        //                    LogInstance.Log($"goal = {goal}");
-        //                }
-        //#endif
-
-        //                if(!goalsList.Contains( GoalOfATNExtendToken.NP))
-        //                {
-        //                    return NTakeResult();
-        //                }
-
-        //                n++;
-
-        //                if (n > 10)
-        //                {
-        //                    break;
-        //                }
-        //            }
-
-        //#if DEBUG
-        //            LogInstance.Log("End");
-        //#endif
-        //            return NTakeResult();
-        //        }
-
-        //        private NounPhrase NTakeResult()
-        //        {
-        //            return mResult;
-        //        }
 
         //        private bool RunItem()
         //        {

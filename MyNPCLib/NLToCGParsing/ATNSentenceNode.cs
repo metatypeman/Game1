@@ -13,26 +13,29 @@ namespace MyNPCLib.NLToCGParsing
         }
 
         public ATNSentenceNode(ContextOfATNParsing context)
-            : base(context)
+            : this(GoalOfATNExtendToken.Undefined, CompositionCommand.Undefined, context)
+        {
+        }
+
+        public ATNSentenceNode(GoalOfATNExtendToken goal, CompositionCommand compositionCommand, ContextOfATNParsing context)
+            : base(goal, compositionCommand, context)
         {
         }
 
         private State mInternalState = State.Init;
 
-        protected override void NRun()
+        protected override void NormalizeCompositionCommand()
         {
 #if DEBUG
             LogInstance.Log("Begin");
 #endif
-            ImplementInternalState();
-            BornNewNodes();
 
 #if DEBUG
             LogInstance.Log("End");
 #endif
         }
 
-        private void ImplementInternalState()
+        protected override void ImplementInternalState()
         {
 #if DEBUG
             LogInstance.Log("Begin");
@@ -52,7 +55,7 @@ namespace MyNPCLib.NLToCGParsing
 #endif
         }
 
-        private void BornNewNodes()
+        protected override void BornNewNodes()
         {
 #if DEBUG
             LogInstance.Log("Begin");

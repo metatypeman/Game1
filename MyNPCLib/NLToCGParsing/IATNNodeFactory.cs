@@ -8,7 +8,7 @@ namespace MyNPCLib.NLToCGParsing
     {
         ATNExtendedToken ExtendedToken { get; }
         GoalOfATNExtendToken Goal { get; }
-        int? InternalState { get; }
+        CompositionCommand CompositionCommand { get; }
         BaseATNParsingNode Create(ContextOfATNParsing context);
     }
 }

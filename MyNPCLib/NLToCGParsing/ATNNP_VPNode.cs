@@ -7,22 +7,21 @@ namespace MyNPCLib.NLToCGParsing
     public class ATNNP_VPNodeFactory: BaseATNNodeFactory
     {
         public ATNNP_VPNodeFactory(ATNExtendedToken extendedToken, GoalOfATNExtendToken goal)
-            : this(extendedToken, ATNNP_VPNode.State.Init, goal)
+            : this(extendedToken, ATNNP_VPNode.State.Init, goal, CompositionCommand.Undefined)
         {
         }
 
-        public ATNNP_VPNodeFactory(ATNExtendedToken extendedToken, ATNNP_VPNode.State internalState, GoalOfATNExtendToken goal)
-            : base(extendedToken, goal)
+        public ATNNP_VPNodeFactory(ATNExtendedToken extendedToken, ATNNP_VPNode.State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand)
+            : base(extendedToken, goal, compositionCommand)
         {
             mInternalState = internalState;
         }
 
         private ATNNP_VPNode.State mInternalState = ATNNP_VPNode.State.Init;
-        public override int? InternalState => (int)mInternalState;
-
+      
         public override BaseATNParsingNode Create(ContextOfATNParsing context)
         {
-            var result = new ATNNP_VPNode(ExtendedToken, mInternalState, context);
+            var result = new ATNNP_VPNode(ExtendedToken, mInternalState, Goal, CompositionCommand, context);
             return result;
         }
     }
@@ -34,8 +33,8 @@ namespace MyNPCLib.NLToCGParsing
             Init
         }
 
-        public ATNNP_VPNode(ATNExtendedToken extendedToken, State internalState, ContextOfATNParsing context)
-            : base(context)
+        public ATNNP_VPNode(ATNExtendedToken extendedToken, State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand, ContextOfATNParsing context)
+            : base(goal, compositionCommand, context)
         {
             mTargetExtendedToken = extendedToken;
             mInternalState = internalState;
@@ -44,24 +43,25 @@ namespace MyNPCLib.NLToCGParsing
         private ATNExtendedToken mTargetExtendedToken;
         private State mInternalState = State.Init;
 
-        protected override void NRun()
+        protected override void NormalizeCompositionCommand()
         {
 #if DEBUG
-            LogInstance.Log($"mTargetExtendedToken = {mTargetExtendedToken} mInternalState = {mInternalState}");
+            LogInstance.Log($"CompositionCommand= {CompositionCommand}");
 #endif
 
-            ImplementInternalState();
-            BornNewNodes();
+
 
 #if DEBUG
             LogInstance.Log("End");
 #endif
         }
 
-        private void ImplementInternalState()
+        protected override void ImplementInternalState()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            LogInstance.Log($"mTargetExtendedToken = {mTargetExtendedToken}");
+            LogInstance.Log($"mInternalState= {mInternalState}");
+            LogInstance.Log($"CompositionCommand= {CompositionCommand}");
 #endif
 
             switch (mInternalState)
@@ -77,7 +77,7 @@ namespace MyNPCLib.NLToCGParsing
 #endif
         }
 
-        private void BornNewNodes()
+        protected override void BornNewNodes()
         {
 #if DEBUG
             LogInstance.Log("Begin");

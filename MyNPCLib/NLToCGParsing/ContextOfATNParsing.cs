@@ -21,6 +21,10 @@ namespace MyNPCLib.NLToCGParsing
         public StateOfATNParsing State { get; set; } = StateOfATNParsing.Undefined;
         public Sentence Sentence { get; set; }
         public Queue<NounPhrase> OperativeNounPhrasesQueue = new Queue<NounPhrase>();
+        public void AddNounPhrase(NounPhrase nounPhrase)
+        {
+            OperativeNounPhrasesQueue.Enqueue(nounPhrase);
+        }
 
         public ContextOfATNParsing Fork()
         {

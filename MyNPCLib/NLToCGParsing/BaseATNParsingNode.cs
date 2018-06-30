@@ -7,24 +7,35 @@ namespace MyNPCLib.NLToCGParsing
 {
     public abstract class BaseATNParsingNode
     {
-        protected BaseATNParsingNode(ContextOfATNParsing context)
+        protected BaseATNParsingNode(GoalOfATNExtendToken goal, CompositionCommand compositionCommand, ContextOfATNParsing context)
         {
             Context = context;
+            CompositionCommand = compositionCommand;
+            Goal = goal;
+
 #if DEBUG
             LogInstance.Log($"Context.State = {Context.State}");
             LogInstance.Log($"Context = {Context}");
+            LogInstance.Log($"CompositionCommand = {CompositionCommand}");
+            LogInstance.Log($"Goal = {Goal}");
 #endif
         }
 
+        protected ContextOfATNParsing Context { get; private set; }
+        protected CompositionCommand CompositionCommand { get; set; }
+        protected GoalOfATNExtendToken Goal { get; private set; }
+
         public void Run()
         {
-            NRun();
+            NormalizeCompositionCommand();
+            ImplementInternalState();
+            BornNewNodes();
             ProcessTasks();
         }
 
-        protected abstract void NRun();
-
-        protected ContextOfATNParsing Context { get; private set; }
+        protected abstract void NormalizeCompositionCommand();
+        protected abstract void ImplementInternalState();
+        protected abstract void BornNewNodes();
 
         protected IList<KeyValuePair<ATNExtendedToken, GoalOfATNExtendToken>> GetСlusterOfExtendedTokensWithGoals()
         {
