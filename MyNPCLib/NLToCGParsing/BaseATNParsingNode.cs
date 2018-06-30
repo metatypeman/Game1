@@ -10,6 +10,10 @@ namespace MyNPCLib.NLToCGParsing
         protected BaseATNParsingNode(ContextOfATNParsing context)
         {
             Context = context;
+#if DEBUG
+            LogInstance.Log($"Context.State = {Context.State}");
+            LogInstance.Log($"Context = {Context}");
+#endif
         }
 
         public void Run()
@@ -21,6 +25,30 @@ namespace MyNPCLib.NLToCGParsing
         protected abstract void NRun();
 
         protected ContextOfATNParsing Context { get; private set; }
+
+        protected IList<KeyValuePair<ATNExtendedToken, GoalOfATNExtendToken>> GetСlusterOfExtendedTokensWithGoals()
+        {
+            var сlusterOfExtendedTokens = Context.GetСlusterOfExtendedTokens();
+
+            var result = new List<KeyValuePair<ATNExtendedToken, GoalOfATNExtendToken>>();
+
+            if (сlusterOfExtendedTokens.IsEmpty())
+            {
+                return result;
+            }
+
+            foreach (var extendedToken in сlusterOfExtendedTokens)
+            {
+                var goalsList = GetGoals(extendedToken);
+
+                foreach (var goal in goalsList)
+                {
+                    result.Add(new KeyValuePair<ATNExtendedToken, GoalOfATNExtendToken>(extendedToken, goal));
+                }
+            }
+            return result;
+        }
+
         protected IList<GoalOfATNExtendToken> GetGoals(ATNExtendedToken extendedToken)
         {
 #if DEBUG
@@ -218,16 +246,10 @@ namespace MyNPCLib.NLToCGParsing
             return result;
         }
 
-        private bool mIsUsingContextNext;
         private List<IATNNodeFactory> mTasksList = new List<IATNNodeFactory>();
 
-        protected void AddTask(IATNNodeFactory factory, bool isUsingContextNext)
+        protected void AddTask(IATNNodeFactory factory)
         {
-            if(isUsingContextNext)
-            {
-                mIsUsingContextNext = true;
-            }
-
             mTasksList.Add(factory);
         }
 
@@ -238,7 +260,38 @@ namespace MyNPCLib.NLToCGParsing
                 return;
             }
 
-            throw new NotImplementedException();
+#if DEBUG
+            LogInstance.Log($"mTasksList.Count = {mTasksList.Count}");
+#endif
+
+            var n = 0;
+
+            foreach(var task in mTasksList)
+            {
+                n++;
+
+#if DEBUG
+                LogInstance.Log($"n = {n}");
+                LogInstance.Log($"task.Goal = {task.Goal}");
+                LogInstance.Log($"Context.State = {Context.State}");
+#endif
+
+                ContextOfATNParsing newConext = null;
+
+                if(n < mTasksList.Count)
+                {
+                    newConext = Context.Fork();
+                }
+                else
+                {
+                    newConext = Context;
+                }
+
+                newConext.State = StateOfATNParsingHelper.CreareState(newConext.State, task.Goal);
+
+                var node = task.Create(newConext);
+                node.Run();
+            }
         }
     }
 }

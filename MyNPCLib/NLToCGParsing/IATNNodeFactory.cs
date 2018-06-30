@@ -6,6 +6,9 @@ namespace MyNPCLib.NLToCGParsing
 {
     public interface IATNNodeFactory
     {
-        BaseATNParsingNode Create(ATNExtendedToken extendedToken, GoalOfATNExtendToken goal, ContextOfATNParsing context);
+        ATNExtendedToken ExtendedToken { get; }
+        GoalOfATNExtendToken Goal { get; }
+        int? InternalState { get; }
+        BaseATNParsingNode Create(ContextOfATNParsing context);
     }
 }

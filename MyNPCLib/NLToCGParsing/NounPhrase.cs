@@ -8,6 +8,13 @@ namespace MyNPCLib.NLToCGParsing
     {
         public ATNExtendedToken Noun { get; set; }
 
+        public NounPhrase Fork()
+        {
+            var result = new NounPhrase();
+            result.Noun = Noun;
+            return result;
+        }
+
         public override string ToString()
         {
             return ToString(0u);

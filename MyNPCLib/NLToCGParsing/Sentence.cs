@@ -6,6 +6,15 @@ namespace MyNPCLib.NLToCGParsing
 {
     public class Sentence: IObjectToString, IShortObjectToString
     {
+        public NounPhrase NounPhrase { get; set; }
+
+        public Sentence Fork()
+        {
+            var result = new Sentence();
+            result.NounPhrase = NounPhrase?.Fork();
+            return result;
+        }
+
         public override string ToString()
         {
             return ToString(0u);
@@ -21,6 +30,16 @@ namespace MyNPCLib.NLToCGParsing
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            if (NounPhrase == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NounPhrase)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NounPhrase)}");
+                sb.Append(NounPhrase.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(NounPhrase)}");
+            }
             return sb.ToString();
         }
 
@@ -39,6 +58,16 @@ namespace MyNPCLib.NLToCGParsing
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            if (NounPhrase == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NounPhrase)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NounPhrase)}");
+                sb.Append(NounPhrase.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(NounPhrase)}");
+            }
             return sb.ToString();
         }
     }
