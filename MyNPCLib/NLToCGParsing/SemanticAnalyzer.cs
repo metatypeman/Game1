@@ -17,12 +17,18 @@ namespace MyNPCLib.NLToCGParsing
                 LogInstance.Log($"sentence = {sentence}");
 #endif
 
+                var context = new ContextOfSemanticAnalyzer();
+
+                var sentenceNode = new SentenceNodeOfSemanticAnalyzer(context, sentence);
+                sentenceNode.Run();
+
+                var result = context.ConceptualGraph;
+
 #if DEBUG
                 LogInstance.Log("End");
-                var tmpResult = new ConceptualGraph();
-                tmpResult.Name = NamesHelper.CreateEntityName();
-                return tmpResult;
 #endif
+
+                return result;
             }
         }
     }

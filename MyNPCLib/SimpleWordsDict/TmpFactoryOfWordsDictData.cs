@@ -42,7 +42,7 @@ namespace MyNPCLib.SimpleWordsDict
         private static void CalculateFullMeaningsDict()
         {
 #if DEBUG
-            LogInstance.Log($"mTmpMeaningsDict.Count = {mTmpMeaningsDict.Count}");
+            //LogInstance.Log($"mTmpMeaningsDict.Count = {mTmpMeaningsDict.Count}");
 #endif
 
             var mMeaningsDict = new Dictionary<string, IList<string>>();
@@ -51,7 +51,7 @@ namespace MyNPCLib.SimpleWordsDict
             {
                 var word = tmpMeaningsDictKVPItem.Key;
 #if DEBUG
-                LogInstance.Log($"word = {word}");
+                //LogInstance.Log($"word = {word}");
 #endif
                 
                 var wasVisited = new List<string>();
@@ -62,11 +62,11 @@ namespace MyNPCLib.SimpleWordsDict
 
                 tmplistOfMeanings = tmplistOfMeanings.Distinct().ToList();
 #if DEBUG
-                LogInstance.Log($"tmplistOfMeanings.Count = {tmplistOfMeanings.Count}");
-                foreach(var meaning in tmplistOfMeanings)
-                {
-                    LogInstance.Log($"meaning = {meaning}");
-                }
+                //LogInstance.Log($"tmplistOfMeanings.Count = {tmplistOfMeanings.Count}");
+                //foreach(var meaning in tmplistOfMeanings)
+                //{
+                //    LogInstance.Log($"meaning = {meaning}");
+                //}
 #endif
                 mMeaningsDict[word] = tmplistOfMeanings;
             }
@@ -80,7 +80,7 @@ namespace MyNPCLib.SimpleWordsDict
                 foreach(var grammaticalWordFrame in wordFrame.GrammaticalWordFrames)
                 {
 #if DEBUG
-                    LogInstance.Log($"grammaticalWordFrame = {grammaticalWordFrame}");
+                    //LogInstance.Log($"grammaticalWordFrame = {grammaticalWordFrame}");
 #endif
 
                     var logicalMeaningsList = grammaticalWordFrame.LogicalMeaning;
@@ -95,7 +95,7 @@ namespace MyNPCLib.SimpleWordsDict
                     foreach (var logicalMeaning in logicalMeaningsList)
                     {
 #if DEBUG
-                        LogInstance.Log($"logicalMeaning = {logicalMeaning}");
+                        //LogInstance.Log($"logicalMeaning = {logicalMeaning}");
 #endif
 
                         completeLogicalMeaningsList.Add(logicalMeaning);
@@ -108,11 +108,11 @@ namespace MyNPCLib.SimpleWordsDict
                     }
 
 #if DEBUG
-                    LogInstance.Log($"completeLogicalMeaningsList.Count = {completeLogicalMeaningsList.Count}");
-                    foreach (var meaning in completeLogicalMeaningsList)
-                    {
-                        LogInstance.Log($"meaning = {meaning}");
-                    }
+                    //LogInstance.Log($"completeLogicalMeaningsList.Count = {completeLogicalMeaningsList.Count}");
+                    //foreach (var meaning in completeLogicalMeaningsList)
+                    //{
+                    //    LogInstance.Log($"meaning = {meaning}");
+                    //}
 #endif
 
                     grammaticalWordFrame.FullLogicalMeaning = completeLogicalMeaningsList;
@@ -123,14 +123,14 @@ namespace MyNPCLib.SimpleWordsDict
         private static void NCalculateFullMeaningsDict(string word, ref List<string> listOfMeanings, List<string> wasVisited)
         {
 #if DEBUG
-            LogInstance.Log($"word = {word}");
+            //LogInstance.Log($"word = {word}");
 #endif
 
             var tmpSourceListOfMeanings = listOfMeanings.ToList();
             foreach (var meaning in tmpSourceListOfMeanings)
             {
 #if DEBUG
-                LogInstance.Log($"meaning = {meaning}");
+                //LogInstance.Log($"meaning = {meaning}");
 #endif
 
                 if(wasVisited.Contains(meaning))
@@ -139,7 +139,7 @@ namespace MyNPCLib.SimpleWordsDict
                 }
 
 #if DEBUG
-                LogInstance.Log($"NEXT meaning = {meaning}");
+                //LogInstance.Log($"NEXT meaning = {meaning}");
 #endif
 
                 if(mTmpMeaningsDict.ContainsKey(meaning))
