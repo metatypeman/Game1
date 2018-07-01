@@ -34,6 +34,7 @@ namespace MyNPCLib.NLToCGParsing
         public NumeralType NumeralType { get; set; } = NumeralType.Undefined;
         public IList<string> LogicalMeaning { get; set; }
         public IList<string> FullLogicalMeaning { get; set; }
+        public string RootWord { get; set; }
 
         public override string ToString()
         {
@@ -103,6 +104,8 @@ namespace MyNPCLib.NLToCGParsing
                 }
                 sb.AppendLine($"{spaces}End {nameof(FullLogicalMeaning)}");
             }
+            sb.AppendLine($"{spaces}{nameof(RootWord)} = {RootWord}");
+            
             return sb.ToString();
         }
     }

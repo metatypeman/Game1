@@ -284,6 +284,7 @@ namespace MyNPCLib.NLToCGParsing
             dest.PartOfSpeech = source.PartOfSpeech;
             dest.LogicalMeaning = source.LogicalMeaning;
             dest.FullLogicalMeaning = source.FullLogicalMeaning;
+            dest.RootWord = source.RootWord;
         }
 
         public void Recovery(IList<ATNExtendedToken> tokensList)
