@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.SimpleWordsDict;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,9 @@ namespace MyNPCLib.NLToCGParsing
 {
     public class Sentence: IObjectToString, IShortObjectToString
     {
+        public GrammaticalAspect Aspect { get; set; } = GrammaticalAspect.Undefined;
+        public GrammaticalTenses Tense { get; set; } = GrammaticalTenses.Undefined;
+        public GrammaticalVoice Voice { get; set; } = GrammaticalVoice.Undefined;
         public NounPhrase NounPhrase { get; set; }
         public VerbPhrase VerbPhrase { get; set; }
 
@@ -31,6 +35,9 @@ namespace MyNPCLib.NLToCGParsing
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Aspect)} = {Aspect}");
+            sb.AppendLine($"{spaces}{nameof(Tense)} = {Tense}");
+            sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
             if (NounPhrase == null)
             {
                 sb.AppendLine($"{spaces}{nameof(NounPhrase)} = null");
@@ -69,6 +76,9 @@ namespace MyNPCLib.NLToCGParsing
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Aspect)} = {Aspect}");
+            sb.AppendLine($"{spaces}{nameof(Tense)} = {Tense}");
+            sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
             if (NounPhrase == null)
             {
                 sb.AppendLine($"{spaces}{nameof(NounPhrase)} = null");

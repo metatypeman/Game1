@@ -29,6 +29,9 @@ namespace MyNPCLib.SimpleWordsDict
         public virtual bool IsNumeral => false;
         public virtual NumeralGrammaticalWordFrame AsNumeral => null;
         public string RootWord { get; set; }
+        public IList<string> LogicalMeaning { get; set; }
+        public IList<string> FullLogicalMeaning { get; set; }
+
         public override string ToString()
         {
             return ToString(0u);
@@ -43,9 +46,36 @@ namespace MyNPCLib.SimpleWordsDict
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
+            var nextNSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(PartOfSpeech)} = {PartOfSpeech}");
             sb.AppendLine($"{spaces}{nameof(RootWord)} = {RootWord}");
+            if (LogicalMeaning == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(LogicalMeaning)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(LogicalMeaning)}");
+                foreach (var item in LogicalMeaning)
+                {
+                    sb.AppendLine($"{nextNSpaces}{item}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(LogicalMeaning)}");
+            }
+            if (FullLogicalMeaning == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(FullLogicalMeaning)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(FullLogicalMeaning)}");
+                foreach (var item in FullLogicalMeaning)
+                {
+                    sb.AppendLine($"{nextNSpaces}{item}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(FullLogicalMeaning)}");
+            }
             return sb.ToString();
         }
     }

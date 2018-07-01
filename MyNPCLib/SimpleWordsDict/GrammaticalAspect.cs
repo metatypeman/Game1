@@ -4,13 +4,12 @@ using System.Text;
 
 namespace MyNPCLib.SimpleWordsDict
 {
-    public enum GrammaticalTenses
+    public enum GrammaticalAspect
     {
         Undefined,
-        All,
-        Present,
-        Past,
-        Future,
-        FutureInThePast
+        Simple,
+        Continuous,
+        Perfect,
+        PerfectContinuous
     }
 }

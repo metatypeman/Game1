@@ -32,6 +32,8 @@ namespace MyNPCLib.NLToCGParsing
         public bool IsQuestionWord { get; set; }
         public bool IsDeterminer { get; set; }
         public NumeralType NumeralType { get; set; } = NumeralType.Undefined;
+        public IList<string> LogicalMeaning { get; set; }
+        public IList<string> FullLogicalMeaning { get; set; }
 
         public override string ToString()
         {
@@ -46,6 +48,8 @@ namespace MyNPCLib.NLToCGParsing
         public string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextNSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Content)} = {Content}");
@@ -72,6 +76,33 @@ namespace MyNPCLib.NLToCGParsing
             sb.AppendLine($"{spaces}{nameof(IsQuestionWord)} = {IsQuestionWord}");
             sb.AppendLine($"{spaces}{nameof(IsDeterminer)} = {IsDeterminer}");
             sb.AppendLine($"{spaces}{nameof(NumeralType)} = {NumeralType}");
+            if (LogicalMeaning == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(LogicalMeaning)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(LogicalMeaning)}");
+                foreach (var item in LogicalMeaning)
+                {
+                    sb.AppendLine($"{nextNSpaces}{item}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(LogicalMeaning)}");
+            }
+
+            if (FullLogicalMeaning == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(FullLogicalMeaning)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(FullLogicalMeaning)}");
+                foreach (var item in FullLogicalMeaning)
+                {
+                    sb.AppendLine($"{nextNSpaces}{item}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(FullLogicalMeaning)}");
+            }
             return sb.ToString();
         }
     }

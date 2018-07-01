@@ -183,7 +183,7 @@ namespace MyNPCLib.NLToCGParsing
         private ATNExtendedToken CreateNounExtendToken(ATNToken sourceToken, NounGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
-            result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
+            FillBaseGrammaticalWordFrame(grammaticalWordFrame, result);
             result.IsName = grammaticalWordFrame.IsName;
             result.IsShortForm = grammaticalWordFrame.IsShortForm;
             result.Gender = grammaticalWordFrame.Gender;
@@ -197,7 +197,7 @@ namespace MyNPCLib.NLToCGParsing
         private ATNExtendedToken CreatePronounExtendToken(ATNToken sourceToken, PronounGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
-            result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
+            FillBaseGrammaticalWordFrame(grammaticalWordFrame, result);
             result.Gender = grammaticalWordFrame.Gender;
             result.Number = grammaticalWordFrame.Number;
             result.Person = grammaticalWordFrame.Person;
@@ -210,7 +210,7 @@ namespace MyNPCLib.NLToCGParsing
         private ATNExtendedToken CreateAdjectiveExtendToken(ATNToken sourceToken, AdjectiveGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
-            result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
+            FillBaseGrammaticalWordFrame(grammaticalWordFrame, result);
             result.Comparison = grammaticalWordFrame.Comparison;
             result.IsDeterminer = grammaticalWordFrame.IsDeterminer;
             return result;
@@ -219,7 +219,7 @@ namespace MyNPCLib.NLToCGParsing
         private ATNExtendedToken CreateVerbExtendToken(ATNToken sourceToken, VerbGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
-            result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
+            FillBaseGrammaticalWordFrame(grammaticalWordFrame, result);
             result.VerbType = grammaticalWordFrame.VerbType;
             result.Number = grammaticalWordFrame.Number;
             result.Person = grammaticalWordFrame.Person;
@@ -234,7 +234,7 @@ namespace MyNPCLib.NLToCGParsing
         private ATNExtendedToken CreateAdverbExtendToken(ATNToken sourceToken, AdverbGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
-            result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
+            FillBaseGrammaticalWordFrame(grammaticalWordFrame, result);
             result.Comparison = grammaticalWordFrame.Comparison;
             result.IsQuestionWord = grammaticalWordFrame.IsQuestionWord;
             result.IsDeterminer = grammaticalWordFrame.IsDeterminer;
@@ -244,28 +244,28 @@ namespace MyNPCLib.NLToCGParsing
         private ATNExtendedToken CreatePrepositionExtendToken(ATNToken sourceToken, PrepositionGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
-            result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
+            FillBaseGrammaticalWordFrame(grammaticalWordFrame, result);
             return result;
         }
 
         private ATNExtendedToken CreateConjunctionExtendToken(ATNToken sourceToken, ConjunctionGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
-            result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
+            FillBaseGrammaticalWordFrame(grammaticalWordFrame, result);
             return result;
         }
 
         private ATNExtendedToken CreateInterjectionExtendToken(ATNToken sourceToken, InterjectionGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
-            result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
+            FillBaseGrammaticalWordFrame(grammaticalWordFrame, result);
             return result;
         }
 
         private ATNExtendedToken CreateArticleExtendToken(ATNToken sourceToken, ArticleGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
-            result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
+            FillBaseGrammaticalWordFrame(grammaticalWordFrame, result);
             result.Number = grammaticalWordFrame.Number;
             result.IsDeterminer = grammaticalWordFrame.IsDeterminer;
             return result;
@@ -274,9 +274,16 @@ namespace MyNPCLib.NLToCGParsing
         private ATNExtendedToken CreateNumeralExtendToken(ATNToken sourceToken, NumeralGrammaticalWordFrame grammaticalWordFrame)
         {
             var result = CreateExtendToken(sourceToken);
-            result.PartOfSpeech = grammaticalWordFrame.PartOfSpeech;
+            FillBaseGrammaticalWordFrame(grammaticalWordFrame, result);
             result.NumeralType = grammaticalWordFrame.NumeralType;
             return result;
+        }
+
+        private void FillBaseGrammaticalWordFrame(BaseGrammaticalWordFrame source, ATNExtendedToken dest)
+        {
+            dest.PartOfSpeech = source.PartOfSpeech;
+            dest.LogicalMeaning = source.LogicalMeaning;
+            dest.FullLogicalMeaning = source.FullLogicalMeaning;
         }
 
         public void Recovery(IList<ATNExtendedToken> tokensList)

@@ -94,7 +94,12 @@ namespace MyNPCLib.NLToCGParsing
                         switch (CompositionCommand)
                         {
                             case CompositionCommand.AddToVerbPhraseOfSentence:
-                                Context.Sentence.VerbPhrase = mVerbPhrase;
+                                {
+                                    var sentence = Context.Sentence;
+                                    sentence.VerbPhrase = mVerbPhrase;
+                                    sentence.Aspect = GrammaticalAspect.Simple;
+                                    sentence.Voice = GrammaticalVoice.Active;
+                                }
                                 break;
 
                             default: throw new ArgumentOutOfRangeException(nameof(CompositionCommand), CompositionCommand, null);
@@ -125,9 +130,22 @@ namespace MyNPCLib.NLToCGParsing
 
                 case State.Verb:
                     {
+                        var sentence = Context.Sentence;
                         mVerbPhrase = Context.PeekCurrentVerbPhrase();
                         mVerbPhrase.Verb = mTargetExtendedToken;
                         mInternalState = State.Verb;
+                        switch (Goal)
+                        {
+                            case GoalOfATNExtendToken.BaseV:
+                                sentence.Tense = GrammaticalTenses.Present;
+                                break;
+
+                            case GoalOfATNExtendToken.V2f:
+                                sentence.Tense = GrammaticalTenses.Past;
+                                break;
+
+                            default: throw new ArgumentOutOfRangeException(nameof(Goal), Goal, null);
+                        }
                     }
                     break;
 

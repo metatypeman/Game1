@@ -110,11 +110,14 @@ namespace MyNPCLib.NLToCGParsing
 #if DEBUG
             LogInstance.Log($"sentencesList.Count = {sentencesList.Count}");
 #endif
-            foreach (var tmpSentences in sentencesList)
+            foreach (var sentence in sentencesList)
             {
 #if DEBUG
-                LogInstance.Log($"tmpSentences = {tmpSentences}");
+                LogInstance.Log($"sentence = {sentence}");
 #endif
+
+                var itemResult = mSemanticAnalyzer.Run(sentence);
+                result.Add(itemResult);
             }
 
             return result;

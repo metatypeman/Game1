@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.SimpleWordsDict
@@ -12,11 +13,157 @@ namespace MyNPCLib.SimpleWordsDict
             mWordsDictData.WordsDict = new Dictionary<string, WordFrame>();
             mWordsDictData.NamesList = new List<string>();
 
+            DefineCommonClasses();
             DefineWords();
+
+            CalculateFullMeaningsDict();
+        }
+
+        private static void DefineMeaning(string word, string meaning)
+        {
+            DefineMeanings(word, new List<string>() { meaning });
+        }
+
+        private static void DefineMeanings(string word, List<string> listOfMeanings)
+        {
+            if(mTmpMeaningsDict.ContainsKey(word))
+            {
+                var tmplistOfMeanings = mTmpMeaningsDict[word];
+                tmplistOfMeanings.AddRange(listOfMeanings);
+                tmplistOfMeanings = tmplistOfMeanings.Distinct().ToList();
+                mTmpMeaningsDict[word] = tmplistOfMeanings;
+            }
+            else
+            {
+                mTmpMeaningsDict[word] = listOfMeanings;
+            }
+        }
+
+        private static void CalculateFullMeaningsDict()
+        {
+#if DEBUG
+            LogInstance.Log($"mTmpMeaningsDict.Count = {mTmpMeaningsDict.Count}");
+#endif
+
+            var mMeaningsDict = new Dictionary<string, IList<string>>();
+
+            foreach (var tmpMeaningsDictKVPItem in mTmpMeaningsDict)
+            {
+                var word = tmpMeaningsDictKVPItem.Key;
+#if DEBUG
+                LogInstance.Log($"word = {word}");
+#endif
+                
+                var wasVisited = new List<string>();
+                wasVisited.Add(word);
+                var tmplistOfMeanings = tmpMeaningsDictKVPItem.Value;
+
+                NCalculateFullMeaningsDict(word, ref tmplistOfMeanings, wasVisited);
+
+                tmplistOfMeanings = tmplistOfMeanings.Distinct().ToList();
+#if DEBUG
+                LogInstance.Log($"tmplistOfMeanings.Count = {tmplistOfMeanings.Count}");
+                foreach(var meaning in tmplistOfMeanings)
+                {
+                    LogInstance.Log($"meaning = {meaning}");
+                }
+#endif
+                mMeaningsDict[word] = tmplistOfMeanings;
+            }
+
+            var wordsDict = mWordsDictData.WordsDict;
+
+            foreach(var wordsDictKVPItem in wordsDict)
+            {
+                var wordFrame = wordsDictKVPItem.Value;
+
+                foreach(var grammaticalWordFrame in wordFrame.GrammaticalWordFrames)
+                {
+#if DEBUG
+                    LogInstance.Log($"grammaticalWordFrame = {grammaticalWordFrame}");
+#endif
+
+                    var logicalMeaningsList = grammaticalWordFrame.LogicalMeaning;
+
+                    if (logicalMeaningsList.IsEmpty())
+                    {
+                        continue;
+                    }
+
+                    var completeLogicalMeaningsList = new List<string>();
+
+                    foreach (var logicalMeaning in logicalMeaningsList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"logicalMeaning = {logicalMeaning}");
+#endif
+
+                        completeLogicalMeaningsList.Add(logicalMeaning);
+
+                        if (mMeaningsDict.ContainsKey(logicalMeaning))
+                        {
+                            var targetLogicalMeaningsList = mMeaningsDict[logicalMeaning];
+                            completeLogicalMeaningsList.AddRange(targetLogicalMeaningsList);
+                        }
+                    }
+
+#if DEBUG
+                    LogInstance.Log($"completeLogicalMeaningsList.Count = {completeLogicalMeaningsList.Count}");
+                    foreach (var meaning in completeLogicalMeaningsList)
+                    {
+                        LogInstance.Log($"meaning = {meaning}");
+                    }
+#endif
+
+                    grammaticalWordFrame.FullLogicalMeaning = completeLogicalMeaningsList;
+                }
+            }
+        }
+
+        private static void NCalculateFullMeaningsDict(string word, ref List<string> listOfMeanings, List<string> wasVisited)
+        {
+#if DEBUG
+            LogInstance.Log($"word = {word}");
+#endif
+
+            var tmpSourceListOfMeanings = listOfMeanings.ToList();
+            foreach (var meaning in tmpSourceListOfMeanings)
+            {
+#if DEBUG
+                LogInstance.Log($"meaning = {meaning}");
+#endif
+
+                if(wasVisited.Contains(meaning))
+                {
+                    continue;
+                }
+
+#if DEBUG
+                LogInstance.Log($"NEXT meaning = {meaning}");
+#endif
+
+                if(mTmpMeaningsDict.ContainsKey(meaning))
+                {
+                    var tmplistOfMeanings = mTmpMeaningsDict[meaning];
+                    listOfMeanings.AddRange(tmplistOfMeanings);
+                    wasVisited.Add(meaning);
+
+                    NCalculateFullMeaningsDict(meaning, ref listOfMeanings, wasVisited);
+                }
+            }
         }
 
         private static WordsDictData mWordsDictData;
         public static WordsDictData Data => mWordsDictData;
+        private static Dictionary<string, List<string>> mTmpMeaningsDict = new Dictionary<string, List<string>>();
+
+        private static void DefineCommonClasses()
+        {
+            DefineMeaning("act", "event");
+            DefineMeaning("animate", "entity");
+            DefineMeaning("phisobj", "entity");
+            DefineMeanings("animal", new List<string>() { "animate", "phisobj" });
+        }
 
         private static void DefineWords()
         {
@@ -68,6 +215,7 @@ namespace MyNPCLib.SimpleWordsDict
         {
 
         }
+
         private static void DefineToHaveWords()
         {
 
@@ -91,7 +239,11 @@ namespace MyNPCLib.SimpleWordsDict
                         TypeOfPronoun = TypeOfPronoun.Personal,
                         Case = CaseOfPersonalPronoun.Subject,
                         Person = GrammaticalPerson.First,
-                        Number = GrammaticalNumberOfWord.Singular
+                        Number = GrammaticalNumberOfWord.Singular,
+                        LogicalMeaning = new List<string>()
+                        {
+                            "animate"
+                        }
                     }
                 }
             };
@@ -129,7 +281,11 @@ namespace MyNPCLib.SimpleWordsDict
                     new NounGrammaticalWordFrame()
                     {
                         Number = GrammaticalNumberOfWord.Singular,
-                        IsCountable = true
+                        IsCountable = true,
+                        LogicalMeaning = new List<string>()
+                        {
+                            "animate"
+                        }
                     }
                 }
             };
@@ -144,6 +300,12 @@ namespace MyNPCLib.SimpleWordsDict
                 GrammaticalWordFrames = new List<BaseGrammaticalWordFrame>()
                 {
                     new VerbGrammaticalWordFrame()
+                    {
+                        LogicalMeaning = new List<string>()
+                        {
+                            "state"
+                        }
+                    }
                 }
             };
         }
@@ -157,6 +319,12 @@ namespace MyNPCLib.SimpleWordsDict
                 GrammaticalWordFrames = new List<BaseGrammaticalWordFrame>()
                 {
                     new AdjectiveGrammaticalWordFrame()
+                    {
+                        LogicalMeaning = new List<string>()
+                        {
+                            "state"
+                        }
+                    }
                 }
             };
         }
@@ -180,12 +348,14 @@ namespace MyNPCLib.SimpleWordsDict
                         IsName = true,
                         IsCountable = true,
                         Number = GrammaticalNumberOfWord.Singular,
-                        Gender = GrammaticalGender.Masculine
+                        Gender = GrammaticalGender.Masculine,
+                        LogicalMeaning = new List<string>()
+                        {
+                            "animate"
+                        }
                     }
                 }
             };
-
-
         }
     }
 }
