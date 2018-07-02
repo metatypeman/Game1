@@ -47,7 +47,7 @@ namespace MyNPCLib.NLToCGParsing
                         LogInstance.Log($"determiner = {determiner}");
 #endif
 
-                        CreateDeterminerMark(mConcept, noun, determiner, conceptualGraph);
+                        CreateDeterminerMark(mConcept, noun, determiner);
                     }
                 }
 
@@ -55,7 +55,7 @@ namespace MyNPCLib.NLToCGParsing
 
                 if (nounFullLogicalMeaning.IsEmpty())
                 {
-                    nounFullLogicalMeaning = new List<string>() { "phisobj" };
+                    return result;
                 }
 
                 foreach (var logicalMeaning in nounFullLogicalMeaning)
@@ -64,8 +64,8 @@ namespace MyNPCLib.NLToCGParsing
                     LogInstance.Log($"logicalMeaning = {logicalMeaning}");
 #endif
 
-                    PrimaryRolesDict.Add(logicalMeaning, noun);
-                    resultPrimaryRolesDict.Add(logicalMeaning, noun);
+                    PrimaryRolesDict.Add(logicalMeaning, mConcept);
+                    resultPrimaryRolesDict.Add(logicalMeaning, mConcept);
                 }
             }
 
@@ -77,20 +77,30 @@ namespace MyNPCLib.NLToCGParsing
             return result;
         }
 
-        private void CreateDeterminerMark(ConceptCGNode concept, ATNExtendedToken conceptExtendedToken, ATNExtendedToken determiner, ConceptualGraph conceptualGraph)
+        private void CreateDeterminerMark(ConceptCGNode concept, ATNExtendedToken conceptExtendedToken, ATNExtendedToken determiner)
         {
+            var determinerRelationName = "determiner"; 
+            var determinerConceptName = GetName(determiner);
+
+            if (Context.RelationStorage.ContainsRelation(concept.Name, determinerConceptName, determinerRelationName))
+            {
+                return;
+            }
+
+            var conceptualGraph = Context.ConceptualGraph;
+
             var determinerConcept = new ConceptCGNode();
             determinerConcept.Parent = conceptualGraph;
-            determinerConcept.Name = GetName(determiner);
+            determinerConcept.Name = determinerConceptName;
 
             var determinerRelation = new RelationCGNode();
             determinerRelation.Parent = conceptualGraph;
-            determinerRelation.Name = "determiner";
+            determinerRelation.Name = determinerRelationName;
 
             concept.AddOutputNode(determinerRelation);
             determinerRelation.AddOutputNode(determinerConcept);
 
-            Context.RelationStorage.AddRelation(conceptExtendedToken, determiner, determinerRelation.Name);
+            Context.RelationStorage.AddRelation(concept.Name, determinerConceptName, determinerRelationName);
         }
     }
 }

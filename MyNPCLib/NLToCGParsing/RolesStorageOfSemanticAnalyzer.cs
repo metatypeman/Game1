@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.CG;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,23 +7,23 @@ namespace MyNPCLib.NLToCGParsing
 {
     public class RolesStorageOfSemanticAnalyzer : IObjectToString
     {
-        private Dictionary<string, List<ATNExtendedToken>> mRolesDict = new Dictionary<string, List<ATNExtendedToken>>();
+        private Dictionary<string, List<ConceptCGNode>> mRolesDict = new Dictionary<string, List<ConceptCGNode>>();
 
-        public void Add(string role, ATNExtendedToken extendedToken)
+        public void Add(string role, ConceptCGNode concept)
         {
             if(mRolesDict.ContainsKey(role))
             {
                 var itemsList = mRolesDict[role];
-                if(itemsList.Contains(extendedToken))
+                if(itemsList.Contains(concept))
                 {
                     return;
                 }
-                itemsList.Add(extendedToken);
+                itemsList.Add(concept);
                 return;
             }
 
-            var newItemsList = new List<ATNExtendedToken>();
-            newItemsList.Add(extendedToken);
+            var newItemsList = new List<ConceptCGNode>();
+            newItemsList.Add(concept);
             mRolesDict[role] = newItemsList;
         }
 
@@ -50,6 +51,16 @@ namespace MyNPCLib.NLToCGParsing
                     Add(role, extendedToken);
                 }
             }
+        }
+
+        public List<ConceptCGNode> GetByRole(string role)
+        {
+            if (mRolesDict.ContainsKey(role))
+            {
+                return mRolesDict[role];
+            }
+
+            return null;
         }
 
         public override string ToString()
@@ -83,7 +94,7 @@ namespace MyNPCLib.NLToCGParsing
                     sb.AppendLine($"{spaces}Begin {nameof(itemsOfRole)}");
                     foreach (var itemOfRole in itemsOfRole)
                     {
-                        sb.Append(itemOfRole.ToString(nextNextN));
+                        sb.Append(itemOfRole.ToBriefString(nextNextN));
                     }
                     sb.AppendLine($"{spaces}End {nameof(itemsOfRole)}");
                 }

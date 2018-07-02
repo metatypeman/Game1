@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.CG;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,23 +7,23 @@ namespace MyNPCLib.NLToCGParsing
 {
     public class RelationStorageOfSemanticAnalyzer : IObjectToString
     {
-        private Dictionary<ATNExtendedToken, Dictionary<ATNExtendedToken, List<string>>> mInfoDict = new Dictionary<ATNExtendedToken, Dictionary<ATNExtendedToken, List<string>>>();
+        private Dictionary<string, Dictionary<string, List<string>>> mInfoDict = new Dictionary<string, Dictionary<string, List<string>>>();
 
         /// <summary>
-        /// inputExtendedToken -> relationName -> outputExtendedToken
+        /// inputConcept -> relationName -> outputConcept
         /// </summary>
-        /// <param name="inputExtendedToken"></param>
-        /// <param name="outputExtendedToken"></param>
+        /// <param name="inputConcept"></param>
+        /// <param name="outputConcept"></param>
         /// <param name="relationName"></param>
-        public void AddRelation(ATNExtendedToken inputExtendedToken, ATNExtendedToken outputExtendedToken, string relationName)
+        public void AddRelation(string inputConcept, string outputConcept, string relationName)
         {
-            if(mInfoDict.ContainsKey(inputExtendedToken))
+            if(mInfoDict.ContainsKey(inputConcept))
             {
-                var targetDict = mInfoDict[inputExtendedToken];
+                var targetDict = mInfoDict[inputConcept];
 
-                if(targetDict.ContainsKey(outputExtendedToken))
+                if(targetDict.ContainsKey(outputConcept))
                 {
-                    var targetList = targetDict[outputExtendedToken];
+                    var targetList = targetDict[outputConcept];
 
                     if(!targetList.Contains(relationName))
                     {
@@ -34,35 +35,35 @@ namespace MyNPCLib.NLToCGParsing
 
                 {
                     var targetList = new List<string>() { relationName };
-                    targetDict[outputExtendedToken] = targetList;
+                    targetDict[outputConcept] = targetList;
                 }
                 return;
             }
 
             {
                 var targetList = new List<string>() { relationName };
-                var targetDict = new Dictionary<ATNExtendedToken, List<string>>();
-                targetDict[outputExtendedToken] = targetList;
-                mInfoDict[inputExtendedToken] = targetDict;
+                var targetDict = new Dictionary<string, List<string>>();
+                targetDict[outputConcept] = targetList;
+                mInfoDict[inputConcept] = targetDict;
             }
         }
 
         /// <summary>
-        /// inputExtendedToken -> relationName -> outputExtendedToken
+        /// inputConcept -> relationName -> outputConcept
         /// </summary>
-        /// <param name="inputExtendedToken"></param>
-        /// <param name="outputExtendedToken"></param>
+        /// <param name="inputConcept"></param>
+        /// <param name="outputConcept"></param>
         /// <param name="relationName"></param>
         /// <returns></returns>
-        public bool ContainsRelation(ATNExtendedToken inputExtendedToken, ATNExtendedToken outputExtendedToken, string relationName)
+        public bool ContainsRelation(string inputConcept, string outputConcept, string relationName)
         {
-            if (mInfoDict.ContainsKey(inputExtendedToken))
+            if (mInfoDict.ContainsKey(inputConcept))
             {
-                var targetDict = mInfoDict[inputExtendedToken];
+                var targetDict = mInfoDict[inputConcept];
 
-                if(targetDict.ContainsKey(outputExtendedToken))
+                if(targetDict.ContainsKey(outputConcept))
                 {
-                    var targetList = targetDict[outputExtendedToken];
+                    var targetList = targetDict[outputConcept];
                     return targetList.Contains(relationName);
                 }
             }

@@ -36,7 +36,7 @@ namespace MyNPCLib.NLToCGParsing
 
             if(verbFullLogicalMeaning.IsEmpty())
             {
-                verbFullLogicalMeaning = new List<string>() { "act" };
+                return result;
             }
 
             foreach(var logicalMeaning in verbFullLogicalMeaning)
@@ -45,8 +45,8 @@ namespace MyNPCLib.NLToCGParsing
                 LogInstance.Log($"logicalMeaning = {logicalMeaning}");
 #endif
 
-                PrimaryRolesDict.Add(logicalMeaning, verb);
-                resultPrimaryRolesDict.Add(logicalMeaning, verb);
+                PrimaryRolesDict.Add(logicalMeaning, mConcept);
+                resultPrimaryRolesDict.Add(logicalMeaning, mConcept);
             }
 
             if (mVerbPhrase.Object != null)
@@ -65,13 +65,49 @@ namespace MyNPCLib.NLToCGParsing
             LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
 #endif
 
+            if(verbFullLogicalMeaning.Contains("event") || verbFullLogicalMeaning.Contains("state"))
+            {
+                var entitiesList = PrimaryRolesDict.GetByRole("entity");
 
+                if(!entitiesList.IsEmpty())
+                {
+                    foreach(var entityConcept in entitiesList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"entityConcept = {entityConcept}");
+#endif
+
+                        CreateObjectRelation(mConcept, entityConcept);
+                    }
+                }
+            }
 
 #if DEBUG
             LogInstance.Log("End");
 #endif
 
             return result;
+        }
+
+        private void CreateObjectRelation(ConceptCGNode verbConcept, ConceptCGNode objectConcept)
+        {
+            var relationName = "object";
+
+            if(Context.RelationStorage.ContainsRelation(verbConcept.Name, objectConcept.Name, relationName))
+            {
+                return;
+            }
+
+            var conceptualGraph = Context.ConceptualGraph;
+
+            var relation = new RelationCGNode();
+            relation.Parent = conceptualGraph;
+            relation.Name = relationName;
+
+            verbConcept.AddOutputNode(relation);
+            relation.AddOutputNode(objectConcept);
+
+            Context.RelationStorage.AddRelation(verbConcept.Name, objectConcept.Name, relationName);
         }
     }
 }
