@@ -8,5 +8,6 @@ namespace MyNPCLib.NLToCGParsing
     public class ContextOfSemanticAnalyzer
     {
         public ConceptualGraph ConceptualGraph { get; set; }
+        public RelationStorageOfSemanticAnalyzer RelationStorage { get; private set; } = new RelationStorageOfSemanticAnalyzer();
     }
 }

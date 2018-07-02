@@ -34,6 +34,24 @@ namespace MyNPCLib.NLToCGParsing
             }             
         }
 
+        public void Assing(RolesStorageOfSemanticAnalyzer source)
+        {
+            if(source.Count == 0)
+            {
+                return;
+            }
+
+            foreach(var rolesDictKVPItem in source.mRolesDict)
+            {
+                var role = rolesDictKVPItem.Key;
+
+                foreach (var extendedToken in rolesDictKVPItem.Value)
+                {
+                    Add(role, extendedToken);
+                }
+            }
+        }
+
         public override string ToString()
         {
             return ToString(0u);

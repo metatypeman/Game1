@@ -15,8 +15,7 @@ namespace MyNPCLib.NLToCGParsing
 
         private VerbPhrase mVerbPhrase;
         private ConceptCGNode mConcept;
-        private RolesStorageOfSemanticAnalyzer mRolesDict = new RolesStorageOfSemanticAnalyzer();
-
+        
         public ResultOfNodeOfSemanticAnalyzer Run()
         {
 #if DEBUG
@@ -24,7 +23,8 @@ namespace MyNPCLib.NLToCGParsing
 #endif
 
             var result = new ResultOfNodeOfSemanticAnalyzer();
-            var resultRolesDict = result.RolesDict;
+            var resultPrimaryRolesDict = result.PrimaryRolesDict;
+            var resultSecondaryRolesDict = result.SecondaryRolesDict;
             var verb = mVerbPhrase.Verb;
             var conceptualGraph = Context.ConceptualGraph;
             mConcept = new ConceptCGNode();
@@ -45,8 +45,8 @@ namespace MyNPCLib.NLToCGParsing
                 LogInstance.Log($"logicalMeaning = {logicalMeaning}");
 #endif
 
-                mRolesDict.Add(logicalMeaning, verb);
-                resultRolesDict.Add(logicalMeaning, verb);
+                PrimaryRolesDict.Add(logicalMeaning, verb);
+                resultPrimaryRolesDict.Add(logicalMeaning, verb);
             }
 
             if (mVerbPhrase.Object != null)
@@ -57,10 +57,17 @@ namespace MyNPCLib.NLToCGParsing
 #if DEBUG
                 LogInstance.Log($"nounResult = {nounResult}");
 #endif
+
+                PrimaryRolesDict.Assing(nounResult.PrimaryRolesDict);
             }
 
 #if DEBUG
-            LogInstance.Log($"mRolesDict = {mRolesDict}");
+            LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
+#endif
+
+
+
+#if DEBUG
             LogInstance.Log("End");
 #endif
 

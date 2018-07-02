@@ -13,6 +13,7 @@ namespace MyNPCLib.NLToCGParsing
         }
 
         protected ContextOfSemanticAnalyzer Context { get; private set; }
+        protected RolesStorageOfSemanticAnalyzer PrimaryRolesDict { get; private set; } = new RolesStorageOfSemanticAnalyzer();
 
         protected string GetName(ATNExtendedToken extendedToken)
         {

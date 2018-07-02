@@ -14,7 +14,6 @@ namespace MyNPCLib.NLToCGParsing
         }
 
         private NounPhrase mNounPhrase;
-        private RolesStorageOfSemanticAnalyzer mRolesDict = new RolesStorageOfSemanticAnalyzer();
         private ConceptCGNode mConcept;
         private bool mHasDeterminers;
 
@@ -25,7 +24,8 @@ namespace MyNPCLib.NLToCGParsing
 #endif
 
             var result = new ResultOfNodeOfSemanticAnalyzer();
-            var resultRolesDict = result.RolesDict;
+            var resultPrimaryRolesDict = result.PrimaryRolesDict;
+            var resultSecondaryRolesDict = result.SecondaryRolesDict;
             var conceptualGraph = Context.ConceptualGraph;
             var noun = mNounPhrase.Noun;
 
@@ -47,7 +47,7 @@ namespace MyNPCLib.NLToCGParsing
                         LogInstance.Log($"determiner = {determiner}");
 #endif
 
-                        CreateDeterminerMark(mConcept, determiner, conceptualGraph);
+                        CreateDeterminerMark(mConcept, noun, determiner, conceptualGraph);
                     }
                 }
 
@@ -64,20 +64,20 @@ namespace MyNPCLib.NLToCGParsing
                     LogInstance.Log($"logicalMeaning = {logicalMeaning}");
 #endif
 
-                    mRolesDict.Add(logicalMeaning, noun);
-                    resultRolesDict.Add(logicalMeaning, noun);
+                    PrimaryRolesDict.Add(logicalMeaning, noun);
+                    resultPrimaryRolesDict.Add(logicalMeaning, noun);
                 }
             }
 
 #if DEBUG
-            LogInstance.Log($"mRolesDict = {mRolesDict}");
+            LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
             LogInstance.Log("End");
 #endif
 
             return result;
         }
 
-        private void CreateDeterminerMark(ConceptCGNode concept, ATNExtendedToken determiner, ConceptualGraph conceptualGraph)
+        private void CreateDeterminerMark(ConceptCGNode concept, ATNExtendedToken conceptExtendedToken, ATNExtendedToken determiner, ConceptualGraph conceptualGraph)
         {
             var determinerConcept = new ConceptCGNode();
             determinerConcept.Parent = conceptualGraph;
@@ -89,6 +89,8 @@ namespace MyNPCLib.NLToCGParsing
 
             concept.AddOutputNode(determinerRelation);
             determinerRelation.AddOutputNode(determinerConcept);
+
+            Context.RelationStorage.AddRelation(conceptExtendedToken, determiner, determinerRelation.Name);
         }
     }
 }

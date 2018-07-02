@@ -23,7 +23,8 @@ namespace MyNPCLib.NLToCGParsing
 #endif
 
             var result = new ResultOfNodeOfSemanticAnalyzer();
-
+            var resultPrimaryRolesDict = result.PrimaryRolesDict;
+            var resultSecondaryRolesDict = result.SecondaryRolesDict;
             mConceptualGraph = new ConceptualGraph();
             Context.ConceptualGraph = mConceptualGraph;
             mConceptualGraph.Name = NamesHelper.CreateEntityName();
@@ -36,6 +37,8 @@ namespace MyNPCLib.NLToCGParsing
 #if DEBUG
                 LogInstance.Log($"nounResult = {nounResult}");
 #endif
+
+                PrimaryRolesDict.Assing(nounResult.PrimaryRolesDict);
             }
 
             if (mSentence.VerbPhrase != null)
@@ -46,7 +49,13 @@ namespace MyNPCLib.NLToCGParsing
 #if DEBUG
                 LogInstance.Log($"verbResult = {verbResult}");
 #endif
+
+                PrimaryRolesDict.Assing(verbResult.PrimaryRolesDict);
             }
+
+#if DEBUG
+            LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
+#endif
 
 #if DEBUG
             LogInstance.Log("End");
