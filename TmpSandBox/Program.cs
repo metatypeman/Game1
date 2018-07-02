@@ -229,6 +229,15 @@ namespace TmpSandBox
             var result = parser.Run(paragraph);
             LogInstance.Log($"result = {result}");
 
+            var items = result.Items;
+
+            foreach(var graph in items)
+            {
+                var dotStr = DotConverter.ConvertToString(graph);
+
+                LogInstance.Log($"dotStr = {dotStr}");
+            }
+
             //var paragraph = "The dog likes the man.";
 
             //var result = parser.Run(paragraph);

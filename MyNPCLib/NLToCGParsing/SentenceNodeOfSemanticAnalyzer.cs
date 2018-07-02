@@ -5,43 +5,54 @@ using System.Text;
 
 namespace MyNPCLib.NLToCGParsing
 {
-    public class SentenceNodeOfSemanticAnalyzer
+    public class SentenceNodeOfSemanticAnalyzer: BaseNodeOfSemanticAnalyzer
     {
         public SentenceNodeOfSemanticAnalyzer(ContextOfSemanticAnalyzer context, Sentence sentence)
-        {
-            mContext = context;
+            : base(context)
+        {         
             mSentence = sentence;
         }
-
-        private ContextOfSemanticAnalyzer mContext;
+    
         private Sentence mSentence;
         private ConceptualGraph mConceptualGraph;
 
-        public void Run()
+        public ResultOfNodeOfSemanticAnalyzer Run()
         {
 #if DEBUG
             LogInstance.Log($"mSentence = {mSentence}");
 #endif
 
+            var result = new ResultOfNodeOfSemanticAnalyzer();
+
             mConceptualGraph = new ConceptualGraph();
-            mContext.ConceptualGraph = mConceptualGraph;
+            Context.ConceptualGraph = mConceptualGraph;
             mConceptualGraph.Name = NamesHelper.CreateEntityName();
 
             if(mSentence.NounPhrase != null)
             {
-                var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(mContext, mSentence.NounPhrase);
-                nounPhraseNode.Run();
+                var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(Context, mSentence.NounPhrase);
+                var nounResult = nounPhraseNode.Run();
+
+#if DEBUG
+                LogInstance.Log($"nounResult = {nounResult}");
+#endif
             }
 
-            if(mSentence.VerbPhrase != null)
+            if (mSentence.VerbPhrase != null)
             {
-                var verbPhraseNode = new VerbPhraseNodeOfSemanticAnalyzer(mContext, mSentence.VerbPhrase);
-                verbPhraseNode.Run();
+                var verbPhraseNode = new VerbPhraseNodeOfSemanticAnalyzer(Context, mSentence.VerbPhrase);
+                var verbResult = verbPhraseNode.Run();
+
+#if DEBUG
+                LogInstance.Log($"verbResult = {verbResult}");
+#endif
             }
 
 #if DEBUG
             LogInstance.Log("End");
 #endif
+
+            return result;
         }
     }
 }

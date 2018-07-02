@@ -20,7 +20,11 @@ namespace MyNPCLib.NLToCGParsing
                 var context = new ContextOfSemanticAnalyzer();
 
                 var sentenceNode = new SentenceNodeOfSemanticAnalyzer(context, sentence);
-                sentenceNode.Run();
+                var sentenceResult = sentenceNode.Run();
+
+#if DEBUG
+                LogInstance.Log($"sentenceResult = {sentenceResult}");
+#endif
 
                 var result = context.ConceptualGraph;
 
