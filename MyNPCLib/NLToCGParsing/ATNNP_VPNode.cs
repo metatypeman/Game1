@@ -99,6 +99,8 @@ namespace MyNPCLib.NLToCGParsing
                                     sentence.VerbPhrase = mVerbPhrase;
                                     sentence.Aspect = GrammaticalAspect.Simple;
                                     sentence.Voice = GrammaticalVoice.Active;
+                                    sentence.Mood = GrammaticalMood.Indicative;
+                                    sentence.Modal = KindOfModal.None;
                                 }
                                 break;
 

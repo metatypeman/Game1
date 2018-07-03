@@ -79,10 +79,10 @@ namespace MyNPCLib.NLToCGParsing
 
         private void CreateDeterminerMark(ConceptCGNode concept, ATNExtendedToken conceptExtendedToken, ATNExtendedToken determiner)
         {
-            var determinerRelationName = "determiner"; 
+            var relationName = "determiner"; 
             var determinerConceptName = GetName(determiner);
 
-            if (Context.RelationStorage.ContainsRelation(concept.Name, determinerConceptName, determinerRelationName))
+            if (Context.RelationStorage.ContainsRelation(concept.Name, determinerConceptName, relationName))
             {
                 return;
             }
@@ -95,12 +95,14 @@ namespace MyNPCLib.NLToCGParsing
 
             var determinerRelation = new RelationCGNode();
             determinerRelation.Parent = conceptualGraph;
-            determinerRelation.Name = determinerRelationName;
+            determinerRelation.Name = relationName;
 
             concept.AddOutputNode(determinerRelation);
             determinerRelation.AddOutputNode(determinerConcept);
 
-            Context.RelationStorage.AddRelation(concept.Name, determinerConceptName, determinerRelationName);
+            Context.RelationStorage.AddRelation(concept.Name, determinerConceptName, relationName);
+
+            MarkAsEntityCondition(determinerConcept);
         }
     }
 }

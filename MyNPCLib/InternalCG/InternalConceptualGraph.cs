@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CG;
+using MyNPCLib.SimpleWordsDict;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,12 @@ namespace MyNPCLib.InternalCG
         public override bool IsConceptualGraph => true;
         public override InternalConceptualGraph AsConceptualGraph => this;
         public override KindOfCGNode Kind => KindOfCGNode.Graph;
+        public GrammaticalTenses Tense { get; set; } = GrammaticalTenses.Undefined;
+        public GrammaticalAspect Aspect { get; set; } = GrammaticalAspect.Undefined;
+        public GrammaticalVoice Voice { get; set; } = GrammaticalVoice.Undefined;
+        public GrammaticalMood Mood { get; set; } = GrammaticalMood.Undefined;
+        public bool? Conditional { get; set; }
+        public KindOfModal Modal { get; set; } = KindOfModal.Undefined;
 
         private IList<BaseInternalCGNode> mChildren = new List<BaseInternalCGNode>();
 
@@ -78,12 +85,34 @@ namespace MyNPCLib.InternalCG
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToSting(n));
+            sb.AppendLine($"{spaces}{nameof(Number)} = {Number}");
+            sb.AppendLine($"{spaces}{nameof(Tense)} = {Tense}");
+            sb.AppendLine($"{spaces}{nameof(Aspect)} = {Aspect}");
+            sb.AppendLine($"{spaces}{nameof(Conditional)} = {Conditional}");
+            sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
+            sb.AppendLine($"{spaces}{nameof(Modal)} = {Modal}");
+            sb.AppendLine($"{spaces}{nameof(Mood)} = {Mood}");
             sb.AppendLine($"{spaces}Begin {nameof(Children)}");
             foreach (var child in Children)
             {
                 sb.Append(child.PropertiesToShortSting(nextN));
             }
             sb.AppendLine($"{spaces}End {nameof(Children)}");
+            return sb.ToString();
+        }
+
+        public override string PropertiesToShortSting(uint n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Number)} = {Number}");
+            sb.AppendLine($"{spaces}{nameof(Tense)} = {Tense}");
+            sb.AppendLine($"{spaces}{nameof(Aspect)} = {Aspect}");
+            sb.AppendLine($"{spaces}{nameof(Conditional)} = {Conditional}");
+            sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
+            sb.AppendLine($"{spaces}{nameof(Modal)} = {Modal}");
+            sb.AppendLine($"{spaces}{nameof(Mood)} = {Mood}");
+            sb.Append(base.PropertiesToShortSting(n));
             return sb.ToString();
         }
     }

@@ -10,6 +10,8 @@ namespace MyNPCLib.NLToCGParsing
         public GrammaticalAspect Aspect { get; set; } = GrammaticalAspect.Undefined;
         public GrammaticalTenses Tense { get; set; } = GrammaticalTenses.Undefined;
         public GrammaticalVoice Voice { get; set; } = GrammaticalVoice.Undefined;
+        public GrammaticalMood Mood { get; set; } = GrammaticalMood.Undefined;
+        public KindOfModal Modal { get; set; } = KindOfModal.Undefined;
         public NounPhrase NounPhrase { get; set; }
         public VerbPhrase VerbPhrase { get; set; }
 
@@ -38,6 +40,8 @@ namespace MyNPCLib.NLToCGParsing
             sb.AppendLine($"{spaces}{nameof(Aspect)} = {Aspect}");
             sb.AppendLine($"{spaces}{nameof(Tense)} = {Tense}");
             sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
+            sb.AppendLine($"{spaces}{nameof(Modal)} = {Modal}");
+            sb.AppendLine($"{spaces}{nameof(Mood)} = {Mood}");
             if (NounPhrase == null)
             {
                 sb.AppendLine($"{spaces}{nameof(NounPhrase)} = null");
@@ -79,6 +83,8 @@ namespace MyNPCLib.NLToCGParsing
             sb.AppendLine($"{spaces}{nameof(Aspect)} = {Aspect}");
             sb.AppendLine($"{spaces}{nameof(Tense)} = {Tense}");
             sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
+            sb.AppendLine($"{spaces}{nameof(Modal)} = {Modal}");
+            sb.AppendLine($"{spaces}{nameof(Mood)} = {Mood}");
             if (NounPhrase == null)
             {
                 sb.AppendLine($"{spaces}{nameof(NounPhrase)} = null");

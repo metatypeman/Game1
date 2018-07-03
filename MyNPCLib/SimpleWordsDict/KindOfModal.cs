@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.InternalCG
+namespace MyNPCLib.SimpleWordsDict
 {
     public enum KindOfModal
     {
         Undefined,
+        None,
         Must,
         Can,
         May

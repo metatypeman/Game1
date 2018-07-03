@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.InternalCG
+namespace MyNPCLib.SimpleWordsDict
 {
     /// <summary>
     /// See at https://en.wikipedia.org/wiki/Grammatical_mood
     /// </summary>
-    public enum KindOfMood
+    public enum GrammaticalMood
     {
         Undefined,
         Indicative,

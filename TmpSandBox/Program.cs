@@ -1,6 +1,7 @@
 ﻿using MyNPCLib;
 using MyNPCLib.CG;
 using MyNPCLib.CGStorage;
+using MyNPCLib.ConvertingCGToInternal;
 using MyNPCLib.ConvertingPersistLogicalDataToIndexing;
 using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.Dot;
@@ -236,6 +237,14 @@ namespace TmpSandBox
                 var dotStr = DotConverter.ConvertToString(graph);
 
                 LogInstance.Log($"dotStr = {dotStr}");
+
+                var internalCG = ConvertorCGToInternal.Convert(graph);
+
+                LogInstance.Log($"internalCG = {internalCG}");
+
+                dotStr = DotConverter.ConvertToString(internalCG);
+
+                LogInstance.Log($"dotStr (2) = {dotStr}");
             }
 
             //var paragraph = "The dog likes the man.";
