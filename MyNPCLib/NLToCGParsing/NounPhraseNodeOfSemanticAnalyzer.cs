@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CG;
+using MyNPCLib.CommonServiceGrammaticalElements;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -79,7 +80,7 @@ namespace MyNPCLib.NLToCGParsing
 
         private void CreateDeterminerMark(ConceptCGNode concept, ATNExtendedToken conceptExtendedToken, ATNExtendedToken determiner)
         {
-            var relationName = "determiner"; 
+            var relationName = CGGramamaticalNamesOfRelations.DeterminerName; 
             var determinerConceptName = GetName(determiner);
 
             if (Context.RelationStorage.ContainsRelation(concept.Name, determinerConceptName, relationName))

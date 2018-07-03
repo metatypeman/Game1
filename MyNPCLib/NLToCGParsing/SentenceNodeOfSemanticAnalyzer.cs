@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CG;
+using MyNPCLib.CommonServiceGrammaticalElements;
 using MyNPCLib.SimpleWordsDict;
 using System;
 using System.Collections.Generic;
@@ -123,7 +124,7 @@ namespace MyNPCLib.NLToCGParsing
 
                 var grammarRelation = new RelationCGNode();
                 grammarRelation.Parent = outerConceptualGraph;
-                grammarRelation.Name = "__aspect";
+                grammarRelation.Name = CGGramamaticalNamesOfRelations.AspectName;
 
                 conceptualGraph.AddOutputNode(grammarRelation);
                 grammarRelation.AddOutputNode(grammarConcept);
@@ -143,7 +144,7 @@ namespace MyNPCLib.NLToCGParsing
 
                 var grammarRelation = new RelationCGNode();
                 grammarRelation.Parent = outerConceptualGraph;
-                grammarRelation.Name = "__tense";
+                grammarRelation.Name = CGGramamaticalNamesOfRelations.TenseName;
 
                 conceptualGraph.AddOutputNode(grammarRelation);
                 grammarRelation.AddOutputNode(grammarConcept);
@@ -162,7 +163,7 @@ namespace MyNPCLib.NLToCGParsing
 
                 var grammarRelation = new RelationCGNode();
                 grammarRelation.Parent = outerConceptualGraph;
-                grammarRelation.Name = "__voice";
+                grammarRelation.Name = CGGramamaticalNamesOfRelations.VoiceName;
 
                 conceptualGraph.AddOutputNode(grammarRelation);
                 grammarRelation.AddOutputNode(grammarConcept);
@@ -182,7 +183,7 @@ namespace MyNPCLib.NLToCGParsing
 
                 var grammarRelation = new RelationCGNode();
                 grammarRelation.Parent = outerConceptualGraph;
-                grammarRelation.Name = "__mood";
+                grammarRelation.Name = CGGramamaticalNamesOfRelations.MoodName;
 
                 conceptualGraph.AddOutputNode(grammarRelation);
                 grammarRelation.AddOutputNode(grammarConcept);
@@ -202,7 +203,7 @@ namespace MyNPCLib.NLToCGParsing
 
                 var grammarRelation = new RelationCGNode();
                 grammarRelation.Parent = outerConceptualGraph;
-                grammarRelation.Name = "__modal";
+                grammarRelation.Name = CGGramamaticalNamesOfRelations.ModalName;
 
                 conceptualGraph.AddOutputNode(grammarRelation);
                 grammarRelation.AddOutputNode(grammarConcept);
@@ -216,10 +217,19 @@ namespace MyNPCLib.NLToCGParsing
             switch(aspect)
             {
                 case GrammaticalAspect.Undefined:
+                    return string.Empty;
+
                 case GrammaticalAspect.Simple:
-                case GrammaticalAspect.Continuous,
-                case GrammaticalAspect.Perfect,
-                case GrammaticalAspect.PerfectContinuous
+                    return CGGramamaticalNamesOfConcepts.GrammaticalAspect_Simple;
+
+                case GrammaticalAspect.Continuous:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalAspect_Continuous;
+
+                case GrammaticalAspect.Perfect:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalAspect_Perfect;
+
+                case GrammaticalAspect.PerfectContinuous:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalAspect_PerfectContinuous;
 
                 default: throw new ArgumentOutOfRangeException(nameof(aspect), aspect, null);
             }
@@ -231,12 +241,23 @@ namespace MyNPCLib.NLToCGParsing
 
             switch (tense)
             {
-                     Undefined,
-        All,
-        Present,
-        Past,
-        Future,
-        FutureInThePast
+                case GrammaticalTenses.Undefined:
+                    return string.Empty;
+
+                case GrammaticalTenses.All:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalTenses_All;
+
+                case GrammaticalTenses.Present:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalTenses_Present;
+
+                case GrammaticalTenses.Past:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalTenses_Past;
+
+                case GrammaticalTenses.Future:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalTenses_Future;
+
+                case GrammaticalTenses.FutureInThePast:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalTenses_FutureInThePast;
 
                 default: throw new ArgumentOutOfRangeException(nameof(tense), tense, null);
             }
@@ -248,9 +269,14 @@ namespace MyNPCLib.NLToCGParsing
 
             switch (voice)
             {
-                                    Undefined,
-        Active,
-        Passive
+                case GrammaticalVoice.Undefined:
+                    return string.Empty;
+
+                case GrammaticalVoice.Active:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalVoice_Active;
+
+                case GrammaticalVoice.Passive:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalVoice_Passive;
 
                 default: throw new ArgumentOutOfRangeException(nameof(voice), voice, null);
             }
@@ -262,15 +288,32 @@ namespace MyNPCLib.NLToCGParsing
 
             switch (mood)
             {
-                                    Undefined,
-        Indicative,
-        Subjunctive,
-        Imperative,
-        Jussive,
-        Potential,
-        Hypothetical,
-        Hortative,
-        Optative
+                case GrammaticalMood.Undefined:
+                    return string.Empty;
+
+                case GrammaticalMood.Indicative:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Indicative;
+
+                case GrammaticalMood.Subjunctive:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Subjunctive;
+
+                case GrammaticalMood.Imperative:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Imperative;
+
+                case GrammaticalMood.Jussive:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Jussive;
+
+                case GrammaticalMood.Potential:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Potential;
+
+                case GrammaticalMood.Hypothetical:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Hypothetical;
+
+                case GrammaticalMood.Hortative:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Hortative;
+
+                case GrammaticalMood.Optative:
+                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Optative;
 
                 default: throw new ArgumentOutOfRangeException(nameof(mood), mood, null);
             }
@@ -281,11 +324,20 @@ namespace MyNPCLib.NLToCGParsing
             var modal = mSentence.Modal;
             switch (modal)
             {
-                                    Undefined,
-        None,
-        Must,
-        Can,
-        May
+                case KindOfModal.Undefined:
+                    return string.Empty;
+
+                case KindOfModal.None:
+                    return CGGramamaticalNamesOfConcepts.KindOfModal_None;
+
+                case KindOfModal.Must:
+                    return CGGramamaticalNamesOfConcepts.KindOfModal_Must;
+
+                case KindOfModal.Can:
+                    return CGGramamaticalNamesOfConcepts.KindOfModal_Can;
+
+                case KindOfModal.May:
+                    return CGGramamaticalNamesOfConcepts.KindOfModal_May;
 
                 default: throw new ArgumentOutOfRangeException(nameof(modal), modal, null);
             }

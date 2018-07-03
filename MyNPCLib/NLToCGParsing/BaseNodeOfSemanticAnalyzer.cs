@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CG;
+using MyNPCLib.CommonServiceGrammaticalElements;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,7 +30,7 @@ namespace MyNPCLib.NLToCGParsing
 
         protected void MarkAsEntityCondition(ConceptCGNode concept)
         {
-            var relationName = "__entity_condition";
+            var relationName = CGGramamaticalNamesOfRelations.EntityCondition;
             var conceptualGraph = Context.ConceptualGraph;
 
             var relation = new RelationCGNode();
