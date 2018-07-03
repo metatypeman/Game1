@@ -110,7 +110,7 @@ namespace MyNPCLib.NLToCGParsing
             var conceptualGraph = Context.ConceptualGraph;
             var outerConceptualGraph = Context.OuterConceptualGraph;
 
-            var aspectName = GetAspectName();
+            var aspectName = GrammaticalElementsHeper.GetAspectName(mSentence.Aspect);
 
 #if DEBUG
             LogInstance.Log($"aspectName = {aspectName}");
@@ -130,7 +130,7 @@ namespace MyNPCLib.NLToCGParsing
                 grammarRelation.AddOutputNode(grammarConcept);
             }
 
-            var tenseName = GetTenseName();
+            var tenseName = GrammaticalElementsHeper.GetTenseName(mSentence.Tense);
 
 #if DEBUG
             LogInstance.Log($"tenseName = {tenseName}");
@@ -150,7 +150,7 @@ namespace MyNPCLib.NLToCGParsing
                 grammarRelation.AddOutputNode(grammarConcept);
             }
 
-            var voiceName = GetVoiceName();
+            var voiceName = GrammaticalElementsHeper.GetVoiceName(mSentence.Voice);
 
 #if DEBUG
             LogInstance.Log($"voiceName = {voiceName}");
@@ -169,7 +169,7 @@ namespace MyNPCLib.NLToCGParsing
                 grammarRelation.AddOutputNode(grammarConcept);
             }
 
-            var moodName = GetMoodName();
+            var moodName = GrammaticalElementsHeper.GetMoodName(mSentence.Mood);
 
 #if DEBUG
             LogInstance.Log($"moodName = {moodName}");
@@ -189,7 +189,7 @@ namespace MyNPCLib.NLToCGParsing
                 grammarRelation.AddOutputNode(grammarConcept);
             }
 
-            var modalName = GetModalName();
+            var modalName = GrammaticalElementsHeper.GetModalName(mSentence.Modal);
 
 #if DEBUG
             LogInstance.Log($"modalName = {modalName}");
@@ -207,139 +207,6 @@ namespace MyNPCLib.NLToCGParsing
 
                 conceptualGraph.AddOutputNode(grammarRelation);
                 grammarRelation.AddOutputNode(grammarConcept);
-            }
-        }
-
-        private string GetAspectName()
-        {
-            var aspect = mSentence.Aspect;
-
-            switch(aspect)
-            {
-                case GrammaticalAspect.Undefined:
-                    return string.Empty;
-
-                case GrammaticalAspect.Simple:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalAspect_Simple;
-
-                case GrammaticalAspect.Continuous:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalAspect_Continuous;
-
-                case GrammaticalAspect.Perfect:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalAspect_Perfect;
-
-                case GrammaticalAspect.PerfectContinuous:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalAspect_PerfectContinuous;
-
-                default: throw new ArgumentOutOfRangeException(nameof(aspect), aspect, null);
-            }
-        }
-
-        private string GetTenseName()
-        {
-            var tense = mSentence.Tense;
-
-            switch (tense)
-            {
-                case GrammaticalTenses.Undefined:
-                    return string.Empty;
-
-                case GrammaticalTenses.All:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalTenses_All;
-
-                case GrammaticalTenses.Present:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalTenses_Present;
-
-                case GrammaticalTenses.Past:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalTenses_Past;
-
-                case GrammaticalTenses.Future:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalTenses_Future;
-
-                case GrammaticalTenses.FutureInThePast:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalTenses_FutureInThePast;
-
-                default: throw new ArgumentOutOfRangeException(nameof(tense), tense, null);
-            }
-        }
-
-        private string GetVoiceName()
-        {
-            var voice = mSentence.Voice;
-
-            switch (voice)
-            {
-                case GrammaticalVoice.Undefined:
-                    return string.Empty;
-
-                case GrammaticalVoice.Active:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalVoice_Active;
-
-                case GrammaticalVoice.Passive:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalVoice_Passive;
-
-                default: throw new ArgumentOutOfRangeException(nameof(voice), voice, null);
-            }
-        }
-
-        private string GetMoodName()
-        {
-            var mood = mSentence.Mood;
-
-            switch (mood)
-            {
-                case GrammaticalMood.Undefined:
-                    return string.Empty;
-
-                case GrammaticalMood.Indicative:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Indicative;
-
-                case GrammaticalMood.Subjunctive:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Subjunctive;
-
-                case GrammaticalMood.Imperative:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Imperative;
-
-                case GrammaticalMood.Jussive:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Jussive;
-
-                case GrammaticalMood.Potential:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Potential;
-
-                case GrammaticalMood.Hypothetical:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Hypothetical;
-
-                case GrammaticalMood.Hortative:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Hortative;
-
-                case GrammaticalMood.Optative:
-                    return CGGramamaticalNamesOfConcepts.GrammaticalMood_Optative;
-
-                default: throw new ArgumentOutOfRangeException(nameof(mood), mood, null);
-            }
-        }
-
-        private string GetModalName()
-        {
-            var modal = mSentence.Modal;
-            switch (modal)
-            {
-                case KindOfModal.Undefined:
-                    return string.Empty;
-
-                case KindOfModal.None:
-                    return CGGramamaticalNamesOfConcepts.KindOfModal_None;
-
-                case KindOfModal.Must:
-                    return CGGramamaticalNamesOfConcepts.KindOfModal_Must;
-
-                case KindOfModal.Can:
-                    return CGGramamaticalNamesOfConcepts.KindOfModal_Can;
-
-                case KindOfModal.May:
-                    return CGGramamaticalNamesOfConcepts.KindOfModal_May;
-
-                default: throw new ArgumentOutOfRangeException(nameof(modal), modal, null);
             }
         }
 
