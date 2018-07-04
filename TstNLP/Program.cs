@@ -11,25 +11,39 @@ namespace TstNLP
         {
             NLog.LogManager.GetCurrentClassLogger().Info("Hello World!");
 
-            var path = Directory.GetCurrentDirectory();
+            var sb = new StringBuilder();
+            sb.AppendLine("# Some header");
+            sb.AppendLine("## Second header");
+            sb.AppendLine("**Hello world!**");
+            sb.AppendLine("My text");
+            sb.AppendLine();
+            sb.AppendLine("Yet another text");
 
-            NLog.LogManager.GetCurrentClassLogger().Info($"Hello World! path = {path}");
+            NLog.LogManager.GetCurrentClassLogger().Info($"sb.ToString() = {sb.ToString()}");
 
-            var sentence = "- Sorry Mrs Hudson, I'll skip the tea.";
+            var result = CommonMark.CommonMarkConverter.Convert(sb.ToString());
 
-            ParseSentence(sentence);
+            NLog.LogManager.GetCurrentClassLogger().Info($"result = {result}");
 
-            sentence = "Kill the dog!";
+            //var path = Directory.GetCurrentDirectory();
 
-            ParseSentence(sentence);
+            //NLog.LogManager.GetCurrentClassLogger().Info($"Hello World! path = {path}");
 
-            sentence = "This is a green forest.";
+            //var sentence = "- Sorry Mrs Hudson, I'll skip the tea.";
 
-            ParseSentence(sentence);
+            //ParseSentence(sentence);
 
-            sentence = "The third story arc centers on the longstanding brotherhood charged with defending the realm against the ancient threats of the fierce peoples and legendary creatures that lie far north, and an impending winter that threatens the realm.";
+            //sentence = "Kill the dog!";
 
-            ParseSentence(sentence);
+            //ParseSentence(sentence);
+
+            //sentence = "This is a green forest.";
+
+            //ParseSentence(sentence);
+
+            //sentence = "The third story arc centers on the longstanding brotherhood charged with defending the realm against the ancient threats of the fierce peoples and legendary creatures that lie far north, and an impending winter that threatens the realm.";
+
+            //ParseSentence(sentence);
         }
 
         private static void ParseSentence(string sentence)

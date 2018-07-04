@@ -28,16 +28,16 @@ namespace MyNPCLib.NLToCGParsing
             return rootWord;
         }
 
-        protected void MarkAsEntityCondition(ConceptCGNode concept)
+        protected void MarkAsEntityCondition(RelationCGNode relation)
         {
             var relationName = CGGramamaticalNamesOfRelations.EntityCondition;
             var conceptualGraph = Context.ConceptualGraph;
 
-            var relation = new RelationCGNode();
-            relation.Parent = conceptualGraph;
-            relation.Name = relationName;
+            var secondaryRelation = new RelationCGNode();
+            secondaryRelation.Parent = conceptualGraph;
+            secondaryRelation.Name = relationName;
 
-            concept.AddOutputNode(relation);
+            secondaryRelation.AddOutputNode(relation);
         }
     }
 }

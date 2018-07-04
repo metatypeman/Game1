@@ -103,7 +103,7 @@ namespace MyNPCLib.NLToCGParsing
 
             Context.RelationStorage.AddRelation(concept.Name, determinerConceptName, relationName);
 
-            MarkAsEntityCondition(determinerConcept);
+            MarkAsEntityCondition(determinerRelation);
         }
     }
 }

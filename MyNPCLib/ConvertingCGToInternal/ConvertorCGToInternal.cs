@@ -18,8 +18,12 @@ namespace MyNPCLib.ConvertingCGToInternal
             LogInstance.Log($"source = {source}");
 #endif
 
-            while(IsWrapperGraph(source))
+            var context = new ContextOfConvertingCGToInternal();
+            context.EntityDictionary = entityDictionary;
+
+            while (IsWrapperGraph(source))
             {
+                context.WrappersList.Add(source);
                 source = (ConceptualGraph)source.Children.SingleOrDefault(p => p.Kind == KindOfCGNode.Graph);
             }
 
@@ -27,8 +31,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             LogInstance.Log($"source = {source}");
 #endif
 
-            var context = new ContextOfConvertingCGToInternal();
-            context.EntityDictionary = entityDictionary;
+
             return ConvertConceptualGraph(source, context);
         }
 
@@ -65,6 +68,11 @@ namespace MyNPCLib.ConvertingCGToInternal
 #if DEBUG
             LogInstance.Log($"source = {source}");
 #endif
+
+            if(context.WrappersList.Contains(source))
+            {
+                return null;
+            }
 
             if (context.ConceptualGraphsDict.ContainsKey(source))
             {
@@ -108,7 +116,48 @@ namespace MyNPCLib.ConvertingCGToInternal
             LogInstance.Log($"childrenList.Count = {childrenList.Count}");
 #endif
 
-            foreach(var child in childrenList)
+            var entitiesConditionsMarksRelationsList = childrenList.Where(p => GrammaticalElementsHeper.IsEntityCondition(p.Name)).ToList();
+
+#if DEBUG
+            LogInstance.Log($"entitiesConditionsMarksRelationsList.Count = {entitiesConditionsMarksRelationsList.Count}");
+#endif
+
+            if(entitiesConditionsMarksRelationsList.Count == 0)
+            {
+                CreateChildrenByAllNodes(source, result, context);
+                return;
+            }
+
+            foreach(var entityConditionMarkRelation in entitiesConditionsMarksRelationsList)
+            {
+#if DEBUG
+                LogInstance.Log($"entityConditionMarkRelation = {entityConditionMarkRelation}");
+#endif
+
+                var firstOrdersRelationsList = entityConditionMarkRelation.Outputs.Where(p => p.Kind == KindOfCGNode.Relation).Select(p => (RelationCGNode)p).ToList();
+
+#if DEBUG
+                LogInstance.Log($"firstOrdersRelationsList.Count = {firstOrdersRelationsList.Count}");
+#endif
+
+                foreach(var firstOrderRelation in firstOrdersRelationsList)
+                {
+#if DEBUG
+                    LogInstance.Log($"firstOrderRelation = {firstOrderRelation}");
+#endif
+                }
+            }
+        }
+
+        private static void CreateChildrenByAllNodes(ConceptualGraph source, InternalConceptualGraph result, ContextOfConvertingCGToInternal context)
+        {
+            var childrenList = source.Children;
+
+#if DEBUG
+            LogInstance.Log($"childrenList.Count = {childrenList.Count}");
+#endif
+
+            foreach (var child in childrenList)
             {
 #if DEBUG
                 LogInstance.Log($"child = {child}");

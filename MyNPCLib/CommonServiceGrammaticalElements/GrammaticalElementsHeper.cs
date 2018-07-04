@@ -331,5 +331,15 @@ namespace MyNPCLib.CommonServiceGrammaticalElements
 
             return KindOfGrammaticalRelation.Undefined;
         }
+
+        public static bool IsEntityCondition(string relationName)
+        {
+            if(relationName == CGGramamaticalNamesOfRelations.EntityCondition)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }
