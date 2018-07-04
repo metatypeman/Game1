@@ -184,6 +184,8 @@ namespace TmpSandBox
 
         private static void TSTParseNLText()
         {
+            var globalEntityDictionary = new EntityDictionary();
+
             //var path = AppDomain.CurrentDomain.BaseDirectory;
 
             //LogInstance.Log($"path = {path}");
@@ -238,7 +240,7 @@ namespace TmpSandBox
 
                 LogInstance.Log($"dotStr = {dotStr}");
 
-                var internalCG = ConvertorCGToInternal.Convert(graph);
+                var internalCG = ConvertorCGToInternal.Convert(graph, globalEntityDictionary);
 
                 LogInstance.Log($"internalCG = {internalCG}");
 
