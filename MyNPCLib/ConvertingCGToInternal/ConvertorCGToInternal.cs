@@ -186,6 +186,36 @@ namespace MyNPCLib.ConvertingCGToInternal
 
                 entityConditionsDict[sourceItem] = entityCondition;
             }
+
+            CreateChildrenByAllNodes(sourceItems, entityCondition, context);
+
+            var conceptsSourceItemsList = sourceItems.Where(p => p.Kind == KindOfCGNode.Concept).Select(p => ()p);
+
+            foreach (var sourceItem in conceptsSourceItemsList)
+            {
+#if DEBUG
+                LogInstance.Log($"sourceItem = {sourceItem}");
+#endif
+
+                var kind = sourceItem.Kind;
+
+                switch(kind)
+                {
+                    case KindOfCGNode.Relation:
+                        {
+                            var resultItem = context.RelationsDict[(RelationCGNode)sourceItem];
+
+#if DEBUG
+                            LogInstance.Log($"resultItem = {resultItem}");
+#endif
+
+
+                        }
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+                }
+            }
         }
 
         private static List<BaseCGNode> GetNotDirectlyClonedNodesList(List<BaseCGNode> entitiesConditionsMarksRelationsList)
