@@ -32,7 +32,7 @@ namespace MyNPCLib.ConvertingCGToInternal
 #endif
 
 
-            return ConvertConceptualGraph(source, context);
+            return ConvertConceptualGraph(source, null, context);
         }
 
         private static bool IsWrapperGraph(ConceptualGraph source)
@@ -63,7 +63,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             return false;
         }
 
-        private static InternalConceptualGraph ConvertConceptualGraph(ConceptualGraph source, ContextOfConvertingCGToInternal context)
+        private static InternalConceptualGraph ConvertConceptualGraph(ConceptualGraph source, InternalConceptualGraph targetParent, ContextOfConvertingCGToInternal context)
         {
 #if DEBUG
             LogInstance.Log($"source = {source}");
@@ -83,10 +83,17 @@ namespace MyNPCLib.ConvertingCGToInternal
 
             context.ConceptualGraphsDict[source] = result;
 
-            if(source.Parent != null)
+            if(targetParent == null)
             {
-                var parentForResult = ConvertConceptualGraph(source.Parent, context);
-                result.Parent = parentForResult;
+                if (source.Parent != null)
+                {
+                    var parentForResult = ConvertConceptualGraph(source.Parent, null, context);
+                    result.Parent = parentForResult;
+                }
+            }
+            else
+            {
+                result.Parent = targetParent;
             }
 
             FillName(source, result, context);
@@ -124,15 +131,74 @@ namespace MyNPCLib.ConvertingCGToInternal
 
             if(entitiesConditionsMarksRelationsList.Count == 0)
             {
-                CreateChildrenByAllNodes(source, result, context);
+                CreateChildrenByAllNodes(childrenList, null, context);
                 return;
             }
 
-            foreach(var entityConditionMarkRelation in entitiesConditionsMarksRelationsList)
+            var notDirectlyClonedNodesList = GetNotDirectlyClonedNodesList(entitiesConditionsMarksRelationsList);
+
+#if DEBUG
+            LogInstance.Log($"notDirectlyClonedNodesList.Count = {notDirectlyClonedNodesList.Count}");
+            foreach(var notDirectlyClonedNode in notDirectlyClonedNodesList)
+            {
+                LogInstance.Log($"notDirectlyClonedNode = {notDirectlyClonedNode}");
+            }
+#endif
+
+            var clustersOfLinkedNodesDict = GetClastersOfLinkedNodes(notDirectlyClonedNodesList);
+
+#if DEBUG
+            LogInstance.Log($"clustersOfLinkedNodesDict.Count = {clustersOfLinkedNodesDict.Count}");
+#endif
+            foreach (var clustersOfLinkedNodesKVPItem in clustersOfLinkedNodesDict)
+            {
+#if DEBUG
+                LogInstance.Log($"clustersOfLinkedNodesKVPItem.Key = {clustersOfLinkedNodesKVPItem.Key}");
+#endif
+                CreateEntityCondition(result, clustersOfLinkedNodesKVPItem.Value, context);
+            }
+
+            var nodesForDirectlyClonningList = childrenList.Where(p => !notDirectlyClonedNodesList.Contains(p)).ToList();
+
+            CreateChildrenByAllNodes(nodesForDirectlyClonningList, null, context);
+        }
+
+        private static void CreateEntityCondition(InternalConceptualGraph parent, List<BaseCGNode> sourceItems, ContextOfConvertingCGToInternal context)
+        {
+#if DEBUG
+            LogInstance.Log($"sourceItems.Count = {sourceItems.Count}");
+#endif
+
+            var entityCondition = new InternalConceptualGraph();
+            entityCondition.Parent = parent;
+            entityCondition.IsEntityCondition = true;
+            var entityConditionName = NamesHelper.CreateEntityName();
+            entityCondition.Name = entityConditionName;
+            entityCondition.Key = context.EntityDictionary.GetKey(entityConditionName);
+
+            var entityConditionsDict = context.EntityConditionsDict;
+
+            foreach (var sourceItem in sourceItems)
+            {
+#if DEBUG
+                LogInstance.Log($"sourceItem = {sourceItem}");
+#endif
+
+                entityConditionsDict[sourceItem] = entityCondition;
+            }
+        }
+
+        private static List<BaseCGNode> GetNotDirectlyClonedNodesList(List<BaseCGNode> entitiesConditionsMarksRelationsList)
+        {
+            var notDirectlyClonedNodesList = new List<BaseCGNode>();
+
+            foreach (var entityConditionMarkRelation in entitiesConditionsMarksRelationsList)
             {
 #if DEBUG
                 LogInstance.Log($"entityConditionMarkRelation = {entityConditionMarkRelation}");
 #endif
+
+                notDirectlyClonedNodesList.Add(entityConditionMarkRelation);
 
                 var firstOrdersRelationsList = entityConditionMarkRelation.Outputs.Where(p => p.Kind == KindOfCGNode.Relation).Select(p => (RelationCGNode)p).ToList();
 
@@ -140,19 +206,154 @@ namespace MyNPCLib.ConvertingCGToInternal
                 LogInstance.Log($"firstOrdersRelationsList.Count = {firstOrdersRelationsList.Count}");
 #endif
 
-                foreach(var firstOrderRelation in firstOrdersRelationsList)
+                foreach (var firstOrderRelation in firstOrdersRelationsList)
                 {
 #if DEBUG
                     LogInstance.Log($"firstOrderRelation = {firstOrderRelation}");
 #endif
+
+                    if (!notDirectlyClonedNodesList.Contains(firstOrderRelation))
+                    {
+                        notDirectlyClonedNodesList.Add(firstOrderRelation);
+                    }
+
+                    var inputConceptsList = firstOrderRelation.Inputs.Where(p => p.Kind == KindOfCGNode.Concept).Select(p => (ConceptCGNode)p).ToList();
+
+#if DEBUG
+                    LogInstance.Log($"inputConceptsList.Count = {inputConceptsList.Count}");
+#endif
+
+                    foreach (var inputConcept in inputConceptsList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"inputConcept = {inputConcept}");
+#endif
+
+                        if (!notDirectlyClonedNodesList.Contains(inputConcept))
+                        {
+                            notDirectlyClonedNodesList.Add(inputConcept);
+                        }
+                    }
+
+                    var outputConceptsList = firstOrderRelation.Outputs.Where(p => p.Kind == KindOfCGNode.Concept).Select(p => (ConceptCGNode)p).ToList();
+
+#if DEBUG
+                    LogInstance.Log($"outputConceptsList.Count = {outputConceptsList.Count}");
+#endif
+
+                    foreach (var outputConcept in outputConceptsList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"outputConcept = {outputConcept}");
+#endif
+
+                        if (!notDirectlyClonedNodesList.Contains(outputConcept))
+                        {
+                            notDirectlyClonedNodesList.Add(outputConcept);
+                        }
+                    }
+                }
+            }
+
+            return notDirectlyClonedNodesList;
+        }
+
+        private static Dictionary<int, List<BaseCGNode>> GetClastersOfLinkedNodes(List<BaseCGNode> source)
+        {
+            var result = new Dictionary<int, List<BaseCGNode>>();
+
+            var currentTargetNodesList = source.ToList();
+            var n = 0;
+            while(currentTargetNodesList.Count > 0)
+            {
+                n++;
+#if DEBUG
+                LogInstance.Log($"currentTargetNodesList.Count = {currentTargetNodesList.Count} n = {n}");
+#endif
+
+                var nodesForThisN = GetLinkedNodes(currentTargetNodesList);
+
+                if(nodesForThisN.Count == 0)
+                {
+                    break;
+                }
+
+                result[n] = nodesForThisN;
+
+                currentTargetNodesList = currentTargetNodesList.Where(p => !nodesForThisN.Contains(p)).ToList();
+            }
+
+            return result;
+        }
+
+        private static List<BaseCGNode> GetLinkedNodes(List<BaseCGNode> source)
+        {
+            var result = new List<BaseCGNode>();
+
+            foreach(var sourceItem in source)
+            {
+                NGetLinkedNodes(source, sourceItem, ref result);
+            }
+
+            return result;
+        }
+
+        private static void NGetLinkedNodes(List<BaseCGNode> source, BaseCGNode targetNode, ref List<BaseCGNode> result)
+        {
+#if DEBUG
+            LogInstance.Log($"targetNode = {targetNode}");
+#endif
+
+            if(result.Contains(targetNode))
+            {
+                return;
+            }
+
+            result.Add(targetNode);
+
+            var inputNodesList = targetNode.Inputs;
+
+#if DEBUG
+            LogInstance.Log($"inputNodesList.Count = {inputNodesList.Count}");
+#endif
+
+            if(inputNodesList.Count > 0)
+            {
+                var tmpNodesList = inputNodesList.Where(p => source.Contains(p)).ToList();
+
+#if DEBUG
+                LogInstance.Log($"tmpNodesList.Count = {tmpNodesList.Count}");
+#endif
+
+                foreach (var tmpNode in tmpNodesList)
+                {
+                    NGetLinkedNodes(source, tmpNode, ref result);
+                }
+            }
+
+            var outputNodesList = targetNode.Outputs;
+
+#if DEBUG
+            LogInstance.Log($"outputNodesList.Count = {outputNodesList.Count}");
+#endif
+
+            if(outputNodesList.Count > 0)
+            {
+                var tmpNodesList = outputNodesList.Where(p => source.Contains(p)).ToList();
+
+#if DEBUG
+                LogInstance.Log($"tmpNodesList.Count = {tmpNodesList.Count}");
+#endif
+
+                foreach(var tmpNode in tmpNodesList)
+                {
+                    NGetLinkedNodes(source, tmpNode, ref result);
                 }
             }
         }
 
-        private static void CreateChildrenByAllNodes(ConceptualGraph source, InternalConceptualGraph result, ContextOfConvertingCGToInternal context)
+        private static void CreateChildrenByAllNodes(IList<BaseCGNode> childrenList, InternalConceptualGraph targetParent, ContextOfConvertingCGToInternal context)
         {
-            var childrenList = source.Children;
-
 #if DEBUG
             LogInstance.Log($"childrenList.Count = {childrenList.Count}");
 #endif
@@ -168,15 +369,15 @@ namespace MyNPCLib.ConvertingCGToInternal
                 switch (kind)
                 {
                     case KindOfCGNode.Graph:
-                        ConvertConceptualGraph((ConceptualGraph)child, context);
+                        ConvertConceptualGraph((ConceptualGraph)child, targetParent, context);
                         break;
 
                     case KindOfCGNode.Concept:
-                        ConvertConcept((ConceptCGNode)child, context);
+                        ConvertConcept((ConceptCGNode)child, targetParent, context);
                         break;
 
                     case KindOfCGNode.Relation:
-                        ConvertRelation((RelationCGNode)child, context);
+                        ConvertRelation((RelationCGNode)child, targetParent, context);
                         break;
 
                     default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
@@ -397,7 +598,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             }
         }
 
-        private static InternalConceptCGNode ConvertConcept(ConceptCGNode source, ContextOfConvertingCGToInternal context)
+        private static InternalConceptCGNode ConvertConcept(ConceptCGNode source, InternalConceptualGraph targetParent, ContextOfConvertingCGToInternal context)
         {
 #if DEBUG
             LogInstance.Log($"source = {source}");
@@ -412,15 +613,22 @@ namespace MyNPCLib.ConvertingCGToInternal
 
             context.ConceptsDict[source] = result;
 
-            var parentForResult = ConvertConceptualGraph(source.Parent, context);
-            result.Parent = parentForResult;
+            if(targetParent == null)
+            {
+                var parentForResult = ConvertConceptualGraph(source.Parent, null, context);
+                result.Parent = parentForResult;
+            }
+            else
+            {
+                result.Parent = targetParent;
+            }
 
             FillName(source, result, context);
 
             return result;
         }
 
-        private static InternalRelationCGNode ConvertRelation(RelationCGNode source, ContextOfConvertingCGToInternal context)
+        private static InternalRelationCGNode ConvertRelation(RelationCGNode source, InternalConceptualGraph targetParent, ContextOfConvertingCGToInternal context)
         {
 #if DEBUG
             LogInstance.Log($"source = {source}");
@@ -435,8 +643,15 @@ namespace MyNPCLib.ConvertingCGToInternal
 
             context.RelationsDict[source] = result;
 
-            var parentForResult = ConvertConceptualGraph(source.Parent, context);
-            result.Parent = parentForResult;
+            if(targetParent == null)
+            {
+                var parentForResult = ConvertConceptualGraph(source.Parent, null, context);
+                result.Parent = parentForResult;
+            }
+            else
+            {
+                result.Parent = targetParent;
+            }
 
             FillName(source, result, context);
 

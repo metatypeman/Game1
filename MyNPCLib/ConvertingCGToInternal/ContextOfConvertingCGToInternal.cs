@@ -13,5 +13,6 @@ namespace MyNPCLib.ConvertingCGToInternal
         public Dictionary<ConceptualGraph, InternalConceptualGraph> ConceptualGraphsDict { get; set; } = new Dictionary<ConceptualGraph, InternalConceptualGraph>();
         public Dictionary<ConceptCGNode, InternalConceptCGNode> ConceptsDict { get; set; } = new Dictionary<ConceptCGNode, InternalConceptCGNode>();
         public Dictionary<RelationCGNode, InternalRelationCGNode> RelationsDict { get; set; } = new Dictionary<RelationCGNode, InternalRelationCGNode>();
+        public Dictionary<BaseCGNode, InternalConceptualGraph> EntityConditionsDict { get; set; } = new Dictionary<BaseCGNode, InternalConceptualGraph>();
     }
 }
