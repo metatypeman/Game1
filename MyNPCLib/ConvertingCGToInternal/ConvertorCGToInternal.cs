@@ -161,6 +161,44 @@ namespace MyNPCLib.ConvertingCGToInternal
             var nodesForDirectlyClonningList = childrenList.Where(p => !notDirectlyClonedNodesList.Contains(p)).ToList();
 
             CreateChildrenByAllNodes(nodesForDirectlyClonningList, null, context);
+
+            var conceptsSourceItemsList = nodesForDirectlyClonningList.Where(p => p.Kind == KindOfCGNode.Concept).Select(p => (ConceptCGNode)p).ToList();
+
+            var relationStorage = new RelationStorageOfSemanticAnalyzer();
+
+            foreach(var sourceItem in conceptsSourceItemsList)
+            {
+#if DEBUG
+                LogInstance.Log($"sourceItem = {sourceItem}");
+#endif
+
+                var resultItem = context.ConceptsDict[sourceItem];
+
+#if DEBUG
+                LogInstance.Log($"resultItem = {resultItem}");
+#endif
+
+                var inputsNodesList = sourceItem.Inputs.Select(p => (RelationCGNode)p).ToList();
+
+#if DEBUG
+                LogInstance.Log($"inputsNodesList.Count = {inputsNodesList.Count}");
+#endif
+
+                foreach (var inputNode in inputsNodesList)
+                {
+#if DEBUG
+                    LogInstance.Log($"inputNode = {inputNode}");
+#endif
+
+                    var resultRelationItem = context.RelationsDict[inputNode];
+
+#if DEBUG
+                    LogInstance.Log($"resultRelationItem = {resultRelationItem}");
+#endif
+
+                    g
+                }
+            }
         }
 
         private static void CreateEntityCondition(InternalConceptualGraph parent, List<BaseCGNode> sourceItems, ContextOfConvertingCGToInternal context)
@@ -178,6 +216,8 @@ namespace MyNPCLib.ConvertingCGToInternal
 
             var entityConditionsDict = context.EntityConditionsDict;
 
+            sourceItems = sourceItems.Where(p => !GrammaticalElementsHeper.IsEntityCondition(p.Name)).ToList();
+
             foreach (var sourceItem in sourceItems)
             {
 #if DEBUG
@@ -189,31 +229,116 @@ namespace MyNPCLib.ConvertingCGToInternal
 
             CreateChildrenByAllNodes(sourceItems, entityCondition, context);
 
-            var conceptsSourceItemsList = sourceItems.Where(p => p.Kind == KindOfCGNode.Concept).Select(p => ()p);
+            var conceptsSourceItemsList = sourceItems.Where(p => p.Kind == KindOfCGNode.Concept).Select(p => (ConceptCGNode)p).ToList();
+
+            var relationStorage = new RelationStorageOfSemanticAnalyzer();
 
             foreach (var sourceItem in conceptsSourceItemsList)
             {
 #if DEBUG
-                LogInstance.Log($"sourceItem = {sourceItem}");
+                LogInstance.Log($"sourceItem (2) = {sourceItem}");
 #endif
 
-                var kind = sourceItem.Kind;
-
-                switch(kind)
-                {
-                    case KindOfCGNode.Relation:
-                        {
-                            var resultItem = context.RelationsDict[(RelationCGNode)sourceItem];
+                var resultItem = context.ConceptsDict[sourceItem];
 
 #if DEBUG
-                            LogInstance.Log($"resultItem = {resultItem}");
+                LogInstance.Log($"resultItem = {resultItem}");
 #endif
 
+                var inputsNodesList = sourceItem.Inputs.Where(p => sourceItems.Contains(p)).Select(p => (RelationCGNode)p).ToList();
 
+#if DEBUG
+                LogInstance.Log($"inputsNodesList.Count = {inputsNodesList.Count}");
+#endif
+
+                foreach(var inputNode in inputsNodesList)
+                {
+#if DEBUG
+                    LogInstance.Log($"inputNode = {inputNode}");
+#endif
+
+                    var resultRelationItem = context.RelationsDict[inputNode];
+
+#if DEBUG
+                    LogInstance.Log($"resultRelationItem = {resultRelationItem}");
+#endif
+
+                    var relationsInputsNodesList = inputNode.Inputs.Where(p => p.Kind == KindOfCGNode.Concept && sourceItems.Contains(p)).Select(p => (ConceptCGNode)p).ToList();
+
+#if DEBUG
+                    LogInstance.Log($"relationsInputsNodesList.Count = {relationsInputsNodesList.Count}");
+#endif
+
+                    foreach (var relationInputNode in relationsInputsNodesList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"relationInputNode = {relationInputNode}");
+#endif
+
+                        var resultRelationInputNode = context.ConceptsDict[relationInputNode];
+
+#if DEBUG
+                        LogInstance.Log($"resultRelationInputNode = {resultRelationInputNode}");
+#endif
+
+                        if (relationStorage.ContainsRelation(resultRelationInputNode.Name, resultRelationItem.Name, resultItem.Name))
+                        {
+                            continue;
                         }
-                        break;
 
-                    default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+                        resultItem.AddInputNode(resultRelationItem);
+                        resultRelationItem.AddInputNode(resultRelationInputNode);
+
+                        relationStorage.AddRelation(resultRelationInputNode.Name, resultRelationItem.Name, resultItem.Name);
+                    }
+                }
+
+                var outputsNodesList = sourceItem.Outputs.Where(p => sourceItems.Contains(p)).Select(p => (RelationCGNode)p).ToList();
+
+#if DEBUG
+                LogInstance.Log($"outputsNodesList.Count = {outputsNodesList.Count}");
+#endif
+
+                foreach(var outputNode in outputsNodesList)
+                {
+#if DEBUG
+                    LogInstance.Log($"outputNode = {outputNode}");
+#endif
+
+                    var resultRelationItem = context.RelationsDict[outputNode];
+
+#if DEBUG
+                    LogInstance.Log($"resultRelationItem = {resultRelationItem}");
+#endif
+
+                    var relationsOutputsNodesList = outputNode.Outputs.Where(p => p.Kind == KindOfCGNode.Concept && sourceItems.Contains(p)).Select(p => (ConceptCGNode)p).ToList();
+
+#if DEBUG
+                    LogInstance.Log($"relationsOutputsNodesList.Count = {relationsOutputsNodesList.Count}");
+#endif
+
+                    foreach(var relationOutputNode in relationsOutputsNodesList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"relationOutputNode = {relationOutputNode}");
+#endif
+
+                        var resultRelationOutputNode = context.ConceptsDict[relationOutputNode];
+
+#if DEBUG
+                        LogInstance.Log($"resultRelationOutputNode = {resultRelationOutputNode}");
+#endif
+
+                        if(relationStorage.ContainsRelation(resultItem.Name, resultRelationItem.Name, resultRelationOutputNode.Name))
+                        {
+                            continue;
+                        }
+
+                        resultItem.AddOutputNode(resultRelationItem);
+                        resultRelationItem.AddOutputNode(resultRelationOutputNode);
+
+                        relationStorage.AddRelation(resultItem.Name, resultRelationItem.Name, resultRelationOutputNode.Name);
+                    }
                 }
             }
         }
