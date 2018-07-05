@@ -78,6 +78,7 @@ namespace MyNPCLib.NLToCGParsing
                         foreach(var animate in primaryAnimatesList)
                         {
                             CreateExperiencerRelation(state, animate);
+                            CreateStateRelation(state, animate);
                         }
                     }
                 }
@@ -231,6 +232,27 @@ namespace MyNPCLib.NLToCGParsing
             Context.RelationStorage.AddRelation(verbConcept.Name, nounConcept.Name, relationName);
         }
 
+        private void CreateStateRelation(ConceptCGNode verbConcept, ConceptCGNode nounConcept)
+        {
+            var relationName = "state";
+
+            if(Context.RelationStorage.ContainsRelation(nounConcept.Name, verbConcept.Name, relationName))
+            {
+                return;
+            }
+
+            var conceptualGraph = Context.ConceptualGraph;
+
+            var relation = new RelationCGNode();
+            relation.Parent = conceptualGraph;
+            relation.Name = relationName;
+
+            nounConcept.AddOutputNode(relation);
+            relation.AddOutputNode(verbConcept);
+
+            Context.RelationStorage.AddRelation(verbConcept.Name, nounConcept.Name, relationName);
+        }
+
         private void CreateAgentRelation(ConceptCGNode verbConcept, ConceptCGNode nounConcept)
         {
             var relationName = "agent";
@@ -256,7 +278,7 @@ namespace MyNPCLib.NLToCGParsing
         {
             var relationName = "action";
 
-            if (Context.RelationStorage.ContainsRelation(verbConcept.Name, nounConcept.Name, relationName))
+            if (Context.RelationStorage.ContainsRelation(nounConcept.Name, verbConcept.Name, relationName))
             {
                 return;
             }
@@ -270,7 +292,7 @@ namespace MyNPCLib.NLToCGParsing
             nounConcept.AddOutputNode(relation);
             relation.AddOutputNode(verbConcept);
 
-            Context.RelationStorage.AddRelation(verbConcept.Name, nounConcept.Name, relationName);
+            Context.RelationStorage.AddRelation(nounConcept.Name, verbConcept.Name, relationName);
         }
     }
 }

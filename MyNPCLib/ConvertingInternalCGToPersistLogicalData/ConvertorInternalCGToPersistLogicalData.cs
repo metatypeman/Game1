@@ -204,6 +204,22 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
 
             switch(kindOfGraphOrConcept)
             {
+                case KindOfInternalGraphOrConceptNode.Concept:
+                    {
+                        var conceptExpression = new ConceptExpressionNode();
+                        conceptExpression.Name = graphOrConcept.Name;
+                        conceptExpression.Key = context.EntityDictionary.GetKey(graphOrConcept.Name);
+                        return conceptExpression;
+                    }
+
+                case KindOfInternalGraphOrConceptNode.EntityCondition:
+                    {
+                        var entityRef = new EntityConditionExpressionNode();
+                        entityRef.Name = graphOrConcept.Name;
+                        entityRef.Key = context.EntityDictionary.GetKey(graphOrConcept.Name);
+                        return entityRef;
+                    }
+
                 default: throw new ArgumentOutOfRangeException(nameof(kindOfGraphOrConcept), kindOfGraphOrConcept, null);
             }
         }
