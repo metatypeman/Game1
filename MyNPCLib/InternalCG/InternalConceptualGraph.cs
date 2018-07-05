@@ -18,7 +18,6 @@ namespace MyNPCLib.InternalCG
         public GrammaticalMood Mood { get; set; } = GrammaticalMood.Undefined;
         public bool? Conditional { get; set; }
         public KindOfModal Modal { get; set; } = KindOfModal.Undefined;
-        public bool IsEntityCondition { get; set; }
 
         private IList<BaseInternalCGNode> mChildren = new List<BaseInternalCGNode>();
 
@@ -93,7 +92,6 @@ namespace MyNPCLib.InternalCG
             sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
             sb.AppendLine($"{spaces}{nameof(Modal)} = {Modal}");
             sb.AppendLine($"{spaces}{nameof(Mood)} = {Mood}");
-            sb.AppendLine($"{spaces}{nameof(IsEntityCondition)} = {IsEntityCondition}");
             sb.AppendLine($"{spaces}Begin {nameof(Children)}");
             foreach (var child in Children)
             {
@@ -114,7 +112,6 @@ namespace MyNPCLib.InternalCG
             sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
             sb.AppendLine($"{spaces}{nameof(Modal)} = {Modal}");
             sb.AppendLine($"{spaces}{nameof(Mood)} = {Mood}");
-            sb.AppendLine($"{spaces}{nameof(IsEntityCondition)} = {IsEntityCondition}");
             sb.Append(base.PropertiesToShortSting(n));
             return sb.ToString();
         }

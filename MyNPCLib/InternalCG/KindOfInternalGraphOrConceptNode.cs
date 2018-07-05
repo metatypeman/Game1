@@ -7,6 +7,7 @@ namespace MyNPCLib.InternalCG
     public enum KindOfInternalGraphOrConceptNode
     {
         Undefined,
+        Graph,
         EntityRef,
         EntityCondition,
         Property,

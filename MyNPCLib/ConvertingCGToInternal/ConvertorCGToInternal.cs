@@ -96,6 +96,8 @@ namespace MyNPCLib.ConvertingCGToInternal
                 result.Parent = targetParent;
             }
 
+            result.KindOfGraphOrConcept = KindOfInternalGraphOrConceptNode.Graph;
+
             FillName(source, result, context);
 
             SetGrammaticalOptions(source, result);
@@ -162,7 +164,7 @@ namespace MyNPCLib.ConvertingCGToInternal
 
             CreateChildrenByAllNodes(nodesForDirectlyClonningList, null, context);
 
-            var conceptsSourceItemsList = nodesForDirectlyClonningList.Where(p => p.Kind == KindOfCGNode.Concept).Select(p => (ConceptCGNode)p).ToList();
+            var conceptsSourceItemsList = nodesForDirectlyClonningList.Where(p => p.Kind == KindOfCGNode.Concept || p.Kind == KindOfCGNode.Graph).Select(p => (BaseConceptCGNode)p).ToList();
 
             var relationStorage = new RelationStorageOfSemanticAnalyzer();
 
@@ -172,8 +174,23 @@ namespace MyNPCLib.ConvertingCGToInternal
                 LogInstance.Log($"sourceItem = {sourceItem}");
 #endif
 
-                var resultItem = context.ConceptsDict[sourceItem];
+                BaseInternalConceptCGNode resultItem = null;
 
+                var kind = sourceItem.Kind;
+
+                switch(kind)
+                {
+                    case KindOfCGNode.Graph:
+                        resultItem = context.ConceptualGraphsDict[(ConceptualGraph)sourceItem];
+                        break;
+
+                    case KindOfCGNode.Concept:
+                        resultItem = context.ConceptsDict[(ConceptCGNode)sourceItem];
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+                }
+          
 #if DEBUG
                 LogInstance.Log($"resultItem = {resultItem}");
 #endif
@@ -196,8 +213,106 @@ namespace MyNPCLib.ConvertingCGToInternal
                     LogInstance.Log($"resultRelationItem = {resultRelationItem}");
 #endif
 
-                    g
+                    var relationsInputsNodesList = inputNode.Inputs.Where(p => p.Kind == KindOfCGNode.Concept || p.Kind == KindOfCGNode.Graph).Select(p => (BaseConceptCGNode)p).ToList();
+
+#if DEBUG
+                    LogInstance.Log($"relationsInputsNodesList.Count = {relationsInputsNodesList.Count}");
+#endif
+
+                    foreach (var relationInputNode in relationsInputsNodesList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"relationInputNode = {relationInputNode}");
+#endif
+
+                        var resultRelationInputNode = GetBaseConceptCGNodeForMakingCommonRelation(relationInputNode, context);
+
+#if DEBUG
+                        LogInstance.Log($"resultRelationInputNode = {resultRelationInputNode}");
+#endif
+                        if (relationStorage.ContainsRelation(resultRelationInputNode.Name, resultRelationItem.Name, resultItem.Name))
+                        {
+                            continue;
+                        }
+
+                        resultItem.AddInputNode(resultRelationItem);
+                        resultRelationItem.AddInputNode(resultRelationInputNode);
+
+                        relationStorage.AddRelation(resultRelationInputNode.Name, resultRelationItem.Name, resultItem.Name);
+                    }
                 }
+
+                //throw new NotImplementedException();
+
+                var outputsNodesList = sourceItem.Outputs.Select(p => (RelationCGNode)p).ToList();
+
+#if DEBUG
+                LogInstance.Log($"outputsNodesList.Count = {outputsNodesList.Count}");
+#endif
+
+                foreach (var outputNode in outputsNodesList)
+                {
+#if DEBUG
+                    LogInstance.Log($"outputNode = {outputNode}");
+#endif
+
+                    var resultRelationItem = context.RelationsDict[outputNode];
+
+#if DEBUG
+                    LogInstance.Log($"resultRelationItem = {resultRelationItem}");
+#endif
+
+                    var relationsOutputsNodesList = outputNode.Outputs.Where(p => p.Kind == KindOfCGNode.Concept || p.Kind == KindOfCGNode.Graph).Select(p => (BaseConceptCGNode)p).ToList();
+
+#if DEBUG
+                    LogInstance.Log($"relationsOutputsNodesList.Count = {relationsOutputsNodesList.Count}");
+#endif
+
+                    foreach (var relationOutputNode in relationsOutputsNodesList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"relationOutputNode = {relationOutputNode}");
+#endif
+                        var resultRelationOutputNode = GetBaseConceptCGNodeForMakingCommonRelation(relationOutputNode, context);
+
+#if DEBUG
+                        LogInstance.Log($"resultRelationOutputNode = {resultRelationOutputNode}");
+#endif
+
+                        if (relationStorage.ContainsRelation(resultItem.Name, resultRelationItem.Name, resultRelationOutputNode.Name))
+                        {
+                            continue;
+                        }
+
+                        resultItem.AddOutputNode(resultRelationItem);
+                        resultRelationItem.AddOutputNode(resultRelationOutputNode);
+
+                        relationStorage.AddRelation(resultItem.Name, resultRelationItem.Name, resultRelationOutputNode.Name);
+                    }
+                }
+            }
+
+            //throw new NotImplementedException();
+        }
+
+        public static BaseInternalConceptCGNode GetBaseConceptCGNodeForMakingCommonRelation(BaseConceptCGNode sourceNode, ContextOfConvertingCGToInternal context)
+        {
+            if(context.EntityConditionsDict.ContainsKey(sourceNode))
+            {
+                return context.EntityConditionsDict[sourceNode];
+            }
+
+            var kind = sourceNode.Kind;
+
+            switch (kind)
+            {
+                case KindOfCGNode.Graph:
+                    return context.ConceptualGraphsDict[(ConceptualGraph)sourceNode];
+
+                case KindOfCGNode.Concept:
+                    return context.ConceptsDict[(ConceptCGNode)sourceNode];
+
+                default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
             }
         }
 
@@ -209,7 +324,7 @@ namespace MyNPCLib.ConvertingCGToInternal
 
             var entityCondition = new InternalConceptualGraph();
             entityCondition.Parent = parent;
-            entityCondition.IsEntityCondition = true;
+            entityCondition.KindOfGraphOrConcept = KindOfInternalGraphOrConceptNode.EntityCondition;
             var entityConditionName = NamesHelper.CreateEntityName();
             entityCondition.Name = entityConditionName;
             entityCondition.Key = context.EntityDictionary.GetKey(entityConditionName);
@@ -229,7 +344,7 @@ namespace MyNPCLib.ConvertingCGToInternal
 
             CreateChildrenByAllNodes(sourceItems, entityCondition, context);
 
-            var conceptsSourceItemsList = sourceItems.Where(p => p.Kind == KindOfCGNode.Concept).Select(p => (ConceptCGNode)p).ToList();
+            var conceptsSourceItemsList = sourceItems.Where(p => p.Kind == KindOfCGNode.Concept || p.Kind == KindOfCGNode.Graph).Select(p => (BaseConceptCGNode)p).ToList();
 
             var relationStorage = new RelationStorageOfSemanticAnalyzer();
 
@@ -239,7 +354,22 @@ namespace MyNPCLib.ConvertingCGToInternal
                 LogInstance.Log($"sourceItem (2) = {sourceItem}");
 #endif
 
-                var resultItem = context.ConceptsDict[sourceItem];
+                BaseInternalConceptCGNode resultItem = null;
+
+                var kind = sourceItem.Kind;
+
+                switch (kind)
+                {
+                    case KindOfCGNode.Graph:
+                        resultItem = context.ConceptualGraphsDict[(ConceptualGraph)sourceItem];
+                        break;
+
+                    case KindOfCGNode.Concept:
+                        resultItem = context.ConceptsDict[(ConceptCGNode)sourceItem];
+                        break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+                }
 
 #if DEBUG
                 LogInstance.Log($"resultItem = {resultItem}");
@@ -263,7 +393,7 @@ namespace MyNPCLib.ConvertingCGToInternal
                     LogInstance.Log($"resultRelationItem = {resultRelationItem}");
 #endif
 
-                    var relationsInputsNodesList = inputNode.Inputs.Where(p => p.Kind == KindOfCGNode.Concept && sourceItems.Contains(p)).Select(p => (ConceptCGNode)p).ToList();
+                    var relationsInputsNodesList = inputNode.Inputs.Where(p => (p.Kind == KindOfCGNode.Concept || p.Kind == KindOfCGNode.Graph) && sourceItems.Contains(p)).Select(p => (BaseConceptCGNode)p).ToList();
 
 #if DEBUG
                     LogInstance.Log($"relationsInputsNodesList.Count = {relationsInputsNodesList.Count}");
@@ -275,7 +405,22 @@ namespace MyNPCLib.ConvertingCGToInternal
                         LogInstance.Log($"relationInputNode = {relationInputNode}");
 #endif
 
-                        var resultRelationInputNode = context.ConceptsDict[relationInputNode];
+                        BaseInternalConceptCGNode resultRelationInputNode = null;
+
+                        var relationInputNodeKind = relationInputNode.Kind;
+
+                        switch(relationInputNodeKind)
+                        {
+                            case KindOfCGNode.Graph:
+                                resultRelationInputNode = context.ConceptualGraphsDict[(ConceptualGraph)relationInputNode];
+                                break;
+
+                            case KindOfCGNode.Concept:
+                                resultRelationInputNode = context.ConceptsDict[(ConceptCGNode)relationInputNode];
+                                break;
+
+                            default: throw new ArgumentOutOfRangeException(nameof(relationInputNodeKind), relationInputNodeKind, null);
+                        }
 
 #if DEBUG
                         LogInstance.Log($"resultRelationInputNode = {resultRelationInputNode}");
@@ -311,7 +456,7 @@ namespace MyNPCLib.ConvertingCGToInternal
                     LogInstance.Log($"resultRelationItem = {resultRelationItem}");
 #endif
 
-                    var relationsOutputsNodesList = outputNode.Outputs.Where(p => p.Kind == KindOfCGNode.Concept && sourceItems.Contains(p)).Select(p => (ConceptCGNode)p).ToList();
+                    var relationsOutputsNodesList = outputNode.Outputs.Where(p => (p.Kind == KindOfCGNode.Concept || p.Kind == KindOfCGNode.Graph) && sourceItems.Contains(p)).Select(p => (BaseConceptCGNode)p).ToList();
 
 #if DEBUG
                     LogInstance.Log($"relationsOutputsNodesList.Count = {relationsOutputsNodesList.Count}");
@@ -322,8 +467,23 @@ namespace MyNPCLib.ConvertingCGToInternal
 #if DEBUG
                         LogInstance.Log($"relationOutputNode = {relationOutputNode}");
 #endif
+                        BaseInternalConceptCGNode resultRelationOutputNode = null;
 
-                        var resultRelationOutputNode = context.ConceptsDict[relationOutputNode];
+                        var relationOutputNodeKind = relationOutputNode.Kind;
+
+                        switch(relationOutputNodeKind)
+                        {
+                            case KindOfCGNode.Graph:
+                                resultRelationOutputNode = context.ConceptualGraphsDict[(ConceptualGraph)relationOutputNode];
+                                break;
+
+                            case KindOfCGNode.Concept:
+                                resultRelationOutputNode = context.ConceptsDict[(ConceptCGNode)relationOutputNode];
+                                break;
+
+
+                            default: throw new ArgumentOutOfRangeException(nameof(relationOutputNodeKind), relationOutputNodeKind, null);
+                        }
 
 #if DEBUG
                         LogInstance.Log($"resultRelationOutputNode = {resultRelationOutputNode}");
@@ -777,6 +937,8 @@ namespace MyNPCLib.ConvertingCGToInternal
             {
                 result.Parent = targetParent;
             }
+
+            result.KindOfGraphOrConcept = KindOfInternalGraphOrConceptNode.Concept;
 
             FillName(source, result, context);
 

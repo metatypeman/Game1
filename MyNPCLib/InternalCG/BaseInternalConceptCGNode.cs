@@ -10,11 +10,9 @@ namespace MyNPCLib.InternalCG
         public override bool IsGraphOrConceptNode => true;
         public override BaseInternalConceptCGNode AsGraphOrConceptNode => this;
         public KindOfInternalGraphOrConceptNode KindOfGraphOrConcept { get; set; } = KindOfInternalGraphOrConceptNode.Undefined;
-        public GrammaticalNumberOfWord Number { get; set; } = GrammaticalNumberOfWord.Neuter;
-           
+        public GrammaticalNumberOfWord Number { get; set; } = GrammaticalNumberOfWord.Neuter;          
         public GrammaticalComparison Comparison { get; set; } = GrammaticalComparison.None;
-        
-        
+              
         public void AddInputNode(InternalRelationCGNode node)
         {
             NAddInputNode(node);

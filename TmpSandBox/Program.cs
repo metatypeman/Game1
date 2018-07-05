@@ -2,6 +2,7 @@
 using MyNPCLib.CG;
 using MyNPCLib.CGStorage;
 using MyNPCLib.ConvertingCGToInternal;
+using MyNPCLib.ConvertingInternalCGToPersistLogicalData;
 using MyNPCLib.ConvertingPersistLogicalDataToIndexing;
 using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.Dot;
@@ -247,6 +248,17 @@ namespace TmpSandBox
                 dotStr = DotConverter.ConvertToString(internalCG);
 
                 LogInstance.Log($"dotStr (2) = {dotStr}");
+
+                var ruleInstancesList = ConvertorInternalCGToPersistLogicalData.ConvertConceptualGraph(internalCG, globalEntityDictionary);
+
+                LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
+                foreach(var ruleInstance in ruleInstancesList)
+                {
+                    LogInstance.Log($"ruleInstance = {ruleInstance}");
+                    var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+
+                    LogInstance.Log($"debugStr = {debugStr}");
+                }
             }
 
             //var paragraph = "The dog likes the man.";
