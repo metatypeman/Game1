@@ -14,8 +14,12 @@ namespace MyNPCLib
             mEntityLogger = entityLogger;
             mIdFactory = idFactory;
             mEntityDictionary = entityDictionary;
-            mNPCBodyHost = npcHostContext.BodyHost;
-            mNPCBodyHost.OnHumanoidStatesChanged += OnHumanoidStatesChanged;
+            if(npcHostContext != null)
+            {
+                mNPCBodyHost = npcHostContext.BodyHost;
+                mNPCBodyHost.OnHumanoidStatesChanged += OnHumanoidStatesChanged;
+            }
+
             mContext = context;
         }
 

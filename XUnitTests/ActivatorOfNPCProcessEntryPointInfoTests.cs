@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xunit;
+using XUnitTests.Helpers;
 
 namespace XUnitTests
 {
@@ -12,7 +13,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsNull_GotArgumentNullException()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var e = Assert.Throws<ArgumentNullException>(() => {
                 var rank = activator.GetRankByTypesOfParameters(null, typeof(int));
@@ -24,7 +26,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsInt32_PutTypeOfParameterAsNull_GotZero()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var rank = activator.GetRankByTypesOfParameters(typeof(int), null);
 
@@ -34,7 +37,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsNullableInt32_PutTypeOfParameterAsNull_Got05()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var rank = activator.GetRankByTypesOfParameters(typeof(int?), null);
 
@@ -44,7 +48,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsObject_PutTypeOfParameterAsNull_Got05()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var rank = activator.GetRankByTypesOfParameters(typeof(object), null);
 
@@ -54,7 +59,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsString_PutTypeOfParameterAsNull_Got05()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var rank = activator.GetRankByTypesOfParameters(typeof(string), null);
 
@@ -64,7 +70,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsInt32_PutTypeOfParameterAsInt32_GotOne()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var rank = activator.GetRankByTypesOfParameters(typeof(int), typeof(int));
 
@@ -74,7 +81,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsObject_PutTypeOfParameterAsObject_GotOne()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var rank = activator.GetRankByTypesOfParameters(typeof(object), typeof(object));
 
@@ -84,7 +92,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsString_PutTypeOfParameterAsString_GotOne()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var rank = activator.GetRankByTypesOfParameters(typeof(string), typeof(string));
 
@@ -94,7 +103,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsInt32_PutTypeOfParameterAsObject_GotZero()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var rank = activator.GetRankByTypesOfParameters(typeof(int), typeof(object));
 
@@ -104,7 +114,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsString_PutTypeOfParameterAsObject_GotZero()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var rank = activator.GetRankByTypesOfParameters(typeof(string), typeof(object));
 
@@ -114,7 +125,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsInt32_PutTypeOfParameterAsString_GotZero()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var rank = activator.GetRankByTypesOfParameters(typeof(int), typeof(string));
 
@@ -124,7 +136,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsObject_PutTypeOfParameterAsString_Got05()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var rank = activator.GetRankByTypesOfParameters(typeof(object), typeof(string));
 
@@ -134,7 +147,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankByTypesOfParameters_PutTypeOfArgumentAsString_PutTypeOfParameterAsInt32_GotZero()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var rank = activator.GetRankByTypesOfParameters(typeof(string), typeof(int));
 
@@ -144,7 +158,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoAsNull_GotArgumentNullException()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var e = Assert.Throws<ArgumentNullException>(() => {
                 var result = activator.GetRankedEntryPoints(null, new Dictionary<ulong, object>());
@@ -156,7 +171,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutCommandAsNull_GotArgumentNullException()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var e = Assert.Throws<ArgumentNullException>(() => {
                 var result = activator.GetRankedEntryPoints(new NPCProcessInfo(), null);
@@ -168,7 +184,8 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithEntryPointsListAsNull_GotArgumentNullException()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var npcProcessInfo = new NPCProcessInfo();
             npcProcessInfo.EntryPointsInfoList = null;
@@ -183,10 +200,11 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithoutAnyEntryPoints_AndPutCommand_GotEmptyList()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -200,9 +218,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithoutArguments_AndPutCommandWithArguments_GotEmptyList()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -217,9 +236,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithArguments_AndPutCommandWithoutArguments_GotEmptyList()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithArgsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -233,9 +253,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints__PutNpcProcessInfoWithMethodWithoutArguments_AndPutCommandWithoutArguments_GotListWithTargetEntryPointRankedAsOne()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -257,9 +278,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgument_AndPutCommandWithoutArguments_GotEmptyList()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithArgsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -273,9 +295,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgument_AndPutCommandWithTwoArguments_GotEmptyList()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithArgsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -290,9 +313,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithTwoArguments_AndPutCommandWithoutArguments_GotEmptyList()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithTwoArgumentsAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -306,9 +330,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithTwoArguments_AndPutCommandWithOneArgument_GotEmptyList()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithTwoArgumentsAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -324,9 +349,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32_AndPutCommandWithOneArgumentWithTypeInt32_GotListWithTargetEntryPointRankedAsOne()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32AndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -355,9 +381,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgumentWithTypeObject_AndPutCommandWithOneArgumentWithTypeInt32_GotListWithTargetEntryPointRankedAs05()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentAndWithTypeObjectWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -383,9 +410,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgumentWithTypeString_AndPutCommandWithOneArgumentWithTypeInt32_GotEmptyList()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeStringAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -403,9 +431,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32_AndPutCommandWithOneArgumentWithTypeObject_GotEmptyList()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32AndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -423,9 +452,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgumentWithTypeObject_AndPutCommandWithOneArgumentWithTypeObject_GotListWithTargetEntryPointRankedAsOne()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentAndWithTypeObjectWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -451,9 +481,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgumentWithTypeString_AndPutCommandWithOneArgumentWithTypeObject_GotEmptyList()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeStringAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -471,9 +502,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32_AndPutCommandWithOneArgumentWithTypeString_GotEmptyList()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32AndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -491,9 +523,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgumentWithTypeObject_AndPutCommandWithOneArgumentWithTypeString_GotListWithTargetEntryPointRankedAs05()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentAndWithTypeObjectWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -519,9 +552,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOnlyMethodWithOneArgumentWithTypeString_AndPutCommandWithOneArgumentWithTypeString_GotListWithTargetEntryPointRankedAsOne()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeStringAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -547,9 +581,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithSeveralEntryPoints_AndPutCommandWithOneArgumentWithTypeInt32_GotListWithThreeTargetEntryPointsRankedAsOneAnd05()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNpcProcessInfoWithSeveralEntryPointsWithOneArgumentAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -579,9 +614,10 @@ namespace XUnitTests
         [Fact]
         public void GetRankedEntryPoints_PutNpcProcessInfoWithOneEntryPointWithDefaultValue_AndPutCommandWithoutArguments_GotListWithTargetEntryPointRankedAsOne()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -603,7 +639,8 @@ namespace XUnitTests
         [Fact]
         public void CallEntryPoint_SetNPCProcessAsNull_GotArgumentNullException()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var e = Assert.Throws<ArgumentNullException>(() => {
                 activator.CallEntryPoint(null, new NPCProcessEntryPointInfo(), new Dictionary<ulong, object>());
@@ -615,7 +652,8 @@ namespace XUnitTests
         [Fact]
         public void CallEntryPoint_SetEntryPointInfoAsNull_GotArgumentNullException()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var instance = new TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcess();
 
@@ -629,7 +667,8 @@ namespace XUnitTests
         [Fact]
         public void CallEntryPoint_SetNPCInternalCommandAsNull_GotArgumentNullException()
         {
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var entityLogger = new EmptyEntityLogger();
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var instance = new TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcess();
 
@@ -643,9 +682,10 @@ namespace XUnitTests
         [Fact]
         public void CallEntryPoint_ByEntryPointWithoutArguments_GotNothing()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var instance = new TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcess();
             var type = instance.GetType();
@@ -671,9 +711,10 @@ namespace XUnitTests
         [Fact]
         public void CallEntryPoint_ByEntryPointWithArgument_GotNothing()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
-            var activator = new ActivatorOfNPCProcessEntryPointInfo();
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
+            var activator = new ActivatorOfNPCProcessEntryPointInfo(entityLogger);
 
             var instance = new TestedNPCProcessInfoWithOnlyMethodWithTwoArgumentsAndWithNameAndWithStartupModeNPCProcess();
             var type = instance.GetType();

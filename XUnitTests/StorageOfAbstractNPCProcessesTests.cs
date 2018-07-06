@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
+using XUnitTests.Helpers;
 
 namespace XUnitTests
 {
@@ -11,11 +12,12 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_SetNull_GotArgumentNullException()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var e = Assert.Throws<ArgumentNullException>(() => {
                 storage.AddTypeOfProcess(null);
@@ -27,11 +29,12 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_SetNull_OnDisposed_GotElementIsNotActiveException()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             storage.Dispose();
 
@@ -43,11 +46,12 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddTypeWhatIsNotBasedOnBaseNPCProcess_GotTypeIsNotNPCProcessException()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = GetType();
 
@@ -61,11 +65,12 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddTypeWhatIsNotBasedOnBaseNPCProcessToDisposed_GotElementIsNotActiveException()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             storage.Dispose();
 
@@ -79,11 +84,12 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddNormalType_GotTrue()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
 
@@ -95,11 +101,12 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddNormalTypeTwise_GotTrueFirstlyAndFalseSecondly()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
 
@@ -115,11 +122,12 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddTwoDifferentTypesOfProcesesWithTheSameName_GotTrueFirstlyAndFalseSecondly()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -137,11 +145,12 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddTypeWithoutEntryPoints_GotTrue()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
 
@@ -153,11 +162,12 @@ namespace XUnitTests
         [Fact]
         public void TryGetProcessOfNotAddedType_GotNull()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -175,11 +185,12 @@ namespace XUnitTests
         [Fact]
         public void TryGetProcessOfNotAddedType_ToDisposed_GotElementIsNotActiveException()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -199,11 +210,12 @@ namespace XUnitTests
         [Fact]
         public void TryGetProcessOfTypeWithoutEntryPoints_GotNull()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
 
@@ -243,11 +255,12 @@ namespace XUnitTests
         [Fact]
         public void TryGetProcess_GotProcessOfTheType()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -269,11 +282,12 @@ namespace XUnitTests
         [Fact]
         public void TryGetProcess_ToDisposed_GotElementIsNotActiveException()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -297,11 +311,12 @@ namespace XUnitTests
         [Fact]
         public void TryGetSingletonProcessTwice_GotInstancesWithEqualsReferences()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcessSingleton);
 
@@ -328,11 +343,12 @@ namespace XUnitTests
         [Fact]
         public void TryGetNewInstanceProcessTwice_GotInstancesWithDifferentReferences()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcessNewInstance);
 
@@ -358,11 +374,12 @@ namespace XUnitTests
         [Fact]
         public void TryGetNewStandaloneInstanceProcessTwice_GotInstancesWithDifferentReferences()
         {
+            var entityLogger = new EmptyEntityLogger();
             var idFactory = new IdFactory();
             var globalEntityDictionary = new EntityDictionary();
             var npcProcessInfoCache = new NPCProcessInfoCache();
-            var testedContext = new TestedNPCContext();
-            var storage = new StorageOfNPCProcesses(idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
+            var testedContext = new TestedNPCContext(entityLogger);
+            var storage = new StorageOfNPCProcesses(entityLogger, idFactory, globalEntityDictionary, npcProcessInfoCache, testedContext);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcessNewStandaloneInstance);
 

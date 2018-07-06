@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
+using XUnitTests.Helpers;
 
 namespace XUnitTests
 {
@@ -23,9 +24,10 @@ namespace XUnitTests
         [Fact]
         public void SetValidInfo_GotTrue()
         {
+            var entityLogger = new EmptyEntityLogger();
             var npcProcessInfoCache = new NPCProcessInfoCache();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -38,9 +40,10 @@ namespace XUnitTests
         [Fact]
         public void SetValidInfoTwise_GotFalseAtSecontAttempt()
         {
+            var entityLogger = new EmptyEntityLogger();
             var npcProcessInfoCache = new NPCProcessInfoCache();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -79,9 +82,10 @@ namespace XUnitTests
         [Fact]
         public void GetRegisteredType_GotInfoForTheType()
         {
+            var entityLogger = new EmptyEntityLogger();
             var npcProcessInfoCache = new NPCProcessInfoCache();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);

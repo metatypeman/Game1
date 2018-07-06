@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xunit;
+using XUnitTests.Helpers;
 
 namespace XUnitTests
 {
@@ -12,8 +13,9 @@ namespace XUnitTests
         [Fact]
         public void TryCreateByNull_GotArgumentNullException()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var e = Assert.Throws<ArgumentNullException>(() => {
                 var npcProcessInfo = npcProcessInfoFactory.CreateInfo(null);
@@ -25,8 +27,9 @@ namespace XUnitTests
         [Fact]
         public void TryCreateByTypeWhatIsNotBasedOnBaseNPCProcess_GotTypeIsNotNPCProcessException()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(NPCProcessInfoFactoryTests);
             
@@ -68,8 +71,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithoutEntryPointsAndWithoutAttributesNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -119,8 +123,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -248,8 +253,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithTwoEntryPointsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -298,8 +304,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithThreeEntryPointsAndWithoutAttributesNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithThreeEntryPointsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -358,8 +365,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithFourEntryPointsAndWithoutAttributesNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithFourEntryPointsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -418,8 +426,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithFiveEntryPointsAndWithoutAttributesNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithFiveEntryPointsAndWithoutAttributesNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -438,8 +447,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -457,8 +467,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -476,8 +487,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithTwoEntryPointsAndWithNameAndWithoutStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithTwoEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -490,8 +502,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoThreeEntryPointsAndWithNameAndWithoutStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoThreeEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -504,8 +517,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithFourEntryPointsAndWithNameAndWithoutStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithFourEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -518,8 +532,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithFiveEntryPointsAndWithNameAndWithoutStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithFiveEntryPointsAndWithNameAndWithoutStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -538,8 +553,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithoutEntryPointsAndWithoutNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithoutNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -552,8 +568,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -566,8 +583,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithTwoEntryPointsAndWithoutNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithTwoEntryPointsAndWithoutNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -580,8 +598,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoThreeEntryPointsAndWithoutNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoThreeEntryPointsAndWithoutNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -594,8 +613,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithFourEntryPointsAndWithoutNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithFourEntryPointsAndWithoutNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -608,8 +628,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithFiveEntryPointsAndWithoutNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithFiveEntryPointsAndWithoutNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -628,8 +649,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -642,8 +664,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -700,8 +723,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedTestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithPointWithDefaultValueOfArgumentAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -714,8 +738,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithTwoEntryPointsAndWithNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithTwoEntryPointsAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -728,8 +753,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoThreeEntryPointsAndWithNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoThreeEntryPointsAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -742,8 +768,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithFourEntryPointsAndWithNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithFourEntryPointsAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);
@@ -756,8 +783,9 @@ namespace XUnitTests
         [Fact]
         public void CreateTestedNPCProcessInfoWithFiveEntryPointsAndWithNameAndWithStartupModeNPCProcess()
         {
+            var entityLogger = new EmptyEntityLogger();
             var globalEntityDictionary = new EntityDictionary();
-            var npcProcessInfoFactory = new NPCProcessInfoFactory(globalEntityDictionary);
+            var npcProcessInfoFactory = new NPCProcessInfoFactory(entityLogger, globalEntityDictionary);
 
             var type = typeof(TestedNPCProcessInfoWithFiveEntryPointsAndWithNameAndWithStartupModeNPCProcess);
             var npcProcessInfo = npcProcessInfoFactory.CreateInfo(type);

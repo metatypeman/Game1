@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
+using XUnitTests.Helpers;
 
 namespace XUnitTests
 {
@@ -11,7 +12,8 @@ namespace XUnitTests
         [Fact]
         public void CreateEmptyContext_GotCreatedState()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             Assert.Equal(StateOfNPCContext.Created, testedContext.State);
         }
@@ -19,7 +21,8 @@ namespace XUnitTests
         [Fact]
         public void DisposeEmptyContext_GotDestroyedState()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Dispose();
 
@@ -29,7 +32,8 @@ namespace XUnitTests
         [Fact]
         public void DisposeTwiceEmptyContext_GotDestroyedState()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Dispose();
 
@@ -43,7 +47,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_SetNull_GotArgumentNullException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var e = Assert.Throws<ArgumentNullException>(() => {
                 testedContext.AddTypeOfProcess(null);
@@ -55,7 +60,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_SetNull_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Dispose();
 
@@ -67,7 +73,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddTypeWhatIsNotBasedOnBaseNPCProcess_GotTypeIsNotNPCProcessException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = GetType();
 
@@ -81,7 +88,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddTypeWhatIsNotBasedOnBaseNPCProcess_ByGeneric_GotTypeIsNotNPCProcessException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(BaseNPCContextTests);
 
@@ -95,7 +103,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddTypeWhatIsNotBasedOnBaseNPCProcessToDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = GetType();
 
@@ -109,7 +118,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddTypeWhatIsNotBasedOnBaseNPCProcessToDisposed_ByGeneric_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(BaseNPCContextTests);
 
@@ -123,7 +133,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddNormalType_GotTrue()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
 
@@ -135,7 +146,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddNormalType_ByGeneric_GotTrue()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var result = testedContext.AddTypeOfProcess<TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess>();
 
@@ -145,7 +157,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddNormalTypeTwise_GotTrueFirstlyAndFalseSecondly()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess);
 
@@ -161,7 +174,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddNormalTypeTwise_ByGeneric_GotTrueFirstlyAndFalseSecondly()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var result = testedContext.AddTypeOfProcess<TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithoutAttributesNPCProcess>();
 
@@ -175,7 +189,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddTwoDifferentTypesOfProcesesWithTheSameName_GotTrueFirstlyAndFalseSecondly()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -193,7 +208,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddTwoDifferentTypesOfProcesesWithTheSameName_ByGeneric_GotTrueFirstlyAndFalseSecondly()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var result = testedContext.AddTypeOfProcess<TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess>();
 
@@ -207,7 +223,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddTypeWithoutEntryPoints_GotTrue()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
 
@@ -219,7 +236,8 @@ namespace XUnitTests
         [Fact]
         public void AddTypeOfProcess_AddTypeWithoutEntryPoints_ByGeneric_GotTrue()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var result = testedContext.AddTypeOfProcess<TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess>();
 
@@ -229,7 +247,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByEmpty_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Bootstrap();
 
@@ -239,7 +258,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByEmpty_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Dispose();
 
@@ -251,7 +271,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByNull_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Bootstrap(null);
 
@@ -261,7 +282,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByNull_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Dispose();
 
@@ -273,7 +295,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByNotRegisteredType_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -285,7 +308,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByGeneric_ByNotRegisteredType_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Bootstrap<TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess>();
 
@@ -295,7 +319,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByNotRegisteredType_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -309,7 +334,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByGeneric_ByNotRegisteredType_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -323,7 +349,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByTypeWhatIsNotBasedOnBaseNPCProcess_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(BaseNPCContextTests);
 
@@ -335,7 +362,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByGeneric_ByTypeWhatIsNotBasedOnBaseNPCProcess_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Bootstrap<BaseNPCContextTests>();
 
@@ -345,7 +373,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByTypeWhatIsNotBasedOnBaseNPCProcess_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(BaseNPCContextTests);
 
@@ -359,7 +388,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByGeneric_ByTypeWhatIsNotBasedOnBaseNPCProcess_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Dispose();
 
@@ -371,7 +401,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByTypeWithoutEntryPoints_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
 
@@ -383,7 +414,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByGeneric_ByTypeWithoutEntryPoints_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Bootstrap<TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess>();
 
@@ -393,7 +425,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByTypeWithoutEntryPoints_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
 
@@ -407,7 +440,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByGeneric_ByTypeWithoutEntryPoints_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithoutEntryPointsAndWithNameAndWithStartupModeNPCProcess);
 
@@ -421,7 +455,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByTypeWithEntryPointWithoutArguments_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -433,7 +468,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByGeneric_ByTypeWithEntryPointWithoutArguments_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Bootstrap<TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess>();
 
@@ -443,7 +479,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByTypeWithEntryPointWithoutArguments_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -457,7 +494,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByGeneric_ByTypeWithEntryPointWithoutArguments_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Dispose();
 
@@ -469,7 +507,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByTypeOnlyWithEntryPointWithArgument_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32AndWithNameAndWithStartupModeNPCProcess);
 
@@ -481,7 +520,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByGeneric_ByTypeOnlyWithEntryPointWithArgument_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Bootstrap<TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32AndWithNameAndWithStartupModeNPCProcess>();
 
@@ -491,7 +531,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByTypeOnlyWithEntryPointWithArgument_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOnlyMethodWithOneArgumentWithTypeInt32AndWithNameAndWithStartupModeNPCProcess);
 
@@ -505,7 +546,8 @@ namespace XUnitTests
         [Fact]
         public void Bootstrap_ByGeneric_ByTypeOnlyWithEntryPointWithArgument_OnDisposed_GotElementIsNotActiveException()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Dispose();
 
@@ -517,7 +559,8 @@ namespace XUnitTests
         [Fact]
         public void BootstrapTwice_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             var type = typeof(TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess);
 
@@ -533,7 +576,8 @@ namespace XUnitTests
         [Fact]
         public void BootstrapTwice_ByGeneric_GotWorkingNPCContext()
         {
-            var testedContext = new TestedNPCContext();
+            var entityLogger = new EmptyEntityLogger();
+            var testedContext = new TestedNPCContext(entityLogger);
 
             testedContext.Bootstrap<TestedNPCProcessInfoWithOneEntryPointWithoutArgsAndWithNameAndWithoutStartupModeNPCProcess>();
 

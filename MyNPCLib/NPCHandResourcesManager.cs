@@ -22,15 +22,18 @@ namespace MyNPCLib
             mEntityDictionary = entityDictionary;
             mContext = context;
 
-            switch (kindOfHand)
+            if(npcHostContext != null)
             {
-                case KindOfHand.Right:
-                    mNPCHandHost = npcHostContext.RightHandHost;
-                    break;
+                switch (kindOfHand)
+                {
+                    case KindOfHand.Right:
+                        mNPCHandHost = npcHostContext.RightHandHost;
+                        break;
 
-                case KindOfHand.Left:
-                    mNPCHandHost = npcHostContext.LeftHandHost;
-                    break;
+                    case KindOfHand.Left:
+                        mNPCHandHost = npcHostContext.LeftHandHost;
+                        break;
+                }
             }
         }
 

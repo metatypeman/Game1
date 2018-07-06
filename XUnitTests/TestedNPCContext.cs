@@ -7,5 +7,9 @@ namespace XUnitTests
 {
     public class TestedNPCContext: BaseNPCContext
     {
+        public TestedNPCContext(IEntityLogger entityLogger)
+            : base(entityLogger)
+        {
+        }
     }
 }

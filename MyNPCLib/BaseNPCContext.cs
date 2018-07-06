@@ -32,15 +32,18 @@ namespace MyNPCLib
             }
             
 #if DEBUG
-            Log($"npcHostContext.SelfEntityId = {npcHostContext.SelfEntityId} npcHostContext.IsReady = {npcHostContext.IsReady}");
+            Log($"npcHostContext.SelfEntityId = {npcHostContext?.SelfEntityId} npcHostContext.IsReady = {npcHostContext?.IsReady}");
 #endif
 
             mIdFactory = new IdFactory();
 
             mNPCHostContext = npcHostContext;
 
-            npcHostContext.OnReady += NpcHostContext_OnReady;
-            npcHostContext.BodyHost.OnDie += BodyHost_OnDie;
+            if(npcHostContext != null)
+            {
+                npcHostContext.OnReady += NpcHostContext_OnReady;
+                npcHostContext.BodyHost.OnDie += BodyHost_OnDie;
+            }
 
             mBodyResourcesManager = new NPCBodyResourcesManager(mEntityLogger, mIdFactory, mEntityDictionary, npcHostContext, this);
             mRightHandResourcesManager = new NPCHandResourcesManager(mEntityLogger, mIdFactory, mEntityDictionary, npcHostContext, KindOfHand.Right, this);
@@ -53,7 +56,7 @@ namespace MyNPCLib
 
             mVisionObjectsStorage = new VisionObjectsStorage(mEntityLogger, mEntityDictionary, npcHostContext, mSystemPropertiesDictionary, mStorageOfSpecialEntities);
 
-            if (mNPCHostContext.IsReady)
+            if (mNPCHostContext != null && mNPCHostContext.IsReady)
             {
                 InitLogicalSubSystem();
             }
