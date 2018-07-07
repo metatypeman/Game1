@@ -12,6 +12,15 @@ namespace MyNPCLib.PersistLogicalData
 
         public IList<LogicalAnnotation> Annotations { get; set; }
 
+        public LogicalAnnotation Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new LogicalAnnotation();
+            result.Name = Name;
+            result.Key = Key;
+            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations);
+            return result;
+        }
+
         public override string ToString()
         {
             return ToString(0u);
@@ -76,6 +85,21 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}End {nameof(Annotations)}");
             }
             return sb.ToString();
+        }
+
+        public static IList<LogicalAnnotation> CloneListOfAnnotations(IList<LogicalAnnotation> sourceList, CloneContextOfPersistLogicalData context)
+        {
+            if(sourceList == null)
+            {
+                return null;
+            }
+
+            var resultAnnotationsList = new List<LogicalAnnotation>();
+            foreach(var annotation in sourceList)
+            {
+                resultAnnotationsList.Add(annotation.Clone(context));
+            }
+            return resultAnnotationsList;
         }
     }
 }

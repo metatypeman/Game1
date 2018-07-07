@@ -11,6 +11,15 @@ namespace MyNPCLib.PersistLogicalData
         public BaseExpressionNode Expression { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
 
+        public AccessPolicyToFactModality Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new AccessPolicyToFactModality();
+            result.Kind = Kind;
+            result.Expression = Expression.Clone(context);
+            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+            return result;
+        }
+
         public override string ToString()
         {
             return ToString(0u);

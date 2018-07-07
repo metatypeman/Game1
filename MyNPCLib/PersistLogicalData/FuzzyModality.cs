@@ -12,6 +12,13 @@ namespace MyNPCLib.PersistLogicalData
         public BaseExpressionNode Expression { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
 
+        public void FillForClone(FuzzyModality dest, CloneContextOfPersistLogicalData context)
+        {
+            dest.Parent = context.RuleInstancesDict[Parent];
+            dest.Expression = Expression.Clone(context);
+            dest.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+        }
+
         public override string ToString()
         {
             return ToString(0u);

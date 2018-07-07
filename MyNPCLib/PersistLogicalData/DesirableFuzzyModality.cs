@@ -8,5 +8,11 @@ namespace MyNPCLib.PersistLogicalData
     public class DesirableFuzzyModality : FuzzyModality
     {
         public override KindOfModality Kind => KindOfModality.Desirable;
+        public DesirableFuzzyModality Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new DesirableFuzzyModality();
+            FillForClone(result, context);
+            return result;
+        }
     }
 }

@@ -11,6 +11,13 @@ namespace MyNPCLib.PersistLogicalData
         public ulong Key { get; set; }
         public override bool IsBaseRef => true;
         public override BaseRefExpressionNode AsBaseRef => this;
+
+        public void FillForClone(BaseRefExpressionNode dest)
+        {
+            dest.Name = Name;
+            dest.Key = Key;
+        }
+
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);

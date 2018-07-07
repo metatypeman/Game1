@@ -36,6 +36,115 @@ namespace MyNPCLib.PersistLogicalData
         public QuantityQualityFuzzyModality QuantityQualityModality { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
 
+        public RuleInstance Clone()
+        {
+            var context = new CloneContextOfPersistLogicalData();
+
+            var result = new RuleInstance();
+            context.RuleInstancesDict[this] = result;
+
+            result.DictionaryName = DictionaryName;
+            result.Kind = Kind;
+            result.Name = Name;
+            result.Key = Key;
+            result.ModuleName = ModuleName;
+            result.ModuleKey = ModuleKey;
+
+            if(BelongToEntity != null)
+            {
+                result.BelongToEntity = BelongToEntity.Clone(context);
+            }
+
+            if (EntitiesConditions != null)
+            {
+                result.EntitiesConditions = EntitiesConditions.Clone(context);
+            }
+
+            if (VariablesQuantification != null)
+            {
+                result.VariablesQuantification = VariablesQuantification.Clone(context);
+            }
+
+            if (Part_1 != null)
+            {
+                result.Part_1 = Part_1.Clone(context);
+            }
+
+            if (Part_2 != null)
+            {
+                result.Part_2 = Part_2.Clone(context);
+            }
+
+            if (IfConditions != null)
+            {
+                result.IfConditions = IfConditions.Clone(context);
+            }
+
+            if (NotContradict != null)
+            {
+                result.NotContradict = NotContradict.Clone(context);
+            }
+
+            if (AccessPolicyToFactModality != null)
+            {
+                result.AccessPolicyToFactModality = AccessPolicyToFactModality.Clone(context);
+            }
+
+            if (DesirableModality != null)
+            {
+                result.DesirableModality = DesirableModality.Clone(context);
+            }
+
+            if (NecessityModality != null)
+            {
+                result.NecessityModality = NecessityModality.Clone(context);
+            }
+
+            if (ImperativeModality != null)
+            {
+                result.ImperativeModality = ImperativeModality.Clone(context);
+            }
+
+            if (IntentionallyModality != null)
+            {
+                result.IntentionallyModality = IntentionallyModality.Clone(context);
+            }
+
+            if (PriorityModality != null)
+            {
+                result.PriorityModality = PriorityModality.Clone(context);
+            }
+
+            if (RealityModality != null)
+            {
+                result.RealityModality = RealityModality.Clone(context);
+            }
+
+            if (ProbabilityModality != null)
+            {
+                result.ProbabilityModality = ProbabilityModality.Clone(context);
+            }
+
+            if (CertaintyFactor != null)
+            {
+                result.CertaintyFactor = CertaintyFactor.Clone(context);
+            }
+
+            if (MoralQualityModality != null)
+            {
+                result.MoralQualityModality = MoralQualityModality.Clone(context);
+            }
+
+            if (QuantityQualityModality != null)
+            {
+                result.QuantityQualityModality = QuantityQualityModality.Clone(context);
+            }
+
+            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+
+            return result;
+        }
+
         public override string ToString()
         {
             return ToString(0u);

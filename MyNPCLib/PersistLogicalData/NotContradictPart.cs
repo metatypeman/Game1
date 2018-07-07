@@ -10,7 +10,6 @@ namespace MyNPCLib.PersistLogicalData
         public RuleInstance Parent { get; set; }
         public BaseExpressionNode Expression { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
-
         public override string ToString()
         {
             return ToString(0u);
