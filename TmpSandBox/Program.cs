@@ -277,7 +277,7 @@ namespace TmpSandBox
 
             LogInstance.Log($"contentOfStorageDbgStr = {contentOfStorageDbgStr}");
 
-            return;
+            //return;
 
             var query = CreateSimpleQueryForMySentence(globalEntityDictionary);
 

@@ -259,7 +259,10 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         public static string ToString(BaseExpressionNode source)
         {
             var context = new ContextForDebugHelperForRuleInstance();
-            context.MainView = ToString(source, context);
+            if(source != null)
+            {
+                context.MainView = ToString(source, context);
+            }   
             return ToString(context);
         }
 

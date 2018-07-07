@@ -20,6 +20,7 @@ namespace MyNPCLib.InternalCG
         public virtual InternalRelationCGNode AsRelationNode => null;
         public virtual bool IsGraphOrConceptNode => false;
         public virtual BaseInternalConceptCGNode AsGraphOrConceptNode => null;
+        public abstract void Destroy();
 
         private InternalConceptualGraph mParent;
 
@@ -76,7 +77,7 @@ namespace MyNPCLib.InternalCG
         {
             get
             {
-                return mInputsNodes;
+                return mInputsNodes.ToList();
             }
         }
 
@@ -86,7 +87,7 @@ namespace MyNPCLib.InternalCG
         {
             get
             {
-                return mOutputsNodes;
+                return mOutputsNodes.ToList();
             }
         }
 

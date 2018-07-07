@@ -213,7 +213,7 @@ namespace MyNPCLib.NLToCGParsing
 
         private void CreateExperiencerRelation(ConceptCGNode verbConcept, ConceptCGNode nounConcept)
         {
-            var relationName = "experiencer";
+            var relationName = SpecialNamesOfRelations.ExperiencerRelationName;
 
             if (Context.RelationStorage.ContainsRelation(verbConcept.Name, nounConcept.Name, relationName))
             {
@@ -234,7 +234,7 @@ namespace MyNPCLib.NLToCGParsing
 
         private void CreateStateRelation(ConceptCGNode verbConcept, ConceptCGNode nounConcept)
         {
-            var relationName = "state";
+            var relationName = SpecialNamesOfRelations.StateRelationName;
 
             if(Context.RelationStorage.ContainsRelation(nounConcept.Name, verbConcept.Name, relationName))
             {
@@ -255,7 +255,7 @@ namespace MyNPCLib.NLToCGParsing
 
         private void CreateAgentRelation(ConceptCGNode verbConcept, ConceptCGNode nounConcept)
         {
-            var relationName = "agent";
+            var relationName = SpecialNamesOfRelations.AgentRelationName;
 
             if (Context.RelationStorage.ContainsRelation(verbConcept.Name, nounConcept.Name, relationName))
             {
@@ -276,7 +276,7 @@ namespace MyNPCLib.NLToCGParsing
 
         private void CreateActionRelation(ConceptCGNode verbConcept, ConceptCGNode nounConcept)
         {
-            var relationName = "action";
+            var relationName = SpecialNamesOfRelations.ActionRelationName;
 
             if (Context.RelationStorage.ContainsRelation(nounConcept.Name, verbConcept.Name, relationName))
             {

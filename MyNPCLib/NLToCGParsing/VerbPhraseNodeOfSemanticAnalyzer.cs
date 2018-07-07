@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CG;
+using MyNPCLib.CommonServiceGrammaticalElements;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -91,9 +92,9 @@ namespace MyNPCLib.NLToCGParsing
 
         private void CreateObjectRelation(ConceptCGNode verbConcept, ConceptCGNode objectConcept)
         {
-            var relationName = "object";
+            var relationName = SpecialNamesOfRelations.ObjectRelationName;
 
-            if(Context.RelationStorage.ContainsRelation(verbConcept.Name, objectConcept.Name, relationName))
+            if (Context.RelationStorage.ContainsRelation(verbConcept.Name, objectConcept.Name, relationName))
             {
                 return;
             }

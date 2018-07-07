@@ -1,6 +1,7 @@
 ﻿using MyNPCLib.CG;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.InternalCG
@@ -31,6 +32,11 @@ namespace MyNPCLib.InternalCG
 
         public void RemoveInputNode(InternalRelationCGNode node)
         {
+            NSRemoveInputNode(node);
+        }
+
+        private void NSRemoveInputNode(BaseInternalCGNode node)
+        {
             NRemoveInputNode(node);
             node.NRemoveOutputNode(this);
         }
@@ -55,8 +61,27 @@ namespace MyNPCLib.InternalCG
 
         public void RemoveOutputNode(InternalRelationCGNode node)
         {
+            NSRemoveOutputNode(node);
+        }
+
+        private void NSRemoveOutputNode(BaseInternalCGNode node)
+        {
             NRemoveOutputNode(node);
             node.NRemoveInputNode(this);
+        }
+
+        public override void Destroy()
+        {
+            Parent = null;
+            foreach(var node in Inputs)
+            {
+                NSRemoveInputNode(node);
+            }
+
+            foreach(var node in Outputs)
+            {
+                NSRemoveOutputNode(node);
+            }
         }
     }
 }

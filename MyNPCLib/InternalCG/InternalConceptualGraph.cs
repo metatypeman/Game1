@@ -25,7 +25,7 @@ namespace MyNPCLib.InternalCG
         {
             get
             {
-                return mChildren;
+                return mChildren.ToList();
             }
         }
 
@@ -76,6 +76,24 @@ namespace MyNPCLib.InternalCG
             if (mChildren.Contains(child))
             {
                 mChildren.Remove(child);
+            }
+        }
+
+        public override void Destroy()
+        {
+            Parent = null;
+            foreach(var child in Children)
+            {
+                RemoveChild(child);
+            }
+            foreach (var node in Inputs)
+            {
+                NSRemoveInputNode(node);
+            }
+
+            foreach (var node in Outputs)
+            {
+                NSRemoveOutputNode(node);
             }
         }
 

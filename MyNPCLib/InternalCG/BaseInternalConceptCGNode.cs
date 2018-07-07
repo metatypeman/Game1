@@ -21,6 +21,11 @@ namespace MyNPCLib.InternalCG
 
         public void RemoveInputNode(InternalRelationCGNode node)
         {
+            NSRemoveInputNode(node);
+        }
+
+        protected void NSRemoveInputNode(BaseInternalCGNode node)
+        {
             NRemoveInputNode(node);
             node.NRemoveOutputNode(this);
         }
@@ -32,6 +37,10 @@ namespace MyNPCLib.InternalCG
         }
 
         public void RemoveOutputNode(InternalRelationCGNode node)
+        {
+            NSRemoveOutputNode(node);
+        }
+        protected void NSRemoveOutputNode(BaseInternalCGNode node)
         {
             NRemoveOutputNode(node);
             node.NRemoveInputNode(this);

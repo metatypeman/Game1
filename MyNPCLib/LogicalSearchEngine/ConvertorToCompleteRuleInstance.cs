@@ -10,6 +10,9 @@ namespace MyNPCLib.LogicalSearchEngine
     {
         public static RuleInstance Convert(LogicalSearchResultItem source, IEntityDictionary entityDictionary)
         {
+#if DEBUG
+            LogInstance.Log($"source = {source}");
+#endif
             var context = new ContextOfConvertorToCompleteRuleInstance();
             context.EntityDictionary = entityDictionary;
             context.ResultOfVarOfQueryToRelationDict = source.ResultOfVarOfQueryToRelationList.ToDictionary(p => p.KeyOfVar, p => p.FoundExpression);
@@ -30,7 +33,7 @@ namespace MyNPCLib.LogicalSearchEngine
                 result.BelongToEntity = ConvertExpressionNode(queryExpression.BelongToEntity, context);
             }
 
-            if(queryExpression.EntitiesConditions != null)
+            if (queryExpression.EntitiesConditions != null)
             {
                 result.EntitiesConditions = ConvertEntitiesConditions(queryExpression.EntitiesConditions, context);
             }
@@ -115,6 +118,10 @@ namespace MyNPCLib.LogicalSearchEngine
                 result.QuantityQualityModality = ConvertQuantityQualityFuzzyModality(queryExpression.QuantityQualityModality, result, context);
             }
 
+#if DEBUG
+            LogInstance.Log($"queryExpression = {queryExpression}");
+#endif
+
             result.Annotations = ConvertAnnotations(queryExpression.Annotations, context);
             return result;
         }
@@ -135,6 +142,10 @@ namespace MyNPCLib.LogicalSearchEngine
 
         private static EntitiesConditions ConvertEntitiesConditions(EntitiesConditions source, ContextOfConvertorToCompleteRuleInstance context)
         {
+#if DEBUG
+            LogInstance.Log($"source = {source}");
+#endif
+
             var result = new EntitiesConditions();
             var resultItemsList = new List<EntityConditionItem>();
             foreach(var item in source.Items)
@@ -294,6 +305,10 @@ namespace MyNPCLib.LogicalSearchEngine
 
         private static EntityConditionExpressionNode ConvertEntityConditionNode(EntityConditionExpressionNode source, ContextOfConvertorToCompleteRuleInstance context)
         {
+#if DEBUG
+            LogInstance.Log($"source = {source}");
+#endif
+
             var result = new EntityConditionExpressionNode();
             result.Name = source.Name;
             result.Key = source.Key;
