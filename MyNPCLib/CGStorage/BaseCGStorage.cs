@@ -46,6 +46,10 @@ namespace MyNPCLib.CGStorage
         {
             lock (mDataLockObj)
             {
+#if DEBUG
+                LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+#endif
+
                 mIndexedRuleInstancesDict[indexedRuleInstance.Key] = indexedRuleInstance;
 
                 var kind = indexedRuleInstance.Kind;
@@ -82,6 +86,8 @@ namespace MyNPCLib.CGStorage
                             }
                         }
                         break;
+
+                    //default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                 }
             }
         }
@@ -112,6 +118,11 @@ namespace MyNPCLib.CGStorage
         {
             lock (mDataLockObj)
             {
+#if DEBUG
+                LogInstance.Log($"key = {key}");
+                LogInstance.Log($"mIndexedRulePartsOfFactsDict.Count = {mIndexedRulePartsOfFactsDict.Count}");
+#endif
+
                 if (mIndexedRulePartsOfFactsDict.ContainsKey(key))
                 {
                     return mIndexedRulePartsOfFactsDict[key];
@@ -133,6 +144,42 @@ namespace MyNPCLib.CGStorage
                 return null;
             }
         }
+
+        public string GetContentAsDbgStr()
+        {
+            var n = 0u;
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextNSpaces = StringHelper.Spaces(nextN);
+            var entityDictionary = mContext.EntityDictionary;
+            var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}mRuleInstancesList.Count = {mRuleInstancesList.Count}");
+            sb.AppendLine($"{spaces}mIndexedRuleInstancesDict.Count = {mIndexedRuleInstancesDict.Count}");
+            foreach(var indexedRuleInstancesKVPItem in mIndexedRuleInstancesDict)
+            {
+                sb.AppendLine($"{spaces}Key = {indexedRuleInstancesKVPItem.Key} ({entityDictionary.GetName(indexedRuleInstancesKVPItem.Key)})");
+            }
+            sb.AppendLine($"{spaces}mIndexedRulePartsOfFactsDict.Count = {mIndexedRulePartsOfFactsDict.Count}");
+            foreach (var indexedRulePartsOfFactsKVPItem in mIndexedRulePartsOfFactsDict)
+            {
+                sb.AppendLine($"{spaces}Key = {indexedRulePartsOfFactsKVPItem.Key} ({entityDictionary.GetName(indexedRulePartsOfFactsKVPItem.Key)})");
+            }
+            sb.AppendLine($"{spaces}mIndexedRulePartsWithOneRelationWithVarsDict.Count = {mIndexedRulePartsWithOneRelationWithVarsDict.Count}");
+            foreach (var indexedRulePartsWithOneRelationWithVarsKVPItem in mIndexedRulePartsWithOneRelationWithVarsDict)
+            {
+                sb.AppendLine($"{spaces}Key = {indexedRulePartsWithOneRelationWithVarsKVPItem.Key} ({entityDictionary.GetName(indexedRulePartsWithOneRelationWithVarsKVPItem.Key)})");
+            }
+            //sb.AppendLine($"{spaces}{nameof()} = {}");
+
+            return sb.ToString();
+        }
+
+        /*
+                        mRuleInstancesList = new List<RuleInstance>();
+                mIndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
+                mIndexedRulePartsOfFactsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
+                mIndexedRulePartsWithOneRelationWithVarsDict = new Dictionary<ulong, IList<IndexedRulePart>>(); 
+        */
 
         public override string ToString()
         {

@@ -273,6 +273,12 @@ namespace TmpSandBox
                 }
             }
 
+            var contentOfStorageDbgStr = context.GlobalCGStorage.GetContentAsDbgStr();
+
+            LogInstance.Log($"contentOfStorageDbgStr = {contentOfStorageDbgStr}");
+
+            return;
+
             var query = CreateSimpleQueryForMySentence(globalEntityDictionary);
 
             LogInstance.Log($"query = {query}");
@@ -281,6 +287,41 @@ namespace TmpSandBox
                 var debugStr = DebugHelperForRuleInstance.ToString(query);
 
                 LogInstance.Log($"debugStr = {debugStr}");
+            }
+
+            var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
+
+            var searcher = new LogicalSearcher(context);
+
+            var searchOptions = new LogicalSearchOptions();
+            var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
+            globalStorageOptions.Storage = context.GlobalCGStorage;
+            globalStorageOptions.MaxDeph = null;
+            globalStorageOptions.UseFacts = true;
+            globalStorageOptions.UseProductions = true;
+            globalStorageOptions.Priority = 1;
+
+            searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+
+            searchOptions.QueryExpression = indexedQuery;
+
+            var rearchResult = searcher.Run(searchOptions);
+
+            LogInstance.Log($"rearchResult = {rearchResult}");
+
+            var targetSearchResultItemsList = rearchResult.Items;
+
+            foreach (var targetSearchResultItem in targetSearchResultItemsList)
+            {
+                var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
+
+                //LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
+
+                {
+                    var debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
+
+                    LogInstance.Log($"debugStr = {debugStr}");
+                }
             }
 
             //var paragraph = "The dog likes the man.";
@@ -330,7 +371,7 @@ namespace TmpSandBox
             param_1.Name = "?X";
             param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
 
-            var param_2 = new EntityRefExpressionNode();
+            var param_2 = new QuestionVarExpressionNode();
             expr3.Params.Add(param_2);
             param_2.Name = "?Y";
             param_2.Key = globalEntityDictionary.GetKey(param_2.Name);

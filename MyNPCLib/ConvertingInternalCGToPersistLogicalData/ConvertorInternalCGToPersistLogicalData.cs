@@ -312,6 +312,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
 
             var relationExpr = new RelationExpressionNode();
             relationExpr.Name = relation.Name;
+            relationExpr.Key = context.EntityDictionary.GetKey(relation.Name);
             relationExpr.Params = new List<BaseExpressionNode>();
 
             var inputNode = relation.Inputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
