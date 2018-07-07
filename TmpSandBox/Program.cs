@@ -187,6 +187,9 @@ namespace TmpSandBox
         {
             var globalEntityDictionary = new EntityDictionary();
 
+            var context = new ContextOfCGStorage(globalEntityDictionary);
+            context.Init();
+
             //var path = AppDomain.CurrentDomain.BaseDirectory;
 
             //LogInstance.Log($"path = {path}");
@@ -255,10 +258,29 @@ namespace TmpSandBox
                 foreach(var ruleInstance in ruleInstancesList)
                 {
                     LogInstance.Log($"ruleInstance = {ruleInstance}");
-                    var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
 
-                    LogInstance.Log($"debugStr = {debugStr}");
+                    {
+                        var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+
+                        LogInstance.Log($"debugStr = {debugStr}");
+                    }
+
+                    var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+
+                    LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+
+                    context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
                 }
+            }
+
+            var query = CreateSimpleQueryForMySentence(globalEntityDictionary);
+
+            LogInstance.Log($"query = {query}");
+
+            {
+                var debugStr = DebugHelperForRuleInstance.ToString(query);
+
+                LogInstance.Log($"debugStr = {debugStr}");
             }
 
             //var paragraph = "The dog likes the man.";
@@ -276,6 +298,46 @@ namespace TmpSandBox
             //LogInstance.Log($"result = {result}");
 
             LogInstance.Log("End");
+        }
+
+        private static RuleInstance CreateSimpleQueryForMySentence(IEntityDictionary globalEntityDictionary)
+        {
+            var ruleInstance = new RuleInstance();
+            ruleInstance.DictionaryName = globalEntityDictionary.Name;
+            ruleInstance.Kind = KindOfRuleInstance.QuestionVars;
+            ruleInstance.Name = NamesHelper.CreateEntityName();
+            ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
+            ruleInstance.ModuleName = "#simple_module";
+            ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
+
+            var rulePart_1 = new RulePart();
+            rulePart_1.Parent = ruleInstance;
+            ruleInstance.Part_1 = rulePart_1;
+
+            rulePart_1.IsActive = true;
+
+            var expr3 = new RelationExpressionNode();
+            rulePart_1.Expression = expr3;
+            expr3.Params = new List<BaseExpressionNode>();
+
+            var relationName = "know";
+            var relationKey = globalEntityDictionary.GetKey(relationName);
+            expr3.Name = relationName;
+            expr3.Key = relationKey;
+
+            var param_1 = new QuestionVarExpressionNode();
+            expr3.Params.Add(param_1);
+            param_1.Name = "?X";
+            param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
+
+            var param_2 = new EntityRefExpressionNode();
+            expr3.Params.Add(param_2);
+            param_2.Name = "?Y";
+            param_2.Key = globalEntityDictionary.GetKey(param_2.Name);
+
+            //son(Piter,$X1)
+
+            return ruleInstance;
         }
 
         private static EnglishTreebankParser mParser;
