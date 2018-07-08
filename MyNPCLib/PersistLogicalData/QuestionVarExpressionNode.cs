@@ -11,5 +11,12 @@ namespace MyNPCLib.PersistLogicalData
 
         public override bool IsQuestionVar => true;
         public override QuestionVarExpressionNode AsQuestionVar => this;
+
+        public override BaseExpressionNode Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new QuestionVarExpressionNode();
+            FillForClone(result, context);
+            return result;
+        }
     }
 }

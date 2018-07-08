@@ -17,7 +17,7 @@ namespace MyNPCLib.PersistLogicalData
             var result = new LogicalAnnotation();
             result.Name = Name;
             result.Key = Key;
-            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations);
+            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
             return result;
         }
 

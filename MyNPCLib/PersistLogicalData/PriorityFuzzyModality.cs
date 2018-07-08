@@ -8,5 +8,12 @@ namespace MyNPCLib.PersistLogicalData
     public class PriorityFuzzyModality : FuzzyModality
     {
         public override KindOfModality Kind => KindOfModality.Priority;
+
+        public PriorityFuzzyModality Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new PriorityFuzzyModality();
+            FillForClone(result, context);
+            return result;
+        }
     }
 }

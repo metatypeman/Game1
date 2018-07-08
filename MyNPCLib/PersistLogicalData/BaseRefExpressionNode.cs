@@ -12,10 +12,11 @@ namespace MyNPCLib.PersistLogicalData
         public override bool IsBaseRef => true;
         public override BaseRefExpressionNode AsBaseRef => this;
 
-        public void FillForClone(BaseRefExpressionNode dest)
+        public void FillForClone(BaseRefExpressionNode dest, CloneContextOfPersistLogicalData context)
         {
             dest.Name = Name;
             dest.Key = Key;
+            dest.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
         }
 
         public override string PropertiesToSting(uint n)

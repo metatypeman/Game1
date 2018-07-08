@@ -14,7 +14,7 @@ namespace MyNPCLib.PersistLogicalData
         public override BaseExpressionNode Clone(CloneContextOfPersistLogicalData context)
         {
             var result = new ConceptExpressionNode();
-            FillForClone(result);
+            FillForClone(result, context);
             return result;
         }
     }

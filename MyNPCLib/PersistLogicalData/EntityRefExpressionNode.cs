@@ -11,10 +11,10 @@ namespace MyNPCLib.PersistLogicalData
         public override bool IsEntityRef => true;
         public override EntityRefExpressionNode AsEntityRef => this;
 
-        public override BaseExpressionNode Clone()
+        public override BaseExpressionNode Clone(CloneContextOfPersistLogicalData context)
         {
             var result = new EntityRefExpressionNode();
-            FillForClone(result);
+            FillForClone(result, context);
             return result;
         }
     }

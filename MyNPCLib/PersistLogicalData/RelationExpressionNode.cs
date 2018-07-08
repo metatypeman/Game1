@@ -14,6 +14,24 @@ namespace MyNPCLib.PersistLogicalData
         public override bool IsRelation => true;
         public override RelationExpressionNode AsRelation => this;
 
+        public override BaseExpressionNode Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new RelationExpressionNode();
+            result.Name = Name;
+            result.Key = Key;
+            if(Params != null)
+            {
+                var paramsList = new List<BaseExpressionNode>();
+                foreach(var item in Params)
+                {
+                    paramsList.Add(item.Clone(context));
+                }
+                result.Params = paramsList;
+            }
+            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+            return result;
+        }
+
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);

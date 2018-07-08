@@ -12,6 +12,12 @@ namespace MyNPCLib.PersistLogicalData
         public override bool IsUnaryOperator => true;
         public override UnaryOperatorExpressionNode UnaryOperator => this;
 
+        protected void FillForClone(UnaryOperatorExpressionNode dest, CloneContextOfPersistLogicalData context)
+        {
+            dest.Left = Left.Clone(context);
+            dest.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+        }
+
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);

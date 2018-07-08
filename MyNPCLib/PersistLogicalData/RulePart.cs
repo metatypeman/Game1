@@ -14,6 +14,26 @@ namespace MyNPCLib.PersistLogicalData
         public BaseExpressionNode Expression { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
 
+        public RulePart Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new RulePart();
+            context.RulePartsDict[this] = result; 
+            result.Parent = context.RuleInstancesDict[Parent];
+            result.NextPart = context.RulePartsDict[NextPart];
+            if(VariablesQuantification != null)
+            {
+                result.VariablesQuantification = VariablesQuantification.Clone(context);
+            }
+
+            if(Expression != null)
+            {
+                result.Expression = Expression.Clone(context);
+            }
+
+            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+            return result;
+        }
+
         public override string ToString()
         {
             return ToString(0u);

@@ -13,6 +13,17 @@ namespace MyNPCLib.PersistLogicalData
         public ulong VariableKey { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
 
+        public EntityConditionItem Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new EntityConditionItem();
+            result.Name = Name;
+            result.Key = Key;
+            result.VariableName = VariableName;
+            result.VariableKey = VariableKey;
+            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+            return result;
+        }
+
         public override string ToString()
         {
             return ToString(0u);

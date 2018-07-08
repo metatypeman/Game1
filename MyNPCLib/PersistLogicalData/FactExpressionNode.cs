@@ -10,5 +10,12 @@ namespace MyNPCLib.PersistLogicalData
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Fact;
         public override bool IsFact => true;
         public override FactExpressionNode AsFact => this;
+
+        public override BaseExpressionNode Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new FactExpressionNode();
+            FillForClone(result, context);
+            return result;
+        }
     }
 }

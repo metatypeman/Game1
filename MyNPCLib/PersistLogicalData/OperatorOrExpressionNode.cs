@@ -10,5 +10,12 @@ namespace MyNPCLib.PersistLogicalData
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Or;
         public override bool IsOperatorOr => true;
         public override OperatorOrExpressionNode AsOperatorOr => this;
+
+        public override BaseExpressionNode Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new OperatorOrExpressionNode();
+            FillForClone(result, context);
+            return result;
+        }
     }
 }

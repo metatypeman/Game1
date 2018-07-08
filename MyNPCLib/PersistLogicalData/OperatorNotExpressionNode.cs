@@ -11,5 +11,12 @@ namespace MyNPCLib.PersistLogicalData
 
         public override bool IsOperatorNot => true;
         public override OperatorNotExpressionNode AsOperatorNot => this;
+
+        public override BaseExpressionNode Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new OperatorNotExpressionNode();
+            FillForClone(result, context);
+            return result;
+        }
     }
 }

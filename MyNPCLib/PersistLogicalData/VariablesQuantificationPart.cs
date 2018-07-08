@@ -10,6 +10,22 @@ namespace MyNPCLib.PersistLogicalData
         public IList<VarExpressionNode> Items { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
 
+        public VariablesQuantificationPart Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new VariablesQuantificationPart();
+            if (Items != null)
+            {
+                var itemsList = new List<VarExpressionNode>();
+                foreach (var item in Items)
+                {
+                    itemsList.Add((VarExpressionNode)item.Clone(context));
+                }
+                result.Items = itemsList;
+            }
+            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+            return result;
+        }
+
         public override string ToString()
         {
             return ToString(0u);

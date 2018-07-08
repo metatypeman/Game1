@@ -13,6 +13,13 @@ namespace MyNPCLib.PersistLogicalData
         public BaseExpressionNode Left { get; set; }
         public BaseExpressionNode Right { get; set; }
         
+        protected void FillForClone(BinaryOperatorExpressionNode dest, CloneContextOfPersistLogicalData context)
+        {
+            dest.Left = Left.Clone(context);
+            dest.Right = Right.Clone(context);
+            dest.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+        }
+
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);

@@ -8,5 +8,12 @@ namespace MyNPCLib.PersistLogicalData
     public class IntentionallyFuzzyModality : FuzzyModality
     {
         public override KindOfModality Kind => KindOfModality.Intentionally;
+
+        public IntentionallyFuzzyModality Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new IntentionallyFuzzyModality();
+            FillForClone(result, context);
+            return result;
+        }
     }
 }

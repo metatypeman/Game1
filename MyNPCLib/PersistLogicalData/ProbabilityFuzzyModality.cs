@@ -8,5 +8,12 @@ namespace MyNPCLib.PersistLogicalData
     public class ProbabilityFuzzyModality : FuzzyModality
     {
         public override KindOfModality Kind => KindOfModality.Probability;
+
+        public ProbabilityFuzzyModality Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new ProbabilityFuzzyModality();
+            FillForClone(result, context);
+            return result;
+        }
     }
 }

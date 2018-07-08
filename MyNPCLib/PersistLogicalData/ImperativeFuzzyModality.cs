@@ -8,5 +8,12 @@ namespace MyNPCLib.PersistLogicalData
     public class ImperativeFuzzyModality : FuzzyModality
     {
         public override KindOfModality Kind => KindOfModality.Imperative;
+
+        public ImperativeFuzzyModality Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new ImperativeFuzzyModality();
+            FillForClone(result, context);
+            return result;
+        }
     }
 }

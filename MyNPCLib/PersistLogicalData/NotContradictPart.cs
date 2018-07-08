@@ -10,6 +10,16 @@ namespace MyNPCLib.PersistLogicalData
         public RuleInstance Parent { get; set; }
         public BaseExpressionNode Expression { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
+
+        public NotContradictPart Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new NotContradictPart();
+            result.Parent = context.RuleInstancesDict[Parent];
+            result.Expression = Expression.Clone(context);
+            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+            return result;
+        }
+
         public override string ToString()
         {
             return ToString(0u);

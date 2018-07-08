@@ -10,6 +10,22 @@ namespace MyNPCLib.PersistLogicalData
         public IList<EntityConditionItem> Items { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
 
+        public EntitiesConditions Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new EntitiesConditions();
+            if(Items != null)
+            {
+                var itemsList = new List<EntityConditionItem>();
+                foreach(var item in Items)
+                {
+                    itemsList.Add(item.Clone(context));
+                }
+                result.Items = itemsList;
+            }
+            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+            return result;
+        }
+
         public override string ToString()
         {
             return ToString(0u);

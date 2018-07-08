@@ -12,6 +12,14 @@ namespace MyNPCLib.PersistLogicalData
         public override bool IsVar => true;
         public override VarExpressionNode AsVar => this;
 
+        public override BaseExpressionNode Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new VarExpressionNode();
+            result.Quantifier = Quantifier;
+            FillForClone(result, context);
+            return result;
+        }
+
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);

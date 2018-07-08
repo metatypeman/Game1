@@ -12,6 +12,14 @@ namespace MyNPCLib.PersistLogicalData
         public override ValueExpressionNode AsValue => this;
         public object Value { get; set; }
 
+        public override BaseExpressionNode Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new ValueExpressionNode();
+            result.Value = Value;
+            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+            return result;
+        }
+
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);

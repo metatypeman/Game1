@@ -8,5 +8,12 @@ namespace MyNPCLib.PersistLogicalData
     public class MoralQualityFuzzyModality : FuzzyModality
     {
         public override KindOfModality Kind => KindOfModality.MoralQuality;
+
+        public MoralQualityFuzzyModality Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new MoralQualityFuzzyModality();
+            FillForClone(result, context);
+            return result;
+        }
     }
 }

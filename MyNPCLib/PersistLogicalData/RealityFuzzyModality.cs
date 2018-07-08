@@ -8,5 +8,12 @@ namespace MyNPCLib.PersistLogicalData
     public class RealityFuzzyModality : FuzzyModality
     {
         public override KindOfModality Kind => KindOfModality.Reality;
+
+        public RealityFuzzyModality Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new RealityFuzzyModality();
+            FillForClone(result, context);
+            return result;
+        }
     }
 }

@@ -10,5 +10,12 @@ namespace MyNPCLib.PersistLogicalData
         public override KindOfExpressionNode Kind => KindOfExpressionNode.FuzzyLogicValue;
         public override bool IsFuzzyLogicValue => true;
         public override FuzzyLogicValueExpressionNode AsFuzzyLogicValue => this;
+
+        public override BaseExpressionNode Clone(CloneContextOfPersistLogicalData context)
+        {
+            var result = new FuzzyLogicValueExpressionNode();
+            result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
+            return result;
+        }
     }
 }
