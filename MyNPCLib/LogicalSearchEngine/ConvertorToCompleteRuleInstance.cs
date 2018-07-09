@@ -123,7 +123,161 @@ namespace MyNPCLib.LogicalSearchEngine
 #endif
 
             result.Annotations = ConvertAnnotations(queryExpression.Annotations, context);
+
+            var entityConditionsDictBuilder = new BuilderForDictionaryWithList<string, string>();
+
+            var resultOfVarOfQueryToRelationList = source.ResultOfVarOfQueryToRelationList.Where(p => p.FoundExpression.Kind == KindOfExpressionNode.EntityCondition).ToList();
+
+#if DEBUG
+            LogInstance.Log($"resultOfVarOfQueryToRelationList.Count = {resultOfVarOfQueryToRelationList.Count}");
+#endif
+
+            foreach(var resultOfVarOfQueryToRelation in resultOfVarOfQueryToRelationList)
+            {
+#if DEBUG
+                LogInstance.Log($"resultOfVarOfQueryToRelation = {resultOfVarOfQueryToRelation}");
+#endif
+
+                var foundEntityCondition = resultOfVarOfQueryToRelation.FoundExpression.AsEntityCondition;
+
+#if DEBUG
+                LogInstance.Log($"foundEntityCondition = {foundEntityCondition}");
+#endif
+
+                var tagetEntityConditionName = foundEntityCondition.Name;
+
+#if DEBUG
+                LogInstance.Log($"tagetEntityConditionName = {tagetEntityConditionName}");
+#endif
+
+                var originDict = resultOfVarOfQueryToRelation.OriginDict;
+
+#if DEBUG
+                LogInstance.Log($"originDict.Count = {originDict.Count}");
+#endif
+
+                foreach(var originKVPItem in originDict)
+                {
+#if DEBUG
+                    LogInstance.Log($"originKVPItem.Key = {originKVPItem.Key}");
+                    LogInstance.Log($"originKVPItem.Value = {originKVPItem.Value}");
+#endif
+
+                    var targetFact = originKVPItem.Value.IndexedRuleInstance.Origin;
+
+#if DEBUG
+                    LogInstance.Log($"targetFact = {targetFact}");
+#endif
+
+                    var entityConditions = targetFact.EntitiesConditions;
+
+#if DEBUG
+                    LogInstance.Log($"entityConditions = {entityConditions}");
+#endif
+
+                    var targetEntityCondition = entityConditions.Items.FirstOrDefault(p => p.VariableKey == foundEntityCondition.Key);
+
+#if DEBUG
+                    LogInstance.Log($"targetEntityCondition = {targetEntityCondition}");
+#endif
+
+                    var targetFactName = targetEntityCondition.Name;
+
+#if DEBUG
+                    LogInstance.Log($"targetFactName = {targetFactName}");
+                    LogInstance.Log($"tagetEntityConditionName = {tagetEntityConditionName}");
+#endif
+
+                    entityConditionsDictBuilder.Add(tagetEntityConditionName, targetFactName);
+                }
+            }
+
+            var entityConditionsDict = entityConditionsDictBuilder.GetResult();
+
+#if DEBUG
+            LogInstance.Log($"entityConditionsDict.Count = {entityConditionsDict .Count}");
+#endif
+
+            if(entityConditionsDict.Count > 0)
+            {
+                var countOfResult = GetCountOfResult(entityConditionsDict);
+
+#if DEBUG
+                LogInstance.Log($"countOfResult = {countOfResult}");
+#endif
+
+                var resultList = new List<RuleInstance>() { result };
+
+                var nextCountOfResult = countOfResult - 1;
+
+#if DEBUG
+                LogInstance.Log($"nextCountOfResult = {nextCountOfResult}");
+                //nextCountOfResult = 10;//tmp
+#endif
+
+                if (nextCountOfResult > 0)
+                {
+                    for (var i = 0; i < nextCountOfResult; i++)
+                    {
+#if DEBUG
+                        LogInstance.Log($"i = {i}");
+#endif
+
+                        var newResult = result.Clone();
+                        resultList.Add(newResult);
+                    }
+                }
+
+#if DEBUG
+                LogInstance.Log($"resultList.Count = {resultList.Count}");
+#endif
+
+                EntityConditionScopeForConvertorToCompleteRuleInstance firstEntityConditionScope = null;
+                EntityConditionScopeForConvertorToCompleteRuleInstance prevEntityConditionScope = null;
+
+                foreach (var entityCondionsKVPItem in entityConditionsDict)
+                {
+                    var currentEntityConditionScope = new EntityConditionScopeForConvertorToCompleteRuleInstance(entityDictionary, entityCondionsKVPItem.Key, entityCondionsKVPItem.Value);
+
+                    if (prevEntityConditionScope == null)
+                    {
+                        firstEntityConditionScope = currentEntityConditionScope;
+                    }
+                    else
+                    {
+                        prevEntityConditionScope.Next = currentEntityConditionScope;
+                    }
+
+                    prevEntityConditionScope = currentEntityConditionScope;
+                }
+
+                firstEntityConditionScope.Run(resultList.GetEnumerator());
+
+                if(resultList.Count > 1)
+                {
+                    throw new NotSupportedException();
+                }
+            }
+
+#if DEBUG
+            LogInstance.Log($"result = {result}");
+#endif
+
+            //throw new NotImplementedException();
+
             return result;
+        }
+
+        private static int GetCountOfResult(Dictionary<string, List<string>> source)
+        {
+            var n = 1;
+
+            foreach(var sourceKVPItem in source)
+            {
+                n *= sourceKVPItem.Value.Count;
+            }
+
+            return n;
         }
 
         private static VariablesQuantificationPart ConvertVariablesQuantification(VariablesQuantificationPart source, ContextOfConvertorToCompleteRuleInstance context)

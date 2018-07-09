@@ -19,7 +19,11 @@ namespace MyNPCLib.PersistLogicalData
             var result = new RulePart();
             context.RulePartsDict[this] = result; 
             result.Parent = context.RuleInstancesDict[Parent];
-            result.NextPart = context.RulePartsDict[NextPart];
+            if(NextPart != null)
+            {
+                result.NextPart = context.RulePartsDict[NextPart];
+            }
+            
             if(VariablesQuantification != null)
             {
                 result.VariablesQuantification = VariablesQuantification.Clone(context);

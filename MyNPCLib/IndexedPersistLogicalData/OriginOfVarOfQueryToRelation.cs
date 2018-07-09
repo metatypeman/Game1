@@ -25,7 +25,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}{KeyOfRuleInstance} = {KeyOfRuleInstance}");
+            sb.AppendLine($"{spaces}{nameof(KeyOfRuleInstance)} = {KeyOfRuleInstance}");
             if (IndexedRuleInstance == null)
             {
                 sb.AppendLine($"{spaces}{nameof(IndexedRuleInstance)} = null");
