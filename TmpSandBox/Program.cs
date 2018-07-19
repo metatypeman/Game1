@@ -45,10 +45,11 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
+            TSTProcessAnnotations();
             //TSTATNParsing();
             //TSTWordNet();
             //TSTTextCGParserRunner();
-            TSTParseNLText();
+            //TSTParseNLText();
             //TSTRuleInstance();
             //TSTEntityLogging();
             //TSTConceptualGraph_2();
