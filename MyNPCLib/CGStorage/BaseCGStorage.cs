@@ -29,6 +29,7 @@ namespace MyNPCLib.CGStorage
         public IDictionary<ulong, IList<IndexedRulePart>> mIndexedRulePartsOfFactsDict { get; set; }
         //It is temporary public for construction time. It will be private after complete construction.
         public IDictionary<ulong, IList<IndexedRulePart>> mIndexedRulePartsWithOneRelationWithVarsDict { get; set; }
+        public IList<ResolverForRelationExpressionNode> mRelationsList { get; set; }
 
         public void Init()
         {
@@ -38,6 +39,7 @@ namespace MyNPCLib.CGStorage
                 mIndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
                 mIndexedRulePartsOfFactsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
                 mIndexedRulePartsWithOneRelationWithVarsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
+                mRelationsList = new List<ResolverForRelationExpressionNode>();
             }
         }
 
@@ -47,7 +49,7 @@ namespace MyNPCLib.CGStorage
             lock (mDataLockObj)
             {
 #if DEBUG
-                LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+                //LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 #endif
 
                 mIndexedRuleInstancesDict[indexedRuleInstance.Key] = indexedRuleInstance;
@@ -94,13 +96,23 @@ namespace MyNPCLib.CGStorage
 
         private void NAddIndexedRulePartToKeysOfRelationsIndex(IDictionary<ulong, IList<IndexedRulePart>> indexData, IndexedRulePart indexedRulePart)
         {
+            var relationsList = indexedRulePart.RelationsDict.SelectMany(p => p.Value).Distinct().ToList();
+
+            foreach(var relation in relationsList)
+            {
+                if (!mRelationsList.Contains(relation))
+                {
+                    mRelationsList.Add(relation);
+                }
+            }
+
             var keysOfRelationsList = indexedRulePart.RelationsDict.Keys.ToList();
 
-            foreach(var keyOfRelastion in keysOfRelationsList)
+            foreach(var keyOfRelation in keysOfRelationsList)
             {
-                if(indexData.ContainsKey(keyOfRelastion))
+                if(indexData.ContainsKey(keyOfRelation))
                 {
-                    var tmpList = indexData[keyOfRelastion];
+                    var tmpList = indexData[keyOfRelation];
                     if(!tmpList.Contains(indexedRulePart))
                     {
                         tmpList.Add(indexedRulePart);
@@ -109,7 +121,7 @@ namespace MyNPCLib.CGStorage
                 else
                 {
                     var tmpList = new List<IndexedRulePart>() { indexedRulePart };
-                    indexData[keyOfRelastion] = tmpList;
+                    indexData[keyOfRelation] = tmpList;
                 }
             }
         }
@@ -145,6 +157,14 @@ namespace MyNPCLib.CGStorage
             }
         }
 
+        public IList<ResolverForRelationExpressionNode> GetAllRelations()
+        {
+            lock (mDataLockObj)
+            {
+                return mRelationsList.ToList();
+            }
+        }
+
         public string GetContentAsDbgStr()
         {
             var n = 0u;
@@ -169,17 +189,14 @@ namespace MyNPCLib.CGStorage
             {
                 sb.AppendLine($"{spaces}Key = {indexedRulePartsWithOneRelationWithVarsKVPItem.Key} ({entityDictionary.GetName(indexedRulePartsWithOneRelationWithVarsKVPItem.Key)})");
             }
-            //sb.AppendLine($"{spaces}{nameof()} = {}");
+            sb.AppendLine($"{spaces}mRelationsList.Count = {mRelationsList.Count}");
+            foreach(var relation in mRelationsList)
+            {
+                sb.AppendLine($"{spaces}Key = {relation.Key} ({entityDictionary.GetName(relation.Key)})");
+            }
 
             return sb.ToString();
         }
-
-        /*
-                        mRuleInstancesList = new List<RuleInstance>();
-                mIndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
-                mIndexedRulePartsOfFactsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
-                mIndexedRulePartsWithOneRelationWithVarsDict = new Dictionary<ulong, IList<IndexedRulePart>>(); 
-        */
 
         public override string ToString()
         {

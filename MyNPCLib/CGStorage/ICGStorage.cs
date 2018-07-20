@@ -10,5 +10,6 @@ namespace MyNPCLib.CGStorage
         KindOfCGStorage Kind { get; }
         IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key);
         IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key);
+        IList<ResolverForRelationExpressionNode> GetAllRelations();
     }
 }

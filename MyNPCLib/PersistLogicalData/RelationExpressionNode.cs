@@ -10,6 +10,7 @@ namespace MyNPCLib.PersistLogicalData
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Relation;
         public string Name { get; set; }
         public ulong Key { get; set; }
+        public bool IsQuestion { get; set; }
         public IList<BaseExpressionNode> Params { get; set; }
         public override bool IsRelation => true;
         public override RelationExpressionNode AsRelation => this;
@@ -39,6 +40,7 @@ namespace MyNPCLib.PersistLogicalData
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            sb.AppendLine($"{spaces}{nameof(IsQuestion)} = {IsQuestion}");
             if (Params == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Params)} = null");
@@ -63,6 +65,7 @@ namespace MyNPCLib.PersistLogicalData
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            sb.AppendLine($"{spaces}{nameof(IsQuestion)} = {IsQuestion}");
             if (Params == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Params)} = null");

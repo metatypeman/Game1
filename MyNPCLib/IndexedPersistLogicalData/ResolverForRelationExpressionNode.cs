@@ -15,14 +15,22 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Relation;
         public ulong Key { get; set; }
         public int CountParams { get; set; }
+        public bool IsQuestion { get; set; }
         public IList<ResolverForBaseExpressionNode> Params { get; set; }
         public IList<QueryExecutingCardAboutVar> VarsInfoList { get; set; }
         public IList<QueryExecutingCardAboutKnownInfo> KnownInfoList { get; set; }
         
         public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
+            if(IsQuestion)
+            {
+                FillExecutingCardForQuestion(queryExecutingCard, context);
+                return;
+            }
+
 #if DEBUG
             LogInstance.Log($"Key = {Key}");
+            LogInstance.Log($"IsQuestion = {IsQuestion}");
             LogInstance.Log($"Params.Count = {Params.Count}");
             foreach (var param in Params)
             {
@@ -152,6 +160,44 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
         }
 
+        private void FillExecutingCardForQuestion(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        {
+#if DEBUG
+            LogInstance.Log($"Key = {Key}");
+            LogInstance.Log($"IsQuestion = {IsQuestion}");
+            LogInstance.Log($"Params.Count = {Params.Count}");
+            foreach (var param in Params)
+            {
+                LogInstance.Log($"param = {param}");
+            }
+            LogInstance.Log($"VarsInfoList.Count = {VarsInfoList.Count}");
+            foreach (var varInfo in VarsInfoList)
+            {
+                LogInstance.Log($"varInfo = {varInfo}");
+            }
+            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
+            LogInstance.Log($"queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString() = {queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString()}");
+            LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
+#endif
+
+            var targetRelationsList = GetAllRelations(context);
+
+#if DEBUG
+            LogInstance.Log($"targetRelationsList.Count = {targetRelationsList.Count}");
+            foreach(var tmpRelation in targetRelationsList)
+            {
+                LogInstance.Log($"tmpRelation = {tmpRelation}");
+            }
+#endif
+
+#if DEBUG
+            throw new NotImplementedException();
+            LogInstance.Log("End");
+#endif
+        }
+
         private IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key, LogicalSearchContext context)
         {
 #if DEBUG
@@ -207,12 +253,34 @@ namespace MyNPCLib.IndexedPersistLogicalData
             return result;
         }
 
+        private IList<ResolverForRelationExpressionNode> GetAllRelations(LogicalSearchContext context)
+        {
+            var result = new List<ResolverForRelationExpressionNode>();
+
+            var dataSourcesSettingsOrderedByPriorityAndUseProductionsList = context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList;
+
+            foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityAndUseProductionsList)
+            {
+                var targetRelationsList = dataSourcesSettings.Storage.GetAllRelations();
+
+                if(targetRelationsList == null)
+                {
+                    continue;
+                }
+
+                result.AddRange(targetRelationsList);
+            }
+
+            return result;
+        }
+
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            sb.AppendLine($"{spaces}{nameof(IsQuestion)} = {IsQuestion}");
             sb.AppendLine($"{spaces}{nameof(CountParams)} = {CountParams}");
             if (Params == null)
             {

@@ -298,6 +298,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.ConcreteOrigin = source;
             result.Key = source.Key;
             result.CountParams = source.Params.Count;
+            result.IsQuestion = source.IsQuestion;
             var parametersList = new List<ResolverForBaseExpressionNode>();
             var varsInfoList = new List<QueryExecutingCardAboutVar>();
             var knownInfoList = new List<QueryExecutingCardAboutKnownInfo>();
