@@ -646,8 +646,7 @@ namespace MyNPCLib.LogicalSearchEngine
             foreach (var item in source)
             {
                 var resultItem = new LogicalAnnotation();
-                resultItem.Name = item.Name;
-                resultItem.Key = item.Key;
+                resultItem.RuleInstance = item.RuleInstance;
                 resultItem.Annotations = ConvertAnnotations(item.Annotations, context);
                 result.Add(resultItem);
             }

@@ -536,7 +536,7 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
 
             foreach (var annotation in annotations)
             {
-                annotationsViewsList.Add($"{annotation.Name}{ToString(annotation.Annotations, context)}");
+                annotationsViewsList.Add($"{ToString(annotation.RuleInstance)}{ToString(annotation.Annotations, context)}");
             }
 
             return $"[:{string.Join(",", annotationsViewsList)}:]";

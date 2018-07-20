@@ -190,8 +190,7 @@ namespace TmpSandBox
 
             var annotation = new LogicalAnnotation();
             relation.Annotations.Add(annotation);
-            annotation.Name = annotationInstance.Name;
-            annotation.Key = annotationInstance.Key;
+            annotation.RuleInstance = annotationInstance;
 
             concept = new ConceptExpressionNode();
             name = "I";
@@ -1156,13 +1155,13 @@ namespace TmpSandBox
 
             var annotationForCF_1 = new LogicalAnnotation();
             cF.Annotations.Add(annotationForCF_1);
-            annotationForCF_1.Name = "#annotation_1";
-            annotationForCF_1.Key = globalEntityDictionary.GetKey(annotationForCF_1.Name);
+            //annotationForCF_1.Name = "#annotation_1";
+            //annotationForCF_1.Key = globalEntityDictionary.GetKey(annotationForCF_1.Name);
 
             var annotationForCF_2 = new LogicalAnnotation();
             cF.Annotations.Add(annotationForCF_2);
-            annotationForCF_2.Name = "#annotation_2";
-            annotationForCF_2.Key = globalEntityDictionary.GetKey(annotationForCF_2.Name);
+            //annotationForCF_2.Name = "#annotation_2";
+            //annotationForCF_2.Key = globalEntityDictionary.GetKey(annotationForCF_2.Name);
 
             return ruleInstance;
         }
