@@ -10,6 +10,7 @@ namespace MyNPCLib
         Fact,
         Rule,
         EntityCondition,
+        Annotation,
         QuestionVars
     }
 }

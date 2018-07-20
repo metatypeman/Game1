@@ -66,6 +66,161 @@ namespace TmpSandBox
             //CreateInfoOfConcreteProcess();
         }
 
+        private static void TSTProcessAnnotations()
+        {
+            LogInstance.Log("Begin");
+            var globalEntityDictionary = new EntityDictionary();
+
+            LogInstance.Log($"globalEntityDictionary.Name = {globalEntityDictionary.Name}");
+
+            var context = new ContextOfCGStorage(globalEntityDictionary);
+            context.Init();
+
+            var annotaredFactList = CreateAnnotaredFact(globalEntityDictionary);
+            LogInstance.Log($"annotaredFactList.Count = {annotaredFactList.Count}");
+            foreach(var ruleInstance in annotaredFactList)
+            {
+                var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+
+                LogInstance.Log($"debugStr = {debugStr}");
+
+                var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+
+                context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
+            }
+
+            LogInstance.Log("End");
+        }
+
+        //private static List<RuleInstance> CreateAnnotatedQuery(IEntityDictionary globalEntityDictionary)
+        //{
+
+        //}
+
+        private static List<RuleInstance> CreateAnnotaredFact(IEntityDictionary globalEntityDictionary)
+        {
+            var result = new List<RuleInstance>();
+
+            var annotationInstance = new RuleInstance();
+            result.Add(annotationInstance);
+            annotationInstance.Kind = KindOfRuleInstance.Annotation;
+            var name = NamesHelper.CreateEntityName();
+            annotationInstance.Name = name;
+            annotationInstance.Key = globalEntityDictionary.GetKey(name);
+
+            var partOfAnnotation = new RulePart();
+            partOfAnnotation.IsActive = true;
+            partOfAnnotation.Parent = annotationInstance;
+            annotationInstance.Part_1 = partOfAnnotation;
+
+            var relation = new RelationExpressionNode();
+            partOfAnnotation.Expression = relation;
+            name = "state";
+            relation.Name = name;
+            relation.Key = globalEntityDictionary.GetKey(name);
+            relation.Params = new List<BaseExpressionNode>();
+
+            var param = new VarExpressionNode();
+            relation.Params.Add(param);
+            var varName = "@X";
+            param.Name = varName;
+            param.Key = globalEntityDictionary.GetKey(varName);
+            param.Quantifier = KindOfQuantifier.Existential;
+
+            var variablesQuantification = new VariablesQuantificationPart();
+            annotationInstance.VariablesQuantification = variablesQuantification;
+            variablesQuantification.Items = new List<VarExpressionNode>();
+
+            var varQuant_1 = new VarExpressionNode();
+            varQuant_1.Quantifier = KindOfQuantifier.Existential;
+            varQuant_1.Name = varName;
+            varQuant_1.Key = globalEntityDictionary.GetKey(varName);
+            variablesQuantification.Items.Add(varQuant_1);
+
+            var entityConditionInstance = new RuleInstance();
+            result.Add(entityConditionInstance);
+            entityConditionInstance.Kind = KindOfRuleInstance.EntityCondition;
+            name = NamesHelper.CreateEntityName();
+            entityConditionInstance.Name = name;
+            entityConditionInstance.Key = globalEntityDictionary.GetKey(name);
+
+            var partOfEntityCondition = new RulePart();
+            partOfEntityCondition.Parent = entityConditionInstance;
+            entityConditionInstance.Part_1 = partOfEntityCondition;
+            partOfEntityCondition.IsActive = true;
+
+            relation = new RelationExpressionNode();
+            partOfEntityCondition.Expression = relation;
+            name = "determiner";
+            relation.Name = name;
+            relation.Key = globalEntityDictionary.GetKey(name);
+            relation.Params = new List<BaseExpressionNode>();
+
+            var concept = new ConceptExpressionNode();
+            name = "dog";
+            concept.Name = name;
+            concept.Key = globalEntityDictionary.GetKey(name);
+            relation.Params.Add(concept);
+
+            concept = new ConceptExpressionNode();
+            name = "the";
+            concept.Name = name;
+            concept.Key = globalEntityDictionary.GetKey(name);
+            relation.Params.Add(concept);
+
+            var ruleInstance = new RuleInstance();
+            result.Add(ruleInstance);
+            ruleInstance.Kind = KindOfRuleInstance.Fact;
+            name = NamesHelper.CreateEntityName();
+            ruleInstance.Name = name;
+            ruleInstance.Key = globalEntityDictionary.GetKey(name);
+
+            var partOfRuleInstance = new RulePart();
+            partOfRuleInstance.Parent = ruleInstance;
+            ruleInstance.Part_1 = partOfRuleInstance;
+            partOfRuleInstance.IsActive = true;
+
+            relation = new RelationExpressionNode();
+            partOfRuleInstance.Expression = relation;
+            name = "know";
+            relation.Name = name;
+            relation.Key = globalEntityDictionary.GetKey(name);
+            relation.Params = new List<BaseExpressionNode>();
+            relation.Annotations = new List<LogicalAnnotation>();
+
+            var annotation = new LogicalAnnotation();
+            relation.Annotations.Add(annotation);
+            annotation.Name = annotationInstance.Name;
+            annotation.Key = annotationInstance.Key;
+
+            concept = new ConceptExpressionNode();
+            name = "I";
+            concept.Name = name;
+            concept.Key = globalEntityDictionary.GetKey(name);
+            relation.Params.Add(concept);
+
+            var entityConditionVarName = "#@R";
+            var entityConditionVarKey = globalEntityDictionary.GetKey(entityConditionVarName);
+
+            var entityCondition = new EntityConditionExpressionNode();
+            relation.Params.Add(entityCondition);
+            entityCondition.Name = entityConditionVarName;
+            entityCondition.Key = entityConditionVarKey;
+
+            var entitiesConditions = new EntitiesConditions();
+            ruleInstance.EntitiesConditions = entitiesConditions;
+            entitiesConditions.Items = new List<EntityConditionItem>();
+
+            var entityCondition_1 = new EntityConditionItem();
+            entitiesConditions.Items.Add(entityCondition_1);
+            entityCondition_1.Name = entityConditionInstance.Name;
+            entityCondition_1.Key = entityConditionInstance.Key;
+            entityCondition_1.VariableName = entityConditionVarName;
+            entityCondition_1.VariableKey = entityConditionVarKey;
+
+            return result;
+        }
+
         private static void TSTATNParsing()
         {
             LogInstance.Log("Begin");
@@ -382,7 +537,7 @@ namespace TmpSandBox
             return ruleInstance;
         }
 
-        private static EnglishTreebankParser mParser;
+        //private static EnglishTreebankParser mParser;
 
         private static void ParseSentence(string sentence)
         {
@@ -400,9 +555,9 @@ namespace TmpSandBox
 
             //var parser = new EnglishTreebankParser(modelPath);
             //var node = parser.DoParse(sentence);
-            var node = mParser.DoParse(sentence);
-            var dbgStr = OpenNLPParseNodeHelper.ToString(node);
-            LogInstance.Log($"dbgStr = {dbgStr}");
+            //var node = mParser.DoParse(sentence);
+            //var dbgStr = OpenNLPParseNodeHelper.ToString(node);
+            //LogInstance.Log($"dbgStr = {dbgStr}");
 
             LogInstance.Log("End");
         }
