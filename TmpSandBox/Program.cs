@@ -103,7 +103,7 @@ namespace TmpSandBox
                 LogInstance.Log($"debugStr = {debugStr}");
 
                 var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
-                indexedRuleInstance.FillIndexedDataAsStorage();
+                //indexedRuleInstance.FillIndexedDataAsStorage();
                 context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
             }
 
@@ -114,7 +114,7 @@ namespace TmpSandBox
                 LogInstance.Log($"debugStr = {debugStr}");
 
                 var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
-                indexedQuery.FillIndexedDataAsStorage();
+                //indexedQuery.FillIndexedDataAsStorage();
 
                 var searcher = new LogicalSearcher(context);
 
@@ -141,7 +141,7 @@ namespace TmpSandBox
         private static void AddSmokeFact(RuleInstance smokeFact, BaseCGStorage storage)
         {
             var indexedSmokeFact = ConvertorToIndexed.ConvertRuleInstance(smokeFact);
-            indexedSmokeFact.FillIndexedDataAsStorage();
+            //indexedSmokeFact.FillIndexedDataAsStorage();
             storage.NSetIndexedRuleInstanceToIndexData(indexedSmokeFact);
             var debugStr = DebugHelperForRuleInstance.ToString(smokeFact);
             LogInstance.Log($"debugStr = {debugStr}");
@@ -552,7 +552,7 @@ namespace TmpSandBox
                     }
 
                     var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
-                    indexedRuleInstance.FillIndexedDataAsStorage();
+                    //indexedRuleInstance.FillIndexedDataAsStorage();
 
                     LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 
@@ -577,7 +577,7 @@ namespace TmpSandBox
             }
 
             var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
-            indexedQuery.FillIndexedDataAsStorage();
+            //indexedQuery.FillIndexedDataAsStorage();
 
             var searcher = new LogicalSearcher(context);
 

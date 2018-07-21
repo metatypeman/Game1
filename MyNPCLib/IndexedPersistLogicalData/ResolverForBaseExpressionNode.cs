@@ -16,6 +16,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IList<IndexedLogicalAnnotation> Annotations { get; set; }
 
         public abstract void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context);
+        public abstract void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo);
 
         public string GetHumanizeDbgString()
         {

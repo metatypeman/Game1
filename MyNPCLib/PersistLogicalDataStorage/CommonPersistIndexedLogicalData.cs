@@ -29,7 +29,7 @@ namespace MyNPCLib.PersistLogicalDataStorage
         public void NSetIndexedRuleInstanceToIndexData(IndexedRuleInstance indexedRuleInstance)
         {
 #if DEBUG
-            //LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+            LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 #endif
 
             IndexedRuleInstancesDict[indexedRuleInstance.Key] = indexedRuleInstance;
@@ -39,6 +39,7 @@ namespace MyNPCLib.PersistLogicalDataStorage
             switch (kind)
             {
                 case KindOfRuleInstance.Fact:
+                case KindOfRuleInstance.Annotation:
                     {
                         if (indexedRuleInstance.IsPart_1_Active)
                         {
@@ -69,7 +70,13 @@ namespace MyNPCLib.PersistLogicalDataStorage
                     }
                     break;
 
-                    //default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+                case KindOfRuleInstance.EntityCondition:
+                    break;
+
+                case KindOfRuleInstance.QuestionVars:
+                    break;
+
+                    default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
             }
         }
 

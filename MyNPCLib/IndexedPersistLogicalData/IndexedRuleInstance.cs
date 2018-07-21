@@ -40,8 +40,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
         public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
-            var resultsOfQueryToRelationList = new List<ResultOfQueryToRelation>();
-
             if (IsPart_1_Active)
             {
                 var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
@@ -66,6 +64,40 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
                 }
             }
+        }
+
+        public void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo)
+        {
+            if (IsPart_1_Active)
+            {
+                var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
+                queryExecutingCardForPart_1.SenderIndexedRuleInstance = this;
+
+                Part_1.FillExecutingCardForAnnotation(queryExecutingCardForPart_1, strategyForGettingInfo);
+
+                foreach (var resultOfQueryToRelation in queryExecutingCardForPart_1.ResultsOfQueryToRelationList)
+                {
+                    queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+                }
+            }
+
+            if (IsPart_2_Active)
+            {
+                var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
+                queryExecutingCardForPart_2.SenderIndexedRuleInstance = this;
+
+                Part_2.FillExecutingCardForAnnotation(queryExecutingCardForPart_2, strategyForGettingInfo);
+
+                foreach (var resultOfQueryToRelation in queryExecutingCardForPart_2.ResultsOfQueryToRelationList)
+                {
+                    queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+                }
+            }
+
+#if DEBUG
+            //throw new NotImplementedException();
+            LogInstance.Log("End");
+#endif
         }
 
         private CommonPersistIndexedLogicalData mCommonPersistIndexedLogicalData { get; set; }

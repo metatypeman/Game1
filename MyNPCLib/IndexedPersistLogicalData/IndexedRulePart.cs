@@ -336,6 +336,33 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
         }
 
+        public void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo)
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+            var senderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
+
+            var queryExecutingCardForExpression = new QueryExecutingCardForIndexedPersistLogicalData();
+            queryExecutingCardForExpression.SenderIndexedRuleInstance = senderIndexedRuleInstance;
+            queryExecutingCardForExpression.SenderIndexedRulePart = this;
+            Expression.FillExecutingCardForAnnotation(queryExecutingCardForExpression, strategyForGettingInfo);
+
+#if DEBUG
+            LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");
+#endif
+
+            foreach (var resultOfQueryToRelation in queryExecutingCardForExpression.ResultsOfQueryToRelationList)
+            {
+                queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+            }
+#if DEBUG
+            //throw new NotImplementedException();
+            LogInstance.Log("End");
+#endif
+        }
+
         public string GetHumanizeDbgString()
         {
             if (Origin == null)

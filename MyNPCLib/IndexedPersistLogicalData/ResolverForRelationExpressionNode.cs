@@ -48,10 +48,67 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
 #endif
 
+            var strategyForGettingInfo = new StrategyForGettingInfoFromStoragesByLogicalSearchContext(context);
+
+            NFillExecutingCard(queryExecutingCard, strategyForGettingInfo);
+
+#if DEBUG
+            LogInstance.Log($"^^^^^^queryExecutingCard = {queryExecutingCard}");
+            LogInstance.Log($"queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString() = {queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString()}");
+            LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
+
+            //throw new NotImplementedException();
+
+            LogInstance.Log("End");
+#endif
+        }
+
+        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo)
+        {
+#if DEBUG
+            LogInstance.Log($"Key = {Key}");
+            LogInstance.Log($"IsQuestion = {IsQuestion}");
+            LogInstance.Log($"Params.Count = {Params.Count}");
+            foreach (var param in Params)
+            {
+                LogInstance.Log($"param = {param}");
+            }
+            LogInstance.Log($"VarsInfoList.Count = {VarsInfoList.Count}");
+            foreach (var varInfo in VarsInfoList)
+            {
+                LogInstance.Log($"varInfo = {varInfo}");
+            }
+            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
+            LogInstance.Log($"queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString() = {queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString()}");
+            LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
+#endif
+
+            NFillExecutingCard(queryExecutingCard, strategyForGettingInfo);
+
+#if DEBUG
+            LogInstance.Log($"^^^^^^queryExecutingCard = {queryExecutingCard}");
+            LogInstance.Log($"queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString() = {queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString()}");
+            LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
+
+            //throw new NotImplementedException();
+
+            LogInstance.Log("End");
+#endif
+        }
+
+        private void NFillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo)
+        {
+            var context = strategyForGettingInfo.Context;
             var senderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
             var senderIndexedRulePart = queryExecutingCard.SenderIndexedRulePart;
-            
-            var indexedRulePartsOfFactsList = GetIndexedRulePartOfFactsByKeyOfRelation(Key, context);
+
+            var indexedRulePartsOfFactsList = strategyForGettingInfo.GetIndexedRulePartOfFactsByKeyOfRelation(Key);
 
 #if DEBUG
             LogInstance.Log($"indexedRulePartsOfFactsList?.Count = {indexedRulePartsOfFactsList?.Count}");
@@ -108,7 +165,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"~~~~~~~~~~~~~~~~~queryExecutingCard = {queryExecutingCard}");
 #endif
 
-            var indexedRulePartWithOneRelationsList = GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key, context);
+            var indexedRulePartWithOneRelationsList = strategyForGettingInfo.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key);
 
 #if DEBUG
             LogInstance.Log($"indexedRulePartWithOneRelationsList?.Count = {indexedRulePartWithOneRelationsList?.Count}");
@@ -148,14 +205,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
 
 #if DEBUG
-            LogInstance.Log($"^^^^^^queryExecutingCard = {queryExecutingCard}");
-            LogInstance.Log($"queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString() = {queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString()}");
-            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString()}");
-            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString()}");
-            LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
-
-            //throw new NotImplementedException();
-
             LogInstance.Log("End");
 #endif
         }
@@ -219,7 +268,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     {
                         foreach (var annotationOfTargetRealtion in targetRelation.Annotations)
                         {
-                            var tmpCheckAnnotation = CheckAnnotation(annotation, annotationOfTargetRealtion);
+                            var tmpCheckAnnotation = CheckAnnotation(annotation, annotationOfTargetRealtion, context);
 
                             if(tmpCheckAnnotation)
                             {
@@ -238,7 +287,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     }
 
 #if DEBUG
-                    throw new NotImplementedException();
+                    //throw new NotImplementedException();
 #endif
                 }
 
@@ -248,44 +297,42 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
 
 #if DEBUG
+            LogInstance.Log($"queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString() = {queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString()}");
+            LogInstance.Log($"queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString()}");
+            LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
             throw new NotImplementedException();
             LogInstance.Log("End");
 #endif
         }
 
-        private bool CheckAnnotation(IndexedLogicalAnnotation annotationOfQuery, IndexedLogicalAnnotation annotationOfStored)
+        private bool CheckAnnotation(IndexedLogicalAnnotation annotationOfQuery, IndexedLogicalAnnotation annotationOfStored, LogicalSearchContext context)
         {
 #if DEBUG
             LogInstance.Log($"annotationOfQuery = {annotationOfQuery.GetHumanizeDbgString()}");
             LogInstance.Log($"annotationOfStored = {annotationOfStored.GetHumanizeDbgString()}");
+            //LogInstance.Log($"annotationOfQuery = {annotationOfQuery}");
+            //throw new NotImplementedException();
 #endif
 
-            return false;//tmp
-        }
+            var strategyForGettingInfo = new StrategyForGettingInfoFromStoragesByAnnotation(context, annotationOfStored);
 
-        private IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key, LogicalSearchContext context)
-        {
+            var executingCardForAnnotation = new QueryExecutingCardForIndexedPersistLogicalData();
+            annotationOfQuery.RuleInstance.FillExecutingCardForAnnotation(executingCardForAnnotation, strategyForGettingInfo);
+            //NFillExecutingCard(executingCardForAnnotation, strategyForGettingInfo);
+
 #if DEBUG
-            LogInstance.Log($"key = {key}");
+            LogInstance.Log($"executingCardForAnnotation = {executingCardForAnnotation}");
+            //throw new NotImplementedException();
+            //return false;//tmp
 #endif
 
-            var result = new List<IndexedRulePart>();
-
-            var dataSourcesSettingsOrderedByPriorityList = context.DataSourcesSettingsOrderedByPriorityAndUseFactsList;
-
-            foreach(var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
+            if(executingCardForAnnotation.ResultsOfQueryToRelationList.IsEmpty())
             {
-                var indexedRulePartsOfFactsList = dataSourcesSettings.Storage.GetIndexedRulePartOfFactsByKeyOfRelation(key);
-
-                if(indexedRulePartsOfFactsList == null)
-                {
-                    continue;
-                }
-
-                result.AddRange(indexedRulePartsOfFactsList);
+                return false;
             }
 
-            return result;
+            return true;
         }
 
         private IList<IndexedRulePart> GetEntityConditions(ulong key, LogicalSearchContext context)
@@ -295,27 +342,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
 
             throw new NotImplementedException();
-        }
-
-        private IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key, LogicalSearchContext context)
-        {
-            var result = new List<IndexedRulePart>();
-
-            var dataSourcesSettingsOrderedByPriorityAndUseProductionsList = context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList;
-
-            foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityAndUseProductionsList)
-            {
-                var indexedRulePartWithOneRelationsList = dataSourcesSettings.Storage.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key);
-
-                if(indexedRulePartWithOneRelationsList == null)
-                {
-                    continue;
-                }
-
-                result.AddRange(indexedRulePartWithOneRelationsList);
-            }
-
-            return result;
         }
 
         private IList<ResolverForRelationExpressionNode> GetAllRelations(LogicalSearchContext context)

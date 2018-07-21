@@ -123,6 +123,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
                 result.QuantityQualityModality = ConvertQuantityQualityFuzzyModality(source.QuantityQualityModality, context);
             }
             result.Annotations = ConvertAnnotations(source.Annotations);
+            result.FillIndexedDataAsStorage();
             return result;
         }
 
