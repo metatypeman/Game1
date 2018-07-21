@@ -11,6 +11,6 @@ namespace MyNPCLib.CGStorage
         {
         }
 
-        public override KindOfCGStorage Kind => KindOfCGStorage.Query;
+        public override KindOfCGStorage KindOfStorage => KindOfCGStorage.Query;
     }
 }

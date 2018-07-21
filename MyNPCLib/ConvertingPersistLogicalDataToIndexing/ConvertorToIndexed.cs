@@ -122,7 +122,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             {
                 result.QuantityQualityModality = ConvertQuantityQualityFuzzyModality(source.QuantityQualityModality, context);
             }
-
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -137,7 +137,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             context.BelongToEntityDict[source] = result;
 
             result.Origin = source;
-
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -152,7 +152,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             context.VariablesQuantificationPartDict[source] = result;
 
             result.Origin = source;
-
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -167,7 +167,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             context.EntitiesConditionsDict[source] = result;
 
             result.Origin = source;
-
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -216,7 +216,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             {
                 result.HasVars = true;
             }
-
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -272,6 +272,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.ConcreteOrigin = source;
             result.Left = ConvertExpressionNode(source.Left, context, contextOfConvertingExpressionNode);
             result.Right = ConvertExpressionNode(source.Right, context, contextOfConvertingExpressionNode);
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -281,6 +282,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.ConcreteOrigin = source;
             result.Left = ConvertExpressionNode(source.Left, context, contextOfConvertingExpressionNode);
             result.Right = ConvertExpressionNode(source.Right, context, contextOfConvertingExpressionNode);
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -289,6 +291,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new ResolverForOperatorNotExpressionNode();
             result.ConcreteOrigin = source;
             result.Left = ConvertExpressionNode(source.Left, context, contextOfConvertingExpressionNode);
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -405,6 +408,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.Params = parametersList;
             result.VarsInfoList = varsInfoList;
             result.KnownInfoList = knownInfoList;
+            result.Annotations = ConvertAnnotations(source.Annotations);
             contextOfConvertingExpressionNode.RelationsList.Add(result);
             return result;
         }
@@ -414,6 +418,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new ResolverForConceptExpressionNode();
             result.ConcreteOrigin = source;
             result.Key = source.Key;
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -422,6 +427,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new ResolverForEntityRefExpressionNode();
             result.ConcreteOrigin = source;
             result.Key = source.Key;
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -430,6 +436,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new ResolverForEntityConditionExpressionNode();
             result.ConcreteOrigin = source;
             result.Key = source.Key;
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -438,6 +445,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new ResolverForVarExpressionNode();
             result.ConcreteOrigin = source;
             result.Key = source.Key;
+            result.Annotations = ConvertAnnotations(source.Annotations);
             contextOfConvertingExpressionNode.VarsList.Add(source);
             return result;
         }
@@ -447,6 +455,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new ResolverForQuestionVarExpressionNode();
             result.ConcreteOrigin = source;
             result.Key = source.Key;
+            result.Annotations = ConvertAnnotations(source.Annotations);
             contextOfConvertingExpressionNode.QuestionVarsList.Add(source);
             return result;
         }
@@ -456,6 +465,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new ResolverForValueExpressionNode();
             result.ConcreteOrigin = source;
             result.Value = source.Value;
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -463,6 +473,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
         {
             var result = new ResolverForFuzzyLogicValueExpressionNode();
             result.ConcreteOrigin = source;
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -471,6 +482,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new ResolverForFactExpressionNode();
             result.ConcreteOrigin = source;
             result.Key = source.Key;
+            result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
@@ -493,6 +505,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 #if DEBUG
             //LogInstance.Log($"contextOfConvertingExpressionNode = {contextOfConvertingExpressionNode}");
 #endif
+            result.Annotations = ConvertAnnotations(source.Annotations);
 
             return result;
         }
@@ -516,6 +529,8 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 #if DEBUG
             //LogInstance.Log($"contextOfConvertingExpressionNode = {contextOfConvertingExpressionNode}");
 #endif
+
+            result.Annotations = ConvertAnnotations(source.Annotations);
 
             return result;
         }
@@ -675,8 +690,28 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
         {
             dest.Parent = context.RuleInstancesDict[source.Parent];
             dest.Origin = source;
+            dest.Annotations = ConvertAnnotations(source.Annotations);
         }
 
+        private static IList<IndexedLogicalAnnotation> ConvertAnnotations(IList<LogicalAnnotation> source)
+        {
+            var result = new List<IndexedLogicalAnnotation>();
 
+            if(source.IsEmpty())
+            {
+                return result;
+            }
+             
+            foreach(var sourceItem in source)
+            {
+                var resultItem = new IndexedLogicalAnnotation();
+                resultItem.Origin = sourceItem;
+                resultItem.RuleInstance = ConvertRuleInstance(sourceItem.RuleInstance);
+                resultItem.Annotations = ConvertAnnotations(sourceItem.Annotations);
+                result.Add(resultItem);
+            }
+
+            return result;
+        }
     }
 }

@@ -182,7 +182,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
 #endif
 
-            //var hasAnnotations = 
+            var hasAnnotations = !Annotations.IsEmpty();
+
+#if DEBUG
+            LogInstance.Log($"hasAnnotations = {hasAnnotations}");
+#endif
 
             var targetRelationsList = GetAllRelations(context);
 
@@ -199,12 +203,44 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
                 LogInstance.Log($"targetRelation.GetHumanizeDbgString() = {targetRelation.GetHumanizeDbgString()}");
                 //LogInstance.Log($"targetRelation = {targetRelation}");
+                LogInstance.Log($"hasAnnotations = {hasAnnotations}");
 #endif
 
-                //if()
-                //{
+                if (hasAnnotations)
+                {
+                    if(targetRelation.Annotations.IsEmpty())
+                    {
+                        continue;
+                    }
 
-                //}
+                    var isCheckAnnotation = false;
+
+                    foreach(var annotation in Annotations)
+                    {
+                        foreach (var annotationOfTargetRealtion in targetRelation.Annotations)
+                        {
+                            var tmpCheckAnnotation = CheckAnnotation(annotation, annotationOfTargetRealtion);
+
+                            if(tmpCheckAnnotation)
+                            {
+                                isCheckAnnotation = true;
+                            }
+                        }
+                    }
+
+#if DEBUG
+                    LogInstance.Log($"isCheckAnnotation = {isCheckAnnotation}");
+#endif
+
+                    if(!isCheckAnnotation)
+                    {
+                        continue;
+                    }
+
+#if DEBUG
+                    throw new NotImplementedException();
+#endif
+                }
 
 #if DEBUG
                 LogInstance.Log($"NEXT targetRelation.GetHumanizeDbgString() = {targetRelation.GetHumanizeDbgString()}");
@@ -215,6 +251,16 @@ namespace MyNPCLib.IndexedPersistLogicalData
             throw new NotImplementedException();
             LogInstance.Log("End");
 #endif
+        }
+
+        private bool CheckAnnotation(IndexedLogicalAnnotation annotationOfQuery, IndexedLogicalAnnotation annotationOfStored)
+        {
+#if DEBUG
+            LogInstance.Log($"annotationOfQuery = {annotationOfQuery.GetHumanizeDbgString()}");
+            LogInstance.Log($"annotationOfStored = {annotationOfStored.GetHumanizeDbgString()}");
+#endif
+
+            return false;//tmp
         }
 
         private IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key, LogicalSearchContext context)

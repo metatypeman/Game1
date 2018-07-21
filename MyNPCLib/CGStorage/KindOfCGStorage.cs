@@ -10,6 +10,7 @@ namespace MyNPCLib.CGStorage
         Global,
         Sharding,
         Local,
-        Query
+        Query,
+        IndexedQuery
     }
 }

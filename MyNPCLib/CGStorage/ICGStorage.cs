@@ -7,7 +7,7 @@ namespace MyNPCLib.CGStorage
 {
     public interface ICGStorage : IObjectToString
     {
-        KindOfCGStorage Kind { get; }
+        KindOfCGStorage KindOfStorage { get; }
         IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key);
         IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key);
         IList<ResolverForRelationExpressionNode> GetAllRelations();

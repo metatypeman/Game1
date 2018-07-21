@@ -12,6 +12,16 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IndexedRuleInstance RuleInstance { get; set; }
         public IList<IndexedLogicalAnnotation> Annotations { get; set; }
 
+        public string GetHumanizeDbgString()
+        {
+            if(RuleInstance == null)
+            {
+                return string.Empty;
+            }
+
+            return RuleInstance.GetHumanizeDbgString();
+        }
+
         public override string ToString()
         {
             return ToString(0u);

@@ -2,6 +2,7 @@
 using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
+using MyNPCLib.PersistLogicalDataStorage;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ using System.Text;
 namespace MyNPCLib.IndexedPersistLogicalData
 {
     [Serializable]
-    public class IndexedRuleInstance: IIndexedLogicalyAnnotated, IObjectToString, IShortObjectToString
+    public class IndexedRuleInstance: IIndexedLogicalyAnnotated, ICGStorage, IObjectToString, IShortObjectToString
     {
         public KindOfRuleInstance Kind { get; set; }
         public ulong Key { get; set; }
@@ -65,6 +66,32 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
                 }
             }
+        }
+
+        private CommonPersistIndexedLogicalData mCommonPersistIndexedLogicalData { get; set; }
+
+        public KindOfCGStorage KindOfStorage => KindOfCGStorage.IndexedQuery;
+
+        public void FillIndexedDataAsStorage()
+        {
+            mCommonPersistIndexedLogicalData = new CommonPersistIndexedLogicalData();
+            mCommonPersistIndexedLogicalData.Init();
+            mCommonPersistIndexedLogicalData.NSetIndexedRuleInstanceToIndexData(this);
+        }
+
+        public IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
+        {
+            return mCommonPersistIndexedLogicalData.GetIndexedRulePartOfFactsByKeyOfRelation(key);
+        }
+
+        public IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key)
+        {
+            return mCommonPersistIndexedLogicalData.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(key);
+        }
+
+        public IList<ResolverForRelationExpressionNode> GetAllRelations()
+        {
+            return mCommonPersistIndexedLogicalData.GetAllRelations();
         }
 
         public string GetHumanizeDbgString()
