@@ -1,26 +1,16 @@
-﻿using System;
+﻿using MyNPCLib.PersistLogicalData;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.PersistLogicalData
+namespace MyNPCLib.IndexedPersistLogicalData
 {
     [Serializable]
-    public class LogicalAnnotation : ILogicalyAnnotated, IObjectToString, IShortObjectToString
+    public class IndexedLogicalAnnotation: IIndexedLogicalyAnnotated, IObjectToString, IShortObjectToString
     {
-        public RuleInstance RuleInstance { get; set; }
-        public IList<LogicalAnnotation> Annotations { get; set; }
-
-        public LogicalAnnotation Clone(CloneContextOfPersistLogicalData context)
-        {
-            var result = new LogicalAnnotation();
-            if(RuleInstance != null)
-            {
-                result.RuleInstance = RuleInstance.Clone();
-            }
-                 
-            result.Annotations = CloneListOfAnnotations(Annotations, context);
-            return result;
-        }
+        public LogicalAnnotation Origin { get; set; }
+        public IndexedRuleInstance RuleInstance { get; set; }
+        public IList<IndexedLogicalAnnotation> Annotations { get; set; }
 
         public override string ToString()
         {
@@ -37,7 +27,17 @@ namespace MyNPCLib.PersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            if(RuleInstance == null)
+            if (Origin == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Origin)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Origin)}");
+                sb.Append(Origin.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Origin)}");
+            }
+            if (RuleInstance == null)
             {
                 sb.AppendLine($"{spaces}{nameof(RuleInstance)} = null");
             }
@@ -79,6 +79,16 @@ namespace MyNPCLib.PersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            if (Origin == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Origin)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Origin)}");
+                sb.Append(Origin.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Origin)}");
+            }
             if (RuleInstance == null)
             {
                 sb.AppendLine($"{spaces}{nameof(RuleInstance)} = null");
@@ -103,22 +113,8 @@ namespace MyNPCLib.PersistLogicalData
                 }
                 sb.AppendLine($"{spaces}End {nameof(Annotations)}");
             }
+
             return sb.ToString();
-        }
-
-        public static IList<LogicalAnnotation> CloneListOfAnnotations(IList<LogicalAnnotation> sourceList, CloneContextOfPersistLogicalData context)
-        {
-            if(sourceList == null)
-            {
-                return null;
-            }
-
-            var resultAnnotationsList = new List<LogicalAnnotation>();
-            foreach(var annotation in sourceList)
-            {
-                resultAnnotationsList.Add(annotation.Clone(context));
-            }
-            return resultAnnotationsList;
         }
     }
 }

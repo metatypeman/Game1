@@ -76,6 +76,24 @@ namespace TmpSandBox
             var context = new ContextOfCGStorage(globalEntityDictionary);
             context.Init();
 
+            var smokeFact = CreateSimpleFact(globalEntityDictionary);
+            AddSmokeFact(smokeFact, context.GlobalCGStorage);
+
+            smokeFact = CreateSimpleRule(globalEntityDictionary);
+            AddSmokeFact(smokeFact, context.GlobalCGStorage);
+
+            smokeFact = CreateSimpleFact_2(globalEntityDictionary);
+            AddSmokeFact(smokeFact, context.GlobalCGStorage);
+
+            smokeFact = CreateSimpleFact_2_2(globalEntityDictionary);
+            AddSmokeFact(smokeFact, context.GlobalCGStorage);
+
+            smokeFact = CreateSimpleFact_3(globalEntityDictionary);
+            AddSmokeFact(smokeFact, context.GlobalCGStorage);
+
+            smokeFact = CreateSimpleFact_3_2(globalEntityDictionary);
+            AddSmokeFact(smokeFact, context.GlobalCGStorage);
+
             var annotaredFactList = CreateAnnotaredFact(globalEntityDictionary);
             LogInstance.Log($"annotaredFactList.Count = {annotaredFactList.Count}");
             foreach(var ruleInstance in annotaredFactList)
@@ -117,6 +135,14 @@ namespace TmpSandBox
             }
 
             LogInstance.Log("End");
+        }
+
+        private static void AddSmokeFact(RuleInstance smokeFact, BaseCGStorage storage)
+        {
+            var indexedSmokeFact = ConvertorToIndexed.ConvertRuleInstance(smokeFact);
+            storage.NSetIndexedRuleInstanceToIndexData(indexedSmokeFact);
+            var debugStr = DebugHelperForRuleInstance.ToString(smokeFact);
+            LogInstance.Log($"debugStr = {debugStr}");
         }
 
         private static RuleInstance CreateAnnotatedQuery(IEntityDictionary globalEntityDictionary)

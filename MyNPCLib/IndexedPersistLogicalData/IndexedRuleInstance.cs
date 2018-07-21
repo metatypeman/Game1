@@ -9,7 +9,7 @@ using System.Text;
 namespace MyNPCLib.IndexedPersistLogicalData
 {
     [Serializable]
-    public class IndexedRuleInstance: IObjectToString, IShortObjectToString
+    public class IndexedRuleInstance: IIndexedLogicalyAnnotated, IObjectToString, IShortObjectToString
     {
         public KindOfRuleInstance Kind { get; set; }
         public ulong Key { get; set; }
@@ -35,6 +35,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IndexedCertaintyFactorFuzzyModality CertaintyFactor { get; set; }
         public IndexedMoralQualityFuzzyModality MoralQualityModality { get; set; }
         public IndexedQuantityQualityFuzzyModality QuantityQualityModality { get; set; }
+        public IList<IndexedLogicalAnnotation> Annotations { get; set; }
 
         public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
@@ -302,6 +303,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.Append(QuantityQualityModality.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(QuantityQualityModality)}");
             }
+
+            if (Annotations == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+                foreach (var annotation in Annotations)
+                {
+                    sb.Append(annotation.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Annotations)}");
+            }
             return sb.ToString();
         }
 
@@ -531,6 +546,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(QuantityQualityModality)}");
                 sb.Append(QuantityQualityModality.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(QuantityQualityModality)}");
+            }
+
+            if (Annotations == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+                foreach (var annotation in Annotations)
+                {
+                    sb.Append(annotation.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Annotations)}");
             }
             return sb.ToString();
         }

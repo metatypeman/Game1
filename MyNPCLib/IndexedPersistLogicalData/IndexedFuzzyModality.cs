@@ -5,11 +5,12 @@ using System.Text;
 
 namespace MyNPCLib.IndexedPersistLogicalData
 {
-    public abstract class IndexedFuzzyModality : IObjectToString, IShortObjectToString
+    public abstract class IndexedFuzzyModality : IIndexedLogicalyAnnotated, IObjectToString, IShortObjectToString
     {
         public abstract KindOfModality Kind { get; }
         public IndexedRuleInstance Parent { get; set; }
         public FuzzyModality Origin { get; set; }
+        public IList<IndexedLogicalAnnotation> Annotations { get; set; }
 
         public override string ToString()
         {
@@ -48,6 +49,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.Append(Parent.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Parent)}");
             }
+
+            if (Annotations == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+                foreach (var annotation in Annotations)
+                {
+                    sb.Append(annotation.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Annotations)}");
+            }
             return sb.ToString();
         }
 
@@ -77,6 +92,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}End {nameof(Origin)}");
             }
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+
+            if (Annotations == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+                foreach (var annotation in Annotations)
+                {
+                    sb.Append(annotation.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Annotations)}");
+            }
             return sb.ToString();
         }
     }

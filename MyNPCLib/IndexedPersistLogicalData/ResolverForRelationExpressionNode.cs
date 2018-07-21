@@ -182,15 +182,34 @@ namespace MyNPCLib.IndexedPersistLogicalData
             LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
 #endif
 
+            //var hasAnnotations = 
+
             var targetRelationsList = GetAllRelations(context);
 
 #if DEBUG
             LogInstance.Log($"targetRelationsList.Count = {targetRelationsList.Count}");
-            foreach(var tmpRelation in targetRelationsList)
-            {
-                LogInstance.Log($"tmpRelation = {tmpRelation}");
-            }
 #endif
+
+            foreach(var targetRelation in targetRelationsList)
+            {
+                if(targetRelation.CountParams != CountParams)
+                {
+                    continue;
+                }
+#if DEBUG
+                LogInstance.Log($"targetRelation.GetHumanizeDbgString() = {targetRelation.GetHumanizeDbgString()}");
+                //LogInstance.Log($"targetRelation = {targetRelation}");
+#endif
+
+                //if()
+                //{
+
+                //}
+
+#if DEBUG
+                LogInstance.Log($"NEXT targetRelation.GetHumanizeDbgString() = {targetRelation.GetHumanizeDbgString()}");
+#endif
+            }
 
 #if DEBUG
             throw new NotImplementedException();

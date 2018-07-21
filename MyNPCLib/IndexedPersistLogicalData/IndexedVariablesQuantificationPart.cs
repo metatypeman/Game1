@@ -6,9 +6,10 @@ using System.Text;
 namespace MyNPCLib.IndexedPersistLogicalData
 {
     [Serializable]
-    public class IndexedVariablesQuantificationPart : IObjectToString, IShortObjectToString
+    public class IndexedVariablesQuantificationPart : IIndexedLogicalyAnnotated, IObjectToString, IShortObjectToString
     {
         public VariablesQuantificationPart Origin { get; set; }
+        public IList<IndexedLogicalAnnotation> Annotations { get; set; }
 
         public override string ToString()
         {
@@ -34,6 +35,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(Origin)}");
                 sb.Append(Origin.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Origin)}");
+            }
+
+            if (Annotations == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+                foreach (var annotation in Annotations)
+                {
+                    sb.Append(annotation.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Annotations)}");
             }
             return sb.ToString();
         }
@@ -62,6 +77,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.AppendLine($"{spaces}Begin {nameof(Origin)}");
                 sb.Append(Origin.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Origin)}");
+            }
+
+            if (Annotations == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+                foreach (var annotation in Annotations)
+                {
+                    sb.Append(annotation.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Annotations)}");
             }
             return sb.ToString();
         }

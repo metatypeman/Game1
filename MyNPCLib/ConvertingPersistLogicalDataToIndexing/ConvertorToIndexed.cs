@@ -676,5 +676,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             dest.Parent = context.RuleInstancesDict[source.Parent];
             dest.Origin = source;
         }
+
+
     }
 }

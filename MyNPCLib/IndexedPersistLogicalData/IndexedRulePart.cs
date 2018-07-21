@@ -10,7 +10,7 @@ using System.Text;
 namespace MyNPCLib.IndexedPersistLogicalData
 {
     [Serializable]
-    public class IndexedRulePart : IObjectToString, IShortObjectToString
+    public class IndexedRulePart : IIndexedLogicalyAnnotated, IObjectToString, IShortObjectToString
     {
         public RulePart Origin { get; set; }
         public bool IsActive { get; set; }
@@ -21,6 +21,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IndexedVariablesQuantificationPart VariablesQuantification { get; set; }
         public ResolverForBaseExpressionNode Expression { get; set; }
         public IDictionary<ulong, IList<ResolverForRelationExpressionNode>> RelationsDict { get; set; }
+        public IList<IndexedLogicalAnnotation> Annotations { get; set; }
 
         public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
@@ -438,6 +439,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 }
                 sb.AppendLine($"{spaces}End {nameof(RelationsDict)}");
             }
+
+            if (Annotations == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+                foreach (var annotation in Annotations)
+                {
+                    sb.Append(annotation.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Annotations)}");
+            }
             return sb.ToString();
         }
 
@@ -513,6 +528,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     }
                 }
                 sb.AppendLine($"{spaces}End {nameof(RelationsDict)}");
+            }
+
+            if (Annotations == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Annotations)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Annotations)}");
+                foreach (var annotation in Annotations)
+                {
+                    sb.Append(annotation.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(Annotations)}");
             }
             return sb.ToString();
         }
