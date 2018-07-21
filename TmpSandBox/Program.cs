@@ -109,9 +109,12 @@ namespace TmpSandBox
 
             {
                 var query = CreateAnnotatedQuery(globalEntityDictionary);
-                var debugStr = DebugHelperForRuleInstance.ToString(query);
 
-                LogInstance.Log($"debugStr = {debugStr}");
+                {
+                    var debugStr = DebugHelperForRuleInstance.ToString(query);
+
+                    LogInstance.Log($"debugStr = {debugStr}");
+                }
 
                 var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
                 //indexedQuery.FillIndexedDataAsStorage();
@@ -133,6 +136,21 @@ namespace TmpSandBox
                 var rearchResult = searcher.Run(searchOptions);
 
                 LogInstance.Log($"rearchResult = {rearchResult}");
+
+                var targetSearchResultItemsList = rearchResult.Items;
+
+                foreach (var targetSearchResultItem in targetSearchResultItemsList)
+                {
+                    var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
+
+                    //LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
+
+                    {
+                        var debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
+
+                        LogInstance.Log($"debugStr (zzz) = {debugStr}");
+                    }
+                }
             }
 
             LogInstance.Log("End");

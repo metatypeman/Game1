@@ -242,8 +242,9 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
             LogInstance.Log($"targetRelationsList.Count = {targetRelationsList.Count}");
 #endif
+            
 
-            foreach(var targetRelation in targetRelationsList)
+            foreach (var targetRelation in targetRelationsList)
             {
                 if(targetRelation.CountParams != CountParams)
                 {
@@ -254,6 +255,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 //LogInstance.Log($"targetRelation = {targetRelation}");
                 LogInstance.Log($"hasAnnotations = {hasAnnotations}");
 #endif
+                var isCheckAnnotation = false;
 
                 if (hasAnnotations)
                 {
@@ -261,8 +263,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     {
                         continue;
                     }
-
-                    var isCheckAnnotation = false;
 
                     foreach(var annotation in Annotations)
                     {
@@ -281,27 +281,112 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     LogInstance.Log($"isCheckAnnotation = {isCheckAnnotation}");
 #endif
 
-                    if(!isCheckAnnotation)
+                }
+
+                if (hasAnnotations && !isCheckAnnotation)
+                {
+                    continue;
+                }
+
+#if DEBUG
+                LogInstance.Log($"NEXT targetRelation.GetHumanizeDbgString() = {targetRelation.GetHumanizeDbgString()}");
+                LogInstance.Log($"NEXT targetRelation = {targetRelation}");
+#endif
+
+                var resultOfQueryToRelation = new ResultOfQueryToRelation();
+                queryExecutingCard.ResultsOfQueryToRelationList.Add(resultOfQueryToRelation);
+
+                {
+                    
+                    var resultOfVarOfQueryToRelation = new ResultOfVarOfQueryToRelation();
+                    resultOfVarOfQueryToRelation.KeyOfVar = Key;
+                    resultOfVarOfQueryToRelation.FoundExpression = targetRelation.Origin;
+                    resultOfQueryToRelation.ResultOfVarOfQueryToRelationList.Add(resultOfVarOfQueryToRelation);
+
+                    var originInfo = new OriginOfVarOfQueryToRelation();
+                    var targetRulePart = targetRelation.RulePart;
+                    originInfo.IndexedRuleInstance = targetRelation.RuleInstance;
+                    originInfo.IndexedRulePart = targetRulePart;
+
+                    var keyOfRuleInstance = targetRelation.RuleInstance.Key;
+
+                    originInfo.KeyOfRuleInstance = keyOfRuleInstance;
+
+                    resultOfVarOfQueryToRelation.OriginDict[keyOfRuleInstance] = originInfo;
+                }
+
+                var n = 0;
+
+                foreach (var param in Params)
+                {
+#if DEBUG
+                    LogInstance.Log($"n = {n} param = {param}");
+#endif
+
+                    n++;
+
+                    if(param.Kind != KindOfExpressionNode.QuestionVar)
                     {
                         continue;
                     }
 
+                    var foundExpression = targetRelation.Params[n - 1].Origin;
+
+                    var questionVarParam = param.Origin.AsQuestionVar;
+
+                    var resultOfVarOfQueryToRelation = new ResultOfVarOfQueryToRelation();
+                    resultOfVarOfQueryToRelation.KeyOfVar = questionVarParam.Key;
+                    resultOfVarOfQueryToRelation.FoundExpression = foundExpression;
+                    resultOfQueryToRelation.ResultOfVarOfQueryToRelationList.Add(resultOfVarOfQueryToRelation);
+
+                    var originInfo = new OriginOfVarOfQueryToRelation();
+                    var targetRulePart = targetRelation.RulePart;
+                    originInfo.IndexedRuleInstance = targetRelation.RuleInstance;
+                    originInfo.IndexedRulePart = targetRulePart;
+
+                    var keyOfRuleInstance = targetRelation.RuleInstance.Key;
+
+                    originInfo.KeyOfRuleInstance = keyOfRuleInstance;
+
+                    resultOfVarOfQueryToRelation.OriginDict[keyOfRuleInstance] = originInfo;
+
 #if DEBUG
+                    LogInstance.Log($"resultOfVarOfQueryToRelation = {resultOfVarOfQueryToRelation}");
                     //throw new NotImplementedException();
 #endif
                 }
 
 #if DEBUG
-                LogInstance.Log($"NEXT targetRelation.GetHumanizeDbgString() = {targetRelation.GetHumanizeDbgString()}");
+                LogInstance.Log($"resultOfQueryToRelation = {resultOfQueryToRelation}");
+                //throw new NotImplementedException();
 #endif
             }
-
 #if DEBUG
             LogInstance.Log($"queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString() = {queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString()}");
             LogInstance.Log($"queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString()}");
             LogInstance.Log($"queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString()}");
             LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
-            throw new NotImplementedException();
+            LogInstance.Log($"this = {this}");
+#endif
+
+            //var resultOfVarOfQueryToRelation = new ResultOfVarOfQueryToRelation();
+            //resultOfVarOfQueryToRelation.KeyOfVar = Key;
+            //resultOfVarOfQueryToRelation.FoundExpression = paramOfTargetRelation;
+            //resultOfQueryToRelation.ResultOfVarOfQueryToRelationList.Add(resultOfVarOfQueryToRelation);
+
+            //var originInfo = new OriginOfVarOfQueryToRelation();
+            //originInfo.IndexedRuleInstance = Parent;
+            //originInfo.IndexedRulePart = this;
+
+            //var keyOfRuleInstance = Parent.Key;
+
+            //originInfo.KeyOfRuleInstance = keyOfRuleInstance;
+
+            //resultOfVarOfQueryToRelation.OriginDict[keyOfRuleInstance] = originInfo;
+
+
+#if DEBUG
+            //throw new NotImplementedException();
             LogInstance.Log("End");
 #endif
         }

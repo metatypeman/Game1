@@ -14,6 +14,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public abstract KindOfExpressionNode Kind { get; }
         public abstract BaseExpressionNode Origin { get; }
         public IList<IndexedLogicalAnnotation> Annotations { get; set; }
+        public IndexedRuleInstance RuleInstance { get; set; }
+        public IndexedRulePart RulePart { get; set; }
 
         public abstract void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context);
         public abstract void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo);

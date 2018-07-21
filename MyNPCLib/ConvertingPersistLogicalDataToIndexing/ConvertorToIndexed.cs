@@ -49,28 +49,28 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             if (source.Part_1 != null)
             {
                 result.IsPart_1_Active = source.Part_1.IsActive;
-                result.Part_1 = ConvertRulePart(source.Part_1, context);
+                result.Part_1 = ConvertRulePart(source.Part_1, result, context);
             }
 
             if(source.Part_2 != null)
             {
                 result.IsPart_2_Active = source.Part_2.IsActive;
-                result.Part_2 = ConvertRulePart(source.Part_2, context);
+                result.Part_2 = ConvertRulePart(source.Part_2, result, context);
             }
 
             if(source.IfConditions != null)
             {
-                result.IfConditions = ConvertIfConditionsPart(source.IfConditions, context);
+                result.IfConditions = ConvertIfConditionsPart(source.IfConditions, result, context);
             }
             
             if (source.NotContradict != null)
             {
-                result.NotContradict = ConvertNotContradictPart(source.NotContradict, context);
+                result.NotContradict = ConvertNotContradictPart(source.NotContradict, result, context);
             }
 
             if(source.AccessPolicyToFactModality != null)
             {
-                result.AccessPolicyToFactModality = ConvertAccessPolicyToFactModality(source.AccessPolicyToFactModality, context);
+                result.AccessPolicyToFactModality = ConvertAccessPolicyToFactModality(source.AccessPolicyToFactModality, result, context);
             }
             
             if (source.DesirableModality != null)
@@ -172,7 +172,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             return result;
         }
 
-        private static IndexedRulePart ConvertRulePart(RulePart source, ContextOfConvertingToIndexed context)
+        private static IndexedRulePart ConvertRulePart(RulePart source, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context)
         {
             if(context.RulePartDict.ContainsKey(source))
             {
@@ -186,11 +186,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 
             result.IsActive = source.IsActive;
 
-            result.Parent = context.RuleInstancesDict[source.Parent];
+            result.Parent = parentIndexedRuleInstance;
 
             if (source.NextPart != null)
             {
-                result.NextPart = ConvertRulePart(source.NextPart, context);
+                result.NextPart = ConvertRulePart(source.NextPart, parentIndexedRuleInstance, context);
             }
 
             if(source.VariablesQuantification != null)
@@ -200,7 +200,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 
             var contextOfConvertingExpressionNode = new ContextOfConvertingExpressionNode();
 
-            result.Expression = ConvertExpressionNode(source.Expression, context, contextOfConvertingExpressionNode);
+            result.Expression = ConvertExpressionNode(source.Expression, result, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
 #if DEBUG
             //LogInstance.Log($"contextOfConvertingExpressionNode = {contextOfConvertingExpressionNode}");
@@ -221,85 +221,93 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             return result;
         }
 
-        private static ResolverForBaseExpressionNode ConvertExpressionNode(BaseExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForBaseExpressionNode ConvertExpressionNode(BaseExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var kind = source.Kind;
 
             switch (kind)
             {
                 case KindOfExpressionNode.And:
-                    return ConvertAndNode(source.AsOperatorAnd, context, contextOfConvertingExpressionNode);
+                    return ConvertAndNode(source.AsOperatorAnd, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
                 case KindOfExpressionNode.Or:
-                    return ConvertOrNode(source.AsOperatorOr, context, contextOfConvertingExpressionNode);
+                    return ConvertOrNode(source.AsOperatorOr, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
                 case KindOfExpressionNode.Not:
-                    return ConvertNotNode(source.AsOperatorNot, context, contextOfConvertingExpressionNode);
+                    return ConvertNotNode(source.AsOperatorNot, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
                 case KindOfExpressionNode.Relation:
-                    return ConvertRelationNode(source.AsRelation, context, contextOfConvertingExpressionNode);
+                    return ConvertRelationNode(source.AsRelation, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
                 case KindOfExpressionNode.Concept:
-                    return ConvertConceptNode(source.AsConcept, context, contextOfConvertingExpressionNode);
+                    return ConvertConceptNode(source.AsConcept, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
                 case KindOfExpressionNode.EntityRef:
-                    return ConvertEntityRefNode(source.AsEntityRef, context, contextOfConvertingExpressionNode);
+                    return ConvertEntityRefNode(source.AsEntityRef, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
                 case KindOfExpressionNode.EntityCondition:
-                    return ConvertEntityConditionNode(source.AsEntityCondition, context, contextOfConvertingExpressionNode);
+                    return ConvertEntityConditionNode(source.AsEntityCondition, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
                 case KindOfExpressionNode.Var:
-                    return ConvertVarNode(source.AsVar, context, contextOfConvertingExpressionNode);
+                    return ConvertVarNode(source.AsVar, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
                 case KindOfExpressionNode.QuestionVar:
-                    return ConvertQuestionVarNode(source.AsQuestionVar, context, contextOfConvertingExpressionNode);
+                    return ConvertQuestionVarNode(source.AsQuestionVar, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
                 case KindOfExpressionNode.Value:
-                    return ConvertValueNode(source.AsValue, context, contextOfConvertingExpressionNode);
+                    return ConvertValueNode(source.AsValue, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
                 case KindOfExpressionNode.FuzzyLogicValue:
-                    return ConvertFuzzyLogicValueNode(source.AsFuzzyLogicValue, context, contextOfConvertingExpressionNode);
+                    return ConvertFuzzyLogicValueNode(source.AsFuzzyLogicValue, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
                 case KindOfExpressionNode.Fact:
-                    return ConvertFactNode(source.AsFact, context, contextOfConvertingExpressionNode);
+                    return ConvertFactNode(source.AsFact, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
                 default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
             }
         }
 
-        private static ResolverForOperatorAndExpressionNode ConvertAndNode(OperatorAndExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForOperatorAndExpressionNode ConvertAndNode(OperatorAndExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForOperatorAndExpressionNode();
             result.ConcreteOrigin = source;
-            result.Left = ConvertExpressionNode(source.Left, context, contextOfConvertingExpressionNode);
-            result.Right = ConvertExpressionNode(source.Right, context, contextOfConvertingExpressionNode);
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
+            result.Left = ConvertExpressionNode(source.Left, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
+            result.Right = ConvertExpressionNode(source.Right, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
             result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
-        private static ResolverForOperatorOrExpressionNode ConvertOrNode(OperatorOrExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForOperatorOrExpressionNode ConvertOrNode(OperatorOrExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForOperatorOrExpressionNode();
             result.ConcreteOrigin = source;
-            result.Left = ConvertExpressionNode(source.Left, context, contextOfConvertingExpressionNode);
-            result.Right = ConvertExpressionNode(source.Right, context, contextOfConvertingExpressionNode);
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
+            result.Left = ConvertExpressionNode(source.Left, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
+            result.Right = ConvertExpressionNode(source.Right, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
             result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
-        private static ResolverForOperatorNotExpressionNode ConvertNotNode(OperatorNotExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForOperatorNotExpressionNode ConvertNotNode(OperatorNotExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForOperatorNotExpressionNode();
             result.ConcreteOrigin = source;
-            result.Left = ConvertExpressionNode(source.Left, context, contextOfConvertingExpressionNode);
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
+            result.Left = ConvertExpressionNode(source.Left, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
             result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
-        private static ResolverForRelationExpressionNode ConvertRelationNode(RelationExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForRelationExpressionNode ConvertRelationNode(RelationExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForRelationExpressionNode();
             result.ConcreteOrigin = source;
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
             result.CountParams = source.Params.Count;
             result.IsQuestion = source.IsQuestion;
@@ -309,7 +317,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var i = 0;
             foreach (var param in source.Params)
             {
-                var resultParam = ConvertExpressionNode(param, context, contextOfConvertingExpressionNode);
+                var resultParam = ConvertExpressionNode(param, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
                 parametersList.Add(resultParam);
                 var kindOfParam = param.Kind;
                 switch(kindOfParam)
@@ -414,80 +422,96 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             return result;
         }
 
-        private static ResolverForConceptExpressionNode ConvertConceptNode(ConceptExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForConceptExpressionNode ConvertConceptNode(ConceptExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForConceptExpressionNode();
             result.ConcreteOrigin = source;
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
             result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
-        private static ResolverForEntityRefExpressionNode ConvertEntityRefNode(EntityRefExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForEntityRefExpressionNode ConvertEntityRefNode(EntityRefExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForEntityRefExpressionNode();
             result.ConcreteOrigin = source;
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
             result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
-        private static ResolverForEntityConditionExpressionNode ConvertEntityConditionNode(EntityConditionExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForEntityConditionExpressionNode ConvertEntityConditionNode(EntityConditionExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForEntityConditionExpressionNode();
             result.ConcreteOrigin = source;
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
             result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
-        private static ResolverForVarExpressionNode ConvertVarNode(VarExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForVarExpressionNode ConvertVarNode(VarExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForVarExpressionNode();
             result.ConcreteOrigin = source;
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
             result.Annotations = ConvertAnnotations(source.Annotations);
             contextOfConvertingExpressionNode.VarsList.Add(source);
             return result;
         }
 
-        private static ResolverForQuestionVarExpressionNode ConvertQuestionVarNode(QuestionVarExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForQuestionVarExpressionNode ConvertQuestionVarNode(QuestionVarExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForQuestionVarExpressionNode();
             result.ConcreteOrigin = source;
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
             result.Annotations = ConvertAnnotations(source.Annotations);
             contextOfConvertingExpressionNode.QuestionVarsList.Add(source);
             return result;
         }
 
-        private static ResolverForValueExpressionNode ConvertValueNode(ValueExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForValueExpressionNode ConvertValueNode(ValueExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForValueExpressionNode();
             result.ConcreteOrigin = source;
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
             result.Value = source.Value;
             result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
-        private static ResolverForFuzzyLogicValueExpressionNode ConvertFuzzyLogicValueNode(FuzzyLogicValueExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForFuzzyLogicValueExpressionNode ConvertFuzzyLogicValueNode(FuzzyLogicValueExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForFuzzyLogicValueExpressionNode();
             result.ConcreteOrigin = source;
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
             result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
-        private static ResolverForFactExpressionNode ConvertFactNode(FactExpressionNode source, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        private static ResolverForFactExpressionNode ConvertFactNode(FactExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForFactExpressionNode();
             result.ConcreteOrigin = source;
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
             result.Annotations = ConvertAnnotations(source.Annotations);
             return result;
         }
 
-        private static IndexedIfConditionsPart ConvertIfConditionsPart(IfConditionsPart source, ContextOfConvertingToIndexed context)
+        private static IndexedIfConditionsPart ConvertIfConditionsPart(IfConditionsPart source, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context)
         {
             if(context.IfConditionsPartDict.ContainsKey(source))
             {
@@ -501,7 +525,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 
             var contextOfConvertingExpressionNode = new ContextOfConvertingExpressionNode();
 
-            result.Expression = ConvertExpressionNode(source.Expression, context, contextOfConvertingExpressionNode);
+            result.Expression = ConvertExpressionNode(source.Expression, null, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
 #if DEBUG
             //LogInstance.Log($"contextOfConvertingExpressionNode = {contextOfConvertingExpressionNode}");
@@ -511,7 +535,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             return result;
         }
 
-        private static IndexedNotContradictPart ConvertNotContradictPart(NotContradictPart source, ContextOfConvertingToIndexed context)
+        private static IndexedNotContradictPart ConvertNotContradictPart(NotContradictPart source, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context)
         {
             if(context.NotContradictPartDict.ContainsKey(source))
             {
@@ -525,7 +549,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 
             var contextOfConvertingExpressionNode = new ContextOfConvertingExpressionNode();
 
-            result.Expression = ConvertExpressionNode(source.Expression, context, contextOfConvertingExpressionNode);
+            result.Expression = ConvertExpressionNode(source.Expression, null, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
 #if DEBUG
             //LogInstance.Log($"contextOfConvertingExpressionNode = {contextOfConvertingExpressionNode}");
@@ -536,7 +560,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             return result;
         }
 
-        private static IndexedAccessPolicyToFactModality ConvertAccessPolicyToFactModality(AccessPolicyToFactModality source, ContextOfConvertingToIndexed context)
+        private static IndexedAccessPolicyToFactModality ConvertAccessPolicyToFactModality(AccessPolicyToFactModality source, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context)
         {
             if(context.AccessPolicyToFactModalityDict.ContainsKey(source))
             {
@@ -550,7 +574,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             {
                 var contextOfConvertingExpressionNode = new ContextOfConvertingExpressionNode();
 
-                result.Expression = ConvertExpressionNode(source.Expression, context, contextOfConvertingExpressionNode);
+                result.Expression = ConvertExpressionNode(source.Expression, null, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
             }
             return result;
         }

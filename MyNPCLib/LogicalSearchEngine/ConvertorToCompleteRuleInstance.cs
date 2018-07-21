@@ -297,7 +297,7 @@ namespace MyNPCLib.LogicalSearchEngine
         private static EntitiesConditions ConvertEntitiesConditions(EntitiesConditions source, ContextOfConvertorToCompleteRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             var result = new EntitiesConditions();
@@ -425,9 +425,24 @@ namespace MyNPCLib.LogicalSearchEngine
 
         private static RelationExpressionNode ConvertRelationNode(RelationExpressionNode source, ContextOfConvertorToCompleteRuleInstance context)
         {
+#if DEBUG
+            //LogInstance.Log($"source = {source}");
+#endif
+            var key = source.Key;
+            if(source.IsQuestion)
+            {
+                if (context.ResultOfVarOfQueryToRelationDict.ContainsKey(key))
+                {
+                    var targetValue = context.ResultOfVarOfQueryToRelationDict[key];
+
+                    var foundResult = ConvertExpressionNode(targetValue, context);
+                    return foundResult.AsRelation;
+                }
+            }
+
             var result = new RelationExpressionNode();
             result.Name = source.Name;
-            result.Key = source.Key;
+            result.Key = key;
             var resultParamsList = new List<BaseExpressionNode>();
             foreach(var item in source.Params)
             {
@@ -436,6 +451,11 @@ namespace MyNPCLib.LogicalSearchEngine
             }
             result.Params = resultParamsList;
             result.Annotations = ConvertAnnotations(source.Annotations, context);
+
+#if DEBUG
+            //throw new NotImplementedException();
+#endif
+
             return result;
         }
 
@@ -459,10 +479,6 @@ namespace MyNPCLib.LogicalSearchEngine
 
         private static EntityConditionExpressionNode ConvertEntityConditionNode(EntityConditionExpressionNode source, ContextOfConvertorToCompleteRuleInstance context)
         {
-#if DEBUG
-            LogInstance.Log($"source = {source}");
-#endif
-
             var result = new EntityConditionExpressionNode();
             result.Name = source.Name;
             result.Key = source.Key;
