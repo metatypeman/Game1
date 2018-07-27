@@ -45,7 +45,8 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTProcessAnnotations();
+            TSTGoToGreenWaypoint();
+            //TSTProcessAnnotations();
             //TSTATNParsing();
             //TSTWordNet();
             //TSTTextCGParserRunner();
@@ -64,6 +65,30 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTGoToGreenWaypoint()
+        {
+            LogInstance.Log("Begin");
+
+            var paragraph = "Go to Geen Waypoint";
+
+            var wordsDict = new WordsDict();
+            var parser = new CGParser(wordsDict);
+
+            var result = parser.Run(paragraph);
+            LogInstance.Log($"result = {result}");
+
+            var items = result.Items;
+
+            foreach (var graph in items)
+            {
+                var dotStr = DotConverter.ConvertToString(graph);
+
+                LogInstance.Log($"dotStr = {dotStr}");
+            }
+
+            LogInstance.Log("End");
         }
 
         private static void TSTProcessAnnotations()
