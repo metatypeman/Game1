@@ -5,29 +5,29 @@ using System.Text;
 
 namespace MyNPCLib.NLToCGParsing
 {
-    public class ATNNP_VPNodeFactory: BaseATNNodeFactory
+    public class ATNImperativeVPNodeFactory : BaseATNNodeFactory
     {
-        public ATNNP_VPNodeFactory(ATNExtendedToken extendedToken, GoalOfATNExtendToken goal)
-            : this(extendedToken, ATNNP_VPNode.State.Init, goal, CompositionCommand.Undefined)
+        public ATNImperativeVPNodeFactory(ATNExtendedToken extendedToken, GoalOfATNExtendToken goal)
+            : this(extendedToken, ATNImperativeVPNode.State.Init, goal, CompositionCommand.Undefined)
         {
         }
 
-        public ATNNP_VPNodeFactory(ATNExtendedToken extendedToken, ATNNP_VPNode.State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand)
+        public ATNImperativeVPNodeFactory(ATNExtendedToken extendedToken, ATNImperativeVPNode.State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand)
             : base(extendedToken, goal, compositionCommand)
         {
             mInternalState = internalState;
         }
 
-        private ATNNP_VPNode.State mInternalState = ATNNP_VPNode.State.Init;
-      
+        private ATNImperativeVPNode.State mInternalState = ATNImperativeVPNode.State.Init;
+
         public override BaseATNParsingNode Create(ContextOfATNParsing context)
         {
-            var result = new ATNNP_VPNode(ExtendedToken, mInternalState, Goal, CompositionCommand, context);
+            var result = new ATNImperativeVPNode(ExtendedToken, mInternalState, Goal, CompositionCommand, context);
             return result;
         }
     }
 
-    public class ATNNP_VPNode : BaseATNParsingNode
+    public class ATNImperativeVPNode : BaseATNParsingNode
     {
         public enum State
         {
@@ -41,7 +41,7 @@ namespace MyNPCLib.NLToCGParsing
             Verb
         }
 
-        public ATNNP_VPNode(ATNExtendedToken extendedToken, State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand, ContextOfATNParsing context)
+        public ATNImperativeVPNode(ATNExtendedToken extendedToken, State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand, ContextOfATNParsing context)
             : base(goal, compositionCommand, context)
         {
             mTargetExtendedToken = extendedToken;
@@ -59,6 +59,7 @@ namespace MyNPCLib.NLToCGParsing
             LogInstance.Log($"mInternalState = {mInternalState}");
             LogInstance.Log($"CompositionCommand = {CompositionCommand}");
 #endif
+
             switch (mInternalState)
             {
                 case State.Init:
@@ -99,7 +100,7 @@ namespace MyNPCLib.NLToCGParsing
                                     sentence.VerbPhrase = mVerbPhrase;
                                     sentence.Aspect = GrammaticalAspect.Simple;
                                     sentence.Voice = GrammaticalVoice.Active;
-                                    sentence.Mood = GrammaticalMood.Indicative;
+                                    sentence.Mood = GrammaticalMood.Imperative;
                                     sentence.Modal = KindOfModal.None;
                                 }
                                 break;
@@ -121,7 +122,7 @@ namespace MyNPCLib.NLToCGParsing
                             switch (subGoal)
                             {
                                 case SubGoal.Verb:
-                                    AddTask(new ATNNP_VPNodeFactory(mTargetExtendedToken, State.Verb, Goal, CompositionCommand.PutVerbInVP));
+                                    AddTask(new ATNImperativeVPNodeFactory(mTargetExtendedToken, State.Verb, Goal, CompositionCommand.PutVerbInVP));
                                     break;
 
                                 default: throw new ArgumentOutOfRangeException(nameof(subGoal), subGoal, null);
@@ -136,14 +137,11 @@ namespace MyNPCLib.NLToCGParsing
                         mVerbPhrase = Context.PeekCurrentVerbPhrase();
                         mVerbPhrase.Verb = mTargetExtendedToken;
                         mInternalState = State.Verb;
+
                         switch (Goal)
                         {
                             case GoalOfATNExtendToken.BaseV:
                                 sentence.Tense = GrammaticalTenses.Present;
-                                break;
-
-                            case GoalOfATNExtendToken.V2f:
-                                sentence.Tense = GrammaticalTenses.Past;
                                 break;
 
                             default: throw new ArgumentOutOfRangeException(nameof(Goal), Goal, null);
@@ -162,7 +160,6 @@ namespace MyNPCLib.NLToCGParsing
         private List<SubGoal> GetSubGoals(ATNExtendedToken extendedToken)
         {
             var result = new List<SubGoal>();
-
             var partOfSpeech = extendedToken.PartOfSpeech;
 
             switch (partOfSpeech)
@@ -177,7 +174,7 @@ namespace MyNPCLib.NLToCGParsing
                     throw new NotImplementedException();
 
                 case GrammaticalPartOfSpeech.Verb:
-                    switch(Goal)
+                    switch (Goal)
                     {
                         case GoalOfATNExtendToken.BaseV:
                             result.Add(SubGoal.Verb);
@@ -242,8 +239,8 @@ namespace MyNPCLib.NLToCGParsing
 
                 switch (goal)
                 {
-                    case GoalOfATNExtendToken.NP:
-                        AddTask(new ATNNPNodeFactory(extendedToken, ATNNPNode.State.Init, goal, CompositionCommand.AddToObjectOfVP));
+                    case GoalOfATNExtendToken.PP:
+                        AddTask(new ATNPPNodeFactory(extendedToken, ATNPPNode.State.Init, goal, CompositionCommand.AddToObjectOfVP));
                         break;
 
                     default: throw new ArgumentOutOfRangeException(nameof(goal), goal, null);

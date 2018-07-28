@@ -87,6 +87,10 @@ namespace MyNPCLib.NLToCGParsing
                         AddTask(new ATNNPNodeFactory(extendedToken, goal));
                         break;
 
+                    case GoalOfATNExtendToken.BaseV:
+                        AddTask(new ATNImperativeVPNodeFactory(extendedToken, goal));
+                        break;
+
                     default: throw new ArgumentOutOfRangeException(nameof(goal), goal, null);
                 }
 #endif

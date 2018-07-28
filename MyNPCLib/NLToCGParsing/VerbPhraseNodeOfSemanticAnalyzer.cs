@@ -52,7 +52,8 @@ namespace MyNPCLib.NLToCGParsing
 
             if (mVerbPhrase.Object != null)
             {
-                var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(Context, mVerbPhrase.Object);
+                throw new NotImplementedException();
+                var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(Context, mVerbPhrase.Object.AsNounPhrase);
                 var nounResult = nounPhraseNode.Run();
 
 #if DEBUG

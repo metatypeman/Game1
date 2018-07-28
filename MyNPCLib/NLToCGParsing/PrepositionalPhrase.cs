@@ -4,35 +4,35 @@ using System.Text;
 
 namespace MyNPCLib.NLToCGParsing
 {
-    public class VerbPhrase : IObjectToString, IShortObjectToString
+    public class PrepositionalPhrase : BaseNounLikePhrase
     {
-        public ATNExtendedToken Verb { get; set; }
-        public BaseNounLikePhrase Object { get; set; }
+        public ATNExtendedToken Preposition { get; set; }
+        public NounPhrase Object { get; set; }
+        public override bool IsPrepositionalPhrase => true;
+        public override PrepositionalPhrase AsPrepositionalPhrase => this;
 
-        public override string ToString()
+        public override BaseNounLikePhrase Fork()
         {
-            return ToString(0u);
+            var result = new PrepositionalPhrase();
+            result.Preposition = Preposition;
+            result.Object = Object;
+            return result;
         }
 
-        public string ToString(uint n)
-        {
-            return this.GetDefaultToStringInformation(n);
-        }
-
-        public string PropertiesToSting(uint n)
+        public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            if (Verb == null)
+            if (Preposition == null)
             {
-                sb.AppendLine($"{spaces}{nameof(Verb)} = null");
+                sb.AppendLine($"{spaces}{nameof(Preposition)} = null");
             }
             else
             {
-                sb.AppendLine($"{spaces}Begin {nameof(Verb)}");
-                sb.Append(Verb.ToString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(Verb)}");
+                sb.AppendLine($"{spaces}Begin {nameof(Preposition)}");
+                sb.Append(Preposition.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Preposition)}");
             }
             if (Object == null)
             {
@@ -47,30 +47,20 @@ namespace MyNPCLib.NLToCGParsing
             return sb.ToString();
         }
 
-        public string ToShortString()
-        {
-            return ToShortString(0u);
-        }
-
-        public string ToShortString(uint n)
-        {
-            return this.GetDefaultToShortStringInformation(n);
-        }
-
-        public string PropertiesToShortSting(uint n)
+        public override string PropertiesToShortSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            if (Verb == null)
+            if (Preposition == null)
             {
-                sb.AppendLine($"{spaces}{nameof(Verb)} = null");
+                sb.AppendLine($"{spaces}{nameof(Preposition)} = null");
             }
             else
             {
-                sb.AppendLine($"{spaces}Begin {nameof(Verb)}");
-                sb.Append(Verb.ToString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(Verb)}");
+                sb.AppendLine($"{spaces}Begin {nameof(Preposition)}");
+                sb.Append(Preposition.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Preposition)}");
             }
             if (Object == null)
             {
@@ -79,7 +69,7 @@ namespace MyNPCLib.NLToCGParsing
             else
             {
                 sb.AppendLine($"{spaces}Begin {nameof(Object)}");
-                sb.Append(Object.ToShortString(nextN));
+                sb.Append(Object.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Object)}");
             }
             return sb.ToString();

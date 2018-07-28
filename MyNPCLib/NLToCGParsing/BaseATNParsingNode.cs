@@ -241,7 +241,7 @@ namespace MyNPCLib.NLToCGParsing
                             break;
 
                         case GrammaticalPartOfSpeech.Preposition:
-                            resultList.Add(GoalOfATNExtendToken.NP);
+                            resultList.Add(GoalOfATNExtendToken.PP);
                             break;
 
                         case GrammaticalPartOfSpeech.Conjunction:

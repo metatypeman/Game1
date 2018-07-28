@@ -21,6 +21,9 @@ namespace MyNPCLib.NLToCGParsing
                         case GoalOfATNExtendToken.NP:
                             return StateOfATNParsing.NP;
 
+                        case GoalOfATNExtendToken.BaseV:
+                            return StateOfATNParsing.ImperativeVP;
+
                         default: throw new ArgumentOutOfRangeException(nameof(goal), goal, null);
                     }
 
@@ -44,6 +47,18 @@ namespace MyNPCLib.NLToCGParsing
 
                         case GoalOfATNExtendToken.NP:
                             return StateOfATNParsing.NP_VP;
+
+                        default: throw new ArgumentOutOfRangeException(nameof(goal), goal, null);
+                    }
+
+                case StateOfATNParsing.ImperativeVP:
+                    switch (goal)
+                    {
+                        case GoalOfATNExtendToken.BaseV:
+                            return StateOfATNParsing.ImperativeVP;
+
+                        case GoalOfATNExtendToken.PP:
+                            return StateOfATNParsing.ImperativeVP;
 
                         default: throw new ArgumentOutOfRangeException(nameof(goal), goal, null);
                     }

@@ -22,13 +22,13 @@ namespace MyNPCLib.NLToCGParsing
         private ATNExtendedLexer mATNExtendedLexer;
         public StateOfATNParsing State { get; set; } = StateOfATNParsing.Undefined;
         public Sentence Sentence { get; set; }
-        public Stack<NounPhrase> OperativeNounPhrasesStack = new Stack<NounPhrase>();
-        public void AddNounPhrase(NounPhrase nounPhrase)
+        public Stack<BaseNounLikePhrase> OperativeNounPhrasesStack = new Stack<BaseNounLikePhrase>();
+        public void AddNounLikePhrase(BaseNounLikePhrase nounPhrase)
         {
             OperativeNounPhrasesStack.Push(nounPhrase);
         }
 
-        public NounPhrase PeekCurrentNounPhrase()
+        public BaseNounLikePhrase PeekCurrentNounPhrase()
         {
             if(OperativeNounPhrasesStack.Count == 0)
             {
@@ -62,7 +62,7 @@ namespace MyNPCLib.NLToCGParsing
             result.mATNExtendedLexer = mATNExtendedLexer.Fork();
             result.State = State;
             result.Sentence = Sentence?.Fork();
-            result.OperativeNounPhrasesStack = new Stack<NounPhrase>(OperativeNounPhrasesStack.ToList());
+            result.OperativeNounPhrasesStack = new Stack<BaseNounLikePhrase>(OperativeNounPhrasesStack.ToList());
             result.OperativeVerbPhraseStack = new Stack<VerbPhrase>(OperativeVerbPhraseStack.ToList());
             return result;
         }

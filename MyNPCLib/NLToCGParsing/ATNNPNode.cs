@@ -58,7 +58,7 @@ namespace MyNPCLib.NLToCGParsing
         protected override void NormalizeCompositionCommand()
         {
 #if DEBUG
-            LogInstance.Log($"CompositionCommand= {CompositionCommand}");
+            LogInstance.Log($"CompositionCommand = {CompositionCommand}");
 #endif
 
             switch (mInternalState)
@@ -92,7 +92,7 @@ namespace MyNPCLib.NLToCGParsing
                     {
                         SuppressBornNewNodes = true;
                         mNounPhrase = new NounPhrase();
-                        Context.AddNounPhrase(mNounPhrase);
+                        Context.AddNounLikePhrase(mNounPhrase);
                         switch (CompositionCommand)
                         {
                             case CompositionCommand.AddToNounPhraseOfSentence:
@@ -122,11 +122,11 @@ namespace MyNPCLib.NLToCGParsing
                             switch (subGoal)
                             {
                                 case SubGoal.Noun:
-                                    AddTask(new ATNNPNodeFactory(mTargetExtendedToken, ATNNPNode.State.Noun, Goal, CompositionCommand.PutNounInNP));
+                                    AddTask(new ATNNPNodeFactory(mTargetExtendedToken, State.Noun, Goal, CompositionCommand.PutNounInNP));
                                     break;
 
                                 case SubGoal.Determiner:
-                                    AddTask(new ATNNPNodeFactory(mTargetExtendedToken, ATNNPNode.State.Noun, Goal, CompositionCommand.PutDeterminerInNP));
+                                    AddTask(new ATNNPNodeFactory(mTargetExtendedToken, State.Noun, Goal, CompositionCommand.PutDeterminerInNP));
                                     break;
 
                                 default: throw new ArgumentOutOfRangeException(nameof(subGoal), subGoal, null);
@@ -139,13 +139,13 @@ namespace MyNPCLib.NLToCGParsing
                     switch (CompositionCommand)
                     {
                         case CompositionCommand.PutNounInNP:
-                            mNounPhrase = Context.PeekCurrentNounPhrase();
+                            mNounPhrase = Context.PeekCurrentNounPhrase().AsNounPhrase;
                             mNounPhrase.Noun = mTargetExtendedToken;
                             mInternalState = State.Noun;
                             break;
 
                         case CompositionCommand.PutDeterminerInNP:
-                            mNounPhrase = Context.PeekCurrentNounPhrase();
+                            mNounPhrase = Context.PeekCurrentNounPhrase().AsNounPhrase;
                             mNounPhrase.Determiners.Add(mTargetExtendedToken);
                             mInternalState = State.Determiner;
                             break;
@@ -158,7 +158,7 @@ namespace MyNPCLib.NLToCGParsing
                     switch (CompositionCommand)
                     {
                         case CompositionCommand.PutNounInNP:
-                            mNounPhrase = Context.PeekCurrentNounPhrase();
+                            mNounPhrase = Context.PeekCurrentNounPhrase().AsNounPhrase;
                             mNounPhrase.Noun = mTargetExtendedToken;
                             mInternalState = State.Noun;
                             break;

@@ -11,6 +11,10 @@ namespace MyNPCLib.NLToCGParsing
         /// <summary>
         /// She helps me; The Earth is round.
         /// </summary>
-        NP_VP
+        NP_VP,
+        /// <summary>
+        /// Go to green waypoint.
+        /// </summary>
+        ImperativeVP,
     }
 }

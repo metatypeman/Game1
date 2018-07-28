@@ -267,6 +267,7 @@ namespace MyNPCLib.SimpleWordsDict
             DefineUsualNouns();
             DefineUsualVerbs();
             DefineUsualAdjectives();
+            DefineUsualPrepositions();
             DefineNames();
         }
 
@@ -308,6 +309,22 @@ namespace MyNPCLib.SimpleWordsDict
                     }
                 }
             };
+
+            wordName = "go";
+            mWordsDictData.WordsDict[wordName] = new WordFrame()
+            {
+                Word = wordName,
+                GrammaticalWordFrames = new List<BaseGrammaticalWordFrame>()
+                {
+                    new VerbGrammaticalWordFrame()
+                    {
+                        LogicalMeaning = new List<string>()
+                        {
+                            "act"
+                        }
+                    }
+                }
+            };
         }
 
         private static void DefineUsualAdjectives()
@@ -325,6 +342,19 @@ namespace MyNPCLib.SimpleWordsDict
                             "state"
                         }
                     }
+                }
+            };
+        }
+
+        private static void DefineUsualPrepositions()
+        {
+            var wordName = "to";
+            mWordsDictData.WordsDict[wordName] = new WordFrame()
+            {
+                Word = wordName,
+                GrammaticalWordFrames = new List<BaseGrammaticalWordFrame>()
+                {
+                    new PrepositionGrammaticalWordFrame()
                 }
             };
         }

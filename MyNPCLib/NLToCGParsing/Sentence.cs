@@ -12,7 +12,7 @@ namespace MyNPCLib.NLToCGParsing
         public GrammaticalVoice Voice { get; set; } = GrammaticalVoice.Undefined;
         public GrammaticalMood Mood { get; set; } = GrammaticalMood.Undefined;
         public KindOfModal Modal { get; set; } = KindOfModal.Undefined;
-        public NounPhrase NounPhrase { get; set; }
+        public BaseNounLikePhrase NounPhrase { get; set; }
         public VerbPhrase VerbPhrase { get; set; }
 
         public Sentence Fork()

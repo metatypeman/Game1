@@ -71,7 +71,7 @@ namespace TmpSandBox
         {
             LogInstance.Log("Begin");
 
-            var paragraph = "Go to Geen Waypoint";
+            var paragraph = "Go to Green Waypoint";
 
             var wordsDict = new WordsDict();
             var parser = new CGParser(wordsDict);
