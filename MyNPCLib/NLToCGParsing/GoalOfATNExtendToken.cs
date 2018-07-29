@@ -9,6 +9,7 @@ namespace MyNPCLib.NLToCGParsing
         Undefined,
         NP,
         PP,
+        AP,
         BaseV,
         V2f,
         V3f,

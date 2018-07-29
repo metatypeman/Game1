@@ -60,6 +60,12 @@ namespace MyNPCLib.NLToCGParsing
                         case GoalOfATNExtendToken.PP:
                             return StateOfATNParsing.ImperativeVP;
 
+                        case GoalOfATNExtendToken.AP:
+                            return StateOfATNParsing.ImperativeVP;
+
+                        case GoalOfATNExtendToken.NP:
+                            return StateOfATNParsing.ImperativeVP;
+
                         default: throw new ArgumentOutOfRangeException(nameof(goal), goal, null);
                     }
 

@@ -91,7 +91,7 @@ namespace MyNPCLib.NLToCGParsing
                     {
                         SuppressBornNewNodes = true;
                         mVerbPhrase = new VerbPhrase();
-                        Context.AddVerbPhrase(mVerbPhrase);
+                        
                         switch (CompositionCommand)
                         {
                             case CompositionCommand.AddToVerbPhraseOfSentence:
@@ -107,6 +107,9 @@ namespace MyNPCLib.NLToCGParsing
 
                             default: throw new ArgumentOutOfRangeException(nameof(CompositionCommand), CompositionCommand, null);
                         }
+
+                        Context.AddVerbPhrase(mVerbPhrase);
+
                         var subGoalsList = GetSubGoals(mTargetExtendedToken);
 
 #if DEBUG
@@ -240,7 +243,7 @@ namespace MyNPCLib.NLToCGParsing
                 switch (goal)
                 {
                     case GoalOfATNExtendToken.PP:
-                        AddTask(new ATNPPNodeFactory(extendedToken, ATNPPNode.State.Init, goal, CompositionCommand.AddToObjectOfVP));
+                        AddTask(new ATNPPNodeFactory(extendedToken, ATNPPNode.State.Init, goal, CompositionCommand.AddToObjectOfVerbPhrase));
                         break;
 
                     default: throw new ArgumentOutOfRangeException(nameof(goal), goal, null);

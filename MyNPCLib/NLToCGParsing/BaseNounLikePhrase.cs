@@ -10,6 +10,10 @@ namespace MyNPCLib.NLToCGParsing
         public virtual NounPhrase AsNounPhrase => null;
         public virtual bool IsPrepositionalPhrase => false;
         public virtual PrepositionalPhrase AsPrepositionalPhrase => null;
+        public virtual bool IsAdjectivePhrase => false;
+        public virtual AdjectivePhrase AsAdjectivePhrase => null;
+
+        public BaseNounLikePhrase Object { get; set; }
 
         public abstract BaseNounLikePhrase Fork();
 

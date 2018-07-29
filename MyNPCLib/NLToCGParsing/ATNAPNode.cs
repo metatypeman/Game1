@@ -5,43 +5,43 @@ using System.Text;
 
 namespace MyNPCLib.NLToCGParsing
 {
-    public class ATNPPNodeFactory : BaseATNNodeFactory
+    public class ATNAPNodeFactory : BaseATNNodeFactory
     {
-        public ATNPPNodeFactory(ATNExtendedToken extendedToken, GoalOfATNExtendToken goal)
-            : this(extendedToken, ATNPPNode.State.Init, goal, CompositionCommand.Undefined)
+        public ATNAPNodeFactory(ATNExtendedToken extendedToken, GoalOfATNExtendToken goal)
+            : this(extendedToken, ATNAPNode.State.Init, goal, CompositionCommand.Undefined)
         {
         }
 
-        public ATNPPNodeFactory(ATNExtendedToken extendedToken, ATNPPNode.State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand)
+        public ATNAPNodeFactory(ATNExtendedToken extendedToken, ATNAPNode.State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand)
             : base(extendedToken, goal, compositionCommand)
         {
             mInternalState = internalState;
         }
 
-        private ATNPPNode.State mInternalState = ATNPPNode.State.Init;
+        private ATNAPNode.State mInternalState = ATNAPNode.State.Init;
 
         public override BaseATNParsingNode Create(ContextOfATNParsing context)
         {
-            var result = new ATNPPNode(ExtendedToken, mInternalState, Goal, CompositionCommand, context);
+            var result = new ATNAPNode(ExtendedToken, mInternalState, Goal, CompositionCommand, context);
             return result;
         }
     }
 
-    public class ATNPPNode : BaseATNParsingNode
+    public class ATNAPNode : BaseATNParsingNode
     {
         public enum State
         {
             Init,
-            Preposition
+            Adjective
         }
 
         public enum SubGoal
         {
             Undefined,
-            Preposition
+            Adjective
         }
 
-        public ATNPPNode(ATNExtendedToken extendedToken, State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand, ContextOfATNParsing context)
+        public ATNAPNode(ATNExtendedToken extendedToken, State internalState, GoalOfATNExtendToken goal, CompositionCommand compositionCommand, ContextOfATNParsing context)
             : base(goal, compositionCommand, context)
         {
             mTargetExtendedToken = extendedToken;
@@ -50,25 +50,13 @@ namespace MyNPCLib.NLToCGParsing
 
         private ATNExtendedToken mTargetExtendedToken;
         private State mInternalState = State.Init;
-        private PrepositionalPhrase mPrepositionalPhrase;
+        private AdjectivePhrase mAdjectivePhrase;
 
         protected override void NormalizeCompositionCommand()
         {
 #if DEBUG
             LogInstance.Log($"CompositionCommand = {CompositionCommand}");
 #endif
-
-            switch (mInternalState)
-            {
-                case State.Init:
-                    switch (CompositionCommand)
-                    {
-                        case CompositionCommand.Undefined:
-                            CompositionCommand = CompositionCommand.AddToNounPhraseOfSentence;
-                            break;
-                    }
-                    break;
-            }
 
 #if DEBUG
             LogInstance.Log("End");
@@ -88,25 +76,29 @@ namespace MyNPCLib.NLToCGParsing
                 case State.Init:
                     {
                         SuppressBornNewNodes = true;
-                        mPrepositionalPhrase = new PrepositionalPhrase();
+                        mAdjectivePhrase = new AdjectivePhrase();
                         
                         switch (CompositionCommand)
                         {
                             case CompositionCommand.AddToNounPhraseOfSentence:
-                                Context.Sentence.NounPhrase = mPrepositionalPhrase;
+                                Context.Sentence.NounPhrase = mAdjectivePhrase;
                                 break;
 
-                            case CompositionCommand.AddToObjectOfVerbPhrase:
+                            case CompositionCommand.AddToObjectOfNounLikePhrase:
                                 {
-                                    var tmpVP = Context.PeekCurrentVerbPhrase();
-                                    tmpVP.Object = mPrepositionalPhrase;
+                                    var tmpPhrase = Context.PeekCurrentNounPhrase();
+                                    tmpPhrase.Object = mAdjectivePhrase;
+
+#if DEBUG
+                                    LogInstance.Log($"tmpPhrase = {tmpPhrase}");
+#endif
+                                    //throw new NotImplementedException();
                                 }
                                 break;
 
                             default: throw new ArgumentOutOfRangeException(nameof(CompositionCommand), CompositionCommand, null);
                         }
-
-                        Context.AddNounLikePhrase(mPrepositionalPhrase);
+                        Context.AddNounLikePhrase(mAdjectivePhrase);
 
                         var subGoalsList = GetSubGoals(mTargetExtendedToken);
 
@@ -122,8 +114,8 @@ namespace MyNPCLib.NLToCGParsing
 
                             switch (subGoal)
                             {
-                                case SubGoal.Preposition:
-                                    AddTask(new ATNPPNodeFactory(mTargetExtendedToken, State.Preposition, Goal, CompositionCommand.PutNounInNP));
+                                case SubGoal.Adjective:
+                                    AddTask(new ATNAPNodeFactory(mTargetExtendedToken, State.Adjective, Goal, CompositionCommand.AddToObjectOfNounLikePhrase));
                                     break;
 
                                 default: throw new ArgumentOutOfRangeException(nameof(subGoal), subGoal, null);
@@ -132,13 +124,20 @@ namespace MyNPCLib.NLToCGParsing
                     }
                     break;
 
-                case State.Preposition:
+                case State.Adjective:
                     switch (CompositionCommand)
                     {
-                        case CompositionCommand.PutNounInNP:
-                            mPrepositionalPhrase = Context.PeekCurrentNounPhrase().AsPrepositionalPhrase;
-                            mPrepositionalPhrase.Preposition = mTargetExtendedToken;
-                            mInternalState = State.Preposition;
+                        case CompositionCommand.AddToObjectOfNounLikePhrase:
+                            mAdjectivePhrase = Context.PeekCurrentNounPhrase().AsAdjectivePhrase;
+                            mAdjectivePhrase.Adjective = mTargetExtendedToken;
+
+#if DEBUG
+                            LogInstance.Log($"mAdjectivePhrase = {mAdjectivePhrase}");
+#endif
+
+                            //throw new NotImplementedException();
+
+                            mInternalState = State.Adjective;
                             break;
 
                         default: throw new ArgumentOutOfRangeException(nameof(CompositionCommand), CompositionCommand, null);
@@ -149,7 +148,7 @@ namespace MyNPCLib.NLToCGParsing
             }
 
 #if DEBUG
-            LogInstance.Log($"mPrepositionalPhrase = {mPrepositionalPhrase}");
+            LogInstance.Log($"mAdjectivePhrase = {mAdjectivePhrase}");
             LogInstance.Log("End");
 #endif
         }
@@ -162,8 +161,8 @@ namespace MyNPCLib.NLToCGParsing
 
             switch (partOfSpeech)
             {
-                case GrammaticalPartOfSpeech.Preposition:
-                    result.Add(SubGoal.Preposition);
+                case GrammaticalPartOfSpeech.Adjective:
+                    result.Add(SubGoal.Adjective);
                     break;
 
                 default: throw new ArgumentOutOfRangeException(nameof(partOfSpeech), partOfSpeech, null);
@@ -204,8 +203,8 @@ namespace MyNPCLib.NLToCGParsing
 
                 switch (goal)
                 {
-                    case GoalOfATNExtendToken.AP:
-                        AddTask(new ATNAPNodeFactory(extendedToken, ATNAPNode.State.Init, goal, CompositionCommand.AddToObjectOfNounLikePhrase));
+                    case GoalOfATNExtendToken.NP:
+                        AddTask(new ATNNPNodeFactory(extendedToken, ATNNPNode.State.Init, goal, CompositionCommand.AddToObjectOfNounLikePhrase));
                         break;
 
                     default: throw new ArgumentOutOfRangeException(nameof(goal), goal, null);

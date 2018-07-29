@@ -9,7 +9,8 @@ namespace MyNPCLib.NLToCGParsing
         Undefined,
         AddToNounPhraseOfSentence,
         AddToVerbPhraseOfSentence,
-        AddToObjectOfVP,
+        AddToObjectOfVerbPhrase,
+        AddToObjectOfNounLikePhrase,
         PutNounInNP,
         PutDeterminerInNP,
         PutVerbInVP

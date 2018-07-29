@@ -94,7 +94,7 @@ namespace MyNPCLib.NLToCGParsing
                             break;
 
                         case GrammaticalPartOfSpeech.Adjective:
-                            resultList.Add(GoalOfATNExtendToken.NP);
+                            resultList.Add(GoalOfATNExtendToken.AP);
                             break;
 
                         case GrammaticalPartOfSpeech.Verb:
@@ -237,8 +237,9 @@ namespace MyNPCLib.NLToCGParsing
                             break;
 
                         case GrammaticalPartOfSpeech.Adverb:
-                            resultList.Add(GoalOfATNExtendToken.NP);
-                            break;
+                            throw new NotImplementedException();
+                        //resultList.Add(GoalOfATNExtendToken.NP);
+                        //break;
 
                         case GrammaticalPartOfSpeech.Preposition:
                             resultList.Add(GoalOfATNExtendToken.PP);
@@ -255,8 +256,9 @@ namespace MyNPCLib.NLToCGParsing
                             break;
 
                         case GrammaticalPartOfSpeech.Numeral:
-                            resultList.Add(GoalOfATNExtendToken.NP);
-                            break;
+                            throw new NotImplementedException();
+                        //resultList.Add(GoalOfATNExtendToken.NP);
+                        //break;
 
                         default: throw new ArgumentOutOfRangeException(nameof(partOfSpeech), partOfSpeech, null);
                     }

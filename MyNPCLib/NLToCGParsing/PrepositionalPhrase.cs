@@ -7,7 +7,6 @@ namespace MyNPCLib.NLToCGParsing
     public class PrepositionalPhrase : BaseNounLikePhrase
     {
         public ATNExtendedToken Preposition { get; set; }
-        public NounPhrase Object { get; set; }
         public override bool IsPrepositionalPhrase => true;
         public override PrepositionalPhrase AsPrepositionalPhrase => this;
 
@@ -15,7 +14,7 @@ namespace MyNPCLib.NLToCGParsing
         {
             var result = new PrepositionalPhrase();
             result.Preposition = Preposition;
-            result.Object = Object;
+            result.Object = Object?.Fork();
             return result;
         }
 

@@ -9,6 +9,14 @@ namespace MyNPCLib.NLToCGParsing
         public ATNExtendedToken Verb { get; set; }
         public BaseNounLikePhrase Object { get; set; }
 
+        public VerbPhrase Fork()
+        {
+            var result = new VerbPhrase();
+            result.Verb = Verb;
+            result.Object = Object?.Fork();
+            return result;
+        }
+
         public override string ToString()
         {
             return ToString(0u);

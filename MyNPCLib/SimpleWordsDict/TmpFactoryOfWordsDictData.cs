@@ -290,6 +290,20 @@ namespace MyNPCLib.SimpleWordsDict
                     }
                 }
             };
+
+            wordName = "waypoint";
+            mWordsDictData.WordsDict[wordName] = new WordFrame()
+            {
+                Word = wordName,
+                GrammaticalWordFrames = new List<BaseGrammaticalWordFrame>()
+                {
+                    new NounGrammaticalWordFrame()
+                    {
+                        Number = GrammaticalNumberOfWord.Singular,
+                        IsCountable = true
+                    }
+                }
+            };
         }
 
         private static void DefineUsualVerbs()
@@ -336,12 +350,16 @@ namespace MyNPCLib.SimpleWordsDict
                 GrammaticalWordFrames = new List<BaseGrammaticalWordFrame>()
                 {
                     new AdjectiveGrammaticalWordFrame()
-                    {
-                        LogicalMeaning = new List<string>()
-                        {
-                            "state"
-                        }
-                    }
+                }
+            };
+
+            wordName = "green";
+            mWordsDictData.WordsDict[wordName] = new WordFrame()
+            {
+                Word = wordName,
+                GrammaticalWordFrames = new List<BaseGrammaticalWordFrame>()
+                {
+                    new AdjectiveGrammaticalWordFrame()
                 }
             };
         }

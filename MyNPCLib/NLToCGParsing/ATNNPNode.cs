@@ -92,22 +92,32 @@ namespace MyNPCLib.NLToCGParsing
                     {
                         SuppressBornNewNodes = true;
                         mNounPhrase = new NounPhrase();
-                        Context.AddNounLikePhrase(mNounPhrase);
+                        
                         switch (CompositionCommand)
                         {
                             case CompositionCommand.AddToNounPhraseOfSentence:
                                 Context.Sentence.NounPhrase = mNounPhrase;
                                 break;
 
-                            case CompositionCommand.AddToObjectOfVP:
+                            case CompositionCommand.AddToObjectOfVerbPhrase:
                                 {
                                     var tmpVP = Context.PeekCurrentVerbPhrase();
                                     tmpVP.Object = mNounPhrase;
                                 }              
                                 break;
 
+                            case CompositionCommand.AddToObjectOfNounLikePhrase:
+                                {
+                                    var tmpPhrase = Context.PeekCurrentNounPhrase();
+                                    tmpPhrase.Object = mNounPhrase;
+                                }
+                                break;
+
                             default: throw new ArgumentOutOfRangeException(nameof(CompositionCommand), CompositionCommand, null);
                         }
+
+                        Context.AddNounLikePhrase(mNounPhrase);
+
                         var subGoalsList = GetSubGoals(mTargetExtendedToken);
 
 #if DEBUG

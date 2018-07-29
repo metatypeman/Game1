@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.NLToCGParsing
@@ -9,14 +10,15 @@ namespace MyNPCLib.NLToCGParsing
         public override bool IsNounPhrase => true;
         public override NounPhrase AsNounPhrase => this;
 
-
         public ATNExtendedToken Noun { get; set; }
         public List<ATNExtendedToken> Determiners { get; set; } = new List<ATNExtendedToken>();
+
 
         public override BaseNounLikePhrase Fork()
         {
             var result = new NounPhrase();
             result.Noun = Noun;
+            result.Determiners = Determiners.ToList();
             return result;
         }
 

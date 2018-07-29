@@ -19,6 +19,7 @@ namespace MyNPCLib.NLToCGParsing
         {
             var result = new Sentence();
             result.NounPhrase = NounPhrase?.Fork();
+            result.VerbPhrase = VerbPhrase?.Fork();
             return result;
         }
 
