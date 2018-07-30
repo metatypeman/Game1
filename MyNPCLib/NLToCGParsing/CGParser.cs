@@ -116,8 +116,14 @@ namespace MyNPCLib.NLToCGParsing
                 LogInstance.Log($"sentence = {sentence}");
 #endif
 
-                var itemResult = mSemanticAnalyzer.Run(sentence);
-                result.Add(itemResult);
+                var dtSentenceNode = DTNodeConverter.Convert(sentence);
+
+#if DEBUG
+                LogInstance.Log($"dtSentenceNode = {dtSentenceNode}");
+#endif
+
+                //var itemResult = mSemanticAnalyzer.Run(sentence);
+                //result.Add(itemResult);
             }
 
             return result;
