@@ -1,4 +1,5 @@
-﻿using OpenNLP.Tools.Parser;
+﻿using MyNPCLib.NLToCGParsing.PhraseTree;
+using OpenNLP.Tools.Parser;
 using System;
 using System.Collections.Generic;
 using System.Text;

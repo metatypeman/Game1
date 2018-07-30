@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.NLToCGParsing
+namespace MyNPCLib.NLToCGParsing.PhraseTree
 {
     public abstract class BaseNounLikePhrase : IObjectToString, IShortObjectToString
     {

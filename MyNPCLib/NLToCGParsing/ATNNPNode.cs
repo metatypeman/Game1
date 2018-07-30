@@ -1,4 +1,5 @@
-﻿using MyNPCLib.SimpleWordsDict;
+﻿using MyNPCLib.NLToCGParsing.PhraseTree;
+using MyNPCLib.SimpleWordsDict;
 using System;
 using System.Collections.Generic;
 using System.Linq;

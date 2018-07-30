@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.NLToCGParsing
+namespace MyNPCLib.NLToCGParsing.PhraseTree
 {
-    public class Sentence: IObjectToString, IShortObjectToString
+    public class Sentence : IObjectToString, IShortObjectToString
     {
         public GrammaticalAspect Aspect { get; set; } = GrammaticalAspect.Undefined;
         public GrammaticalTenses Tense { get; set; } = GrammaticalTenses.Undefined;

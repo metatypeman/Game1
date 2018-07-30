@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CG;
+using MyNPCLib.NLToCGParsing.PhraseTree;
 using System;
 using System.Collections.Generic;
 using System.Text;
