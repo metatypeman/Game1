@@ -17,6 +17,8 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public virtual bool IsAdjectiveDTNode => false;
         public virtual AdjectiveDTNode AsAdjectiveDTNode => null;
 
+        public ATNExtendedToken ExtendedToken { get; set; }
+
         private BaseDTNode mParent;
 
         public BaseDTNode Parent
@@ -27,29 +29,47 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             }
         }
 
-        //internal void NSetParent(BaseDTNode parent)
-        //{
-        //    if (mParent != parent)
-        //    {
-        //        mParent = parent;
-        //    }
-        //}
+        internal void NSetParent(BaseDTNode parent)
+        {
+            if (mParent != parent)
+            {
+                mParent = parent;
+            }
+        }
 
-        //internal void RemoveParent(BaseDTNode parent)
-        //{
-        //    if (mParent == parent)
-        //    {
-        //        mParent = null;
+        internal void NRemoveParentIfNot(BaseDTNode parent)
+        {
+            if (mParent == parent)
+            {
+                return;
+            }
 
-        //        //Here we need to remove this from its old place.
-        //        throw new NotImplementedException();
-        //    }
-        //}
+            if (mParent != null)
+            {
+                mParent.OnRemoveObjFromProp(this);
+            }
 
-        //internal void RemoveFromProperty(BaseDTNode child)
-        //{
-        //    throw new NotImplementedException();
-        //}
+            mParent = null;
+        }
+
+        internal void NRemoveParent(BaseDTNode parent)
+        {
+            if (mParent != parent)
+            {
+                return;
+            }
+
+            if (mParent != null)
+            {
+                mParent.OnRemoveObjFromProp(this);
+            }
+
+            mParent = null;
+        }
+
+        protected abstract void OnRemoveObjFromProp(BaseDTNode obj);
+
+        public abstract KindOfDTChild GetKindOfDTChild(BaseDTNode obj);
 
         //public abstract void SetObject(BaseDTNode obj);
 
@@ -63,7 +83,23 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             return this.GetDefaultToStringInformation(n);
         }
 
-        public abstract string PropertiesToSting(uint n);
+        public virtual string PropertiesToSting(uint n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var sb = new StringBuilder();
+            if (ExtendedToken == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(ExtendedToken)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(ExtendedToken)}");
+                sb.Append(ExtendedToken.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(ExtendedToken)}");
+            }
+            return sb.ToString();
+        }
 
         public string ToShortString()
         {
@@ -75,6 +111,22 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             return this.GetDefaultToShortStringInformation(n);
         }
 
-        public abstract string PropertiesToShortSting(uint n);
+        public virtual string PropertiesToShortSting(uint n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var sb = new StringBuilder();
+            if (ExtendedToken == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(ExtendedToken)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(ExtendedToken)}");
+                sb.Append(ExtendedToken.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(ExtendedToken)}");
+            }
+            return sb.ToString();
+        }
     }
 }

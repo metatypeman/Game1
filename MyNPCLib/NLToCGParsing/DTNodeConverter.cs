@@ -25,108 +25,106 @@ namespace MyNPCLib.NLToCGParsing
 
             if(verbOfSentence != null)
             {
-                //var verbDtNode = new VerbDTNode();
-                //result.Verb = verbDtNode;
-
-                //FillRootVerbOfSentence(verbOfSentence, verbDtNode);
+                var verbDtNode = new VerbDTNode();
+                result.Verb = verbDtNode;
+                FillRootVerbOfSentence(verbOfSentence, verbDtNode);
             }
 
             return result;
         }
 
-//        private static void FillRootVerbOfSentence(VerbPhrase verbPhrase, VerbDTNode dest)
-//        {
-            
-//#if DEBUG
-//            LogInstance.Log($"verbPhrase = {verbPhrase}");
-//#endif
+        private static void FillRootVerbOfSentence(VerbPhrase verbPhrase, VerbDTNode dest)
+        {
+#if DEBUG
+            LogInstance.Log($"verbPhrase = {verbPhrase}");
+#endif
 
-//            dest.VerbExtendedToken = verbPhrase.Verb;
+            dest.ExtendedToken = verbPhrase.Verb;
 
-//            var verbObject = verbPhrase.Object;
+            var verbObject = verbPhrase.Object;
 
-//            if (verbObject != null)
-//            {
-//                if(verbObject.IsPrepositionalPhrase)
-//                {
-//                    var prepositionalObject = verbObject.AsPrepositionalPhrase;
+            if (verbObject != null)
+            {
+                if (verbObject.IsPrepositionalPhrase)
+                {
+                    var prepositionalObject = verbObject.AsPrepositionalPhrase;
 
-//#if DEBUG
-//                    LogInstance.Log($"prepositionalObject = {prepositionalObject}");
-//#endif
-//                    var prepositionalDTNode = new PrepositionalDTNode();        
-//                    dest.PrepositionalObjectsList.Add(prepositionalDTNode);
-//                    FillPrepositional(prepositionalObject, prepositionalDTNode);
-//                }
-//                else
-//                {
-//                    throw new NotImplementedException();
-//                }
-//            }
-//        }
+#if DEBUG
+                    LogInstance.Log($"prepositionalObject = {prepositionalObject}");
+#endif
+                    var prepositionalDTNode = new PrepositionalDTNode();
+                    dest.AddPrepositionalObject(prepositionalDTNode);
+                    FillPrepositional(prepositionalObject, prepositionalDTNode);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+        }
 
-//        private static void FillPrepositional(PrepositionalPhrase prepositionalPhrase, PrepositionalDTNode dest)
-//        {
-//            dest.PrepositionalExtendedToken = prepositionalPhrase.Preposition;
+        private static void FillPrepositional(PrepositionalPhrase prepositionalPhrase, PrepositionalDTNode dest)
+        {
+            dest.ExtendedToken = prepositionalPhrase.Preposition;
 
-//            var prepositionObject = prepositionalPhrase.Object;
+            var prepositionObject = prepositionalPhrase.Object;
 
-//            if(prepositionObject != null)
-//            {
-//#if DEBUG
-//                LogInstance.Log($"prepositionObject = {prepositionObject}");
-//#endif
+            if (prepositionObject != null)
+            {
+#if DEBUG
+                LogInstance.Log($"prepositionObject = {prepositionObject}");
+#endif
 
-//                if(prepositionObject.IsAdjectivePhrase)
-//                {
-//                    var adjectiveDTNode = new AdjectiveDTNode();
+                if (prepositionObject.IsAdjectivePhrase)
+                {
+                    var adjectiveDTNode = new AdjectiveDTNode();
 
-//#if DEBUG
-//                    LogInstance.Log($"adjectiveDTNode = {adjectiveDTNode}");
-//#endif
+#if DEBUG
+                    LogInstance.Log($"adjectiveDTNode = {adjectiveDTNode}");
+#endif
 
-//                    dest.AdjectiveObject = adjectiveDTNode;
-//                    FillAdjective(prepositionObject.AsAdjectivePhrase, adjectiveDTNode);
-//                }
-//                else
-//                {
-//                    throw new NotImplementedException();
-//                }
-//            }
-//        }
+                    //dest.AdjectiveObject = adjectiveDTNode;
+                    //FillAdjective(prepositionObject.AsAdjectivePhrase, adjectiveDTNode);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+        }
 
-//        private static void FillAdjective(AdjectivePhrase adjectivePhrase, AdjectiveDTNode dest)
-//        {
-//            dest.AdjectiveExtendedToken = adjectivePhrase.Adjective;
+        //        private static void FillAdjective(AdjectivePhrase adjectivePhrase, AdjectiveDTNode dest)
+        //        {
+        //            dest.AdjectiveExtendedToken = adjectivePhrase.Adjective;
 
-//            var ajectiveObject = adjectivePhrase.Object;
+        //            var ajectiveObject = adjectivePhrase.Object;
 
-//            if(ajectiveObject != null)
-//            {
-//#if DEBUG
-//                LogInstance.Log($"ajectiveObject = {ajectiveObject}");
-//#endif
+        //            if(ajectiveObject != null)
+        //            {
+        //#if DEBUG
+        //                LogInstance.Log($"ajectiveObject = {ajectiveObject}");
+        //#endif
 
-//                if(ajectiveObject.IsNounPhrase)
-//                {
+        //                if(ajectiveObject.IsNounPhrase)
+        //                {
 
-//                    var nounDtNode = new NounDTNode();
-//                    var parentOfAjective = dest.Parent;
-//                    parentOfAjective.SetObject(nounDtNode);
-//                    nounDtNode.AddAjective(dest);
+        //                    var nounDtNode = new NounDTNode();
+        //                    var parentOfAjective = dest.Parent;
+        //                    parentOfAjective.SetObject(nounDtNode);
+        //                    nounDtNode.AddAjective(dest);
 
-//                    FillNoun(ajectiveObject.AsNounPhrase, nounDtNode);
-//                }
-//                else
-//                {
-//                    throw new NotImplementedException();
-//                }
-//            }
-//        }
+        //                    FillNoun(ajectiveObject.AsNounPhrase, nounDtNode);
+        //                }
+        //                else
+        //                {
+        //                    throw new NotImplementedException();
+        //                }
+        //            }
+        //        }
 
-//        private static void FillNoun(NounPhrase nounPhrase, NounDTNode dest)
-//        {
-//            dest.NounExtendedToken = nounPhrase.Noun;
-//        }
+        //        private static void FillNoun(NounPhrase nounPhrase, NounDTNode dest)
+        //        {
+        //            dest.NounExtendedToken = nounPhrase.Noun;
+        //        }
     }
 }
