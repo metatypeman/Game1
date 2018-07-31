@@ -27,31 +27,31 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             }
         }
 
-        internal void NSetParent(BaseDTNode parent)
-        {
-            if (mParent != parent)
-            {
-                mParent = parent;
-            }
-        }
+        //internal void NSetParent(BaseDTNode parent)
+        //{
+        //    if (mParent != parent)
+        //    {
+        //        mParent = parent;
+        //    }
+        //}
 
-        internal void RemoveParent(BaseDTNode parent)
-        {
-            if (mParent == parent)
-            {
-                mParent = null;
+        //internal void RemoveParent(BaseDTNode parent)
+        //{
+        //    if (mParent == parent)
+        //    {
+        //        mParent = null;
 
-                //Here we need to remove this from its old place.
-                throw new NotImplementedException();
-            }
-        }
+        //        //Here we need to remove this from its old place.
+        //        throw new NotImplementedException();
+        //    }
+        //}
 
-        internal void RemoveFromProperty(BaseDTNode child)
-        {
-            throw new NotImplementedException();
-        }
+        //internal void RemoveFromProperty(BaseDTNode child)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public abstract void SetObject(BaseDTNode obj);
+        //public abstract void SetObject(BaseDTNode obj);
 
         public override string ToString()
         {

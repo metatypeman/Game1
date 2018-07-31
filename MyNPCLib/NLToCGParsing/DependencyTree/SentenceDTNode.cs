@@ -15,12 +15,12 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public GrammaticalVoice Voice { get; set; } = GrammaticalVoice.Undefined;
         public GrammaticalMood Mood { get; set; } = GrammaticalMood.Undefined;
         public KindOfModal Modal { get; set; } = KindOfModal.Undefined;
-        public VerbDTNode Verb { get; set; }
+        //public VerbDTNode Verb { get; set; }
 
-        public override void SetObject(BaseDTNode obj)
-        {
-            throw new NotImplementedException();
-        }
+        //public override void SetObject(BaseDTNode obj)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public override string PropertiesToSting(uint n)
         {
@@ -32,16 +32,16 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
             sb.AppendLine($"{spaces}{nameof(Modal)} = {Modal}");
             sb.AppendLine($"{spaces}{nameof(Mood)} = {Mood}");
-            if(Verb == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(Verb)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(Verb)}");
-                sb.Append(Verb.ToString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(Verb)}");
-            }
+            //if(Verb == null)
+            //{
+            //    sb.AppendLine($"{spaces}{nameof(Verb)} = null");
+            //}
+            //else
+            //{
+            //    sb.AppendLine($"{spaces}Begin {nameof(Verb)}");
+            //    sb.Append(Verb.ToString(nextN));
+            //    sb.AppendLine($"{spaces}End {nameof(Verb)}");
+            //}
             return sb.ToString();
         }
 
@@ -55,16 +55,16 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
             sb.AppendLine($"{spaces}{nameof(Modal)} = {Modal}");
             sb.AppendLine($"{spaces}{nameof(Mood)} = {Mood}");
-            if (Verb == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(Verb)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(Verb)}");
-                sb.Append(Verb.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(Verb)}");
-            }
+            //if (Verb == null)
+            //{
+            //    sb.AppendLine($"{spaces}{nameof(Verb)} = null");
+            //}
+            //else
+            //{
+            //    sb.AppendLine($"{spaces}Begin {nameof(Verb)}");
+            //    sb.Append(Verb.ToShortString(nextN));
+            //    sb.AppendLine($"{spaces}End {nameof(Verb)}");
+            //}
             return sb.ToString();
         }
     }
