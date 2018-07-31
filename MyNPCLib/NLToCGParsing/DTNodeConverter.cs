@@ -20,28 +20,30 @@ namespace MyNPCLib.NLToCGParsing
             result.Voice = sentence.Voice;
             result.Mood = sentence.Mood;
             result.Modal = sentence.Modal;
-            result.Verb = CovertRootVerbOfSentence(sentence);
+
+            var verbOfSentence = sentence.VerbPhrase;
+
+            if(verbOfSentence != null)
+            {
+                var verbDtNode = new VerbDTNode();
+                result.Verb = verbDtNode;
+
+                FillRootVerbOfSentence(verbOfSentence, verbDtNode);
+            }
 
             return result;
         }
 
-        private static VerbDTNode CovertRootVerbOfSentence(Sentence sentence)
+        private static void FillRootVerbOfSentence(VerbPhrase verbPhrase, VerbDTNode dest)
         {
-            var verbOfSentence = sentence.VerbPhrase;
-
-            if(verbOfSentence == null)
-            {
-                return null;
-            }
-
+            
 #if DEBUG
-            LogInstance.Log($"verbOfSentence = {verbOfSentence}");
+            LogInstance.Log($"verbPhrase = {verbPhrase}");
 #endif
 
-            var result = new VerbDTNode();
-            result.VerbExtendedToken = verbOfSentence.Verb;
+            dest.VerbExtendedToken = verbPhrase.Verb;
 
-            var verbObject = verbOfSentence.Object;
+            var verbObject = verbPhrase.Object;
 
             if (verbObject != null)
             {
@@ -52,23 +54,20 @@ namespace MyNPCLib.NLToCGParsing
 #if DEBUG
                     LogInstance.Log($"prepositionalObject = {prepositionalObject}");
 #endif
-
-                    var prepositionalDTNode = ConvertPrepositional(prepositionalObject);
-                    result.PrepositionalObjectsList.Add(prepositionalDTNode);
+                    var prepositionalDTNode = new PrepositionalDTNode();        
+                    dest.PrepositionalObjectsList.Add(prepositionalDTNode);
+                    FillPrepositional(prepositionalObject, prepositionalDTNode);
                 }
                 else
                 {
                     throw new NotImplementedException();
                 }
             }
-
-            return result;
         }
 
-        private static PrepositionalDTNode ConvertPrepositional(PrepositionalPhrase prepositionalPhrase)
+        private static void FillPrepositional(PrepositionalPhrase prepositionalPhrase, PrepositionalDTNode dest)
         {
-            var result = new PrepositionalDTNode();
-            result.PrepositionalExtendedToken = prepositionalPhrase.Preposition;
+            dest.PrepositionalExtendedToken = prepositionalPhrase.Preposition;
 
             var prepositionObject = prepositionalPhrase.Object;
 
@@ -80,28 +79,54 @@ namespace MyNPCLib.NLToCGParsing
 
                 if(prepositionObject.IsAdjectivePhrase)
                 {
-                    var adjectiveDTNode = ConvertAdjective(prepositionObject.AsAdjectivePhrase);
+                    var adjectiveDTNode = new AdjectiveDTNode();
 
 #if DEBUG
                     LogInstance.Log($"adjectiveDTNode = {adjectiveDTNode}");
 #endif
 
-                    //result.
+                    dest.AdjectiveObject = adjectiveDTNode;
+                    FillAdjective(prepositionObject.AsAdjectivePhrase, adjectiveDTNode);
                 }
                 else
                 {
                     throw new NotImplementedException();
                 }
             }
-
-            return result;
         }
 
-        private static AdjectiveDTNode ConvertAdjective(AdjectivePhrase adjectivePhrase)
+        private static void FillAdjective(AdjectivePhrase adjectivePhrase, AdjectiveDTNode dest)
         {
-            var result = new AdjectiveDTNode();
+            dest.AdjectiveExtendedToken = adjectivePhrase.Adjective;
 
-            return result;
+            var ajectiveObject = adjectivePhrase.Object;
+
+            if(ajectiveObject != null)
+            {
+#if DEBUG
+                LogInstance.Log($"ajectiveObject = {ajectiveObject}");
+#endif
+
+                if(ajectiveObject.IsNounPhrase)
+                {
+
+                    var nounDtNode = new NounDTNode();
+                    var parentOfAjective = dest.Parent;
+                    parentOfAjective.SetObject(nounDtNode);
+                    nounDtNode.AddAjective(dest);
+
+                    FillNoun(ajectiveObject.AsNounPhrase, nounDtNode);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+        }
+
+        private static void FillNoun(NounPhrase nounPhrase, NounDTNode dest)
+        {
+            dest.NounExtendedToken = nounPhrase.Noun;
         }
     }
 }

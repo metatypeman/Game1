@@ -4,8 +4,11 @@ using System.Text;
 
 namespace MyNPCLib.NLToCGParsing.DependencyTree
 {
-    public class VerbDTNode : IObjectToString, IShortObjectToString
+    public class VerbDTNode : BaseDTNode
     {
+        public override bool IsVerbDTNode => true;
+        public override VerbDTNode AsVerbDTNode => this;
+
         public ATNExtendedToken VerbExtendedToken { get; set; }
 
         public IList<NounDTNode> NounSubjectsList { get; set; } = new List<NounDTNode>();
@@ -13,17 +16,12 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public IList<NounDTNode> NounObjectsList { get; set; } = new List<NounDTNode>();
         public IList<PrepositionalDTNode> PrepositionalObjectsList { get; set; } = new List<PrepositionalDTNode>();
 
-        public override string ToString()
+        public override void SetObject(BaseDTNode obj)
         {
-            return ToString(0u);
+            throw new NotImplementedException();
         }
 
-        public string ToString(uint n)
-        {
-            return this.GetDefaultToStringInformation(n);
-        }
-
-        public string PropertiesToSting(uint n)
+        public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
@@ -80,17 +78,7 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             return sb.ToString();
         }
 
-        public string ToShortString()
-        {
-            return ToShortString(0u);
-        }
-
-        public string ToShortString(uint n)
-        {
-            return this.GetDefaultToShortStringInformation(n);
-        }
-
-        public string PropertiesToShortSting(uint n)
+        public override string PropertiesToShortSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;

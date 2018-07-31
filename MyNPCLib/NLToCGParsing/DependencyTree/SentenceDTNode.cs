@@ -5,8 +5,11 @@ using System.Text;
 
 namespace MyNPCLib.NLToCGParsing.DependencyTree
 {
-    public class SentenceDTNode : IObjectToString, IShortObjectToString
+    public class SentenceDTNode : BaseDTNode
     {
+        public override bool IsSentenceDTNode => true;
+        public override SentenceDTNode AsSentenceDTNode => this;
+
         public GrammaticalAspect Aspect { get; set; } = GrammaticalAspect.Undefined;
         public GrammaticalTenses Tense { get; set; } = GrammaticalTenses.Undefined;
         public GrammaticalVoice Voice { get; set; } = GrammaticalVoice.Undefined;
@@ -14,17 +17,12 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public KindOfModal Modal { get; set; } = KindOfModal.Undefined;
         public VerbDTNode Verb { get; set; }
 
-        public override string ToString()
+        public override void SetObject(BaseDTNode obj)
         {
-            return ToString(0u);
+            throw new NotImplementedException();
         }
 
-        public string ToString(uint n)
-        {
-            return this.GetDefaultToStringInformation(n);
-        }
-
-        public string PropertiesToSting(uint n)
+        public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
@@ -47,17 +45,7 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             return sb.ToString();
         }
 
-        public string ToShortString()
-        {
-            return ToShortString(0u);
-        }
-
-        public string ToShortString(uint n)
-        {
-            return this.GetDefaultToShortStringInformation(n);
-        }
-
-        public string PropertiesToShortSting(uint n)
+        public override string PropertiesToShortSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;

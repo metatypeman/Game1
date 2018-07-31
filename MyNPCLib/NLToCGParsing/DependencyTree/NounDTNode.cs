@@ -4,41 +4,60 @@ using System.Text;
 
 namespace MyNPCLib.NLToCGParsing.DependencyTree
 {
-    public class NounDTNode : IObjectToString, IShortObjectToString
+    public class NounDTNode : BaseDTNode
     {
-        public override string ToString()
+        public override bool IsNounDTNode => true;
+        public override NounDTNode AsNounDTNode => this;
+
+        public ATNExtendedToken NounExtendedToken { get; set; }
+
+        public void AddAjective(AdjectiveDTNode adjective)
         {
-            return ToString(0u);
+#if DEBUG
+            LogInstance.Log($"adjective = {adjective}");
+#endif
+
+            throw new NotImplementedException();
         }
 
-        public string ToString(uint n)
+        public override void SetObject(BaseDTNode obj)
         {
-            return this.GetDefaultToStringInformation(n);
+            throw new NotImplementedException();
         }
 
-        public string PropertiesToSting(uint n)
+        public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            if (NounExtendedToken == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NounExtendedToken)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NounExtendedToken)}");
+                sb.Append(NounExtendedToken.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(NounExtendedToken)}");
+            }
             return sb.ToString();
         }
 
-        public string ToShortString()
-        {
-            return ToShortString(0u);
-        }
-
-        public string ToShortString(uint n)
-        {
-            return this.GetDefaultToShortStringInformation(n);
-        }
-
-        public string PropertiesToShortSting(uint n)
+        public override string PropertiesToShortSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            if (NounExtendedToken == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NounExtendedToken)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NounExtendedToken)}");
+                sb.Append(NounExtendedToken.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(NounExtendedToken)}");
+            }
             return sb.ToString();
         }
     }

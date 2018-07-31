@@ -4,41 +4,51 @@ using System.Text;
 
 namespace MyNPCLib.NLToCGParsing.DependencyTree
 {
-    public class AdjectiveDTNode : IObjectToString, IShortObjectToString
+    public class AdjectiveDTNode : BaseDTNode
     {
-        public override string ToString()
+        public override bool IsAdjectiveDTNode => true;
+        public override AdjectiveDTNode AsAdjectiveDTNode => this;
+
+        public ATNExtendedToken AdjectiveExtendedToken { get; set; }
+
+        public override void SetObject(BaseDTNode obj)
         {
-            return ToString(0u);
+            throw new NotImplementedException();
         }
 
-        public string ToString(uint n)
-        {
-            return this.GetDefaultToStringInformation(n);
-        }
-
-        public string PropertiesToSting(uint n)
+        public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            if (AdjectiveExtendedToken == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(AdjectiveExtendedToken)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(AdjectiveExtendedToken)}");
+                sb.Append(AdjectiveExtendedToken.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(AdjectiveExtendedToken)}");
+            }
             return sb.ToString();
         }
 
-        public string ToShortString()
-        {
-            return ToShortString(0u);
-        }
-
-        public string ToShortString(uint n)
-        {
-            return this.GetDefaultToShortStringInformation(n);
-        }
-
-        public string PropertiesToShortSting(uint n)
+        public override string PropertiesToShortSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            if (AdjectiveExtendedToken == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(AdjectiveExtendedToken)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(AdjectiveExtendedToken)}");
+                sb.Append(AdjectiveExtendedToken.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(AdjectiveExtendedToken)}");
+            }
             return sb.ToString();
         }
     }
