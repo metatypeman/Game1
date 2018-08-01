@@ -66,7 +66,39 @@ namespace MyNPCLib.NLToCGParsing
 
             var nounSubjectsList = mVerbPhrase.NounSubjectsList;
 
-            if(!nounSubjectsList.IsEmpty())
+            if(nounSubjectsList.IsEmpty())
+            {
+                var isAct = verb.FullLogicalMeaning.Contains("act");
+                var isState = verb.FullLogicalMeaning.Contains("state");
+
+#if DEBUG
+                LogInstance.Log($"isAct = {isAct}");
+                LogInstance.Log($"isState = {isState}");
+#endif
+
+                if(isAct)
+                {
+                    var relationName = SpecialNamesOfRelations.ActionRelationName;
+                    var relation = new RelationCGNode();
+                    relation.Parent = conceptualGraph;
+                    relation.Name = relationName;
+
+                    relation.AddOutputNode(mConcept);
+                }
+                else
+                {
+                    if(isState)
+                    {
+                        var relationName = SpecialNamesOfRelations.StateRelationName;
+                        var relation = new RelationCGNode();
+                        relation.Parent = conceptualGraph;
+                        relation.Name = relationName;
+
+                        relation.AddOutputNode(mConcept);
+                    }
+                }
+            }
+            else
             {
                 var subjectsRolesStorage = new RolesStorageOfSemanticAnalyzer();
 
@@ -260,42 +292,6 @@ namespace MyNPCLib.NLToCGParsing
 #if DEBUG
             LogInstance.Log($"PrimaryRolesDict (2) = {PrimaryRolesDict}");
 #endif
-
-            //throw new NotImplementedException();
-
-            //            var verbFullLogicalMeaning = verb.FullLogicalMeaning;
-
-            //            if(verbFullLogicalMeaning.IsEmpty())
-            //            {
-            //                return result;
-            //            }
-
-            //            foreach(var logicalMeaning in verbFullLogicalMeaning)
-            //            {
-            //#if DEBUG
-            //                LogInstance.Log($"logicalMeaning = {logicalMeaning}");
-            //#endif
-
-            //                PrimaryRolesDict.Add(logicalMeaning, mConcept);
-            //                resultPrimaryRolesDict.Add(logicalMeaning, mConcept);
-            //            }
-
-            //            if (mVerbPhrase.Object != null)
-            //            {
-            //                throw new NotImplementedException();
-            //                var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(Context, mVerbPhrase.Object.AsNounPhrase);
-            //                var nounResult = nounPhraseNode.Run();
-
-            //#if DEBUG
-            //                LogInstance.Log($"nounResult = {nounResult}");
-            //#endif
-
-            //                PrimaryRolesDict.Assing(nounResult.PrimaryRolesDict);
-            //            }
-
-            //#if DEBUG
-            //            LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
-            //#endif
 
 #if DEBUG
             LogInstance.Log("End");
