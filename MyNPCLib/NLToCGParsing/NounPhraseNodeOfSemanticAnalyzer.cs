@@ -38,44 +38,88 @@ namespace MyNPCLib.NLToCGParsing
             LogInstance.Log($"noun = {noun}");
 #endif
 
-                throw new NotImplementedException();
+                mConcept = new ConceptCGNode();
+                mConcept.Parent = conceptualGraph;
+                mConcept.Name = GetName(noun);
 
-//                mConcept = new ConceptCGNode();
-//                mConcept.Parent = conceptualGraph;
-//                mConcept.Name = GetName(noun);
+                var determinersList = mNounPhrase.DeterminersList;
 
-//                var determinersList = mNounPhrase.Determiners;
+                if(!determinersList.IsEmpty())
+                {
+                    mHasDeterminers = true;
 
-//                if (!determinersList.IsEmpty())
-//                {
-//                    mHasDeterminers = true;
+#if DEBUG
+                    LogInstance.Log($"determinersList.Count = {determinersList.Count}");
+#endif
 
-//                    foreach (var determiner in determinersList)
-//                    {
-//#if DEBUG
-//                        LogInstance.Log($"determiner = {determiner}");
-//#endif
+                    foreach (var determiner in determinersList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"determiner = {determiner}");
+#endif
 
-//                        CreateDeterminerMark(mConcept, noun, determiner);
-//                    }
-//                }
+                        if(determiner.IsDeterminerDTNode)
+                        {
+                            var determinerDTNode = determiner.AsDeterminerDTNode;
 
-//                var nounFullLogicalMeaning = noun.FullLogicalMeaning;
+                            CreateDeterminerMark(mConcept, noun, determinerDTNode.ExtendedToken);
+                        }
+                    }
 
-//                if (nounFullLogicalMeaning.IsEmpty())
-//                {
-//                    return result;
-//                }
+                    //throw new NotImplementedException();
+                }
 
-//                foreach (var logicalMeaning in nounFullLogicalMeaning)
-//                {
-//#if DEBUG
-//                    LogInstance.Log($"logicalMeaning = {logicalMeaning}");
-//#endif
+                var nounFullLogicalMeaning = noun.FullLogicalMeaning;
 
-//                    PrimaryRolesDict.Add(logicalMeaning, mConcept);
-//                    resultPrimaryRolesDict.Add(logicalMeaning, mConcept);
-//                }
+                if (nounFullLogicalMeaning.IsEmpty())
+                {
+                    return result;
+                }
+
+                foreach (var logicalMeaning in nounFullLogicalMeaning)
+                {
+#if DEBUG
+                    LogInstance.Log($"logicalMeaning = {logicalMeaning}");
+#endif
+
+                    PrimaryRolesDict.Add(logicalMeaning, mConcept);
+                    resultPrimaryRolesDict.Add(logicalMeaning, mConcept);
+                }
+
+                //throw new NotImplementedException();
+
+                //                
+
+                //                if (!determinersList.IsEmpty())
+                //                {
+                //                    mHasDeterminers = true;
+
+                //                    foreach (var determiner in determinersList)
+                //                    {
+                //#if DEBUG
+                //                        LogInstance.Log($"determiner = {determiner}");
+                //#endif
+
+                //                        CreateDeterminerMark(mConcept, noun, determiner);
+                //                    }
+                //                }
+
+                //                var nounFullLogicalMeaning = noun.FullLogicalMeaning;
+
+                //                if (nounFullLogicalMeaning.IsEmpty())
+                //                {
+                //                    return result;
+                //                }
+
+                //                foreach (var logicalMeaning in nounFullLogicalMeaning)
+                //                {
+                //#if DEBUG
+                //                    LogInstance.Log($"logicalMeaning = {logicalMeaning}");
+                //#endif
+
+                //                    PrimaryRolesDict.Add(logicalMeaning, mConcept);
+                //                    resultPrimaryRolesDict.Add(logicalMeaning, mConcept);
+                //                }
             }
 
 #if DEBUG

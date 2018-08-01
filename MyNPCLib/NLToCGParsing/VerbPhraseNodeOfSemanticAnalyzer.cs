@@ -39,10 +39,36 @@ namespace MyNPCLib.NLToCGParsing
             LogInstance.Log($"verb = {verb}");
 #endif
 
+            var verbsRolesStorage = new RolesStorageOfSemanticAnalyzer();
+
+            var verbFullLogicalMeaning = verb.FullLogicalMeaning;
+
+            foreach (var logicalMeaning in verbFullLogicalMeaning)
+            {
+#if DEBUG
+                LogInstance.Log($"logicalMeaning = {logicalMeaning}");
+#endif
+
+                PrimaryRolesDict.Add(logicalMeaning, mConcept);
+                resultPrimaryRolesDict.Add(logicalMeaning, mConcept);
+                verbsRolesStorage.Add(logicalMeaning, mConcept);
+            }
+
+            if (verbFullLogicalMeaning.IsEmpty())
+            {
+                return result;
+            }
+
+#if DEBUG
+            LogInstance.Log($"verbsRolesStorage = {verbsRolesStorage}");
+#endif
+
             var nounSubjectsList = mVerbPhrase.NounSubjectsList;
 
             if(!nounSubjectsList.IsEmpty())
             {
+                var subjectsRolesStorage = new RolesStorageOfSemanticAnalyzer();
+
 #if DEBUG
                 LogInstance.Log($"nounSubjectsList.Count = {nounSubjectsList.Count}");
 #endif
@@ -59,10 +85,120 @@ namespace MyNPCLib.NLToCGParsing
 #if DEBUG
                     LogInstance.Log($"nounResult = {nounResult}");
 #endif
+
+                    PrimaryRolesDict.Assing(nounResult.PrimaryRolesDict);
+                    subjectsRolesStorage.Assing(nounResult.PrimaryRolesDict);
+                }
+
+                var verbAndSubjectsMixRolesStorage = new RolesStorageOfSemanticAnalyzer();
+                verbAndSubjectsMixRolesStorage.Assing(subjectsRolesStorage);
+                verbAndSubjectsMixRolesStorage.Assing(verbsRolesStorage);
+
+#if DEBUG
+                LogInstance.Log($"subjectsRolesStorage = {subjectsRolesStorage}");
+                LogInstance.Log($"verbAndSubjectsMix = {verbAndSubjectsMixRolesStorage}");
+#endif
+
+                var primaryAnimatesList = verbAndSubjectsMixRolesStorage.GetByRole("animate");
+
+                if (!primaryAnimatesList.IsEmpty())
+                {
+                    //state -> experiencer -> animate
+
+                    var primaryStatesList = verbAndSubjectsMixRolesStorage.GetByRole("state");
+
+                    if (!primaryStatesList.IsEmpty())
+                    {
+                        foreach (var state in primaryStatesList)
+                        {
+                            foreach (var animate in primaryAnimatesList)
+                            {
+                                CreateExperiencerRelation(state, animate);
+                                CreateStateRelation(state, animate);
+                            }
+                        }
+                    }
+                    //act -> agent -> animate
+
+                    var primaryActsList = verbAndSubjectsMixRolesStorage.GetByRole("act");
+
+                    if (!primaryActsList.IsEmpty())
+                    {
+                        foreach (var act in primaryActsList)
+                        {
+                            foreach (var animate in primaryAnimatesList)
+                            {
+                                CreateAgentRelation(act, animate);
+                                CreateActionRelation(act, animate);
+                            }
+                        }
+                    }
                 }
             }
 
-            throw new NotImplementedException();
+#if DEBUG
+            LogInstance.Log($"PrimaryRolesDict (1) = {PrimaryRolesDict}");
+#endif
+
+            var nounObjectsList = mVerbPhrase.NounObjectsList;
+
+            if(!nounObjectsList.IsEmpty())
+            {
+                var objectsRolesStorage = new RolesStorageOfSemanticAnalyzer();
+
+#if DEBUG
+                LogInstance.Log($"nounObjectsList.Count = {nounObjectsList.Count}");
+#endif
+
+                foreach(var nounObject in nounObjectsList)
+                {
+#if DEBUG
+                    LogInstance.Log($"nounObject = {nounObject}");
+#endif
+
+                    var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(Context, nounObject);
+                    var nounResult = nounPhraseNode.Run();
+
+#if DEBUG
+                    LogInstance.Log($"nounResult = {nounResult}");
+#endif
+
+                    //PrimaryRolesDict.Assing(nounResult.PrimaryRolesDict);
+                    objectsRolesStorage.Assing(nounResult.PrimaryRolesDict);
+                }
+
+                var verbAndObjectsMixRolesStorage = new RolesStorageOfSemanticAnalyzer();
+                verbAndObjectsMixRolesStorage.Assing(objectsRolesStorage);
+                verbAndObjectsMixRolesStorage.Assing(verbsRolesStorage);
+
+#if DEBUG
+                LogInstance.Log($"objectsRolesStorage = {objectsRolesStorage}");
+                LogInstance.Log($"verbAndObjectsMix = {verbAndObjectsMixRolesStorage}");
+#endif
+
+                if (verbFullLogicalMeaning.Contains("event") || verbFullLogicalMeaning.Contains("state"))
+                {
+                    var entitiesList = verbAndObjectsMixRolesStorage.GetByRole("entity");
+
+                    if (!entitiesList.IsEmpty())
+                    {
+                        foreach (var entityConcept in entitiesList)
+                        {
+#if DEBUG
+                            LogInstance.Log($"entityConcept = {entityConcept}");
+#endif
+
+                            CreateObjectRelation(mConcept, entityConcept);
+                        }
+                    }
+                }
+            }
+
+#if DEBUG
+            LogInstance.Log($"PrimaryRolesDict (2) = {PrimaryRolesDict}");
+#endif
+
+            //throw new NotImplementedException();
 
             //            var verbFullLogicalMeaning = verb.FullLogicalMeaning;
 
@@ -98,23 +234,6 @@ namespace MyNPCLib.NLToCGParsing
             //            LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
             //#endif
 
-            //            if(verbFullLogicalMeaning.Contains("event") || verbFullLogicalMeaning.Contains("state"))
-            //            {
-            //                var entitiesList = PrimaryRolesDict.GetByRole("entity");
-
-            //                if(!entitiesList.IsEmpty())
-            //                {
-            //                    foreach(var entityConcept in entitiesList)
-            //                    {
-            //#if DEBUG
-            //                        LogInstance.Log($"entityConcept = {entityConcept}");
-            //#endif
-
-            //                        CreateObjectRelation(mConcept, entityConcept);
-            //                    }
-            //                }
-            //            }
-
 #if DEBUG
             LogInstance.Log("End");
 #endif
@@ -141,6 +260,95 @@ namespace MyNPCLib.NLToCGParsing
             relation.AddOutputNode(objectConcept);
 
             Context.RelationStorage.AddRelation(verbConcept.Name, objectConcept.Name, relationName);
+        }
+
+        private void CreateAgentRelation(ConceptCGNode verbConcept, ConceptCGNode nounConcept)
+        {
+            var relationName = SpecialNamesOfRelations.AgentRelationName;
+
+            if (Context.RelationStorage.ContainsRelation(verbConcept.Name, nounConcept.Name, relationName))
+            {
+                return;
+            }
+
+            var conceptualGraph = Context.ConceptualGraph;
+
+            var relation = new RelationCGNode();
+            relation.Parent = conceptualGraph;
+            relation.Name = relationName;
+
+            verbConcept.AddOutputNode(relation);
+            relation.AddOutputNode(nounConcept);
+
+            Context.RelationStorage.AddRelation(verbConcept.Name, nounConcept.Name, relationName);
+        }
+
+        private void CreateActionRelation(ConceptCGNode verbConcept, ConceptCGNode nounConcept)
+        {
+            var relationName = SpecialNamesOfRelations.ActionRelationName;
+
+            if (Context.RelationStorage.ContainsRelation(nounConcept.Name, verbConcept.Name, relationName))
+            {
+                return;
+            }
+
+            var conceptualGraph = Context.ConceptualGraph;
+
+            var relation = new RelationCGNode();
+            relation.Parent = conceptualGraph;
+            relation.Name = relationName;
+
+            nounConcept.AddOutputNode(relation);
+            relation.AddOutputNode(verbConcept);
+
+            Context.RelationStorage.AddRelation(nounConcept.Name, verbConcept.Name, relationName);
+        }
+
+        private void CreateExperiencerRelation(ConceptCGNode verbConcept, ConceptCGNode nounConcept)
+        {
+#if DEBUG
+            LogInstance.Log($"verbConcept = {verbConcept}");
+            LogInstance.Log($"nounConcept = {nounConcept}");
+#endif
+
+            var relationName = SpecialNamesOfRelations.ExperiencerRelationName;
+
+            if (Context.RelationStorage.ContainsRelation(verbConcept.Name, nounConcept.Name, relationName))
+            {
+                return;
+            }
+
+            var conceptualGraph = Context.ConceptualGraph;
+
+            var relation = new RelationCGNode();
+            relation.Parent = conceptualGraph;
+            relation.Name = relationName;
+
+            verbConcept.AddOutputNode(relation);
+            relation.AddOutputNode(nounConcept);
+
+            Context.RelationStorage.AddRelation(verbConcept.Name, nounConcept.Name, relationName);
+        }
+
+        private void CreateStateRelation(ConceptCGNode verbConcept, ConceptCGNode nounConcept)
+        {
+            var relationName = SpecialNamesOfRelations.StateRelationName;
+
+            if (Context.RelationStorage.ContainsRelation(nounConcept.Name, verbConcept.Name, relationName))
+            {
+                return;
+            }
+
+            var conceptualGraph = Context.ConceptualGraph;
+
+            var relation = new RelationCGNode();
+            relation.Parent = conceptualGraph;
+            relation.Name = relationName;
+
+            nounConcept.AddOutputNode(relation);
+            relation.AddOutputNode(verbConcept);
+
+            Context.RelationStorage.AddRelation(verbConcept.Name, nounConcept.Name, relationName);
         }
     }
 }

@@ -52,10 +52,10 @@ namespace MyNPCLib.NLToCGParsing
                 LogInstance.Log($"verbResult = {verbResult}");
 #endif
 
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
             }
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
 
 //            if (mSentence.NounPhrase != null)
 //            {
