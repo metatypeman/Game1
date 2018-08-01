@@ -53,10 +53,26 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         //public IList<NounDTNode> NounObjectsList { get; set; } = new List<NounDTNode>();
         //public IList<PrepositionalDTNode> PrepositionalObjectsList { get; set; } = new List<PrepositionalDTNode>();
 
-        //public override void SetObject(BaseDTNode obj)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public override void SetValue(BaseDTNode obj, KindOfDTChild kindOfDTChild)
+        {
+#if DEBUG
+            LogInstance.Log($"obj = {obj}");
+            LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
+#endif
+
+            switch (kindOfDTChild)
+            {
+                case KindOfDTChild.Object:
+                    if(obj.IsPrepositionalDTNode)
+                    {
+                        AddPrepositionalObject(obj.AsPrepositionalDTNode);
+                        return;
+                    }
+                    break;
+
+                default: throw new ArgumentOutOfRangeException(nameof(kindOfDTChild), kindOfDTChild, null);
+            }
+        }
 
         protected override void OnRemoveObjFromProp(BaseDTNode obj)
         {

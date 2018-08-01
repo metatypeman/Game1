@@ -58,7 +58,20 @@ namespace MyNPCLib.NLToCGParsing
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    if(verbObject.IsNounPhrase)
+                    {
+                        var nounObject = verbObject.AsNounPhrase;
+
+#if DEBUG
+                        LogInstance.Log($"nounObject = {nounObject}");
+#endif
+
+                        throw new NotImplementedException();
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }          
                 }
             }
         }
@@ -83,8 +96,8 @@ namespace MyNPCLib.NLToCGParsing
                     LogInstance.Log($"adjectiveDTNode = {adjectiveDTNode}");
 #endif
 
-                    //dest.AdjectiveObject = adjectiveDTNode;
-                    //FillAdjective(prepositionObject.AsAdjectivePhrase, adjectiveDTNode);
+                    dest.AdjectiveObject = adjectiveDTNode;
+                    FillAdjective(prepositionObject.AsAdjectivePhrase, adjectiveDTNode);
                 }
                 else
                 {
@@ -93,38 +106,44 @@ namespace MyNPCLib.NLToCGParsing
             }
         }
 
-        //        private static void FillAdjective(AdjectivePhrase adjectivePhrase, AdjectiveDTNode dest)
-        //        {
-        //            dest.AdjectiveExtendedToken = adjectivePhrase.Adjective;
+        private static void FillAdjective(AdjectivePhrase adjectivePhrase, AdjectiveDTNode dest)
+        {
+            dest.ExtendedToken = adjectivePhrase.Adjective;
 
-        //            var ajectiveObject = adjectivePhrase.Object;
+            var ajectiveObject = adjectivePhrase.Object;
 
-        //            if(ajectiveObject != null)
-        //            {
-        //#if DEBUG
-        //                LogInstance.Log($"ajectiveObject = {ajectiveObject}");
-        //#endif
+            if (ajectiveObject != null)
+            {
+#if DEBUG
+                LogInstance.Log($"ajectiveObject = {ajectiveObject}");
+#endif
 
-        //                if(ajectiveObject.IsNounPhrase)
-        //                {
+                if (ajectiveObject.IsNounPhrase)
+                {
 
-        //                    var nounDtNode = new NounDTNode();
-        //                    var parentOfAjective = dest.Parent;
-        //                    parentOfAjective.SetObject(nounDtNode);
-        //                    nounDtNode.AddAjective(dest);
+                    var nounDtNode = new NounDTNode();
+                    var parentOfAjective = dest.Parent;
+                    var kindOfDTChild = parentOfAjective.GetKindOfDTChild(dest);
 
-        //                    FillNoun(ajectiveObject.AsNounPhrase, nounDtNode);
-        //                }
-        //                else
-        //                {
-        //                    throw new NotImplementedException();
-        //                }
-        //            }
-        //        }
+#if DEBUG
+                    LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
+#endif
 
-        //        private static void FillNoun(NounPhrase nounPhrase, NounDTNode dest)
-        //        {
-        //            dest.NounExtendedToken = nounPhrase.Noun;
-        //        }
+                    parentOfAjective.SetValue(nounDtNode, kindOfDTChild);
+                    nounDtNode.AddAjective(dest);
+
+                    FillNoun(ajectiveObject.AsNounPhrase, nounDtNode);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+        }
+
+        private static void FillNoun(NounPhrase nounPhrase, NounDTNode dest)
+        {
+            dest.ExtendedToken = nounPhrase.Noun;
+        }
     }
 }

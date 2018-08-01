@@ -8,27 +8,67 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
     {
         private enum KindOfDTNodeProperty
         {
-            Undefined
+            Undefined,
+            Ajective
         }
 
         public override bool IsNounDTNode => true;
         public override NounDTNode AsNounDTNode => this;
 
-        //        public ATNExtendedToken NounExtendedToken { get; set; }
+        private List<AdjectiveDTNode> mAjectivesList = new List<AdjectiveDTNode>();
 
-        //        public void AddAjective(AdjectiveDTNode adjective)
-        //        {
-        //#if DEBUG
-        //            LogInstance.Log($"adjective = {adjective}");
-        //#endif
+        public List<AdjectiveDTNode> AjectivesList
+        {
+            get
+            {
+                return mAjectivesList;
+            }
+        }
 
-        //            throw new NotImplementedException();
-        //        }
+        public void AddAjective(AdjectiveDTNode adjectiveDTNode)
+        {
+#if DEBUG
+            LogInstance.Log($"adjectiveDTNode = {adjectiveDTNode}");
+#endif
 
-        //        public override void SetObject(BaseDTNode obj)
-        //        {
-        //            throw new NotImplementedException();
-        //        }
+            if (adjectiveDTNode == null)
+            {
+                return;
+            }
+
+            if (mAjectivesList.Contains(adjectiveDTNode))
+            {
+                return;
+            }
+
+            mAjectivesList.Add(adjectiveDTNode);
+
+            adjectiveDTNode.NRemoveParentIfNot(this);
+            adjectiveDTNode.NSetParent(this);
+            mKindsOfDTNodePropertiesDict.Add(adjectiveDTNode, KindOfDTNodeProperty.Ajective);
+            mKindsOfDTChildDict.Add(adjectiveDTNode, KindOfDTChild.Object);
+        }
+
+        public override void SetValue(BaseDTNode obj, KindOfDTChild kindOfDTChild)
+        {
+#if DEBUG
+            LogInstance.Log($"obj = {obj}");
+            LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
+#endif
+
+            switch (kindOfDTChild)
+            {
+                case KindOfDTChild.Object:
+                    if(obj.IsAdjectiveDTNode)
+                    {
+                        AddAjective(obj.AsAdjectiveDTNode);
+                        return;
+                    }
+                    break;
+
+                default: throw new ArgumentOutOfRangeException(nameof(kindOfDTChild), kindOfDTChild, null);
+            }
+        }
 
         protected override void OnRemoveObjFromProp(BaseDTNode obj)
         {
@@ -36,7 +76,23 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             LogInstance.Log($"obj = {obj}");
 #endif
 
-            throw new NotImplementedException();
+            if (!mKindsOfDTNodePropertiesDict.ContainsKey(obj))
+            {
+                return;
+            }
+
+            var kinfOfDTNode = mKindsOfDTNodePropertiesDict[obj];
+            mKindsOfDTNodePropertiesDict.Remove(obj);
+            mKindsOfDTChildDict.Remove(obj);
+
+            switch (kinfOfDTNode)
+            {
+                case KindOfDTNodeProperty.Ajective:
+                    mAjectivesList.Remove(obj.AsAdjectiveDTNode);
+                    break;
+
+                default: throw new ArgumentOutOfRangeException(nameof(kinfOfDTNode), kinfOfDTNode, null);
+            }
         }
 
         private Dictionary<BaseDTNode, KindOfDTNodeProperty> mKindsOfDTNodePropertiesDict = new Dictionary<BaseDTNode, KindOfDTNodeProperty>();
@@ -63,16 +119,19 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToSting(n));
-            //if (NounExtendedToken == null)
-            //{
-            //    sb.AppendLine($"{spaces}{nameof(NounExtendedToken)} = null");
-            //}
-            //else
-            //{
-            //    sb.AppendLine($"{spaces}Begin {nameof(NounExtendedToken)}");
-            //    sb.Append(NounExtendedToken.ToString(nextN));
-            //    sb.AppendLine($"{spaces}End {nameof(NounExtendedToken)}");
-            //}
+            if (AjectivesList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(AjectivesList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(AjectivesList)}");
+                foreach (var item in AjectivesList)
+                {
+                    sb.Append(item.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(AjectivesList)}");
+            }
             return sb.ToString();
         }
 
@@ -82,16 +141,19 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToShortSting(n));
-            //if (NounExtendedToken == null)
-            //{
-            //    sb.AppendLine($"{spaces}{nameof(NounExtendedToken)} = null");
-            //}
-            //else
-            //{
-            //    sb.AppendLine($"{spaces}Begin {nameof(NounExtendedToken)}");
-            //    sb.Append(NounExtendedToken.ToString(nextN));
-            //    sb.AppendLine($"{spaces}End {nameof(NounExtendedToken)}");
-            //}
+            if (AjectivesList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(AjectivesList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(AjectivesList)}");
+                foreach (var item in AjectivesList)
+                {
+                    sb.Append(item.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(AjectivesList)}");
+            }
             return sb.ToString();
         }
     }

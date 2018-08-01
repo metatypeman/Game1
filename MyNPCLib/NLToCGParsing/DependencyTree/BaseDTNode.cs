@@ -71,7 +71,7 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
 
         public abstract KindOfDTChild GetKindOfDTChild(BaseDTNode obj);
 
-        //public abstract void SetObject(BaseDTNode obj);
+        public abstract void SetValue(BaseDTNode obj, KindOfDTChild kindOfDTChild);
 
         public override string ToString()
         {

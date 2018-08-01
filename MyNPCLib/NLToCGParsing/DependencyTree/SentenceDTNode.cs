@@ -54,10 +54,18 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             }
         }
 
-        //public override void SetObject(BaseDTNode obj)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public override void SetValue(BaseDTNode obj, KindOfDTChild kindOfDTChild)
+        {
+#if DEBUG
+            LogInstance.Log($"obj = {obj}");
+            LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
+#endif
+
+            switch(kindOfDTChild)
+            {
+                default: throw new ArgumentOutOfRangeException(nameof(kindOfDTChild), kindOfDTChild, null);
+            }
+        }
 
         protected override void OnRemoveObjFromProp(BaseDTNode obj)
         {
