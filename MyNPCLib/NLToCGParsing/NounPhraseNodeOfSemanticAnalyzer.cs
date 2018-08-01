@@ -1,5 +1,6 @@
 ﻿using MyNPCLib.CG;
 using MyNPCLib.CommonServiceGrammaticalElements;
+using MyNPCLib.NLToCGParsing.DependencyTree;
 using MyNPCLib.NLToCGParsing.PhraseTree;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,13 @@ namespace MyNPCLib.NLToCGParsing
 {
     public class NounPhraseNodeOfSemanticAnalyzer : BaseNodeOfSemanticAnalyzer
     {
-        public NounPhraseNodeOfSemanticAnalyzer(ContextOfSemanticAnalyzer context, NounPhrase nounPhrase)
+        public NounPhraseNodeOfSemanticAnalyzer(ContextOfSemanticAnalyzer context, NounDTNode nounPhrase)
             : base(context)
         {
             mNounPhrase = nounPhrase;
         }
 
-        private NounPhrase mNounPhrase;
+        private NounDTNode mNounPhrase;
         private ConceptCGNode mConcept;
         private bool mHasDeterminers;
 
@@ -29,46 +30,52 @@ namespace MyNPCLib.NLToCGParsing
             var resultPrimaryRolesDict = result.PrimaryRolesDict;
             var resultSecondaryRolesDict = result.SecondaryRolesDict;
             var conceptualGraph = Context.ConceptualGraph;
-            var noun = mNounPhrase.Noun;
+            var noun = mNounPhrase.ExtendedToken;
 
             if (noun != null)
             {
-                mConcept = new ConceptCGNode();
-                mConcept.Parent = conceptualGraph;
-                mConcept.Name = GetName(noun);
-
-                var determinersList = mNounPhrase.Determiners;
-
-                if (!determinersList.IsEmpty())
-                {
-                    mHasDeterminers = true;
-
-                    foreach (var determiner in determinersList)
-                    {
 #if DEBUG
-                        LogInstance.Log($"determiner = {determiner}");
+            LogInstance.Log($"noun = {noun}");
 #endif
 
-                        CreateDeterminerMark(mConcept, noun, determiner);
-                    }
-                }
+                throw new NotImplementedException();
 
-                var nounFullLogicalMeaning = noun.FullLogicalMeaning;
+//                mConcept = new ConceptCGNode();
+//                mConcept.Parent = conceptualGraph;
+//                mConcept.Name = GetName(noun);
 
-                if (nounFullLogicalMeaning.IsEmpty())
-                {
-                    return result;
-                }
+//                var determinersList = mNounPhrase.Determiners;
 
-                foreach (var logicalMeaning in nounFullLogicalMeaning)
-                {
-#if DEBUG
-                    LogInstance.Log($"logicalMeaning = {logicalMeaning}");
-#endif
+//                if (!determinersList.IsEmpty())
+//                {
+//                    mHasDeterminers = true;
 
-                    PrimaryRolesDict.Add(logicalMeaning, mConcept);
-                    resultPrimaryRolesDict.Add(logicalMeaning, mConcept);
-                }
+//                    foreach (var determiner in determinersList)
+//                    {
+//#if DEBUG
+//                        LogInstance.Log($"determiner = {determiner}");
+//#endif
+
+//                        CreateDeterminerMark(mConcept, noun, determiner);
+//                    }
+//                }
+
+//                var nounFullLogicalMeaning = noun.FullLogicalMeaning;
+
+//                if (nounFullLogicalMeaning.IsEmpty())
+//                {
+//                    return result;
+//                }
+
+//                foreach (var logicalMeaning in nounFullLogicalMeaning)
+//                {
+//#if DEBUG
+//                    LogInstance.Log($"logicalMeaning = {logicalMeaning}");
+//#endif
+
+//                    PrimaryRolesDict.Add(logicalMeaning, mConcept);
+//                    resultPrimaryRolesDict.Add(logicalMeaning, mConcept);
+//                }
             }
 
 #if DEBUG

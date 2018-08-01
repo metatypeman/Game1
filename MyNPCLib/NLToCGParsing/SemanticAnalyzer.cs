@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CG;
+using MyNPCLib.NLToCGParsing.DependencyTree;
 using MyNPCLib.NLToCGParsing.PhraseTree;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace MyNPCLib.NLToCGParsing
     {
         private readonly object mRunLockObj = new object();
 
-        public ConceptualGraph Run(Sentence sentence)
+        public ConceptualGraph Run(SentenceDTNode sentence)
         {
             lock(mRunLockObj)
             {

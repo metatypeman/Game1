@@ -603,57 +603,57 @@ namespace TmpSandBox
                 //}
             }
 
-            var contentOfStorageDbgStr = context.GlobalCGStorage.GetContentAsDbgStr();
+            //var contentOfStorageDbgStr = context.GlobalCGStorage.GetContentAsDbgStr();
 
-            LogInstance.Log($"contentOfStorageDbgStr = {contentOfStorageDbgStr}");
+            //LogInstance.Log($"contentOfStorageDbgStr = {contentOfStorageDbgStr}");
 
-            //return;
+            ////return;
 
-            var query = CreateSimpleQueryForMySentence(globalEntityDictionary);
+            //var query = CreateSimpleQueryForMySentence(globalEntityDictionary);
 
-            LogInstance.Log($"query = {query}");
+            //LogInstance.Log($"query = {query}");
 
-            {
-                var debugStr = DebugHelperForRuleInstance.ToString(query);
+            //{
+            //    var debugStr = DebugHelperForRuleInstance.ToString(query);
 
-                LogInstance.Log($"debugStr = {debugStr}");
-            }
+            //    LogInstance.Log($"debugStr = {debugStr}");
+            //}
 
-            var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
-            //indexedQuery.FillIndexedDataAsStorage();
+            //var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
+            ////indexedQuery.FillIndexedDataAsStorage();
 
-            var searcher = new LogicalSearcher(context);
+            //var searcher = new LogicalSearcher(context);
 
-            var searchOptions = new LogicalSearchOptions();
-            var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
-            globalStorageOptions.Storage = context.GlobalCGStorage;
-            globalStorageOptions.MaxDeph = null;
-            globalStorageOptions.UseFacts = true;
-            globalStorageOptions.UseProductions = true;
-            globalStorageOptions.Priority = 1;
+            //var searchOptions = new LogicalSearchOptions();
+            //var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
+            //globalStorageOptions.Storage = context.GlobalCGStorage;
+            //globalStorageOptions.MaxDeph = null;
+            //globalStorageOptions.UseFacts = true;
+            //globalStorageOptions.UseProductions = true;
+            //globalStorageOptions.Priority = 1;
 
-            searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+            //searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
 
-            searchOptions.QueryExpression = indexedQuery;
+            //searchOptions.QueryExpression = indexedQuery;
 
-            var rearchResult = searcher.Run(searchOptions);
+            //var rearchResult = searcher.Run(searchOptions);
 
-            LogInstance.Log($"rearchResult = {rearchResult}");
+            //LogInstance.Log($"rearchResult = {rearchResult}");
 
-            var targetSearchResultItemsList = rearchResult.Items;
+            //var targetSearchResultItemsList = rearchResult.Items;
 
-            foreach (var targetSearchResultItem in targetSearchResultItemsList)
-            {
-                var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
+            //foreach (var targetSearchResultItem in targetSearchResultItemsList)
+            //{
+            //    var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
 
-                //LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
+            //    //LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
 
-                {
-                    var debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
+            //    {
+            //        var debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
 
-                    LogInstance.Log($"debugStr = {debugStr}");
-                }
-            }
+            //        LogInstance.Log($"debugStr = {debugStr}");
+            //    }
+            //}
 
             //var paragraph = "The dog likes the man.";
 

@@ -1,5 +1,6 @@
 ﻿using MyNPCLib.CG;
 using MyNPCLib.CommonServiceGrammaticalElements;
+using MyNPCLib.NLToCGParsing.DependencyTree;
 using MyNPCLib.NLToCGParsing.PhraseTree;
 using MyNPCLib.SimpleWordsDict;
 using System;
@@ -10,13 +11,13 @@ namespace MyNPCLib.NLToCGParsing
 {
     public class SentenceNodeOfSemanticAnalyzer: BaseNodeOfSemanticAnalyzer
     {
-        public SentenceNodeOfSemanticAnalyzer(ContextOfSemanticAnalyzer context, Sentence sentence)
+        public SentenceNodeOfSemanticAnalyzer(ContextOfSemanticAnalyzer context, SentenceDTNode sentence)
             : base(context)
         {         
             mSentence = sentence;
         }
     
-        private Sentence mSentence;
+        private SentenceDTNode mSentence;
         private ConceptualGraph mConceptualGraph;
 
         public ResultOfNodeOfSemanticAnalyzer Run()
@@ -36,70 +37,90 @@ namespace MyNPCLib.NLToCGParsing
 
             CreateGrammaticalRelations();
 
-            if (mSentence.NounPhrase != null)
-            {
-                throw new NotImplementedException();
-                var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(Context, mSentence.NounPhrase.AsNounPhrase);
-                var nounResult = nounPhraseNode.Run();
+            var rootVerb = mSentence.Verb;
 
 #if DEBUG
-                LogInstance.Log($"nounResult = {nounResult}");
+            LogInstance.Log($"rootVerb = {rootVerb}");
 #endif
 
-                PrimaryRolesDict.Assing(nounResult.PrimaryRolesDict);
-            }
-
-            if (mSentence.VerbPhrase != null)
+            if(rootVerb != null)
             {
-                var verbPhraseNode = new VerbPhraseNodeOfSemanticAnalyzer(Context, mSentence.VerbPhrase);
+                var verbPhraseNode = new VerbPhraseNodeOfSemanticAnalyzer(Context, rootVerb);
                 var verbResult = verbPhraseNode.Run();
 
 #if DEBUG
                 LogInstance.Log($"verbResult = {verbResult}");
 #endif
 
-                PrimaryRolesDict.Assing(verbResult.PrimaryRolesDict);
+                throw new NotImplementedException();
             }
 
-#if DEBUG
-            LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
-#endif
+            throw new NotImplementedException();
 
-            var primaryAnimatesList = PrimaryRolesDict.GetByRole("animate");
+//            if (mSentence.NounPhrase != null)
+//            {
+//                throw new NotImplementedException();
+//                var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(Context, mSentence.NounPhrase.AsNounPhrase);
+//                var nounResult = nounPhraseNode.Run();
 
-            if(!primaryAnimatesList.IsEmpty())
-            {
-                //state -> experiencer -> animate
+//#if DEBUG
+//                LogInstance.Log($"nounResult = {nounResult}");
+//#endif
 
-                var primaryStatesList = PrimaryRolesDict.GetByRole("state");
+//                PrimaryRolesDict.Assing(nounResult.PrimaryRolesDict);
+//            }
 
-                if (!primaryStatesList.IsEmpty())
-                {
-                    foreach(var state in primaryStatesList)
-                    {
-                        foreach(var animate in primaryAnimatesList)
-                        {
-                            CreateExperiencerRelation(state, animate);
-                            CreateStateRelation(state, animate);
-                        }
-                    }
-                }
-                //act -> agent -> animate
+//            if (mSentence.VerbPhrase != null)
+//            {
+//                var verbPhraseNode = new VerbPhraseNodeOfSemanticAnalyzer(Context, mSentence.VerbPhrase);
+//                var verbResult = verbPhraseNode.Run();
 
-                var primaryActsList = PrimaryRolesDict.GetByRole("act");
+//#if DEBUG
+//                LogInstance.Log($"verbResult = {verbResult}");
+//#endif
 
-                if(!primaryActsList.IsEmpty())
-                {
-                    foreach(var act in primaryActsList)
-                    {
-                        foreach (var animate in primaryAnimatesList)
-                        {
-                            CreateAgentRelation(act, animate);
-                            CreateActionRelation(act, animate);
-                        }
-                    }
-                }
-            }
+//                PrimaryRolesDict.Assing(verbResult.PrimaryRolesDict);
+//            }
+
+//#if DEBUG
+//            LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
+//#endif
+
+//            var primaryAnimatesList = PrimaryRolesDict.GetByRole("animate");
+
+//            if(!primaryAnimatesList.IsEmpty())
+//            {
+//                //state -> experiencer -> animate
+
+//                var primaryStatesList = PrimaryRolesDict.GetByRole("state");
+
+//                if (!primaryStatesList.IsEmpty())
+//                {
+//                    foreach(var state in primaryStatesList)
+//                    {
+//                        foreach(var animate in primaryAnimatesList)
+//                        {
+//                            CreateExperiencerRelation(state, animate);
+//                            CreateStateRelation(state, animate);
+//                        }
+//                    }
+//                }
+//                //act -> agent -> animate
+
+//                var primaryActsList = PrimaryRolesDict.GetByRole("act");
+
+//                if(!primaryActsList.IsEmpty())
+//                {
+//                    foreach(var act in primaryActsList)
+//                    {
+//                        foreach (var animate in primaryAnimatesList)
+//                        {
+//                            CreateAgentRelation(act, animate);
+//                            CreateActionRelation(act, animate);
+//                        }
+//                    }
+//                }
+//            }
 
 #if DEBUG
             LogInstance.Log("End");
