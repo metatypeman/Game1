@@ -17,6 +17,7 @@ namespace MyNPCLib.SimpleWordsDict
             DefineWords();
 
             CalculateFullMeaningsDict();
+            PrepareRootWords();
         }
 
         private static void DefineMeaning(string word, string meaning)
@@ -107,6 +108,7 @@ namespace MyNPCLib.SimpleWordsDict
                         }
                     }
 
+                    completeLogicalMeaningsList = completeLogicalMeaningsList.Distinct().ToList();
 #if DEBUG
                     //LogInstance.Log($"completeLogicalMeaningsList.Count = {completeLogicalMeaningsList.Count}");
                     //foreach (var meaning in completeLogicalMeaningsList)
@@ -153,6 +155,23 @@ namespace MyNPCLib.SimpleWordsDict
             }
         }
 
+        private static void PrepareRootWords()
+        {
+            foreach(var wordsDictDataKVPItem in mWordsDictData.WordsDict)
+            {
+                var wordFrame = wordsDictDataKVPItem.Value;
+                var wordName = wordFrame.Word;
+
+                foreach(var grammaticalWordFrame in wordFrame.GrammaticalWordFrames)
+                {
+                    if(string.IsNullOrWhiteSpace(grammaticalWordFrame.RootWord))
+                    {
+                        grammaticalWordFrame.RootWord = wordName;
+                    }
+                }
+            }
+        }
+
         private static WordsDictData mWordsDictData;
         public static WordsDictData Data => mWordsDictData;
         private static Dictionary<string, List<string>> mTmpMeaningsDict = new Dictionary<string, List<string>>();
@@ -163,6 +182,8 @@ namespace MyNPCLib.SimpleWordsDict
             DefineMeaning("animate", "entity");
             DefineMeaning("phisobj", "entity");
             DefineMeanings("animal", new List<string>() { "animate", "phisobj" });
+            DefineMeaning("moving", "act");
+            DefineMeaning("place", "phisobj");
         }
 
         private static void DefineWords()
@@ -300,7 +321,11 @@ namespace MyNPCLib.SimpleWordsDict
                     new NounGrammaticalWordFrame()
                     {
                         Number = GrammaticalNumberOfWord.Singular,
-                        IsCountable = true
+                        IsCountable = true,
+                        LogicalMeaning = new List<string>()
+                        {
+                            "place"
+                        }
                     }
                 }
             };
@@ -334,7 +359,8 @@ namespace MyNPCLib.SimpleWordsDict
                     {
                         LogicalMeaning = new List<string>()
                         {
-                            "act"
+                            "act",
+                            "moving"
                         }
                     }
                 }
@@ -360,6 +386,12 @@ namespace MyNPCLib.SimpleWordsDict
                 GrammaticalWordFrames = new List<BaseGrammaticalWordFrame>()
                 {
                     new AdjectiveGrammaticalWordFrame()
+                    {
+                        LogicalMeaning = new List<string>()
+                        {
+                            "color"
+                        }
+                    }
                 }
             };
         }

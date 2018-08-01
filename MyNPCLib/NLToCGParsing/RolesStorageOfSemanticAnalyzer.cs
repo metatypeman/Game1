@@ -2,6 +2,7 @@
 using MyNPCLib.NLToCGParsing.DependencyTree;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.NLToCGParsing
@@ -26,6 +27,14 @@ namespace MyNPCLib.NLToCGParsing
             var newItemsList = new List<ConceptCGNode>();
             newItemsList.Add(concept);
             mRolesDict[role] = newItemsList;
+        }
+
+        public List<string> Roles
+        {
+            get
+            {
+                return mRolesDict.Keys.ToList();
+            }
         }
 
         public int Count

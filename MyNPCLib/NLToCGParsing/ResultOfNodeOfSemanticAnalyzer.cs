@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.CG;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,7 @@ namespace MyNPCLib.NLToCGParsing
 {
     public class ResultOfNodeOfSemanticAnalyzer : IObjectToString
     {
+        public ConceptCGNode RootConcept { get; set; }
         public RolesStorageOfSemanticAnalyzer PrimaryRolesDict { get; set; } = new RolesStorageOfSemanticAnalyzer();
         public RolesStorageOfSemanticAnalyzer SecondaryRolesDict { get; set; } = new RolesStorageOfSemanticAnalyzer();
 
@@ -24,6 +26,16 @@ namespace MyNPCLib.NLToCGParsing
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            if (RootConcept == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(RootConcept)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(RootConcept)}");
+                sb.Append(RootConcept.ToBriefString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(RootConcept)}");
+            }
             if (PrimaryRolesDict == null)
             {
                 sb.AppendLine($"{spaces}{nameof(PrimaryRolesDict)} = null");

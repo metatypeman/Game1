@@ -31,6 +31,7 @@ namespace MyNPCLib.NLToCGParsing
             var verb = mVerbPhrase.ExtendedToken;
             var conceptualGraph = Context.ConceptualGraph;
             mConcept = new ConceptCGNode();
+            result.RootConcept = mConcept;
             mConcept.Parent = conceptualGraph;
 
             mConcept.Name = GetName(verb);
@@ -141,30 +142,92 @@ namespace MyNPCLib.NLToCGParsing
 #endif
 
             var nounObjectsList = mVerbPhrase.NounObjectsList;
+            var prepositionalObjectsList = mVerbPhrase.PrepositionalObjectsList;
 
-            if(!nounObjectsList.IsEmpty())
+            if(!nounObjectsList.IsEmpty() || !prepositionalObjectsList.IsEmpty())
             {
                 var objectsRolesStorage = new RolesStorageOfSemanticAnalyzer();
 
-#if DEBUG
-                LogInstance.Log($"nounObjectsList.Count = {nounObjectsList.Count}");
-#endif
-
-                foreach(var nounObject in nounObjectsList)
+                if (!nounObjectsList.IsEmpty())
                 {
 #if DEBUG
-                    LogInstance.Log($"nounObject = {nounObject}");
+                    LogInstance.Log($"nounObjectsList.Count = {nounObjectsList.Count}");
 #endif
 
-                    var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(Context, nounObject);
-                    var nounResult = nounPhraseNode.Run();
+                    foreach (var nounObject in nounObjectsList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"nounObject = {nounObject}");
+#endif
+
+                        var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(Context, nounObject);
+                        var nounResult = nounPhraseNode.Run();
 
 #if DEBUG
-                    LogInstance.Log($"nounResult = {nounResult}");
+                        LogInstance.Log($"nounResult = {nounResult}");
 #endif
 
-                    //PrimaryRolesDict.Assing(nounResult.PrimaryRolesDict);
-                    objectsRolesStorage.Assing(nounResult.PrimaryRolesDict);
+                        //PrimaryRolesDict.Assing(nounResult.PrimaryRolesDict);
+                        objectsRolesStorage.Assing(nounResult.PrimaryRolesDict);
+                    }
+                }
+
+                if(!prepositionalObjectsList.IsEmpty())
+                {
+#if DEBUG
+                    LogInstance.Log($"prepositionalObjectsList.Count = {prepositionalObjectsList.Count}");
+#endif
+
+                    var isMoving = verb.FullLogicalMeaning.Contains("moving");
+
+#if DEBUG
+                    LogInstance.Log($"isMoving = {isMoving}");
+#endif
+
+                    foreach (var prepositional in prepositionalObjectsList)
+                    {
+#if DEBUG
+                        LogInstance.Log($"prepositional = {prepositional}");
+#endif
+
+                        var isTo = prepositional.ExtendedToken.RootWord == "to";
+
+#if DEBUG
+                        LogInstance.Log($"isTo = {isTo}");
+#endif
+
+                        if(isTo && isMoving)
+                        {
+                            var nounOfPrepositional = prepositional.NounObject;
+
+                            var nodeOfNounOfPrepositional = new NounPhraseNodeOfSemanticAnalyzer(Context, nounOfPrepositional);
+                            var nounOfPrepositionalResult = nodeOfNounOfPrepositional.Run();
+
+#if DEBUG
+                            LogInstance.Log($"nounOfPrepositionalResult = {nounOfPrepositionalResult}");
+#endif
+
+                            var phisobjList = nounOfPrepositionalResult.PrimaryRolesDict.GetByRole("phisobj");
+
+#if DEBUG
+                            LogInstance.Log($"phisobjList.Count = {phisobjList.Count}");
+#endif
+
+                            foreach(var phisobj in phisobjList)
+                            {
+#if DEBUG
+                                LogInstance.Log($"phisobj = {phisobj}");
+#endif
+
+                                var directionRelation = new RelationCGNode();
+                                directionRelation.Parent = conceptualGraph;
+                                directionRelation.Name = "direction";
+
+                                directionRelation.AddInputNode(mConcept);
+                                directionRelation.AddOutputNode(phisobj);
+                            }
+                        }
+                    }
                 }
 
                 var verbAndObjectsMixRolesStorage = new RolesStorageOfSemanticAnalyzer();

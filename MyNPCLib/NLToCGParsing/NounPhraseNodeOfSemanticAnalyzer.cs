@@ -4,6 +4,7 @@ using MyNPCLib.NLToCGParsing.DependencyTree;
 using MyNPCLib.NLToCGParsing.PhraseTree;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.NLToCGParsing
@@ -32,94 +33,108 @@ namespace MyNPCLib.NLToCGParsing
             var conceptualGraph = Context.ConceptualGraph;
             var noun = mNounPhrase.ExtendedToken;
 
-            if (noun != null)
-            {
 #if DEBUG
             LogInstance.Log($"noun = {noun}");
 #endif
 
-                mConcept = new ConceptCGNode();
-                mConcept.Parent = conceptualGraph;
-                mConcept.Name = GetName(noun);
+            if (noun == null)
+            {
+                return result;
+            }
 
-                var determinersList = mNounPhrase.DeterminersList;
+            mConcept = new ConceptCGNode();
+            result.RootConcept = mConcept;
+            mConcept.Parent = conceptualGraph;
+            mConcept.Name = GetName(noun);
 
-                if(!determinersList.IsEmpty())
-                {
-                    mHasDeterminers = true;
+            var determinersList = mNounPhrase.DeterminersList;
+
+            if (!determinersList.IsEmpty())
+            {
+                mHasDeterminers = true;
 
 #if DEBUG
-                    LogInstance.Log($"determinersList.Count = {determinersList.Count}");
+                LogInstance.Log($"determinersList.Count = {determinersList.Count}");
 #endif
 
-                    foreach (var determiner in determinersList)
+                foreach (var determiner in determinersList)
+                {
+#if DEBUG
+                    LogInstance.Log($"determiner = {determiner}");
+#endif
+
+                    if (determiner.IsDeterminerDTNode)
                     {
-#if DEBUG
-                        LogInstance.Log($"determiner = {determiner}");
-#endif
+                        var determinerDTNode = determiner.AsDeterminerDTNode;
 
-                        if(determiner.IsDeterminerDTNode)
-                        {
-                            var determinerDTNode = determiner.AsDeterminerDTNode;
-
-                            CreateDeterminerMark(mConcept, noun, determinerDTNode.ExtendedToken);
-                        }
+                        CreateDeterminerMark(mConcept, noun, determinerDTNode.ExtendedToken);
                     }
-
-                    //throw new NotImplementedException();
-                }
-
-                var nounFullLogicalMeaning = noun.FullLogicalMeaning;
-
-                if (nounFullLogicalMeaning.IsEmpty())
-                {
-                    return result;
-                }
-
-                foreach (var logicalMeaning in nounFullLogicalMeaning)
-                {
-#if DEBUG
-                    LogInstance.Log($"logicalMeaning = {logicalMeaning}");
-#endif
-
-                    PrimaryRolesDict.Add(logicalMeaning, mConcept);
-                    resultPrimaryRolesDict.Add(logicalMeaning, mConcept);
                 }
 
                 //throw new NotImplementedException();
+            }
 
-                //                
+            var ajectivesList = mNounPhrase.AjectivesList;
 
-                //                if (!determinersList.IsEmpty())
-                //                {
-                //                    mHasDeterminers = true;
+            if(!ajectivesList.IsEmpty())
+            {
+#if DEBUG
+                LogInstance.Log($"ajectivesList.Count = {ajectivesList.Count}");
+#endif
 
-                //                    foreach (var determiner in determinersList)
-                //                    {
-                //#if DEBUG
-                //                        LogInstance.Log($"determiner = {determiner}");
-                //#endif
+                foreach(var ajective in ajectivesList)
+                {
+#if DEBUG
+                    LogInstance.Log($"ajective = {ajective}");
+#endif
 
-                //                        CreateDeterminerMark(mConcept, noun, determiner);
-                //                    }
-                //                }
+                    var ajectiveNode = new AjectivePhraseNodeOfSemanticAnalyzer(Context, ajective);
+                    var ajectiveNodeResult = ajectiveNode.Run();
 
-                //                var nounFullLogicalMeaning = noun.FullLogicalMeaning;
+#if DEBUG
+                    LogInstance.Log($"ajectiveNodeResult = {ajectiveNodeResult}");
+#endif
+                    var role = ajective.ExtendedToken.LogicalMeaning.FirstOrDefault();
 
-                //                if (nounFullLogicalMeaning.IsEmpty())
-                //                {
-                //                    return result;
-                //                }
+#if DEBUG
+                    LogInstance.Log($"role = {role}");
+#endif
 
-                //                foreach (var logicalMeaning in nounFullLogicalMeaning)
-                //                {
-                //#if DEBUG
-                //                    LogInstance.Log($"logicalMeaning = {logicalMeaning}");
-                //#endif
+                    if(!string.IsNullOrWhiteSpace(role))
+                    {
+                        var ajectiveConcept = ajectiveNodeResult.RootConcept;
 
-                //                    PrimaryRolesDict.Add(logicalMeaning, mConcept);
-                //                    resultPrimaryRolesDict.Add(logicalMeaning, mConcept);
-                //                }
+#if DEBUG
+                        LogInstance.Log($"ajectiveConcept = {ajectiveConcept.ToBriefString()}");
+#endif
+
+                        var ajectiveRelation = new RelationCGNode();
+                        ajectiveRelation.Parent = conceptualGraph;
+                        ajectiveRelation.Name = role;
+
+                        MarkAsEntityCondition(ajectiveRelation);
+
+                        ajectiveRelation.AddInputNode(mConcept);
+                        ajectiveRelation.AddOutputNode(ajectiveConcept);
+                    }
+                }
+            }
+
+            var nounFullLogicalMeaning = noun.FullLogicalMeaning;
+
+            if (nounFullLogicalMeaning.IsEmpty())
+            {
+                return result;
+            }
+
+            foreach (var logicalMeaning in nounFullLogicalMeaning)
+            {
+#if DEBUG
+                LogInstance.Log($"logicalMeaning = {logicalMeaning}");
+#endif
+
+                PrimaryRolesDict.Add(logicalMeaning, mConcept);
+                resultPrimaryRolesDict.Add(logicalMeaning, mConcept);
             }
 
 #if DEBUG
