@@ -9,7 +9,8 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         private enum KindOfDTNodeProperty
         {
             Undefined,
-            Ajective
+            Ajective,
+            Determiner
         }
 
         public override bool IsNounDTNode => true;
@@ -47,6 +48,40 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             adjectiveDTNode.NSetParent(this);
             mKindsOfDTNodePropertiesDict.Add(adjectiveDTNode, KindOfDTNodeProperty.Ajective);
             mKindsOfDTChildDict.Add(adjectiveDTNode, KindOfDTChild.Object);
+        }
+
+        private List<BaseDTNode> mDeterminersList = new List<BaseDTNode>();
+
+        public List<BaseDTNode> DeterminersList
+        {
+            get
+            {
+                return mDeterminersList;
+            }
+        }
+
+        public void AddDeterminer(BaseDTNode determinerDTNode)
+        {
+#if DEBUG
+            LogInstance.Log($"determinerDTNode = {determinerDTNode}");
+#endif
+
+            if (determinerDTNode == null)
+            {
+                return;
+            }
+
+            if (mDeterminersList.Contains(determinerDTNode))
+            {
+                return;
+            }
+
+            mDeterminersList.Add(determinerDTNode);
+
+            determinerDTNode.NRemoveParentIfNot(this);
+            determinerDTNode.NSetParent(this);
+            mKindsOfDTNodePropertiesDict.Add(determinerDTNode, KindOfDTNodeProperty.Determiner);
+            mKindsOfDTChildDict.Add(determinerDTNode, KindOfDTChild.Object);
         }
 
         public override void SetValue(BaseDTNode obj, KindOfDTChild kindOfDTChild)
@@ -132,6 +167,19 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
                 }
                 sb.AppendLine($"{spaces}End {nameof(AjectivesList)}");
             }
+            if (DeterminersList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DeterminersList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(DeterminersList)}");
+                foreach (var item in DeterminersList)
+                {
+                    sb.Append(item.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(DeterminersList)}");
+            }
             return sb.ToString();
         }
 
@@ -153,6 +201,19 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
                     sb.Append(item.ToShortString(nextN));
                 }
                 sb.AppendLine($"{spaces}End {nameof(AjectivesList)}");
+            }
+            if (DeterminersList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(DeterminersList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(DeterminersList)}");
+                foreach (var item in DeterminersList)
+                {
+                    sb.Append(item.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(DeterminersList)}");
             }
             return sb.ToString();
         }

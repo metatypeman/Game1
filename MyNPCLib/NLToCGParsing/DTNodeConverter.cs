@@ -21,6 +21,8 @@ namespace MyNPCLib.NLToCGParsing
             result.Mood = sentence.Mood;
             result.Modal = sentence.Modal;
 
+            var subject = sentence.NounPhrase;
+
             var verbOfSentence = sentence.VerbPhrase;
 
             if(verbOfSentence != null)
@@ -28,6 +30,24 @@ namespace MyNPCLib.NLToCGParsing
                 var verbDtNode = new VerbDTNode();
                 result.Verb = verbDtNode;
                 FillRootVerbOfSentence(verbOfSentence, verbDtNode);
+
+                if (subject != null)
+                {
+#if DEBUG
+                    LogInstance.Log($"subject = {subject}");
+#endif
+
+                    if(subject.IsNounPhrase)
+                    {
+                        var nounDtNode = new NounDTNode();
+                        verbDtNode.AddNounSubject(nounDtNode);
+                        FillNoun(subject.AsNounPhrase, nounDtNode);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
             }
 
             return result;
@@ -66,7 +86,9 @@ namespace MyNPCLib.NLToCGParsing
                         LogInstance.Log($"nounObject = {nounObject}");
 #endif
 
-                        throw new NotImplementedException();
+                        var nounDtNode = new NounDTNode();
+                        dest.AddNounObject(nounDtNode);
+                        FillNoun(nounObject, nounDtNode);
                     }
                     else
                     {
@@ -144,6 +166,22 @@ namespace MyNPCLib.NLToCGParsing
         private static void FillNoun(NounPhrase nounPhrase, NounDTNode dest)
         {
             dest.ExtendedToken = nounPhrase.Noun;
+
+#if DEBUG
+            LogInstance.Log($"nounPhrase = {nounPhrase}");
+#endif
+
+            var determinersList = nounPhrase.Determiners;
+
+            if(!determinersList.IsEmpty())
+            {
+                foreach (var determiner in determinersList)
+                {
+                    var determinerDTNode = new DeterminerDTNode();
+                    dest.AddDeterminer(determinerDTNode);
+                    determinerDTNode.ExtendedToken = determiner;
+                }
+            }
         }
     }
 }

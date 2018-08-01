@@ -16,6 +16,8 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public virtual PrepositionalDTNode AsPrepositionalDTNode => null;
         public virtual bool IsAdjectiveDTNode => false;
         public virtual AdjectiveDTNode AsAdjectiveDTNode => null;
+        public virtual bool IsDeterminerDTNode => false;
+        public virtual DeterminerDTNode AsDeterminerDTNode => null;
 
         public ATNExtendedToken ExtendedToken { get; set; }
 

@@ -573,34 +573,34 @@ namespace TmpSandBox
 
                 LogInstance.Log($"dotStr = {dotStr}");
 
-                var internalCG = ConvertorCGToInternal.Convert(graph, globalEntityDictionary);
+                //var internalCG = ConvertorCGToInternal.Convert(graph, globalEntityDictionary);
 
-                LogInstance.Log($"internalCG = {internalCG}");
+                //LogInstance.Log($"internalCG = {internalCG}");
 
-                dotStr = DotConverter.ConvertToString(internalCG);
+                //dotStr = DotConverter.ConvertToString(internalCG);
 
-                LogInstance.Log($"dotStr (2) = {dotStr}");
+                //LogInstance.Log($"dotStr (2) = {dotStr}");
 
-                var ruleInstancesList = ConvertorInternalCGToPersistLogicalData.ConvertConceptualGraph(internalCG, globalEntityDictionary);
+                //var ruleInstancesList = ConvertorInternalCGToPersistLogicalData.ConvertConceptualGraph(internalCG, globalEntityDictionary);
 
-                LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
-                foreach(var ruleInstance in ruleInstancesList)
-                {
-                    LogInstance.Log($"ruleInstance = {ruleInstance}");
+                //LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
+                //foreach(var ruleInstance in ruleInstancesList)
+                //{
+                //    LogInstance.Log($"ruleInstance = {ruleInstance}");
 
-                    {
-                        var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+                //    {
+                //        var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
 
-                        LogInstance.Log($"debugStr = {debugStr}");
-                    }
+                //        LogInstance.Log($"debugStr = {debugStr}");
+                //    }
 
-                    var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
-                    //indexedRuleInstance.FillIndexedDataAsStorage();
+                //    var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+                //    //indexedRuleInstance.FillIndexedDataAsStorage();
 
-                    LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+                //    LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 
-                    context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
-                }
+                //    context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
+                //}
             }
 
             var contentOfStorageDbgStr = context.GlobalCGStorage.GetContentAsDbgStr();

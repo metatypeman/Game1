@@ -8,11 +8,47 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
     {
         private enum KindOfDTNodeProperty
         {
-            PrepositionalObject
+            NounSubject,
+            PrepositionalObject,
+            NounObject
         }
 
         public override bool IsVerbDTNode => true;
         public override VerbDTNode AsVerbDTNode => this;
+
+        private List<NounDTNode> mNounSubjectsList = new List<NounDTNode>();
+
+        public List<NounDTNode> NounSubjectsList
+        {
+            get
+            {
+                return mNounSubjectsList;
+            }
+        }
+
+        public void AddNounSubject(NounDTNode nounDTNode)
+        {
+#if DEBUG
+            LogInstance.Log($"nounDTNode = {nounDTNode}");
+#endif
+
+            if (nounDTNode == null)
+            {
+                return;
+            }
+
+            if (mNounSubjectsList.Contains(nounDTNode))
+            {
+                return;
+            }
+
+            mNounSubjectsList.Add(nounDTNode);
+
+            nounDTNode.NRemoveParentIfNot(this);
+            nounDTNode.NSetParent(this);
+            mKindsOfDTNodePropertiesDict.Add(nounDTNode, KindOfDTNodeProperty.NounSubject);
+            mKindsOfDTChildDict.Add(nounDTNode, KindOfDTChild.Subject);
+        }
 
         private List<PrepositionalDTNode> mPrepositionalObjectsList = new List<PrepositionalDTNode>();
 
@@ -48,10 +84,39 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             mKindsOfDTChildDict.Add(prepositionalDTNode, KindOfDTChild.Object);
         }
 
-        //public IList<NounDTNode> NounSubjectsList { get; set; } = new List<NounDTNode>();
+        private List<NounDTNode> mNounObjectsList = new List<NounDTNode>();
 
-        //public IList<NounDTNode> NounObjectsList { get; set; } = new List<NounDTNode>();
-        //public IList<PrepositionalDTNode> PrepositionalObjectsList { get; set; } = new List<PrepositionalDTNode>();
+        public List<NounDTNode> NounObjectsList
+        {
+            get
+            {
+                return mNounObjectsList;
+            }
+        }
+
+        public void AddNounObject(NounDTNode nounDTNode)
+        {
+#if DEBUG
+            LogInstance.Log($"nounDTNode = {nounDTNode}");
+#endif
+
+            if (nounDTNode == null)
+            {
+                return;
+            }
+
+            if (mNounObjectsList.Contains(nounDTNode))
+            {
+                return;
+            }
+
+            mNounObjectsList.Add(nounDTNode);
+
+            nounDTNode.NRemoveParentIfNot(this);
+            nounDTNode.NSetParent(this);
+            mKindsOfDTNodePropertiesDict.Add(nounDTNode, KindOfDTNodeProperty.NounObject);
+            mKindsOfDTChildDict.Add(nounDTNode, KindOfDTChild.Object);
+        }
 
         public override void SetValue(BaseDTNode obj, KindOfDTChild kindOfDTChild)
         {
@@ -62,10 +127,23 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
 
             switch (kindOfDTChild)
             {
+                case KindOfDTChild.Subject:
+                    if (obj.IsNounDTNode)
+                    {
+                        AddNounSubject(obj.AsNounDTNode);
+                        return;
+                    }
+                    break;
+
                 case KindOfDTChild.Object:
                     if(obj.IsPrepositionalDTNode)
                     {
                         AddPrepositionalObject(obj.AsPrepositionalDTNode);
+                        return;
+                    }
+                    if(obj.IsNounDTNode)
+                    {
+                        AddNounObject(obj.AsNounDTNode);
                         return;
                     }
                     break;
@@ -91,8 +169,16 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
 
             switch (kinfOfDTNode)
             {
+                case KindOfDTNodeProperty.NounSubject:
+                    mNounSubjectsList.Remove(obj.AsNounDTNode);
+                    break;
+
                 case KindOfDTNodeProperty.PrepositionalObject:
                     mPrepositionalObjectsList.Remove(obj.AsPrepositionalDTNode);
+                    break;
+
+                case KindOfDTNodeProperty.NounObject:
+                    mNounObjectsList.Remove(obj.AsNounDTNode);
                     break;
 
                 default: throw new ArgumentOutOfRangeException(nameof(kinfOfDTNode), kinfOfDTNode, null);
@@ -123,32 +209,32 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToSting(n));
-            //if (NounSubjectsList == null)
-            //{
-            //    sb.AppendLine($"{spaces}{nameof(NounSubjectsList)} = null");
-            //}
-            //else
-            //{
-            //    sb.AppendLine($"{spaces}Begin {nameof(NounSubjectsList)}");
-            //    foreach(var item in NounSubjectsList)
-            //    {
-            //        sb.Append(item.ToString(nextN));
-            //    }   
-            //    sb.AppendLine($"{spaces}End {nameof(NounSubjectsList)}");
-            //}
-            //if (NounObjectsList == null)
-            //{
-            //    sb.AppendLine($"{spaces}{nameof(NounObjectsList)} = null");
-            //}
-            //else
-            //{
-            //    sb.AppendLine($"{spaces}Begin {nameof(NounObjectsList)}");
-            //    foreach (var item in NounObjectsList)
-            //    {
-            //        sb.Append(item.ToString(nextN));
-            //    }
-            //    sb.AppendLine($"{spaces}End {nameof(NounObjectsList)}");
-            //}
+            if (NounSubjectsList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NounSubjectsList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NounSubjectsList)}");
+                foreach (var item in NounSubjectsList)
+                {
+                    sb.Append(item.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(NounSubjectsList)}");
+            }
+            if (NounObjectsList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NounObjectsList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NounObjectsList)}");
+                foreach (var item in NounObjectsList)
+                {
+                    sb.Append(item.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(NounObjectsList)}");
+            }
             if (PrepositionalObjectsList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(PrepositionalObjectsList)} = null");
@@ -172,33 +258,33 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToShortSting(n));
 
-            //if (NounSubjectsList == null)
-            //{
-            //    sb.AppendLine($"{spaces}{nameof(NounSubjectsList)} = null");
-            //}
-            //else
-            //{
-            //    sb.AppendLine($"{spaces}Begin {nameof(NounSubjectsList)}");
-            //    foreach (var item in NounSubjectsList)
-            //    {
-            //        sb.Append(item.ToShortString(nextN));
-            //    }
-            //    sb.AppendLine($"{spaces}End {nameof(NounSubjectsList)}");
-            //}
+            if (NounSubjectsList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NounSubjectsList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NounSubjectsList)}");
+                foreach (var item in NounSubjectsList)
+                {
+                    sb.Append(item.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(NounSubjectsList)}");
+            }
 
-            //if (NounObjectsList == null)
-            //{
-            //    sb.AppendLine($"{spaces}{nameof(NounObjectsList)} = null");
-            //}
-            //else
-            //{
-            //    sb.AppendLine($"{spaces}Begin {nameof(NounObjectsList)}");
-            //    foreach (var item in NounObjectsList)
-            //    {
-            //        sb.Append(item.ToShortString(nextN));
-            //    }
-            //    sb.AppendLine($"{spaces}End {nameof(NounObjectsList)}");
-            //}
+            if (NounObjectsList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(NounObjectsList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(NounObjectsList)}");
+                foreach (var item in NounObjectsList)
+                {
+                    sb.Append(item.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(NounObjectsList)}");
+            }
 
             if (PrepositionalObjectsList == null)
             {
