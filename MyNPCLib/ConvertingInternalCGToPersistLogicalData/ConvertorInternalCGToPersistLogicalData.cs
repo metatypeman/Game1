@@ -330,6 +330,22 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                         if (!processedRelationsList.Contains(initRelation))
                         {
                             processedRelationsList.Add(initRelation);
+
+                            firstConcept = initRelation.Inputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
+
+#if DEBUG
+                            LogInstance.Log($"!!!!! firstConcept = {firstConcept}");
+#endif
+
+                            var outputNode = initRelation.Outputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
+
+                            targetConceptToRelation = outputNode;
+                            targetConceptToRelation.KindOfSpecialRelation = kindOfSpecialRelation;
+#if DEBUG
+                            LogInstance.Log($"outputNode = {outputNode}");
+#endif
+
+
                         }
                         initRelation.Destroy();
                         throw new NotImplementedException();

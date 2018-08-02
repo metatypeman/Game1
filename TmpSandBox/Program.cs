@@ -45,12 +45,12 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            //TSTGoToGreenWaypoint();
+            TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
             //TSTATNParsing();
             //TSTWordNet();
             //TSTTextCGParserRunner();
-            TSTParseNLText();
+            //TSTParseNLText();
             //TSTRuleInstance();
             //TSTEntityLogging();
             //TSTConceptualGraph_2();
@@ -96,6 +96,27 @@ namespace TmpSandBox
                 dotStr = DotConverter.ConvertToString(internalCG);
 
                 LogInstance.Log($"dotStr (2) = {dotStr}");
+
+                var ruleInstancesList = ConvertorInternalCGToPersistLogicalData.ConvertConceptualGraph(internalCG, globalEntityDictionary);
+
+                LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
+                foreach (var ruleInstance in ruleInstancesList)
+                {
+                    LogInstance.Log($"ruleInstance = {ruleInstance}");
+
+                    {
+                        var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+
+                        LogInstance.Log($"debugStr = {debugStr}");
+                    }
+
+                    //    var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+                    //    //indexedRuleInstance.FillIndexedDataAsStorage();
+
+                    //    LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+
+                    //    context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
+                }
             }
 
             LogInstance.Log("End");
