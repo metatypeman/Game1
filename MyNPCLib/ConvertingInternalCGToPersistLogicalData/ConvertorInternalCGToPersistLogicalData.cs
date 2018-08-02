@@ -209,7 +209,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                                 var stateRelation = inputNode.Inputs.Where(p => p.IsRelationNode && SpecialElementsHeper.GetKindOfSpecialRelation(p.Name) == KindOfSpecialRelation.State).Select(p => p.AsRelationNode).FirstOrDefault();
 
 #if DEBUG
-                                //LogInstance.Log($"stateRelation = {stateRelation}");
+                                LogInstance.Log($"stateRelation = {stateRelation}");
 #endif
 
                                 if(stateRelation != null && !processedRelationsList.Contains(stateRelation))
