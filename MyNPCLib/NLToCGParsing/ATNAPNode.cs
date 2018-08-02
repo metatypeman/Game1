@@ -56,20 +56,20 @@ namespace MyNPCLib.NLToCGParsing
         protected override void NormalizeCompositionCommand()
         {
 #if DEBUG
-            LogInstance.Log($"CompositionCommand = {CompositionCommand}");
+            //LogInstance.Log($"CompositionCommand = {CompositionCommand}");
 #endif
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
 
         protected override void ImplementInternalState()
         {
 #if DEBUG
-            LogInstance.Log($"mTargetExtendedToken = {mTargetExtendedToken}");
-            LogInstance.Log($"mInternalState = {mInternalState}");
-            LogInstance.Log($"CompositionCommand = {CompositionCommand}");
+            //LogInstance.Log($"mTargetExtendedToken = {mTargetExtendedToken}");
+            //LogInstance.Log($"mInternalState = {mInternalState}");
+            //LogInstance.Log($"CompositionCommand = {CompositionCommand}");
 #endif
 
             switch (mInternalState)
@@ -91,7 +91,7 @@ namespace MyNPCLib.NLToCGParsing
                                     tmpPhrase.Object = mAdjectivePhrase;
 
 #if DEBUG
-                                    LogInstance.Log($"tmpPhrase = {tmpPhrase}");
+                                    //LogInstance.Log($"tmpPhrase = {tmpPhrase}");
 #endif
                                     //throw new NotImplementedException();
                                 }
@@ -104,13 +104,13 @@ namespace MyNPCLib.NLToCGParsing
                         var subGoalsList = GetSubGoals(mTargetExtendedToken);
 
 #if DEBUG
-                        LogInstance.Log($"subGoalsList.Count = {subGoalsList.Count}");
+                        //LogInstance.Log($"subGoalsList.Count = {subGoalsList.Count}");
 #endif
 
                         foreach (var subGoal in subGoalsList)
                         {
 #if DEBUG
-                            LogInstance.Log($"subGoal = {subGoal}");
+                            //LogInstance.Log($"subGoal = {subGoal}");
 #endif
 
                             switch (subGoal)
@@ -133,7 +133,7 @@ namespace MyNPCLib.NLToCGParsing
                             mAdjectivePhrase.Adjective = mTargetExtendedToken;
 
 #if DEBUG
-                            LogInstance.Log($"mAdjectivePhrase = {mAdjectivePhrase}");
+                            //LogInstance.Log($"mAdjectivePhrase = {mAdjectivePhrase}");
 #endif
 
                             //throw new NotImplementedException();
@@ -149,8 +149,8 @@ namespace MyNPCLib.NLToCGParsing
             }
 
 #if DEBUG
-            LogInstance.Log($"mAdjectivePhrase = {mAdjectivePhrase}");
-            LogInstance.Log("End");
+            //LogInstance.Log($"mAdjectivePhrase = {mAdjectivePhrase}");
+            //LogInstance.Log("End");
 #endif
         }
 
@@ -175,13 +175,13 @@ namespace MyNPCLib.NLToCGParsing
         protected override void BornNewNodes()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
 #endif
 
             var clusterOfExtendedTokensWithGoals = GetСlusterOfExtendedTokensWithGoals();
 
 #if DEBUG
-            LogInstance.Log($"clusterOfExtendedTokensWithGoals.Count = {clusterOfExtendedTokensWithGoals?.Count}");
+            //LogInstance.Log($"clusterOfExtendedTokensWithGoals.Count = {clusterOfExtendedTokensWithGoals?.Count}");
 #endif
 
             if (clusterOfExtendedTokensWithGoals.IsEmpty())
@@ -198,8 +198,8 @@ namespace MyNPCLib.NLToCGParsing
                 var goal = clusterOfExtendedTokensWithGoalsKVPItem.Value;
 
 #if DEBUG
-                LogInstance.Log($"extendedToken = {extendedToken}");
-                LogInstance.Log($"goal = {goal}");
+                //LogInstance.Log($"extendedToken = {extendedToken}");
+                //LogInstance.Log($"goal = {goal}");
 #endif
 
                 switch (goal)
@@ -213,7 +213,7 @@ namespace MyNPCLib.NLToCGParsing
             }
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
     }

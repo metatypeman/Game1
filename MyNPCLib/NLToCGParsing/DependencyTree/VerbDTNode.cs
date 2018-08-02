@@ -29,7 +29,7 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public void AddNounSubject(NounDTNode nounDTNode)
         {
 #if DEBUG
-            LogInstance.Log($"nounDTNode = {nounDTNode}");
+            //LogInstance.Log($"nounDTNode = {nounDTNode}");
 #endif
 
             if (nounDTNode == null)
@@ -63,7 +63,7 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public void AddPrepositionalObject(PrepositionalDTNode prepositionalDTNode)
         {
 #if DEBUG
-            LogInstance.Log($"prepositionalDTNode = {prepositionalDTNode}");
+            //LogInstance.Log($"prepositionalDTNode = {prepositionalDTNode}");
 #endif
 
             if(prepositionalDTNode == null)
@@ -97,7 +97,7 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public void AddNounObject(NounDTNode nounDTNode)
         {
 #if DEBUG
-            LogInstance.Log($"nounDTNode = {nounDTNode}");
+            //LogInstance.Log($"nounDTNode = {nounDTNode}");
 #endif
 
             if (nounDTNode == null)
@@ -121,8 +121,8 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public override void SetValue(BaseDTNode obj, KindOfDTChild kindOfDTChild)
         {
 #if DEBUG
-            LogInstance.Log($"obj = {obj}");
-            LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
+            //LogInstance.Log($"obj = {obj}");
+            //LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
 #endif
 
             switch (kindOfDTChild)
@@ -155,7 +155,7 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         protected override void OnRemoveObjFromProp(BaseDTNode obj)
         {
 #if DEBUG
-            LogInstance.Log($"obj = {obj}");
+            //LogInstance.Log($"obj = {obj}");
 #endif
 
             if (!mKindsOfDTNodePropertiesDict.ContainsKey(obj))

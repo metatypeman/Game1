@@ -71,13 +71,15 @@ namespace TmpSandBox
         {
             LogInstance.Log("Begin");
 
+            var globalEntityDictionary = new EntityDictionary();
+
             var paragraph = "Go to Green Waypoint";
 
             var wordsDict = new WordsDict();
             var parser = new CGParser(wordsDict);
 
             var result = parser.Run(paragraph);
-            LogInstance.Log($"result = {result}");
+            //LogInstance.Log($"result = {result}");
 
             var items = result.Items;
 
@@ -86,6 +88,14 @@ namespace TmpSandBox
                 var dotStr = DotConverter.ConvertToString(graph);
 
                 LogInstance.Log($"dotStr = {dotStr}");
+
+                var internalCG = ConvertorCGToInternal.Convert(graph, globalEntityDictionary);
+
+                LogInstance.Log($"internalCG = {internalCG}");
+
+                dotStr = DotConverter.ConvertToString(internalCG);
+
+                LogInstance.Log($"dotStr (2) = {dotStr}");
             }
 
             LogInstance.Log("End");
@@ -563,7 +573,7 @@ namespace TmpSandBox
             var paragraph = "I know the dog.";
 
             var result = parser.Run(paragraph);
-            LogInstance.Log($"result = {result}");
+            //LogInstance.Log($"result = {result}");
 
             var items = result.Items;
 

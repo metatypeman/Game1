@@ -9,8 +9,8 @@ namespace MyNPCLib.NLToCGParsing
         public static StateOfATNParsing CreareState(StateOfATNParsing state, GoalOfATNExtendToken goal)
         {
 #if DEBUG
-            LogInstance.Log($"state = {state}");
-            LogInstance.Log($"goal = {goal}");
+            //LogInstance.Log($"state = {state}");
+            //LogInstance.Log($"goal = {goal}");
 #endif
 
             switch(state)

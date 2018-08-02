@@ -1,11 +1,6 @@
 ﻿using MyNPCLib.CG;
 using MyNPCLib.CommonServiceGrammaticalElements;
 using MyNPCLib.NLToCGParsing.DependencyTree;
-using MyNPCLib.NLToCGParsing.PhraseTree;
-using MyNPCLib.SimpleWordsDict;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MyNPCLib.NLToCGParsing
 {
@@ -23,7 +18,7 @@ namespace MyNPCLib.NLToCGParsing
         public ResultOfNodeOfSemanticAnalyzer Run()
         {
 #if DEBUG
-            LogInstance.Log($"mSentence = {mSentence}");
+            //LogInstance.Log($"mSentence = {mSentence}");
 #endif
 
             var result = new ResultOfNodeOfSemanticAnalyzer();
@@ -40,7 +35,7 @@ namespace MyNPCLib.NLToCGParsing
             var rootVerb = mSentence.Verb;
 
 #if DEBUG
-            LogInstance.Log($"rootVerb = {rootVerb}");
+            //LogInstance.Log($"rootVerb = {rootVerb}");
 #endif
 
             if(rootVerb != null)
@@ -49,81 +44,14 @@ namespace MyNPCLib.NLToCGParsing
                 var verbResult = verbPhraseNode.Run();
 
 #if DEBUG
-                LogInstance.Log($"verbResult = {verbResult}");
+                //LogInstance.Log($"verbResult = {verbResult}");
 #endif
 
                 //throw new NotImplementedException();
             }
 
-            //throw new NotImplementedException();
-
-//            if (mSentence.NounPhrase != null)
-//            {
-//                throw new NotImplementedException();
-//                var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(Context, mSentence.NounPhrase.AsNounPhrase);
-//                var nounResult = nounPhraseNode.Run();
-
-//#if DEBUG
-//                LogInstance.Log($"nounResult = {nounResult}");
-//#endif
-
-//                PrimaryRolesDict.Assing(nounResult.PrimaryRolesDict);
-//            }
-
-//            if (mSentence.VerbPhrase != null)
-//            {
-//                var verbPhraseNode = new VerbPhraseNodeOfSemanticAnalyzer(Context, mSentence.VerbPhrase);
-//                var verbResult = verbPhraseNode.Run();
-
-//#if DEBUG
-//                LogInstance.Log($"verbResult = {verbResult}");
-//#endif
-
-//                PrimaryRolesDict.Assing(verbResult.PrimaryRolesDict);
-//            }
-
-//#if DEBUG
-//            LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
-//#endif
-
-//            var primaryAnimatesList = PrimaryRolesDict.GetByRole("animate");
-
-//            if(!primaryAnimatesList.IsEmpty())
-//            {
-//                //state -> experiencer -> animate
-
-//                var primaryStatesList = PrimaryRolesDict.GetByRole("state");
-
-//                if (!primaryStatesList.IsEmpty())
-//                {
-//                    foreach(var state in primaryStatesList)
-//                    {
-//                        foreach(var animate in primaryAnimatesList)
-//                        {
-//                            CreateExperiencerRelation(state, animate);
-//                            CreateStateRelation(state, animate);
-//                        }
-//                    }
-//                }
-//                //act -> agent -> animate
-
-//                var primaryActsList = PrimaryRolesDict.GetByRole("act");
-
-//                if(!primaryActsList.IsEmpty())
-//                {
-//                    foreach(var act in primaryActsList)
-//                    {
-//                        foreach (var animate in primaryAnimatesList)
-//                        {
-//                            CreateAgentRelation(act, animate);
-//                            CreateActionRelation(act, animate);
-//                        }
-//                    }
-//                }
-//            }
-
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
 
             return result;
@@ -137,7 +65,7 @@ namespace MyNPCLib.NLToCGParsing
             var aspectName = GrammaticalElementsHeper.GetAspectName(mSentence.Aspect);
 
 #if DEBUG
-            LogInstance.Log($"aspectName = {aspectName}");
+            //LogInstance.Log($"aspectName = {aspectName}");
 #endif
 
             if (!string.IsNullOrWhiteSpace(aspectName))
@@ -157,7 +85,7 @@ namespace MyNPCLib.NLToCGParsing
             var tenseName = GrammaticalElementsHeper.GetTenseName(mSentence.Tense);
 
 #if DEBUG
-            LogInstance.Log($"tenseName = {tenseName}");
+            //LogInstance.Log($"tenseName = {tenseName}");
 #endif 
 
             if(!string.IsNullOrWhiteSpace(tenseName))
@@ -177,7 +105,7 @@ namespace MyNPCLib.NLToCGParsing
             var voiceName = GrammaticalElementsHeper.GetVoiceName(mSentence.Voice);
 
 #if DEBUG
-            LogInstance.Log($"voiceName = {voiceName}");
+            //LogInstance.Log($"voiceName = {voiceName}");
 #endif
             if (!string.IsNullOrWhiteSpace(voiceName))
             {
@@ -196,7 +124,7 @@ namespace MyNPCLib.NLToCGParsing
             var moodName = GrammaticalElementsHeper.GetMoodName(mSentence.Mood);
 
 #if DEBUG
-            LogInstance.Log($"moodName = {moodName}");
+            //LogInstance.Log($"moodName = {moodName}");
 #endif
 
             if (!string.IsNullOrWhiteSpace(moodName))
@@ -216,7 +144,7 @@ namespace MyNPCLib.NLToCGParsing
             var modalName = GrammaticalElementsHeper.GetModalName(mSentence.Modal);
 
 #if DEBUG
-            LogInstance.Log($"modalName = {modalName}");
+            //LogInstance.Log($"modalName = {modalName}");
 #endif
 
             if (!string.IsNullOrWhiteSpace(modalName))

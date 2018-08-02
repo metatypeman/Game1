@@ -204,7 +204,7 @@ namespace MyNPCLib.ConvertingCGToInternal
                 foreach (var inputNode in inputsNodesList)
                 {
 #if DEBUG
-                    LogInstance.Log($"inputNode = {inputNode}");
+                    LogInstance.Log($"Begin inputNode (Relation) = {inputNode}");
 #endif
 
                     var resultRelationItem = context.RelationsDict[inputNode];
@@ -219,27 +219,40 @@ namespace MyNPCLib.ConvertingCGToInternal
                     LogInstance.Log($"relationsInputsNodesList.Count = {relationsInputsNodesList.Count}");
 #endif
 
-                    foreach (var relationInputNode in relationsInputsNodesList)
+                    if(relationsInputsNodesList.Count == 0)
                     {
-#if DEBUG
-                        LogInstance.Log($"relationInputNode = {relationInputNode}");
-#endif
-
-                        var resultRelationInputNode = GetBaseConceptCGNodeForMakingCommonRelation(relationInputNode, context);
-
-#if DEBUG
-                        LogInstance.Log($"resultRelationInputNode = {resultRelationInputNode}");
-#endif
-                        if (relationStorage.ContainsRelation(resultRelationInputNode.Name, resultRelationItem.Name, resultItem.Name))
+                        if(!relationStorage.ContainsRelation(resultRelationItem.Name, resultItem.Name))
                         {
-                            continue;
-                        }
-
-                        resultItem.AddInputNode(resultRelationItem);
-                        resultRelationItem.AddInputNode(resultRelationInputNode);
-
-                        relationStorage.AddRelation(resultRelationInputNode.Name, resultRelationItem.Name, resultItem.Name);
+                            resultItem.AddInputNode(resultRelationItem);
+                            relationStorage.AddRelation(resultRelationItem.Name, resultItem.Name);
+                        }               
                     }
+                    else
+                    {
+                        foreach (var relationInputNode in relationsInputsNodesList)
+                        {
+#if DEBUG
+                            LogInstance.Log($"relationInputNode = {relationInputNode}");
+#endif
+
+                            var resultRelationInputNode = GetBaseConceptCGNodeForMakingCommonRelation(relationInputNode, context);
+
+#if DEBUG
+                            LogInstance.Log($"resultRelationInputNode = {resultRelationInputNode}");
+#endif
+                            if (!relationStorage.ContainsRelation(resultRelationInputNode.Name, resultRelationItem.Name, resultItem.Name))
+                            {
+                                resultItem.AddInputNode(resultRelationItem);
+                                resultRelationItem.AddInputNode(resultRelationInputNode);
+
+                                relationStorage.AddRelation(resultRelationInputNode.Name, resultRelationItem.Name, resultItem.Name);
+                            }
+                        }
+                    }
+
+#if DEBUG
+                    LogInstance.Log($"End inputNode (Relation) = {inputNode}");
+#endif
                 }
 
                 //throw new NotImplementedException();
@@ -253,7 +266,7 @@ namespace MyNPCLib.ConvertingCGToInternal
                 foreach (var outputNode in outputsNodesList)
                 {
 #if DEBUG
-                    LogInstance.Log($"outputNode = {outputNode}");
+                    LogInstance.Log($"Begin outputNode (Relation) = {outputNode}");
 #endif
 
                     var resultRelationItem = context.RelationsDict[outputNode];
@@ -279,16 +292,18 @@ namespace MyNPCLib.ConvertingCGToInternal
                         LogInstance.Log($"resultRelationOutputNode = {resultRelationOutputNode}");
 #endif
 
-                        if (relationStorage.ContainsRelation(resultItem.Name, resultRelationItem.Name, resultRelationOutputNode.Name))
+                        if (!relationStorage.ContainsRelation(resultItem.Name, resultRelationItem.Name, resultRelationOutputNode.Name))
                         {
-                            continue;
+                            resultItem.AddOutputNode(resultRelationItem);
+                            resultRelationItem.AddOutputNode(resultRelationOutputNode);
+
+                            relationStorage.AddRelation(resultItem.Name, resultRelationItem.Name, resultRelationOutputNode.Name);
                         }
-
-                        resultItem.AddOutputNode(resultRelationItem);
-                        resultRelationItem.AddOutputNode(resultRelationOutputNode);
-
-                        relationStorage.AddRelation(resultItem.Name, resultRelationItem.Name, resultRelationOutputNode.Name);
                     }
+
+#if DEBUG
+                    LogInstance.Log($"End outputNode (Relation) = {outputNode}");
+#endif
                 }
             }
 

@@ -19,12 +19,12 @@ namespace MyNPCLib.NLToCGParsing
 
         private NounDTNode mNounPhrase;
         private ConceptCGNode mConcept;
-        private bool mHasDeterminers;
+        //private bool mHasDeterminers;
 
         public ResultOfNodeOfSemanticAnalyzer Run()
         {
 #if DEBUG
-            LogInstance.Log($"mNounPhrase = {mNounPhrase}");
+            //LogInstance.Log($"mNounPhrase = {mNounPhrase}");
 #endif
 
             var result = new ResultOfNodeOfSemanticAnalyzer();
@@ -34,7 +34,7 @@ namespace MyNPCLib.NLToCGParsing
             var noun = mNounPhrase.ExtendedToken;
 
 #if DEBUG
-            LogInstance.Log($"noun = {noun}");
+            //LogInstance.Log($"noun = {noun}");
 #endif
 
             if (noun == null)
@@ -51,16 +51,16 @@ namespace MyNPCLib.NLToCGParsing
 
             if (!determinersList.IsEmpty())
             {
-                mHasDeterminers = true;
+                //mHasDeterminers = true;
 
 #if DEBUG
-                LogInstance.Log($"determinersList.Count = {determinersList.Count}");
+                //LogInstance.Log($"determinersList.Count = {determinersList.Count}");
 #endif
 
                 foreach (var determiner in determinersList)
                 {
 #if DEBUG
-                    LogInstance.Log($"determiner = {determiner}");
+                    //LogInstance.Log($"determiner = {determiner}");
 #endif
 
                     if (determiner.IsDeterminerDTNode)
@@ -79,25 +79,25 @@ namespace MyNPCLib.NLToCGParsing
             if(!ajectivesList.IsEmpty())
             {
 #if DEBUG
-                LogInstance.Log($"ajectivesList.Count = {ajectivesList.Count}");
+                //LogInstance.Log($"ajectivesList.Count = {ajectivesList.Count}");
 #endif
 
                 foreach(var ajective in ajectivesList)
                 {
 #if DEBUG
-                    LogInstance.Log($"ajective = {ajective}");
+                    //LogInstance.Log($"ajective = {ajective}");
 #endif
 
                     var ajectiveNode = new AjectivePhraseNodeOfSemanticAnalyzer(Context, ajective);
                     var ajectiveNodeResult = ajectiveNode.Run();
 
 #if DEBUG
-                    LogInstance.Log($"ajectiveNodeResult = {ajectiveNodeResult}");
+                    //LogInstance.Log($"ajectiveNodeResult = {ajectiveNodeResult}");
 #endif
                     var role = ajective.ExtendedToken.LogicalMeaning.FirstOrDefault();
 
 #if DEBUG
-                    LogInstance.Log($"role = {role}");
+                    //LogInstance.Log($"role = {role}");
 #endif
 
                     if(!string.IsNullOrWhiteSpace(role))
@@ -105,7 +105,7 @@ namespace MyNPCLib.NLToCGParsing
                         var ajectiveConcept = ajectiveNodeResult.RootConcept;
 
 #if DEBUG
-                        LogInstance.Log($"ajectiveConcept = {ajectiveConcept.ToBriefString()}");
+                        //LogInstance.Log($"ajectiveConcept = {ajectiveConcept.ToBriefString()}");
 #endif
 
                         var ajectiveRelation = new RelationCGNode();
@@ -130,7 +130,7 @@ namespace MyNPCLib.NLToCGParsing
             foreach (var logicalMeaning in nounFullLogicalMeaning)
             {
 #if DEBUG
-                LogInstance.Log($"logicalMeaning = {logicalMeaning}");
+                //LogInstance.Log($"logicalMeaning = {logicalMeaning}");
 #endif
 
                 PrimaryRolesDict.Add(logicalMeaning, mConcept);
@@ -138,8 +138,8 @@ namespace MyNPCLib.NLToCGParsing
             }
 
 #if DEBUG
-            LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
-            LogInstance.Log("End");
+            //LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
+            //LogInstance.Log("End");
 #endif
 
             return result;

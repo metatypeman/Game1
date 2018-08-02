@@ -22,7 +22,7 @@ namespace MyNPCLib.NLToCGParsing
         public ResultOfNodeOfSemanticAnalyzer Run()
         {
 #if DEBUG
-            LogInstance.Log($"mVerbPhrase = {mVerbPhrase}");
+            //LogInstance.Log($"mVerbPhrase = {mVerbPhrase}");
 #endif
 
             var result = new ResultOfNodeOfSemanticAnalyzer();
@@ -37,7 +37,7 @@ namespace MyNPCLib.NLToCGParsing
             mConcept.Name = GetName(verb);
 
 #if DEBUG
-            LogInstance.Log($"verb = {verb}");
+            //LogInstance.Log($"verb = {verb}");
 #endif
 
             var verbsRolesStorage = new RolesStorageOfSemanticAnalyzer();
@@ -47,7 +47,7 @@ namespace MyNPCLib.NLToCGParsing
             foreach (var logicalMeaning in verbFullLogicalMeaning)
             {
 #if DEBUG
-                LogInstance.Log($"logicalMeaning = {logicalMeaning}");
+                //LogInstance.Log($"logicalMeaning = {logicalMeaning}");
 #endif
 
                 PrimaryRolesDict.Add(logicalMeaning, mConcept);
@@ -61,7 +61,7 @@ namespace MyNPCLib.NLToCGParsing
             }
 
 #if DEBUG
-            LogInstance.Log($"verbsRolesStorage = {verbsRolesStorage}");
+            //LogInstance.Log($"verbsRolesStorage = {verbsRolesStorage}");
 #endif
 
             var nounSubjectsList = mVerbPhrase.NounSubjectsList;
@@ -72,8 +72,8 @@ namespace MyNPCLib.NLToCGParsing
                 var isState = verb.FullLogicalMeaning.Contains("state");
 
 #if DEBUG
-                LogInstance.Log($"isAct = {isAct}");
-                LogInstance.Log($"isState = {isState}");
+                //LogInstance.Log($"isAct = {isAct}");
+                //LogInstance.Log($"isState = {isState}");
 #endif
 
                 if(isAct)
@@ -103,20 +103,20 @@ namespace MyNPCLib.NLToCGParsing
                 var subjectsRolesStorage = new RolesStorageOfSemanticAnalyzer();
 
 #if DEBUG
-                LogInstance.Log($"nounSubjectsList.Count = {nounSubjectsList.Count}");
+                //LogInstance.Log($"nounSubjectsList.Count = {nounSubjectsList.Count}");
 #endif
 
                 foreach (var nounSubject in nounSubjectsList)
                 {
 #if DEBUG
-                    LogInstance.Log($"nounSubject = {nounSubject}");
+                    //LogInstance.Log($"nounSubject = {nounSubject}");
 #endif
 
                     var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(Context, nounSubject);
                     var nounResult = nounPhraseNode.Run();
 
 #if DEBUG
-                    LogInstance.Log($"nounResult = {nounResult}");
+                    //LogInstance.Log($"nounResult = {nounResult}");
 #endif
 
                     PrimaryRolesDict.Assing(nounResult.PrimaryRolesDict);
@@ -128,8 +128,8 @@ namespace MyNPCLib.NLToCGParsing
                 verbAndSubjectsMixRolesStorage.Assing(verbsRolesStorage);
 
 #if DEBUG
-                LogInstance.Log($"subjectsRolesStorage = {subjectsRolesStorage}");
-                LogInstance.Log($"verbAndSubjectsMix = {verbAndSubjectsMixRolesStorage}");
+                //LogInstance.Log($"subjectsRolesStorage = {subjectsRolesStorage}");
+                //LogInstance.Log($"verbAndSubjectsMix = {verbAndSubjectsMixRolesStorage}");
 #endif
 
                 var primaryAnimatesList = verbAndSubjectsMixRolesStorage.GetByRole("animate");
@@ -170,7 +170,7 @@ namespace MyNPCLib.NLToCGParsing
             }
 
 #if DEBUG
-            LogInstance.Log($"PrimaryRolesDict (1) = {PrimaryRolesDict}");
+            //LogInstance.Log($"PrimaryRolesDict (1) = {PrimaryRolesDict}");
 #endif
 
             var nounObjectsList = mVerbPhrase.NounObjectsList;
@@ -183,20 +183,20 @@ namespace MyNPCLib.NLToCGParsing
                 if (!nounObjectsList.IsEmpty())
                 {
 #if DEBUG
-                    LogInstance.Log($"nounObjectsList.Count = {nounObjectsList.Count}");
+                    //LogInstance.Log($"nounObjectsList.Count = {nounObjectsList.Count}");
 #endif
 
                     foreach (var nounObject in nounObjectsList)
                     {
 #if DEBUG
-                        LogInstance.Log($"nounObject = {nounObject}");
+                        //LogInstance.Log($"nounObject = {nounObject}");
 #endif
 
                         var nounPhraseNode = new NounPhraseNodeOfSemanticAnalyzer(Context, nounObject);
                         var nounResult = nounPhraseNode.Run();
 
 #if DEBUG
-                        LogInstance.Log($"nounResult = {nounResult}");
+                        //LogInstance.Log($"nounResult = {nounResult}");
 #endif
 
                         //PrimaryRolesDict.Assing(nounResult.PrimaryRolesDict);
@@ -207,25 +207,25 @@ namespace MyNPCLib.NLToCGParsing
                 if(!prepositionalObjectsList.IsEmpty())
                 {
 #if DEBUG
-                    LogInstance.Log($"prepositionalObjectsList.Count = {prepositionalObjectsList.Count}");
+                    //LogInstance.Log($"prepositionalObjectsList.Count = {prepositionalObjectsList.Count}");
 #endif
 
                     var isMoving = verb.FullLogicalMeaning.Contains("moving");
 
 #if DEBUG
-                    LogInstance.Log($"isMoving = {isMoving}");
+                    //LogInstance.Log($"isMoving = {isMoving}");
 #endif
 
                     foreach (var prepositional in prepositionalObjectsList)
                     {
 #if DEBUG
-                        LogInstance.Log($"prepositional = {prepositional}");
+                        //LogInstance.Log($"prepositional = {prepositional}");
 #endif
 
                         var isTo = prepositional.ExtendedToken.RootWord == "to";
 
 #if DEBUG
-                        LogInstance.Log($"isTo = {isTo}");
+                        //LogInstance.Log($"isTo = {isTo}");
 #endif
 
                         if(isTo && isMoving)
@@ -236,19 +236,19 @@ namespace MyNPCLib.NLToCGParsing
                             var nounOfPrepositionalResult = nodeOfNounOfPrepositional.Run();
 
 #if DEBUG
-                            LogInstance.Log($"nounOfPrepositionalResult = {nounOfPrepositionalResult}");
+                            //LogInstance.Log($"nounOfPrepositionalResult = {nounOfPrepositionalResult}");
 #endif
 
                             var phisobjList = nounOfPrepositionalResult.PrimaryRolesDict.GetByRole("phisobj");
 
 #if DEBUG
-                            LogInstance.Log($"phisobjList.Count = {phisobjList.Count}");
+                            //LogInstance.Log($"phisobjList.Count = {phisobjList.Count}");
 #endif
 
                             foreach(var phisobj in phisobjList)
                             {
 #if DEBUG
-                                LogInstance.Log($"phisobj = {phisobj}");
+                                //LogInstance.Log($"phisobj = {phisobj}");
 #endif
 
                                 var directionRelation = new RelationCGNode();
@@ -267,8 +267,8 @@ namespace MyNPCLib.NLToCGParsing
                 verbAndObjectsMixRolesStorage.Assing(verbsRolesStorage);
 
 #if DEBUG
-                LogInstance.Log($"objectsRolesStorage = {objectsRolesStorage}");
-                LogInstance.Log($"verbAndObjectsMix = {verbAndObjectsMixRolesStorage}");
+                //LogInstance.Log($"objectsRolesStorage = {objectsRolesStorage}");
+                //LogInstance.Log($"verbAndObjectsMix = {verbAndObjectsMixRolesStorage}");
 #endif
 
                 if (verbFullLogicalMeaning.Contains("event") || verbFullLogicalMeaning.Contains("state"))
@@ -280,7 +280,7 @@ namespace MyNPCLib.NLToCGParsing
                         foreach (var entityConcept in entitiesList)
                         {
 #if DEBUG
-                            LogInstance.Log($"entityConcept = {entityConcept}");
+                            //LogInstance.Log($"entityConcept = {entityConcept}");
 #endif
 
                             CreateObjectRelation(mConcept, entityConcept);
@@ -290,11 +290,11 @@ namespace MyNPCLib.NLToCGParsing
             }
 
 #if DEBUG
-            LogInstance.Log($"PrimaryRolesDict (2) = {PrimaryRolesDict}");
+            //LogInstance.Log($"PrimaryRolesDict (2) = {PrimaryRolesDict}");
 #endif
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
 
             return result;
@@ -366,8 +366,8 @@ namespace MyNPCLib.NLToCGParsing
         private void CreateExperiencerRelation(ConceptCGNode verbConcept, ConceptCGNode nounConcept)
         {
 #if DEBUG
-            LogInstance.Log($"verbConcept = {verbConcept}");
-            LogInstance.Log($"nounConcept = {nounConcept}");
+            //LogInstance.Log($"verbConcept = {verbConcept}");
+            //LogInstance.Log($"nounConcept = {nounConcept}");
 #endif
 
             var relationName = SpecialNamesOfRelations.ExperiencerRelationName;

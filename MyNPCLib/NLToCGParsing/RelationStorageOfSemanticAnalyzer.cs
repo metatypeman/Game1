@@ -8,6 +8,7 @@ namespace MyNPCLib.NLToCGParsing
     public class RelationStorageOfSemanticAnalyzer : IObjectToString
     {
         private Dictionary<string, Dictionary<string, List<string>>> mInfoDict = new Dictionary<string, Dictionary<string, List<string>>>();
+        private Dictionary<string, List<string>> mInfoForSingleRelationDict = new Dictionary<string, List<string>>();
 
         /// <summary>
         /// inputConcept -> relationName -> outputConcept
@@ -49,6 +50,31 @@ namespace MyNPCLib.NLToCGParsing
         }
 
         /// <summary>
+        /// relationName -> outputConcept
+        /// </summary>
+        /// <param name="outputConcept"></param>
+        /// <param name="relationName"></param>
+        public void AddRelation(string outputConcept, string relationName)
+        {
+            if(mInfoForSingleRelationDict.ContainsKey(outputConcept))
+            {
+                var targetList = mInfoForSingleRelationDict[outputConcept];
+
+                if (!targetList.Contains(relationName))
+                {
+                    targetList.Add(relationName);
+                }
+
+                return;
+            }
+
+            {
+                var targetList = new List<string>() { relationName };
+                mInfoForSingleRelationDict[outputConcept] = targetList;
+            }
+        }
+
+        /// <summary>
         /// inputConcept -> relationName -> outputConcept
         /// </summary>
         /// <param name="inputConcept"></param>
@@ -66,6 +92,23 @@ namespace MyNPCLib.NLToCGParsing
                     var targetList = targetDict[outputConcept];
                     return targetList.Contains(relationName);
                 }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// relationName -> outputConcept
+        /// </summary>
+        /// <param name="outputConcept"></param>
+        /// <param name="relationName"></param>
+        /// <returns></returns>
+        public bool ContainsRelation(string outputConcept, string relationName)
+        {
+            if(mInfoForSingleRelationDict.ContainsKey(outputConcept))
+            {
+                var targetList = mInfoForSingleRelationDict[outputConcept];
+                return targetList.Contains(relationName);
             }
 
             return false;

@@ -20,7 +20,7 @@ namespace MyNPCLib.NLToCGParsing
         public IList<Sentence> Run(string text)
         {
 #if DEBUG
-            LogInstance.Log($"text = {text}");
+            //LogInstance.Log($"text = {text}");
 #endif
 
             var commonContext = new CommonContextOfATNParsing();
@@ -32,11 +32,11 @@ namespace MyNPCLib.NLToCGParsing
             var sentencesList = commonContext.SentencesList;
 
 #if DEBUG
-            LogInstance.Log($"sentencesList.Count = {sentencesList.Count}");
-            foreach(var tmpSentences in sentencesList)
-            {
-                LogInstance.Log($"tmpSentences = {tmpSentences}");
-            }
+            //LogInstance.Log($"sentencesList.Count = {sentencesList.Count}");
+            //foreach(var tmpSentences in sentencesList)
+            //{
+            //    LogInstance.Log($"tmpSentences = {tmpSentences}");
+            //}
 #endif
 
             return sentencesList;

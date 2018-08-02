@@ -16,7 +16,7 @@ namespace MyNPCLib.NLToCGParsing
         {
             var path = Directory.GetCurrentDirectory();
 #if DEBUG
-            LogInstance.Log($"path = {path}");
+            //LogInstance.Log($"path = {path}");
 
             //LogInstance.Log(Process.GetCurrentProcess().StartInfo.FileName);
             //LogInstance.Log(AppDomain.CurrentDomain.BaseDirectory);
@@ -27,7 +27,7 @@ namespace MyNPCLib.NLToCGParsing
             //var modelPath = Path.Combine(path, englishSDNbinRelativePath);
             var modelPath = OpenNLPPathsHelper.EnglishSDnbinPath;
 #if DEBUG
-            LogInstance.Log($"modelPath = {modelPath}");
+            //LogInstance.Log($"modelPath = {modelPath}");
 #endif
 
             mSentenceDetector = new EnglishMaximumEntropySentenceDetector(modelPath);
@@ -46,7 +46,7 @@ namespace MyNPCLib.NLToCGParsing
             lock(mRunLockObj)
             {
 #if DEBUG
-                LogInstance.Log($"text = {text}");
+                //LogInstance.Log($"text = {text}");
 #endif
 
                 var result = new GCParsingResult();
@@ -62,7 +62,7 @@ namespace MyNPCLib.NLToCGParsing
                 var sentencesList = mSentenceDetector.SentenceDetect(text);
 
 #if DEBUG
-                LogInstance.Log($"sentencesList.Length = {sentencesList.Length}");
+                //LogInstance.Log($"sentencesList.Length = {sentencesList.Length}");
 #endif
 
                 var isFirst = true;
@@ -71,7 +71,7 @@ namespace MyNPCLib.NLToCGParsing
                 foreach (var sentence in sentencesList)
                 {
 #if DEBUG
-                    LogInstance.Log($"sentence = {sentence}");
+                    //LogInstance.Log($"sentence = {sentence}");
 #endif
 
                     var itemsResultList = RunSentence(sentence);
@@ -101,25 +101,25 @@ namespace MyNPCLib.NLToCGParsing
         private IList<ConceptualGraph> RunSentence(string text)
         {
 #if DEBUG
-            LogInstance.Log($"text = {text}");
+            //LogInstance.Log($"text = {text}");
 #endif
 
             var result = new List<ConceptualGraph>();
             var sentencesList = mATNParser.Run(text);
 
 #if DEBUG
-            LogInstance.Log($"sentencesList.Count = {sentencesList.Count}");
+            //LogInstance.Log($"sentencesList.Count = {sentencesList.Count}");
 #endif
             foreach (var sentence in sentencesList)
             {
 #if DEBUG
-                LogInstance.Log($"sentence = {sentence}");
+                //LogInstance.Log($"sentence = {sentence}");
 #endif
 
                 var dtSentenceNode = DTNodeConverter.Convert(sentence);
 
 #if DEBUG
-                LogInstance.Log($"dtSentenceNode = {dtSentenceNode}");
+                //LogInstance.Log($"dtSentenceNode = {dtSentenceNode}");
 #endif
 
                 var itemResult = mSemanticAnalyzer.Run(dtSentenceNode);

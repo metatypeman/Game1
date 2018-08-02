@@ -28,18 +28,18 @@ namespace MyNPCLib.NLToCGParsing
         protected override void NormalizeCompositionCommand()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
 #endif
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
 
         protected override void ImplementInternalState()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
 #endif
 
             switch (mInternalState)
@@ -52,20 +52,20 @@ namespace MyNPCLib.NLToCGParsing
             }
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
 
         protected override void BornNewNodes()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
 #endif
 
             var clusterOfExtendedTokensWithGoals = GetСlusterOfExtendedTokensWithGoals();
 
 #if DEBUG
-            LogInstance.Log($"clusterOfExtendedTokensWithGoals.Count = {clusterOfExtendedTokensWithGoals?.Count}");
+            //LogInstance.Log($"clusterOfExtendedTokensWithGoals.Count = {clusterOfExtendedTokensWithGoals?.Count}");
 #endif
 
             if (clusterOfExtendedTokensWithGoals.IsEmpty())
@@ -79,8 +79,8 @@ namespace MyNPCLib.NLToCGParsing
                 var goal = clusterOfExtendedTokensWithGoalsKVPItem.Value;
 
 #if DEBUG
-                LogInstance.Log($"extendedToken = {extendedToken}");
-                LogInstance.Log($"goal = {goal}");
+                //LogInstance.Log($"extendedToken = {extendedToken}");
+                //LogInstance.Log($"goal = {goal}");
 
                 switch (goal)
                 {
@@ -98,7 +98,7 @@ namespace MyNPCLib.NLToCGParsing
             }
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
     }

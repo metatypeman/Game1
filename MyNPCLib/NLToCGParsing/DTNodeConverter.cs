@@ -11,7 +11,7 @@ namespace MyNPCLib.NLToCGParsing
         public static SentenceDTNode Convert(Sentence sentence)
         {
 #if DEBUG
-            LogInstance.Log($"sentence = {sentence}");
+            //LogInstance.Log($"sentence = {sentence}");
 #endif
 
             var result = new SentenceDTNode();
@@ -34,7 +34,7 @@ namespace MyNPCLib.NLToCGParsing
                 if (subject != null)
                 {
 #if DEBUG
-                    LogInstance.Log($"subject = {subject}");
+                    //LogInstance.Log($"subject = {subject}");
 #endif
 
                     if(subject.IsNounPhrase)
@@ -56,7 +56,7 @@ namespace MyNPCLib.NLToCGParsing
         private static void FillRootVerbOfSentence(VerbPhrase verbPhrase, VerbDTNode dest)
         {
 #if DEBUG
-            LogInstance.Log($"verbPhrase = {verbPhrase}");
+            //LogInstance.Log($"verbPhrase = {verbPhrase}");
 #endif
 
             dest.ExtendedToken = verbPhrase.Verb;
@@ -70,7 +70,7 @@ namespace MyNPCLib.NLToCGParsing
                     var prepositionalObject = verbObject.AsPrepositionalPhrase;
 
 #if DEBUG
-                    LogInstance.Log($"prepositionalObject = {prepositionalObject}");
+                    //LogInstance.Log($"prepositionalObject = {prepositionalObject}");
 #endif
                     var prepositionalDTNode = new PrepositionalDTNode();
                     dest.AddPrepositionalObject(prepositionalDTNode);
@@ -83,7 +83,7 @@ namespace MyNPCLib.NLToCGParsing
                         var nounObject = verbObject.AsNounPhrase;
 
 #if DEBUG
-                        LogInstance.Log($"nounObject = {nounObject}");
+                        //LogInstance.Log($"nounObject = {nounObject}");
 #endif
 
                         var nounDtNode = new NounDTNode();
@@ -107,7 +107,7 @@ namespace MyNPCLib.NLToCGParsing
             if (prepositionObject != null)
             {
 #if DEBUG
-                LogInstance.Log($"prepositionObject = {prepositionObject}");
+                //LogInstance.Log($"prepositionObject = {prepositionObject}");
 #endif
 
                 if (prepositionObject.IsAdjectivePhrase)
@@ -115,7 +115,7 @@ namespace MyNPCLib.NLToCGParsing
                     var adjectiveDTNode = new AdjectiveDTNode();
 
 #if DEBUG
-                    LogInstance.Log($"adjectiveDTNode = {adjectiveDTNode}");
+                    //LogInstance.Log($"adjectiveDTNode = {adjectiveDTNode}");
 #endif
 
                     dest.AdjectiveObject = adjectiveDTNode;
@@ -137,7 +137,7 @@ namespace MyNPCLib.NLToCGParsing
             if (ajectiveObject != null)
             {
 #if DEBUG
-                LogInstance.Log($"ajectiveObject = {ajectiveObject}");
+                //LogInstance.Log($"ajectiveObject = {ajectiveObject}");
 #endif
 
                 if (ajectiveObject.IsNounPhrase)
@@ -148,7 +148,7 @@ namespace MyNPCLib.NLToCGParsing
                     var kindOfDTChild = parentOfAjective.GetKindOfDTChild(dest);
 
 #if DEBUG
-                    LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
+                    //LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
 #endif
 
                     parentOfAjective.SetValue(nounDtNode, kindOfDTChild);
@@ -168,7 +168,7 @@ namespace MyNPCLib.NLToCGParsing
             dest.ExtendedToken = nounPhrase.Noun;
 
 #if DEBUG
-            LogInstance.Log($"nounPhrase = {nounPhrase}");
+            //LogInstance.Log($"nounPhrase = {nounPhrase}");
 #endif
 
             var determinersList = nounPhrase.Determiners;

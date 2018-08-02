@@ -14,7 +14,7 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
 
         public override bool IsSentenceDTNode => true;
         public override SentenceDTNode AsSentenceDTNode => this;
-
+        
         public GrammaticalAspect Aspect { get; set; } = GrammaticalAspect.Undefined;
         public GrammaticalTenses Tense { get; set; } = GrammaticalTenses.Undefined;
         public GrammaticalVoice Voice { get; set; } = GrammaticalVoice.Undefined;
@@ -57,8 +57,8 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public override void SetValue(BaseDTNode obj, KindOfDTChild kindOfDTChild)
         {
 #if DEBUG
-            LogInstance.Log($"obj = {obj}");
-            LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
+            //LogInstance.Log($"obj = {obj}");
+            //LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
 #endif
 
             switch(kindOfDTChild)

@@ -12,7 +12,7 @@ namespace MyNPCLib.NLToCGParsing
         public void AddSentence(Sentence sentence)
         {
 #if DEBUG
-            LogInstance.Log($"sentence = {sentence}");
+            //LogInstance.Log($"sentence = {sentence}");
 #endif
 
             mSentencesList.Add(sentence);

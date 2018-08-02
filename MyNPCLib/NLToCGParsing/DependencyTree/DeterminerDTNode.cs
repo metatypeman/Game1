@@ -12,8 +12,8 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public override void SetValue(BaseDTNode obj, KindOfDTChild kindOfDTChild)
         {
 #if DEBUG
-            LogInstance.Log($"obj = {obj}");
-            LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
+            //LogInstance.Log($"obj = {obj}");
+            //LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
 #endif
 
             switch (kindOfDTChild)
@@ -25,7 +25,7 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         protected override void OnRemoveObjFromProp(BaseDTNode obj)
         {
 #if DEBUG
-            LogInstance.Log($"obj = {obj}");
+            //LogInstance.Log($"obj = {obj}");
 #endif
 
             throw new NotImplementedException();

@@ -29,7 +29,7 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public void AddAjective(AdjectiveDTNode adjectiveDTNode)
         {
 #if DEBUG
-            LogInstance.Log($"adjectiveDTNode = {adjectiveDTNode}");
+            //LogInstance.Log($"adjectiveDTNode = {adjectiveDTNode}");
 #endif
 
             if (adjectiveDTNode == null)
@@ -63,7 +63,7 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public void AddDeterminer(BaseDTNode determinerDTNode)
         {
 #if DEBUG
-            LogInstance.Log($"determinerDTNode = {determinerDTNode}");
+            //LogInstance.Log($"determinerDTNode = {determinerDTNode}");
 #endif
 
             if (determinerDTNode == null)
@@ -87,8 +87,8 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         public override void SetValue(BaseDTNode obj, KindOfDTChild kindOfDTChild)
         {
 #if DEBUG
-            LogInstance.Log($"obj = {obj}");
-            LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
+            //LogInstance.Log($"obj = {obj}");
+            //LogInstance.Log($"kindOfDTChild = {kindOfDTChild}");
 #endif
 
             switch (kindOfDTChild)
@@ -108,7 +108,7 @@ namespace MyNPCLib.NLToCGParsing.DependencyTree
         protected override void OnRemoveObjFromProp(BaseDTNode obj)
         {
 #if DEBUG
-            LogInstance.Log($"obj = {obj}");
+            //LogInstance.Log($"obj = {obj}");
 #endif
 
             if (!mKindsOfDTNodePropertiesDict.ContainsKey(obj))

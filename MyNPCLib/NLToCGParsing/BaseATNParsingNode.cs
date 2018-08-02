@@ -14,10 +14,10 @@ namespace MyNPCLib.NLToCGParsing
             Goal = goal;
 
 #if DEBUG
-            LogInstance.Log($"Context.State = {Context.State}");
-            LogInstance.Log($"Context = {Context}");
-            LogInstance.Log($"CompositionCommand = {CompositionCommand}");
-            LogInstance.Log($"Goal = {Goal}");
+            //LogInstance.Log($"Context.State = {Context.State}");
+            //LogInstance.Log($"Context = {Context}");
+            //LogInstance.Log($"CompositionCommand = {CompositionCommand}");
+            //LogInstance.Log($"Goal = {Goal}");
 #endif
         }
 
@@ -69,7 +69,7 @@ namespace MyNPCLib.NLToCGParsing
         protected ResultOfGetGoals GetGoals(ATNExtendedToken extendedToken)
         {
 #if DEBUG
-            LogInstance.Log($"extendedToken = {extendedToken}");
+            //LogInstance.Log($"extendedToken = {extendedToken}");
 #endif
 
             var result = new ResultOfGetGoals();
@@ -287,7 +287,7 @@ namespace MyNPCLib.NLToCGParsing
             }
 
 #if DEBUG
-            LogInstance.Log($"mTasksList.Count = {mTasksList.Count}");
+            //LogInstance.Log($"mTasksList.Count = {mTasksList.Count}");
 #endif
 
             var n = 0;
@@ -297,9 +297,9 @@ namespace MyNPCLib.NLToCGParsing
                 n++;
 
 #if DEBUG
-                LogInstance.Log($"n = {n}");
-                LogInstance.Log($"task.Goal = {task.Goal}");
-                LogInstance.Log($"Context.State = {Context.State}");
+                //LogInstance.Log($"n = {n}");
+                //LogInstance.Log($"task.Goal = {task.Goal}");
+                //LogInstance.Log($"Context.State = {Context.State}");
 #endif
 
                 ContextOfATNParsing newConext = null;
@@ -323,13 +323,13 @@ namespace MyNPCLib.NLToCGParsing
         protected void PutSentenceToResult()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
 #endif
 
             Context.PutSentenceToResult();
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
     }

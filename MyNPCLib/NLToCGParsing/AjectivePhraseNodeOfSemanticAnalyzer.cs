@@ -20,7 +20,7 @@ namespace MyNPCLib.NLToCGParsing
         public ResultOfNodeOfSemanticAnalyzer Run()
         {
 #if DEBUG
-            LogInstance.Log($"mAdjectiveDTNode = {mAdjectiveDTNode}");
+            //LogInstance.Log($"mAdjectiveDTNode = {mAdjectiveDTNode}");
 #endif
 
             var result = new ResultOfNodeOfSemanticAnalyzer();
@@ -31,7 +31,7 @@ namespace MyNPCLib.NLToCGParsing
             var ajective = mAdjectiveDTNode.ExtendedToken;
 
 #if DEBUG
-            LogInstance.Log($"ajective = {ajective}");
+            //LogInstance.Log($"ajective = {ajective}");
 #endif
 
             mConcept = new ConceptCGNode();
@@ -49,7 +49,7 @@ namespace MyNPCLib.NLToCGParsing
             foreach (var logicalMeaning in ajectiveFullLogicalMeaning)
             {
 #if DEBUG
-                LogInstance.Log($"logicalMeaning = {logicalMeaning}");
+                //LogInstance.Log($"logicalMeaning = {logicalMeaning}");
 #endif
 
                 PrimaryRolesDict.Add(logicalMeaning, mConcept);
@@ -57,8 +57,8 @@ namespace MyNPCLib.NLToCGParsing
             }
 
 #if DEBUG
-            LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
-            LogInstance.Log("End");
+            //LogInstance.Log($"PrimaryRolesDict = {PrimaryRolesDict}");
+            //LogInstance.Log("End");
 #endif
 
             return result;

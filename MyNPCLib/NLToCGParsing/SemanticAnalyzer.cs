@@ -16,7 +16,7 @@ namespace MyNPCLib.NLToCGParsing
             lock(mRunLockObj)
             {
 #if DEBUG
-                LogInstance.Log($"sentence = {sentence}");
+                //LogInstance.Log($"sentence = {sentence}");
 #endif
                 var outerConceptualGraph = new ConceptualGraph();
                 var context = new ContextOfSemanticAnalyzer();
@@ -26,13 +26,13 @@ namespace MyNPCLib.NLToCGParsing
                 var sentenceResult = sentenceNode.Run();
 
 #if DEBUG
-                LogInstance.Log($"sentenceResult = {sentenceResult}");
+                //LogInstance.Log($"sentenceResult = {sentenceResult}");
 #endif
 
                 var result = outerConceptualGraph;
 
 #if DEBUG
-                LogInstance.Log("End");
+                //LogInstance.Log("End");
 #endif
 
                 return result;
