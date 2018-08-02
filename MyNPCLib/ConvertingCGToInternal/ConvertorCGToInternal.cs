@@ -15,7 +15,7 @@ namespace MyNPCLib.ConvertingCGToInternal
         public static InternalConceptualGraph Convert(ConceptualGraph source, IEntityDictionary entityDictionary)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             var context = new ContextOfConvertingCGToInternal();
@@ -28,9 +28,8 @@ namespace MyNPCLib.ConvertingCGToInternal
             }
 
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
-
 
             return ConvertConceptualGraph(source, null, context);
         }
@@ -38,13 +37,13 @@ namespace MyNPCLib.ConvertingCGToInternal
         private static bool IsWrapperGraph(ConceptualGraph source)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             var countOfConceptualGraphs = source.Children.Count(p => p.Kind == KindOfCGNode.Graph);
 
 #if DEBUG
-            LogInstance.Log($"countOfConceptualGraphs = {countOfConceptualGraphs}");
+            //LogInstance.Log($"countOfConceptualGraphs = {countOfConceptualGraphs}");
 #endif
 
             var kindOfRelationsList = source.Children.Where(p => p.Kind == KindOfCGNode.Relation).Select(p => GrammaticalElementsHeper.GetKindOfGrammaticalRelationFromName(p.Name));
@@ -52,7 +51,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             var isGrammaticalRelationsOnly = !kindOfRelationsList.Any(p => p == KindOfGrammaticalRelation.Undefined);
 
 #if DEBUG
-            LogInstance.Log($"isGrammaticalRelationsOnly = {isGrammaticalRelationsOnly}");
+            //LogInstance.Log($"isGrammaticalRelationsOnly = {isGrammaticalRelationsOnly}");
 #endif
 
             if(countOfConceptualGraphs == 1 && isGrammaticalRelationsOnly)
@@ -66,7 +65,7 @@ namespace MyNPCLib.ConvertingCGToInternal
         private static InternalConceptualGraph ConvertConceptualGraph(ConceptualGraph source, InternalConceptualGraph targetParent, ContextOfConvertingCGToInternal context)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             if(context.WrappersList.Contains(source))
@@ -122,13 +121,13 @@ namespace MyNPCLib.ConvertingCGToInternal
             var childrenList = source.Children;
 
 #if DEBUG
-            LogInstance.Log($"childrenList.Count = {childrenList.Count}");
+            //LogInstance.Log($"childrenList.Count = {childrenList.Count}");
 #endif
 
             var entitiesConditionsMarksRelationsList = childrenList.Where(p => GrammaticalElementsHeper.IsEntityCondition(p.Name)).ToList();
 
 #if DEBUG
-            LogInstance.Log($"entitiesConditionsMarksRelationsList.Count = {entitiesConditionsMarksRelationsList.Count}");
+            //LogInstance.Log($"entitiesConditionsMarksRelationsList.Count = {entitiesConditionsMarksRelationsList.Count}");
 #endif
 
             if(entitiesConditionsMarksRelationsList.Count == 0)
@@ -140,22 +139,22 @@ namespace MyNPCLib.ConvertingCGToInternal
             var notDirectlyClonedNodesList = GetNotDirectlyClonedNodesList(entitiesConditionsMarksRelationsList);
 
 #if DEBUG
-            LogInstance.Log($"notDirectlyClonedNodesList.Count = {notDirectlyClonedNodesList.Count}");
-            foreach(var notDirectlyClonedNode in notDirectlyClonedNodesList)
-            {
-                LogInstance.Log($"notDirectlyClonedNode = {notDirectlyClonedNode}");
-            }
+            //LogInstance.Log($"notDirectlyClonedNodesList.Count = {notDirectlyClonedNodesList.Count}");
+            //foreach(var notDirectlyClonedNode in notDirectlyClonedNodesList)
+            //{
+            //    LogInstance.Log($"notDirectlyClonedNode = {notDirectlyClonedNode}");
+            //}
 #endif
 
             var clustersOfLinkedNodesDict = GetClastersOfLinkedNodes(notDirectlyClonedNodesList);
 
 #if DEBUG
-            LogInstance.Log($"clustersOfLinkedNodesDict.Count = {clustersOfLinkedNodesDict.Count}");
+            //LogInstance.Log($"clustersOfLinkedNodesDict.Count = {clustersOfLinkedNodesDict.Count}");
 #endif
             foreach (var clustersOfLinkedNodesKVPItem in clustersOfLinkedNodesDict)
             {
 #if DEBUG
-                LogInstance.Log($"clustersOfLinkedNodesKVPItem.Key = {clustersOfLinkedNodesKVPItem.Key}");
+                //LogInstance.Log($"clustersOfLinkedNodesKVPItem.Key = {clustersOfLinkedNodesKVPItem.Key}");
 #endif
                 CreateEntityCondition(result, clustersOfLinkedNodesKVPItem.Value, context);
             }
@@ -171,7 +170,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             foreach(var sourceItem in conceptsSourceItemsList)
             {
 #if DEBUG
-                LogInstance.Log($"sourceItem = {sourceItem}");
+                //LogInstance.Log($"sourceItem = {sourceItem}");
 #endif
 
                 BaseInternalConceptCGNode resultItem = null;
@@ -192,31 +191,31 @@ namespace MyNPCLib.ConvertingCGToInternal
                 }
           
 #if DEBUG
-                LogInstance.Log($"resultItem = {resultItem}");
+                //LogInstance.Log($"resultItem = {resultItem}");
 #endif
 
                 var inputsNodesList = sourceItem.Inputs.Select(p => (RelationCGNode)p).ToList();
 
 #if DEBUG
-                LogInstance.Log($"inputsNodesList.Count = {inputsNodesList.Count}");
+                //LogInstance.Log($"inputsNodesList.Count = {inputsNodesList.Count}");
 #endif
 
                 foreach (var inputNode in inputsNodesList)
                 {
 #if DEBUG
-                    LogInstance.Log($"Begin inputNode (Relation) = {inputNode}");
+                    //LogInstance.Log($"Begin inputNode (Relation) = {inputNode}");
 #endif
 
                     var resultRelationItem = context.RelationsDict[inputNode];
 
 #if DEBUG
-                    LogInstance.Log($"resultRelationItem = {resultRelationItem}");
+                    //LogInstance.Log($"resultRelationItem = {resultRelationItem}");
 #endif
 
                     var relationsInputsNodesList = inputNode.Inputs.Where(p => p.Kind == KindOfCGNode.Concept || p.Kind == KindOfCGNode.Graph).Select(p => (BaseConceptCGNode)p).ToList();
 
 #if DEBUG
-                    LogInstance.Log($"relationsInputsNodesList.Count = {relationsInputsNodesList.Count}");
+                    //LogInstance.Log($"relationsInputsNodesList.Count = {relationsInputsNodesList.Count}");
 #endif
 
                     if(relationsInputsNodesList.Count == 0)
@@ -232,13 +231,13 @@ namespace MyNPCLib.ConvertingCGToInternal
                         foreach (var relationInputNode in relationsInputsNodesList)
                         {
 #if DEBUG
-                            LogInstance.Log($"relationInputNode = {relationInputNode}");
+                            //LogInstance.Log($"relationInputNode = {relationInputNode}");
 #endif
 
                             var resultRelationInputNode = GetBaseConceptCGNodeForMakingCommonRelation(relationInputNode, context);
 
 #if DEBUG
-                            LogInstance.Log($"resultRelationInputNode = {resultRelationInputNode}");
+                            //LogInstance.Log($"resultRelationInputNode = {resultRelationInputNode}");
 #endif
                             if (!relationStorage.ContainsRelation(resultRelationInputNode.Name, resultRelationItem.Name, resultItem.Name))
                             {
@@ -251,7 +250,7 @@ namespace MyNPCLib.ConvertingCGToInternal
                     }
 
 #if DEBUG
-                    LogInstance.Log($"End inputNode (Relation) = {inputNode}");
+                    //LogInstance.Log($"End inputNode (Relation) = {inputNode}");
 #endif
                 }
 
@@ -260,36 +259,36 @@ namespace MyNPCLib.ConvertingCGToInternal
                 var outputsNodesList = sourceItem.Outputs.Select(p => (RelationCGNode)p).ToList();
 
 #if DEBUG
-                LogInstance.Log($"outputsNodesList.Count = {outputsNodesList.Count}");
+                //LogInstance.Log($"outputsNodesList.Count = {outputsNodesList.Count}");
 #endif
 
                 foreach (var outputNode in outputsNodesList)
                 {
 #if DEBUG
-                    LogInstance.Log($"Begin outputNode (Relation) = {outputNode}");
+                    //LogInstance.Log($"Begin outputNode (Relation) = {outputNode}");
 #endif
 
                     var resultRelationItem = context.RelationsDict[outputNode];
 
 #if DEBUG
-                    LogInstance.Log($"resultRelationItem = {resultRelationItem}");
+                    //LogInstance.Log($"resultRelationItem = {resultRelationItem}");
 #endif
 
                     var relationsOutputsNodesList = outputNode.Outputs.Where(p => p.Kind == KindOfCGNode.Concept || p.Kind == KindOfCGNode.Graph).Select(p => (BaseConceptCGNode)p).ToList();
 
 #if DEBUG
-                    LogInstance.Log($"relationsOutputsNodesList.Count = {relationsOutputsNodesList.Count}");
+                    //LogInstance.Log($"relationsOutputsNodesList.Count = {relationsOutputsNodesList.Count}");
 #endif
 
                     foreach (var relationOutputNode in relationsOutputsNodesList)
                     {
 #if DEBUG
-                        LogInstance.Log($"relationOutputNode = {relationOutputNode}");
+                        //LogInstance.Log($"relationOutputNode = {relationOutputNode}");
 #endif
                         var resultRelationOutputNode = GetBaseConceptCGNodeForMakingCommonRelation(relationOutputNode, context);
 
 #if DEBUG
-                        LogInstance.Log($"resultRelationOutputNode = {resultRelationOutputNode}");
+                        //LogInstance.Log($"resultRelationOutputNode = {resultRelationOutputNode}");
 #endif
 
                         if (!relationStorage.ContainsRelation(resultItem.Name, resultRelationItem.Name, resultRelationOutputNode.Name))
@@ -302,7 +301,7 @@ namespace MyNPCLib.ConvertingCGToInternal
                     }
 
 #if DEBUG
-                    LogInstance.Log($"End outputNode (Relation) = {outputNode}");
+                    //LogInstance.Log($"End outputNode (Relation) = {outputNode}");
 #endif
                 }
             }
@@ -334,7 +333,7 @@ namespace MyNPCLib.ConvertingCGToInternal
         private static void CreateEntityCondition(InternalConceptualGraph parent, List<BaseCGNode> sourceItems, ContextOfConvertingCGToInternal context)
         {
 #if DEBUG
-            LogInstance.Log($"sourceItems.Count = {sourceItems.Count}");
+            //LogInstance.Log($"sourceItems.Count = {sourceItems.Count}");
 #endif
 
             var entityCondition = new InternalConceptualGraph();
@@ -351,7 +350,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             foreach (var sourceItem in sourceItems)
             {
 #if DEBUG
-                LogInstance.Log($"sourceItem = {sourceItem}");
+                //LogInstance.Log($"sourceItem = {sourceItem}");
 #endif
 
                 entityConditionsDict[sourceItem] = entityCondition;
@@ -366,7 +365,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             foreach (var sourceItem in conceptsSourceItemsList)
             {
 #if DEBUG
-                LogInstance.Log($"sourceItem (2) = {sourceItem}");
+                //LogInstance.Log($"sourceItem (2) = {sourceItem}");
 #endif
 
                 BaseInternalConceptCGNode resultItem = null;
@@ -387,37 +386,37 @@ namespace MyNPCLib.ConvertingCGToInternal
                 }
 
 #if DEBUG
-                LogInstance.Log($"resultItem = {resultItem}");
+                //LogInstance.Log($"resultItem = {resultItem}");
 #endif
 
                 var inputsNodesList = sourceItem.Inputs.Where(p => sourceItems.Contains(p)).Select(p => (RelationCGNode)p).ToList();
 
 #if DEBUG
-                LogInstance.Log($"inputsNodesList.Count = {inputsNodesList.Count}");
+                //LogInstance.Log($"inputsNodesList.Count = {inputsNodesList.Count}");
 #endif
 
                 foreach(var inputNode in inputsNodesList)
                 {
 #if DEBUG
-                    LogInstance.Log($"inputNode = {inputNode}");
+                    //LogInstance.Log($"inputNode = {inputNode}");
 #endif
 
                     var resultRelationItem = context.RelationsDict[inputNode];
 
 #if DEBUG
-                    LogInstance.Log($"resultRelationItem = {resultRelationItem}");
+                    //LogInstance.Log($"resultRelationItem = {resultRelationItem}");
 #endif
 
                     var relationsInputsNodesList = inputNode.Inputs.Where(p => (p.Kind == KindOfCGNode.Concept || p.Kind == KindOfCGNode.Graph) && sourceItems.Contains(p)).Select(p => (BaseConceptCGNode)p).ToList();
 
 #if DEBUG
-                    LogInstance.Log($"relationsInputsNodesList.Count = {relationsInputsNodesList.Count}");
+                    //LogInstance.Log($"relationsInputsNodesList.Count = {relationsInputsNodesList.Count}");
 #endif
 
                     foreach (var relationInputNode in relationsInputsNodesList)
                     {
 #if DEBUG
-                        LogInstance.Log($"relationInputNode = {relationInputNode}");
+                        //LogInstance.Log($"relationInputNode = {relationInputNode}");
 #endif
 
                         BaseInternalConceptCGNode resultRelationInputNode = null;
@@ -438,7 +437,7 @@ namespace MyNPCLib.ConvertingCGToInternal
                         }
 
 #if DEBUG
-                        LogInstance.Log($"resultRelationInputNode = {resultRelationInputNode}");
+                        //LogInstance.Log($"resultRelationInputNode = {resultRelationInputNode}");
 #endif
 
                         if (relationStorage.ContainsRelation(resultRelationInputNode.Name, resultRelationItem.Name, resultItem.Name))
@@ -456,31 +455,31 @@ namespace MyNPCLib.ConvertingCGToInternal
                 var outputsNodesList = sourceItem.Outputs.Where(p => sourceItems.Contains(p)).Select(p => (RelationCGNode)p).ToList();
 
 #if DEBUG
-                LogInstance.Log($"outputsNodesList.Count = {outputsNodesList.Count}");
+                //LogInstance.Log($"outputsNodesList.Count = {outputsNodesList.Count}");
 #endif
 
                 foreach(var outputNode in outputsNodesList)
                 {
 #if DEBUG
-                    LogInstance.Log($"outputNode = {outputNode}");
+                    //LogInstance.Log($"outputNode = {outputNode}");
 #endif
 
                     var resultRelationItem = context.RelationsDict[outputNode];
 
 #if DEBUG
-                    LogInstance.Log($"resultRelationItem = {resultRelationItem}");
+                    //LogInstance.Log($"resultRelationItem = {resultRelationItem}");
 #endif
 
                     var relationsOutputsNodesList = outputNode.Outputs.Where(p => (p.Kind == KindOfCGNode.Concept || p.Kind == KindOfCGNode.Graph) && sourceItems.Contains(p)).Select(p => (BaseConceptCGNode)p).ToList();
 
 #if DEBUG
-                    LogInstance.Log($"relationsOutputsNodesList.Count = {relationsOutputsNodesList.Count}");
+                    //LogInstance.Log($"relationsOutputsNodesList.Count = {relationsOutputsNodesList.Count}");
 #endif
 
                     foreach(var relationOutputNode in relationsOutputsNodesList)
                     {
 #if DEBUG
-                        LogInstance.Log($"relationOutputNode = {relationOutputNode}");
+                        //LogInstance.Log($"relationOutputNode = {relationOutputNode}");
 #endif
                         BaseInternalConceptCGNode resultRelationOutputNode = null;
 
@@ -501,7 +500,7 @@ namespace MyNPCLib.ConvertingCGToInternal
                         }
 
 #if DEBUG
-                        LogInstance.Log($"resultRelationOutputNode = {resultRelationOutputNode}");
+                        //LogInstance.Log($"resultRelationOutputNode = {resultRelationOutputNode}");
 #endif
 
                         if(relationStorage.ContainsRelation(resultItem.Name, resultRelationItem.Name, resultRelationOutputNode.Name))
@@ -525,7 +524,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             foreach (var entityConditionMarkRelation in entitiesConditionsMarksRelationsList)
             {
 #if DEBUG
-                LogInstance.Log($"entityConditionMarkRelation = {entityConditionMarkRelation}");
+                //LogInstance.Log($"entityConditionMarkRelation = {entityConditionMarkRelation}");
 #endif
 
                 notDirectlyClonedNodesList.Add(entityConditionMarkRelation);
@@ -533,13 +532,13 @@ namespace MyNPCLib.ConvertingCGToInternal
                 var firstOrdersRelationsList = entityConditionMarkRelation.Outputs.Where(p => p.Kind == KindOfCGNode.Relation).Select(p => (RelationCGNode)p).ToList();
 
 #if DEBUG
-                LogInstance.Log($"firstOrdersRelationsList.Count = {firstOrdersRelationsList.Count}");
+                //LogInstance.Log($"firstOrdersRelationsList.Count = {firstOrdersRelationsList.Count}");
 #endif
 
                 foreach (var firstOrderRelation in firstOrdersRelationsList)
                 {
 #if DEBUG
-                    LogInstance.Log($"firstOrderRelation = {firstOrderRelation}");
+                    //LogInstance.Log($"firstOrderRelation = {firstOrderRelation}");
 #endif
 
                     if (!notDirectlyClonedNodesList.Contains(firstOrderRelation))
@@ -550,13 +549,13 @@ namespace MyNPCLib.ConvertingCGToInternal
                     var inputConceptsList = firstOrderRelation.Inputs.Where(p => p.Kind == KindOfCGNode.Concept).Select(p => (ConceptCGNode)p).ToList();
 
 #if DEBUG
-                    LogInstance.Log($"inputConceptsList.Count = {inputConceptsList.Count}");
+                    //LogInstance.Log($"inputConceptsList.Count = {inputConceptsList.Count}");
 #endif
 
                     foreach (var inputConcept in inputConceptsList)
                     {
 #if DEBUG
-                        LogInstance.Log($"inputConcept = {inputConcept}");
+                        //LogInstance.Log($"inputConcept = {inputConcept}");
 #endif
 
                         if (!notDirectlyClonedNodesList.Contains(inputConcept))
@@ -568,13 +567,13 @@ namespace MyNPCLib.ConvertingCGToInternal
                     var outputConceptsList = firstOrderRelation.Outputs.Where(p => p.Kind == KindOfCGNode.Concept).Select(p => (ConceptCGNode)p).ToList();
 
 #if DEBUG
-                    LogInstance.Log($"outputConceptsList.Count = {outputConceptsList.Count}");
+                    //LogInstance.Log($"outputConceptsList.Count = {outputConceptsList.Count}");
 #endif
 
                     foreach (var outputConcept in outputConceptsList)
                     {
 #if DEBUG
-                        LogInstance.Log($"outputConcept = {outputConcept}");
+                        //LogInstance.Log($"outputConcept = {outputConcept}");
 #endif
 
                         if (!notDirectlyClonedNodesList.Contains(outputConcept))
@@ -598,7 +597,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             {
                 n++;
 #if DEBUG
-                LogInstance.Log($"currentTargetNodesList.Count = {currentTargetNodesList.Count} n = {n}");
+                //LogInstance.Log($"currentTargetNodesList.Count = {currentTargetNodesList.Count} n = {n}");
 #endif
 
                 var nodesForThisN = GetLinkedNodes(currentTargetNodesList);
@@ -631,7 +630,7 @@ namespace MyNPCLib.ConvertingCGToInternal
         private static void NGetLinkedNodes(List<BaseCGNode> source, BaseCGNode targetNode, ref List<BaseCGNode> result)
         {
 #if DEBUG
-            LogInstance.Log($"targetNode = {targetNode}");
+            //LogInstance.Log($"targetNode = {targetNode}");
 #endif
 
             if(result.Contains(targetNode))
@@ -644,7 +643,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             var inputNodesList = targetNode.Inputs;
 
 #if DEBUG
-            LogInstance.Log($"inputNodesList.Count = {inputNodesList.Count}");
+            //LogInstance.Log($"inputNodesList.Count = {inputNodesList.Count}");
 #endif
 
             if(inputNodesList.Count > 0)
@@ -652,7 +651,7 @@ namespace MyNPCLib.ConvertingCGToInternal
                 var tmpNodesList = inputNodesList.Where(p => source.Contains(p)).ToList();
 
 #if DEBUG
-                LogInstance.Log($"tmpNodesList.Count = {tmpNodesList.Count}");
+                //LogInstance.Log($"tmpNodesList.Count = {tmpNodesList.Count}");
 #endif
 
                 foreach (var tmpNode in tmpNodesList)
@@ -664,7 +663,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             var outputNodesList = targetNode.Outputs;
 
 #if DEBUG
-            LogInstance.Log($"outputNodesList.Count = {outputNodesList.Count}");
+            //LogInstance.Log($"outputNodesList.Count = {outputNodesList.Count}");
 #endif
 
             if(outputNodesList.Count > 0)
@@ -672,7 +671,7 @@ namespace MyNPCLib.ConvertingCGToInternal
                 var tmpNodesList = outputNodesList.Where(p => source.Contains(p)).ToList();
 
 #if DEBUG
-                LogInstance.Log($"tmpNodesList.Count = {tmpNodesList.Count}");
+                //LogInstance.Log($"tmpNodesList.Count = {tmpNodesList.Count}");
 #endif
 
                 foreach(var tmpNode in tmpNodesList)
@@ -685,13 +684,13 @@ namespace MyNPCLib.ConvertingCGToInternal
         private static void CreateChildrenByAllNodes(IList<BaseCGNode> childrenList, InternalConceptualGraph targetParent, ContextOfConvertingCGToInternal context)
         {
 #if DEBUG
-            LogInstance.Log($"childrenList.Count = {childrenList.Count}");
+            //LogInstance.Log($"childrenList.Count = {childrenList.Count}");
 #endif
 
             foreach (var child in childrenList)
             {
 #if DEBUG
-                LogInstance.Log($"child = {child}");
+                //LogInstance.Log($"child = {child}");
 #endif
 
                 var kind = child.Kind;
@@ -720,7 +719,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             var outputNodesGroupedDict = source.Outputs.GroupBy(p => GrammaticalElementsHeper.GetKindOfGrammaticalRelationFromName(p.Name)).ToDictionary(p => p.Key, p => p.ToList());
 
 #if DEBUG
-            LogInstance.Log($"outputNodesGroupedDict.Count = {outputNodesGroupedDict.Count}");
+            //LogInstance.Log($"outputNodesGroupedDict.Count = {outputNodesGroupedDict.Count}");
 #endif
 
             foreach (var outputNodesGroupedKVPItem in outputNodesGroupedDict)
@@ -752,14 +751,14 @@ namespace MyNPCLib.ConvertingCGToInternal
                             var outputNodeOfTheRelation = outputNodesOfTheRelation.Single();
 
 #if DEBUG
-                            LogInstance.Log($"relation = {relation}");
-                            LogInstance.Log($"outputNodeOfTheRelation = {outputNodeOfTheRelation}");
+                            //LogInstance.Log($"relation = {relation}");
+                            //LogInstance.Log($"outputNodeOfTheRelation = {outputNodeOfTheRelation}");
 #endif
 
                             var aspect = GrammaticalElementsHeper.GetAspectFromName(outputNodeOfTheRelation.Name);
 
 #if DEBUG
-                            LogInstance.Log($"aspect = {aspect}");
+                            //LogInstance.Log($"aspect = {aspect}");
 #endif
 
                             if (aspect == GrammaticalAspect.Undefined)
@@ -790,14 +789,14 @@ namespace MyNPCLib.ConvertingCGToInternal
                             var outputNodeOfTheRelation = outputNodesOfTheRelation.Single();
 
 #if DEBUG
-                            LogInstance.Log($"relation = {relation}");
-                            LogInstance.Log($"outputNodeOfTheRelation = {outputNodeOfTheRelation}");
+                            //LogInstance.Log($"relation = {relation}");
+                            //LogInstance.Log($"outputNodeOfTheRelation = {outputNodeOfTheRelation}");
 #endif
 
                             var tense = GrammaticalElementsHeper.GetTenseFromName(outputNodeOfTheRelation.Name);
 
 #if DEBUG
-                            LogInstance.Log($"tense = {tense}");
+                            //LogInstance.Log($"tense = {tense}");
 #endif
 
                             if (tense == GrammaticalTenses.Undefined)
@@ -828,14 +827,14 @@ namespace MyNPCLib.ConvertingCGToInternal
                             var outputNodeOfTheRelation = outputNodesOfTheRelation.Single();
 
 #if DEBUG
-                            LogInstance.Log($"relation = {relation}");
-                            LogInstance.Log($"outputNodeOfTheRelation = {outputNodeOfTheRelation}");
+                            //LogInstance.Log($"relation = {relation}");
+                            //LogInstance.Log($"outputNodeOfTheRelation = {outputNodeOfTheRelation}");
 #endif
 
                             var voice = GrammaticalElementsHeper.GetVoiceFromName(outputNodeOfTheRelation.Name);
 
 #if DEBUG
-                            LogInstance.Log($"voice = {voice}");
+                            //LogInstance.Log($"voice = {voice}");
 #endif
 
                             if (voice == GrammaticalVoice.Undefined)
@@ -866,14 +865,14 @@ namespace MyNPCLib.ConvertingCGToInternal
                             var outputNodeOfTheRelation = outputNodesOfTheRelation.Single();
 
 #if DEBUG
-                            LogInstance.Log($"relation = {relation}");
-                            LogInstance.Log($"outputNodeOfTheRelation = {outputNodeOfTheRelation}");
+                            //LogInstance.Log($"relation = {relation}");
+                            //LogInstance.Log($"outputNodeOfTheRelation = {outputNodeOfTheRelation}");
 #endif
 
                             var mood = GrammaticalElementsHeper.GetMoodFromName(outputNodeOfTheRelation.Name);
 
 #if DEBUG
-                            LogInstance.Log($"mood = {mood}");
+                            //LogInstance.Log($"mood = {mood}");
 #endif
 
                             if (mood == GrammaticalMood.Undefined)
@@ -904,14 +903,14 @@ namespace MyNPCLib.ConvertingCGToInternal
                             var outputNodeOfTheRelation = outputNodesOfTheRelation.Single();
 
 #if DEBUG
-                            LogInstance.Log($"relation = {relation}");
-                            LogInstance.Log($"outputNodeOfTheRelation = {outputNodeOfTheRelation}");
+                            //LogInstance.Log($"relation = {relation}");
+                            //LogInstance.Log($"outputNodeOfTheRelation = {outputNodeOfTheRelation}");
 #endif
 
                             var modal = GrammaticalElementsHeper.GetModalFromName(outputNodeOfTheRelation.Name);
 
 #if DEBUG
-                            LogInstance.Log($"modal = {modal}");
+                            //LogInstance.Log($"modal = {modal}");
 #endif
 
                             if (modal == KindOfModal.Undefined)
@@ -931,7 +930,7 @@ namespace MyNPCLib.ConvertingCGToInternal
         private static InternalConceptCGNode ConvertConcept(ConceptCGNode source, InternalConceptualGraph targetParent, ContextOfConvertingCGToInternal context)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             if (context.ConceptsDict.ContainsKey(source))
@@ -963,7 +962,7 @@ namespace MyNPCLib.ConvertingCGToInternal
         private static InternalRelationCGNode ConvertRelation(RelationCGNode source, InternalConceptualGraph targetParent, ContextOfConvertingCGToInternal context)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             if (context.RelationsDict.ContainsKey(source))

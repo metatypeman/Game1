@@ -91,7 +91,7 @@ namespace TmpSandBox
 
                 var internalCG = ConvertorCGToInternal.Convert(graph, globalEntityDictionary);
 
-                LogInstance.Log($"internalCG = {internalCG}");
+                //LogInstance.Log($"internalCG = {internalCG}");
 
                 dotStr = DotConverter.ConvertToString(internalCG);
 
@@ -583,13 +583,13 @@ namespace TmpSandBox
 
                 LogInstance.Log($"dotStr = {dotStr}");
 
-                //var internalCG = ConvertorCGToInternal.Convert(graph, globalEntityDictionary);
+                var internalCG = ConvertorCGToInternal.Convert(graph, globalEntityDictionary);
 
-                //LogInstance.Log($"internalCG = {internalCG}");
+                LogInstance.Log($"internalCG = {internalCG}");
 
-                //dotStr = DotConverter.ConvertToString(internalCG);
+                dotStr = DotConverter.ConvertToString(internalCG);
 
-                //LogInstance.Log($"dotStr (2) = {dotStr}");
+                LogInstance.Log($"dotStr (2) = {dotStr}");
 
                 //var ruleInstancesList = ConvertorInternalCGToPersistLogicalData.ConvertConceptualGraph(internalCG, globalEntityDictionary);
 
