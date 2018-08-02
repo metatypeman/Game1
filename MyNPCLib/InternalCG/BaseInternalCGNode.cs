@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CG;
+using MyNPCLib.CommonServiceGrammaticalElements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace MyNPCLib.InternalCG
         public string Name { get; set; }
         public ulong Key { get; set; }
         public bool IsNegation { get; set; }
+        public KindOfSpecialRelation KindOfSpecialRelation { get; set; }
         public virtual bool IsConceptualGraph => false;
         public virtual InternalConceptualGraph AsConceptualGraph => null;
         public virtual bool IsConceptNode => false;
@@ -20,6 +22,7 @@ namespace MyNPCLib.InternalCG
         public virtual InternalRelationCGNode AsRelationNode => null;
         public virtual bool IsGraphOrConceptNode => false;
         public virtual BaseInternalConceptCGNode AsGraphOrConceptNode => null;
+        
         public abstract void Destroy();
 
         private InternalConceptualGraph mParent;
@@ -179,6 +182,8 @@ namespace MyNPCLib.InternalCG
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
             sb.AppendLine($"{spaces}{nameof(IsNegation)} = {IsNegation}");
+            sb.AppendLine($"{spaces}{nameof(KindOfSpecialRelation)} = {KindOfSpecialRelation}");
+            
             if (Parent == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Parent)} = null");
@@ -228,6 +233,7 @@ namespace MyNPCLib.InternalCG
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.AppendLine($"{spaces}{nameof(KindOfSpecialRelation)} = {KindOfSpecialRelation}");
             return sb.ToString();
         }
 
@@ -247,6 +253,7 @@ namespace MyNPCLib.InternalCG
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.AppendLine($"{spaces}{nameof(KindOfSpecialRelation)} = {KindOfSpecialRelation}");
             return sb.ToString();
         }
     }
