@@ -344,11 +344,9 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
 #if DEBUG
                             LogInstance.Log($"outputNode = {outputNode}");
 #endif
-
-
                         }
                         initRelation.Destroy();
-                        throw new NotImplementedException();
+                        //throw new NotImplementedException();
                         break;
 
                     default: throw new ArgumentOutOfRangeException(nameof(kindOfSpecialRelation), kindOfSpecialRelation, null);
