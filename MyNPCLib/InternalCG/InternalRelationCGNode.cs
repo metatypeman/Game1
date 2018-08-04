@@ -6,8 +6,9 @@ using System.Text;
 
 namespace MyNPCLib.InternalCG
 {
-    public class InternalRelationCGNode: BaseInternalCGNode
+    public class InternalRelationCGNode : BaseInternalCGNode
     {
+        public string LinkedVarName { get; set; }
         public override KindOfCGNode Kind => KindOfCGNode.Relation;
         public override bool IsRelationNode => true;
         public override InternalRelationCGNode AsRelationNode => this;
@@ -82,6 +83,33 @@ namespace MyNPCLib.InternalCG
             {
                 NSRemoveOutputNode(node);
             }
+        }
+
+        public override string PropertiesToSting(uint n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.Append(base.PropertiesToSting(n));
+            sb.AppendLine($"{spaces}{nameof(LinkedVarName)} = {LinkedVarName}");
+            return sb.ToString();
+        }
+
+        public override string PropertiesToShortSting(uint n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.Append(base.PropertiesToShortSting(n));
+            sb.AppendLine($"{spaces}{nameof(LinkedVarName)} = {LinkedVarName}");
+            return sb.ToString();
+        }
+
+        public override string PropertiesToBriefSting(uint n)
+        {
+            var spaces = StringHelper.Spaces(n);
+            var sb = new StringBuilder();
+            sb.Append(base.PropertiesToBriefSting(n));
+            sb.AppendLine($"{spaces}{nameof(LinkedVarName)} = {LinkedVarName}");
+            return sb.ToString();
         }
     }
 }

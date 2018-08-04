@@ -97,10 +97,29 @@ namespace MyNPCLib.InternalCG
             }
         }
 
+        private Dictionary<string, string> mRealtionLinkedVarNameDict = new Dictionary<string, string>();
+        public void AddLinkRelationToVarName(string relationName, string varName)
+        {
+            mRealtionLinkedVarNameDict[relationName] = varName;
+        }
+
+        public string GetVarNameForRelation(string relationName)
+        {
+            if(mRealtionLinkedVarNameDict.ContainsKey(relationName))
+            {
+                return mRealtionLinkedVarNameDict[relationName];
+            }
+
+            return string.Empty;
+        }
+
+        public int MaxVarCount { get; set; }
+
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
+            var nextNSpace = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToSting(n));
             sb.AppendLine($"{spaces}{nameof(Number)} = {Number}");
@@ -116,12 +135,21 @@ namespace MyNPCLib.InternalCG
                 sb.Append(child.PropertiesToShortSting(nextN));
             }
             sb.AppendLine($"{spaces}End {nameof(Children)}");
+            sb.AppendLine($"{spaces}Begin RealtionLinkedVarNameDict");
+            foreach (var relationLinkedVarKVPItem in mRealtionLinkedVarNameDict)
+            {
+                sb.AppendLine($"{nextNSpace}{relationLinkedVarKVPItem.Key} = {relationLinkedVarKVPItem.Value}");
+            }
+            sb.AppendLine($"{spaces}End RealtionLinkedVarNameDict");
+            sb.AppendLine($"{spaces}{nameof(MaxVarCount)} = {MaxVarCount}");
             return sb.ToString();
         }
 
         public override string PropertiesToShortSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);
+            var nextN = n + 4;
+            var nextNSpace = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Number)} = {Number}");
             sb.AppendLine($"{spaces}{nameof(Tense)} = {Tense}");
@@ -130,6 +158,13 @@ namespace MyNPCLib.InternalCG
             sb.AppendLine($"{spaces}{nameof(Voice)} = {Voice}");
             sb.AppendLine($"{spaces}{nameof(Modal)} = {Modal}");
             sb.AppendLine($"{spaces}{nameof(Mood)} = {Mood}");
+            sb.AppendLine($"{spaces}Begin RealtionLinkedVarNameDict");
+            foreach (var relationLinkedVarKVPItem in mRealtionLinkedVarNameDict)
+            {
+                sb.AppendLine($"{nextNSpace}{relationLinkedVarKVPItem.Key} = {relationLinkedVarKVPItem.Value}");
+            }
+            sb.AppendLine($"{spaces}End RealtionLinkedVarNameDict");
+            sb.AppendLine($"{spaces}{nameof(MaxVarCount)} = {MaxVarCount}");
             sb.Append(base.PropertiesToShortSting(n));
             return sb.ToString();
         }

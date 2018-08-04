@@ -178,6 +178,7 @@ namespace MyNPCLib.ConvertingCGToInternal
 #endif
 
                     var stubOfOfSubject = new InternalConceptCGNode();
+                    stubOfOfSubject.KindOfGraphOrConcept = KindOfInternalGraphOrConceptNode.Concept;
                     stubOfOfSubject.Parent = dest;
                     stubOfOfSubject.AddOutputNode(actionRelation);
                     stubOfOfSubject.Name = SpecialNamesOfConcepts.SomeOne;
@@ -228,6 +229,7 @@ namespace MyNPCLib.ConvertingCGToInternal
 #endif
 
                     var stubOfOfSubject = new InternalConceptCGNode();
+                    stubOfOfSubject.KindOfGraphOrConcept = KindOfInternalGraphOrConceptNode.Concept;
                     stubOfOfSubject.Parent = dest;
                     stubOfOfSubject.AddOutputNode(stateRelation);
                     stubOfOfSubject.Name = SpecialNamesOfConcepts.SomeOne;
@@ -261,6 +263,7 @@ namespace MyNPCLib.ConvertingCGToInternal
                 concept.AddOutputNode(objectRelation);
 
                 var stubOfObject = new InternalConceptCGNode();
+                stubOfObject.KindOfGraphOrConcept = KindOfInternalGraphOrConceptNode.Concept;
                 stubOfObject.Parent = parent;
                 stubOfObject.Name = SpecialNamesOfConcepts.Self;
                 stubOfObject.Key = entityDictionary.GetKey(SpecialNamesOfConcepts.Self);
