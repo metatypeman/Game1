@@ -41,7 +41,7 @@ namespace MyNPCLib.CGStorage
             lock (mDataLockObj)
             {
 #if DEBUG
-                //LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+                LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 #endif
 
                 mCommonPersistIndexedLogicalData.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);

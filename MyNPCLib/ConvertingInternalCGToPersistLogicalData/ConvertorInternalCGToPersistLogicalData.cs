@@ -15,7 +15,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
         public static IList<RuleInstance> ConvertConceptualGraph(InternalConceptualGraph source, IEntityDictionary entityDictionary)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             var context = new ContextOfConvertingInternalCGToPersistLogicalData();
@@ -28,7 +28,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             PreliminaryСreation(source, context);
 
 #if DEBUG
-            LogInstance.Log($"context.RuleInstancesDict.Count = {context.RuleInstancesDict.Count}");
+            //LogInstance.Log($"context.RuleInstancesDict.Count = {context.RuleInstancesDict.Count}");
 #endif
 
             foreach(var ruleInstancesDictKVPItem in context.RuleInstancesDict)
@@ -42,7 +42,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
         private static void PreliminaryСreation(InternalConceptualGraph source, ContextOfConvertingInternalCGToPersistLogicalData context)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             if (context.RuleInstancesDict.ContainsKey(source))
@@ -81,8 +81,8 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
         private static void FillRuleInstances(InternalConceptualGraph source, RuleInstance dest, ContextOfConvertingInternalCGToPersistLogicalData context)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
-            LogInstance.Log($"dest = {dest}");
+            //LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"dest = {dest}");
 #endif
 
             var contextForSingleRuleInstance = new ContextForSingleRuleInstanceOfConvertingInternalCGToPersistLogicalData();
@@ -100,7 +100,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             var kindOfGraphOrConcept = source.KindOfGraphOrConcept;
 
 #if DEBUG
-            LogInstance.Log($"kindOfGraphOrConcept = {kindOfGraphOrConcept}");
+            //LogInstance.Log($"kindOfGraphOrConcept = {kindOfGraphOrConcept}");
 #endif
 
             switch(kindOfGraphOrConcept)
@@ -119,9 +119,9 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             var expression = CreateExpressionByWholeGraph(source, context, dest, contextForSingleRuleInstance);
 
 #if DEBUG
-            LogInstance.Log($"expression = {expression}");
-            var debugStr = DebugHelperForRuleInstance.ToString(expression);
-            LogInstance.Log($"debugStr = {debugStr}");
+            //LogInstance.Log($"expression = {expression}");
+            //var debugStr = DebugHelperForRuleInstance.ToString(expression);
+            //LogInstance.Log($"debugStr = {debugStr}");
 #endif
 
             //throw new NotImplementedException();
@@ -131,7 +131,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             var etityConditionsDict = contextForSingleRuleInstance.EntityConditionsDict;
 
 #if DEBUG
-            LogInstance.Log($"etityConditionsDict.Count = {etityConditionsDict.Count}");
+            //LogInstance.Log($"etityConditionsDict.Count = {etityConditionsDict.Count}");
 #endif
 
             if(etityConditionsDict.Count > 0)
@@ -143,8 +143,8 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                 foreach(var etityConditionsKVPItem in etityConditionsDict)
                 {
 #if DEBUG
-                    LogInstance.Log($"etityConditionsKVPItem.Key = {etityConditionsKVPItem.Key}");
-                    LogInstance.Log($"etityConditionsKVPItem.Value = {etityConditionsKVPItem.Value}");
+                    //LogInstance.Log($"etityConditionsKVPItem.Key = {etityConditionsKVPItem.Key}");
+                    //LogInstance.Log($"etityConditionsKVPItem.Value = {etityConditionsKVPItem.Value}");
 #endif
 
                     var entityConditionItem = new EntityConditionItem();
@@ -168,7 +168,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             var initRelationsList = source.Children.Where(p => p.IsRelationNode).Select(p => p.AsRelationNode).ToList();
 
 #if DEBUG
-            LogInstance.Log($"initRelationsList.Count = {initRelationsList.Count}");
+            //LogInstance.Log($"initRelationsList.Count = {initRelationsList.Count}");
 #endif
 
             foreach (var initRelation in initRelationsList)
@@ -212,13 +212,13 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
 
                     case KindOfSpecialRelation.State:
 #if DEBUG
-                        LogInstance.Log($"initRelation = {initRelation}");
-                        LogInstance.Log($"kindOfSpecialRelation = {kindOfSpecialRelation}");
+                        //LogInstance.Log($"initRelation = {initRelation}");
+                        //LogInstance.Log($"kindOfSpecialRelation = {kindOfSpecialRelation}");
 #endif
                         if (!relationsForRemoving.Contains(initRelation))
                         {
 #if DEBUG
-                            LogInstance.Log("NEXT");
+                            //LogInstance.Log("NEXT");
 #endif
                             ModifyClusterAroundSpecialRelation(source, initRelation, kindOfSpecialRelation, context);
 
@@ -239,14 +239,14 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
 
                     case KindOfSpecialRelation.Action:
 #if DEBUG
-                        LogInstance.Log($"initRelation = {initRelation}");
-                        LogInstance.Log($"kindOfSpecialRelation = {kindOfSpecialRelation}");
+                        //LogInstance.Log($"initRelation = {initRelation}");
+                        //LogInstance.Log($"kindOfSpecialRelation = {kindOfSpecialRelation}");
 #endif
 
                         if (!relationsForRemoving.Contains(initRelation))
                         {
 #if DEBUG
-                            LogInstance.Log("NEXT");
+                            //LogInstance.Log("NEXT");
 #endif
                             ModifyClusterAroundSpecialRelation(source, initRelation, kindOfSpecialRelation, context);
 
@@ -270,8 +270,8 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             }
 
 #if DEBUG
-            var dotStr = DotConverter.ConvertToString(source);
-            LogInstance.Log($"dotStr (2) = {dotStr}");
+            //var dotStr = DotConverter.ConvertToString(source);
+            //LogInstance.Log($"dotStr (2) = {dotStr}");
             //throw new NotImplementedException();
 #endif
         }
@@ -282,26 +282,26 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             var firstConceptsList = relation.Inputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).ToList();
 
 #if DEBUG
-            LogInstance.Log($"kindOfSpecialRelation = {kindOfSpecialRelation}");
-            LogInstance.Log($"firstConceptsList.Count = {firstConceptsList.Count}");
+            //LogInstance.Log($"kindOfSpecialRelation = {kindOfSpecialRelation}");
+            //LogInstance.Log($"firstConceptsList.Count = {firstConceptsList.Count}");
 #endif
 
             var outputNode = relation.Outputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
 
 #if DEBUG
-            LogInstance.Log($"outputNode = {outputNode}");
+            //LogInstance.Log($"outputNode = {outputNode}");
 #endif
 
             var objectRelationsList = outputNode.Outputs.Where(p => p.IsRelationNode && p.Name == SpecialNamesOfRelations.ObjectRelationName).Select(p => p.AsRelationNode).ToList();
 
 #if DEBUG
-            LogInstance.Log($"objectRelationsList.Count = {objectRelationsList.Count}");
+            //LogInstance.Log($"objectRelationsList.Count = {objectRelationsList.Count}");
 #endif
 
             var hasAnotherRelations = outputNode.Outputs.Any(p => p.IsRelationNode && p.Name != SpecialNamesOfRelations.ObjectRelationName && p.Name != SpecialNamesOfRelations.ExperiencerRelationName);
 
 #if DEBUG
-            LogInstance.Log($"hasAnotherRelations = {hasAnotherRelations}");
+            //LogInstance.Log($"hasAnotherRelations = {hasAnotherRelations}");
 #endif
 
             var linkedVarName = string.Empty;
@@ -313,7 +313,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                 source.MaxVarCount++;
                 var n = source.MaxVarCount;
 #if DEBUG
-                LogInstance.Log($"n = {n}");
+                //LogInstance.Log($"n = {n}");
 #endif
 
                 linkedVarName = $"@X{n}";
@@ -324,7 +324,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             foreach(var firstConcept in firstConceptsList)
             {
 #if DEBUG
-                LogInstance.Log($"firstConcept = {firstConcept}");
+                //LogInstance.Log($"firstConcept = {firstConcept}");
 #endif
 
                 foreach (var objectRelation in objectRelationsList)
@@ -342,7 +342,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                     foreach(var objectConcept in objectsConceptsList)
                     {
 #if DEBUG
-                        LogInstance.Log($"objectConcept = {objectConcept}");
+                        //LogInstance.Log($"objectConcept = {objectConcept}");
 #endif
 
                         var resultRelation = new InternalRelationCGNode();
@@ -371,7 +371,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             var initRelationsList = source.Children.Where(p => p.IsRelationNode).Select(p => p.AsRelationNode).ToList();
 
 #if DEBUG
-            LogInstance.Log($"initRelationsList.Count = {initRelationsList.Count}");
+            //LogInstance.Log($"initRelationsList.Count = {initRelationsList.Count}");
 #endif
 
             var n = 0;
@@ -379,13 +379,13 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             foreach (var initRelation in initRelationsList)
             {
 #if DEBUG
-                LogInstance.Log($"initRelation = {initRelation}");
+                //LogInstance.Log($"initRelation = {initRelation}");
 #endif
 
                 var inputNode = initRelation.Inputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
 
 #if DEBUG
-                LogInstance.Log($"inputNode = {inputNode}");
+                //LogInstance.Log($"inputNode = {inputNode}");
 #endif
 
                 var kindOfInputNode = inputNode.KindOfGraphOrConcept;
@@ -397,7 +397,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                             var conceptName = inputNode.Name;
 
 #if DEBUG
-                            LogInstance.Log($"conceptName = {conceptName}");
+                            //LogInstance.Log($"conceptName = {conceptName}");
 #endif
 
                             if(!conceptsNamesDict.ContainsKey(conceptName))
@@ -422,19 +422,19 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             foreach(var initRelation in initRelationsList)
             {
 #if DEBUG
-                LogInstance.Log($"initRelation = {initRelation}");
+                //LogInstance.Log($"initRelation = {initRelation}");
 #endif
 
                 var inputNode = initRelation.Inputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
 
 #if DEBUG
-                LogInstance.Log($"inputNode = {inputNode}");
+                //LogInstance.Log($"inputNode = {inputNode}");
 #endif
 
                 var outputNode = initRelation.Outputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
 
 #if DEBUG
-                LogInstance.Log($"outputNode = {outputNode}");
+                //LogInstance.Log($"outputNode = {outputNode}");
 #endif
 
                 PrepareRealtionForEntityConditionExpression(inputNode, initRelation, true, conceptsNamesDict, ref processedInRelationsConceptsList, context);
@@ -442,19 +442,19 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             }
 
 #if DEBUG
-            LogInstance.Log($"processedInRelationsConceptsList.Count = {processedInRelationsConceptsList.Count}");
+            //LogInstance.Log($"processedInRelationsConceptsList.Count = {processedInRelationsConceptsList.Count}");
 #endif
             
             foreach(var processedInRelationsConcept in processedInRelationsConceptsList)
             {
 #if DEBUG
-                LogInstance.Log($"processedInRelationsConcept = {processedInRelationsConcept}");
+                //LogInstance.Log($"processedInRelationsConcept = {processedInRelationsConcept}");
 #endif
 
                 var varName = conceptsNamesDict[processedInRelationsConcept];
 
 #if DEBUG
-                LogInstance.Log($"varName = {varName}");
+                //LogInstance.Log($"varName = {varName}");
 #endif
 
                 var realtionForClass = new InternalRelationCGNode();
@@ -470,9 +470,8 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                 realtionForClass.AddInputNode(varNode);
 
 #if DEBUG
-                LogInstance.Log($"realtionForClass = {realtionForClass}");
+                //LogInstance.Log($"realtionForClass = {realtionForClass}");
 #endif
-
             }
 
             //throw new NotImplementedException();
@@ -481,9 +480,9 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
         private static void PrepareRealtionForEntityConditionExpression(BaseInternalConceptCGNode conceptNode, InternalRelationCGNode relation, bool isInputNode, Dictionary<string, string> conceptsNamesDict, ref List<string> processedInRelationsConceptsList, ContextOfConvertingInternalCGToPersistLogicalData context)
         {
 #if DEBUG
-            LogInstance.Log($"conceptNode = {conceptNode}");
-            LogInstance.Log($"relation = {relation}");
-            LogInstance.Log($"isInputNode = {isInputNode}");
+            //LogInstance.Log($"conceptNode = {conceptNode}");
+            //LogInstance.Log($"relation = {relation}");
+            //LogInstance.Log($"isInputNode = {isInputNode}");
 #endif
 
             var kindOfInputNode = conceptNode.KindOfGraphOrConcept;
@@ -495,7 +494,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                         var conceptName = conceptNode.Name;
 
 #if DEBUG
-                        LogInstance.Log($"conceptName = {conceptName}");
+                        //LogInstance.Log($"conceptName = {conceptName}");
 #endif
 
                         if (conceptsNamesDict.ContainsKey(conceptName))
@@ -503,7 +502,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                             var varName = conceptsNamesDict[conceptName];
 
 #if DEBUG
-                            LogInstance.Log($"varName = {varName}");
+                            //LogInstance.Log($"varName = {varName}");
 #endif
 
                             var varNode = new InternalConceptCGNode();
@@ -536,7 +535,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             var relationsList = source.Children.Where(p => p.IsRelationNode).Select(p => p.AsRelationNode).ToList();
 
 #if DEBUG
-            LogInstance.Log($"relationsList.Count = {relationsList.Count}");
+            //LogInstance.Log($"relationsList.Count = {relationsList.Count}");
 #endif
 
             if(relationsList.Count == 0)
@@ -566,7 +565,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                 var relationExpr = CreateExpressionByRelation(relation, source, ruleInstance, context, contextForSingleRuleInstance);
 
 #if DEBUG
-                LogInstance.Log($"n = {n} relationExpr = {relationExpr}");
+                //LogInstance.Log($"n = {n} relationExpr = {relationExpr}");
 #endif
 
                 if(prevRelation == null)
@@ -597,13 +596,13 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
         private static BaseExpressionNode CreateExpressionByRelation(InternalRelationCGNode relation, InternalConceptualGraph internalConceptualGraph, RuleInstance ruleInstance, ContextOfConvertingInternalCGToPersistLogicalData context, ContextForSingleRuleInstanceOfConvertingInternalCGToPersistLogicalData contextForSingleRuleInstance)
         {
 #if DEBUG
-            LogInstance.Log($"relation = {relation}");
+            //LogInstance.Log($"relation = {relation}");
 #endif
 
             var linkedVarName = internalConceptualGraph.GetVarNameForRelation(relation.Name);
 
 #if DEBUG
-            LogInstance.Log($"linkedVarName = {linkedVarName}");
+            //LogInstance.Log($"linkedVarName = {linkedVarName}");
 #endif
 
             var relationExpr = new RelationExpressionNode();
@@ -614,7 +613,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             var inputNode = relation.Inputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
 
 #if DEBUG
-            LogInstance.Log($"inputNode = {inputNode}");
+            //LogInstance.Log($"inputNode = {inputNode}");
 #endif
             var inputNodeExpr = CreateExpressionByGraphOrConceptNode(inputNode, internalConceptualGraph, context, contextForSingleRuleInstance);
 
@@ -623,7 +622,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             var outputNode = relation.Outputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
 
 #if DEBUG
-            LogInstance.Log($"outputNode = {outputNode}");
+            //LogInstance.Log($"outputNode = {outputNode}");
 #endif
 
             if(outputNode != null)
@@ -672,7 +671,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             //throw new NotImplementedException();
 
 #if DEBUG
-            LogInstance.Log($"relationExpr = {relationExpr}");
+            //LogInstance.Log($"relationExpr = {relationExpr}");
 #endif
 
             return relationExpr;
@@ -681,7 +680,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
         private static void AddAnnotationForState(BaseExpressionNode relation, ContextOfConvertingInternalCGToPersistLogicalData context, ContextForSingleRuleInstanceOfConvertingInternalCGToPersistLogicalData contextForSingleRuleInstance)
         {
 #if DEBUG
-            LogInstance.Log($"relation = {relation}");
+            //LogInstance.Log($"relation = {relation}");
 #endif
 
             AddAnnotationForRelation("state", relation, context, contextForSingleRuleInstance);
@@ -690,7 +689,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
         private static void AddAnnotationForAction(BaseExpressionNode relation, ContextOfConvertingInternalCGToPersistLogicalData context, ContextForSingleRuleInstanceOfConvertingInternalCGToPersistLogicalData contextForSingleRuleInstance)
         {
 #if DEBUG
-            LogInstance.Log($"relation = {relation}");
+            //LogInstance.Log($"relation = {relation}");
 #endif
 
             AddAnnotationForRelation("action", relation, context, contextForSingleRuleInstance);
@@ -699,8 +698,8 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
         private static void AddAnnotationForRelation(string annotationName, BaseExpressionNode relation, ContextOfConvertingInternalCGToPersistLogicalData context, ContextForSingleRuleInstanceOfConvertingInternalCGToPersistLogicalData contextForSingleRuleInstance)
         {
 #if DEBUG
-            LogInstance.Log($"annotationName = {annotationName}");
-            LogInstance.Log($"relation = {relation}");
+            //LogInstance.Log($"annotationName = {annotationName}");
+            //LogInstance.Log($"relation = {relation}");
 #endif
 
             var globalEntityDictionary = context.EntityDictionary;

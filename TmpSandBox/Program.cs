@@ -50,7 +50,7 @@ namespace TmpSandBox
             //TSTATNParsing();
             //TSTWordNet();
             //TSTTextCGParserRunner();
-            TSTParseNLText();
+            //TSTParseNLText();
             //TSTRuleInstance();
             //TSTEntityLogging();
             //TSTConceptualGraph_2();
@@ -72,6 +72,8 @@ namespace TmpSandBox
             LogInstance.Log("Begin");
 
             var globalEntityDictionary = new EntityDictionary();
+            var context = new ContextOfCGStorage(globalEntityDictionary);
+            context.Init();
 
             var paragraph = "Go to Green Waypoint";
 
@@ -111,12 +113,12 @@ namespace TmpSandBox
                         LogInstance.Log($"debugStr = {debugStr}");
                     }
 
-                //    //    var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
-                //    //    //indexedRuleInstance.FillIndexedDataAsStorage();
+                    var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+                    //indexedRuleInstance.FillIndexedDataAsStorage();
 
-                //    //    LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+                    LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 
-                //    //    context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
+                    context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
                 }
             }
 
@@ -607,7 +609,7 @@ namespace TmpSandBox
 
                 var internalCG = ConvertorCGToInternal.Convert(graph, globalEntityDictionary);
 
-                LogInstance.Log($"internalCG = {internalCG}");
+                //LogInstance.Log($"internalCG = {internalCG}");
 
                 dotStr = DotConverter.ConvertToString(internalCG);
 
