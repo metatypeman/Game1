@@ -282,6 +282,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             var firstConceptsList = relation.Inputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).ToList();
 
 #if DEBUG
+            LogInstance.Log($"kindOfSpecialRelation = {kindOfSpecialRelation}");
             LogInstance.Log($"firstConceptsList.Count = {firstConceptsList.Count}");
 #endif
 
@@ -348,7 +349,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                         resultRelation.Parent = source;
                         resultRelation.Name = relationName;
                         resultRelation.Key = relationKey;
-                        relation.KindOfSpecialRelation = kindOfSpecialRelation;
+                        resultRelation.KindOfSpecialRelation = kindOfSpecialRelation;
                         resultRelation.LinkedVarName = linkedVarName;
 
                         resultRelation.AddInputNode(firstConcept);
@@ -356,6 +357,8 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                     }
                 }
             }
+
+            //throw new NotImplementedException();
         }
 
         private static void PrepareForEntityConditionExpression(InternalConceptualGraph source, RuleInstance dest, ContextOfConvertingInternalCGToPersistLogicalData context)
@@ -746,7 +749,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
         private static BaseExpressionNode CreateExpressionByGraphOrConceptNode(BaseInternalConceptCGNode graphOrConcept, InternalConceptualGraph internalConceptualGraph, ContextOfConvertingInternalCGToPersistLogicalData context, ContextForSingleRuleInstanceOfConvertingInternalCGToPersistLogicalData contextForSingleRuleInstance)
         {
 #if DEBUG
-            LogInstance.Log($"graphOrConcept = {graphOrConcept}");
+            //LogInstance.Log($"graphOrConcept = {graphOrConcept}");
 #endif
 
             var kindOfGraphOrConcept = graphOrConcept.KindOfGraphOrConcept;
@@ -758,7 +761,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                         var linkedVarName = internalConceptualGraph.GetVarNameForRelation(graphOrConcept.Name);
 
 #if DEBUG
-                        LogInstance.Log($"linkedVarName = {linkedVarName}");
+                        //LogInstance.Log($"linkedVarName = {linkedVarName}");
 #endif
 
                         var conceptExpression = new ConceptExpressionNode();
@@ -791,7 +794,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                         }
 
 #if DEBUG
-                        LogInstance.Log($"aliasOfEntityCondition = {aliasOfEntityCondition}");
+                        //LogInstance.Log($"aliasOfEntityCondition = {aliasOfEntityCondition}");
 #endif
 
                         //throw new NotImplementedException();
