@@ -183,10 +183,6 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                 //LogInstance.Log($"kindOfSpecialRelation = {kindOfSpecialRelation}");
 #endif
 
-                //BaseInternalConceptCGNode firstConcept = null;
-                //BaseInternalConceptCGNode targetConceptToRelation = null;
-                //BaseInternalConceptCGNode secondConcept = null;
-
                 switch (kindOfSpecialRelation)
                 {
                     case KindOfSpecialRelation.Undefinded:
@@ -260,202 +256,6 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
 
                     default: throw new ArgumentOutOfRangeException(nameof(kindOfSpecialRelation), kindOfSpecialRelation, null);
                 }
-
-//                switch (kindOfSpecialRelation)
-//                {
-//                    case KindOfSpecialRelation.Undefinded:
-//                        break;
-
-//                    case KindOfSpecialRelation.Object:
-//                        if(!processedRelationsList.Contains(initRelation))
-//                        {
-//                            processedRelationsList.Add(initRelation);
-//                            secondConcept = initRelation.Outputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
-
-//#if DEBUG
-//                            LogInstance.Log($"secondConcept = {secondConcept}");
-//#endif
-
-//                            var inputNode = initRelation.Inputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
-//                            targetConceptToRelation = inputNode;
-                            
-//#if DEBUG
-//                            LogInstance.Log($"inputNode = {inputNode}");
-//#endif
-
-//                            if(inputNode != null && !processedSpecialConceptsList.Contains(inputNode))
-//                            {
-//                                processedSpecialConceptsList.Add(inputNode);
-
-//                                var stateRelation = inputNode.Inputs.Where(p => p.IsRelationNode && SpecialElementsHeper.GetKindOfSpecialRelation(p.Name) == KindOfSpecialRelation.State).Select(p => p.AsRelationNode).FirstOrDefault();
-
-//#if DEBUG
-//                                LogInstance.Log($"stateRelation = {stateRelation}");
-//#endif
-
-//                                if(stateRelation != null && !processedRelationsList.Contains(stateRelation))
-//                                {
-//                                    processedRelationsList.Add(stateRelation);
-
-//                                    firstConcept = stateRelation.Inputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
-
-//#if DEBUG
-//                                    LogInstance.Log($"firstConcept = {firstConcept}");
-//#endif
-//                                }
-//                            }
-//                        }
-//                        initRelation.Destroy();
-//                        break;
-
-//                    case KindOfSpecialRelation.Experiencer:
-//                        if (!processedRelationsList.Contains(initRelation))
-//                        {
-//                            processedRelationsList.Add(initRelation);
-
-//                            firstConcept = initRelation.Outputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
-
-//#if DEBUG
-//                            LogInstance.Log($"firstConcept = {firstConcept}");
-//#endif
-
-//                            var inputNode = initRelation.Inputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
-                  
-//                            targetConceptToRelation = inputNode;
-//                            targetConceptToRelation.KindOfSpecialRelation = KindOfSpecialRelation.State;
-
-//#if DEBUG
-//                            LogInstance.Log($"inputNode = {inputNode}");
-//#endif
-
-//                            if (inputNode != null && !processedSpecialConceptsList.Contains(inputNode))
-//                            {
-//                                processedSpecialConceptsList.Add(inputNode);
-
-//                                var objectRelation = inputNode.Outputs.Where(p => p.IsRelationNode && SpecialElementsHeper.GetKindOfSpecialRelation(p.Name) == KindOfSpecialRelation.Object).Select(p => p.AsRelationNode).FirstOrDefault();
-
-//#if DEBUG
-//                                LogInstance.Log($"objectRelation = {objectRelation}");
-//#endif
-//                                if (objectRelation != null && !processedRelationsList.Contains(objectRelation))
-//                                {
-//                                    processedRelationsList.Add(objectRelation);
-//                                    secondConcept = objectRelation.Outputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
-
-//#if DEBUG
-//                                    //LogInstance.Log($"secondConcept = {secondConcept}");
-//#endif
-//                                }
-//                            }
-//                        }
-//                        initRelation.Destroy();
-//                        //throw new NotImplementedException();
-//                        break;
-
-//                    case KindOfSpecialRelation.State:
-//                        if (!processedRelationsList.Contains(initRelation))
-//                        {
-//                            processedRelationsList.Add(initRelation);
-
-//                            firstConcept = initRelation.Inputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
-
-//#if DEBUG
-//                            LogInstance.Log($"!!!!! firstConcept = {firstConcept}");
-//#endif
-
-//                            var outputNode = initRelation.Outputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
-                            
-//                            targetConceptToRelation = outputNode;
-//                            targetConceptToRelation.KindOfSpecialRelation = kindOfSpecialRelation;
-//#if DEBUG
-//                            LogInstance.Log($"outputNode = {outputNode}");
-//#endif
-//                            if (outputNode != null && !processedSpecialConceptsList.Contains(outputNode))
-//                            {
-//                                processedSpecialConceptsList.Add(outputNode);
-
-//                                var objectRelation = outputNode.Outputs.Where(p => p.IsRelationNode && SpecialElementsHeper.GetKindOfSpecialRelation(p.Name) == KindOfSpecialRelation.Object).Select(p => p.AsRelationNode).FirstOrDefault();
-
-//#if DEBUG
-//                                LogInstance.Log($"objectRelation = {objectRelation}");
-//#endif
-
-//                                if (objectRelation != null && !processedRelationsList.Contains(objectRelation))
-//                                {
-//                                    processedRelationsList.Add(objectRelation);
-//                                    secondConcept = objectRelation.Outputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
-
-//#if DEBUG
-//                                    LogInstance.Log($"secondConcept = {secondConcept}");
-//#endif
-//                                }
-//                            }
-//                        }
-//                        initRelation.Destroy();
-//#if DEBUG
-//                        //throw new NotImplementedException();
-//#endif
-//                        break;
-
-//                    case KindOfSpecialRelation.Agent:
-//                        if (!processedRelationsList.Contains(initRelation))
-//                        {
-//                            processedRelationsList.Add(initRelation);
-//                        }
-//                        initRelation.Destroy();
-//                        throw new NotImplementedException();
-//                        break;
-
-//                    case KindOfSpecialRelation.Action:
-//                        if (!processedRelationsList.Contains(initRelation))
-//                        {
-//                            processedRelationsList.Add(initRelation);
-
-//                            firstConcept = initRelation.Inputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
-
-//#if DEBUG
-//                            LogInstance.Log($"!!!!! firstConcept = {firstConcept}");
-//#endif
-
-//                            var outputNode = initRelation.Outputs.Where(p => p.IsGraphOrConceptNode).Select(p => p.AsGraphOrConceptNode).FirstOrDefault();
-
-//                            targetConceptToRelation = outputNode;
-//                            targetConceptToRelation.KindOfSpecialRelation = kindOfSpecialRelation;
-//#if DEBUG
-//                            LogInstance.Log($"outputNode = {outputNode}");
-//#endif
-
-//                            throw new NotImplementedException();
-//                        }
-//                        initRelation.Destroy();
-//                        throw new NotImplementedException();
-//                        break;
-
-                //    default: throw new ArgumentOutOfRangeException(nameof(kindOfSpecialRelation), kindOfSpecialRelation, null);
-                //}
-
-//                if(firstConcept != null && targetConceptToRelation != null && secondConcept != null)
-//                {
-//#if DEBUG
-//                    LogInstance.Log($"firstConcept = {firstConcept}");
-//                    LogInstance.Log($"targetConceptToRelation = {targetConceptToRelation}");
-//                    LogInstance.Log($"secondConcept = {secondConcept}");
-//#endif
-
-//                    var parent = firstConcept.Parent;
-
-//                    var relation = new InternalRelationCGNode();
-//                    relation.Parent = parent;
-//                    relation.Name = targetConceptToRelation.Name;
-//                    relation.Key = targetConceptToRelation.Key;
-//                    relation.KindOfSpecialRelation = targetConceptToRelation.KindOfSpecialRelation;
-//                    relation.AddInputNode(firstConcept);
-//                    relation.AddOutputNode(secondConcept);
-
-//#if DEBUG
-//                    //throw new NotImplementedException();
-//#endif
-//                }
             }
 
 #if DEBUG
@@ -670,18 +470,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                 LogInstance.Log($"realtionForClass = {realtionForClass}");
 #endif
 
-                //realtionForClass.A
             }
-
-            /*
-                                 var relation = new InternalRelationCGNode();
-                    relation.Parent = parent;
-                    relation.Name = targetConceptToRelation.Name;
-                    relation.Key = targetConceptToRelation.Key;
-                    relation.KindOfSpecialRelation = targetConceptToRelation.KindOfSpecialRelation;
-                    relation.AddInputNode(firstConcept);
-                    relation.AddOutputNode(secondConcept);
-             */
 
             //throw new NotImplementedException();
         }
@@ -732,49 +521,6 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                                 relation.AddOutputNode(varNode);
                             }
                         }
-
-                        //                            var varName = string.Empty;
-
-                        //                            
-                        //                            {
-                        //                                //varName = conceptsNamesDict[conceptName];
-                        //                            }
-                        //                            else
-                        //                            {
-                        //                                n++;
-                        //                                //varName = $"@X{n}";
-                        //                                conceptsNamesDict[conceptName] = varName;
-
-                        //                                var isaRealtion = new InternalRelationCGNode();
-                        //                                isaRealtion.Name = "is_a";
-                        //                                isaRealtion.Key = context.EntityDictionary.GetKey(isaRealtion.Name);
-                        //                                isaRealtion.Parent = inputNode.Parent;
-
-
-
-                        //                                isaRealtion.AddInputNode(varNode);
-                        //                                inputNode.AddInputNode(isaRealtion);                   
-                        //                            }
-
-                        //#if DEBUG
-                        //                            LogInstance.Log($"varName = {varName}");
-                        //                            LogInstance.Log($"pre initRelation = {initRelation}");
-                        //#endif
-                        //                            {
-                        //                                var varNode = new InternalConceptCGNode();
-                        //                                varNode.KindOfGraphOrConcept = KindOfInternalGraphOrConceptNode.Variable;
-                        //                                varNode.Name = varName;
-                        //                                varNode.Key = context.EntityDictionary.GetKey(varName);
-
-                        //                                initRelation.Inputs.Remove(inputNode);
-                        //                                initRelation.Inputs.Add(varNode);
-                        //                            }
-
-                        //#if DEBUG
-                        //                            LogInstance.Log($"after initRelation = {initRelation}");
-                        //#endif
-
-                        //                            //throw new NotImplementedException();
                     }
                     break;
 
