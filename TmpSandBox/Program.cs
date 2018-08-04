@@ -97,18 +97,19 @@ namespace TmpSandBox
 
                 LogInstance.Log($"dotStr (2) = {dotStr}");
 
-                //var ruleInstancesList = ConvertorInternalCGToPersistLogicalData.ConvertConceptualGraph(internalCG, globalEntityDictionary);
+                var ruleInstancesList = ConvertorInternalCGToPersistLogicalData.ConvertConceptualGraph(internalCG, globalEntityDictionary);
 
-                //LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
-                //foreach (var ruleInstance in ruleInstancesList)
-                //{
-                //    LogInstance.Log($"ruleInstance = {ruleInstance}");
+                LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
+                ruleInstancesList = ruleInstancesList.Take(1).ToList();
+                foreach (var ruleInstance in ruleInstancesList)
+                {
+                    LogInstance.Log($"ruleInstance = {ruleInstance}");
 
-                //    {
-                //        var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+                    {
+                        var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
 
-                //        LogInstance.Log($"debugStr = {debugStr}");
-                //    }
+                        LogInstance.Log($"debugStr = {debugStr}");
+                    }
 
                 //    //    var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
                 //    //    //indexedRuleInstance.FillIndexedDataAsStorage();
@@ -116,7 +117,7 @@ namespace TmpSandBox
                 //    //    LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 
                 //    //    context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
-                //}
+                }
             }
 
             LogInstance.Log("End");

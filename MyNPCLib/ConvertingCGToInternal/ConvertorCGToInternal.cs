@@ -182,6 +182,13 @@ namespace MyNPCLib.ConvertingCGToInternal
                     stubOfOfSubject.AddOutputNode(actionRelation);
                     stubOfOfSubject.Name = SpecialNamesOfConcepts.SomeOne;
                     stubOfOfSubject.Key = entityDictionary.GetKey(SpecialNamesOfConcepts.SomeOne);
+
+                    var agentRelation = new InternalRelationCGNode();
+                    agentRelation.Parent = dest;
+                    agentRelation.Name = SpecialNamesOfRelations.AgentRelationName;
+                    agentRelation.Key = entityDictionary.GetKey(SpecialNamesOfRelations.AgentRelationName);
+                    agentRelation.AddInputNode(actionConcept);
+                    agentRelation.AddOutputNode(stubOfOfSubject);
                 }
 
                 TransformResultToCanonicalViewTryFillObjectNode(actionConcept, context);

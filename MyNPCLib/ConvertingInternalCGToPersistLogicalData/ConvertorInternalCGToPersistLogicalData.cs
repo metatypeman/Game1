@@ -346,7 +346,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
 #endif
                         }
                         initRelation.Destroy();
-                        //throw new NotImplementedException();
+                        throw new NotImplementedException();
                         break;
 
                     default: throw new ArgumentOutOfRangeException(nameof(kindOfSpecialRelation), kindOfSpecialRelation, null);
