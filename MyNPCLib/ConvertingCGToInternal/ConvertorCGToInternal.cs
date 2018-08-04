@@ -136,6 +136,13 @@ namespace MyNPCLib.ConvertingCGToInternal
             var dotStr = DotConverter.ConvertToString(dest);
             LogInstance.Log($"dotStr = {dotStr}");
 #endif
+
+            TransformResultToCanonicalViewForActionConcepts(dest, context);
+            TransformResultToCanonicalViewForStateConcepts(dest, context);
+        }
+
+        private static void TransformResultToCanonicalViewForActionConcepts(InternalConceptualGraph dest, ContextOfConvertingCGToInternal context)
+        {
             var entityDictionary = context.EntityDictionary;
             var actionsConceptsList = dest.Children.Where(p => p.IsConceptNode && !p.Inputs.IsEmpty() && p.Inputs.Any(x => x.Name == SpecialNamesOfRelations.ActionRelationName)).Select(p => p.AsConceptNode).ToList();
 
@@ -143,7 +150,7 @@ namespace MyNPCLib.ConvertingCGToInternal
             LogInstance.Log($"actionsConceptsList.Count = {actionsConceptsList.Count}");
 #endif
 
-            foreach(var actionConcept in actionsConceptsList)
+            foreach (var actionConcept in actionsConceptsList)
             {
 #if DEBUG
                 LogInstance.Log($"actionConcept = {actionConcept}");
@@ -155,13 +162,13 @@ namespace MyNPCLib.ConvertingCGToInternal
                 LogInstance.Log($"actionRelationsList.Count = {actionRelationsList.Count}");
 #endif
 
-                foreach(var actionRelation in actionRelationsList)
+                foreach (var actionRelation in actionRelationsList)
                 {
 #if DEBUG
                     LogInstance.Log($"actionRelation = {actionRelation}");
 #endif
 
-                    if(!actionRelation.Inputs.IsEmpty())
+                    if (!actionRelation.Inputs.IsEmpty())
                     {
                         continue;
                     }
@@ -177,30 +184,80 @@ namespace MyNPCLib.ConvertingCGToInternal
                     stubOfOfSubject.Key = entityDictionary.GetKey(SpecialNamesOfConcepts.SomeOne);
                 }
 
-                var objectRelationsList = actionConcept.Outputs.Where(p => p.Name == SpecialNamesOfRelations.ObjectRelationName).Select(p => p.AsRelationNode).ToList();
+                TransformResultToCanonicalViewTryFillObjectNode(actionConcept, context);
+            }
+        }
+
+        private static void TransformResultToCanonicalViewForStateConcepts(InternalConceptualGraph dest, ContextOfConvertingCGToInternal context)
+        {
+            var entityDictionary = context.EntityDictionary;
+            var statesConceptsList = dest.Children.Where(p => p.IsConceptNode && !p.Inputs.IsEmpty() && p.Inputs.Any(x => x.Name == SpecialNamesOfRelations.StateRelationName)).Select(p => p.AsConceptNode).ToList();
 
 #if DEBUG
-                LogInstance.Log($"objectRelationsList.Count = {objectRelationsList.Count}");
+            LogInstance.Log($"statesConceptsList.Count = {statesConceptsList.Count}");
 #endif
 
-                if(objectRelationsList.Count == 0)
+            foreach(var stateConcept in statesConceptsList)
+            {
+#if DEBUG
+                LogInstance.Log($"stateConcept = {stateConcept}");
+#endif
+
+                var stateRelationsList = stateConcept.Inputs.Where(p => p.Name == SpecialNamesOfRelations.StateRelationName).Select(p => p.AsRelationNode).ToList();
+
+#if DEBUG
+                LogInstance.Log($"stateRelationsList.Count = {stateRelationsList.Count}");
+#endif
+
+                foreach(var stateRelation in stateRelationsList)
                 {
+                    if (!stateRelation.Inputs.IsEmpty())
+                    {
+                        continue;
+                    }
+
 #if DEBUG
-                    LogInstance.Log("Add stub of object !!!!");
+                    LogInstance.Log("Add stub of subject !!!!");
 #endif
 
-                    var objectRelation = new InternalRelationCGNode();
-                    objectRelation.Parent = dest;
-                    objectRelation.Name = SpecialNamesOfRelations.ObjectRelationName;
-                    objectRelation.Key = entityDictionary.GetKey(SpecialNamesOfRelations.ObjectRelationName);
-                    actionConcept.AddOutputNode(objectRelation);
-
-                    var stubOfObject = new InternalConceptCGNode();
-                    stubOfObject.Parent = dest;
-                    stubOfObject.Name = SpecialNamesOfConcepts.Self;
-                    stubOfObject.Key = entityDictionary.GetKey(SpecialNamesOfConcepts.Self);
-                    objectRelation.AddOutputNode(stubOfObject);
+                    var stubOfOfSubject = new InternalConceptCGNode();
+                    stubOfOfSubject.Parent = dest;
+                    stubOfOfSubject.AddOutputNode(stateRelation);
+                    stubOfOfSubject.Name = SpecialNamesOfConcepts.SomeOne;
+                    stubOfOfSubject.Key = entityDictionary.GetKey(SpecialNamesOfConcepts.SomeOne);
                 }
+
+                TransformResultToCanonicalViewTryFillObjectNode(stateConcept, context);
+            }
+        }
+
+        private static void TransformResultToCanonicalViewTryFillObjectNode(InternalConceptCGNode concept, ContextOfConvertingCGToInternal context)
+        {
+            var objectRelationsList = concept.Outputs.Where(p => p.Name == SpecialNamesOfRelations.ObjectRelationName).Select(p => p.AsRelationNode).ToList();
+            var parent = concept.Parent;
+            var entityDictionary = context.EntityDictionary;
+
+#if DEBUG
+            LogInstance.Log($"objectRelationsList.Count = {objectRelationsList.Count}");
+#endif
+
+            if (objectRelationsList.Count == 0)
+            {
+#if DEBUG
+                LogInstance.Log("Add stub of object !!!!");
+#endif
+
+                var objectRelation = new InternalRelationCGNode();
+                objectRelation.Parent = parent;
+                objectRelation.Name = SpecialNamesOfRelations.ObjectRelationName;
+                objectRelation.Key = entityDictionary.GetKey(SpecialNamesOfRelations.ObjectRelationName);
+                concept.AddOutputNode(objectRelation);
+
+                var stubOfObject = new InternalConceptCGNode();
+                stubOfObject.Parent = parent;
+                stubOfObject.Name = SpecialNamesOfConcepts.Self;
+                stubOfObject.Key = entityDictionary.GetKey(SpecialNamesOfConcepts.Self);
+                objectRelation.AddOutputNode(stubOfObject);
             }
         }
 
