@@ -330,6 +330,10 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         private static string RelationToString(RelationExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
             var sb = new StringBuilder();
+            if(source.LinkedVar != null)
+            {
+                sb.Append($"{source.LinkedVar.Name} = ");
+            }
             sb.Append($"{source.Name}(");
             if(!ListHelper.IsEmpty(source.Params))
             {

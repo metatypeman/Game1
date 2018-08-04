@@ -88,6 +88,10 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             var contextForSingleRuleInstance = new ContextForSingleRuleInstanceOfConvertingInternalCGToPersistLogicalData();
             contextForSingleRuleInstance.CurrentRuleInstance = dest;
 
+            var variablesQuantification = new VariablesQuantificationPart();
+            dest.VariablesQuantification = variablesQuantification;
+            variablesQuantification.Items = new List<VarExpressionNode>();
+
             var part = new RulePart();
             dest.Part_1 = part;
             part.Parent = dest;
@@ -112,7 +116,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                 default: throw new ArgumentOutOfRangeException(nameof(kindOfGraphOrConcept), kindOfGraphOrConcept, null);
             }
 
-            var expression = CreateExpressionByWholeGraph(source, context, contextForSingleRuleInstance);
+            var expression = CreateExpressionByWholeGraph(source, context, dest, contextForSingleRuleInstance);
 
 #if DEBUG
             LogInstance.Log($"expression = {expression}");
@@ -559,9 +563,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             var conceptsNamesDict = new Dictionary<string, string>();
             var processedInRelationsConceptsList = new List<string>();
 
-            var variablesQuantification = new VariablesQuantificationPart();
-            dest.VariablesQuantification = variablesQuantification;
-            variablesQuantification.Items = new List<VarExpressionNode>();
+            var variablesQuantification = dest.VariablesQuantification;
 
             var initRelationsList = source.Children.Where(p => p.IsRelationNode).Select(p => p.AsRelationNode).ToList();
 
@@ -780,7 +782,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             }
         }
 
-        private static BaseExpressionNode CreateExpressionByWholeGraph(InternalConceptualGraph source, ContextOfConvertingInternalCGToPersistLogicalData context, ContextForSingleRuleInstanceOfConvertingInternalCGToPersistLogicalData contextForSingleRuleInstance)
+        private static BaseExpressionNode CreateExpressionByWholeGraph(InternalConceptualGraph source, ContextOfConvertingInternalCGToPersistLogicalData context, RuleInstance ruleInstance, ContextForSingleRuleInstanceOfConvertingInternalCGToPersistLogicalData contextForSingleRuleInstance)
         {
             var relationsList = source.Children.Where(p => p.IsRelationNode).Select(p => p.AsRelationNode).ToList();
 
@@ -795,7 +797,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
 
             if(relationsList.Count == 1)
             {
-                return CreateExpressionByRelation(relationsList.Single(), source, context, contextForSingleRuleInstance);
+                return CreateExpressionByRelation(relationsList.Single(), source, ruleInstance, context, contextForSingleRuleInstance);
             }
 
             var result = new OperatorAndExpressionNode();
@@ -812,7 +814,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                 n++;
                 var relation = relationsListEnumerator.Current;
 
-                var relationExpr = CreateExpressionByRelation(relation, source, context, contextForSingleRuleInstance);
+                var relationExpr = CreateExpressionByRelation(relation, source, ruleInstance, context, contextForSingleRuleInstance);
 
 #if DEBUG
                 LogInstance.Log($"n = {n} relationExpr = {relationExpr}");
@@ -843,7 +845,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             return result;
         }
 
-        private static BaseExpressionNode CreateExpressionByRelation(InternalRelationCGNode relation, InternalConceptualGraph internalConceptualGraph, ContextOfConvertingInternalCGToPersistLogicalData context, ContextForSingleRuleInstanceOfConvertingInternalCGToPersistLogicalData contextForSingleRuleInstance)
+        private static BaseExpressionNode CreateExpressionByRelation(InternalRelationCGNode relation, InternalConceptualGraph internalConceptualGraph, RuleInstance ruleInstance, ContextOfConvertingInternalCGToPersistLogicalData context, ContextForSingleRuleInstanceOfConvertingInternalCGToPersistLogicalData contextForSingleRuleInstance)
         {
 #if DEBUG
             LogInstance.Log($"relation = {relation}");
@@ -884,7 +886,20 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
 
             if(!string.IsNullOrWhiteSpace(linkedVarName))
             {
-                throw new NotImplementedException();
+                var linkedVarKey = context.EntityDictionary.GetKey(linkedVarName);
+
+                var varNodeForRelation = new VarExpressionNode();
+                varNodeForRelation.Quantifier = KindOfQuantifier.Existential;
+                varNodeForRelation.Name = linkedVarName;
+                varNodeForRelation.Key = linkedVarKey;
+                relationExpr.LinkedVar = varNodeForRelation;
+
+                var varNodeForQuantification = new VarExpressionNode();
+                varNodeForQuantification.Quantifier = KindOfQuantifier.Existential;
+                varNodeForQuantification.Name = linkedVarName;
+                varNodeForQuantification.Key = linkedVarKey;
+
+                ruleInstance.VariablesQuantification.Items.Add(varNodeForQuantification);
             }
 
             var kindOfSpecialRelation = relation.KindOfSpecialRelation;

@@ -100,10 +100,10 @@ namespace TmpSandBox
                 var ruleInstancesList = ConvertorInternalCGToPersistLogicalData.ConvertConceptualGraph(internalCG, globalEntityDictionary);
 
                 LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
-                ruleInstancesList = ruleInstancesList.Take(1).ToList();
+                //ruleInstancesList = ruleInstancesList.Take(1).ToList();
                 foreach (var ruleInstance in ruleInstancesList)
                 {
-                    LogInstance.Log($"ruleInstance = {ruleInstance}");
+                    //LogInstance.Log($"ruleInstance = {ruleInstance}");
 
                     {
                         var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
