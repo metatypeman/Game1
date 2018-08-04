@@ -497,7 +497,7 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             LogInstance.Log($"objectRelationsList.Count = {objectRelationsList.Count}");
 #endif
 
-            var hasAnotherRelations = outputNode.Outputs.Any(p => p.IsRelationNode && p.Name != SpecialNamesOfRelations.ObjectRelationName);
+            var hasAnotherRelations = outputNode.Outputs.Any(p => p.IsRelationNode && p.Name != SpecialNamesOfRelations.ObjectRelationName && p.Name != SpecialNamesOfRelations.ExperiencerRelationName);
 
 #if DEBUG
             LogInstance.Log($"hasAnotherRelations = {hasAnotherRelations}");
