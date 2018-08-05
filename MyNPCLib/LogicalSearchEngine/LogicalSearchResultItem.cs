@@ -2,6 +2,7 @@
 using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.LogicalSearchEngine
@@ -12,9 +13,12 @@ namespace MyNPCLib.LogicalSearchEngine
         {
             mEntityDictionary = entityDictionary;
         }
+
         private IEntityDictionary mEntityDictionary;
         public IndexedRuleInstance QueryExpression { get; set; }
         public IList<ResultOfVarOfQueryToRelation> ResultOfVarOfQueryToRelationList { get; set; }
+        private Dictionary<ulong, ResultOfVarOfQueryToRelation> mResultOfVarOfQueryToRelationDict = new Dictionary<ulong, ResultOfVarOfQueryToRelation>();
+
         private readonly object mRuleInstanceLockObj = new object();
         private RuleInstance mRuleInstance;
         public RuleInstance RuleInstance
@@ -31,6 +35,26 @@ namespace MyNPCLib.LogicalSearchEngine
                     return mRuleInstance;
                 }
             }
+        }
+
+        public ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar)
+        {
+            if(mResultOfVarOfQueryToRelationDict.ContainsKey(keyOfVar))
+            {
+                return mResultOfVarOfQueryToRelationDict[keyOfVar];
+            }
+
+            return null;
+        }
+
+        public void Ready()
+        {
+            if(ResultOfVarOfQueryToRelationList == null)
+            {
+                return;
+            }
+
+            mResultOfVarOfQueryToRelationDict = ResultOfVarOfQueryToRelationList.ToDictionary(p => p.KeyOfVar, p => p);
         }
 
         public override string ToString()

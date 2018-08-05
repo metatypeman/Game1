@@ -11,7 +11,7 @@ namespace MyNPCLib.LogicalSearchEngine
         public static RuleInstance Convert(LogicalSearchResultItem source, IEntityDictionary entityDictionary)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
             var context = new ContextOfConvertorToCompleteRuleInstance();
             context.EntityDictionary = entityDictionary;
@@ -119,7 +119,7 @@ namespace MyNPCLib.LogicalSearchEngine
             }
 
 #if DEBUG
-            LogInstance.Log($"queryExpression = {queryExpression}");
+            //LogInstance.Log($"queryExpression = {queryExpression}");
 #endif
 
             result.Annotations = ConvertAnnotations(queryExpression.Annotations, context);
@@ -129,63 +129,63 @@ namespace MyNPCLib.LogicalSearchEngine
             var resultOfVarOfQueryToRelationList = source.ResultOfVarOfQueryToRelationList.Where(p => p.FoundExpression.Kind == KindOfExpressionNode.EntityCondition).ToList();
 
 #if DEBUG
-            LogInstance.Log($"resultOfVarOfQueryToRelationList.Count = {resultOfVarOfQueryToRelationList.Count}");
+            //LogInstance.Log($"resultOfVarOfQueryToRelationList.Count = {resultOfVarOfQueryToRelationList.Count}");
 #endif
 
             foreach(var resultOfVarOfQueryToRelation in resultOfVarOfQueryToRelationList)
             {
 #if DEBUG
-                LogInstance.Log($"resultOfVarOfQueryToRelation = {resultOfVarOfQueryToRelation}");
+                //LogInstance.Log($"resultOfVarOfQueryToRelation = {resultOfVarOfQueryToRelation}");
 #endif
 
                 var foundEntityCondition = resultOfVarOfQueryToRelation.FoundExpression.AsEntityCondition;
 
 #if DEBUG
-                LogInstance.Log($"foundEntityCondition = {foundEntityCondition}");
+                //LogInstance.Log($"foundEntityCondition = {foundEntityCondition}");
 #endif
 
                 var tagetEntityConditionName = foundEntityCondition.Name;
 
 #if DEBUG
-                LogInstance.Log($"tagetEntityConditionName = {tagetEntityConditionName}");
+                //LogInstance.Log($"tagetEntityConditionName = {tagetEntityConditionName}");
 #endif
 
                 var originDict = resultOfVarOfQueryToRelation.OriginDict;
 
 #if DEBUG
-                LogInstance.Log($"originDict.Count = {originDict.Count}");
+                //LogInstance.Log($"originDict.Count = {originDict.Count}");
 #endif
 
                 foreach(var originKVPItem in originDict)
                 {
 #if DEBUG
-                    LogInstance.Log($"originKVPItem.Key = {originKVPItem.Key}");
-                    LogInstance.Log($"originKVPItem.Value = {originKVPItem.Value}");
+                    //LogInstance.Log($"originKVPItem.Key = {originKVPItem.Key}");
+                    ///LogInstance.Log($"originKVPItem.Value = {originKVPItem.Value}");
 #endif
 
                     var targetFact = originKVPItem.Value.IndexedRuleInstance.Origin;
 
 #if DEBUG
-                    LogInstance.Log($"targetFact = {targetFact}");
+                    //LogInstance.Log($"targetFact = {targetFact}");
 #endif
 
                     var entityConditions = targetFact.EntitiesConditions;
 
 #if DEBUG
-                    LogInstance.Log($"entityConditions = {entityConditions}");
+                    //LogInstance.Log($"entityConditions = {entityConditions}");
 #endif
 
                     var targetEntityCondition = entityConditions.Items.FirstOrDefault(p => p.VariableKey == foundEntityCondition.Key);
 
 #if DEBUG
-                    LogInstance.Log($"targetEntityCondition = {targetEntityCondition}");
+                    //LogInstance.Log($"targetEntityCondition = {targetEntityCondition}");
 #endif
 
                     var targetFactName = targetEntityCondition.Name;
 
 #if DEBUG
-                    LogInstance.Log($"targetFactName = {targetFactName}");
-                    LogInstance.Log($"tagetEntityConditionName = {tagetEntityConditionName}");
+                    //LogInstance.Log($"targetFactName = {targetFactName}");
+                    //LogInstance.Log($"tagetEntityConditionName = {tagetEntityConditionName}");
 #endif
 
                     entityConditionsDictBuilder.Add(tagetEntityConditionName, targetFactName);
@@ -195,7 +195,7 @@ namespace MyNPCLib.LogicalSearchEngine
             var entityConditionsDict = entityConditionsDictBuilder.GetResult();
 
 #if DEBUG
-            LogInstance.Log($"entityConditionsDict.Count = {entityConditionsDict .Count}");
+            //LogInstance.Log($"entityConditionsDict.Count = {entityConditionsDict .Count}");
 #endif
 
             if(entityConditionsDict.Count > 0)
@@ -203,7 +203,7 @@ namespace MyNPCLib.LogicalSearchEngine
                 var countOfResult = GetCountOfResult(entityConditionsDict);
 
 #if DEBUG
-                LogInstance.Log($"countOfResult = {countOfResult}");
+                //LogInstance.Log($"countOfResult = {countOfResult}");
 #endif
 
                 var resultList = new List<RuleInstance>() { result };
@@ -211,7 +211,7 @@ namespace MyNPCLib.LogicalSearchEngine
                 var nextCountOfResult = countOfResult - 1;
 
 #if DEBUG
-                LogInstance.Log($"nextCountOfResult = {nextCountOfResult}");
+                //LogInstance.Log($"nextCountOfResult = {nextCountOfResult}");
                 //nextCountOfResult = 10;//tmp
 #endif
 
@@ -229,7 +229,7 @@ namespace MyNPCLib.LogicalSearchEngine
                 }
 
 #if DEBUG
-                LogInstance.Log($"resultList.Count = {resultList.Count}");
+                //LogInstance.Log($"resultList.Count = {resultList.Count}");
 #endif
 
                 EntityConditionScopeForConvertorToCompleteRuleInstance firstEntityConditionScope = null;
@@ -260,7 +260,7 @@ namespace MyNPCLib.LogicalSearchEngine
             }
 
 #if DEBUG
-            LogInstance.Log($"result = {result}");
+            //LogInstance.Log($"result = {result}");
 #endif
 
             //throw new NotImplementedException();

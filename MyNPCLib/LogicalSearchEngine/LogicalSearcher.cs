@@ -55,6 +55,7 @@ namespace MyNPCLib.LogicalSearchEngine
                 resultItem.QueryExpression = queryExpression;
                 resultItem.ResultOfVarOfQueryToRelationList = resultOfQueryToRelation.ResultOfVarOfQueryToRelationList;
                 resultItemsList.Add(resultItem);
+                resultItem.Ready();
             }
 
             result.Items = resultItemsList;

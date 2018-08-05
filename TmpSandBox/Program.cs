@@ -122,7 +122,252 @@ namespace TmpSandBox
                 }
             }
 
+            var actionName = string.Empty;
+
+            {
+                var query = CreateAnnotatedQueryForGoToGreenWaypoint(globalEntityDictionary);
+
+                {
+                    var debugStr = DebugHelperForRuleInstance.ToString(query);
+
+                    LogInstance.Log($"debugStr = {debugStr}");
+                }
+
+                var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
+
+                var searcher = new LogicalSearcher(context);
+
+                var searchOptions = new LogicalSearchOptions();
+                var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
+                globalStorageOptions.Storage = context.GlobalCGStorage;
+                globalStorageOptions.MaxDeph = null;
+                globalStorageOptions.UseFacts = true;
+                globalStorageOptions.UseProductions = true;
+                globalStorageOptions.Priority = 1;
+
+                searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+
+                searchOptions.QueryExpression = indexedQuery;
+
+                var rearchResult = searcher.Run(searchOptions);
+
+                LogInstance.Log($"rearchResult = {rearchResult}");
+
+                var targetSearchResultItemsList = rearchResult.Items;
+
+                LogInstance.Log($"targetSearchResultItemsList.Count = {targetSearchResultItemsList.Count}");
+
+                var keyOfActionQuestionVar = globalEntityDictionary.GetKey("?Z");
+
+                LogInstance.Log($"keyOfActionQuestionVar = {keyOfActionQuestionVar}");
+
+                foreach (var targetSearchResultItem in targetSearchResultItemsList)
+                {
+                    LogInstance.Log($"targetSearchResultItem = {targetSearchResultItem}");
+
+                    var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
+
+                    //LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
+
+                    {
+                        var debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
+
+                        LogInstance.Log($"debugStr (zzz) = {debugStr}");
+                    }
+
+                    var actionExpression = targetSearchResultItem.GetResultOfVar(keyOfActionQuestionVar);
+
+                    LogInstance.Log($"actionExpression = {actionExpression}");
+
+                    if(actionExpression != null)
+                    {
+                        actionName = actionExpression?.FoundExpression?.AsRelation.Name;
+                    }
+                }
+            }
+
+            LogInstance.Log($"!!!!!!!! :) actionName = {actionName}");
+
+            if (string.IsNullOrWhiteSpace(actionName))
+            {
+                return;
+            }
+
+            LogInstance.Log("NEXT");
+
+            {
+                var query = CreateQueryForDirectionOfGoing(globalEntityDictionary, actionName);
+
+                {
+                    var debugStr = DebugHelperForRuleInstance.ToString(query);
+
+                    LogInstance.Log($"debugStr (for going) = {debugStr}");
+                }
+
+                var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
+
+                var searcher = new LogicalSearcher(context);
+
+                var searchOptions = new LogicalSearchOptions();
+                var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
+                globalStorageOptions.Storage = context.GlobalCGStorage;
+                globalStorageOptions.MaxDeph = null;
+                globalStorageOptions.UseFacts = true;
+                globalStorageOptions.UseProductions = true;
+                globalStorageOptions.Priority = 1;
+
+                searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+
+                searchOptions.QueryExpression = indexedQuery;
+
+                var rearchResult = searcher.Run(searchOptions);
+
+                LogInstance.Log($"rearchResult = {rearchResult}");
+
+                var targetSearchResultItemsList = rearchResult.Items;
+
+                LogInstance.Log($"targetSearchResultItemsList.Count = {targetSearchResultItemsList.Count}");
+
+                foreach (var targetSearchResultItem in targetSearchResultItemsList)
+                {
+                    LogInstance.Log($"targetSearchResultItem = {targetSearchResultItem}");
+
+                    var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
+
+                    //LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
+
+                    {
+                        var debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
+
+                        LogInstance.Log($"debugStr (yyyyyyyyyyyyyyyyy) = {debugStr}");
+                    }
+                }
+            }
+
             LogInstance.Log("End");
+        }
+
+        private static RuleInstance CreateQueryForDirectionOfGoing(IEntityDictionary globalEntityDictionary, string actionName)
+        {
+            var ruleInstance = new RuleInstance();
+            ruleInstance.DictionaryName = globalEntityDictionary.Name;
+            ruleInstance.Kind = KindOfRuleInstance.QuestionVars;
+            ruleInstance.Name = NamesHelper.CreateEntityName();
+            ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
+            ruleInstance.ModuleName = "#simple_module";
+            ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
+
+            var rulePart_1 = new RulePart();
+            rulePart_1.Parent = ruleInstance;
+            ruleInstance.Part_1 = rulePart_1;
+
+            rulePart_1.IsActive = true;
+
+            var expr3 = new RelationExpressionNode();
+            rulePart_1.Expression = expr3;
+            expr3.Params = new List<BaseExpressionNode>();
+            expr3.Annotations = new List<LogicalAnnotation>();
+
+            var annotation = new LogicalAnnotation();
+
+            var relationName = "direction";
+            var relationKey = globalEntityDictionary.GetKey(relationName);
+            expr3.IsQuestion = true;
+            expr3.Name = relationName;
+            expr3.Key = relationKey;
+
+            var param_1 = new ConceptExpressionNode();
+            expr3.Params.Add(param_1);
+            param_1.Name = actionName;
+            param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
+
+            var param_2 = new QuestionVarExpressionNode();
+            expr3.Params.Add(param_2);
+            param_2.Name = "?X";
+            param_2.Key = globalEntityDictionary.GetKey(param_2.Name);
+
+            return ruleInstance;
+        }
+
+        private static RuleInstance CreateAnnotatedQueryForGoToGreenWaypoint(IEntityDictionary globalEntityDictionary)
+        {
+            var annotationInstance = new RuleInstance();
+            annotationInstance.Kind = KindOfRuleInstance.Annotation;
+            var name = NamesHelper.CreateEntityName();
+            annotationInstance.Name = name;
+            annotationInstance.Key = globalEntityDictionary.GetKey(name);
+
+            var partOfAnnotation = new RulePart();
+            partOfAnnotation.IsActive = true;
+            partOfAnnotation.Parent = annotationInstance;
+            annotationInstance.Part_1 = partOfAnnotation;
+
+            var relation = new RelationExpressionNode();
+            partOfAnnotation.Expression = relation;
+            name = "action";
+            relation.Name = name;
+            relation.Key = globalEntityDictionary.GetKey(name);
+            relation.Params = new List<BaseExpressionNode>();
+
+            var param = new VarExpressionNode();
+            relation.Params.Add(param);
+            var varName = "@X";
+            param.Name = varName;
+            param.Key = globalEntityDictionary.GetKey(varName);
+            param.Quantifier = KindOfQuantifier.Existential;
+
+            var variablesQuantification = new VariablesQuantificationPart();
+            annotationInstance.VariablesQuantification = variablesQuantification;
+            variablesQuantification.Items = new List<VarExpressionNode>();
+
+            var varQuant_1 = new VarExpressionNode();
+            varQuant_1.Quantifier = KindOfQuantifier.Existential;
+            varQuant_1.Name = varName;
+            varQuant_1.Key = globalEntityDictionary.GetKey(varName);
+            variablesQuantification.Items.Add(varQuant_1);
+
+            var ruleInstance = new RuleInstance();
+            ruleInstance.DictionaryName = globalEntityDictionary.Name;
+            ruleInstance.Kind = KindOfRuleInstance.QuestionVars;
+            ruleInstance.Name = NamesHelper.CreateEntityName();
+            ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
+            ruleInstance.ModuleName = "#simple_module";
+            ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
+
+            var rulePart_1 = new RulePart();
+            rulePart_1.Parent = ruleInstance;
+            ruleInstance.Part_1 = rulePart_1;
+
+            rulePart_1.IsActive = true;
+
+            var expr3 = new RelationExpressionNode();
+            rulePart_1.Expression = expr3;
+            expr3.Params = new List<BaseExpressionNode>();
+            expr3.Annotations = new List<LogicalAnnotation>();
+
+            var annotation = new LogicalAnnotation();
+            expr3.Annotations.Add(annotation);
+            annotation.RuleInstance = annotationInstance;
+
+            var relationName = "?Z";
+            var relationKey = globalEntityDictionary.GetKey(relationName);
+            expr3.IsQuestion = true;
+            expr3.Name = relationName;
+            expr3.Key = relationKey;
+
+            var param_1 = new QuestionVarExpressionNode();
+            expr3.Params.Add(param_1);
+            param_1.Name = "?X";
+            param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
+
+            var param_2 = new QuestionVarExpressionNode();
+            expr3.Params.Add(param_2);
+            param_2.Name = "?Y";
+            param_2.Key = globalEntityDictionary.GetKey(param_2.Name);
+
+            //a(?X,?Y)
+
+            return ruleInstance;
         }
 
         private static void TSTProcessAnnotations()
@@ -299,8 +544,6 @@ namespace TmpSandBox
             expr3.Params.Add(param_2);
             param_2.Name = "?Y";
             param_2.Key = globalEntityDictionary.GetKey(param_2.Name);
-
-            //konw(?X,?Y)
 
             return ruleInstance;
         }
