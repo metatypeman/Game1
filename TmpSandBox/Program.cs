@@ -116,7 +116,7 @@ namespace TmpSandBox
                     var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
                     //indexedRuleInstance.FillIndexedDataAsStorage();
 
-                    LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+                    //LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 
                     context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
                 }
@@ -179,11 +179,13 @@ namespace TmpSandBox
 
                     LogInstance.Log($"actionExpression = {actionExpression}");
 
-                    if(actionExpression != null)
+                    if (actionExpression != null)
                     {
                         actionName = actionExpression?.FoundExpression?.AsRelation.Name;
                     }
                 }
+
+                //actionName = "go";
             }
 
             LogInstance.Log($"!!!!!!!! :) actionName = {actionName}");
@@ -272,7 +274,6 @@ namespace TmpSandBox
 
             var relationName = "direction";
             var relationKey = globalEntityDictionary.GetKey(relationName);
-            expr3.IsQuestion = true;
             expr3.Name = relationName;
             expr3.Key = relationKey;
 

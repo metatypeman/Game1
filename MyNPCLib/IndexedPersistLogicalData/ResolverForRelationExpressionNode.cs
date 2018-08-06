@@ -241,8 +241,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
 #if DEBUG
             LogInstance.Log($"targetRelationsList.Count = {targetRelationsList.Count}");
+            foreach (var targetRelation in targetRelationsList)
+            {
+                LogInstance.Log($"targetRelation.GetHumanizeDbgString() = {targetRelation.GetHumanizeDbgString()}");
+            }
 #endif
-            
 
             foreach (var targetRelation in targetRelationsList)
             {

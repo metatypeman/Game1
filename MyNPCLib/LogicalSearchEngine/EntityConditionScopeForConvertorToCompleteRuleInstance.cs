@@ -27,13 +27,13 @@ namespace MyNPCLib.LogicalSearchEngine
             }
 
 #if DEBUG
-            LogInstance.Log($"mVarName = {mVarName}");
+            //LogInstance.Log($"mVarName = {mVarName}");
 #endif
 
             foreach (var value in mValues)
             {
 #if DEBUG
-                LogInstance.Log($"value = {value}");
+                //LogInstance.Log($"value = {value}");
 #endif
 
                 if(!resultListEnumerator.MoveNext())
@@ -44,7 +44,7 @@ namespace MyNPCLib.LogicalSearchEngine
                 var currentResult = resultListEnumerator.Current;
 
 #if DEBUG
-                LogInstance.Log($"currentResult = {currentResult}");
+                //LogInstance.Log($"currentResult = {currentResult}");
 #endif
 
                 var entitiesCondition = currentResult.EntitiesConditions;

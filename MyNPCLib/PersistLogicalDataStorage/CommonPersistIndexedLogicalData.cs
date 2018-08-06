@@ -29,7 +29,7 @@ namespace MyNPCLib.PersistLogicalDataStorage
         public void NSetIndexedRuleInstanceToIndexData(IndexedRuleInstance indexedRuleInstance)
         {
 #if DEBUG
-            LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+            //LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 #endif
 
             IndexedRuleInstancesDict[indexedRuleInstance.Key] = indexedRuleInstance;
