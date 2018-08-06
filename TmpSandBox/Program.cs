@@ -20,6 +20,7 @@ using SharpWordNet;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -45,7 +46,8 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTGoToGreenWaypoint();
+            TSTSpeechRecognition();
+            //TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
             //TSTATNParsing();
             //TSTWordNet();
@@ -66,6 +68,13 @@ namespace TmpSandBox
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
         }
+
+        //private static void TSTSpeechRecognition()
+        //{
+        //    var ci = new CultureInfo("en-us");
+        //    var sre = new SpeechRecognitionEngine(ci);
+        //    sre.SetInputToDefaultAudioDevice();
+        //}
 
         private static void TSTGoToGreenWaypoint()
         {
