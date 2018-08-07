@@ -413,6 +413,15 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/Sergey/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
+    <Reference Include="SharpEntropyForNS">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SharpEntropyForNS.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpWordNetForNS">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SharpWordNetForNS.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenNLPForNS">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/OpenNLPForNS.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
     </Reference>

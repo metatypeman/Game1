@@ -202,4 +202,8 @@
     </None>
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy $(SolutionDir)\OpenNLPForNS\bin\Debug\netstandard2.0\OpenNLPForNS.dll $(SolutionDir)Assets\OpenNLPForNS.dll" />
+  </Target>
+
 </Project>

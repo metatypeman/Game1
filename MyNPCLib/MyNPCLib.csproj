@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PostBuildEvent>copy MyNPCLib.dll $(SolutionDir)Assets\MyNPCLib.dll</PostBuildEvent>
+    <PostBuildEvent>copy $(SolutionDir)\MyNPCLib\bin\Debug\netstandard2.0\MyNPCLib.dll $(SolutionDir)Assets\MyNPCLib.dll</PostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>

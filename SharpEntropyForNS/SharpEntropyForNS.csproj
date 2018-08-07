@@ -5,4 +5,8 @@
     <RootNamespace>SharpEntropy</RootNamespace>
   </PropertyGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy $(SolutionDir)\SharpEntropyForNS\bin\Debug\netstandard2.0\SharpEntropyForNS.dll $(SolutionDir)Assets\SharpEntropyForNS.dll" />
+  </Target>
+
 </Project>
