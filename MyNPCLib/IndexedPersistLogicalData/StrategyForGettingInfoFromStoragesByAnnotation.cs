@@ -19,8 +19,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
 #if DEBUG
-            LogInstance.Log($"key = {key}");
-            LogInstance.Log($"Context.EntityDictionary.GetName(key) = {Context.EntityDictionary.GetName(key)}");
+            //LogInstance.Log($"key = {key}");
+            //LogInstance.Log($"Context.EntityDictionary.GetName(key) = {Context.EntityDictionary.GetName(key)}");
 #endif
 
             return mIndexedLogicalAnnotation.RuleInstance.GetIndexedRulePartOfFactsByKeyOfRelation(key);
@@ -29,7 +29,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key)
         {
 #if DEBUG
-            LogInstance.Log($"key = {key}");
+            //LogInstance.Log($"key = {key}");
             //throw new NotImplementedException();
 #endif
 

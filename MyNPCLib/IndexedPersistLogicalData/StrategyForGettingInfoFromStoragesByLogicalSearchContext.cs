@@ -17,7 +17,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
 #if DEBUG
-            LogInstance.Log($"key = {key}");
+            //LogInstance.Log($"key = {key}");
 #endif
 
             var result = new List<IndexedRulePart>();

@@ -9,6 +9,7 @@ using MyNPCLib.Dot;
 using MyNPCLib.IndexedPersistLogicalData;
 using MyNPCLib.Logical;
 using MyNPCLib.LogicalSearchEngine;
+using MyNPCLib.LogicalSoundModeling;
 using MyNPCLib.NLToCGParsing;
 using MyNPCLib.Parser;
 using MyNPCLib.PersistLogicalData;
@@ -46,8 +47,8 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTLogicalSoundBus();
-            //TSTGoToGreenWaypoint();
+            //TSTLogicalSoundBus();
+            TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
             //TSTATNParsing();
             //TSTWordNet();
@@ -71,7 +72,27 @@ namespace TmpSandBox
 
         private static void TSTLogicalSoundBus()
         {
+            LogInstance.Log("Begin");
 
+            var globalEntityDictionary = new EntityDictionary();
+
+            var soundBus = new LogicalSoundBus();
+
+            var fakeListener = new TSTFakeLogicalSoundBusListener(new Vector3(200, 0, 0));
+            soundBus.AddListener(fakeListener);
+
+            var fakeListener_2 = new TSTFakeLogicalSoundBusListener(new Vector3(2000, 0, 0));
+            soundBus.AddListener(fakeListener_2);
+
+            var tstFact = CreateSimpleFact(globalEntityDictionary);
+
+            var soundPackage = new InputLogicalSoundPackage(new Vector3(1, 0, 0), 60, new List<string>() { "human_speech" }, new List<RuleInstance>() { tstFact });
+
+            soundBus.PushSoundPackage(soundPackage);
+
+            Thread.Sleep(10000);
+
+            LogInstance.Log("End");
         }
 
         private static void TSTGoToGreenWaypoint()

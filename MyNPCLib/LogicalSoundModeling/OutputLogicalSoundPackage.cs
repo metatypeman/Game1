@@ -8,10 +8,11 @@ namespace MyNPCLib.LogicalSoundModeling
 {
     public class OutputLogicalSoundPackage: IObjectToString
     {
-        public OutputLogicalSoundPackage(Vector3 direction, float power, IList<RuleInstance> soundFactsList)
+        public OutputLogicalSoundPackage(Vector3 direction, float power, List<string> logicalClasses, IList<RuleInstance> soundFactsList)
         {
             mDirection = direction;
             mPower = power;
+            mLogicalClasses = logicalClasses;
             mSoundFactsList = soundFactsList;
         }
 
@@ -32,6 +33,16 @@ namespace MyNPCLib.LogicalSoundModeling
             get
             {
                 return mPower;
+            }
+        }
+
+        private List<string> mLogicalClasses;
+
+        public List<string> LogicalClases
+        {
+            get
+            {
+                return mLogicalClasses;
             }
         }
 
@@ -59,9 +70,24 @@ namespace MyNPCLib.LogicalSoundModeling
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
+            var spacesNext = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Direction)} = {mDirection}");
             sb.AppendLine($"{spaces}{nameof(Power)} = {mPower}");
+            if (mLogicalClasses == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(LogicalClases)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(LogicalClases)}");
+                foreach (var logicalClass in mLogicalClasses)
+                {
+                    sb.AppendLine($"{spacesNext}{logicalClass}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(LogicalClases)}");
+            }
+
             if (mSoundFactsList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(SoundFactsList)} = null");

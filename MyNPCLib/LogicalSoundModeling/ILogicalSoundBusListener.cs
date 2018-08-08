@@ -6,5 +6,6 @@ namespace MyNPCLib.LogicalSoundModeling
 {
     public interface ILogicalSoundBusListener
     {
+        void OnLogicalSound(OutputLogicalSoundPackage logicalSoundPackage);
     }
 }

@@ -19,7 +19,7 @@ namespace MyNPCLib.LogicalSearchEngine
         public LogicalSearchResult Run(LogicalSearchOptions options)
         {
 #if DEBUG
-            LogInstance.Log($"options = {options}");
+            //LogInstance.Log($"options = {options}");
 #endif
             var queryExpression = options.QueryExpression;
 
@@ -37,7 +37,7 @@ namespace MyNPCLib.LogicalSearchEngine
             context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList = dataSourcesSettingsOrderedByPriorityList.Where(p => p.UseProductions).ToList();
 
 #if DEBUG
-            LogInstance.Log($"context = {context}");
+            //LogInstance.Log($"context = {context}");
 #endif
 
             var resultItemsList = new List<LogicalSearchResultItem>();
@@ -46,7 +46,7 @@ namespace MyNPCLib.LogicalSearchEngine
             queryExpression.FillExecutingCard(queryExecutingCard, context);
 
 #if DEBUG
-            LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
+            //LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
 
             foreach (var resultOfQueryToRelation in queryExecutingCard.ResultsOfQueryToRelationList)
@@ -61,7 +61,7 @@ namespace MyNPCLib.LogicalSearchEngine
             result.Items = resultItemsList;
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
 
             return result;

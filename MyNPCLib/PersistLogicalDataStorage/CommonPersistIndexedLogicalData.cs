@@ -115,8 +115,8 @@ namespace MyNPCLib.PersistLogicalDataStorage
         public IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
 #if DEBUG
-            LogInstance.Log($"key = {key}");
-            LogInstance.Log($"IndexedRulePartsOfFactsDict.Count = {IndexedRulePartsOfFactsDict.Count}");
+            //LogInstance.Log($"key = {key}");
+            //LogInstance.Log($"IndexedRulePartsOfFactsDict.Count = {IndexedRulePartsOfFactsDict.Count}");
 #endif
 
             if (IndexedRulePartsOfFactsDict.ContainsKey(key))
