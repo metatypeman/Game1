@@ -6,11 +6,12 @@ using System.Text;
 
 namespace MyNPCLib.LogicalSoundModeling
 {
-    public class LogicalSoundPackage: IObjectToString
+    public class InputLogicalSoundPackage: IObjectToString
     {
-        public LogicalSoundPackage(Vector3 pos, IList<RuleInstance> soundFactsList)
+        public InputLogicalSoundPackage(Vector3 pos, float power, IList<RuleInstance> soundFactsList)
         {
             mPosition = pos;
+            mPower = power;
             mSoundFactsList = soundFactsList;
         }
 
@@ -21,6 +22,16 @@ namespace MyNPCLib.LogicalSoundModeling
             get
             {
                 return mPosition;
+            }
+        }
+
+        private float mPower;
+
+        public float Power
+        {
+            get
+            {
+                return mPower;
             }
         }
 
@@ -49,6 +60,21 @@ namespace MyNPCLib.LogicalSoundModeling
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(Position)} = {mPosition}");
+            sb.AppendLine($"{spaces}{nameof(Power)} = {mPower}");
+            if(mSoundFactsList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(SoundFactsList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(SoundFactsList)}");
+                foreach (var soundFact in mSoundFactsList)
+                {
+                    sb.Append(soundFact.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(SoundFactsList)}");
+            }
             return sb.ToString();
         }
     }

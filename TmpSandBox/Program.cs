@@ -46,7 +46,7 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTSpeechRecognition();
+            TSTLogicalSoundBus();
             //TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
             //TSTATNParsing();
@@ -69,12 +69,10 @@ namespace TmpSandBox
             //CreateInfoOfConcreteProcess();
         }
 
-        //private static void TSTSpeechRecognition()
-        //{
-        //    var ci = new CultureInfo("en-us");
-        //    var sre = new SpeechRecognitionEngine(ci);
-        //    sre.SetInputToDefaultAudioDevice();
-        //}
+        private static void TSTLogicalSoundBus()
+        {
+
+        }
 
         private static void TSTGoToGreenWaypoint()
         {
