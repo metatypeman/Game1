@@ -35,7 +35,7 @@ namespace MyNPCLib.LogicalSoundModeling
                     //LogInstance.Log($"outputLogicalSoundPackage = {outputLogicalSoundPackage}");
 #endif
 
-                    listener.OnLogicalSound(outputLogicalSoundPackage);
+                    listener.ReceiveLogicalSound(outputLogicalSoundPackage);
                 });
             }      
         }

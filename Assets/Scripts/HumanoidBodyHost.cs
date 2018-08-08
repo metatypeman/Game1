@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts;
 using MyNPCLib;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalSoundModeling;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(EnemyRayScaner))]
-public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInternalHumanoid/*, IInternalLogicalObject*/
+public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInternalHumanoid, ILogicalSoundBusListener/*, IInternalLogicalObject*/
 {
     public bool EnableLogging = false;
     public string Marker = $"#{Guid.NewGuid().ToString("D")}";
@@ -146,6 +147,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private ulong mSelfEntityId;
 
     private HandThingsBus mHandThingsBus;
+    private LogicalSoundBus mLogicalSoundBus;
 
     private readonly object mIsReadyLockObj = new object();
     private bool mIsReady;
@@ -206,6 +208,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         var commonLevelHost = LevelCommonHostFactory.Get();
         mLogicalObjectsBus = commonLevelHost.LogicalObjectsBus;
         mHandThingsBus = commonLevelHost.HandThingsBus;
+        mLogicalSoundBus = commonLevelHost.LogicalSoundBus;
+        mLogicalSoundBus.AddListener(this);
 
         var tmpGameObject = gameObject;
         var instanceId = tmpGameObject.GetInstanceID();
@@ -587,6 +591,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
             }
         });
 
+        mLogicalSoundBus.RemoveListener(this);
+
         UpdateAnimator();
     }
 
@@ -947,5 +953,12 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 Head.LookAt(mCurrentHeadPosition);
                 break;
         }
+    }
+
+    public void ReceiveLogicalSound(OutputLogicalSoundPackage logicalSoundPackage)
+    {
+#if DEBUG
+        Log($"logicalSoundPackage = {logicalSoundPackage}");
+#endif
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MyNPCLib;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalSoundModeling;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +23,7 @@ namespace Assets.Scripts
             mLogicalObjectsBus = new LogicalObjectsBus();
             mQueriesCache = new QueriesCache(mEntityDictionary);
             mHandThingsBus = new HandThingsBus();
+            mLogicalSoundBus = new LogicalSoundBus();
         }
 
         private IEntityDictionary mEntityDictionary;
@@ -42,6 +44,10 @@ namespace Assets.Scripts
         private HandThingsBus mHandThingsBus;
 
         public HandThingsBus HandThingsBus => mHandThingsBus;
+
+        private LogicalSoundBus mLogicalSoundBus;
+
+        public LogicalSoundBus LogicalSoundBus => mLogicalSoundBus;
 
         // Use this for initialization
         void Start()

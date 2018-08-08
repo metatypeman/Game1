@@ -4,8 +4,10 @@ using System.Text;
 
 namespace MyNPCLib.LogicalSoundModeling
 {
+    public delegate void OnLogicalSoundAction(OutputLogicalSoundPackage logicalSoundPackage);
+
     public interface ILogicalSoundBusListener
     {
-        void OnLogicalSound(OutputLogicalSoundPackage logicalSoundPackage);
+        void ReceiveLogicalSound(OutputLogicalSoundPackage logicalSoundPackage);
     }
 }

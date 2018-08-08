@@ -84,7 +84,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private CapsuleCollider m_Capsule;
         private float m_YRotation;
         private Vector3 m_GroundContactNormal { get; set; }
-        private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
+        private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;       
 
         public Vector3 Velocity
         {
@@ -179,13 +179,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jump = false;
         }
 
-
         private float SlopeMultiplier()
         {
             float angle = Vector3.Angle(m_GroundContactNormal, Vector3.up);
             return movementSettings.SlopeCurveModifier.Evaluate(angle);
         }
-
 
         private void StickToGroundHelper()
         {
@@ -201,11 +199,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
-
         private Vector2 GetInput()
-        {
-            
-            Vector2 input = new Vector2
+        {         
+            var input = new Vector2
                 {
                     x = CrossPlatformInputManager.GetAxis("Horizontal"),
                     y = CrossPlatformInputManager.GetAxis("Vertical")
@@ -214,11 +210,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
             return input;
         }
 
-
         private void RotateView()
         {
             //avoids the mouse looking if the game is effectively paused
-            if (Mathf.Abs(Time.timeScale) < float.Epsilon) return;
+            if (Mathf.Abs(Time.timeScale) < float.Epsilon)
+            {
+                return;
+            }
 
             // get the rotation before it's changed
             float oldYRotation = transform.eulerAngles.y;

@@ -1,5 +1,6 @@
 ﻿using MyNPCLib;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalSoundModeling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +28,7 @@ namespace Assets.Scripts
         event Action OnReady;
         IList<IHostVisionObject> VisibleObjects { get; }
         Vector3 GlobalPosition { get; }
+
+        event OnLogicalSoundAction OnLogicalSound;
     }
 }

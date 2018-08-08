@@ -64,7 +64,6 @@
     <Compile Include="Assets\Dead\Script\PlayGUI.cs" />
     <Compile Include="Assets\EthansHealthHelper.cs" />
     <Compile Include="Assets\GameInfoObject.cs" />
-    <Compile Include="Assets\MyHeadBob.cs" />
     <Compile Include="Assets\MyThirdPersonCharacter.cs" />
     <Compile Include="Assets\MyThirdPersonUserControl.cs" />
     <Compile Include="Assets\NewBehaviourScript.cs" />
@@ -122,6 +121,7 @@
     <Compile Include="Assets\Scripts\TestedNPCHostContext.cs" />
     <Compile Include="Assets\Scripts\TestedNPCProcesses.cs" />
     <Compile Include="Assets\Scripts\VectorsConvertor.cs" />
+    <Compile Include="Assets\TmpSmallBot.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
     <None Include="Assets\packages\System.Numerics.Vectors.4.4.0\version.txt" />
     <None Include="Assets\Fortress\Shader\Diffuse.shader" />
@@ -341,6 +341,15 @@
     <Reference Include="MyNPCLib">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/MyNPCLib.dll</HintPath>
     </Reference>
+    <Reference Include="OpenNLPForNS">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/OpenNLPForNS.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpEntropyForNS">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SharpEntropyForNS.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpWordNetForNS">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SharpWordNetForNS.dll</HintPath>
+    </Reference>
     <Reference Include="TestedNPCLogic">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/TestedNPCLogic.dll</HintPath>
     </Reference>
@@ -361,15 +370,6 @@
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/Sergey/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpEntropyForNS">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SharpEntropyForNS.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpWordNetForNS">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SharpWordNetForNS.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenNLPForNS">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/OpenNLPForNS.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

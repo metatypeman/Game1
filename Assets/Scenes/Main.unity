@@ -2136,6 +2136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deaee04f77287424999d8c0ab558c28e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableLogging: 0
+  Marker: '#211f7383-6fbc-46ba-a40f-8606b33b3379'
 --- !u!1 &475034417
 GameObject:
   m_ObjectHideFlags: 0
@@ -2295,6 +2297,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d8e756798c478c4895e031fb0c1761b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableLogging: 0
+  Marker: '#95669ee0-1a7d-4508-b200-701dda514621'
 --- !u!1 &550707830
 GameObject:
   m_ObjectHideFlags: 0
@@ -3646,6 +3650,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a54c1481b792fa3439f35037c739ed10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableLogging: 0
+  Marker: '#685a9907-ee69-4eaa-b08e-964840e2a253'
 --- !u!1001 &866269062
 Prefab:
   m_ObjectHideFlags: 0
@@ -3922,6 +3928,14 @@ Prefab:
     - target: {fileID: 2000000, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 2}
       propertyPath: m_AllowMSAA
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400004, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400006, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 2}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 2}
@@ -10958,6 +10972,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26b8e1de90a14294b8ce804c6aa34c34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableLogging: 0
+  Marker: '#8f36ed0d-4180-4d57-98b2-f31a7aacdbbe'
   Body: {fileID: 1378564044}
   GunEnd: {fileID: 995142506}
   FaceLight: {fileID: 450287138}
@@ -11760,6 +11776,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ea29732aaedce47be24993caf86df9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableLogging: 0
+  Marker: '#cdd0c335-1aff-4ae7-bf7e-96270a5ebe02'
+--- !u!114 &1632200050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1632200041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e524b5c5586af342982cd1229f7e281, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1636028727
 GameObject:
   m_ObjectHideFlags: 0
@@ -11854,6 +11883,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d560738c1975d6a41811812ae6f0c3ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableLogging: 0
+  Marker: '#490ca1ff-3f0c-4e62-a61d-306dac23d82a'
 --- !u!208 &1649283097
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -12743,6 +12774,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feafb2f537409b342bcb0315b59993b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnableLogging: 0
+  Marker: '#e3986874-7ab0-4092-9a0d-4ee2716cf7e6'
 --- !u!1 &1831440841
 GameObject:
   m_ObjectHideFlags: 0

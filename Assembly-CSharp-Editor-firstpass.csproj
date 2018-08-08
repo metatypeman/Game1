@@ -319,6 +319,15 @@
     <Reference Include="MyNPCLib">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/MyNPCLib.dll</HintPath>
     </Reference>
+    <Reference Include="OpenNLPForNS">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/OpenNLPForNS.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpEntropyForNS">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SharpEntropyForNS.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpWordNetForNS">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SharpWordNetForNS.dll</HintPath>
+    </Reference>
     <Reference Include="TestedNPCLogic">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/TestedNPCLogic.dll</HintPath>
     </Reference>
@@ -351,15 +360,6 @@
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpEntropyForNS">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SharpEntropyForNS.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpWordNetForNS">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SharpWordNetForNS.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenNLPForNS">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/OpenNLPForNS.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
