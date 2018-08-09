@@ -7,6 +7,7 @@ using MyNPCLib.ConvertingPersistLogicalDataToIndexing;
 using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.Dot;
 using MyNPCLib.IndexedPersistLogicalData;
+using MyNPCLib.LegacyConvertors;
 using MyNPCLib.Logical;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.LogicalSoundModeling;
@@ -310,7 +311,7 @@ namespace TmpSandBox
 
                         LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
 
-                        var oldEntityConditionQueryString = ConvertToOldEntityConditionQueryString(entityConditionRuleInstance);
+                        var oldEntityConditionQueryString = RuleInstanceToOldEntityConditionConvertor.ConvertToOldQueryString(entityConditionRuleInstance);
 
                         LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
                     }
@@ -318,43 +319,6 @@ namespace TmpSandBox
             }
 
             LogInstance.Log("End");
-        }
-
-        private static string ConvertToOldEntityConditionQueryString(RuleInstance ruleInstance)
-        {
-#if DEBUG
-            //LogInstance.Log($"ruleInstance = {ruleInstance}");
-#endif
-
-            if(ruleInstance.Part_1 != null)
-            {
-                return ConvertToOldEntityConditionQueryString(ruleInstance.Part_1);
-            }
-
-            if(ruleInstance.Part_2 != null)
-            {
-                return ConvertToOldEntityConditionQueryString(ruleInstance.Part_2);
-            }
-
-            return string.Empty;
-        }
-
-        private static string ConvertToOldEntityConditionQueryString(RulePart rulepart)
-        {
-#if DEBUG
-            //LogInstance.Log($"rulepart = {rulepart?.ToShortString()}");
-#endif
-
-            return ConvertToOldEntityConditionQueryString(rulepart.Expression);
-        }
-
-        private static string ConvertToOldEntityConditionQueryString(BaseExpressionNode expressionNode)
-        {
-#if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode?.ToShortString()}");
-#endif
-
-            throw new NotImplementedException();
         }
 
         private static RuleInstance CreateQueryForDirectionOfGoing(IEntityDictionary globalEntityDictionary, string actionName)
