@@ -20,7 +20,7 @@ namespace TmpSandBox
 
         private Vector3 mPosition = Vector3.Zero;
 
-        public void OnLogicalSound(OutputLogicalSoundPackage logicalSoundPackage)
+        public void ReceiveLogicalSound(OutputLogicalSoundPackage logicalSoundPackage)
         {
 #if DEBUG
             LogInstance.Log($"logicalSoundPackage = {logicalSoundPackage}");

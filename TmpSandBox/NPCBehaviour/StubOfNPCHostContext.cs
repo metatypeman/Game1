@@ -1,5 +1,6 @@
 ﻿using MyNPCLib;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalSoundModeling;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -150,6 +151,8 @@ namespace TmpSandBox.NPCBehaviour
         public ulong SelfEntityId => mSelfLogicalObject.EntityId;
         public bool IsReady => mBodyHost.IsReady;
         public event Action OnReady;
+
+        public event OnLogicalSoundAction OnLogicalSound;
 
         [MethodForLoggingSupport]
         protected void Log(string message)

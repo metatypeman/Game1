@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.Logical;
+using MyNPCLib.LogicalSoundModeling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,7 @@ namespace MyNPCLib
             {
                 npcHostContext.OnReady += NpcHostContext_OnReady;
                 npcHostContext.BodyHost.OnDie += BodyHost_OnDie;
+                npcHostContext.OnLogicalSound += NpcHostContext_OnLogicalSound;
             }
 
             mBodyResourcesManager = new NPCBodyResourcesManager(mEntityLogger, mIdFactory, mEntityDictionary, npcHostContext, this);
@@ -78,6 +80,19 @@ namespace MyNPCLib
         protected void Warning(string message)
         {
             mEntityLogger?.Warning(message);
+        }
+
+        private void NpcHostContext_OnLogicalSound(OutputLogicalSoundPackage logicalSoundPackage)
+        {
+#if DEBUG
+            Log($"logicalSoundPackage = {logicalSoundPackage}");
+#endif
+
+            OnLogicalSound(logicalSoundPackage);
+        }
+
+        protected virtual void OnLogicalSound(OutputLogicalSoundPackage logicalSoundPackage)
+        {
         }
 
         private void NpcHostContext_OnReady()

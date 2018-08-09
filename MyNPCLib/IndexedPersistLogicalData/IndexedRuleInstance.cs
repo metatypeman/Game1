@@ -126,6 +126,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
             return mCommonPersistIndexedLogicalData.GetAllRelations();
         }
 
+        public RuleInstance GeyRuleInstanceByKey(ulong key)
+        {
+            return null;
+        }
+
         public string GetHumanizeDbgString()
         {
             if (Origin == null)

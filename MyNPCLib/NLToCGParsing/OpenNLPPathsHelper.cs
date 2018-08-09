@@ -7,16 +7,14 @@ namespace MyNPCLib.NLToCGParsing
 {
     public static class OpenNLPPathsHelper
     {
-        static OpenNLPPathsHelper()
+        public static string ModelsPath(string basePath)
         {
-            mModelsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources/Models/");
-            mEnglishSDnbinPath = Path.Combine(mModelsPath, "EnglishSD.nbin");
+            return Path.Combine(basePath, "Resources/Models/");
         }
 
-        private static string mModelsPath;
-        private static string mEnglishSDnbinPath;
-
-        public static string ModelsPath => mModelsPath;
-        public static string EnglishSDnbinPath => mEnglishSDnbinPath;
+        public static string EnglishSDnbinPath(string basePath)
+        {
+            return Path.Combine(ModelsPath(basePath), "EnglishSD.nbin");
+        }
     }
 }

@@ -12,27 +12,16 @@ namespace MyNPCLib.NLToCGParsing
 {
     public class CGParser
     {
-        public CGParser(IWordsDict wordsDict)
+        public CGParser(CGParserOptions options)
         {
-            var path = Directory.GetCurrentDirectory();
+            var modelPath = OpenNLPPathsHelper.EnglishSDnbinPath(options.BasePath);
 #if DEBUG
-            //LogInstance.Log($"path = {path}");
-
-            //LogInstance.Log(Process.GetCurrentProcess().StartInfo.FileName);
-            //LogInstance.Log(AppDomain.CurrentDomain.BaseDirectory);
-#endif
-
-            //var englishSDNbinRelativePath = "Resources/Models/EnglishSD.nbin";
-
-            //var modelPath = Path.Combine(path, englishSDNbinRelativePath);
-            var modelPath = OpenNLPPathsHelper.EnglishSDnbinPath;
-#if DEBUG
-            //LogInstance.Log($"modelPath = {modelPath}");
+            LogInstance.Log($"modelPath = {modelPath}");
 #endif
 
             mSentenceDetector = new EnglishMaximumEntropySentenceDetector(modelPath);
 
-            mATNParser = new ATNParser(wordsDict);
+            mATNParser = new ATNParser(options.WordsDict);
             mSemanticAnalyzer = new SemanticAnalyzer();
         }
 

@@ -44,6 +44,11 @@ namespace MyNPCLib.CGStorage
                 //LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 #endif
 
+                if(!mRuleInstancesList.Contains(indexedRuleInstance.Origin))
+                {
+                    mRuleInstancesList.Add(indexedRuleInstance.Origin);
+                }
+
                 mCommonPersistIndexedLogicalData.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
             }
         }
@@ -74,6 +79,11 @@ namespace MyNPCLib.CGStorage
             {
                 return mCommonPersistIndexedLogicalData.GetAllRelations();
             }
+        }
+
+        public RuleInstance GeyRuleInstanceByKey(ulong key)
+        {
+            return mRuleInstancesList.FirstOrDefault(p => p.Key == key);
         }
 
         public string GetContentAsDbgStr()

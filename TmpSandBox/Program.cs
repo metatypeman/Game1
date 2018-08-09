@@ -106,7 +106,12 @@ namespace TmpSandBox
             var paragraph = "Go to Green Waypoint";
 
             var wordsDict = new WordsDict();
-            var parser = new CGParser(wordsDict);
+
+            var cgParserOptions = new CGParserOptions();
+            cgParserOptions.WordsDict = wordsDict;
+            cgParserOptions.BasePath = AppDomain.CurrentDomain.BaseDirectory;
+
+            var parser = new CGParser(cgParserOptions);
 
             var result = parser.Run(paragraph);
             //LogInstance.Log($"result = {result}");
@@ -258,6 +263,11 @@ namespace TmpSandBox
 
                 LogInstance.Log($"targetSearchResultItemsList.Count = {targetSearchResultItemsList.Count}");
 
+                var varNameOfDirection = "?X";
+                var keyOfVarOfDirection = globalEntityDictionary.GetKey(varNameOfDirection);
+
+                LogInstance.Log($"keyOfVarOfDirection = {keyOfVarOfDirection}");
+
                 foreach (var targetSearchResultItem in targetSearchResultItemsList)
                 {
                     LogInstance.Log($"targetSearchResultItem = {targetSearchResultItem}");
@@ -271,10 +281,80 @@ namespace TmpSandBox
 
                         LogInstance.Log($"debugStr (yyyyyyyyyyyyyyyyy) = {debugStr}");
                     }
+
+                    var targetValueOfDirection = targetSearchResultItem.GetResultOfVar(keyOfVarOfDirection);
+
+                    LogInstance.Log($"targetValueOfDirection = {targetValueOfDirection}");
+
+                    var foundExpressionOfValueOfDirection = targetValueOfDirection.FoundExpression;
+
+                    if(foundExpressionOfValueOfDirection.IsEntityCondition)
+                    {
+                        var foundExpressionOfValueOfDirectionAsEntityCondition = foundExpressionOfValueOfDirection.AsEntityCondition;
+
+                        LogInstance.Log($"foundExpressionOfValueOfDirectionAsEntityCondition = {foundExpressionOfValueOfDirectionAsEntityCondition}");
+
+                        var dbgContentString = context.GlobalCGStorage.GetContentAsDbgStr();
+
+                        LogInstance.Log($"dbgContentString = {dbgContentString}");
+
+                        var entityConditionRec = completeFoundRuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == foundExpressionOfValueOfDirectionAsEntityCondition.Key);
+
+                        LogInstance.Log($"entityConditionRec = {entityConditionRec}");
+
+                        var keyOfEntityConditionFact = entityConditionRec.Key;
+
+                        LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
+
+                        var entityConditionRuleInstance = context.GlobalCGStorage.GeyRuleInstanceByKey(keyOfEntityConditionFact);
+
+                        LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
+
+                        var oldEntityConditionQueryString = ConvertToOldEntityConditionQueryString(entityConditionRuleInstance);
+
+                        LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
+                    }
                 }
             }
 
             LogInstance.Log("End");
+        }
+
+        private static string ConvertToOldEntityConditionQueryString(RuleInstance ruleInstance)
+        {
+#if DEBUG
+            //LogInstance.Log($"ruleInstance = {ruleInstance}");
+#endif
+
+            if(ruleInstance.Part_1 != null)
+            {
+                return ConvertToOldEntityConditionQueryString(ruleInstance.Part_1);
+            }
+
+            if(ruleInstance.Part_2 != null)
+            {
+                return ConvertToOldEntityConditionQueryString(ruleInstance.Part_2);
+            }
+
+            return string.Empty;
+        }
+
+        private static string ConvertToOldEntityConditionQueryString(RulePart rulepart)
+        {
+#if DEBUG
+            //LogInstance.Log($"rulepart = {rulepart?.ToShortString()}");
+#endif
+
+            return ConvertToOldEntityConditionQueryString(rulepart.Expression);
+        }
+
+        private static string ConvertToOldEntityConditionQueryString(BaseExpressionNode expressionNode)
+        {
+#if DEBUG
+            LogInstance.Log($"expressionNode = {expressionNode?.ToShortString()}");
+#endif
+
+            throw new NotImplementedException();
         }
 
         private static RuleInstance CreateQueryForDirectionOfGoing(IEntityDictionary globalEntityDictionary, string actionName)
@@ -854,7 +934,12 @@ namespace TmpSandBox
             //ParseSentence(sentence);
 
             var wordsDict = new WordsDict();
-            var parser = new CGParser(wordsDict);
+
+            var cgParserOptions = new CGParserOptions();
+            cgParserOptions.WordsDict = wordsDict;
+            cgParserOptions.BasePath = AppDomain.CurrentDomain.BaseDirectory;
+
+            var parser = new CGParser(cgParserOptions);
 
             //var paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
 
