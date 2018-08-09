@@ -64,6 +64,7 @@
     <Compile Include="Assets\Dead\Script\PlayGUI.cs" />
     <Compile Include="Assets\EthansHealthHelper.cs" />
     <Compile Include="Assets\GameInfoObject.cs" />
+    <Compile Include="Assets\GreenWaypoint.cs" />
     <Compile Include="Assets\MyThirdPersonCharacter.cs" />
     <Compile Include="Assets\MyThirdPersonUserControl.cs" />
     <Compile Include="Assets\NewBehaviourScript.cs" />

@@ -1,5 +1,6 @@
 ﻿using MyNPCLib;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalSoundModeling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -246,6 +247,7 @@ namespace Assets.Scripts
 
             mInternalBodyHumanoidHost = internalBodyHumanoidHost;
             mInternalHumanoidHostContext = new InternalHumanoidHostContext();
+            mInternalBodyHumanoidHost.OnLogicalSound += MInternalBodyHumanoidHost_OnLogicalSound;
 
             mBodyHost = new TestedNPCBodyHost(entityLogger, mInternalHumanoidHostContext, internalBodyHumanoidHost);
             mBodyHost.OnReady += MBodyHost_OnReady;
@@ -336,5 +338,27 @@ namespace Assets.Scripts
 
         public IList<IHostVisionObject> VisibleObjects => mInternalBodyHumanoidHost.VisibleObjects;
         public Vector3 GlobalPosition => mInternalBodyHumanoidHost.GlobalPosition;
+
+        private void MInternalBodyHumanoidHost_OnLogicalSound(OutputLogicalSoundPackage logicalSoundPackage)
+        {
+#if DEBUG
+            //Log($"logicalSoundPackage = {logicalSoundPackage}");
+#endif
+
+            Task.Run(() => {
+                try
+                {
+                    OnLogicalSound?.Invoke(logicalSoundPackage);
+                }
+                catch (Exception e)
+                {
+#if DEBUG
+                    Error($"e = {e}");
+#endif
+                }
+            });
+        }
+
+        public event OnLogicalSoundAction OnLogicalSound;
     }
 }

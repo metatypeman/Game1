@@ -958,7 +958,22 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     public void ReceiveLogicalSound(OutputLogicalSoundPackage logicalSoundPackage)
     {
 #if DEBUG
-        Log($"logicalSoundPackage = {logicalSoundPackage}");
+        //Log($"logicalSoundPackage = {logicalSoundPackage}");
 #endif
+
+        Task.Run(() => {
+            try
+            {
+                OnLogicalSound?.Invoke(logicalSoundPackage);
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Error($"e = {e}");
+#endif
+            }
+        });
     }
+
+    public event OnLogicalSoundAction OnLogicalSound;
 }

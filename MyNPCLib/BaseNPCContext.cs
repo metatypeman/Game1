@@ -85,7 +85,7 @@ namespace MyNPCLib
         private void NpcHostContext_OnLogicalSound(OutputLogicalSoundPackage logicalSoundPackage)
         {
 #if DEBUG
-            Log($"logicalSoundPackage = {logicalSoundPackage}");
+            //Log($"logicalSoundPackage = {logicalSoundPackage}");
 #endif
 
             OnLogicalSound(logicalSoundPackage);
