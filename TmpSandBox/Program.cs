@@ -48,8 +48,9 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
+            TSTParsingUserQuery();
             //TSTLogicalSoundBus();
-            TSTGoToGreenWaypoint();
+            //TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
             //TSTATNParsing();
             //TSTWordNet();
@@ -69,6 +70,74 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTParsingUserQuery()
+        {
+            var queryStr = "{: know(I, {:class=dog&determiner=the:})[:{:class=state:}:]:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{: @x = know(I, {:class=dog&determiner=the:})[:{:class=state:}:]:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{: know(I, {:{class=dog&determiner=the}:})[:{:class=state:}:]:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{: {know(I, {:class=dog&determiner=the:})[:{:class=state:}:]}:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{: {know(I, {:{class=dog&determiner=the}:})[:{:class=state:}:]}:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{: know(I, {:class=dog&determiner=the:})[:{:state:}:]:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "fact { know(I, {:class=dog&determiner=the:})[:{:state:}:]}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{: {know(I, {:class=dog&determiner=the:})[:{:state:}:]}:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{: {know(I, @x1 = {:class=dog&determiner=the:})[:{:state:}:]}:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{: {know(I, @x1 = {:class=dog&determiner=the:})[:{:state:}, {:action:}:]}:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{: ?x(?y, ?z):}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{: ?x(*, *):}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{: { ?x(?y, ?z) }:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{: { ?x(*, *) }:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "query { ?x(*, *) }";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{:class=dog&determiner=the:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{:{class=dog&determiner=the}:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{:{class=dog&determiner=the}:}[:{:state:}, {:action:}:]}:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "{:{son(@x, @y)} -> {male(@x)&parent(@y, @x)}:}";
+            NTSTParsingUserQuery(queryStr);
+
+            queryStr = "rule {{son(@x, @y)} -> {male(@x)&parent(@y, @x)}}";
+            NTSTParsingUserQuery(queryStr);
+        }
+
+        private static void NTSTParsingUserQuery(string queryStr)
+        {
+            LogInstance.Log($"queryStr = {queryStr}");
         }
 
         private static void TSTLogicalSoundBus()
