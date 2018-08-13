@@ -92,9 +92,6 @@ namespace TmpSandBox
             queryStr = "{: know(I, {:class=dog&determiner=the:})[:{:state:}:]:}";
             NTSTParsingUserQuery(queryStr);
 
-            queryStr = "fact { know(I, {:class=dog&determiner=the:})[:{:state:}:]}";
-            NTSTParsingUserQuery(queryStr);
-
             queryStr = "{: {know(I, {:class=dog&determiner=the:})[:{:state:}:]}:}";
             NTSTParsingUserQuery(queryStr);
 
@@ -116,9 +113,6 @@ namespace TmpSandBox
             queryStr = "{: { ?x(*, *) }:}";
             NTSTParsingUserQuery(queryStr);
 
-            queryStr = "query { ?x(*, *) }";
-            NTSTParsingUserQuery(queryStr);
-
             queryStr = "{:class=dog&determiner=the:}";
             NTSTParsingUserQuery(queryStr);
 
@@ -130,10 +124,15 @@ namespace TmpSandBox
 
             queryStr = "{:{son(@x, @y)} -> {male(@x)&parent(@y, @x)}:}";
             NTSTParsingUserQuery(queryStr);
-
-            queryStr = "rule {{son(@x, @y)} -> {male(@x)&parent(@y, @x)}}";
-            NTSTParsingUserQuery(queryStr);
         }
+
+        /*
+        //I do not forget about these cases.
+        //But I will not make it just now.
+        queryStr = "query { ?x(*, *) }";
+        queryStr = "rule {{son(@x, @y)} -> {male(@x)&parent(@y, @x)}}";
+        queryStr = "fact { know(I, {:class=dog&determiner=the:})[:{:state:}:]}";
+        */
 
         private static void NTSTParsingUserQuery(string queryStr)
         {
