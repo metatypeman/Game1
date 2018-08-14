@@ -1,4 +1,5 @@
-﻿using MyNPCLib.Parser;
+﻿using MyNPCLib.LegacyParser;
+using MyNPCLib.Parser;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,9 +14,9 @@ namespace MyNPCLib.Logical
             //LogInstance.Log($"queryString = {queryString}");
 #endif
 
-            var context = new ParserContext(queryString, entityDictionary);
+            var context = new LegacyParserContext(queryString, entityDictionary);
 
-            var node = LogicalExpressionParserHelper.CreateNode(context);
+            var node = LegacyLogicalExpressionParserHelper.CreateNode(context);
 
 #if DEBUG
             //LogInstance.Log($"node = {node}");

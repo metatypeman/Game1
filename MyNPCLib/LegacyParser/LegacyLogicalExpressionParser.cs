@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.Parser
+namespace MyNPCLib.LegacyParser
 {
-    public class LogicalExpressionParser: BaseParser
+    public class LegacyLogicalExpressionParser: LegacyBaseParser
     {
-        public LogicalExpressionParser(ParserContext context)
+        public LegacyLogicalExpressionParser(LegacyParserContext context)
             : base(context)
         {
         }
@@ -19,7 +19,7 @@ namespace MyNPCLib.Parser
 
             switch (CurrToken.TokenKind)
             {
-                default: throw new UnexpectedTokenException(CurrToken);
+                default: throw new LegacyUnexpectedTokenException(CurrToken);
             }
         }
     }

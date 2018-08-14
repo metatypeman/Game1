@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.Parser
+namespace MyNPCLib.LegacyParser
 {
-    public class ConditionNodeParser : BaseParser
+    public class LegacyConditionNodeParser : LegacyBaseParser
     {
         public enum State
         {
@@ -15,7 +15,7 @@ namespace MyNPCLib.Parser
             AfterValue
         }
 
-        public ConditionNodeParser(ParserContext context, TokenKind? closingToken)
+        public LegacyConditionNodeParser(LegacyParserContext context, LegacyTokenKind? closingToken)
             : base(context)
         {
             mConditionNode = new ConditionOfQueryASTNode();
@@ -24,7 +24,7 @@ namespace MyNPCLib.Parser
         }
 
         private ConditionOfQueryASTNode mConditionNode;
-        private TokenKind? mClosingToken;
+        private LegacyTokenKind? mClosingToken;
         private BaseQueryASTNode mResult;
 
         public BaseQueryASTNode Result
@@ -48,71 +48,71 @@ namespace MyNPCLib.Parser
                 case State.Init:
                     switch (CurrToken.TokenKind)
                     {
-                        case TokenKind.Word:
+                        case LegacyTokenKind.Word:
                             mConditionNode.PropertyId = Context.GetKey(CurrToken.Content);
                             mState = State.AfterName;
                             break;
 
-                        default: throw new UnexpectedTokenException(CurrToken);
+                        default: throw new LegacyUnexpectedTokenException(CurrToken);
                     }
                     break;
 
                 case State.AfterName:
                     switch (CurrToken.TokenKind)
                     {
-                        case TokenKind.Assing:
+                        case LegacyTokenKind.Assing:
                             mState = State.AfterEqual;
                             break;
 
-                        default: throw new UnexpectedTokenException(CurrToken);
+                        default: throw new LegacyUnexpectedTokenException(CurrToken);
                     }
                     break;
 
                 case State.AfterEqual:
                     switch (CurrToken.TokenKind)
                     {
-                        case TokenKind.Word:
+                        case LegacyTokenKind.Word:
                             mConditionNode.Value = CurrToken.Content;
                             mState = State.AfterValue;
                             break;
 
-                        default: throw new UnexpectedTokenException(CurrToken);
+                        default: throw new LegacyUnexpectedTokenException(CurrToken);
                     }
                     break;
 
                 case State.AfterValue:
                     switch (CurrToken.TokenKind)
                     {
-                        case TokenKind.Or:
+                        case LegacyTokenKind.Or:
                             {
-                                var parentNode = new OrNodeParser(Context, mConditionNode, mClosingToken);
+                                var parentNode = new LegacyOrNodeParser(Context, mConditionNode, mClosingToken);
                                 parentNode.Run();
                                 mResult = parentNode.Result;
                                 Exit();
                             }
                             break;
 
-                        case TokenKind.And:
+                        case LegacyTokenKind.And:
                             {
-                                var parentNode = new AndNodeParser(Context, mConditionNode, mClosingToken);
+                                var parentNode = new LegacyAndNodeParser(Context, mConditionNode, mClosingToken);
                                 parentNode.Run();
                                 mResult = parentNode.Result;
                                 Exit();
                             }
                             break;
 
-                        case TokenKind.CloseRoundBracket:
-                            if(mClosingToken == TokenKind.CloseRoundBracket)
+                        case LegacyTokenKind.CloseRoundBracket:
+                            if(mClosingToken == LegacyTokenKind.CloseRoundBracket)
                             {
                                 Context.Recovery(CurrToken);
                                 mResult = mConditionNode;
                                 Exit();
                                 break;
                             }
-                            throw new UnexpectedTokenException(CurrToken);
+                            throw new LegacyUnexpectedTokenException(CurrToken);
 
 
-                        default: throw new UnexpectedTokenException(CurrToken);
+                        default: throw new LegacyUnexpectedTokenException(CurrToken);
                     }
                     break;
 

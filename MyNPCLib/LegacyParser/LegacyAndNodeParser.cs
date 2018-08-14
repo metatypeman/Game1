@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.Parser
+namespace MyNPCLib.LegacyParser
 {
-    public class OrNodeParser: BaseParser
+    public class LegacyAndNodeParser : LegacyBaseParser
     {
         public enum State
         {
@@ -13,18 +13,18 @@ namespace MyNPCLib.Parser
             ArterRigthNode
         }
 
-        public OrNodeParser(ParserContext context, BaseQueryASTNode left, TokenKind? closingToken)
+        public LegacyAndNodeParser(LegacyParserContext context, BaseQueryASTNode left, LegacyTokenKind? closingToken)
             : base(context)
         {
             mBinaryOperatorOfQueryASTNode = new BinaryOperatorOfQueryASTNode();
             mBinaryOperatorOfQueryASTNode.Left = left;
-            mBinaryOperatorOfQueryASTNode.OperatorId = KindOfBinaryOperators.Or;
+            mBinaryOperatorOfQueryASTNode.OperatorId = KindOfBinaryOperators.And;
 
             mClosingToken = closingToken;
         }
 
         private BinaryOperatorOfQueryASTNode mBinaryOperatorOfQueryASTNode;
-        private TokenKind? mClosingToken;
+        private LegacyTokenKind? mClosingToken;
 
         public BaseQueryASTNode Result
         {
@@ -41,82 +41,78 @@ namespace MyNPCLib.Parser
 #if DEBUG
             //LogInstance.Log($"mState = {mState} CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}` mClosingToken = {mClosingToken}");
 #endif
-
             switch (mState)
             {
                 case State.Init:
                     switch (CurrToken.TokenKind)
                     {
-                        case TokenKind.Word:
+                        case LegacyTokenKind.Word:
                             {
                                 Context.Recovery(CurrToken);
-                                var parser = new ConditionNodeParser(Context, mClosingToken);
-                                parser.Run();
-                                var result = parser.Result;
-                                mBinaryOperatorOfQueryASTNode.Right = result;
-                                mState = State.ArterRigthNode;
-
-#if DEBUG
-                                //LogInstance.Log($"result = {result}");
-#endif
-                            }
-                            break;
-
-                        case TokenKind.OpenRoundBracket:
-                            {
-                                var parser = new OpenRoundBracketNodeParser(Context);
-                                parser.Run();
-                                var result = parser.Result;
-                                mBinaryOperatorOfQueryASTNode.Right = result;
-                                mState = State.ArterRigthNode;
-
-#if DEBUG
-                                //LogInstance.Log($"result = {result}");
-#endif
-                            }
-                            break;
-
-                        case TokenKind.Not:
-                            {
-                                var parentNode = new NotNodeParser(Context);
+                                var parentNode = new LegacyConditionNodeParser(Context, mClosingToken);
                                 parentNode.Run();
                                 var result = parentNode.Result;
                                 mBinaryOperatorOfQueryASTNode.Right = result;
                                 mState = State.ArterRigthNode;
 
 #if DEBUG
-                                LogInstance.Log($"result = {result}");
+                                //LogInstance.Log($"result = {result}");
+#endif
+                            }
+                            break;
+
+                        case LegacyTokenKind.OpenRoundBracket:
+                            {
+                                var parser = new LegacyOpenRoundBracketNodeParser(Context);
+                                parser.Run();
+                                var result = parser.Result;
+                                mBinaryOperatorOfQueryASTNode.Right = result;
+                                mState = State.ArterRigthNode;
+
+#if DEBUG
+                                //LogInstance.Log($"result = {result}");
+#endif
+                            }
+                            break;
+
+                        case LegacyTokenKind.Not:
+                            {
+                                var parentNode = new LegacyNotNodeParser(Context);
+                                parentNode.Run();
+                                var result = parentNode.Result;
+                                mBinaryOperatorOfQueryASTNode.Right = result;
+                                mState = State.ArterRigthNode;
+
+#if DEBUG
+                                //LogInstance.Log($"result = {result}");
 #endif
                             }
                             break;
 
                         default:
-                            throw new UnexpectedTokenException(CurrToken);
+                            throw new LegacyUnexpectedTokenException(CurrToken);
                     }
                     break;
 
                 case State.ArterRigthNode:
-#if DEBUG
-                    //LogInstance.Log($"mBinaryOperatorOfQueryASTNode = {mBinaryOperatorOfQueryASTNode}");
-#endif
                     switch (CurrToken.TokenKind)
                     {
-                        case TokenKind.And:
+                        case LegacyTokenKind.And:
                             {
-                                var parser = new AndNodeParser(Context, mBinaryOperatorOfQueryASTNode.Right, mClosingToken);
+                                var parser = new LegacyAndNodeParser(Context, mBinaryOperatorOfQueryASTNode.Right, mClosingToken);
                                 parser.Run();
                                 mBinaryOperatorOfQueryASTNode.Right = parser.Result;
                                 Exit();
                             }
                             break;
 
-                        case TokenKind.CloseRoundBracket:
+                        case LegacyTokenKind.CloseRoundBracket:
                             Context.Recovery(CurrToken);
                             Exit();
                             break;
 
                         default:
-                            throw new UnexpectedTokenException(CurrToken);
+                            throw new LegacyUnexpectedTokenException(CurrToken);
                     }
                     break;
 

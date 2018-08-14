@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.Parser
+namespace MyNPCLib.LegacyParser
 {
-    public class ParserContext
+    public class LegacyParserContext
     {
-        public ParserContext(string text, IEntityDictionary entityDictionary)
+        public LegacyParserContext(string text, IEntityDictionary entityDictionary)
         {
-            mLexer = new Lexer(text);
+            mLexer = new LegacyLexer(text);
             mEntityDictionary = entityDictionary;
         }
 
-        private Lexer mLexer;
+        private LegacyLexer mLexer;
         private IEntityDictionary mEntityDictionary;
-        private Queue<Token> mRecoveriesTokens = new Queue<Token>();
+        private Queue<LegacyToken> mRecoveriesTokens = new Queue<LegacyToken>();
 
-        public Token GetToken()
+        public LegacyToken GetToken()
         {
             if (mRecoveriesTokens.Count == 0)
             {
@@ -26,7 +26,7 @@ namespace MyNPCLib.Parser
             return mRecoveriesTokens.Dequeue();
         }
 
-        public void Recovery(Token token)
+        public void Recovery(LegacyToken token)
         {
             mRecoveriesTokens.Enqueue(token);
         }

@@ -2,13 +2,28 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.Parser
+namespace MyNPCLib.LegacyParser
 {
-    public class Token : IObjectToString
+    /// <summary>
+    /// Represents some fragment from code string.
+    /// </summary>
+    public class LegacyToken: IObjectToString
     {
-        public TokenKind TokenKind { get; set; } = TokenKind.Unknown;
-        public TokenKind KeyWordTokenKind { get; set; } = TokenKind.Unknown;
+        /// <summary>
+        /// It represents by the instance of this class.
+        /// </summary>
+        public LegacyTokenKind TokenKind { get; set; } = LegacyTokenKind.Unknown;
+
+        /// <summary>
+        /// Which key word is represent by the instance of this class.
+        /// </summary>
+        public LegacyTokenKind KeyWordTokenKind { get; set; } = LegacyTokenKind.Unknown;
+
+        /// <summary>
+        /// The content of this fragment, is not empty if field TokenKind equal TokenKind.Word or TokenKind.Var. Else is empty.
+        /// </summary>
         public string Content { get; set; } = string.Empty;
+
         public int Pos { get; set; }
         public int Line { get; set; }
 

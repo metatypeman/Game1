@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.Parser
+namespace MyNPCLib.LegacyParser
 {
-    public class UnexpectedTokenException : Exception
+    public class LegacyUnexpectedTokenException : Exception
     {
-        public UnexpectedTokenException(Token token)
+        public LegacyUnexpectedTokenException(LegacyToken token)
             : base($"Unexpected token {token.ToDebugString()}")
         {
         }

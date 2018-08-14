@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.Parser
+namespace MyNPCLib.LegacyParser
 {
-    public class AndNodeParser : BaseParser
+    public class LegacyOrNodeParser: LegacyBaseParser
     {
         public enum State
         {
@@ -13,18 +13,18 @@ namespace MyNPCLib.Parser
             ArterRigthNode
         }
 
-        public AndNodeParser(ParserContext context, BaseQueryASTNode left, TokenKind? closingToken)
+        public LegacyOrNodeParser(LegacyParserContext context, BaseQueryASTNode left, LegacyTokenKind? closingToken)
             : base(context)
         {
             mBinaryOperatorOfQueryASTNode = new BinaryOperatorOfQueryASTNode();
             mBinaryOperatorOfQueryASTNode.Left = left;
-            mBinaryOperatorOfQueryASTNode.OperatorId = KindOfBinaryOperators.And;
+            mBinaryOperatorOfQueryASTNode.OperatorId = KindOfBinaryOperators.Or;
 
             mClosingToken = closingToken;
         }
 
         private BinaryOperatorOfQueryASTNode mBinaryOperatorOfQueryASTNode;
-        private TokenKind? mClosingToken;
+        private LegacyTokenKind? mClosingToken;
 
         public BaseQueryASTNode Result
         {
@@ -41,29 +41,16 @@ namespace MyNPCLib.Parser
 #if DEBUG
             //LogInstance.Log($"mState = {mState} CurrToken.TokenKind = {CurrToken.TokenKind} CurrToken.Content = `{CurrToken.Content}` mClosingToken = {mClosingToken}");
 #endif
+
             switch (mState)
             {
                 case State.Init:
                     switch (CurrToken.TokenKind)
                     {
-                        case TokenKind.Word:
+                        case LegacyTokenKind.Word:
                             {
                                 Context.Recovery(CurrToken);
-                                var parentNode = new ConditionNodeParser(Context, mClosingToken);
-                                parentNode.Run();
-                                var result = parentNode.Result;
-                                mBinaryOperatorOfQueryASTNode.Right = result;
-                                mState = State.ArterRigthNode;
-
-#if DEBUG
-                                //LogInstance.Log($"result = {result}");
-#endif
-                            }
-                            break;
-
-                        case TokenKind.OpenRoundBracket:
-                            {
-                                var parser = new OpenRoundBracketNodeParser(Context);
+                                var parser = new LegacyConditionNodeParser(Context, mClosingToken);
                                 parser.Run();
                                 var result = parser.Result;
                                 mBinaryOperatorOfQueryASTNode.Right = result;
@@ -75,11 +62,11 @@ namespace MyNPCLib.Parser
                             }
                             break;
 
-                        case TokenKind.Not:
+                        case LegacyTokenKind.OpenRoundBracket:
                             {
-                                var parentNode = new NotNodeParser(Context);
-                                parentNode.Run();
-                                var result = parentNode.Result;
+                                var parser = new LegacyOpenRoundBracketNodeParser(Context);
+                                parser.Run();
+                                var result = parser.Result;
                                 mBinaryOperatorOfQueryASTNode.Right = result;
                                 mState = State.ArterRigthNode;
 
@@ -89,30 +76,47 @@ namespace MyNPCLib.Parser
                             }
                             break;
 
+                        case LegacyTokenKind.Not:
+                            {
+                                var parentNode = new LegacyNotNodeParser(Context);
+                                parentNode.Run();
+                                var result = parentNode.Result;
+                                mBinaryOperatorOfQueryASTNode.Right = result;
+                                mState = State.ArterRigthNode;
+
+#if DEBUG
+                                LogInstance.Log($"result = {result}");
+#endif
+                            }
+                            break;
+
                         default:
-                            throw new UnexpectedTokenException(CurrToken);
+                            throw new LegacyUnexpectedTokenException(CurrToken);
                     }
                     break;
 
                 case State.ArterRigthNode:
+#if DEBUG
+                    //LogInstance.Log($"mBinaryOperatorOfQueryASTNode = {mBinaryOperatorOfQueryASTNode}");
+#endif
                     switch (CurrToken.TokenKind)
                     {
-                        case TokenKind.And:
+                        case LegacyTokenKind.And:
                             {
-                                var parser = new AndNodeParser(Context, mBinaryOperatorOfQueryASTNode.Right, mClosingToken);
+                                var parser = new LegacyAndNodeParser(Context, mBinaryOperatorOfQueryASTNode.Right, mClosingToken);
                                 parser.Run();
                                 mBinaryOperatorOfQueryASTNode.Right = parser.Result;
                                 Exit();
                             }
                             break;
 
-                        case TokenKind.CloseRoundBracket:
+                        case LegacyTokenKind.CloseRoundBracket:
                             Context.Recovery(CurrToken);
                             Exit();
                             break;
 
                         default:
-                            throw new UnexpectedTokenException(CurrToken);
+                            throw new LegacyUnexpectedTokenException(CurrToken);
                     }
                     break;
 

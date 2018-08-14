@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.Parser
+namespace MyNPCLib.LegacyParser
 {
-    public class OpenRoundBracketNodeParser : BaseParser
+    public class LegacyOpenRoundBracketNodeParser : LegacyBaseParser
     {
         public enum State
         {
@@ -13,7 +13,7 @@ namespace MyNPCLib.Parser
             AfterCloseRoundBracket
         }
 
-        public OpenRoundBracketNodeParser(ParserContext context)
+        public LegacyOpenRoundBracketNodeParser(LegacyParserContext context)
             : base(context)
         {
         }
@@ -41,20 +41,20 @@ namespace MyNPCLib.Parser
                 case State.Init:
                     switch (CurrToken.TokenKind)
                     {
-                        case TokenKind.Word:
+                        case LegacyTokenKind.Word:
                             Context.Recovery(CurrToken);
-                            mResult = LogicalExpressionParserHelper.CreateNode(Context, TokenKind.CloseRoundBracket);
+                            mResult = LegacyLogicalExpressionParserHelper.CreateNode(Context, LegacyTokenKind.CloseRoundBracket);
                             break;
 
-                        case TokenKind.OpenRoundBracket:
+                        case LegacyTokenKind.OpenRoundBracket:
                             {
-                                var parser = new OpenRoundBracketNodeParser(Context);
+                                var parser = new LegacyOpenRoundBracketNodeParser(Context);
                                 parser.Run();
                                 mResult = parser.Result;
                             }
                             break;
 
-                        case TokenKind.CloseRoundBracket:
+                        case LegacyTokenKind.CloseRoundBracket:
                             mState = State.AfterCloseRoundBracket;
                             break;
 
@@ -62,25 +62,25 @@ namespace MyNPCLib.Parser
 #if DEBUG
                             LogInstance.Log($"mResult = {mResult}");
 #endif
-                            throw new UnexpectedTokenException(CurrToken);
+                            throw new LegacyUnexpectedTokenException(CurrToken);
                     }
                     break;
 
                 case State.AfterCloseRoundBracket:
                     switch (CurrToken.TokenKind)
                     {
-                        case TokenKind.And:
+                        case LegacyTokenKind.And:
                             {
-                                var parentNode = new AndNodeParser(Context, mResult, TokenKind.CloseRoundBracket);
+                                var parentNode = new LegacyAndNodeParser(Context, mResult, LegacyTokenKind.CloseRoundBracket);
                                 parentNode.Run();
                                 mResult = parentNode.Result;
                                 Exit();
                             }
                             break;
 
-                        case TokenKind.Or:
+                        case LegacyTokenKind.Or:
                             {
-                                var parentNode = new OrNodeParser(Context, mResult, TokenKind.CloseRoundBracket);
+                                var parentNode = new LegacyOrNodeParser(Context, mResult, LegacyTokenKind.CloseRoundBracket);
                                 parentNode.Run();
                                 mResult = parentNode.Result;
                                 Exit();
@@ -91,7 +91,7 @@ namespace MyNPCLib.Parser
 #if DEBUG
                             LogInstance.Log($"mResult = {mResult}");
 #endif
-                            throw new UnexpectedTokenException(CurrToken);
+                            throw new LegacyUnexpectedTokenException(CurrToken);
                     }
                     break;
 

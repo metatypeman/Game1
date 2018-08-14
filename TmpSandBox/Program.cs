@@ -8,6 +8,7 @@ using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.Dot;
 using MyNPCLib.IndexedPersistLogicalData;
 using MyNPCLib.LegacyConvertors;
+using MyNPCLib.LegacyParser;
 using MyNPCLib.Logical;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.LogicalSoundModeling;
@@ -2005,7 +2006,7 @@ namespace TmpSandBox
             //    LogInstance.Log($"token = {token}");
             //}
             var globalEntityDictionary = new EntityDictionary();
-            var context = new ParserContext(queryStr, globalEntityDictionary);
+            var context = new LegacyParserContext(queryStr, globalEntityDictionary);
             //Token token = null;
             //while ((token = context.GetToken()) != null)
             //{
@@ -2013,71 +2014,71 @@ namespace TmpSandBox
             //}
             //var parser = new LogicalExpressionParser(context);
             //parser.Run();
-            var node = LogicalExpressionParserHelper.CreateNode(context);
+            var node = LegacyLogicalExpressionParserHelper.CreateNode(context);
             LogInstance.Log($"node = {node}");
             
             queryStr = "!((name='helen'&name='ann')|class='girl')";
             LogInstance.Log($"queryStr = {queryStr}");
 
-            context = new ParserContext(queryStr, globalEntityDictionary);
+            context = new LegacyParserContext(queryStr, globalEntityDictionary);
 
-            node = LogicalExpressionParserHelper.CreateNode(context);
+            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
             LogInstance.Log($"node = {node}");
 
             queryStr = "(name='helen'&name='ann')|class='girl'";
             LogInstance.Log($"queryStr = {queryStr}");
 
-            context = new ParserContext(queryStr, globalEntityDictionary);
+            context = new LegacyParserContext(queryStr, globalEntityDictionary);
            
-            node = LogicalExpressionParserHelper.CreateNode(context);
+            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
             LogInstance.Log($"node = {node}");
 
             queryStr = "class='girl'|(name='helen'&name='ann')";
             LogInstance.Log($"queryStr = {queryStr}");
 
-            context = new ParserContext(queryStr, globalEntityDictionary);
+            context = new LegacyParserContext(queryStr, globalEntityDictionary);
 
-            node = LogicalExpressionParserHelper.CreateNode(context);
+            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
             LogInstance.Log($"node = {node}");
 
             queryStr = "class='girl'&(name='helen'&name='ann')";
             LogInstance.Log($"queryStr = {queryStr}");
 
-            context = new ParserContext(queryStr, globalEntityDictionary);
+            context = new LegacyParserContext(queryStr, globalEntityDictionary);
 
-            node = LogicalExpressionParserHelper.CreateNode(context);
+            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
             LogInstance.Log($"node = {node}");
 
             queryStr = "class='girl'&!(name='helen'&name='ann')";
             LogInstance.Log($"queryStr = {queryStr}");
 
-            context = new ParserContext(queryStr, globalEntityDictionary);
+            context = new LegacyParserContext(queryStr, globalEntityDictionary);
 
-            node = LogicalExpressionParserHelper.CreateNode(context);
+            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
             LogInstance.Log($"node = {node}");
 
             queryStr = "class='girl'|!(name='helen'&name='ann')";
             LogInstance.Log($"queryStr = {queryStr}");
 
-            context = new ParserContext(queryStr, globalEntityDictionary);
+            context = new LegacyParserContext(queryStr, globalEntityDictionary);
 
-            node = LogicalExpressionParserHelper.CreateNode(context);
+            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
             LogInstance.Log($"node = {node}");
 
             queryStr = "!class='girl'";
             LogInstance.Log($"queryStr = {queryStr}");
 
-            context = new ParserContext(queryStr, globalEntityDictionary);
+            context = new LegacyParserContext(queryStr, globalEntityDictionary);
 
-            node = LogicalExpressionParserHelper.CreateNode(context);
+            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
             LogInstance.Log($"node = {node}");
 
             queryStr = "class='girl'";
             LogInstance.Log($"queryStr = {queryStr}");
 
-            context = new ParserContext(queryStr, globalEntityDictionary);
+            context = new LegacyParserContext(queryStr, globalEntityDictionary);
 
-            node = LogicalExpressionParserHelper.CreateNode(context);
+            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
             LogInstance.Log($"node = {node}");
         }
 

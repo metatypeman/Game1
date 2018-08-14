@@ -1,12 +1,13 @@
-﻿using System;
+﻿using MyNPCLib.Parser;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace MyNPCLib.Parser
+namespace MyNPCLib.LegacyParser
 {
-    public class Lexer
+    public class LegacyLexer
     {
         private enum LexerState
         {
@@ -15,20 +16,20 @@ namespace MyNPCLib.Parser
             InRichWord
         }
 
-        public Lexer(string text)
+        public LegacyLexer(string text)
         {
             mItems = new Queue<char>(text.ToList());
         }
 
         private Queue<char> mItems;
         private LexerState mLexerState = LexerState.Init;
-        private Queue<Token> mRecoveriesTokens = new Queue<Token>();
+        private Queue<LegacyToken> mRecoveriesTokens = new Queue<LegacyToken>();
         private CultureInfo mCultureInfo = new CultureInfo("en-GB");
 
         private int mCurrentPos;
         private int mCurrentLine = 1;
         private char mEndStringChar { get; set; }
-        public Token GetToken()
+        public LegacyToken GetToken()
         {
             if (mRecoveriesTokens.Count > 0)
             {
@@ -61,7 +62,7 @@ namespace MyNPCLib.Parser
                             }
                             else
                             {
-                                return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+                                return CreateToken(LegacyTokenKind.Word, tmpBuffer.ToString());
                             }
                             break;
                         }
@@ -72,22 +73,22 @@ namespace MyNPCLib.Parser
                                 break;
 
                             case '(':
-                                return CreateToken(TokenKind.OpenRoundBracket);
+                                return CreateToken(LegacyTokenKind.OpenRoundBracket);
 
                             case ')':
-                                return CreateToken(TokenKind.CloseRoundBracket);
+                                return CreateToken(LegacyTokenKind.CloseRoundBracket);
 
                             case '&':
-                                return CreateToken(TokenKind.And);
+                                return CreateToken(LegacyTokenKind.And);
 
                             case '|':
-                                return CreateToken(TokenKind.Or);
+                                return CreateToken(LegacyTokenKind.Or);
 
                             case '!':
-                                return CreateToken(TokenKind.Not);
+                                return CreateToken(LegacyTokenKind.Not);
 
                             case '=':
-                                return CreateToken(TokenKind.Assing);
+                                return CreateToken(LegacyTokenKind.Assing);
 
                             case '`':
                                 mEndStringChar = tmpChar;
@@ -130,7 +131,7 @@ namespace MyNPCLib.Parser
                             if (mItems.Count == 0)
                             {
                                 mLexerState = LexerState.Init;
-                                return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+                                return CreateToken(LegacyTokenKind.Word, tmpBuffer.ToString());
                             }
 
                             var tmpNextChar = mItems.Peek();
@@ -138,7 +139,7 @@ namespace MyNPCLib.Parser
                             if (!char.IsLetterOrDigit(tmpNextChar) && tmpNextChar != '_')
                             {
                                 mLexerState = LexerState.Init;
-                                return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+                                return CreateToken(LegacyTokenKind.Word, tmpBuffer.ToString());
                             }
                         }
                         break;
@@ -148,10 +149,10 @@ namespace MyNPCLib.Parser
                         {
                             case '`':
                             case '\'':
-                                if (mEndStringChar == tmpChar)
+                                if(mEndStringChar == tmpChar)
                                 {
                                     mLexerState = LexerState.Init;
-                                    return CreateToken(TokenKind.Word, tmpBuffer.ToString());
+                                    return CreateToken(LegacyTokenKind.Word, tmpBuffer.ToString());
                                 }
                                 tmpBuffer.Append(tmpChar);
                                 break;
@@ -169,14 +170,14 @@ namespace MyNPCLib.Parser
             return null;
         }
 
-        private Token CreateToken(TokenKind kind, string content = null)
+        private LegacyToken CreateToken(LegacyTokenKind kind, string content = null)
         {
             //char tmpNextChar;
             //int id;
-            var kindOfKeyWord = TokenKind.Unknown;
+            var kindOfKeyWord = LegacyTokenKind.Unknown;
             var contentLength = 0;
 
-            var result = new Token();
+            var result = new LegacyToken();
             result.TokenKind = kind;
             result.KeyWordTokenKind = kindOfKeyWord;
             result.Content = content;
@@ -186,11 +187,14 @@ namespace MyNPCLib.Parser
             return result;
         }
 
-        public void Recovery(Token token)
+        public void Recovery(LegacyToken token)
         {
             mRecoveriesTokens.Enqueue(token);
         }
 
+        /// <summary>
+        /// Number of remaining characters.
+        /// </summary>
         public int Count
         {
             get

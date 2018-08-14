@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.Parser
+namespace MyNPCLib.LegacyParser
 {
-    public class BaseParser
+    public class LegacyBaseParser
     {
-        protected BaseParser(ParserContext context)
+        protected LegacyBaseParser(LegacyParserContext context)
         {
             Context = context;
         }
 
-        protected ParserContext Context;
+        protected LegacyParserContext Context;
 
         public void Run()
         {
@@ -30,7 +30,7 @@ namespace MyNPCLib.Parser
             OnExit();
         }
 
-        protected Token CurrToken;
+        protected LegacyToken CurrToken;
 
         protected virtual void OnRun()
         {

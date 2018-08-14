@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyNPCLib.Parser
+namespace MyNPCLib.LegacyParser
 {
-    public class NotNodeParser: BaseParser
+    public class LegacyNotNodeParser: LegacyBaseParser
     {
-        public NotNodeParser(ParserContext context)
+        public LegacyNotNodeParser(LegacyParserContext context)
             : base(context)
         {
             mResult = new UnaryOperatorOfQueryASTNode();
@@ -32,24 +32,24 @@ namespace MyNPCLib.Parser
 
             switch (CurrToken.TokenKind)
             {
-                case TokenKind.OpenRoundBracket:
+                case LegacyTokenKind.OpenRoundBracket:
                     {
-                        var parser = new OpenRoundBracketNodeParser(Context);
+                        var parser = new LegacyOpenRoundBracketNodeParser(Context);
                         parser.Run();
                         mResult.Left = parser.Result;
                     }
                     break;
 
-                case TokenKind.Word:
+                case LegacyTokenKind.Word:
                     {
                         Context.Recovery(CurrToken);
-                        var parser = new ConditionNodeParser(Context, null);
+                        var parser = new LegacyConditionNodeParser(Context, null);
                         parser.Run();
                         mResult.Left = parser.Result;
                     }
                     break;
 
-                default: throw new UnexpectedTokenException(CurrToken);
+                default: throw new LegacyUnexpectedTokenException(CurrToken);
             }
         }
     }
