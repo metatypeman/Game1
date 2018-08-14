@@ -14,6 +14,7 @@ using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.LogicalSoundModeling;
 using MyNPCLib.NLToCGParsing;
 using MyNPCLib.Parser;
+using MyNPCLib.Parser.LogicalExpression;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.PersistLogicalDataStorage;
 using MyNPCLib.SimpleWordsDict;
@@ -75,56 +76,58 @@ namespace TmpSandBox
 
         private static void TSTParsingUserQuery()
         {
+            var globalEntityDictionary = new EntityDictionary();
+
             var queryStr = "{: know(I, {:class=dog&determiner=the:})[:{:class=state:}:]:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{: @x = know(I, {:class=dog&determiner=the:})[:{:class=state:}:]:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{: know(I, {:{class=dog&determiner=the}:})[:{:class=state:}:]:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{: {know(I, {:class=dog&determiner=the:})[:{:class=state:}:]}:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{: {know(I, {:{class=dog&determiner=the}:})[:{:class=state:}:]}:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{: know(I, {:class=dog&determiner=the:})[:{:state:}:]:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{: {know(I, {:class=dog&determiner=the:})[:{:state:}:]}:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{: {know(I, @x1 = {:class=dog&determiner=the:})[:{:state:}:]}:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{: {know(I, @x1 = {:class=dog&determiner=the:})[:{:state:}, {:action:}:]}:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{: ?x(?y, ?z):}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{: ?x(*, *):}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{: { ?x(?y, ?z) }:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{: { ?x(*, *) }:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{:class=dog&determiner=the:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{:{class=dog&determiner=the}:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{:{class=dog&determiner=the}:}[:{:state:}, {:action:}:]}:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{:{son(@x, @y)} -> {male(@x)&parent(@y, @x)}:}";
-            NTSTParsingUserQuery(queryStr);
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
         }
 
         /*
@@ -135,9 +138,16 @@ namespace TmpSandBox
         queryStr = "fact { know(I, {:class=dog&determiner=the:})[:{:state:}:]}";
         */
 
-        private static void NTSTParsingUserQuery(string queryStr)
+        private static void NTSTParsingUserQuery(string queryStr, IEntityDictionary entityDictionary)
         {
             LogInstance.Log($"queryStr = {queryStr}");
+
+            var context = new ContextOfLogicalExpressionParser(queryStr, entityDictionary);
+
+            var parser = new FactParser(context);
+            parser.Run();
+
+            LogInstance.Log("End");
         }
 
         private static void TSTLogicalSoundBus()

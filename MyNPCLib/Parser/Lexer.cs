@@ -77,6 +77,36 @@ namespace MyNPCLib.Parser
                             case ')':
                                 return CreateToken(TokenKind.CloseRoundBracket);
 
+                            case '{':
+                                return CreateToken(TokenKind.OpenFigureBracket);
+
+                            case '}':
+                                return CreateToken(TokenKind.CloseFigureBracket);
+
+                            case '[':
+                                return CreateToken(TokenKind.OpenSquareBracket);
+
+                            case ']':
+                                return CreateToken(TokenKind.CloseSquareBracket);
+
+                            case ',':
+                                return CreateToken(TokenKind.Comma);
+
+                            case '+':
+                                return CreateToken(TokenKind.Plus);
+
+                            case '-':
+                                return CreateToken(TokenKind.Minus);
+
+                            case '*':
+                                return CreateToken(TokenKind.Mul);
+
+                            case '/':
+                                return CreateToken(TokenKind.Div);
+
+                            case ':':
+                                return CreateToken(TokenKind.Colon);
+
                             case '&':
                                 return CreateToken(TokenKind.And);
 
@@ -86,8 +116,23 @@ namespace MyNPCLib.Parser
                             case '!':
                                 return CreateToken(TokenKind.Not);
 
+                            case '>':
+                                return CreateToken(TokenKind.More);
+
+                            case '<':
+                                return CreateToken(TokenKind.Less);
+
+                            case '?':
+                                return CreateToken(TokenKind.QuestionMark);
+
                             case '=':
                                 return CreateToken(TokenKind.Assing);
+
+                            case '@':
+                                return CreateToken(TokenKind.AtSign);
+
+                            case '#':
+                                return CreateToken(TokenKind.Sharp);
 
                             case '`':
                                 mEndStringChar = tmpChar;
@@ -171,10 +216,130 @@ namespace MyNPCLib.Parser
 
         private Token CreateToken(TokenKind kind, string content = null)
         {
-            //char tmpNextChar;
-            //int id;
             var kindOfKeyWord = TokenKind.Unknown;
             var contentLength = 0;
+
+            switch (kind)
+            {
+                case TokenKind.Word:
+                    {
+                        contentLength = content.Length - 1;
+                    }
+                    break;
+
+                case TokenKind.OpenFigureBracket:
+                    {
+                        var tmpNextChar = mItems.Peek();
+
+                        switch (tmpNextChar)
+                        {
+                            case ':':
+                                kind = TokenKind.BeginFact;
+                                mItems.Dequeue();
+                                break;
+                        }
+                    }
+                    break;
+
+                case TokenKind.OpenSquareBracket:
+                    {
+                        var tmpNextChar = mItems.Peek();
+
+                        switch (tmpNextChar)
+                        {
+                            case ':':
+                                kind = TokenKind.BeginAnnotaion;
+                                mItems.Dequeue();
+                                break;
+                        }
+                    }
+                    break;
+
+                case TokenKind.Colon:
+                    {
+                        var tmpNextChar = mItems.Peek();
+                        switch (tmpNextChar)
+                        {
+                            case '}':
+                                kind = TokenKind.EndFact;
+                                mItems.Dequeue();
+                                break;
+
+                            case ']':
+                                kind = TokenKind.EndAnnotation;
+                                mItems.Dequeue();
+                                break;
+                        }
+                    }
+                    break;
+
+                case TokenKind.Minus:
+                    {
+                        var tmpNextChar = mItems.Peek();
+                        switch (tmpNextChar)
+                        {
+                            case '>':
+                                kind = TokenKind.RightwardArrow;
+                                mItems.Dequeue();
+                                break;
+                        }
+                    }
+                    break;
+
+                case TokenKind.Less:
+                    {
+                        var tmpNextChar = mItems.Peek();
+                        switch (tmpNextChar)
+                        {
+                            case '-':
+                                kind = TokenKind.LeftwardArrow;
+                                mItems.Dequeue();
+                                tmpNextChar = mItems.Peek();
+                                switch (tmpNextChar)
+                                {
+                                    case '>':
+                                        kind = TokenKind.LeftRightArrow;
+                                        mItems.Dequeue();
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+                    break;
+
+                case TokenKind.AtSign:
+                    {
+                        var tmpNextChar = mItems.Peek();
+
+                        switch (tmpNextChar)
+                        {
+                            case '@':
+                                kind = TokenKind.DoubleAtSign;
+                                mItems.Dequeue();
+                                break;
+                        }
+                    }
+                    break;
+
+                case TokenKind.Sharp:
+                    {
+                        var tmpNextChar = mItems.Peek();
+
+                        switch (tmpNextChar)
+                        {
+                            case '#':
+                                kind = TokenKind.DoubleSharp;
+                                mItems.Dequeue();
+                                break;
+
+                            case '@':
+                                kind = TokenKind.SharpAtSign;
+                                mItems.Dequeue();
+                                break;
+                        }
+                    }
+                    break;
+            }
 
             var result = new Token();
             result.TokenKind = kind;
