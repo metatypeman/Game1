@@ -13,9 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="mscorlib">
-      <HintPath>..\..\..\..\..\..\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.6-api\mscorlib.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>

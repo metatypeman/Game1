@@ -50,5 +50,15 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
             mIsExited = true;
         }
+
+        protected void Recovery(Token token)
+        {
+            Context.Recovery(token);
+        }
+
+        protected Token GetToken()
+        {
+            return Context.GetToken();
+        }
     }
 }

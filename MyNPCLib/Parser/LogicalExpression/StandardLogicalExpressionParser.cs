@@ -4,15 +4,15 @@ using System.Text;
 
 namespace MyNPCLib.Parser.LogicalExpression
 {
-    public class RulePartParser : BaseLogicalExpressionParser
+    public class StandardLogicalExpressionParser : BaseLogicalExpressionParser
     {
         private enum State
         {
             Init,
-            GotUnbracketsContent
+            GotExpressionTree
         }
 
-        public RulePartParser(IParserContext context, TokenKind terminateTokenKind)
+        public StandardLogicalExpressionParser(IParserContext context, TokenKind terminateTokenKind)
             : base(context)
         {
             mTerminateTokenKind = terminateTokenKind;
@@ -38,9 +38,9 @@ namespace MyNPCLib.Parser.LogicalExpression
                         case TokenKind.Word:
                             {
                                 Recovery(CurrToken);
-                                var logicalExpressionParser = new LogicalExpressionParser(Context, mTerminateTokenKind);
-                                logicalExpressionParser.Run();
-                                mState = State.GotUnbracketsContent;
+                                var relationParser = new LogicalRelationParser(Context);
+                                relationParser.Run();
+                                mState = State.GotExpressionTree;
                             }
                             break;
 
@@ -49,13 +49,15 @@ namespace MyNPCLib.Parser.LogicalExpression
                     }
                     break;
 
-                default:
-                    if (currTokenKind == mTerminateTokenKind && currTokenKind != TokenKind.Unknown)
+                case State.GotExpressionTree:
+                    switch (currTokenKind)
                     {
-                        Recovery(CurrToken);
-                        Exit();
-                        return;
+                        default:
+                            throw new UnexpectedTokenException(CurrToken);
                     }
+                    break;
+
+                default:
                     throw new ArgumentOutOfRangeException(nameof(mState), mState, null);
             }
         }

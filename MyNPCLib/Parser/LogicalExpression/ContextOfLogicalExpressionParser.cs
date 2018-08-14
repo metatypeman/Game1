@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.Parser.LogicalExpression
@@ -14,7 +15,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
         private Lexer mLexer;
         private IEntityDictionary mEntityDictionary;
-        private Queue<Token> mRecoveriesTokens = new Queue<Token>();
+        private Stack<Token> mRecoveriesTokens = new Stack<Token>();
 
         public Token GetToken()
         {
@@ -58,12 +59,21 @@ namespace MyNPCLib.Parser.LogicalExpression
                 return mLexer.GetToken();
             }
 
-            return mRecoveriesTokens.Dequeue();
+            return mRecoveriesTokens.Pop();
         }
 
         public void Recovery(Token token)
         {
-            mRecoveriesTokens.Enqueue(token);
+            mRecoveriesTokens.Push(token);
+
+#if DEBUG
+            //var tmpTokensList = mRecoveriesTokens.ToList();
+            //LogInstance.Log($"tmpTokensList.Count = {tmpTokensList.Count}");
+            //foreach(var tmpToken in tmpTokensList)
+            //{
+            //    LogInstance.Log($"tmpToken = {tmpToken}");
+            //}
+#endif
         }
 
         public bool IsEmpty()

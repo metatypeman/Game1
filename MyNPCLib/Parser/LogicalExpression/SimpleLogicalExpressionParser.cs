@@ -4,14 +4,14 @@ using System.Text;
 
 namespace MyNPCLib.Parser.LogicalExpression
 {
-    public class AnnotationParser : BaseLogicalExpressionParser
+    public class SimpleLogicalExpressionParser : BaseLogicalExpressionParser
     {
         private enum State
         {
             Init
         }
 
-        public AnnotationParser(IParserContext context)
+        public SimpleLogicalExpressionParser(IParserContext context)
             : base(context)
         {
         }

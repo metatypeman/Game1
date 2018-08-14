@@ -4,27 +4,30 @@ using System.Text;
 
 namespace MyNPCLib.Parser.LogicalExpression
 {
-    public class FactParser : BaseLogicalExpressionParser
+    public class LogicalRelationParser : BaseLogicalExpressionParser
     {
         private enum State
         {
             Init,
-            WaitForContent,
-            GotUnbracketsContent
+            GotName,
+            WaitForParam,
+            GotParam
         }
 
-        public FactParser(IParserContext context)
+        public LogicalRelationParser(IParserContext context)
             : base(context)
         {
         }
 
         private State mState = State.Init;
+        private Token mTokenOfName;
 
         protected override void OnRun()
         {
 #if DEBUG
             LogInstance.Log($"mState = {mState}");
             LogInstance.Log($"CurrToken = {CurrToken}");
+            LogInstance.Log($"mTokenOfName = {mTokenOfName}");
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -32,10 +35,25 @@ namespace MyNPCLib.Parser.LogicalExpression
             switch (mState)
             {
                 case State.Init:
-                    switch(currTokenKind)
+                    switch (currTokenKind)
                     {
-                        case TokenKind.BeginFact:
-                            mState = State.WaitForContent;
+                        default:
+                        case TokenKind.Word:
+                            {
+                                mTokenOfName = CurrToken;
+                                mState = State.GotName;
+                            }
+                            break;
+
+                            throw new UnexpectedTokenException(CurrToken);
+                    }
+                    break;
+
+                case State.GotName:
+                    switch (currTokenKind)
+                    {
+                        case TokenKind.OpenRoundBracket:
+                            mState = State.WaitForParam;
                             break;
 
                         default:
@@ -43,15 +61,16 @@ namespace MyNPCLib.Parser.LogicalExpression
                     }
                     break;
 
-                case State.WaitForContent:
+                case State.WaitForParam:
                     switch (currTokenKind)
                     {
                         case TokenKind.Word:
+                        case TokenKind.BeginFact:
                             {
                                 Recovery(CurrToken);
-                                var rulePartParser = new RulePartParser(Context, TokenKind.EndFact);
-                                rulePartParser.Run();
-                                mState = State.GotUnbracketsContent;
+                                var paramExpressionParser = new LogicalExpressionSwitcherParser(Context);
+                                paramExpressionParser.Run();
+                                mState = State.GotParam;
                             }
                             break;
 
@@ -60,10 +79,16 @@ namespace MyNPCLib.Parser.LogicalExpression
                     }
                     break;
 
-                case State.GotUnbracketsContent:
+                case State.GotParam:
                     switch (currTokenKind)
                     {
-                        case TokenKind.EndFact:
+                        case TokenKind.Comma:
+                            {
+                                mState = State.WaitForParam;
+                            }
+                            break;
+
+                        case TokenKind.CloseRoundBracket:
                             Exit();
                             break;
 
