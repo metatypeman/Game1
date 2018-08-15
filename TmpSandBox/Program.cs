@@ -140,6 +140,18 @@ namespace TmpSandBox
 
             queryStr = "{: (know(I, {:class=dog&determiner=the:})[:{:class=state:}:] & !@x = son(a)) & male(tree):}[:{:class=state:}:]";
             NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            queryStr = "{: know(I, {:(class=dog&determiner=the) | !determiner=the:})[:{:class=state:}:]:}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            queryStr = "{: know(I, {:(class=dog&determiner=the) | !(determiner=the|class=dog):})[:{:class=state:}:]:}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            queryStr = "{: know(I, {:class=dog&determiner=the | !(determiner=the&class=dog):})[:{:class=state:}:]:}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            queryStr = "{: know(I, {:!class=dog&determiner=the | !(determiner=the&class=dog):})[:{:class=state:}:]:}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
         }
 
         /*

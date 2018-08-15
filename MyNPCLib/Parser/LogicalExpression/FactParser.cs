@@ -54,6 +54,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                         case TokenKind.Var:
                         case TokenKind.QuestionParam:
                         case TokenKind.OpenRoundBracket:
+                        case TokenKind.Not:
                             {
                                 Recovery(CurrToken);
                                 var rulePartParser = new RulePartParser(Context, TokenKind.EndFact);

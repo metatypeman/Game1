@@ -154,7 +154,9 @@ namespace MyNPCLib.Parser.LogicalExpression
             Init,
             GotWord,
             GotGroup,
-            GotWordInGroup
+            GotWordInGroup,
+            GotNot,
+            GotNotWord
         }
 
         private Token mLocalCurrentToken;
@@ -225,6 +227,11 @@ namespace MyNPCLib.Parser.LogicalExpression
                             mLocalState = StateOfDetectKindOfExpression.GotGroup;
                             return NDetectKindOfExpression();
 
+                        case TokenKind.Not:
+                            mLocalUsedTokensList.Add(mLocalCurrentToken);
+                            mLocalState = StateOfDetectKindOfExpression.GotNot;
+                            return NDetectKindOfExpression();
+
                         default:
                             throw new UnexpectedTokenException(mLocalCurrentToken);
                     }
@@ -262,6 +269,38 @@ namespace MyNPCLib.Parser.LogicalExpression
                     }
 
                 case StateOfDetectKindOfExpression.GotWordInGroup:
+                    switch (kindOfLocalCurrentToken)
+                    {
+                        case TokenKind.OpenRoundBracket:
+                            mLocalUsedTokensList.Add(mLocalCurrentToken);
+                            return DetectingOfKindOfExpression.Standard;
+
+                        case TokenKind.Assing:
+                        case TokenKind.BeginAnnotaion:
+                            mLocalUsedTokensList.Add(mLocalCurrentToken);
+                            return DetectingOfKindOfExpression.EntityCondition;
+
+                        case TokenKind.EndFact:
+                            mLocalUsedTokensList.Add(mLocalCurrentToken);
+                            return DetectingOfKindOfExpression.SingleConcept;
+
+                        default:
+                            throw new UnexpectedTokenException(mLocalCurrentToken);
+                    }
+
+                case StateOfDetectKindOfExpression.GotNot:
+                    switch (kindOfLocalCurrentToken)
+                    {
+                        case TokenKind.Word:
+                            mLocalUsedTokensList.Add(mLocalCurrentToken);
+                            mLocalState = StateOfDetectKindOfExpression.GotNotWord;
+                            return NDetectKindOfExpression();
+
+                        default:
+                            throw new UnexpectedTokenException(mLocalCurrentToken);
+                    }
+
+                case StateOfDetectKindOfExpression.GotNotWord:
                     switch (kindOfLocalCurrentToken)
                     {
                         case TokenKind.OpenRoundBracket:

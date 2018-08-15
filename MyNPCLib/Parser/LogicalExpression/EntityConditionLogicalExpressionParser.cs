@@ -12,9 +12,8 @@ namespace MyNPCLib.Parser.LogicalExpression
             GotPropetyName,
             GotAssing,
             GotProperyValue,
-            GotNegation,
-            GotAnd,
-            GotOr
+            GotUnaryOperator,
+            GotBinaryOperator,
         }
 
         public EntityConditionLogicalExpressionParser(IParserContext context, TokenKind terminateTokenKind)
@@ -43,6 +42,15 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 ProcessPropertyName();
                                 mState = State.GotPropetyName;
                             }
+                            break;
+
+                        case TokenKind.OpenRoundBracket:
+                            ProcessGroup();
+                            break;
+
+                        case TokenKind.Not:
+                            ProcessUnaryOperator();
+                            mState = State.GotUnaryOperator;
                             break;
 
                         default:
@@ -89,8 +97,9 @@ namespace MyNPCLib.Parser.LogicalExpression
                     switch (currTokenKind)
                     {
                         case TokenKind.And:
-                            ProcessAnd();
-                            mState = State.GotAnd;
+                        case TokenKind.Or:
+                            ProcessBinaryOperator();
+                            mState = State.GotBinaryOperator;
                             break;
 
                         case TokenKind.BeginAnnotaion:
@@ -113,7 +122,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     }
                     break;
 
-                case State.GotNegation:
+                case State.GotUnaryOperator:
                     switch (currTokenKind)
                     {
                         case TokenKind.Word:
@@ -121,17 +130,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                             mState = State.GotPropetyName;
                             break;
 
-                        default:
-                            throw new UnexpectedTokenException(CurrToken);
-                    }
-                    break;
-
-                case State.GotAnd:
-                    switch (currTokenKind)
-                    {
-                        case TokenKind.Word:
-                            ProcessPropertyName();
-                            mState = State.GotPropetyName;
+                        case TokenKind.OpenRoundBracket:
+                            ProcessGroup();
                             break;
 
                         default:
@@ -139,12 +139,21 @@ namespace MyNPCLib.Parser.LogicalExpression
                     }
                     break;
 
-                case State.GotOr:
+                case State.GotBinaryOperator:
                     switch (currTokenKind)
                     {
                         case TokenKind.Word:
                             ProcessPropertyName();
                             mState = State.GotPropetyName;
+                            break;
+
+                        case TokenKind.Not:
+                            ProcessUnaryOperator();
+                            mState = State.GotUnaryOperator;
+                            break;
+
+                        case TokenKind.OpenRoundBracket:
+                            ProcessGroup();
                             break;
 
                         default:
@@ -171,24 +180,17 @@ namespace MyNPCLib.Parser.LogicalExpression
 #endif
         }
 
-        private void ProcessNegation()
+        private void ProcessUnaryOperator()
         {
 #if DEBUG
-            LogInstance.Log("ProcessNegation !!!!!");
+            LogInstance.Log("ProcessUnaryOperator !!!!!");
 #endif
         }
 
-        private void ProcessAnd()
+        private void ProcessBinaryOperator()
         {
 #if DEBUG
-            LogInstance.Log("ProcessAnd !!!!!!!");
-#endif
-        }
-
-        private void ProcessOr()
-        {
-#if DEBUG
-            LogInstance.Log("ProcessOr !!!!!!!");
+            LogInstance.Log("ProcessBinaryOperator !!!!!!!");
 #endif
         }
 
@@ -196,6 +198,32 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
 #if DEBUG
             LogInstance.Log("ProcessAnnotation !!!!!!!");
+#endif
+        }
+
+        private void ProcessGroup()
+        {
+#if DEBUG
+            LogInstance.Log("ProcessGroup !!!!!!!");
+#endif
+            var logicalExpressionParser = new EntityConditionLogicalExpressionParser(Context, TokenKind.CloseRoundBracket);
+            logicalExpressionParser.Run();
+            mState = State.GotProperyValue;
+
+            var nextToken = GetToken();
+            var nextTokenKind = nextToken.TokenKind;
+
+            switch (nextTokenKind)
+            {
+                case TokenKind.CloseRoundBracket:
+                    break;
+
+                default:
+                    throw new UnexpectedTokenException(nextToken);
+            }
+
+#if DEBUG
+            LogInstance.Log("End ProcessGroup !!!!!!!");
 #endif
         }
     }
