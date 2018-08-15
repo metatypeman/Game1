@@ -363,5 +363,21 @@ namespace MyNPCLib.Parser
                 return mRecoveriesTokens.Count + mItems.Count;
             }
         }
+
+        public string TailOfString
+        {
+            get
+            {
+                var listOfChars = mItems.ToList();
+
+                var sb = new StringBuilder();
+
+                foreach (var ch in listOfChars)
+                {
+                    sb.Append(ch);
+                }
+                return sb.ToString();
+            }
+        }
     }
 }

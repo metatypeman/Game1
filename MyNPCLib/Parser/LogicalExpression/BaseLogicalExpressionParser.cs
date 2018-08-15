@@ -6,10 +6,13 @@ namespace MyNPCLib.Parser.LogicalExpression
 {
     public abstract class BaseLogicalExpressionParser
     {
-        protected BaseLogicalExpressionParser(IParserContext context)
+        protected BaseLogicalExpressionParser(IParserContext context, TokenKind terminateTokenKind)
         {
+            TerminateTokenKind = terminateTokenKind;
             Context = context;
         }
+
+        public TokenKind TerminateTokenKind { get; protected set; }
 
         protected IParserContext Context { get; private set; }
 

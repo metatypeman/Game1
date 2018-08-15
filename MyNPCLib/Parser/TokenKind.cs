@@ -20,6 +20,11 @@ namespace MyNPCLib.Parser
         Var,
 
         /// <summary>
+        /// Represents a param with question, like '?x'.
+        /// </summary>
+        QuestionParam,
+
+        /// <summary>
         /// Represents symbol `{`.
         /// </summary>
         OpenFigureBracket,

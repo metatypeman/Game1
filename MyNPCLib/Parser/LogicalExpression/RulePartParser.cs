@@ -9,16 +9,15 @@ namespace MyNPCLib.Parser.LogicalExpression
         private enum State
         {
             Init,
-            GotUnbracketsContent
+            GotUnbracketsContent,
+            GotBrakedContent
         }
 
         public RulePartParser(IParserContext context, TokenKind terminateTokenKind)
-            : base(context)
+            : base(context, terminateTokenKind)
         {
-            mTerminateTokenKind = terminateTokenKind;
         }
 
-        private TokenKind mTerminateTokenKind = TokenKind.Unknown;
         private State mState = State.Init;
 
         protected override void OnRun()
@@ -36,11 +35,24 @@ namespace MyNPCLib.Parser.LogicalExpression
                     switch (currTokenKind)
                     {
                         case TokenKind.Word:
+                        case TokenKind.Var:
+                        case TokenKind.QuestionParam:
+                        case TokenKind.OpenRoundBracket:
                             {
                                 Recovery(CurrToken);
-                                var logicalExpressionParser = new LogicalExpressionParser(Context, mTerminateTokenKind);
+                                var logicalExpressionParser = new LogicalExpressionParser(Context, TerminateTokenKind);
                                 logicalExpressionParser.Run();
+                                //TerminateTokenKind = logicalExpressionParser.TerminateTokenKind;
                                 mState = State.GotUnbracketsContent;
+                            }
+                            break;
+
+                        case TokenKind.OpenFigureBracket:
+                            {
+                                var logicalExpressionParser = new LogicalExpressionParser(Context, TerminateTokenKind);
+                                logicalExpressionParser.Run();
+                                //TerminateTokenKind = logicalExpressionParser.TerminateTokenKind;
+                                mState = State.GotBrakedContent;
                             }
                             break;
 
@@ -49,13 +61,34 @@ namespace MyNPCLib.Parser.LogicalExpression
                     }
                     break;
 
-                default:
-                    if (currTokenKind == mTerminateTokenKind && currTokenKind != TokenKind.Unknown)
+                case State.GotUnbracketsContent:
+                    switch (currTokenKind)
                     {
-                        Recovery(CurrToken);
-                        Exit();
-                        return;
+                        default:
+                            if (currTokenKind == TerminateTokenKind && currTokenKind != TokenKind.Unknown)
+                            {
+                                Recovery(CurrToken);
+                                Exit();
+                                return;
+                            }
+                            throw new UnexpectedTokenException(CurrToken);
                     }
+                    break;
+
+                case State.GotBrakedContent:
+                    switch (currTokenKind)
+                    {
+                        default:
+                            if (currTokenKind == TerminateTokenKind && currTokenKind != TokenKind.Unknown)
+                            {
+                                Exit();
+                                return;
+                            }
+                            throw new UnexpectedTokenException(CurrToken);
+                    }
+                    break;
+
+                default:
                     throw new ArgumentOutOfRangeException(nameof(mState), mState, null);
             }
         }

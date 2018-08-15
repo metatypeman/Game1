@@ -11,5 +11,6 @@ namespace MyNPCLib.Parser
         bool IsEmpty();
         int Count { get; }
         ulong GetKey(string name);
+        string TailOfString { get; }
     }
 }

@@ -11,11 +11,13 @@ namespace MyNPCLib.Parser.LogicalExpression
             Init,
             GotName,
             WaitForParam,
-            GotParam
+            GotParam,
+            GotVarInParam,
+            GotAssingInParam
         }
 
         public LogicalRelationParser(IParserContext context)
-            : base(context)
+            : base(context, TokenKind.Unknown)
         {
         }
 
@@ -65,13 +67,14 @@ namespace MyNPCLib.Parser.LogicalExpression
                     switch (currTokenKind)
                     {
                         case TokenKind.Word:
+                        case TokenKind.QuestionParam:
                         case TokenKind.BeginFact:
-                            {
-                                Recovery(CurrToken);
-                                var paramExpressionParser = new LogicalExpressionSwitcherParser(Context);
-                                paramExpressionParser.Run();
-                                mState = State.GotParam;
-                            }
+                        case TokenKind.Mul:
+                            DispatchValueInParam();
+                            break;
+
+                        case TokenKind.Var:
+                            DispatchVar();
                             break;
 
                         default:
@@ -92,6 +95,57 @@ namespace MyNPCLib.Parser.LogicalExpression
                             Exit();
                             break;
 
+                        case TokenKind.BeginAnnotaion:
+                            {
+                                Recovery(CurrToken);
+                                var annotationParser = new AnnotationParser(Context);
+                                annotationParser.Run();
+                                ProcessAnnotation();
+                            }
+                            break;
+
+                        default:
+                            throw new UnexpectedTokenException(CurrToken);
+                    }
+                    break;
+
+                case State.GotVarInParam:
+                    switch (currTokenKind)
+                    {
+                        case TokenKind.Assing:
+                            mState = State.GotAssingInParam;
+                            break;
+
+                        case TokenKind.Comma:
+                            mState = State.WaitForParam;
+                            break;
+
+                        case TokenKind.CloseRoundBracket:
+                            Exit();
+                            break;
+
+                        case TokenKind.BeginAnnotaion:
+                            {
+                                Recovery(CurrToken);
+                                var annotationParser = new AnnotationParser(Context);
+                                annotationParser.Run();
+                                ProcessAnnotation();
+                            }
+                            break;
+
+                        default:
+                            throw new UnexpectedTokenException(CurrToken);
+                    }
+                    break;
+
+                case State.GotAssingInParam:
+                    switch (currTokenKind)
+                    {
+                        case TokenKind.Word:
+                        case TokenKind.BeginFact:
+                            DispatchValueInParam();
+                            break;
+
                         default:
                             throw new UnexpectedTokenException(CurrToken);
                     }
@@ -100,6 +154,34 @@ namespace MyNPCLib.Parser.LogicalExpression
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mState), mState, null);
             }
+        }
+
+        private void DispatchValueInParam()
+        {
+#if DEBUG
+            LogInstance.Log("DispatchValueInParam !!!!!!");
+#endif
+
+            Recovery(CurrToken);
+            var paramExpressionParser = new LogicalExpressionSwitcherParser(Context);
+            paramExpressionParser.Run();
+            mState = State.GotParam;
+        }
+
+        private void DispatchVar()
+        {
+#if DEBUG
+            LogInstance.Log("DispatchVar !!!!!!");
+#endif
+
+            mState = State.GotVarInParam;
+        }
+
+        private void ProcessAnnotation()
+        {
+#if DEBUG
+            LogInstance.Log("ProcessAnnotation !!!!!!!");
+#endif
         }
     }
 }

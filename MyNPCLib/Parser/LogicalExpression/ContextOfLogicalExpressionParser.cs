@@ -47,6 +47,24 @@ namespace MyNPCLib.Parser.LogicalExpression
                         }
                     }
                     break;
+
+                case TokenKind.QuestionMark:
+                    {
+                        var nextToken = NGetToken();
+                        var nextTokenKind = nextToken.TokenKind;
+                        switch (nextTokenKind)
+                        {
+                            case TokenKind.Word:
+                                nextToken.Content = $"?{nextToken.Content}";
+                                nextToken.TokenKind = TokenKind.QuestionParam;
+                                return nextToken;
+
+                            default:
+                                Recovery(nextToken);
+                                break;
+                        }
+                    }
+                    break;
             }
 
             return result;
@@ -67,12 +85,12 @@ namespace MyNPCLib.Parser.LogicalExpression
             mRecoveriesTokens.Push(token);
 
 #if DEBUG
-            //var tmpTokensList = mRecoveriesTokens.ToList();
-            //LogInstance.Log($"tmpTokensList.Count = {tmpTokensList.Count}");
-            //foreach(var tmpToken in tmpTokensList)
-            //{
-            //    LogInstance.Log($"tmpToken = {tmpToken}");
-            //}
+            var tmpTokensList = mRecoveriesTokens.ToList();
+            LogInstance.Log($"tmpTokensList.Count = {tmpTokensList.Count}");
+            foreach (var tmpToken in tmpTokensList)
+            {
+                LogInstance.Log($"tmpToken = {tmpToken}");
+            }
 #endif
         }
 
@@ -102,5 +120,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
             return mEntityDictionary.GetKey(name);
         }
+
+        public string TailOfString => mLexer.TailOfString;
     }
 }

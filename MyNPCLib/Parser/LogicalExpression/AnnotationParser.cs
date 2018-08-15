@@ -8,11 +8,13 @@ namespace MyNPCLib.Parser.LogicalExpression
     {
         private enum State
         {
-            Init
+            Init,
+            WaitForFact,
+            GotFact
         }
 
         public AnnotationParser(IParserContext context)
-            : base(context)
+            : base(context, TokenKind.Unknown)
         {
         }
 
@@ -32,6 +34,43 @@ namespace MyNPCLib.Parser.LogicalExpression
                 case State.Init:
                     switch (currTokenKind)
                     {
+                        case TokenKind.BeginAnnotaion:
+                            mState = State.WaitForFact;
+                            break;
+
+                        default:
+                            throw new UnexpectedTokenException(CurrToken);
+                    }
+                    break;
+
+                case State.WaitForFact:
+                    switch (currTokenKind)
+                    {
+                        case TokenKind.BeginFact:
+                            {
+                                Recovery(CurrToken);
+                                var factParser = new FactParser(Context);
+                                factParser.Run();
+                                mState = State.GotFact;
+                            }
+                            break;
+
+                        default:
+                            throw new UnexpectedTokenException(CurrToken);
+                    }
+                    break;
+
+                case State.GotFact:
+                    switch (currTokenKind)
+                    {
+                        case TokenKind.EndAnnotation:
+                            Exit();
+                            break;
+
+                        case TokenKind.Comma:
+                            mState = State.WaitForFact;
+                            break;
+
                         default:
                             throw new UnexpectedTokenException(CurrToken);
                     }

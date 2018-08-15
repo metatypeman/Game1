@@ -102,6 +102,9 @@ namespace TmpSandBox
             queryStr = "{: {know(I, @x1 = {:class=dog&determiner=the:})[:{:state:}:]}:}";
             NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
+            queryStr = "{: {@x[:{:info_0:}:] = know(I[:{:info_1:}:], @x1[:{:info_2:}:] = {:class[:{:info_3:}:]=dog[:{:`info 1`:}:]&determiner=the:})[:{:state:}:]}:}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
             queryStr = "{: {know(I, @x1 = {:class=dog&determiner=the:})[:{:state:}, {:action:}:]}:}";
             NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
@@ -127,6 +130,15 @@ namespace TmpSandBox
             NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             queryStr = "{:{son(@x, @y)} -> {male(@x)&parent(@y, @x)}:}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            queryStr = "{: @x = (know(I, {:class=dog&determiner=the:})[:{:class=state:}:] & !son(a)) & male(tree):}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            queryStr = "{: (know(I, {:class=dog&determiner=the:})[:{:class=state:}:] & !@x = son(a)) & male(tree):}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            queryStr = "{: (know(I, {:class=dog&determiner=the:})[:{:class=state:}:] & !@x = son(a)) & male(tree):}[:{:class=state:}:]";
             NTSTParsingUserQuery(queryStr, globalEntityDictionary);
         }
 

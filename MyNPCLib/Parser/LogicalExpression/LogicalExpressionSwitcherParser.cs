@@ -12,7 +12,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         }
 
         public LogicalExpressionSwitcherParser(IParserContext context)
-            : base(context)
+            : base(context, TokenKind.Unknown)
         {
         }
 
@@ -44,6 +44,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 switch(nextTokenKind)
                                 {
                                     case TokenKind.Comma:
+                                    case TokenKind.CloseRoundBracket:
+                                    case TokenKind.BeginAnnotaion:
                                         Recovery(nextToken);
                                         ProcessConcept();
                                         Exit();
@@ -64,6 +66,35 @@ namespace MyNPCLib.Parser.LogicalExpression
                             }
                             break;
 
+                        case TokenKind.QuestionParam:
+                            {
+                                var nextToken = GetToken();
+                                var nextTokenKind = nextToken.TokenKind;
+#if DEBUG
+                                LogInstance.Log($"nextToken = {nextToken}");
+                                LogInstance.Log($"nextTokenKind = {nextTokenKind}");
+#endif
+
+                                switch (nextTokenKind)
+                                {
+                                    case TokenKind.Comma:
+                                    case TokenKind.CloseRoundBracket:
+                                        Recovery(nextToken);
+                                        ProcessQuestionParam();
+                                        Exit();
+                                        break;
+
+                                    default:
+                                        throw new UnexpectedTokenException(nextToken);
+                                }
+                            }
+                            break;
+
+                        case TokenKind.Mul:
+                            ProcessStubOfConcept();
+                            Exit();
+                            break;
+
                         default:
                             throw new UnexpectedTokenException(CurrToken);
                     }
@@ -78,6 +109,20 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
 #if DEBUG
             LogInstance.Log($"CONCEPT!!!!!!!! CurrToken = {CurrToken}");
+#endif
+        }
+
+        private void ProcessQuestionParam()
+        {
+#if DEBUG
+            LogInstance.Log($"ProcessQuestionParam!!!!!!!! CurrToken = {CurrToken}");
+#endif
+        }
+
+        private void ProcessStubOfConcept()
+        {
+#if DEBUG
+            LogInstance.Log("ProcessStubOfConcept!!!!!!!!");
 #endif
         }
     }

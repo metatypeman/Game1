@@ -18,12 +18,10 @@ namespace MyNPCLib.Parser.LogicalExpression
         }
 
         public EntityConditionLogicalExpressionParser(IParserContext context, TokenKind terminateTokenKind)
-            : base(context)
+            : base(context, terminateTokenKind)
         {
-            mTerminateTokenKind = terminateTokenKind;
         }
 
-        private TokenKind mTerminateTokenKind = TokenKind.Unknown;
         private State mState = State.Init;
 
         protected override void OnRun()
@@ -59,6 +57,15 @@ namespace MyNPCLib.Parser.LogicalExpression
                             mState = State.GotAssing;
                             break;
 
+                        case TokenKind.BeginAnnotaion:
+                            {
+                                Recovery(CurrToken);
+                                var annotationParser = new AnnotationParser(Context);
+                                annotationParser.Run();
+                                ProcessAnnotation();
+                            }
+                            break;
+
                         default:
                             throw new UnexpectedTokenException(CurrToken);
                     }
@@ -86,8 +93,17 @@ namespace MyNPCLib.Parser.LogicalExpression
                             mState = State.GotAnd;
                             break;
 
+                        case TokenKind.BeginAnnotaion:
+                            {
+                                Recovery(CurrToken);
+                                var annotationParser = new AnnotationParser(Context);
+                                annotationParser.Run();
+                                ProcessAnnotation();
+                            }
+                            break;
+
                         default:
-                            if(currTokenKind == mTerminateTokenKind && currTokenKind != TokenKind.Unknown)
+                            if(currTokenKind == TerminateTokenKind && currTokenKind != TokenKind.Unknown)
                             {
                                 Recovery(CurrToken);
                                 Exit();
@@ -173,6 +189,13 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
 #if DEBUG
             LogInstance.Log("ProcessOr !!!!!!!");
+#endif
+        }
+
+        private void ProcessAnnotation()
+        {
+#if DEBUG
+            LogInstance.Log("ProcessAnnotation !!!!!!!");
 #endif
         }
     }

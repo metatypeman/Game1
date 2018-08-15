@@ -12,7 +12,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         }
 
         public SimpleLogicalExpressionParser(IParserContext context)
-            : base(context)
+            : base(context, TokenKind.Unknown)
         {
         }
 
