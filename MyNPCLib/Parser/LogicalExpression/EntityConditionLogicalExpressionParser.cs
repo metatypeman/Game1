@@ -23,6 +23,9 @@ namespace MyNPCLib.Parser.LogicalExpression
 
         private State mState = State.Init;
 
+        public ASTNodeOfLogicalQuery Result => mASTNode;
+        private ASTNodeOfLogicalQuery mASTNode;
+
         protected override void OnRun()
         {
 #if DEBUG

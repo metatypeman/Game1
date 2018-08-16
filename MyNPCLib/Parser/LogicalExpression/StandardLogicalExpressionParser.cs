@@ -32,6 +32,12 @@ namespace MyNPCLib.Parser.LogicalExpression
         
         private State mState = State.Init;
 
+        public ASTNodeOfLogicalQuery Result => mASTNode;
+        private ASTNodeOfLogicalQuery mASTNode;
+
+        private ASTNodeOfLogicalQuery mCurrentNode;
+        private ASTNodeOfLogicalQuery mClusterNode;
+
         protected override void OnRun()
         {
 #if DEBUG
@@ -216,15 +222,17 @@ namespace MyNPCLib.Parser.LogicalExpression
             Recovery(CurrToken);
             var relationParser = new LogicalRelationParser(Context);
             relationParser.Run();
-            ProcessRelation();
+            ProcessRelation(relationParser.Result);
             mState = State.GotExpressionTree;
         }
 
-        private void ProcessRelation()
+        private void ProcessRelation(ASTNodeOfLogicalQuery relation)
         {
 #if DEBUG
-            LogInstance.Log("ProcessRelation !!!!!!");
+            LogInstance.Log($"ProcessRelation !!!!!! relation = {relation}");
 #endif
+
+            PutRelationLikeNodeToTree(relation);
         }
 
         private void ProcessVar()
@@ -232,6 +240,8 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log($"ProcessVar !!!!! CurrToken = {CurrToken}");
 #endif
+
+            throw new NotImplementedException();
 
             mState = State.GotVar;
         }
@@ -242,6 +252,8 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log("ProcessAssing !!!!!!");
 #endif
 
+            throw new NotImplementedException();
+
             mState = State.GotAssing;
         }
 
@@ -250,6 +262,8 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log("ProcessAnnotation !!!!!!!");
 #endif
+
+            throw new NotImplementedException();
         }
 
         private void ProcessUnaryOperator()
@@ -257,6 +271,89 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log("ProcessUnaryOperator !!!!!!!");
 #endif
+            var operatorToken = CurrToken;
+            var tokenKindOfOperatorToken = operatorToken.TokenKind;
+
+            var operatorASTNode = new ASTNodeOfLogicalQuery();
+            operatorASTNode.Kind = KindOfASTNodeOfLogicalQuery.UnaryOperator;
+
+            switch (tokenKindOfOperatorToken)
+            {
+                case TokenKind.Not:
+                    operatorASTNode.KindOfOperator = KindOfOperatorOfASTNodeOfLogicalQuery.Not;
+                    break;
+
+                default:
+                    throw new UnexpectedTokenException(operatorToken);
+            }
+
+#if DEBUG
+            LogInstance.Log($"mASTNode = {mASTNode}");
+            LogInstance.Log($"mCurrentNode = {mCurrentNode}");
+            LogInstance.Log($"mClusterNode = {mClusterNode}");
+#endif
+
+            if (mASTNode == null)
+            {
+                mASTNode = operatorASTNode;
+                mCurrentNode = operatorASTNode;
+                mClusterNode = operatorASTNode;
+                mState = State.GotUnaryOperator;
+                return;
+            }
+
+            var kindOfClusterNode = mClusterNode.Kind;
+
+            switch (kindOfClusterNode)
+            {
+                case KindOfASTNodeOfLogicalQuery.UnaryOperator:
+                    {
+                        var tmpNode = mCurrentNode;
+                        tmpNode.Left = operatorASTNode;
+                        mCurrentNode = operatorASTNode;
+                    }
+                    break;
+
+                case KindOfASTNodeOfLogicalQuery.BinaryOperator:
+                    {
+                        var tmpNode = mCurrentNode;
+                        var kindOfCurrentNode = mCurrentNode.Kind;
+
+                        switch(kindOfCurrentNode)
+                        {
+                            case KindOfASTNodeOfLogicalQuery.BinaryOperator:
+                                tmpNode.Right = operatorASTNode;
+                                mCurrentNode = operatorASTNode;
+                                break;
+
+                            case KindOfASTNodeOfLogicalQuery.UnaryOperator:
+                                tmpNode.Left = operatorASTNode;
+                                mCurrentNode = operatorASTNode;
+                                break;
+
+                            case KindOfASTNodeOfLogicalQuery.Relation:
+                                mClusterNode.Right = operatorASTNode;
+                                operatorASTNode.Left = tmpNode;
+                                mCurrentNode = operatorASTNode;
+                                break;
+
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(kindOfCurrentNode), kindOfCurrentNode, null);
+                        }
+                    }
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kindOfClusterNode), kindOfClusterNode, null);
+            }
+
+#if DEBUG
+            LogInstance.Log($"after mASTNode = {mASTNode}");
+            LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+            LogInstance.Log($"after mClusterNode = {mClusterNode}");
+#endif
+
+            //throw new NotImplementedException();
 
             mState = State.GotUnaryOperator;
         }
@@ -266,6 +363,97 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log("ProcessBinaryOperator !!!!!!!");
 #endif
+            var operatorToken = CurrToken;
+            var tokenKindOfOperatorToken = operatorToken.TokenKind;
+
+            var operatorASTNode = new ASTNodeOfLogicalQuery();
+            operatorASTNode.Kind = KindOfASTNodeOfLogicalQuery.BinaryOperator;
+
+            switch (tokenKindOfOperatorToken)
+            {
+                case TokenKind.And:
+                    operatorASTNode.KindOfOperator = KindOfOperatorOfASTNodeOfLogicalQuery.And;
+                    break;
+
+                case TokenKind.Or:
+                    operatorASTNode.KindOfOperator = KindOfOperatorOfASTNodeOfLogicalQuery.Or;
+                    break;
+
+                default:
+                    throw new UnexpectedTokenException(operatorToken);
+            }
+
+            if (mASTNode == null)
+            {
+                throw new NotSupportedException();
+            }
+
+#if DEBUG
+            LogInstance.Log($"mASTNode = {mASTNode}");
+            LogInstance.Log($"mCurrentNode = {mCurrentNode}");
+            LogInstance.Log($"mClusterNode = {mClusterNode}");     
+#endif
+
+            var kindOfClusterNode = mClusterNode.Kind;
+
+            switch(kindOfClusterNode)
+            {
+                case KindOfASTNodeOfLogicalQuery.Relation:
+                    //throw new NotImplementedException();
+                    {
+                        var tmpNode = mClusterNode;
+                        mClusterNode = operatorASTNode;
+                        mCurrentNode = operatorASTNode;
+                        mASTNode = operatorASTNode;
+                        operatorASTNode.Left = tmpNode;
+
+#if DEBUG
+                        //LogInstance.Log($"after mASTNode = {mASTNode}");
+                        //LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+                        //LogInstance.Log($"after mClusterNode = {mClusterNode}");
+#endif
+                    }
+                    break;
+
+                case KindOfASTNodeOfLogicalQuery.UnaryOperator:
+                    {
+                        var tmpNode = mClusterNode;
+                        mClusterNode = operatorASTNode;
+                        mCurrentNode = tmpNode;
+                        mASTNode = operatorASTNode;
+                        operatorASTNode.Left = tmpNode;
+                    }
+                    break;
+
+                case KindOfASTNodeOfLogicalQuery.BinaryOperator:              
+                    {
+                        var tmpNode = mClusterNode;
+                        mClusterNode = operatorASTNode;
+                        mCurrentNode = operatorASTNode;
+                        var oldRightNode = tmpNode.Right;
+                        tmpNode.Right = operatorASTNode;
+                        operatorASTNode.Left = oldRightNode;
+
+#if DEBUG
+                        //LogInstance.Log($"after mASTNode = {mASTNode}");
+                        //LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+                        //LogInstance.Log($"after mClusterNode = {mClusterNode}");
+#endif
+                    }
+                    //throw new NotImplementedException();
+                break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kindOfClusterNode), kindOfClusterNode, null);
+            }
+
+#if DEBUG
+            LogInstance.Log($"after mASTNode = {mASTNode}");
+            LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+            LogInstance.Log($"after mClusterNode = {mClusterNode}");
+#endif
+
+            //throw new NotImplementedException();
 
             mState = State.GotBinaryOperator;
         }
@@ -290,11 +478,76 @@ namespace MyNPCLib.Parser.LogicalExpression
                     throw new UnexpectedTokenException(nextToken);
             }
 
+            mState = State.GotExpressionTree;
+
 #if DEBUG
             LogInstance.Log("End ProcessGroup !!!!!!!");
 #endif
+        }
 
-            mState = State.GotExpressionTree;
+        private void PutRelationLikeNodeToTree(ASTNodeOfLogicalQuery node)
+        {
+#if DEBUG
+            LogInstance.Log($"node = {node}");
+            LogInstance.Log($"mASTNode = {mASTNode}");
+            LogInstance.Log($"mCurrentNode = {mCurrentNode}");
+            LogInstance.Log($"mClusterNode = {mClusterNode}");
+#endif
+
+            if (mASTNode == null)
+            {
+                mASTNode = node;
+                mCurrentNode = node;
+                mClusterNode = node;
+                return;
+            }
+
+            var kindOfClusterNode = mClusterNode.Kind;
+
+            switch (kindOfClusterNode)
+            {
+                case KindOfASTNodeOfLogicalQuery.UnaryOperator:
+                    {
+                        var tmpNode = mCurrentNode;
+                        tmpNode.Left = node;
+                        mCurrentNode = node;
+                    }
+                    break;
+
+                case KindOfASTNodeOfLogicalQuery.BinaryOperator:
+                    {
+                        var tmpNode = mCurrentNode;
+                        var kindOfCurrentNode = mCurrentNode.Kind;
+
+                        switch (kindOfCurrentNode)
+                        {
+                            case KindOfASTNodeOfLogicalQuery.BinaryOperator:
+                                tmpNode.Left = node;
+                                mCurrentNode = node;
+                                break;
+
+                            case KindOfASTNodeOfLogicalQuery.UnaryOperator:
+                                tmpNode.Left = node;
+                                mCurrentNode = node;
+                                break;
+
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(kindOfCurrentNode), kindOfCurrentNode, null);
+                        }
+                    }
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kindOfClusterNode), kindOfClusterNode, null);
+            }
+
+#if DEBUG
+            LogInstance.Log($"after mASTNode = {mASTNode}");
+            LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+            LogInstance.Log($"after mClusterNode = {mClusterNode}");
+#endif
+
+            //throw new NotImplementedException();
         }
 
         protected override void OnExit()
@@ -302,6 +555,12 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log("Begin");
 #endif
+
+#if DEBUG
+            LogInstance.Log($"mASTNode = {mASTNode}");
+#endif
+
+            //throw new NotImplementedException();
 
 #if DEBUG
             LogInstance.Log("End");

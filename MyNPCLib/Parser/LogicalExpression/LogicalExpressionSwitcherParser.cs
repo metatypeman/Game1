@@ -18,6 +18,9 @@ namespace MyNPCLib.Parser.LogicalExpression
 
         private State mState = State.Init;
 
+        public ASTNodeOfLogicalQuery Result => mASTNode;
+        private ASTNodeOfLogicalQuery mASTNode;
+
         protected override void OnRun()
         {
 #if DEBUG
@@ -58,12 +61,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                             break;
 
                         case TokenKind.BeginFact:
-                            {
-                                Recovery(CurrToken);
-                                var factParser = new FactParser(Context);
-                                factParser.Run();
-                                Exit();
-                            }
+                            ProcessFact();
+                            Exit();
                             break;
 
                         case TokenKind.QuestionParam:
@@ -110,6 +109,10 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log($"CONCEPT!!!!!!!! CurrToken = {CurrToken}");
 #endif
+
+            mASTNode = new ASTNodeOfLogicalQuery();
+            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.Concept;
+            mASTNode.Name = CurrToken.Content;
         }
 
         private void ProcessQuestionParam()
@@ -117,6 +120,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log($"ProcessQuestionParam!!!!!!!! CurrToken = {CurrToken}");
 #endif
+            throw new NotImplementedException();
         }
 
         private void ProcessStubOfConcept()
@@ -124,6 +128,17 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log("ProcessStubOfConcept!!!!!!!!");
 #endif
+
+            throw new NotImplementedException();
+        }
+
+        private void ProcessFact()
+        {
+            Recovery(CurrToken);
+            var factParser = new FactParser(Context);
+            factParser.Run();
+
+            mASTNode = factParser.Result;
         }
 
         protected override void OnExit()

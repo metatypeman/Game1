@@ -24,10 +24,13 @@ namespace MyNPCLib.Parser.LogicalExpression
         }
 
         private State mState = State.Init;
+
+        public ASTNodeOfLogicalQuery Result => mASTNode;
+
         private ASTNodeOfLogicalQuery mASTNode;
         private Token mArrowToken;
         private bool Part_1Filled;
-
+   
         protected override void OnRun()
         {
 #if DEBUG
@@ -169,6 +172,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             else
             {
                 mASTNode.Part_1 = rulePartResult;
+                Part_1Filled = true;
             }
         }
 
@@ -205,12 +209,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             switch (nextTokenKind)
             {
                 case TokenKind.BeginAnnotaion:
-                    {
-                        var annotationParser = new AnnotationParser(Context);
-                        annotationParser.Run();
-                        ProcessAnnotation();
-                        mState = State.GotAnnotationOfTheFact;
-                    }           
+                    ProcessAnnotation();         
                     break;
 
                 default:
@@ -224,6 +223,11 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log("ProcessAnnotation !!!!!!!");
 #endif
+
+            var annotationParser = new AnnotationParser(Context);
+            annotationParser.Run();
+            mASTNode.AnnotationsList = annotationParser.ResultsList;
+            mState = State.GotAnnotationOfTheFact;
         }
 
         protected override void OnExit()
@@ -236,9 +240,54 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log($"mASTNode = {mASTNode}");
 #endif
 
-            if(mArrowToken != null)
+            if(mArrowToken == null)
             {
-                throw new NotImplementedException();
+                if(mASTNode.Part_1 != null && mASTNode.Part_2 != null)
+                {
+                    throw new NotSupportedException();
+                }
+
+                if(mASTNode.Part_1 != null)
+                {
+                    mASTNode.Part_1.IsActivePart = true;
+                }
+                else
+                {
+                    if(mASTNode.Part_2 != null)
+                    {
+                        mASTNode.Part_2.IsActivePart = true;
+                    }
+                }
+            }
+            else
+            {
+                if (mASTNode.Part_1 == null || mASTNode.Part_2 == null)
+                {
+                    throw new NotSupportedException();
+                }
+
+                var arrowTokenKind = mArrowToken.TokenKind;
+
+                switch(arrowTokenKind)
+                {
+                    case TokenKind.RightwardArrow:
+                        mASTNode.Part_1.IsActivePart = true;
+                        mASTNode.Part_2.IsActivePart = false;
+                        break;
+
+                    case TokenKind.LeftwardArrow:
+                        mASTNode.Part_2.IsActivePart = true;
+                        mASTNode.Part_1.IsActivePart = false;
+                        break;
+
+                    case TokenKind.LeftRightArrow:
+                        mASTNode.Part_1.IsActivePart = true;
+                        mASTNode.Part_2.IsActivePart = true;
+                        break;
+
+                    default:
+                        throw new UnexpectedTokenException(mArrowToken);
+                }
             }
 
 #if DEBUG

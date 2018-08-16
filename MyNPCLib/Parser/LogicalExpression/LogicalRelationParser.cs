@@ -19,17 +19,21 @@ namespace MyNPCLib.Parser.LogicalExpression
         public LogicalRelationParser(IParserContext context)
             : base(context, TokenKind.Unknown)
         {
+            mASTNode = new ASTNodeOfLogicalQuery();
+            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.Relation;
+            mASTNode.ParamsList = new List<ASTNodeOfLogicalQuery>();
         }
 
         private State mState = State.Init;
-        private Token mTokenOfName;
+
+        private ASTNodeOfLogicalQuery mASTNode;
+        public ASTNodeOfLogicalQuery Result => mASTNode;
 
         protected override void OnRun()
         {
 #if DEBUG
             LogInstance.Log($"mState = {mState}");
             LogInstance.Log($"CurrToken = {CurrToken}");
-            LogInstance.Log($"mTokenOfName = {mTokenOfName}");
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -41,10 +45,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     {
                         default:
                         case TokenKind.Word:
-                            {
-                                mTokenOfName = CurrToken;
-                                mState = State.GotName;
-                            }
+                            ProcessNameOfRelation();
                             break;
 
                             throw new UnexpectedTokenException(CurrToken);
@@ -156,6 +157,29 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
         }
 
+        private void ProcessNameOfRelation()
+        {
+            var tokenOfName = CurrToken;
+            var kindOfTokenOfName = tokenOfName.TokenKind;
+
+            switch (kindOfTokenOfName)
+            {
+                case TokenKind.Word:
+                    mASTNode.Name = tokenOfName.Content;
+                    break;
+
+                case TokenKind.QuestionParam:
+                    mASTNode.Name = tokenOfName.Content;
+                    mASTNode.IsQuestion = true;
+                    break;
+
+                default:
+                    throw new UnexpectedTokenException(tokenOfName);
+            }
+
+            mState = State.GotName;
+        }
+
         private void DispatchValueInParam()
         {
 #if DEBUG
@@ -165,6 +189,15 @@ namespace MyNPCLib.Parser.LogicalExpression
             Recovery(CurrToken);
             var paramExpressionParser = new LogicalExpressionSwitcherParser(Context);
             paramExpressionParser.Run();
+
+            var paramASTNode = paramExpressionParser.Result;
+
+#if DEBUG
+            LogInstance.Log($"DispatchValueInParam !!!!!! paramASTNode = {paramASTNode}");
+#endif
+
+            mASTNode.ParamsList.Add(paramASTNode);
+            
             mState = State.GotParam;
         }
 

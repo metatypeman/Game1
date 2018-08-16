@@ -8,9 +8,17 @@ namespace MyNPCLib.Parser.LogicalExpression
     {
         public ASTNodeOfLogicalQuery Parent { get; set; }
         public KindOfASTNodeOfLogicalQuery Kind { get; set; } = KindOfASTNodeOfLogicalQuery.Unknown;
+        public KindOfOperatorOfASTNodeOfLogicalQuery KindOfOperator { get; set; } = KindOfOperatorOfASTNodeOfLogicalQuery.Unknown;
+        public string Name { get; set; }
         public ASTNodeOfLogicalQuery Part_1 { get; set; }
         public ASTNodeOfLogicalQuery Part_2 { get; set; }
         public bool IsActivePart { get; set; }
+        public ASTNodeOfLogicalQuery Expression { get; set; }
+        public bool IsQuestion { get; set; }
+        public List<ASTNodeOfLogicalQuery> ParamsList { get; set; }
+        public ASTNodeOfLogicalQuery Left { get; set; }
+        public ASTNodeOfLogicalQuery Right { get; set; }
+        public List<ASTNodeOfLogicalQuery> AnnotationsList { get; set; }
 
         public override string ToString()
         {
@@ -38,6 +46,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{spaces}End {nameof(Parent)}");
             }
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            sb.AppendLine($"{spaces}{nameof(KindOfOperator)} = {KindOfOperator}");       
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             if (Part_1 == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Part_1)} = null");
@@ -59,6 +69,67 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{spaces}End {nameof(Part_2)}");
             }
             sb.AppendLine($"{spaces}{nameof(IsActivePart)} = {IsActivePart}");
+            if (Expression == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Expression)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Expression)}");
+                sb.Append(Expression.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Expression)}");
+            }
+            sb.AppendLine($"{spaces}{nameof(IsQuestion)} = {IsQuestion}");
+            
+            if (ParamsList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(ParamsList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(ParamsList)}");
+                foreach (var item in ParamsList)
+                {
+                    sb.Append(item.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(ParamsList)}");
+            }
+
+            if (Left == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Left)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Left)}");
+                sb.Append(Left.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Left)}");
+            }
+
+            if (Right == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Right)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Right)}");
+                sb.Append(Right.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Right)}");
+            }
+
+            if (AnnotationsList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(AnnotationsList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(AnnotationsList)}");
+                foreach (var annotation in AnnotationsList)
+                {
+                    sb.Append(annotation.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(AnnotationsList)}");
+            }
             return sb.ToString();
         }
 
@@ -78,6 +149,8 @@ namespace MyNPCLib.Parser.LogicalExpression
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            sb.AppendLine($"{spaces}{nameof(KindOfOperator)} = {KindOfOperator}");
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             if (Part_1 == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Part_1)} = null");
@@ -99,6 +172,66 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{spaces}End {nameof(Part_2)}");
             }
             sb.AppendLine($"{spaces}{nameof(IsActivePart)} = {IsActivePart}");
+            if (Expression == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Expression)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Expression)}");
+                sb.Append(Expression.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Expression)}");
+            }
+            sb.AppendLine($"{spaces}{nameof(IsQuestion)} = {IsQuestion}");
+            if (ParamsList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(ParamsList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(ParamsList)}");
+                foreach (var item in ParamsList)
+                {
+                    sb.Append(item.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(ParamsList)}");
+            }
+
+            if (Left == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Left)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Left)}");
+                sb.Append(Left.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Left)}");
+            }
+
+            if (Right == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(Right)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(Right)}");
+                sb.Append(Right.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(Right)}");
+            }
+
+            if (AnnotationsList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(AnnotationsList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(AnnotationsList)}");
+                foreach (var annotation in AnnotationsList)
+                {
+                    sb.Append(annotation.ToString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(AnnotationsList)}");
+            }
             return sb.ToString();
         }
 
@@ -118,7 +251,10 @@ namespace MyNPCLib.Parser.LogicalExpression
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            sb.AppendLine($"{spaces}{nameof(KindOfOperator)} = {KindOfOperator}");
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(IsActivePart)} = {IsActivePart}");
+            sb.AppendLine($"{spaces}{nameof(IsQuestion)} = {IsQuestion}");
             return sb.ToString();
         }
     }

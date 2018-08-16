@@ -8,6 +8,14 @@ namespace MyNPCLib.Parser.LogicalExpression
     {
         Unknown,
         Fact,
-        RulePart
+        RulePart,
+        Relation,
+        Concept,
+        EntityCondition,
+        Var,
+        QuestionParam,
+        BinaryOperator,
+        UnaryOperator,
+        Group
     }
 }

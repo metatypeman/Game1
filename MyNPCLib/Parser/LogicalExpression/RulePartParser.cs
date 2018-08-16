@@ -21,8 +21,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         }
 
         private State mState = State.Init;
-        private ASTNodeOfLogicalQuery mASTNode;
 
+        private ASTNodeOfLogicalQuery mASTNode;
         public ASTNodeOfLogicalQuery Result => mASTNode;
 
         protected override void OnRun()
@@ -48,6 +48,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 Recovery(CurrToken);
                                 var logicalExpressionParser = new LogicalExpressionParser(Context, TerminateTokenKind);
                                 logicalExpressionParser.Run();
+                                mASTNode.Expression = logicalExpressionParser.Result;
                                 mState = State.GotUnbracketsContent;
                             }
                             break;
@@ -56,6 +57,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                             {
                                 var logicalExpressionParser = new LogicalExpressionParser(Context, TerminateTokenKind);
                                 logicalExpressionParser.Run();
+                                mASTNode.Expression = logicalExpressionParser.Result;
                                 mState = State.GotBrakedContent;
                             }
                             break;

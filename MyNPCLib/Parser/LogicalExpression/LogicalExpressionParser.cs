@@ -34,7 +34,10 @@ namespace MyNPCLib.Parser.LogicalExpression
 #endif
 
         private State mState = State.Init;
-        
+        public ASTNodeOfLogicalQuery Result => mASTNode;
+
+        private ASTNodeOfLogicalQuery mASTNode;
+
         protected override void OnRun()
         {
 #if DEBUG
@@ -56,6 +59,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 {
                                     var logicalExpressionParser = new StandardLogicalExpressionParser(Context, TerminateTokenKind);
                                     logicalExpressionParser.Run();
+                                    mASTNode = logicalExpressionParser.Result;
                                     mState = State.GotStandardLogicalExpression;
                                 }
                                 break;
@@ -64,6 +68,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 {
                                     var logicalExpressionParser = new EntityConditionLogicalExpressionParser(Context, TerminateTokenKind);
                                     logicalExpressionParser.Run();
+                                    mASTNode = logicalExpressionParser.Result;
                                     mState = State.GotEntityConditionExpression;
                                 }
                                 break;
@@ -133,6 +138,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     throw new UnexpectedTokenException(CurrToken);
             }
 
+            throw new NotImplementedException();
 #if DEBUG
             LogInstance.Log($"ProcessSingleConcept !!!!!! nextToken = {nextToken}");
 #endif
