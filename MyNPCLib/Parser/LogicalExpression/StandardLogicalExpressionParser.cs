@@ -65,6 +65,10 @@ namespace MyNPCLib.Parser.LogicalExpression
                             ProcessGroup();
                             break;
 
+                        case TokenKind.Not:
+                            ProcessUnaryOperator();
+                            break;
+
                         default:
                             throw new UnexpectedTokenException(CurrToken);
                     }
@@ -186,6 +190,10 @@ namespace MyNPCLib.Parser.LogicalExpression
                             ProcessVar();
                             break;
 
+                        case TokenKind.Not:
+                            ProcessUnaryOperator();
+                            break;
+
                         default:
                             throw new UnexpectedTokenException(CurrToken);
                     }
@@ -298,6 +306,14 @@ namespace MyNPCLib.Parser.LogicalExpression
                 mASTNode = operatorASTNode;
                 mCurrentNode = operatorASTNode;
                 mClusterNode = operatorASTNode;
+
+#if DEBUG
+                //LogInstance.Log($"after mASTNode = {mASTNode}");
+                //LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+                //LogInstance.Log($"after mClusterNode = {mClusterNode}");
+                //throw new NotImplementedException();
+#endif
+
                 mState = State.GotUnaryOperator;
                 return;
             }
@@ -329,6 +345,12 @@ namespace MyNPCLib.Parser.LogicalExpression
                             case KindOfASTNodeOfLogicalQuery.UnaryOperator:
                                 tmpNode.Left = operatorASTNode;
                                 mCurrentNode = operatorASTNode;
+#if DEBUG
+                                //LogInstance.Log($"mASTNode = {mASTNode}");
+                                //LogInstance.Log($"mCurrentNode = {mCurrentNode}");
+                                //LogInstance.Log($"mClusterNode = {mClusterNode}");
+#endif
+                                //throw new NotImplementedException();
                                 break;
 
                             case KindOfASTNodeOfLogicalQuery.Relation:
@@ -422,6 +444,13 @@ namespace MyNPCLib.Parser.LogicalExpression
                         mCurrentNode = tmpNode;
                         mASTNode = operatorASTNode;
                         operatorASTNode.Left = tmpNode;
+
+#if DEBUG
+                        //LogInstance.Log($"after mASTNode = {mASTNode}");
+                        //LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+                        //LogInstance.Log($"after mClusterNode = {mClusterNode}");
+                        //throw new NotImplementedException();
+#endif
                     }
                     break;
 
@@ -438,9 +467,12 @@ namespace MyNPCLib.Parser.LogicalExpression
                         //LogInstance.Log($"after mASTNode = {mASTNode}");
                         //LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
                         //LogInstance.Log($"after mClusterNode = {mClusterNode}");
+                        //if (operatorASTNode.KindOfOperator == KindOfOperatorOfASTNodeOfLogicalQuery.Or)
+                        //{
+                        //    throw new NotImplementedException();
+                        //}
 #endif
                     }
-                    //throw new NotImplementedException();
                 break;
 
                 default:
@@ -522,13 +554,29 @@ namespace MyNPCLib.Parser.LogicalExpression
                         switch (kindOfCurrentNode)
                         {
                             case KindOfASTNodeOfLogicalQuery.BinaryOperator:
-                                tmpNode.Left = node;
+                                tmpNode.Right = node;
                                 mCurrentNode = node;
+
+#if DEBUG
+                                //if (node.Name == "son")
+                                //{
+                                //    LogInstance.Log($"after mASTNode = {mASTNode}");
+                                //    LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+                                //    LogInstance.Log($"after mClusterNode = {mClusterNode}");
+                                //    throw new NotImplementedException();
+                                //}
+#endif
                                 break;
 
                             case KindOfASTNodeOfLogicalQuery.UnaryOperator:
                                 tmpNode.Left = node;
                                 mCurrentNode = node;
+#if DEBUG
+                                //LogInstance.Log($"after mASTNode = {mASTNode}");
+                                //LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+                                //LogInstance.Log($"after mClusterNode = {mClusterNode}");
+                                //throw new NotImplementedException();
+#endif
                                 break;
 
                             default:
@@ -545,6 +593,10 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log($"after mASTNode = {mASTNode}");
             LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
             LogInstance.Log($"after mClusterNode = {mClusterNode}");
+            if (node.Name == "male")
+            {
+                throw new NotImplementedException();
+            }
 #endif
 
             //throw new NotImplementedException();
