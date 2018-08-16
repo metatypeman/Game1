@@ -296,5 +296,16 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             mState = State.GotExpressionTree;
         }
+
+        protected override void OnExit()
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
+        }
     }
 }

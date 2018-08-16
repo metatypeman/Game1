@@ -12,7 +12,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             Context = context;
         }
 
-        public TokenKind TerminateTokenKind { get; protected set; }
+        protected TokenKind TerminateTokenKind { get; private set; }
 
         protected IParserContext Context { get; private set; }
 
@@ -24,13 +24,13 @@ namespace MyNPCLib.Parser.LogicalExpression
 
                 if (mIsExited)
                 {
-                    OnFinish();
+                    OnExit();
                     return;
                 }
             }
 
-            OnFinish();
             OnExit();
+            OnEnd();
         }
 
         protected Token CurrToken;
@@ -43,7 +43,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
         }
 
-        protected virtual void OnFinish()
+        protected virtual void OnEnd()
         {
         }
 

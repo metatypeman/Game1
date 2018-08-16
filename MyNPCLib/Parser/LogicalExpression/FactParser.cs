@@ -19,10 +19,14 @@ namespace MyNPCLib.Parser.LogicalExpression
         public FactParser(IParserContext context)
             : base(context, TokenKind.EndFact)
         {
+            mASTNode = new ASTNodeOfLogicalQuery();
+            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.Fact;
         }
 
         private State mState = State.Init;
+        private ASTNodeOfLogicalQuery mASTNode;
         private Token mArrowToken;
+        private bool Part_1Filled;
 
         protected override void OnRun()
         {
@@ -55,17 +59,11 @@ namespace MyNPCLib.Parser.LogicalExpression
                         case TokenKind.QuestionParam:
                         case TokenKind.OpenRoundBracket:
                         case TokenKind.Not:
-                            {
-                                Recovery(CurrToken);
-                                var rulePartParser = new RulePartParser(Context, TokenKind.EndFact);
-                                rulePartParser.Run();
-                                //TerminateTokenKind = rulePartParser.TerminateTokenKind;
-                                mState = State.GotUnbracketsContent;
-                            }
+                            ProcessUnBracketRulePart();
                             break;
 
                         case TokenKind.OpenFigureBracket:
-                            ProcessRulePart();
+                            ProcessBracketRulePart();
                             break;
 
                         default:
@@ -122,7 +120,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     switch (currTokenKind)
                     {
                         case TokenKind.OpenFigureBracket:
-                            ProcessRulePart();
+                            ProcessBracketRulePart();
                             break;
 
                         default:
@@ -139,16 +137,39 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
         }
 
-        private void ProcessRulePart()
+        private void ProcessUnBracketRulePart()
         {
-#if DEBUG
-            LogInstance.Log("ProcessRulePart !!!!!!");
-#endif
+            Recovery(CurrToken);
+            var rulePartParser = new RulePartParser(Context, TokenKind.EndFact);
+            NProcessRulePart(rulePartParser);        
+            mState = State.GotUnbracketsContent;
+        }
 
+        private void ProcessBracketRulePart()
+        {
             Recovery(CurrToken);
             var rulePartParser = new RulePartParser(Context, TokenKind.CloseFigureBracket);
-            rulePartParser.Run();
+            NProcessRulePart(rulePartParser);
             mState = State.GotBracketContent;
+        }
+
+        private void NProcessRulePart(RulePartParser rulePartParser)
+        {
+            rulePartParser.Run();
+            var rulePartResult = rulePartParser.Result;
+
+#if DEBUG
+            LogInstance.Log($"Part_1Filled = {Part_1Filled}");
+#endif
+
+            if(Part_1Filled)
+            {
+                mASTNode.Part_2 = rulePartResult;
+            }
+            else
+            {
+                mASTNode.Part_1 = rulePartResult;
+            }
         }
 
         private void ProcessArrow()
@@ -202,6 +223,26 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
 #if DEBUG
             LogInstance.Log("ProcessAnnotation !!!!!!!");
+#endif
+        }
+
+        protected override void OnExit()
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+#if DEBUG
+            LogInstance.Log($"mASTNode = {mASTNode}");
+#endif
+
+            if(mArrowToken != null)
+            {
+                throw new NotImplementedException();
+            }
+
+#if DEBUG
+            LogInstance.Log("End");
 #endif
         }
     }

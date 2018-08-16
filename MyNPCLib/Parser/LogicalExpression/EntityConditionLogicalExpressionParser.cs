@@ -226,5 +226,16 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log("End ProcessGroup !!!!!!!");
 #endif
         }
+
+        protected override void OnExit()
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
+        }
     }
 }

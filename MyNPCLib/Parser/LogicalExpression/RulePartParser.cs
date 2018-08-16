@@ -16,9 +16,14 @@ namespace MyNPCLib.Parser.LogicalExpression
         public RulePartParser(IParserContext context, TokenKind terminateTokenKind)
             : base(context, terminateTokenKind)
         {
+            mASTNode = new ASTNodeOfLogicalQuery();
+            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.RulePart;
         }
 
         private State mState = State.Init;
+        private ASTNodeOfLogicalQuery mASTNode;
+
+        public ASTNodeOfLogicalQuery Result => mASTNode;
 
         protected override void OnRun()
         {
@@ -43,7 +48,6 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 Recovery(CurrToken);
                                 var logicalExpressionParser = new LogicalExpressionParser(Context, TerminateTokenKind);
                                 logicalExpressionParser.Run();
-                                //TerminateTokenKind = logicalExpressionParser.TerminateTokenKind;
                                 mState = State.GotUnbracketsContent;
                             }
                             break;
@@ -52,7 +56,6 @@ namespace MyNPCLib.Parser.LogicalExpression
                             {
                                 var logicalExpressionParser = new LogicalExpressionParser(Context, TerminateTokenKind);
                                 logicalExpressionParser.Run();
-                                //TerminateTokenKind = logicalExpressionParser.TerminateTokenKind;
                                 mState = State.GotBrakedContent;
                             }
                             break;
@@ -74,7 +77,6 @@ namespace MyNPCLib.Parser.LogicalExpression
                             }
                             throw new UnexpectedTokenException(CurrToken);
                     }
-                    break;
 
                 case State.GotBrakedContent:
                     switch (currTokenKind)
@@ -87,11 +89,25 @@ namespace MyNPCLib.Parser.LogicalExpression
                             }
                             throw new UnexpectedTokenException(CurrToken);
                     }
-                    break;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mState), mState, null);
             }
+        }
+
+        protected override void OnExit()
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+#if DEBUG
+            LogInstance.Log($"mASTNode = {mASTNode}");
+#endif
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
         }
     }
 }

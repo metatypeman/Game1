@@ -56,8 +56,6 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 {
                                     var logicalExpressionParser = new StandardLogicalExpressionParser(Context, TerminateTokenKind);
                                     logicalExpressionParser.Run();
-                                    //mLastParser = logicalExpressionParser;
-                                    //TerminateTokenKind = logicalExpressionParser.TerminateTokenKind;
                                     mState = State.GotStandardLogicalExpression;
                                 }
                                 break;
@@ -66,8 +64,6 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 {
                                     var logicalExpressionParser = new EntityConditionLogicalExpressionParser(Context, TerminateTokenKind);
                                     logicalExpressionParser.Run();
-                                    //mLastParser = logicalExpressionParser;
-                                    //TerminateTokenKind = logicalExpressionParser.TerminateTokenKind;
                                     mState = State.GotEntityConditionExpression;
                                 }
                                 break;
@@ -98,14 +94,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                             LogInstance.Log($"Context.TailOfString = {Context.TailOfString}");
 #endif
 
-                            //if(TerminateTokenKind != mLastParser.TerminateTokenKind && mLastParser.TerminateTokenKind == TokenKind.CloseRoundBracket)
-                            //{
-                            //    Exit();
-                            //    return;
-                            //}
                             throw new UnexpectedTokenException(CurrToken);
                     }
-                    break;
 
                 case State.GotEntityConditionExpression:
                     switch (currTokenKind)
@@ -119,7 +109,6 @@ namespace MyNPCLib.Parser.LogicalExpression
                             }
                             throw new UnexpectedTokenException(CurrToken);
                     }
-                    break;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mState), mState, null);
@@ -166,8 +155,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         private DetectingOfKindOfExpression DetectKindOfExpression()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
-            LogInstance.Log($"CurrToken = {CurrToken}");
+            //LogInstance.Log("Begin");
+            //LogInstance.Log($"CurrToken = {CurrToken}");
 #endif
 
             Recovery(CurrToken);
@@ -176,8 +165,8 @@ namespace MyNPCLib.Parser.LogicalExpression
             var result = NDetectKindOfExpression();
 
 #if DEBUG
-            LogInstance.Log($"result = {result}");
-            LogInstance.Log($"mLocalUsedTokensList.Count = {mLocalUsedTokensList.Count}");
+            //LogInstance.Log($"result = {result}");
+            //LogInstance.Log($"mLocalUsedTokensList.Count = {mLocalUsedTokensList.Count}");
 #endif
 
             if(mLocalUsedTokensList.Count > 0)
@@ -187,7 +176,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                 foreach (var localUsedToken in mLocalUsedTokensList)
                 {
 #if DEBUG
-                    LogInstance.Log($"localUsedToken = {localUsedToken}");
+                    //LogInstance.Log($"localUsedToken = {localUsedToken}");
 #endif
                     Recovery(localUsedToken);
                 }
@@ -201,8 +190,8 @@ namespace MyNPCLib.Parser.LogicalExpression
             mLocalCurrentToken = GetToken();
 
 #if DEBUG
-            LogInstance.Log($"localCurrentToken = {mLocalCurrentToken}");
-            LogInstance.Log($"localState = {mLocalState}");
+            //LogInstance.Log($"localCurrentToken = {mLocalCurrentToken}");
+            //LogInstance.Log($"localState = {mLocalState}");
 #endif
 
             var kindOfLocalCurrentToken = mLocalCurrentToken.TokenKind;
@@ -323,6 +312,17 @@ namespace MyNPCLib.Parser.LogicalExpression
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mLocalState), mLocalState, null);
             }
+        }
+
+        protected override void OnExit()
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
         }
     }
 }

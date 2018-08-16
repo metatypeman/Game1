@@ -85,12 +85,12 @@ namespace MyNPCLib.Parser.LogicalExpression
             mRecoveriesTokens.Push(token);
 
 #if DEBUG
-            var tmpTokensList = mRecoveriesTokens.ToList();
-            LogInstance.Log($"tmpTokensList.Count = {tmpTokensList.Count}");
-            foreach (var tmpToken in tmpTokensList)
-            {
-                LogInstance.Log($"tmpToken = {tmpToken}");
-            }
+            //var tmpTokensList = mRecoveriesTokens.ToList();
+            //LogInstance.Log($"tmpTokensList.Count = {tmpTokensList.Count}");
+            //foreach (var tmpToken in tmpTokensList)
+            //{
+            //    LogInstance.Log($"tmpToken = {tmpToken}");
+            //}
 #endif
         }
 

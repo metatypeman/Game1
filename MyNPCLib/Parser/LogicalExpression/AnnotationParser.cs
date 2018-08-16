@@ -80,5 +80,16 @@ namespace MyNPCLib.Parser.LogicalExpression
                     throw new ArgumentOutOfRangeException(nameof(mState), mState, null);
             }
         }
+
+        protected override void OnExit()
+        {
+#if DEBUG
+            LogInstance.Log("Begin");
+#endif
+
+#if DEBUG
+            LogInstance.Log("End");
+#endif
+        }
     }
 }
