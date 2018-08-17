@@ -84,11 +84,17 @@ namespace TmpSandBox
             //var queryStr = "{: know(I, dog) & !male(dog) | son(dog, cat) :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            //queryStr = "{: know(I, dog) & !!male(dog) | son(dog, cat) :}";
+            //var queryStr = "{: (know(I, dog) & !male(dog)) | son(dog, cat)  :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            var queryStr = "{: !know(I, dog) & male(dog) | son(dog, cat) :}";
+            var queryStr = "{: know(I, dog) & (!male(dog) | son(dog, cat))& cat(dog) :}";
             NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            //var queryStr = "{: know(I, dog) & !!male(dog) | son(dog, cat) :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            //var queryStr = "{: !know(I, dog) & male(dog) | son(dog, cat) :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //queryStr = "{: @x = know(I, {:class=dog&determiner=the:})[:{:class=state:}:]:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);

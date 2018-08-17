@@ -215,6 +215,10 @@ namespace MyNPCLib.Parser.LogicalExpression
                             ProcessUnaryOperator();
                             break;
 
+                        case TokenKind.OpenRoundBracket:
+                            ProcessGroup();
+                            break;
+
                         default:
                             throw new UnexpectedTokenException(CurrToken);
                     }
@@ -441,7 +445,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     {
                         var tmpNode = mClusterNode;
                         mClusterNode = operatorASTNode;
-                        mCurrentNode = tmpNode;
+                        mCurrentNode = operatorASTNode;
                         mASTNode = operatorASTNode;
                         operatorASTNode.Left = tmpNode;
 
@@ -454,14 +458,24 @@ namespace MyNPCLib.Parser.LogicalExpression
                     }
                     break;
 
-                case KindOfASTNodeOfLogicalQuery.BinaryOperator:              
+                case KindOfASTNodeOfLogicalQuery.BinaryOperator:
                     {
                         var tmpNode = mClusterNode;
-                        mClusterNode = operatorASTNode;
-                        mCurrentNode = operatorASTNode;
-                        var oldRightNode = tmpNode.Right;
-                        tmpNode.Right = operatorASTNode;
-                        operatorASTNode.Left = oldRightNode;
+                        if (tmpNode.IsGroup)
+                        {
+                            mClusterNode = operatorASTNode;
+                            mCurrentNode = operatorASTNode;
+                            mASTNode = operatorASTNode;
+                            operatorASTNode.Left = tmpNode;
+                        }
+                        else
+                        {
+                            mClusterNode = operatorASTNode;
+                            mCurrentNode = operatorASTNode;
+                            var oldRightNode = tmpNode.Right;
+                            tmpNode.Right = operatorASTNode;
+                            operatorASTNode.Left = oldRightNode;
+                        }
 
 #if DEBUG
                         //LogInstance.Log($"after mASTNode = {mASTNode}");
@@ -509,6 +523,11 @@ namespace MyNPCLib.Parser.LogicalExpression
                 default:
                     throw new UnexpectedTokenException(nextToken);
             }
+
+            var resultNode = logicalExpressionParser.Result;
+            resultNode.IsGroup = true;
+
+            PutRelationLikeNodeToTree(resultNode);
 
             mState = State.GotExpressionTree;
 
@@ -570,7 +589,6 @@ namespace MyNPCLib.Parser.LogicalExpression
 
                             case KindOfASTNodeOfLogicalQuery.UnaryOperator:
                                 tmpNode.Left = node;
-                                mCurrentNode = node;
 #if DEBUG
                                 //LogInstance.Log($"after mASTNode = {mASTNode}");
                                 //LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
@@ -593,10 +611,10 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log($"after mASTNode = {mASTNode}");
             LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
             LogInstance.Log($"after mClusterNode = {mClusterNode}");
-            if (node.Name == "male")
-            {
-                throw new NotImplementedException();
-            }
+            //if (node.Name == "male")
+            //{
+            //    throw new NotImplementedException();
+            //}
 #endif
 
             //throw new NotImplementedException();

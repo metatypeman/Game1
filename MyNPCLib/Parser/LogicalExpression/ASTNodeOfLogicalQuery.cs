@@ -18,6 +18,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         public List<ASTNodeOfLogicalQuery> ParamsList { get; set; }
         public ASTNodeOfLogicalQuery Left { get; set; }
         public ASTNodeOfLogicalQuery Right { get; set; }
+        public bool IsGroup { get; set; }
         public List<ASTNodeOfLogicalQuery> AnnotationsList { get; set; }
 
         public override string ToString()
@@ -46,7 +47,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{spaces}End {nameof(Parent)}");
             }
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
-            sb.AppendLine($"{spaces}{nameof(KindOfOperator)} = {KindOfOperator}");       
+            sb.AppendLine($"{spaces}{nameof(KindOfOperator)} = {KindOfOperator}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             if (Part_1 == null)
             {
@@ -116,7 +117,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.Append(Right.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Right)}");
             }
-
+            sb.AppendLine($"{spaces}{nameof(IsGroup)} = {IsGroup}");
             if (AnnotationsList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(AnnotationsList)} = null");
@@ -219,6 +220,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{spaces}End {nameof(Right)}");
             }
 
+            sb.AppendLine($"{spaces}{nameof(IsGroup)} = {IsGroup}");
+
             if (AnnotationsList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(AnnotationsList)} = null");
@@ -255,6 +258,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(IsActivePart)} = {IsActivePart}");
             sb.AppendLine($"{spaces}{nameof(IsQuestion)} = {IsQuestion}");
+            sb.AppendLine($"{spaces}{nameof(IsGroup)} = {IsGroup}");
             return sb.ToString();
         }
     }
