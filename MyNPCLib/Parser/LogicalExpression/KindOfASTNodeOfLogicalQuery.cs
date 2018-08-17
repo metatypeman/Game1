@@ -15,6 +15,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         Var,
         QuestionParam,
         BinaryOperator,
-        UnaryOperator
+        UnaryOperator,
+        Condition
     }
 }

@@ -19,6 +19,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         public ASTNodeOfLogicalQuery Left { get; set; }
         public ASTNodeOfLogicalQuery Right { get; set; }
         public bool IsGroup { get; set; }
+        public ASTNodeOfLogicalQuery PropertyValue { get; set; }
         public List<ASTNodeOfLogicalQuery> AnnotationsList { get; set; }
 
         public override string ToString()
@@ -118,6 +119,17 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{spaces}End {nameof(Right)}");
             }
             sb.AppendLine($"{spaces}{nameof(IsGroup)} = {IsGroup}");
+            if (PropertyValue == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(PropertyValue)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(PropertyValue)}");
+                sb.Append(PropertyValue.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(PropertyValue)}");
+            }
+
             if (AnnotationsList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(AnnotationsList)} = null");
@@ -221,6 +233,17 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
 
             sb.AppendLine($"{spaces}{nameof(IsGroup)} = {IsGroup}");
+
+            if (PropertyValue == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(PropertyValue)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(PropertyValue)}");
+                sb.Append(PropertyValue.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(PropertyValue)}");
+            }
 
             if (AnnotationsList == null)
             {
