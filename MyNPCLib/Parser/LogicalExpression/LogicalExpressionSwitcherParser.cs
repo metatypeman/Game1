@@ -54,6 +54,12 @@ namespace MyNPCLib.Parser.LogicalExpression
                                         Exit();
                                         break;
 
+                                    case TokenKind.OpenRoundBracket:
+                                        Recovery(nextToken);
+                                        ProcessRelation();
+                                        Exit();
+                                        break;
+
                                     default:
                                         throw new UnexpectedTokenException(nextToken);
                                 }
@@ -120,7 +126,11 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log($"ProcessQuestionParam!!!!!!!! CurrToken = {CurrToken}");
 #endif
-            throw new NotImplementedException();
+
+            mASTNode = new ASTNodeOfLogicalQuery();
+            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.QuestionParam;
+            mASTNode.Name = CurrToken.Content;
+            mASTNode.IsQuestion = true;
         }
 
         private void ProcessStubOfConcept()
@@ -129,7 +139,8 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log("ProcessStubOfConcept!!!!!!!!");
 #endif
 
-            throw new NotImplementedException();
+            mASTNode = new ASTNodeOfLogicalQuery();
+            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.StubParam;
         }
 
         private void ProcessFact()
@@ -139,6 +150,19 @@ namespace MyNPCLib.Parser.LogicalExpression
             factParser.Run();
 
             mASTNode = factParser.Result;
+        }
+
+        private void ProcessRelation()
+        {
+#if DEBUG
+            LogInstance.Log("ProcessRelation!!!!!!!!");
+#endif
+
+            Recovery(CurrToken);
+            var relationParser = new LogicalRelationParser(Context);
+            relationParser.Run();
+
+            mASTNode = relationParser.Result;
         }
 
         protected override void OnExit()

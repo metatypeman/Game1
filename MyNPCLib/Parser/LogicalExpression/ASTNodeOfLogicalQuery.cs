@@ -20,6 +20,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         public ASTNodeOfLogicalQuery Right { get; set; }
         public bool IsGroup { get; set; }
         public ASTNodeOfLogicalQuery PropertyValue { get; set; }
+        public List<string> VarsList { get; set; }
         public List<ASTNodeOfLogicalQuery> AnnotationsList { get; set; }
 
         public override string ToString()
@@ -36,6 +37,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
+            var nextNSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             if (Parent == null)
             {
@@ -130,6 +132,20 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{spaces}End {nameof(PropertyValue)}");
             }
 
+            if (VarsList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VarsList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VarsList)}");
+                foreach (var varName in VarsList)
+                {
+                    sb.AppendLine($"{nextNSpaces}{varName}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(VarsList)}");
+            }
+
             if (AnnotationsList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(AnnotationsList)} = null");
@@ -160,6 +176,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
+            var nextNSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(KindOfOperator)} = {KindOfOperator}");
@@ -243,6 +260,20 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{spaces}Begin {nameof(PropertyValue)}");
                 sb.Append(PropertyValue.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(PropertyValue)}");
+            }
+
+            if (VarsList == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(VarsList)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(VarsList)}");
+                foreach (var varName in VarsList)
+                {
+                    sb.AppendLine($"{nextNSpaces}{varName}");
+                }
+                sb.AppendLine($"{spaces}End {nameof(VarsList)}");
             }
 
             if (AnnotationsList == null)

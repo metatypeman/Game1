@@ -38,6 +38,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         private ASTNodeOfLogicalQuery mCurrentNode;
         private ASTNodeOfLogicalQuery mClusterNode;
 
+        private List<string> mVarsOfRelationsList = new List<string>();
+
         protected override void OnRun()
         {
 #if DEBUG
@@ -242,6 +244,17 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
 #if DEBUG
             LogInstance.Log($"ProcessRelation !!!!!! relation = {relation}");
+            LogInstance.Log($"mVarsOfRelationsList.Count = {mVarsOfRelationsList.Count}");
+#endif
+
+            if(mVarsOfRelationsList.Count > 0)
+            {
+                relation.VarsList = mVarsOfRelationsList;
+                mVarsOfRelationsList = new List<string>();
+            }
+
+#if DEBUG
+            LogInstance.Log($"after relation = {relation}");
 #endif
 
             PutRelationLikeNodeToTree(relation);
@@ -253,7 +266,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log($"ProcessVar !!!!! CurrToken = {CurrToken}");
 #endif
 
-            throw new NotImplementedException();
+            mVarsOfRelationsList.Add(CurrToken.Content);
 
             mState = State.GotVar;
         }
@@ -263,8 +276,6 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log("ProcessAssing !!!!!!");
 #endif
-
-            throw new NotImplementedException();
 
             mState = State.GotAssing;
         }
@@ -329,6 +340,10 @@ namespace MyNPCLib.Parser.LogicalExpression
                 case KindOfASTNodeOfLogicalQuery.UnaryOperator:
                     {
                         var tmpNode = mCurrentNode;
+                        if (tmpNode.IsGroup)
+                        {
+                            throw new NotSupportedException();
+                        }
                         tmpNode.Left = operatorASTNode;
                         mCurrentNode = operatorASTNode;
                     }
@@ -337,6 +352,12 @@ namespace MyNPCLib.Parser.LogicalExpression
                 case KindOfASTNodeOfLogicalQuery.BinaryOperator:
                     {
                         var tmpNode = mCurrentNode;
+
+                        if (tmpNode.IsGroup)
+                        {
+                            throw new NotSupportedException();
+                        }
+
                         var kindOfCurrentNode = mCurrentNode.Kind;
 
                         switch(kindOfCurrentNode)

@@ -87,7 +87,7 @@ namespace TmpSandBox
             //var queryStr = "{: (know(I, dog) & !male(dog)) | son(dog, cat)  :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            //var queryStr = "{: know(I, dog) & (!male(dog) | son(dog, cat))& cat(dog) :}";
+            //var queryStr = "{: know(I, dog) & (!male(dog) | son(dog, cat)) & cat(dog) :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //var queryStr = "{: know(I, dog) & !!male(dog) | son(dog, cat) :}";
@@ -96,8 +96,20 @@ namespace TmpSandBox
             //var queryStr = "{: !know(I, dog) & male(dog) | son(dog, cat) :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            var queryStr = "{:class=dog&determiner=the:}";
+            //var queryStr = "{:class=dog&determiner=the:}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            var queryStr = "{: class = dog & determiner = {:time=past & location=forest :} :}";
             NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            //var queryStr = "{: !(class=dog & determiner=the) | !male=neuter :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            //var queryStr = "{: know(male(dog), son(dog, cat)) :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            //var queryStr = "{: @x = know(I, dog) :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //queryStr = "{: @x = know(I, {:class=dog&determiner=the:})[:{:class=state:}:]:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
@@ -126,10 +138,10 @@ namespace TmpSandBox
             //queryStr = "{: {know(I, @x1 = {:class=dog&determiner=the:})[:{:state:}, {:action:}:]}:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            //queryStr = "{: ?x(?y, ?z):}";
+            //var queryStr = "{: ?x(?y, ?z):}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            //queryStr = "{: ?x(*, *):}";
+            //var queryStr = "{: ?x(*, *):}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //queryStr = "{: { ?x(?y, ?z) }:}";

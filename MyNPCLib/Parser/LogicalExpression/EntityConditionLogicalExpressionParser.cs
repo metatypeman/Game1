@@ -45,10 +45,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     switch (currTokenKind)
                     {
                         case TokenKind.Word:
-                            {
-                                ProcessPropertyName();
-                                mState = State.GotPropetyName;
-                            }
+                            ProcessPropertyName();
                             break;
 
                         case TokenKind.OpenRoundBracket:
@@ -56,8 +53,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                             break;
 
                         case TokenKind.Not:
-                            ProcessUnaryOperator();
-                            mState = State.GotUnaryOperator;
+                            ProcessUnaryOperator();                        
                             break;
 
                         default:
@@ -91,8 +87,11 @@ namespace MyNPCLib.Parser.LogicalExpression
                     switch (currTokenKind)
                     {
                         case TokenKind.Word:
-                            ProcessPropertyValue();
-                            mState = State.GotProperyValue;
+                            ProcessPropertyValue();                      
+                            break;
+
+                        case TokenKind.BeginFact:
+                            ProcessFactValue();
                             break;
 
                         default:
@@ -105,8 +104,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     {
                         case TokenKind.And:
                         case TokenKind.Or:
-                            ProcessBinaryOperator();
-                            mState = State.GotBinaryOperator;
+                            ProcessBinaryOperator();                    
                             break;
 
                         case TokenKind.BeginAnnotaion:
@@ -134,7 +132,6 @@ namespace MyNPCLib.Parser.LogicalExpression
                     {
                         case TokenKind.Word:
                             ProcessPropertyName();
-                            mState = State.GotPropetyName;
                             break;
 
                         case TokenKind.OpenRoundBracket:
@@ -151,12 +148,10 @@ namespace MyNPCLib.Parser.LogicalExpression
                     {
                         case TokenKind.Word:
                             ProcessPropertyName();
-                            mState = State.GotPropetyName;
                             break;
 
                         case TokenKind.Not:
                             ProcessUnaryOperator();
-                            mState = State.GotUnaryOperator;
                             break;
 
                         case TokenKind.OpenRoundBracket:
@@ -180,6 +175,8 @@ namespace MyNPCLib.Parser.LogicalExpression
 #endif
 
             mPropertyName = CurrToken.Content;
+
+            mState = State.GotPropetyName;
         }
 
         private void ProcessPropertyValue()
@@ -193,12 +190,31 @@ namespace MyNPCLib.Parser.LogicalExpression
             propertyValue.Kind = KindOfASTNodeOfLogicalQuery.Concept;
             propertyValue.Name = CurrToken.Content;
 
+            NProcessPropertyValue(propertyValue);
+        }
+
+        private void ProcessFactValue()
+        {
+            Recovery(CurrToken);
+
+            var factParser = new FactParser(Context);
+            factParser.Run();
+
+            var factResult = factParser.Result;
+
+            NProcessPropertyValue(factResult);
+        }
+
+        private void NProcessPropertyValue(ASTNodeOfLogicalQuery node)
+        {
             var condition = new ASTNodeOfLogicalQuery();
             condition.Kind = KindOfASTNodeOfLogicalQuery.Condition;
             condition.Name = mPropertyName;
-            condition.PropertyValue = propertyValue;
+            condition.PropertyValue = node;
 
             PutRelationLikeNodeToTree(condition);
+
+            mState = State.GotProperyValue;
         }
 
         private void PutRelationLikeNodeToTree(ASTNodeOfLogicalQuery node)
@@ -217,7 +233,48 @@ namespace MyNPCLib.Parser.LogicalExpression
                 return;
             }
 
-            throw new NotImplementedException();
+            var kindOfClusterNode = mClusterNode.Kind;
+
+            switch (kindOfClusterNode)
+            {
+                case KindOfASTNodeOfLogicalQuery.UnaryOperator:
+                    {
+                        var tmpNode = mCurrentNode;
+                        tmpNode.Left = node;
+                        mCurrentNode = node;
+                    }
+                    break;
+
+                case KindOfASTNodeOfLogicalQuery.BinaryOperator:
+                    {
+                        var tmpNode = mCurrentNode;
+                        var kindOfCurrentNode = mCurrentNode.Kind;
+
+                        switch (kindOfCurrentNode)
+                        {
+                            case KindOfASTNodeOfLogicalQuery.BinaryOperator:
+                                tmpNode.Right = node;
+                                mCurrentNode = node;
+                                break;
+
+                            case KindOfASTNodeOfLogicalQuery.UnaryOperator:
+                                tmpNode.Left = node;
+                                break;
+
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(kindOfCurrentNode), kindOfCurrentNode, null);
+                        }
+                    }
+                    break;
+            }
+
+#if DEBUG
+            LogInstance.Log($"after mASTNode = {mASTNode}");
+            LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+            LogInstance.Log($"after mClusterNode = {mClusterNode}");
+#endif
+
+            //throw new NotImplementedException();
         }
 
         private void ProcessUnaryOperator()
@@ -226,7 +283,107 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log("ProcessUnaryOperator !!!!!");
 #endif
 
-            throw new NotImplementedException();
+            var operatorToken = CurrToken;
+            var tokenKindOfOperatorToken = operatorToken.TokenKind;
+
+            var operatorASTNode = new ASTNodeOfLogicalQuery();
+            operatorASTNode.Kind = KindOfASTNodeOfLogicalQuery.UnaryOperator;
+
+            switch (tokenKindOfOperatorToken)
+            {
+                case TokenKind.Not:
+                    operatorASTNode.KindOfOperator = KindOfOperatorOfASTNodeOfLogicalQuery.Not;
+                    break;
+
+                default:
+                    throw new UnexpectedTokenException(operatorToken);
+            }
+
+#if DEBUG
+            LogInstance.Log($"mASTNode = {mASTNode}");
+            LogInstance.Log($"mCurrentNode = {mCurrentNode}");
+            LogInstance.Log($"mClusterNode = {mClusterNode}");
+#endif
+
+            if (mASTNode == null)
+            {
+                mASTNode = operatorASTNode;
+                mCurrentNode = operatorASTNode;
+                mClusterNode = operatorASTNode;
+
+                mState = State.GotUnaryOperator;
+                return;
+            }
+
+            var kindOfClusterNode = mClusterNode.Kind;
+
+            switch (kindOfClusterNode)
+            {
+                case KindOfASTNodeOfLogicalQuery.UnaryOperator:
+                    {
+                        var tmpNode = mCurrentNode;
+                        if (tmpNode.IsGroup)
+                        {
+                            throw new NotSupportedException();
+                        }
+                        tmpNode.Left = operatorASTNode;
+                        mCurrentNode = operatorASTNode;
+                    }
+                    break;
+
+                case KindOfASTNodeOfLogicalQuery.BinaryOperator:
+                    {
+                        var tmpNode = mCurrentNode;
+
+                        if (tmpNode.IsGroup)
+                        {
+                            throw new NotSupportedException();
+                        }
+
+                        var kindOfCurrentNode = mCurrentNode.Kind;
+
+                        switch (kindOfCurrentNode)
+                        {
+                            case KindOfASTNodeOfLogicalQuery.BinaryOperator:
+                                tmpNode.Right = operatorASTNode;
+                                mCurrentNode = operatorASTNode;
+                                break;
+
+                            case KindOfASTNodeOfLogicalQuery.UnaryOperator:
+                                tmpNode.Left = operatorASTNode;
+                                mCurrentNode = operatorASTNode;
+#if DEBUG
+                                //LogInstance.Log($"mASTNode = {mASTNode}");
+                                //LogInstance.Log($"mCurrentNode = {mCurrentNode}");
+                                //LogInstance.Log($"mClusterNode = {mClusterNode}");
+#endif
+                                //throw new NotImplementedException();
+                                break;
+
+                            case KindOfASTNodeOfLogicalQuery.Condition:
+                                mClusterNode.Right = operatorASTNode;
+                                operatorASTNode.Left = tmpNode;
+                                mCurrentNode = operatorASTNode;
+                                break;
+
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(kindOfCurrentNode), kindOfCurrentNode, null);
+                        }
+                    }
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kindOfClusterNode), kindOfClusterNode, null);
+            }
+
+#if DEBUG
+            LogInstance.Log($"after mASTNode = {mASTNode}");
+            LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+            LogInstance.Log($"after mClusterNode = {mClusterNode}");
+#endif
+
+            mState = State.GotUnaryOperator;
+            //throw new NotImplementedException();
         }
 
         private void ProcessBinaryOperator()
@@ -266,7 +423,64 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log($"mClusterNode = {mClusterNode}");
 #endif
 
-            throw new NotImplementedException();
+            var kindOfClusterNode = mClusterNode.Kind;
+
+            switch (kindOfClusterNode)
+            {
+                case KindOfASTNodeOfLogicalQuery.Condition:
+                    {
+                        var tmpNode = mClusterNode;
+                        mClusterNode = operatorASTNode;
+                        mCurrentNode = operatorASTNode;
+                        mASTNode = operatorASTNode;
+                        operatorASTNode.Left = tmpNode;
+                    }
+                    break;
+
+                case KindOfASTNodeOfLogicalQuery.UnaryOperator:
+                    {
+                        var tmpNode = mClusterNode;
+                        mClusterNode = operatorASTNode;
+                        mCurrentNode = operatorASTNode;
+                        mASTNode = operatorASTNode;
+                        operatorASTNode.Left = tmpNode;
+                    }
+                    break;
+
+                case KindOfASTNodeOfLogicalQuery.BinaryOperator:
+                    {
+                        var tmpNode = mClusterNode;
+                        if (tmpNode.IsGroup)
+                        {
+                            mClusterNode = operatorASTNode;
+                            mCurrentNode = operatorASTNode;
+                            mASTNode = operatorASTNode;
+                            operatorASTNode.Left = tmpNode;
+                        }
+                        else
+                        {
+                            mClusterNode = operatorASTNode;
+                            mCurrentNode = operatorASTNode;
+                            var oldRightNode = tmpNode.Right;
+                            tmpNode.Right = operatorASTNode;
+                            operatorASTNode.Left = oldRightNode;
+                        }
+                    }
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kindOfClusterNode), kindOfClusterNode, null);
+            }
+
+#if DEBUG
+            LogInstance.Log($"after mASTNode = {mASTNode}");
+            LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+            LogInstance.Log($"after mClusterNode = {mClusterNode}");
+#endif
+
+            mState = State.GotBinaryOperator;
+
+            //throw new NotImplementedException();
         }
 
         private void ProcessAnnotation()
@@ -285,7 +499,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 #endif
             var logicalExpressionParser = new EntityConditionLogicalExpressionParser(Context, TokenKind.CloseRoundBracket);
             logicalExpressionParser.Run();
-            mState = State.GotProperyValue;
+           
 
             var nextToken = GetToken();
             var nextTokenKind = nextToken.TokenKind;
@@ -299,11 +513,17 @@ namespace MyNPCLib.Parser.LogicalExpression
                     throw new UnexpectedTokenException(nextToken);
             }
 
-            throw new NotImplementedException();
+            var resultNode = logicalExpressionParser.Result;
+            resultNode.IsGroup = true;
 
+            PutRelationLikeNodeToTree(resultNode);
+
+            mState = State.GotProperyValue;
 #if DEBUG
             LogInstance.Log("End ProcessGroup !!!!!!!");
 #endif
+
+            //throw new NotImplementedException();
         }
 
         protected override void OnExit()
