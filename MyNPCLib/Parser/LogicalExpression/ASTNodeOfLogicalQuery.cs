@@ -20,7 +20,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         public ASTNodeOfLogicalQuery Right { get; set; }
         public bool IsGroup { get; set; }
         public ASTNodeOfLogicalQuery PropertyValue { get; set; }
-        public List<string> VarsList { get; set; }
+        public List<ASTNodeOfLogicalQuery> VarsList { get; set; }
         public List<ASTNodeOfLogicalQuery> AnnotationsList { get; set; }
 
         public override string ToString()
@@ -37,7 +37,6 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
-            var nextNSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             if (Parent == null)
             {
@@ -139,9 +138,9 @@ namespace MyNPCLib.Parser.LogicalExpression
             else
             {
                 sb.AppendLine($"{spaces}Begin {nameof(VarsList)}");
-                foreach (var varName in VarsList)
+                foreach (var varInfo in VarsList)
                 {
-                    sb.AppendLine($"{nextNSpaces}{varName}");
+                    sb.Append(varInfo.ToShortString(nextN));
                 }
                 sb.AppendLine($"{spaces}End {nameof(VarsList)}");
             }
@@ -269,9 +268,9 @@ namespace MyNPCLib.Parser.LogicalExpression
             else
             {
                 sb.AppendLine($"{spaces}Begin {nameof(VarsList)}");
-                foreach (var varName in VarsList)
+                foreach (var varInfo in VarsList)
                 {
-                    sb.AppendLine($"{nextNSpaces}{varName}");
+                    sb.Append(varInfo.ToShortString(nextN));
                 }
                 sb.AppendLine($"{spaces}End {nameof(VarsList)}");
             }

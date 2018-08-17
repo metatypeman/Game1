@@ -10,7 +10,6 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
             Init,
             GotExpressionTree,
-            GotAnnotation,
             GotVar,
             GotAssing,
             GotUnaryOperator,
@@ -40,11 +39,14 @@ namespace MyNPCLib.Parser.LogicalExpression
 
         private List<string> mVarsOfRelationsList = new List<string>();
 
+        private ASTNodeOfLogicalQuery mLastNode;
+
         protected override void OnRun()
         {
 #if DEBUG
             LogInstance.Log($"mState = {mState}");
             LogInstance.Log($"CurrToken = {CurrToken}");
+            LogInstance.Log($"mLastNode = {mLastNode}");        
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -80,13 +82,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                     switch (currTokenKind)
                     {
                         case TokenKind.BeginAnnotaion:
-                            {
-                                Recovery(CurrToken);
-                                var annotationParser = new AnnotationParser(Context);
-                                annotationParser.Run();
-                                ProcessAnnotation();
-                                mState = State.GotAnnotation;
-                            }
+                            Recovery(CurrToken);
+                            ProcessAnnotation();
                             break;
 
                         case TokenKind.Not:
@@ -119,29 +116,29 @@ namespace MyNPCLib.Parser.LogicalExpression
                     }
                     break;
 
-                case State.GotAnnotation:
-                    switch (currTokenKind)
-                    {
-                        case TokenKind.And:
-                        case TokenKind.Or:
-                            ProcessBinaryOperator();
-                            break;
+//                case State.GotAnnotation:
+//                    switch (currTokenKind)
+//                    {
+//                        case TokenKind.And:
+//                        case TokenKind.Or:
+//                            ProcessBinaryOperator();
+//                            break;
 
-                        default:
-#if DEBUG
+//                        default:
+//#if DEBUG
 
-                            LogInstance.Log($"mInitTailOfString = {mInitTailOfString}");
-                            LogInstance.Log($"Context.TailOfString = {Context.TailOfString}");
-#endif
-                            if (currTokenKind == TerminateTokenKind && currTokenKind != TokenKind.Unknown)
-                            {
-                                Recovery(CurrToken);
-                                Exit();
-                                return;
-                            }
-                            throw new UnexpectedTokenException(CurrToken);
-                    }
-                    break;
+//                            LogInstance.Log($"mInitTailOfString = {mInitTailOfString}");
+//                            LogInstance.Log($"Context.TailOfString = {Context.TailOfString}");
+//#endif
+//                            if (currTokenKind == TerminateTokenKind && currTokenKind != TokenKind.Unknown)
+//                            {
+//                                Recovery(CurrToken);
+//                                Exit();
+//                                return;
+//                            }
+//                            throw new UnexpectedTokenException(CurrToken);
+//                    }
+//                    break;
 
                 case State.GotVar:
                     switch (currTokenKind)
@@ -151,12 +148,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                             break;
 
                         case TokenKind.BeginAnnotaion:
-                            {
-                                Recovery(CurrToken);
-                                var annotationParser = new AnnotationParser(Context);
-                                annotationParser.Run();
-                                ProcessAnnotation();
-                            }
+                            Recovery(CurrToken);
+                            ProcessAnnotation();
                             break;
 
                         default:
@@ -284,8 +277,20 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
 #if DEBUG
             LogInstance.Log("ProcessAnnotation !!!!!!!");
+            LogInstance.Log($"mLastNode = {mLastNode}");
 #endif
 
+            var annotationParser = new AnnotationParser(Context);
+            annotationParser.Run();
+
+            var annotationsResult = annotationParser.ResultsList;
+
+            mLastNode.AnnotationsList = annotationsResult;
+
+#if DEBUG
+            LogInstance.Log($"mLastNode = {mLastNode}");
+#endif
+            
             throw new NotImplementedException();
         }
 
@@ -565,6 +570,8 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log($"mCurrentNode = {mCurrentNode}");
             LogInstance.Log($"mClusterNode = {mClusterNode}");
 #endif
+
+            mLastNode = node;
 
             if (mASTNode == null)
             {

@@ -54,6 +54,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 Recovery(CurrToken);
                                 var factParser = new FactParser(Context);
                                 factParser.Run();
+                                mResultsList.Add(factParser.Result);
                                 mState = State.GotFact;
                             }
                             break;

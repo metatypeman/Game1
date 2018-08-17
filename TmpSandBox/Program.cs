@@ -99,8 +99,8 @@ namespace TmpSandBox
             //var queryStr = "{:class=dog&determiner=the:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            var queryStr = "{: class = dog & determiner = {:time=past & location=forest :} :}";
-            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+            //var queryStr = "{: class = dog & determiner = {:time=past & location=forest :} :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //var queryStr = "{: !(class=dog & determiner=the) | !male=neuter :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
@@ -171,8 +171,8 @@ namespace TmpSandBox
             //queryStr = "{: (know(I, {:class=dog&determiner=the:})[:{:class=state:}:] & !@x = son(a)) & male(tree):}[:{:class=state:}:]";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            //queryStr = "{: know(I, {:(class=dog&determiner=the) | !determiner=the:})[:{:class=state:}:]:}";
-            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+            var queryStr = "{: @x[:{:info_0:}:] = know(I, {:(class=dog&determiner=the) | !determiner=the:})[:{:class=state:}:]:}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //queryStr = "{: know(I, {:(class=dog&determiner=the) | !(determiner=the|class=dog):})[:{:class=state:}:]:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
