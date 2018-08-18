@@ -84,6 +84,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 {
                                     case TokenKind.Comma:
                                     case TokenKind.CloseRoundBracket:
+                                    case TokenKind.BeginAnnotaion:
                                         Recovery(nextToken);
                                         ProcessQuestionParam();
                                         Exit();

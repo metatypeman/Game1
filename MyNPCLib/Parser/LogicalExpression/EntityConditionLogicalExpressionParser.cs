@@ -30,6 +30,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         private ASTNodeOfLogicalQuery mClusterNode;
         private string mPropertyName;
 
+        private ASTNodeOfLogicalQuery mLastNode;
+
         protected override void OnRun()
         {
 #if DEBUG
@@ -69,12 +71,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                             break;
 
                         case TokenKind.BeginAnnotaion:
-                            {
-                                Recovery(CurrToken);
-                                var annotationParser = new AnnotationParser(Context);
-                                annotationParser.Run();
-                                ProcessAnnotation();
-                            }
+                            ProcessAnnotation();
                             break;
 
                         default:
@@ -108,12 +105,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                             break;
 
                         case TokenKind.BeginAnnotaion:
-                            {
-                                Recovery(CurrToken);
-                                var annotationParser = new AnnotationParser(Context);
-                                annotationParser.Run();
-                                ProcessAnnotation();
-                            }
+                            ProcessAnnotation();
                             break;
 
                         default:
@@ -213,6 +205,8 @@ namespace MyNPCLib.Parser.LogicalExpression
             condition.PropertyValue = node;
 
             PutRelationLikeNodeToTree(condition);
+
+            mLastNode = node;
 
             mState = State.GotProperyValue;
         }
@@ -489,7 +483,23 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log("ProcessAnnotation !!!!!!!");
 #endif
 
-            throw new NotImplementedException();
+            Recovery(CurrToken);
+            var annotationParser = new AnnotationParser(Context);
+            annotationParser.Run();
+
+#if DEBUG
+            LogInstance.Log($"mLastNode = {mLastNode}");
+#endif
+
+            var annotationsResult = annotationParser.ResultsList;
+
+            mLastNode.AnnotationsList = annotationsResult;
+
+#if DEBUG
+            LogInstance.Log($"after mLastNode = {mLastNode}");
+#endif
+
+            //throw new NotImplementedException();
         }
 
         private void ProcessGroup()

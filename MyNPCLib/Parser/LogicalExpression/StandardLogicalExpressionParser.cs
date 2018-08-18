@@ -294,10 +294,10 @@ namespace MyNPCLib.Parser.LogicalExpression
             mLastNode.AnnotationsList = annotationsResult;
 
 #if DEBUG
-            LogInstance.Log($"mLastNode = {mLastNode}");
+            LogInstance.Log($"after mLastNode = {mLastNode}");
 #endif
             
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void ProcessUnaryOperator()

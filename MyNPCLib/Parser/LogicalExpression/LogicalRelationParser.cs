@@ -29,6 +29,10 @@ namespace MyNPCLib.Parser.LogicalExpression
         private ASTNodeOfLogicalQuery mASTNode;
         public ASTNodeOfLogicalQuery Result => mASTNode;
 
+        private List<ASTNodeOfLogicalQuery> mVarsOfRelationsList = new List<ASTNodeOfLogicalQuery>();
+
+        private ASTNodeOfLogicalQuery mLastNode;
+
         protected override void OnRun()
         {
 #if DEBUG
@@ -97,12 +101,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                             break;
 
                         case TokenKind.BeginAnnotaion:
-                            {
-                                Recovery(CurrToken);
-                                var annotationParser = new AnnotationParser(Context);
-                                annotationParser.Run();
-                                ProcessAnnotation();
-                            }
+                            ProcessAnnotation();
                             break;
 
                         default:
@@ -118,20 +117,17 @@ namespace MyNPCLib.Parser.LogicalExpression
                             break;
 
                         case TokenKind.Comma:
+                            PutVarInParam();
                             mState = State.WaitForParam;
                             break;
 
                         case TokenKind.CloseRoundBracket:
+                            PutVarInParam();
                             Exit();
                             break;
 
                         case TokenKind.BeginAnnotaion:
-                            {
-                                Recovery(CurrToken);
-                                var annotationParser = new AnnotationParser(Context);
-                                annotationParser.Run();
-                                ProcessAnnotation();
-                            }
+                            ProcessAnnotation();
                             break;
 
                         default:
@@ -145,6 +141,10 @@ namespace MyNPCLib.Parser.LogicalExpression
                         case TokenKind.Word:
                         case TokenKind.BeginFact:
                             DispatchValueInParam();
+                            break;
+
+                        case TokenKind.Var:
+                            DispatchVar();
                             break;
 
                         default:
@@ -196,8 +196,22 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log($"DispatchValueInParam !!!!!! paramASTNode = {paramASTNode}");
 #endif
 
-            mASTNode.ParamsList.Add(paramASTNode);
+            mLastNode = paramASTNode;
+
+            if(mVarsOfRelationsList.Count > 0)
+            {
+                if(paramASTNode.Kind != KindOfASTNodeOfLogicalQuery.Relation)
+                {
+                    throw new NotSupportedException();
+                }
+
+                paramASTNode.VarsList = mVarsOfRelationsList;
+
+                mVarsOfRelationsList = new List<ASTNodeOfLogicalQuery>();
+            }
             
+            mASTNode.ParamsList.Add(paramASTNode);
+
             mState = State.GotParam;
         }
 
@@ -207,14 +221,51 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log("DispatchVar !!!!!!");
 #endif
 
+            var varNode = new ASTNodeOfLogicalQuery();
+            varNode.Kind = KindOfASTNodeOfLogicalQuery.Var;
+            varNode.Name = CurrToken.Content;
+
+            mVarsOfRelationsList.Add(varNode);
+
+            mLastNode = varNode;
+
+            //throw new NotImplementedException();
+
             mState = State.GotVarInParam;
+        }
+
+        private void PutVarInParam()
+        {
+#if DEBUG
+            LogInstance.Log("PutVarInParam !!!!!!");
+#endif
+
+            mASTNode.ParamsList.Add(mLastNode);
+            mLastNode = null;
+            mVarsOfRelationsList = new List<ASTNodeOfLogicalQuery>();
+
+            //throw new NotImplementedException();
         }
 
         private void ProcessAnnotation()
         {
 #if DEBUG
             LogInstance.Log("ProcessAnnotation !!!!!!!");
+            LogInstance.Log($"mLastNode = {mLastNode}");
 #endif
+            Recovery(CurrToken);
+            var annotationParser = new AnnotationParser(Context);
+            annotationParser.Run();
+
+            var annotationsResult = annotationParser.ResultsList;
+
+            mLastNode.AnnotationsList = annotationsResult;
+
+#if DEBUG
+            LogInstance.Log($"after mLastNode = {mLastNode}");
+#endif
+
+            //throw new NotImplementedException();
         }
 
         protected override void OnExit()
@@ -222,6 +273,12 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log("Begin");
 #endif
+
+#if DEBUG
+            LogInstance.Log($"mASTNode = {mASTNode}");
+#endif
+
+            //throw new NotImplementedException();
 
 #if DEBUG
             LogInstance.Log("End");
