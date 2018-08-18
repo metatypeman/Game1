@@ -119,6 +119,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             mASTNode = new ASTNodeOfLogicalQuery();
             mASTNode.Kind = KindOfASTNodeOfLogicalQuery.Concept;
+            mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
             mASTNode.Name = CurrToken.Content;
         }
 
@@ -130,6 +131,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             mASTNode = new ASTNodeOfLogicalQuery();
             mASTNode.Kind = KindOfASTNodeOfLogicalQuery.QuestionParam;
+            mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
             mASTNode.Name = CurrToken.Content;
             mASTNode.IsQuestion = true;
         }
@@ -142,6 +144,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             mASTNode = new ASTNodeOfLogicalQuery();
             mASTNode.Kind = KindOfASTNodeOfLogicalQuery.StubParam;
+            mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
         }
 
         private void ProcessFact()
@@ -164,6 +167,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             relationParser.Run();
 
             mASTNode = relationParser.Result;
+            mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
         }
 
         protected override void OnExit()

@@ -180,6 +180,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             var propertyValue = new ASTNodeOfLogicalQuery();
             propertyValue.Kind = KindOfASTNodeOfLogicalQuery.Concept;
+            propertyValue.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition;
             propertyValue.Name = CurrToken.Content;
 
             NProcessPropertyValue(propertyValue);
@@ -201,6 +202,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
             var condition = new ASTNodeOfLogicalQuery();
             condition.Kind = KindOfASTNodeOfLogicalQuery.Condition;
+            condition.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition;
             condition.Name = mPropertyName;
             condition.PropertyValue = node;
 
@@ -282,6 +284,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             var operatorASTNode = new ASTNodeOfLogicalQuery();
             operatorASTNode.Kind = KindOfASTNodeOfLogicalQuery.UnaryOperator;
+            operatorASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition;
 
             switch (tokenKindOfOperatorToken)
             {
@@ -391,6 +394,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             var operatorASTNode = new ASTNodeOfLogicalQuery();
             operatorASTNode.Kind = KindOfASTNodeOfLogicalQuery.BinaryOperator;
+            operatorASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition;
 
             switch (tokenKindOfOperatorToken)
             {
@@ -525,6 +529,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             var resultNode = logicalExpressionParser.Result;
             resultNode.IsGroup = true;
+            resultNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition;
 
             PutRelationLikeNodeToTree(resultNode);
 

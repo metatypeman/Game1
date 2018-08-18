@@ -105,40 +105,13 @@ namespace MyNPCLib.Parser.LogicalExpression
 #endif
                             if (currTokenKind == TerminateTokenKind && currTokenKind != TokenKind.Unknown)
                             {
-                                //if(currTokenKind != TokenKind.CloseRoundBracket)
-                                //{
-                                    Recovery(CurrToken);
-                                //}               
+                                Recovery(CurrToken);               
                                 Exit();
                                 return;
                             }
                             throw new UnexpectedTokenException(CurrToken);
                     }
                     break;
-
-//                case State.GotAnnotation:
-//                    switch (currTokenKind)
-//                    {
-//                        case TokenKind.And:
-//                        case TokenKind.Or:
-//                            ProcessBinaryOperator();
-//                            break;
-
-//                        default:
-//#if DEBUG
-
-//                            LogInstance.Log($"mInitTailOfString = {mInitTailOfString}");
-//                            LogInstance.Log($"Context.TailOfString = {Context.TailOfString}");
-//#endif
-//                            if (currTokenKind == TerminateTokenKind && currTokenKind != TokenKind.Unknown)
-//                            {
-//                                Recovery(CurrToken);
-//                                Exit();
-//                                return;
-//                            }
-//                            throw new UnexpectedTokenException(CurrToken);
-//                    }
-//                    break;
 
                 case State.GotVar:
                     switch (currTokenKind)
@@ -240,7 +213,9 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log($"mVarsOfRelationsList.Count = {mVarsOfRelationsList.Count}");
 #endif
 
-            if(mVarsOfRelationsList.Count > 0)
+            relation.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
+
+            if (mVarsOfRelationsList.Count > 0)
             {
                 relation.VarsList = mVarsOfRelationsList;
                 mVarsOfRelationsList = new List<ASTNodeOfLogicalQuery>();
@@ -261,6 +236,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             var varNode = new ASTNodeOfLogicalQuery();
             varNode.Kind = KindOfASTNodeOfLogicalQuery.Var;
+            varNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
             varNode.Name = CurrToken.Content;
 
             mVarsOfRelationsList.Add(varNode);
@@ -310,6 +286,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             var operatorASTNode = new ASTNodeOfLogicalQuery();
             operatorASTNode.Kind = KindOfASTNodeOfLogicalQuery.UnaryOperator;
+            operatorASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
 
             switch (tokenKindOfOperatorToken)
             {
@@ -426,6 +403,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             var operatorASTNode = new ASTNodeOfLogicalQuery();
             operatorASTNode.Kind = KindOfASTNodeOfLogicalQuery.BinaryOperator;
+            operatorASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
 
             switch (tokenKindOfOperatorToken)
             {
@@ -558,6 +536,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             var resultNode = logicalExpressionParser.Result;
             resultNode.IsGroup = true;
+            resultNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
 
             PutRelationLikeNodeToTree(resultNode);
 

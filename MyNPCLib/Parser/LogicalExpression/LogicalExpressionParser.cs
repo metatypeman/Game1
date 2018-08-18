@@ -60,6 +60,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                                     var logicalExpressionParser = new StandardLogicalExpressionParser(Context, TerminateTokenKind);
                                     logicalExpressionParser.Run();
                                     mASTNode = logicalExpressionParser.Result;
+                                    mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
                                     mState = State.GotStandardLogicalExpression;
                                 }
                                 break;
@@ -69,6 +70,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                                     var logicalExpressionParser = new EntityConditionLogicalExpressionParser(Context, TerminateTokenKind);
                                     logicalExpressionParser.Run();
                                     mASTNode = logicalExpressionParser.Result;
+                                    mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition;
                                     mState = State.GotEntityConditionExpression;
                                 }
                                 break;
@@ -140,6 +142,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             mASTNode = new ASTNodeOfLogicalQuery();
             mASTNode.Kind = KindOfASTNodeOfLogicalQuery.Concept;
+            dsecondKind
             mASTNode.Name = nextToken.Content;
           
 #if DEBUG

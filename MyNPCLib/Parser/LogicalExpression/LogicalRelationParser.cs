@@ -21,6 +21,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
             mASTNode = new ASTNodeOfLogicalQuery();
             mASTNode.Kind = KindOfASTNodeOfLogicalQuery.Relation;
+            mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
             mASTNode.ParamsList = new List<ASTNodeOfLogicalQuery>();
         }
 
@@ -191,7 +192,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             paramExpressionParser.Run();
 
             var paramASTNode = paramExpressionParser.Result;
-
+            paramASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
 #if DEBUG
             LogInstance.Log($"DispatchValueInParam !!!!!! paramASTNode = {paramASTNode}");
 #endif
@@ -223,6 +224,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             var varNode = new ASTNodeOfLogicalQuery();
             varNode.Kind = KindOfASTNodeOfLogicalQuery.Var;
+            varNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
             varNode.Name = CurrToken.Content;
 
             mVarsOfRelationsList.Add(varNode);

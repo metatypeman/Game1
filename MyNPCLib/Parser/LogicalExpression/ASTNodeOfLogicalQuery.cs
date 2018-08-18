@@ -6,8 +6,8 @@ namespace MyNPCLib.Parser.LogicalExpression
 {
     public class ASTNodeOfLogicalQuery: IObjectToString, IShortObjectToString, IObjectToBriefString
     {
-        public ASTNodeOfLogicalQuery Parent { get; set; }
         public KindOfASTNodeOfLogicalQuery Kind { get; set; } = KindOfASTNodeOfLogicalQuery.Unknown;
+        public SecondaryKindOfASTNodeOfLogicalQuery SecondaryKind { get; set; } = SecondaryKindOfASTNodeOfLogicalQuery.Unknown;
         public KindOfOperatorOfASTNodeOfLogicalQuery KindOfOperator { get; set; } = KindOfOperatorOfASTNodeOfLogicalQuery.Unknown;
         public string Name { get; set; }
         public ASTNodeOfLogicalQuery Part_1 { get; set; }
@@ -38,17 +38,8 @@ namespace MyNPCLib.Parser.LogicalExpression
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            if (Parent == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(Parent)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(Parent)}");
-                sb.Append(Parent.ToBriefString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(Parent)}");
-            }
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            sb.AppendLine($"{spaces}{nameof(SecondaryKind)} = {SecondaryKind}");
             sb.AppendLine($"{spaces}{nameof(KindOfOperator)} = {KindOfOperator}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             if (Part_1 == null)
@@ -178,6 +169,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             var nextNSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            sb.AppendLine($"{spaces}{nameof(SecondaryKind)} = {SecondaryKind}");
             sb.AppendLine($"{spaces}{nameof(KindOfOperator)} = {KindOfOperator}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             if (Part_1 == null)
@@ -307,6 +299,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
+            sb.AppendLine($"{spaces}{nameof(SecondaryKind)} = {SecondaryKind}");
             sb.AppendLine($"{spaces}{nameof(KindOfOperator)} = {KindOfOperator}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(IsActivePart)} = {IsActivePart}");
