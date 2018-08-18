@@ -37,7 +37,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private ASTNodeOfLogicalQuery mCurrentNode;
         private ASTNodeOfLogicalQuery mClusterNode;
 
-        private List<string> mVarsOfRelationsList = new List<string>();
+        private List<ASTNodeOfLogicalQuery> mVarsOfRelationsList = new List<ASTNodeOfLogicalQuery>();
 
         private ASTNodeOfLogicalQuery mLastNode;
 
@@ -243,7 +243,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             if(mVarsOfRelationsList.Count > 0)
             {
                 relation.VarsList = mVarsOfRelationsList;
-                mVarsOfRelationsList = new List<string>();
+                mVarsOfRelationsList = new List<ASTNodeOfLogicalQuery>();
             }
 
 #if DEBUG
@@ -259,7 +259,13 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log($"ProcessVar !!!!! CurrToken = {CurrToken}");
 #endif
 
-            mVarsOfRelationsList.Add(CurrToken.Content);
+            var varNode = new ASTNodeOfLogicalQuery();
+            varNode.Kind = KindOfASTNodeOfLogicalQuery.Var;
+            varNode.Name = CurrToken.Content;
+
+            mVarsOfRelationsList.Add(varNode);
+
+            mLastNode = varNode;
 
             mState = State.GotVar;
         }

@@ -138,10 +138,15 @@ namespace MyNPCLib.Parser.LogicalExpression
                     throw new UnexpectedTokenException(CurrToken);
             }
 
-            throw new NotImplementedException();
+            mASTNode = new ASTNodeOfLogicalQuery();
+            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.Concept;
+            mASTNode.Name = nextToken.Content;
+          
 #if DEBUG
             LogInstance.Log($"ProcessSingleConcept !!!!!! nextToken = {nextToken}");
 #endif
+
+            //throw new NotImplementedException();
         }
 
         private enum StateOfDetectKindOfExpression
