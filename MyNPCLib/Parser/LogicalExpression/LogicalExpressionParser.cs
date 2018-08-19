@@ -142,7 +142,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             mASTNode = new ASTNodeOfLogicalQuery();
             mASTNode.Kind = KindOfASTNodeOfLogicalQuery.Concept;
-            dsecondKind
+            mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.SimpleConcept;
             mASTNode.Name = nextToken.Content;
           
 #if DEBUG

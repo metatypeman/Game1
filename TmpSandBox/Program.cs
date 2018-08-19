@@ -81,8 +81,8 @@ namespace TmpSandBox
             //var queryStr = "{: know(I, {:class=dog&determiner=the:})[:{:class=state:}:]:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            //var queryStr = "{: know(I, dog) & !male(dog) | son(dog, cat) :}";
-            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+            var queryStr = "{: know(I, dog) & !male(dog) | son(dog, cat) :}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //var queryStr = "{: (know(I, dog) & !male(dog)) | son(dog, cat)  :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
@@ -102,8 +102,8 @@ namespace TmpSandBox
             //var queryStr = "{: class = dog & determiner = {:time=past & location=forest :} :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            var queryStr = "{: class = dog & determiner = {:time=past & location=forest :}[:{:class=state:}:] :}";
-            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+            //var queryStr = "{: class = dog & determiner = {:time=past & location=forest :}[:{:state:}:] :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //var queryStr = "{: !(class=dog & determiner=the) | !male=neuter :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
@@ -220,6 +220,20 @@ namespace TmpSandBox
 
             LogInstance.Log($"queryStr = {queryStr}");
             LogInstance.Log($"result = {result}");
+
+            var ruleInstancesList = ConvertorASTNodeOfLogicalQueryToRuleInstance.Convert(result, entityDictionary);
+
+            LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
+
+            foreach(var ruleInstance in ruleInstancesList)
+            {
+                LogInstance.Log($"ruleInstance = {ruleInstance}");
+
+                var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+
+                LogInstance.Log($"queryStr = {queryStr}");
+                LogInstance.Log($"debugStr = {debugStr}");
+            }
 
             LogInstance.Log("End");
         }

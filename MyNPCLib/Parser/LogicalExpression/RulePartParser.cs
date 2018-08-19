@@ -49,6 +49,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 var logicalExpressionParser = new LogicalExpressionParser(Context, TerminateTokenKind);
                                 logicalExpressionParser.Run();
                                 mASTNode.Expression = logicalExpressionParser.Result;
+                                mASTNode.SecondaryKind = mASTNode.Expression.SecondaryKind;
                                 mState = State.GotUnbracketsContent;
                             }
                             break;
@@ -58,6 +59,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 var logicalExpressionParser = new LogicalExpressionParser(Context, TerminateTokenKind);
                                 logicalExpressionParser.Run();
                                 mASTNode.Expression = logicalExpressionParser.Result;
+                                mASTNode.SecondaryKind = mASTNode.Expression.SecondaryKind;
                                 mState = State.GotBrakedContent;
                             }
                             break;
