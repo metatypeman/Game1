@@ -144,7 +144,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
             Recovery(CurrToken);
             var rulePartParser = new RulePartParser(Context, TokenKind.EndFact);
-            NProcessRulePart(rulePartParser);        
+            NProcessRulePart(rulePartParser);
             mState = State.GotUnbracketsContent;
         }
 
@@ -160,6 +160,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
             rulePartParser.Run();
             var rulePartResult = rulePartParser.Result;
+            mASTNode.SecondaryKind = rulePartResult.SecondaryKind;
 
 #if DEBUG
             LogInstance.Log($"Part_1Filled = {Part_1Filled}");
