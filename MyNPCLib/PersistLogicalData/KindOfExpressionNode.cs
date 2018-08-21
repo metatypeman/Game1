@@ -72,6 +72,8 @@ namespace MyNPCLib.PersistLogicalData
         /// <summary>
         /// Represents an other fact or rule
         /// </summary>
-        Fact
+        Fact,
+        
+        ParamStub
     }
 }

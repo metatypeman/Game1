@@ -10,13 +10,17 @@ namespace MyNPCLib.CGStorage
         public PassiveListGCStorage(ContextOfCGStorage context, IList<RuleInstance> ruleInstances)
             : base(context)
         {
-            mRuleInstances = ruleInstances;
+            mRuleInstancesList = ruleInstances;
+
+            if(!mRuleInstancesList.IsEmpty())
+            {
+                foreach(var ruleInstance in mRuleInstancesList)
+                {
+                    ruleInstance.DataSource = this;
+                }
+            }
         }
 
         public override KindOfCGStorage KindOfStorage => KindOfCGStorage.PassiveList;
-
-        private IList<RuleInstance> mRuleInstances;
-
-        public override IList<RuleInstance> AllRuleInstances => mRuleInstances;
     }
 }

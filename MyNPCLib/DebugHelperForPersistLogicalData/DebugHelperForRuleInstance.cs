@@ -1,4 +1,5 @@
-﻿using MyNPCLib.PersistLogicalData;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,6 +11,7 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
     {
         public string MainView { get; set; }
         public List<string> AnnotationsViews { get; set; } = new List<string>();
+        public ICGStorage DataSource { get; set; }
     }
 
     public static class DebugHelperForRuleInstance
@@ -28,6 +30,7 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         public static string ToString(RuleInstance source)
         {
             var context = new ContextForDebugHelperForRuleInstance();
+            context.DataSource = source.DataSource;
             context.MainView = ToString(source, context);
             return ToString(context);
         }
@@ -308,6 +311,9 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 case KindOfExpressionNode.Fact:
                     return FactToString(source.AsFact, context);
 
+                case KindOfExpressionNode.ParamStub:
+                    return ParamStubToSting(source.AsParamStub, context);
+
                 default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
             }
         }
@@ -330,10 +336,15 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         private static string RelationToString(RelationExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
             var sb = new StringBuilder();
-            if(source.LinkedVar != null)
+
+            if(source.LinkedVars != null)
             {
-                sb.Append($"{source.LinkedVar.Name} = ");
+                foreach (var linkedVar in source.LinkedVars)
+                {
+                    sb.Append($"{linkedVar.Name} = ");
+                }
             }
+
             sb.Append($"{source.Name}(");
             if(!ListHelper.IsEmpty(source.Params))
             {
@@ -440,6 +451,11 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
             return source.Name.ToString();
         }
 
+        private static string ParamStubToSting(ParamStubExpressionNode source, ContextForDebugHelperForRuleInstance context)
+        {
+            return "*";
+        }
+
         private static string ToString(IfConditionsPart source, ContextForDebugHelperForRuleInstance context)
         {
             var sb = new StringBuilder();
@@ -536,11 +552,22 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 return string.Empty;
             }
 
+            var dataSource = context.DataSource;
+
+            if(dataSource == null)
+            {
+                return string.Empty;
+            }
+
             var annotationsViewsList = new List<string>();
 
             foreach (var annotation in annotations)
             {
-                annotationsViewsList.Add($"{ToString(annotation.RuleInstance)}{ToString(annotation.Annotations, context)}");
+                var ruleInstanceKey = annotation.RuleInstanceKey;
+
+                var annotationRuleInstance = dataSource.GetRuleInstanceByKey(ruleInstanceKey);
+
+                annotationsViewsList.Add($"{ToString(annotationRuleInstance)}{ToString(annotation.Annotations, context)}");
             }
 
             return $"[:{string.Join(",", annotationsViewsList)}:]";

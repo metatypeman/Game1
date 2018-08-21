@@ -81,8 +81,8 @@ namespace TmpSandBox
             //var queryStr = "{: know(I, {:class=dog&determiner=the:})[:{:class=state:}:]:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            var queryStr = "{: know(I, dog) & !male(dog) | son(dog, cat) :}";
-            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+            //var queryStr = "{: know(I, dog) & !male(dog) | son(dog, cat) :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //var queryStr = "{: (know(I, dog) & !male(dog)) | son(dog, cat)  :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
@@ -102,8 +102,8 @@ namespace TmpSandBox
             //var queryStr = "{: class = dog & determiner = {:time=past & location=forest :} :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            //var queryStr = "{: class = dog & determiner = {:time=past & location=forest :}[:{:state:}:] :}";
-            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+            var queryStr = "{: class = dog & determiner = {:time=past & location=forest :}[:{:state:}:] :}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //var queryStr = "{: !(class=dog & determiner=the) | !male=neuter :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
@@ -156,13 +156,13 @@ namespace TmpSandBox
             //var queryStr = "{: ?x(*, *):}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            //queryStr = "{: { ?x(?y, ?z) }:}";
+            //var queryStr = "{: { ?x(?y, ?z) }:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //queryStr = "{: { ?x(*, *) }:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            //queryStr = "{:class=dog&determiner=the:}";
+            //queryStr = "{:class=dog & determiner=the:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //var queryStr = "{:{class = dog & determiner = the[:{:class=state:}:] }:}";
@@ -224,9 +224,11 @@ namespace TmpSandBox
             var context = new ContextOfCGStorage(entityDictionary);
             context.Init();
 
-            var passiveListStorage = ConvertorASTNodeOfLogicalQueryToRuleInstance.Convert(result, context);
+            var ruleInstancesPackage = ConvertorASTNodeOfLogicalQueryToRuleInstance.Convert(result, entityDictionary);
 
-            var ruleInstancesList = passiveListStorage.AllRuleInstances;
+            var ruleInstancesList = ruleInstancesPackage.AllRuleInstances;
+
+            var passiveListStorage = new PassiveListGCStorage(context, ruleInstancesList);
 
             LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
 
@@ -334,7 +336,8 @@ namespace TmpSandBox
             var actionName = string.Empty;
 
             {
-                var query = CreateAnnotatedQueryForGoToGreenWaypoint(globalEntityDictionary);
+                var queryPackage = CreateAnnotatedQueryForGoToGreenWaypoint(globalEntityDictionary);
+                var query = queryPackage.MainRuleInstance;
 
                 {
                     var debugStr = DebugHelperForRuleInstance.ToString(query);
@@ -482,7 +485,7 @@ namespace TmpSandBox
 
                         LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
 
-                        var entityConditionRuleInstance = context.GlobalCGStorage.GeyRuleInstanceByKey(keyOfEntityConditionFact);
+                        var entityConditionRuleInstance = context.GlobalCGStorage.GetRuleInstanceByKey(keyOfEntityConditionFact);
 
                         LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
 
@@ -537,13 +540,19 @@ namespace TmpSandBox
             return ruleInstance;
         }
 
-        private static RuleInstance CreateAnnotatedQueryForGoToGreenWaypoint(IEntityDictionary globalEntityDictionary)
+        private static RuleInstancePackage CreateAnnotatedQueryForGoToGreenWaypoint(IEntityDictionary globalEntityDictionary)
         {
+            var result = new RuleInstancePackage();
+            var allRuleInstancesList = new List<RuleInstance>();
+            result.AllRuleInstances = allRuleInstancesList;
+
             var annotationInstance = new RuleInstance();
             annotationInstance.Kind = KindOfRuleInstance.Annotation;
             var name = NamesHelper.CreateEntityName();
             annotationInstance.Name = name;
             annotationInstance.Key = globalEntityDictionary.GetKey(name);
+
+            allRuleInstancesList.Add(annotationInstance);
 
             var partOfAnnotation = new RulePart();
             partOfAnnotation.IsActive = true;
@@ -582,6 +591,9 @@ namespace TmpSandBox
             ruleInstance.ModuleName = "#simple_module";
             ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
 
+            allRuleInstancesList.Add(ruleInstance);
+            result.MainRuleInstance = ruleInstance;
+
             var rulePart_1 = new RulePart();
             rulePart_1.Parent = ruleInstance;
             ruleInstance.Part_1 = rulePart_1;
@@ -595,7 +607,7 @@ namespace TmpSandBox
 
             var annotation = new LogicalAnnotation();
             expr3.Annotations.Add(annotation);
-            annotation.RuleInstance = annotationInstance;
+            annotation.RuleInstanceKey = annotationInstance.Key;
 
             var relationName = "?Z";
             var relationKey = globalEntityDictionary.GetKey(relationName);
@@ -615,7 +627,7 @@ namespace TmpSandBox
 
             //a(?X,?Y)
 
-            return ruleInstance;
+            return result;
         }
 
         private static void TSTProcessAnnotations()
@@ -646,9 +658,14 @@ namespace TmpSandBox
             smokeFact = CreateSimpleFact_3_2(globalEntityDictionary);
             AddSmokeFact(smokeFact, context.GlobalCGStorage);
 
-            var annotaredFactList = CreateAnnotaredFact(globalEntityDictionary);
-            LogInstance.Log($"annotaredFactList.Count = {annotaredFactList.Count}");
-            foreach(var ruleInstance in annotaredFactList)
+            var annotatedFactsPackage = CreateAnnotaredFact(globalEntityDictionary);
+
+            var annotatedFactList = annotatedFactsPackage.AllRuleInstances;
+            LogInstance.Log($"annotatedFactList.Count = {annotatedFactList.Count}");
+
+            var annotatedFactPassiveListStorage = new PassiveListGCStorage(context, annotatedFactList);
+
+            foreach (var ruleInstance in annotatedFactList)
             {
                 var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
 
@@ -660,7 +677,11 @@ namespace TmpSandBox
             }
 
             {
-                var query = CreateAnnotatedQuery(globalEntityDictionary);
+                var queryPackage = CreateAnnotatedQuery(globalEntityDictionary);
+
+                var queryPassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
+
+                var query = queryPackage.MainRuleInstance;
 
                 {
                     var debugStr = DebugHelperForRuleInstance.ToString(query);
@@ -717,13 +738,19 @@ namespace TmpSandBox
             LogInstance.Log($"debugStr = {debugStr}");
         }
 
-        private static RuleInstance CreateAnnotatedQuery(IEntityDictionary globalEntityDictionary)
+        private static RuleInstancePackage CreateAnnotatedQuery(IEntityDictionary globalEntityDictionary)
         {
+            var result = new RuleInstancePackage();
+            var allRuleInstancesList = new List<RuleInstance>();
+            result.AllRuleInstances = allRuleInstancesList;
+
             var annotationInstance = new RuleInstance();
             annotationInstance.Kind = KindOfRuleInstance.Annotation;
             var name = NamesHelper.CreateEntityName();
             annotationInstance.Name = name;
             annotationInstance.Key = globalEntityDictionary.GetKey(name);
+
+            allRuleInstancesList.Add(annotationInstance);
 
             var partOfAnnotation = new RulePart();
             partOfAnnotation.IsActive = true;
@@ -762,6 +789,9 @@ namespace TmpSandBox
             ruleInstance.ModuleName = "#simple_module";
             ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
 
+            result.MainRuleInstance = ruleInstance;
+            allRuleInstancesList.Add(ruleInstance);
+
             var rulePart_1 = new RulePart();
             rulePart_1.Parent = ruleInstance;
             ruleInstance.Part_1 = rulePart_1;
@@ -775,7 +805,7 @@ namespace TmpSandBox
 
             var annotation = new LogicalAnnotation();
             expr3.Annotations.Add(annotation);
-            annotation.RuleInstance = annotationInstance;
+            annotation.RuleInstanceKey = annotationInstance.Key;
 
             var relationName = "?Z";
             var relationKey = globalEntityDictionary.GetKey(relationName);
@@ -793,12 +823,14 @@ namespace TmpSandBox
             param_2.Name = "?Y";
             param_2.Key = globalEntityDictionary.GetKey(param_2.Name);
 
-            return ruleInstance;
+            return result;
         }
 
-        private static List<RuleInstance> CreateAnnotaredFact(IEntityDictionary globalEntityDictionary)
+        private static RuleInstancePackage CreateAnnotaredFact(IEntityDictionary globalEntityDictionary)
         {
-            var result = new List<RuleInstance>();
+            var result = new RuleInstancePackage();
+            var allRuleInstancesList = new List<RuleInstance>();
+            result.AllRuleInstances = allRuleInstancesList;
 
             var annotationInstance = new RuleInstance();
             //result.Add(annotationInstance);
@@ -806,6 +838,8 @@ namespace TmpSandBox
             var name = NamesHelper.CreateEntityName();
             annotationInstance.Name = name;
             annotationInstance.Key = globalEntityDictionary.GetKey(name);
+
+            allRuleInstancesList.Add(annotationInstance);
 
             var partOfAnnotation = new RulePart();
             partOfAnnotation.IsActive = true;
@@ -837,7 +871,8 @@ namespace TmpSandBox
             variablesQuantification.Items.Add(varQuant_1);
 
             var entityConditionInstance = new RuleInstance();
-            result.Add(entityConditionInstance);
+            allRuleInstancesList.Add(entityConditionInstance);
+
             entityConditionInstance.Kind = KindOfRuleInstance.EntityCondition;
             name = NamesHelper.CreateEntityName();
             entityConditionInstance.Name = name;
@@ -868,7 +903,9 @@ namespace TmpSandBox
             relation.Params.Add(concept);
 
             var ruleInstance = new RuleInstance();
-            result.Add(ruleInstance);
+            result.MainRuleInstance = ruleInstance;
+            allRuleInstancesList.Add(ruleInstance);
+
             ruleInstance.Kind = KindOfRuleInstance.Fact;
             name = NamesHelper.CreateEntityName();
             ruleInstance.Name = name;
@@ -889,7 +926,7 @@ namespace TmpSandBox
 
             var annotation = new LogicalAnnotation();
             relation.Annotations.Add(annotation);
-            annotation.RuleInstance = annotationInstance;
+            annotation.RuleInstanceKey = annotationInstance.Key;
 
             concept = new ConceptExpressionNode();
             name = "I";

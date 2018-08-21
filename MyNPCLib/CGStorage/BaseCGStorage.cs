@@ -19,7 +19,7 @@ namespace MyNPCLib.CGStorage
         private ContextOfCGStorage mContext;
         public abstract KindOfCGStorage KindOfStorage { get; }
 
-        public virtual IList<RuleInstance> AllRuleInstances => null;
+        public virtual IList<RuleInstance> AllRuleInstances => mRuleInstancesList;
 
         //It is temporary public for construction time. It will be private after complete construction.
         public string DictionaryName { get; set; }
@@ -83,7 +83,7 @@ namespace MyNPCLib.CGStorage
             }
         }
 
-        public RuleInstance GeyRuleInstanceByKey(ulong key)
+        public RuleInstance GetRuleInstanceByKey(ulong key)
         {
             return mRuleInstancesList.FirstOrDefault(p => p.Key == key);
         }

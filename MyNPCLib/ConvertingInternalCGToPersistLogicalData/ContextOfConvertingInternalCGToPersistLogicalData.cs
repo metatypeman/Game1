@@ -10,5 +10,6 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
     {
         public IEntityDictionary EntityDictionary { get; set; }
         public Dictionary<InternalConceptualGraph, RuleInstance> RuleInstancesDict { get; set; } = new Dictionary<InternalConceptualGraph, RuleInstance>();
+        public List<RuleInstance> AnnotationsList { get; set; } = new List<RuleInstance>();
     }
 }

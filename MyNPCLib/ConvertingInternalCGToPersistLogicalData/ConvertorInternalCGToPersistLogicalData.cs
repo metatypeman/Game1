@@ -36,7 +36,11 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                 FillRuleInstances(ruleInstancesDictKVPItem.Key, ruleInstancesDictKVPItem.Value, context);
             }
 
-            return context.RuleInstancesDict.Values.ToList();
+            var resultsList = context.RuleInstancesDict.Values.ToList();
+
+            resultsList.AddRange(context.AnnotationsList);
+
+            return resultsList;
         }
 
         private static void PreliminaryСreation(InternalConceptualGraph source, ContextOfConvertingInternalCGToPersistLogicalData context)
@@ -640,7 +644,9 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                 varNodeForRelation.Quantifier = KindOfQuantifier.Existential;
                 varNodeForRelation.Name = linkedVarName;
                 varNodeForRelation.Key = linkedVarKey;
-                relationExpr.LinkedVar = varNodeForRelation;
+
+                relationExpr.LinkedVars = new List<VarExpressionNode>();
+                relationExpr.LinkedVars.Add(varNodeForRelation);
 
                 var varNodeForQuantification = new VarExpressionNode();
                 varNodeForQuantification.Quantifier = KindOfQuantifier.Existential;
@@ -739,10 +745,12 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
             varQuant_1.Key = globalEntityDictionary.GetKey(varName);
             variablesQuantification.Items.Add(varQuant_1);
 
+            context.AnnotationsList.Add(annotationInstance);
+
             var annotation = new LogicalAnnotation();
             relation.Annotations = new List<LogicalAnnotation>();
             relation.Annotations.Add(annotation);
-            annotation.RuleInstance = annotationInstance;
+            annotation.RuleInstanceKey = annotationInstance.Key;
         }
 
         private static BaseExpressionNode CreateExpressionByGraphOrConceptNode(BaseInternalConceptCGNode graphOrConcept, InternalConceptualGraph internalConceptualGraph, ContextOfConvertingInternalCGToPersistLogicalData context, ContextForSingleRuleInstanceOfConvertingInternalCGToPersistLogicalData contextForSingleRuleInstance)

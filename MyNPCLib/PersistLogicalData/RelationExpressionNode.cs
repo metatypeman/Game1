@@ -12,7 +12,7 @@ namespace MyNPCLib.PersistLogicalData
         public ulong Key { get; set; }
         public bool IsQuestion { get; set; }
         public IList<BaseExpressionNode> Params { get; set; }
-        public VarExpressionNode LinkedVar { get; set; }
+        public IList<VarExpressionNode> LinkedVars { get; set; }
         public override bool IsRelation => true;
         public override RelationExpressionNode AsRelation => this; 
         
@@ -29,6 +29,15 @@ namespace MyNPCLib.PersistLogicalData
                     paramsList.Add(item.Clone(context));
                 }
                 result.Params = paramsList;
+            }
+            if(LinkedVars != null)
+            {
+                var linkedVarsList = new List<VarExpressionNode>();
+                foreach(var linkedVar in LinkedVars)
+                {
+                    linkedVarsList.Add(linkedVar.Clone(context).AsVar);
+                }
+                result.LinkedVars = linkedVarsList;
             }
             result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
             return result;
@@ -56,15 +65,18 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}End {nameof(Params)}");
             }
             sb.Append(base.PropertiesToSting(n));
-            if (LinkedVar == null)
+            if (LinkedVars == null)
             {
-                sb.AppendLine($"{spaces}{nameof(LinkedVar)} = null");
+                sb.AppendLine($"{spaces}{nameof(LinkedVars)} = null");
             }
             else
             {
-                sb.AppendLine($"{spaces}Begin {nameof(LinkedVar)}");
-                sb.Append(LinkedVar.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(LinkedVar)}");
+                sb.AppendLine($"{spaces}Begin {nameof(LinkedVars)}");
+                foreach (var linkedVar in LinkedVars)
+                {
+                    sb.Append(linkedVar.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(LinkedVars)}");
             }
             return sb.ToString();
         }
@@ -91,15 +103,18 @@ namespace MyNPCLib.PersistLogicalData
                 sb.AppendLine($"{spaces}End {nameof(Params)}");
             }
             sb.Append(base.PropertiesToShortSting(n));
-            if (LinkedVar == null)
+            if (LinkedVars == null)
             {
-                sb.AppendLine($"{spaces}{nameof(LinkedVar)} = null");
+                sb.AppendLine($"{spaces}{nameof(LinkedVars)} = null");
             }
             else
             {
-                sb.AppendLine($"{spaces}Begin {nameof(LinkedVar)}");
-                sb.Append(LinkedVar.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(LinkedVar)}");
+                sb.AppendLine($"{spaces}Begin {nameof(LinkedVars)}");
+                foreach (var linkedVar in LinkedVars)
+                {
+                    sb.Append(linkedVar.ToShortString(nextN));
+                }
+                sb.AppendLine($"{spaces}End {nameof(LinkedVars)}");
             }
             return sb.ToString();
         }

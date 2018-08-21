@@ -26,6 +26,8 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 
             context.RuleInstancesDict[source] = result;
 
+            result.DataSource = source.DataSource;
+
             result.Origin = source;
             result.Kind = source.Kind;
             result.Key = source.Key;
@@ -33,17 +35,17 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 
             if(source.BelongToEntity != null)
             {
-                result.BelongToEntity = ConvertBelongToEntity(source.BelongToEntity, context);
+                result.BelongToEntity = ConvertBelongToEntity(source.BelongToEntity, context, result);
             }
 
             if(source.EntitiesConditions != null)
             {
-                result.EntitiesConditions = ConvertEntitiesConditions(source.EntitiesConditions, context);
+                result.EntitiesConditions = ConvertEntitiesConditions(source.EntitiesConditions, context, result);
             }
 
             if (source.VariablesQuantification != null)
             {
-                result.VariablesQuantification = ConvertVariablesQuantification(source.VariablesQuantification, context);
+                result.VariablesQuantification = ConvertVariablesQuantification(source.VariablesQuantification, context, result);
             }
 
             if (source.Part_1 != null)
@@ -75,59 +77,59 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             
             if (source.DesirableModality != null)
             {
-                result.DesirableModality = ConvertDesirableFuzzyModality(source.DesirableModality, context);
+                result.DesirableModality = ConvertDesirableFuzzyModality(source.DesirableModality, context, result);
             }
 
             if(source.NecessityModality != null)
             {
-                result.NecessityModality = ConvertNecessityFuzzyModality(source.NecessityModality, context);
+                result.NecessityModality = ConvertNecessityFuzzyModality(source.NecessityModality, context, result);
             }
 
             if(source.ImperativeModality != null)
             {
-                result.ImperativeModality = ConvertImperativeFuzzyModality(source.ImperativeModality, context);
+                result.ImperativeModality = ConvertImperativeFuzzyModality(source.ImperativeModality, context, result);
             }
 
             if (source.IntentionallyModality != null)
             {
-                result.IntentionallyModality = ConvertIntentionallyFuzzyModality(source.IntentionallyModality, context);
+                result.IntentionallyModality = ConvertIntentionallyFuzzyModality(source.IntentionallyModality, context, result);
             }
 
             if (source.PriorityModality != null)
             {
-                result.PriorityModality = ConvertPriorityFuzzyModality(source.PriorityModality, context);
+                result.PriorityModality = ConvertPriorityFuzzyModality(source.PriorityModality, context, result);
             }
 
             if (source.RealityModality != null)
             {
-                result.RealityModality = ConvertRealityFuzzyModality(source.RealityModality, context);
+                result.RealityModality = ConvertRealityFuzzyModality(source.RealityModality, context, result);
             }
 
             if (source.ProbabilityModality != null)
             {
-                result.ProbabilityModality = ConvertProbabilityFuzzyModality(source.ProbabilityModality, context);
+                result.ProbabilityModality = ConvertProbabilityFuzzyModality(source.ProbabilityModality, context, result);
             }
 
             if (source.CertaintyFactor != null)
             {
-                result.CertaintyFactor = ConvertCertaintyFactorFuzzyModality(source.CertaintyFactor, context);
+                result.CertaintyFactor = ConvertCertaintyFactorFuzzyModality(source.CertaintyFactor, context, result);
             }
 
             if (source.MoralQualityModality != null)
             {
-                result.MoralQualityModality = ConvertMoralQualityFuzzyModality(source.MoralQualityModality, context);
+                result.MoralQualityModality = ConvertMoralQualityFuzzyModality(source.MoralQualityModality, context, result);
             }
 
             if (source.QuantityQualityModality != null)
             {
-                result.QuantityQualityModality = ConvertQuantityQualityFuzzyModality(source.QuantityQualityModality, context);
+                result.QuantityQualityModality = ConvertQuantityQualityFuzzyModality(source.QuantityQualityModality, context, result);
             }
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, result);
             result.FillIndexedDataAsStorage();
             return result;
         }
 
-        private static IndexedBelongToEntity ConvertBelongToEntity(BaseExpressionNode source, ContextOfConvertingToIndexed context)
+        private static IndexedBelongToEntity ConvertBelongToEntity(BaseExpressionNode source, ContextOfConvertingToIndexed context, IndexedRuleInstance parentIndexedRuleInstance)
         {
             if(context.BelongToEntityDict.ContainsKey(source))
             {
@@ -138,11 +140,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             context.BelongToEntityDict[source] = result;
 
             result.Origin = source;
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
-        private static IndexedVariablesQuantificationPart ConvertVariablesQuantification(VariablesQuantificationPart source, ContextOfConvertingToIndexed context)
+        private static IndexedVariablesQuantificationPart ConvertVariablesQuantification(VariablesQuantificationPart source, ContextOfConvertingToIndexed context, IndexedRuleInstance parentIndexedRuleInstance)
         {          
             if (context.VariablesQuantificationPartDict.ContainsKey(source))
             {
@@ -153,11 +155,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             context.VariablesQuantificationPartDict[source] = result;
 
             result.Origin = source;
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
-        private static IndexedEntitiesConditions ConvertEntitiesConditions(EntitiesConditions source, ContextOfConvertingToIndexed context)
+        private static IndexedEntitiesConditions ConvertEntitiesConditions(EntitiesConditions source, ContextOfConvertingToIndexed context, IndexedRuleInstance parentIndexedRuleInstance)
         {
             if(context.EntitiesConditionsDict.ContainsKey(source))
             {
@@ -168,7 +170,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             context.EntitiesConditionsDict[source] = result;
 
             result.Origin = source;
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
@@ -195,7 +197,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 
             if(source.VariablesQuantification != null)
             {
-                result.VariablesQuantification = ConvertVariablesQuantification(source.VariablesQuantification, context);
+                result.VariablesQuantification = ConvertVariablesQuantification(source.VariablesQuantification, context, parentIndexedRuleInstance);
             }
 
             var contextOfConvertingExpressionNode = new ContextOfConvertingExpressionNode();
@@ -217,7 +219,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             {
                 result.HasVars = true;
             }
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
@@ -275,7 +277,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.RuleInstance = parentIndexedRuleInstance;
             result.Left = ConvertExpressionNode(source.Left, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
             result.Right = ConvertExpressionNode(source.Right, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
@@ -287,7 +289,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.RuleInstance = parentIndexedRuleInstance;
             result.Left = ConvertExpressionNode(source.Left, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
             result.Right = ConvertExpressionNode(source.Right, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
@@ -298,7 +300,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
             result.Left = ConvertExpressionNode(source.Left, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
@@ -417,7 +419,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.Params = parametersList;
             result.VarsInfoList = varsInfoList;
             result.KnownInfoList = knownInfoList;
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             contextOfConvertingExpressionNode.RelationsList.Add(result);
             return result;
         }
@@ -429,7 +431,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
@@ -440,7 +442,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
@@ -451,7 +453,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
@@ -462,7 +464,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             contextOfConvertingExpressionNode.VarsList.Add(source);
             return result;
         }
@@ -474,7 +476,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             contextOfConvertingExpressionNode.QuestionVarsList.Add(source);
             return result;
         }
@@ -486,7 +488,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
             result.Value = source.Value;
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
@@ -496,7 +498,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.ConcreteOrigin = source;
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
@@ -507,7 +509,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }
 
@@ -530,7 +532,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 #if DEBUG
             //LogInstance.Log($"contextOfConvertingExpressionNode = {contextOfConvertingExpressionNode}");
 #endif
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
 
             return result;
         }
@@ -555,7 +557,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             //LogInstance.Log($"contextOfConvertingExpressionNode = {contextOfConvertingExpressionNode}");
 #endif
 
-            result.Annotations = ConvertAnnotations(source.Annotations);
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
 
             return result;
         }
@@ -579,7 +581,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             return result;
         }
             
-        private static IndexedDesirableFuzzyModality ConvertDesirableFuzzyModality(DesirableFuzzyModality source, ContextOfConvertingToIndexed context)
+        private static IndexedDesirableFuzzyModality ConvertDesirableFuzzyModality(DesirableFuzzyModality source, ContextOfConvertingToIndexed context, IndexedRuleInstance parent)
         {
             if(context.DesirableFuzzyModalityDict.ContainsKey(source))
             {
@@ -589,11 +591,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new IndexedDesirableFuzzyModality();
             context.DesirableFuzzyModalityDict[source] = result;
 
-            FillIndexedFuzzyModality(source, result, context);
+            FillIndexedFuzzyModality(source, result, context, parent);
             return result;
         }
 
-        private static IndexedNecessityFuzzyModality ConvertNecessityFuzzyModality(NecessityFuzzyModality source, ContextOfConvertingToIndexed context)
+        private static IndexedNecessityFuzzyModality ConvertNecessityFuzzyModality(NecessityFuzzyModality source, ContextOfConvertingToIndexed context, IndexedRuleInstance parent)
         {
             if(context.NecessityFuzzyModalityDict.ContainsKey(source))
             {
@@ -603,11 +605,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new IndexedNecessityFuzzyModality();
             context.NecessityFuzzyModalityDict[source] = result;
 
-            FillIndexedFuzzyModality(source, result, context);
+            FillIndexedFuzzyModality(source, result, context, parent);
             return result;
         }
 
-        private static IndexedImperativeFuzzyModality ConvertImperativeFuzzyModality(ImperativeFuzzyModality source, ContextOfConvertingToIndexed context)
+        private static IndexedImperativeFuzzyModality ConvertImperativeFuzzyModality(ImperativeFuzzyModality source, ContextOfConvertingToIndexed context, IndexedRuleInstance parent)
         {
             if(context.ImperativeFuzzyModalityDict.ContainsKey(source))
             {
@@ -616,11 +618,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new IndexedImperativeFuzzyModality();
             context.ImperativeFuzzyModalityDict[source] = result;
 
-            FillIndexedFuzzyModality(source, result, context);
+            FillIndexedFuzzyModality(source, result, context, parent);
             return result;
         }
 
-        private static IndexedIntentionallyFuzzyModality ConvertIntentionallyFuzzyModality(IntentionallyFuzzyModality source, ContextOfConvertingToIndexed context)
+        private static IndexedIntentionallyFuzzyModality ConvertIntentionallyFuzzyModality(IntentionallyFuzzyModality source, ContextOfConvertingToIndexed context, IndexedRuleInstance parent)
         {
             if(context.IntentionallyFuzzyModalityDict.ContainsKey(source))
             {
@@ -629,11 +631,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new IndexedIntentionallyFuzzyModality();
             context.IntentionallyFuzzyModalityDict[source] = result;
 
-            FillIndexedFuzzyModality(source, result, context);
+            FillIndexedFuzzyModality(source, result, context, parent);
             return result;
         }
 
-        private static IndexedPriorityFuzzyModality ConvertPriorityFuzzyModality(PriorityFuzzyModality source, ContextOfConvertingToIndexed context)
+        private static IndexedPriorityFuzzyModality ConvertPriorityFuzzyModality(PriorityFuzzyModality source, ContextOfConvertingToIndexed context, IndexedRuleInstance parent)
         {
             if(context.PriorityFuzzyModalityDict.ContainsKey(source))
             {
@@ -642,11 +644,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new IndexedPriorityFuzzyModality();
             context.PriorityFuzzyModalityDict[source] = result;
 
-            FillIndexedFuzzyModality(source, result, context);
+            FillIndexedFuzzyModality(source, result, context, parent);
             return result;
         }
 
-        private static IndexedRealityFuzzyModality ConvertRealityFuzzyModality(RealityFuzzyModality source, ContextOfConvertingToIndexed context)
+        private static IndexedRealityFuzzyModality ConvertRealityFuzzyModality(RealityFuzzyModality source, ContextOfConvertingToIndexed context, IndexedRuleInstance parent)
         {
             if (context.RealityFuzzyModalityDict.ContainsKey(source))
             {
@@ -655,11 +657,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new IndexedRealityFuzzyModality();
             context.RealityFuzzyModalityDict[source] = result;
 
-            FillIndexedFuzzyModality(source, result, context);
+            FillIndexedFuzzyModality(source, result, context, parent);
             return result;
         }
 
-        private static IndexedProbabilityFuzzyModality ConvertProbabilityFuzzyModality(ProbabilityFuzzyModality source, ContextOfConvertingToIndexed context)
+        private static IndexedProbabilityFuzzyModality ConvertProbabilityFuzzyModality(ProbabilityFuzzyModality source, ContextOfConvertingToIndexed context, IndexedRuleInstance parent)
         {
             if (context.ProbabilityFuzzyModalityDict.ContainsKey(source))
             {
@@ -668,11 +670,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new IndexedProbabilityFuzzyModality();
             context.ProbabilityFuzzyModalityDict[source] = result;
 
-            FillIndexedFuzzyModality(source, result, context);
+            FillIndexedFuzzyModality(source, result, context, parent);
             return result;
         }
 
-        private static IndexedCertaintyFactorFuzzyModality ConvertCertaintyFactorFuzzyModality(CertaintyFactorFuzzyModality source, ContextOfConvertingToIndexed context)
+        private static IndexedCertaintyFactorFuzzyModality ConvertCertaintyFactorFuzzyModality(CertaintyFactorFuzzyModality source, ContextOfConvertingToIndexed context, IndexedRuleInstance parent)
         {
             if (context.CertaintyFactorFuzzyModalityDict.ContainsKey(source))
             {
@@ -681,11 +683,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new IndexedCertaintyFactorFuzzyModality();
             context.CertaintyFactorFuzzyModalityDict[source] = result;
 
-            FillIndexedFuzzyModality(source, result, context);
+            FillIndexedFuzzyModality(source, result, context, parent);
             return result;
         }
 
-        private static IndexedMoralQualityFuzzyModality ConvertMoralQualityFuzzyModality(MoralQualityFuzzyModality source, ContextOfConvertingToIndexed context)
+        private static IndexedMoralQualityFuzzyModality ConvertMoralQualityFuzzyModality(MoralQualityFuzzyModality source, ContextOfConvertingToIndexed context, IndexedRuleInstance parent)
         {
             if (context.MoralQualityFuzzyModalityDict.ContainsKey(source))
             {
@@ -694,11 +696,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new IndexedMoralQualityFuzzyModality();
             context.MoralQualityFuzzyModalityDict[source] = result;
 
-            FillIndexedFuzzyModality(source, result, context);
+            FillIndexedFuzzyModality(source, result, context, parent);
             return result;
         }
 
-        private static IndexedQuantityQualityFuzzyModality ConvertQuantityQualityFuzzyModality(QuantityQualityFuzzyModality source, ContextOfConvertingToIndexed context)
+        private static IndexedQuantityQualityFuzzyModality ConvertQuantityQualityFuzzyModality(QuantityQualityFuzzyModality source, ContextOfConvertingToIndexed context, IndexedRuleInstance parent)
         {
             if (context.QuantityQualityFuzzyModalityDict.ContainsKey(source))
             {
@@ -707,18 +709,18 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             var result = new IndexedQuantityQualityFuzzyModality();
             context.QuantityQualityFuzzyModalityDict[source] = result;
 
-            FillIndexedFuzzyModality(source, result, context);
+            FillIndexedFuzzyModality(source, result, context, parent);
             return result;
         }
 
-        private static void FillIndexedFuzzyModality(FuzzyModality source, IndexedFuzzyModality dest, ContextOfConvertingToIndexed context)
+        private static void FillIndexedFuzzyModality(FuzzyModality source, IndexedFuzzyModality dest, ContextOfConvertingToIndexed context, IndexedRuleInstance parent)
         {
             dest.Parent = context.RuleInstancesDict[source.Parent];
             dest.Origin = source;
-            dest.Annotations = ConvertAnnotations(source.Annotations);
+            dest.Annotations = ConvertAnnotations(source.Annotations, parent);
         }
 
-        private static IList<IndexedLogicalAnnotation> ConvertAnnotations(IList<LogicalAnnotation> source)
+        private static IList<IndexedLogicalAnnotation> ConvertAnnotations(IList<LogicalAnnotation> source, IndexedRuleInstance parent)
         {
             var result = new List<IndexedLogicalAnnotation>();
 
@@ -726,13 +728,18 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             {
                 return result;
             }
-             
+
+            var dataSource = parent.DataSource;
+
             foreach(var sourceItem in source)
             {
                 var resultItem = new IndexedLogicalAnnotation();
                 resultItem.Origin = sourceItem;
-                resultItem.RuleInstance = ConvertRuleInstance(sourceItem.RuleInstance);
-                resultItem.Annotations = ConvertAnnotations(sourceItem.Annotations);
+
+                var originRuleInstance = dataSource.GetRuleInstanceByKey(sourceItem.RuleInstanceKey);
+
+                resultItem.RuleInstance = ConvertRuleInstance(originRuleInstance);
+                resultItem.Annotations = ConvertAnnotations(sourceItem.Annotations, parent);
                 result.Add(resultItem);
             }
 

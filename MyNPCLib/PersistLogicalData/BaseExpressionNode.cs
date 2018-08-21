@@ -39,6 +39,8 @@ namespace MyNPCLib.PersistLogicalData
         public virtual ValueExpressionNode AsValue => null;
         public virtual bool IsFuzzyLogicValue => false;
         public virtual FuzzyLogicValueExpressionNode AsFuzzyLogicValue => null;
+        public virtual bool IsParamStub => false;
+        public virtual ParamStubExpressionNode AsParamStub => null;
         public abstract BaseExpressionNode Clone(CloneContextOfPersistLogicalData context);
 
         public override string ToString()

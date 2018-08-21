@@ -12,6 +12,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
     [Serializable]
     public class IndexedRuleInstance: IIndexedLogicalyAnnotated, ICGStorage, IObjectToString, IShortObjectToString
     {
+        public ICGStorage DataSource { get; set; }
         public KindOfRuleInstance Kind { get; set; }
         public ulong Key { get; set; }
         public RuleInstance Origin { get; set; }
@@ -128,7 +129,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             return mCommonPersistIndexedLogicalData.GetAllRelations();
         }
 
-        public RuleInstance GeyRuleInstanceByKey(ulong key)
+        public RuleInstance GetRuleInstanceByKey(ulong key)
         {
             return null;
         }

@@ -7,17 +7,13 @@ namespace MyNPCLib.PersistLogicalData
     [Serializable]
     public class LogicalAnnotation : ILogicalyAnnotated, IObjectToString, IShortObjectToString
     {
-        public RuleInstance RuleInstance { get; set; }
+        public ulong RuleInstanceKey { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
 
         public LogicalAnnotation Clone(CloneContextOfPersistLogicalData context)
         {
             var result = new LogicalAnnotation();
-            if(RuleInstance != null)
-            {
-                result.RuleInstance = RuleInstance.Clone();
-            }
-                 
+            result.RuleInstanceKey = RuleInstanceKey;
             result.Annotations = CloneListOfAnnotations(Annotations, context);
             return result;
         }
@@ -37,16 +33,7 @@ namespace MyNPCLib.PersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            if(RuleInstance == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(RuleInstance)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(RuleInstance)}");
-                sb.Append(RuleInstance.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(RuleInstance)}");
-            }
+            sb.AppendLine($"{spaces}{nameof(RuleInstanceKey)} = {RuleInstanceKey}");
 
             if (Annotations == null)
             {
@@ -79,16 +66,7 @@ namespace MyNPCLib.PersistLogicalData
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            if (RuleInstance == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(RuleInstance)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(RuleInstance)}");
-                sb.Append(RuleInstance.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(RuleInstance)}");
-            }
+            sb.AppendLine($"{spaces}{nameof(RuleInstanceKey)} = {RuleInstanceKey}");
 
             if (Annotations == null)
             {

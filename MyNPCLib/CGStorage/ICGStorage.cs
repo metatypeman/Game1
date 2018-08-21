@@ -12,7 +12,7 @@ namespace MyNPCLib.CGStorage
         IList<RuleInstance> AllRuleInstances { get; }
         IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key);
         IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key);
-        RuleInstance GeyRuleInstanceByKey(ulong key);
+        RuleInstance GetRuleInstanceByKey(ulong key);
         IList<ResolverForRelationExpressionNode> GetAllRelations();
     }
 }
