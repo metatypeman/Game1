@@ -1,4 +1,5 @@
-﻿using MyNPCLib.PersistLogicalData;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,14 +8,23 @@ namespace MyNPCLib.Parser.LogicalExpression
 {
     public static class ConvertorASTNodeOfLogicalQueryToRuleInstance
     {
-        public static List<RuleInstance> Convert(ASTNodeOfLogicalQuery node, IEntityDictionary entityDictionary)
+        public static ICGStorage Convert(ASTNodeOfLogicalQuery node, ContextOfCGStorage context)
         {
-            var context = new ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance();
-            context.EntityDictionary = entityDictionary;
+            var localContext = new ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance();
+            localContext.EntityDictionary = context.EntityDictionary;
 
-            NConvertFact(node, context);
+            NConvertFact(node, localContext);
 
-            return context.ResultsList;
+            var resultFactsList = localContext.ResultsList;
+
+            var result = new PassiveListGCStorage(context, resultFactsList);
+
+            foreach (var resultFact in resultFactsList)
+            {
+                resultFact.DataSource = result;
+            }
+
+            return result;
         }
 
         private static void NConvertFact(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)

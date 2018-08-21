@@ -61,7 +61,7 @@ namespace Assets.Scripts
             var context = new ContextOfCGStorage(globalEntityDictionary);
             context.Init();
 
-            var ruleInstancesList = logicalSoundPackage.SoundFactsList;
+            var ruleInstancesList = logicalSoundPackage.SoundFactsDataSource.AllRuleInstances;
 
 #if DEBUG
             Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");

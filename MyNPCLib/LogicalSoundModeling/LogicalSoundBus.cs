@@ -29,7 +29,7 @@ namespace MyNPCLib.LogicalSoundModeling
             {
                 Task.Run(() => {
 
-                    var outputLogicalSoundPackage = new OutputLogicalSoundPackage(logicalSoundPackage.Position, logicalSoundPackage.Power, logicalSoundPackage.LogicalClases, logicalSoundPackage.SoundFactsList);
+                    var outputLogicalSoundPackage = new OutputLogicalSoundPackage(logicalSoundPackage.Position, logicalSoundPackage.Power, logicalSoundPackage.LogicalClases, logicalSoundPackage.SoundFactsDataSource);
 
 #if DEBUG
                     //LogInstance.Log($"outputLogicalSoundPackage = {outputLogicalSoundPackage}");

@@ -38,6 +38,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IndexedQuantityQualityFuzzyModality QuantityQualityModality { get; set; }
         public IList<IndexedLogicalAnnotation> Annotations { get; set; }
 
+        public virtual IList<RuleInstance> AllRuleInstances => new List<RuleInstance>() { Origin };
+
         public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
             if (IsPart_1_Active)

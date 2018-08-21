@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.CGStorage;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,6 +12,7 @@ namespace MyNPCLib.PersistLogicalData
     public class RuleInstance : ILogicalyAnnotated, IRefToRecord, IObjectToString, IShortObjectToString
     {
         public string DictionaryName { get; set; }
+        public ICGStorage DataSource { get; set; }
         public KindOfRuleInstance Kind { get; set; }
         public string Name { get; set; }
         public ulong Key { get; set; }

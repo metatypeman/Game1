@@ -11,6 +11,7 @@ namespace MyNPCLib.CGStorage
         Sharding,
         Local,
         Query,
-        IndexedQuery
+        IndexedQuery,
+        PassiveList
     }
 }

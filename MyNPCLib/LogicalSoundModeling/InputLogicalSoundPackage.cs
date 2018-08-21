@@ -1,4 +1,5 @@
-﻿using MyNPCLib.PersistLogicalData;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -8,12 +9,12 @@ namespace MyNPCLib.LogicalSoundModeling
 {
     public class InputLogicalSoundPackage: IObjectToString
     {
-        public InputLogicalSoundPackage(Vector3 pos, float power, List<string> logicalClasses, IList<RuleInstance> soundFactsList)
+        public InputLogicalSoundPackage(Vector3 pos, float power, List<string> logicalClasses, ICGStorage soundFactsDataSource)
         {
             mPosition = pos;
             mPower = power;
             mLogicalClasses = logicalClasses;
-            mSoundFactsList = soundFactsList;
+            mSoundFactsDataSource = soundFactsDataSource;
         }
 
         private Vector3 mPosition;
@@ -46,13 +47,13 @@ namespace MyNPCLib.LogicalSoundModeling
             }
         }
 
-        private IList<RuleInstance> mSoundFactsList;
+        private ICGStorage mSoundFactsDataSource;
 
-        public IList<RuleInstance> SoundFactsList
+        public ICGStorage SoundFactsDataSource
         {
             get
             {
-                return mSoundFactsList;
+                return mSoundFactsDataSource;
             }
         }
 
@@ -89,18 +90,18 @@ namespace MyNPCLib.LogicalSoundModeling
                 sb.AppendLine($"{spaces}End {nameof(LogicalClases)}");
             }
 
-            if (mSoundFactsList == null)
+            if (mSoundFactsDataSource == null)
             {
-                sb.AppendLine($"{spaces}{nameof(SoundFactsList)} = null");
+                sb.AppendLine($"{spaces}{nameof(SoundFactsDataSource)} = null");
             }
             else
             {
-                sb.AppendLine($"{spaces}Begin {nameof(SoundFactsList)}");
-                foreach (var soundFact in mSoundFactsList)
+                sb.AppendLine($"{spaces}Begin {nameof(SoundFactsDataSource)}");
+                foreach (var soundFact in mSoundFactsDataSource.AllRuleInstances)
                 {
                     sb.Append(soundFact.ToString(nextN));
                 }
-                sb.AppendLine($"{spaces}End {nameof(SoundFactsList)}");
+                sb.AppendLine($"{spaces}End {nameof(SoundFactsDataSource)}");
             }
             return sb.ToString();
         }
