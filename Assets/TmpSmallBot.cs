@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts;
 using MyNPCLib;
+using MyNPCLib.CGStorage;
 using MyNPCLib.ConvertingCGToInternal;
 using MyNPCLib.ConvertingInternalCGToPersistLogicalData;
 using MyNPCLib.LogicalSoundModeling;
@@ -19,12 +20,16 @@ public class TmpSmallBot : MonoBehaviour {
     private IEntityDictionary mEntityDictionary;
     private WordsDict mWordsDict;
     private CGParser mCGParser;
+    private ContextOfCGStorage mContextOfCGStorage;
 
     // Use this for initialization
     void Start () {
         var commonLevelHost = LevelCommonHostFactory.Get();
         mEntityDictionary = commonLevelHost.EntityDictionary;
         mLogicalSoundBus = commonLevelHost.LogicalSoundBus;
+
+        mContextOfCGStorage = new ContextOfCGStorage(mEntityDictionary);
+        mContextOfCGStorage.Init();
 
         mWordsDict = new WordsDict();
         var cgParserOptions = new CGParserOptions();
@@ -121,7 +126,7 @@ public class TmpSmallBot : MonoBehaviour {
 
             //var tstFact = CreateSimpleFact(mEntityDictionary);
 
-            var soundPackage = new InputLogicalSoundPackage(new System.Numerics.Vector3(1, 0, 0), 60, new List<string>() { "human_speech" }, ruleInstancesList);
+            var soundPackage = new InputLogicalSoundPackage(new System.Numerics.Vector3(1, 0, 0), 60, new List<string>() { "human_speech" }, new PassiveListGCStorage(mContextOfCGStorage, ruleInstancesList));
 
             mLogicalSoundBus.PushSoundPackage(soundPackage);
         }

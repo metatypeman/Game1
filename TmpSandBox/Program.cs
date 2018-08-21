@@ -211,9 +211,9 @@ namespace TmpSandBox
         {
             LogInstance.Log($"queryStr = {queryStr}");
 
-            var context = new ContextOfLogicalExpressionParser(queryStr, entityDictionary);
+            var contextOfParser = new ContextOfLogicalExpressionParser(queryStr, entityDictionary);
 
-            var parser = new FactParser(context);
+            var parser = new FactParser(contextOfParser);
             parser.Run();
 
             var result = parser.Result;
@@ -221,7 +221,12 @@ namespace TmpSandBox
             LogInstance.Log($"queryStr = {queryStr}");
             LogInstance.Log($"result = {result}");
 
-            var ruleInstancesList = ConvertorASTNodeOfLogicalQueryToRuleInstance.Convert(result, entityDictionary);
+            var context = new ContextOfCGStorage(entityDictionary);
+            context.Init();
+
+            var passiveListStorage = ConvertorASTNodeOfLogicalQueryToRuleInstance.Convert(result, context);
+
+            var ruleInstancesList = passiveListStorage.AllRuleInstances;
 
             LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
 
@@ -244,6 +249,9 @@ namespace TmpSandBox
 
             var globalEntityDictionary = new EntityDictionary();
 
+            var context = new ContextOfCGStorage(globalEntityDictionary);
+            context.Init();
+
             var soundBus = new LogicalSoundBus();
 
             var fakeListener = new TSTFakeLogicalSoundBusListener(new Vector3(200, 0, 0));
@@ -254,7 +262,7 @@ namespace TmpSandBox
 
             var tstFact = CreateSimpleFact(globalEntityDictionary);
 
-            var soundPackage = new InputLogicalSoundPackage(new Vector3(1, 0, 0), 60, new List<string>() { "human_speech" }, new List<RuleInstance>() { tstFact });
+            var soundPackage = new InputLogicalSoundPackage(new Vector3(1, 0, 0), 60, new List<string>() { "human_speech" }, new PassiveListGCStorage(context, new List<RuleInstance>() { tstFact }));
 
             soundBus.PushSoundPackage(soundPackage);
 

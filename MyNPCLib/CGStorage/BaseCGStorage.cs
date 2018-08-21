@@ -19,6 +19,8 @@ namespace MyNPCLib.CGStorage
         private ContextOfCGStorage mContext;
         public abstract KindOfCGStorage KindOfStorage { get; }
 
+        public virtual IList<RuleInstance> AllRuleInstances => null;
+
         //It is temporary public for construction time. It will be private after complete construction.
         public string DictionaryName { get; set; }
         private readonly object mDataLockObj = new object();
