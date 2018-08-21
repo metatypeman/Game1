@@ -42,6 +42,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             var entityDictionary = context.EntityDictionary;
 
             var result = new RuleInstance();
+            result.Kind = KindOfRuleInstance.Fact;
             var nameOfFact = NamesHelper.CreateEntityName();
             result.Name = nameOfFact;
             result.Key = entityDictionary.GetKey(nameOfFact);
@@ -378,6 +379,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             newContext.EntityDictionary = entityDictionary;
 
             var factNode = NConvertFact(node, newContext);
+            factNode.Kind = KindOfRuleInstance.EntityCondition;
 
             var factName = factNode.Name;
             var factKey = entityDictionary.GetKey(factName);
@@ -720,6 +722,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             newContext.EntityDictionary = entityDictionary;
 
             var factNode = NConvertFact(node, newContext);
+            factNode.Kind = KindOfRuleInstance.EntityCondition;
 
             var factName = factNode.Name;
             var factKey = entityDictionary.GetKey(factName);
@@ -813,6 +816,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             newContext.EntityDictionary = context.EntityDictionary;
 
             var annotationInstance = NConvertFact(node, newContext);
+            annotationInstance.Kind = KindOfRuleInstance.Annotation;
 
             var initFactsList = newContext.ResultsList;
 

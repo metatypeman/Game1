@@ -85,7 +85,9 @@ namespace Assets.Scripts
             var actionName = string.Empty;
 
             {
-                var query = CreateAnnotatedQueryForGoToGreenWaypoint(globalEntityDictionary);
+                var queryPackage = CreateAnnotatedQueryForGoToGreenWaypoint(globalEntityDictionary);
+                var queryPassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
+                var query = queryPackage.MainRuleInstance;
 
 #if DEBUG
                 {
@@ -184,13 +186,19 @@ namespace Assets.Scripts
 #endif
         }
 
-        private static RuleInstance CreateAnnotatedQueryForGoToGreenWaypoint(IEntityDictionary globalEntityDictionary)
+        private static RuleInstancePackage CreateAnnotatedQueryForGoToGreenWaypoint(IEntityDictionary globalEntityDictionary)
         {
+            var result = new RuleInstancePackage();
+            var allRuleInstancesList = new List<RuleInstance>();
+            result.AllRuleInstances = allRuleInstancesList;
+
             var annotationInstance = new RuleInstance();
             annotationInstance.Kind = KindOfRuleInstance.Annotation;
             var name = NamesHelper.CreateEntityName();
             annotationInstance.Name = name;
             annotationInstance.Key = globalEntityDictionary.GetKey(name);
+
+            allRuleInstancesList.Add(annotationInstance);
 
             var partOfAnnotation = new RulePart();
             partOfAnnotation.IsActive = true;
@@ -229,6 +237,9 @@ namespace Assets.Scripts
             ruleInstance.ModuleName = "#simple_module";
             ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
 
+            result.MainRuleInstance = ruleInstance;
+            allRuleInstancesList.Add(ruleInstance);
+
             var rulePart_1 = new RulePart();
             rulePart_1.Parent = ruleInstance;
             ruleInstance.Part_1 = rulePart_1;
@@ -242,7 +253,7 @@ namespace Assets.Scripts
 
             var annotation = new LogicalAnnotation();
             expr3.Annotations.Add(annotation);
-            annotation.RuleInstance = annotationInstance;
+            annotation.RuleInstanceKey = annotationInstance.Key;
 
             var relationName = "?Z";
             var relationKey = globalEntityDictionary.GetKey(relationName);
@@ -262,7 +273,7 @@ namespace Assets.Scripts
 
             //a(?X,?Y)
 
-            return ruleInstance;
+            return result;
         }
 
         private void DispatchGo(string actionName, ContextOfCGStorage context)
@@ -371,7 +382,7 @@ namespace Assets.Scripts
                     Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
 #endif
 
-                    var entityConditionRuleInstance = context.GlobalCGStorage.GeyRuleInstanceByKey(keyOfEntityConditionFact);
+                    var entityConditionRuleInstance = context.GlobalCGStorage.GetRuleInstanceByKey(keyOfEntityConditionFact);
 
 #if DEBUG
                     Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");

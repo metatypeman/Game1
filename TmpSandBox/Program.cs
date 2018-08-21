@@ -50,9 +50,9 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTParsingUserQuery();
+            //TSTParsingUserQuery();
             //TSTLogicalSoundBus();
-            //TSTGoToGreenWaypoint();
+            TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
             //TSTATNParsing();
             //TSTWordNet();
@@ -211,24 +211,12 @@ namespace TmpSandBox
         {
             LogInstance.Log($"queryStr = {queryStr}");
 
-            var contextOfParser = new ContextOfLogicalExpressionParser(queryStr, entityDictionary);
-
-            var parser = new FactParser(contextOfParser);
-            parser.Run();
-
-            var result = parser.Result;
-
-            LogInstance.Log($"queryStr = {queryStr}");
-            LogInstance.Log($"result = {result}");
-
             var context = new ContextOfCGStorage(entityDictionary);
             context.Init();
 
-            var ruleInstancesPackage = ConvertorASTNodeOfLogicalQueryToRuleInstance.Convert(result, entityDictionary);
+            var passiveListStorage = RuleInstanceFactory.ConvertStringToPassiveListGCStorage(queryStr, context);
 
-            var ruleInstancesList = ruleInstancesPackage.AllRuleInstances;
-
-            var passiveListStorage = new PassiveListGCStorage(context, ruleInstancesList);
+            var ruleInstancesList = passiveListStorage.AllRuleInstances;
 
             LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
 
@@ -312,6 +300,8 @@ namespace TmpSandBox
 
                 var ruleInstancesList = ConvertorInternalCGToPersistLogicalData.ConvertConceptualGraph(internalCG, globalEntityDictionary);
 
+                var ruleInstancesPassiveListStorage = new PassiveListGCStorage(context, ruleInstancesList);
+
                 LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
                 //ruleInstancesList = ruleInstancesList.Take(1).ToList();
                 foreach (var ruleInstance in ruleInstancesList)
@@ -336,13 +326,18 @@ namespace TmpSandBox
             var actionName = string.Empty;
 
             {
-                var queryPackage = CreateAnnotatedQueryForGoToGreenWaypoint(globalEntityDictionary);
+                var queryStr = "{: ?Z(?X,?Y)[: {: action :} :] :}";
+
+                var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
+
+                //var queryPackage = CreateAnnotatedQueryForGoToGreenWaypoint(globalEntityDictionary);
+                var queryPackagePassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
                 var query = queryPackage.MainRuleInstance;
 
                 {
                     var debugStr = DebugHelperForRuleInstance.ToString(query);
 
-                    LogInstance.Log($"debugStr = {debugStr}");
+                    LogInstance.Log($"debugStr (query) = {debugStr}");
                 }
 
                 var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
