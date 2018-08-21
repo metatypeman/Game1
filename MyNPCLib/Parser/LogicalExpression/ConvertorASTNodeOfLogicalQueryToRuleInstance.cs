@@ -183,16 +183,36 @@ namespace MyNPCLib.Parser.LogicalExpression
                 case KindOfASTNodeOfLogicalQuery.Var:
                     return NConvertStandardExpressionVarNode(node, context);
 
+                case KindOfASTNodeOfLogicalQuery.Fact:
+                    {
+                        var secondaryKind = node.SecondaryKind;
+
+                        switch(secondaryKind)
+                        {
+                            case SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition:
+                                return NConvertStandardExpressionEntityRefNode(node, context);
+
+                            case SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression:
+                            case SecondaryKindOfASTNodeOfLogicalQuery.SimpleConcept:
+                                return NConvertStandardExpressionFactNode(node, context);
+
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(secondaryKind), secondaryKind, null);
+                        }
+                    }
+
+                case KindOfASTNodeOfLogicalQuery.QuestionParam:
+                    return NConvertStandardExpressionQuestionVarNode(node, context);
+
+                case KindOfASTNodeOfLogicalQuery.Value:
+                    return NConvertStandardExpressionValueNode(node, context);
+
+                case KindOfASTNodeOfLogicalQuery.StubParam:
+                    return NConvertStandardExpressionStubNode(node, context);
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kindOfNode), kindOfNode, null);
             }
-
-            /*
-            NConvertStandardExpressionFactNode
-        NConvertStandardExpressionEntityRefNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
-        NConvertStandardExpressionQuestionVarNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
-        NConvertStandardExpressionValueNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
-             */
         }
 
         private static BaseExpressionNode NConvertStandardExpressionAndNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
@@ -313,6 +333,15 @@ namespace MyNPCLib.Parser.LogicalExpression
         }
 
         private static BaseExpressionNode NConvertStandardExpressionValueNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
+        {
+#if DEBUG
+            LogInstance.Log($"node = {node}");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        private static BaseExpressionNode NConvertStandardExpressionStubNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
             LogInstance.Log($"node = {node}");

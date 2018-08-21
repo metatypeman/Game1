@@ -17,6 +17,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         BinaryOperator,
         UnaryOperator,
         Condition,
-        StubParam
+        StubParam,
+        Value
     }
 }
