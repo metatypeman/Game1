@@ -6,6 +6,7 @@ using MyNPCLib.LegacyConvertors;
 using MyNPCLib.Logical;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.LogicalSoundModeling;
+using MyNPCLib.Parser.LogicalExpression;
 using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
@@ -85,7 +86,10 @@ namespace Assets.Scripts
             var actionName = string.Empty;
 
             {
-                var queryPackage = CreateAnnotatedQueryForGoToGreenWaypoint(globalEntityDictionary);
+                var queryStr = "{: ?Z(?X,?Y)[: {: action :} :] :}";
+
+                var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
+                //var queryPackage = CreateAnnotatedQueryForGoToGreenWaypoint(globalEntityDictionary);
                 var queryPassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
                 var query = queryPackage.MainRuleInstance;
 
@@ -186,96 +190,6 @@ namespace Assets.Scripts
 #endif
         }
 
-        private static RuleInstancePackage CreateAnnotatedQueryForGoToGreenWaypoint(IEntityDictionary globalEntityDictionary)
-        {
-            var result = new RuleInstancePackage();
-            var allRuleInstancesList = new List<RuleInstance>();
-            result.AllRuleInstances = allRuleInstancesList;
-
-            var annotationInstance = new RuleInstance();
-            annotationInstance.Kind = KindOfRuleInstance.Annotation;
-            var name = NamesHelper.CreateEntityName();
-            annotationInstance.Name = name;
-            annotationInstance.Key = globalEntityDictionary.GetKey(name);
-
-            allRuleInstancesList.Add(annotationInstance);
-
-            var partOfAnnotation = new RulePart();
-            partOfAnnotation.IsActive = true;
-            partOfAnnotation.Parent = annotationInstance;
-            annotationInstance.Part_1 = partOfAnnotation;
-
-            var relation = new RelationExpressionNode();
-            partOfAnnotation.Expression = relation;
-            name = "action";
-            relation.Name = name;
-            relation.Key = globalEntityDictionary.GetKey(name);
-            relation.Params = new List<BaseExpressionNode>();
-
-            var param = new VarExpressionNode();
-            relation.Params.Add(param);
-            var varName = "@X";
-            param.Name = varName;
-            param.Key = globalEntityDictionary.GetKey(varName);
-            param.Quantifier = KindOfQuantifier.Existential;
-
-            var variablesQuantification = new VariablesQuantificationPart();
-            annotationInstance.VariablesQuantification = variablesQuantification;
-            variablesQuantification.Items = new List<VarExpressionNode>();
-
-            var varQuant_1 = new VarExpressionNode();
-            varQuant_1.Quantifier = KindOfQuantifier.Existential;
-            varQuant_1.Name = varName;
-            varQuant_1.Key = globalEntityDictionary.GetKey(varName);
-            variablesQuantification.Items.Add(varQuant_1);
-
-            var ruleInstance = new RuleInstance();
-            ruleInstance.DictionaryName = globalEntityDictionary.Name;
-            ruleInstance.Kind = KindOfRuleInstance.QuestionVars;
-            ruleInstance.Name = NamesHelper.CreateEntityName();
-            ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
-            ruleInstance.ModuleName = "#simple_module";
-            ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
-
-            result.MainRuleInstance = ruleInstance;
-            allRuleInstancesList.Add(ruleInstance);
-
-            var rulePart_1 = new RulePart();
-            rulePart_1.Parent = ruleInstance;
-            ruleInstance.Part_1 = rulePart_1;
-
-            rulePart_1.IsActive = true;
-
-            var expr3 = new RelationExpressionNode();
-            rulePart_1.Expression = expr3;
-            expr3.Params = new List<BaseExpressionNode>();
-            expr3.Annotations = new List<LogicalAnnotation>();
-
-            var annotation = new LogicalAnnotation();
-            expr3.Annotations.Add(annotation);
-            annotation.RuleInstanceKey = annotationInstance.Key;
-
-            var relationName = "?Z";
-            var relationKey = globalEntityDictionary.GetKey(relationName);
-            expr3.IsQuestion = true;
-            expr3.Name = relationName;
-            expr3.Key = relationKey;
-
-            var param_1 = new QuestionVarExpressionNode();
-            expr3.Params.Add(param_1);
-            param_1.Name = "?X";
-            param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
-
-            var param_2 = new QuestionVarExpressionNode();
-            expr3.Params.Add(param_2);
-            param_2.Name = "?Y";
-            param_2.Key = globalEntityDictionary.GetKey(param_2.Name);
-
-            //a(?X,?Y)
-
-            return result;
-        }
-
         private void DispatchGo(string actionName, ContextOfCGStorage context)
         {
 #if DEBUG
@@ -283,7 +197,12 @@ namespace Assets.Scripts
 #endif
             var globalEntityDictionary = mEntityDictionary;
 
-            var query = CreateQueryForDirectionOfGoing(globalEntityDictionary, actionName);
+            var queryStr = "{: direction(go,?X) :}";
+
+            var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
+            //var queryPackage = CreateQueryForDirectionOfGoing(globalEntityDictionary, actionName);
+            var queryPackagePassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
+            var query = queryPackage.MainRuleInstance;
 
 #if DEBUG
             {
@@ -410,47 +329,6 @@ namespace Assets.Scripts
 #endif
 
             Send(command);
-        }
-
-        private static RuleInstance CreateQueryForDirectionOfGoing(IEntityDictionary globalEntityDictionary, string actionName)
-        {
-            var ruleInstance = new RuleInstance();
-            ruleInstance.DictionaryName = globalEntityDictionary.Name;
-            ruleInstance.Kind = KindOfRuleInstance.QuestionVars;
-            ruleInstance.Name = NamesHelper.CreateEntityName();
-            ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
-            ruleInstance.ModuleName = "#simple_module";
-            ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
-
-            var rulePart_1 = new RulePart();
-            rulePart_1.Parent = ruleInstance;
-            ruleInstance.Part_1 = rulePart_1;
-
-            rulePart_1.IsActive = true;
-
-            var expr3 = new RelationExpressionNode();
-            rulePart_1.Expression = expr3;
-            expr3.Params = new List<BaseExpressionNode>();
-            expr3.Annotations = new List<LogicalAnnotation>();
-
-            var annotation = new LogicalAnnotation();
-
-            var relationName = "direction";
-            var relationKey = globalEntityDictionary.GetKey(relationName);
-            expr3.Name = relationName;
-            expr3.Key = relationKey;
-
-            var param_1 = new ConceptExpressionNode();
-            expr3.Params.Add(param_1);
-            param_1.Name = actionName;
-            param_1.Key = globalEntityDictionary.GetKey(param_1.Name);
-
-            var param_2 = new QuestionVarExpressionNode();
-            expr3.Params.Add(param_2);
-            param_2.Name = "?X";
-            param_2.Key = globalEntityDictionary.GetKey(param_2.Name);
-
-            return ruleInstance;
         }
     }
 }

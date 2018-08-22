@@ -223,7 +223,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     }
 
                 case KindOfASTNodeOfLogicalQuery.QuestionParam:
-                    return NConvertStandardExpressionQuestionVarNode(node, context);
+                    return NConvertStandardExpressionQuestionVarNode(node, parent, context);
 
                 case KindOfASTNodeOfLogicalQuery.Value:
                     return NConvertStandardExpressionValueNode(node, context);
@@ -425,12 +425,14 @@ namespace MyNPCLib.Parser.LogicalExpression
             return result;
         }
 
-        private static BaseExpressionNode NConvertStandardExpressionQuestionVarNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
+        private static BaseExpressionNode NConvertStandardExpressionQuestionVarNode(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
             LogInstance.Log($"node = {node}");
 #endif
             var entityDictionary = context.EntityDictionary;
+
+            parent.Kind = KindOfRuleInstance.QuestionVars;
 
             var result = new QuestionVarExpressionNode();
             result.Name = node.Name;

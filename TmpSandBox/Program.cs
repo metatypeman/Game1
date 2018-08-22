@@ -405,7 +405,12 @@ namespace TmpSandBox
             LogInstance.Log("NEXT");
 
             {
-                var query = CreateQueryForDirectionOfGoing(globalEntityDictionary, actionName);
+                var queryStr = "{: direction(go,?X) :}";
+
+                var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
+                //var queryPackage = CreateQueryForDirectionOfGoing(globalEntityDictionary, actionName);
+                var queryPackagePassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
+                var query = queryPackage.MainRuleInstance;
 
                 {
                     var debugStr = DebugHelperForRuleInstance.ToString(query);
@@ -494,8 +499,12 @@ namespace TmpSandBox
             LogInstance.Log("End");
         }
 
-        private static RuleInstance CreateQueryForDirectionOfGoing(IEntityDictionary globalEntityDictionary, string actionName)
+        private static RuleInstancePackage CreateQueryForDirectionOfGoing(IEntityDictionary globalEntityDictionary, string actionName)
         {
+            var result = new RuleInstancePackage();
+            var allRuleInstancesList = new List<RuleInstance>();
+            result.AllRuleInstances = allRuleInstancesList;
+
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
             ruleInstance.Kind = KindOfRuleInstance.QuestionVars;
@@ -503,6 +512,9 @@ namespace TmpSandBox
             ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
             ruleInstance.ModuleName = "#simple_module";
             ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
+
+            allRuleInstancesList.Add(ruleInstance);
+            result.MainRuleInstance = ruleInstance;
 
             var rulePart_1 = new RulePart();
             rulePart_1.Parent = ruleInstance;
@@ -532,7 +544,7 @@ namespace TmpSandBox
             param_2.Name = "?X";
             param_2.Key = globalEntityDictionary.GetKey(param_2.Name);
 
-            return ruleInstance;
+            return result;
         }
 
         private static RuleInstancePackage CreateAnnotatedQueryForGoToGreenWaypoint(IEntityDictionary globalEntityDictionary)
