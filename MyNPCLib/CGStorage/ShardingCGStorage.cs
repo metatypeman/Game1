@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.CGStorage
 {
-    public class ShardingCGStorage : BaseCGStorage
+    public class ShardingCGStorage : BaseRealStorage
     {
         public ShardingCGStorage(ContextOfCGStorage context)
             : base(context)

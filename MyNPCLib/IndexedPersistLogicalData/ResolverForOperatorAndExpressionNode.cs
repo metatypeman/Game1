@@ -143,7 +143,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
         }
 
-        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo)
+        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
         {
 #if DEBUG
             LogInstance.Log("Begin");

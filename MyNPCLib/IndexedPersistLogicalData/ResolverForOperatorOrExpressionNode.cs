@@ -25,7 +25,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
         }
 
-        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo)
+        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
 #if DEBUG
             LogInstance.Log("Begin");

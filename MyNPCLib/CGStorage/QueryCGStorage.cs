@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.CGStorage
 {
-    public class QueryCGStorage : BaseCGStorage
+    public class QueryCGStorage : BaseProxyStorage
     {
         public QueryCGStorage(ContextOfCGStorage context)
             : base(context)

@@ -16,89 +16,35 @@ namespace MyNPCLib.CGStorage
             DictionaryName = mContext.EntityDictionary.Name;
         }
 
-        private ContextOfCGStorage mContext;
+        protected ContextOfCGStorage mContext { get; private set; }
         public abstract KindOfCGStorage KindOfStorage { get; }
 
-        public virtual IList<RuleInstance> AllRuleInstances => mRuleInstancesList;
+        public virtual IList<RuleInstance> AllRuleInstances => null;
 
-        //It is temporary public for construction time. It will be private after complete construction.
-        public string DictionaryName { get; set; }
-        private readonly object mDataLockObj = new object();
-        //It is temporary public for construction time. It will be private after complete construction.
-        public IList<RuleInstance> mRuleInstancesList { get; set; }
-        private CommonPersistIndexedLogicalData mCommonPersistIndexedLogicalData { get; set; }
+        public string DictionaryName { get; private set; }
 
-        public void Init()
+        public virtual void Init()
         {
-            lock(mDataLockObj)
-            {
-                mRuleInstancesList = new List<RuleInstance>();
-                mCommonPersistIndexedLogicalData = new CommonPersistIndexedLogicalData();
-                mCommonPersistIndexedLogicalData.Init();
-            }
         }
 
-        public void NSetIndexedRuleInstanceToIndexData(IndexedRuleInstance indexedRuleInstance)
+        public virtual IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
-            lock (mDataLockObj)
-            {
-#if DEBUG
-                //LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
-#endif
-
-                if(!mRuleInstancesList.Contains(indexedRuleInstance.Origin))
-                {
-                    mRuleInstancesList.Add(indexedRuleInstance.Origin);
-                }
-
-                mCommonPersistIndexedLogicalData.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
-            }
+            throw new NotImplementedException();
         }
 
-        public IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
+        public virtual IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key)
         {
-            lock (mDataLockObj)
-            {
-#if DEBUG
-                //LogInstance.Log($"key = {key}");
-#endif
-
-                return mCommonPersistIndexedLogicalData.GetIndexedRulePartOfFactsByKeyOfRelation(key);
-            }
+            throw new NotImplementedException();
         }
 
-        public IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key)
+        public virtual IList<ResolverForRelationExpressionNode> GetAllRelations()
         {
-            lock (mDataLockObj)
-            {
-                return mCommonPersistIndexedLogicalData.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(key);
-            }
+            throw new NotImplementedException();
         }
 
-        public IList<ResolverForRelationExpressionNode> GetAllRelations()
+        public virtual RuleInstance GetRuleInstanceByKey(ulong key)
         {
-            lock (mDataLockObj)
-            {
-                return mCommonPersistIndexedLogicalData.GetAllRelations();
-            }
-        }
-
-        public RuleInstance GetRuleInstanceByKey(ulong key)
-        {
-            return mRuleInstancesList.FirstOrDefault(p => p.Key == key);
-        }
-
-        public string GetContentAsDbgStr()
-        {
-            var n = 0u;
-            var spaces = StringHelper.Spaces(n);
-            var nextN = n + 4;
-            var nextNSpaces = StringHelper.Spaces(nextN);
-            var entityDictionary = mContext.EntityDictionary;
-            var sb = new StringBuilder();
-            sb.AppendLine($"{spaces}mRuleInstancesList.Count = {mRuleInstancesList.Count}");
-            sb.Append(mCommonPersistIndexedLogicalData.GetContentAsDbgStr(entityDictionary));
-            return sb.ToString();
+            throw new NotImplementedException();
         }
 
         public override string ToString()

@@ -65,7 +65,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
         }
 
-        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo)
+        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
 #if DEBUG
             //LogInstance.Log($"Key = {Key}");
@@ -87,7 +87,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             //LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
 #endif
 
-            NFillExecutingCard(queryExecutingCard, strategyForGettingInfo);
+            NFillExecutingCard(queryExecutingCard, context);
 
 #if DEBUG
             //LogInstance.Log($"^^^^^^queryExecutingCard = {queryExecutingCard}");
@@ -102,13 +102,14 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
         }
 
-        private void NFillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo)
+        private void NFillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
         {
-            var context = strategyForGettingInfo.Context;
             var senderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
             var senderIndexedRulePart = queryExecutingCard.SenderIndexedRulePart;
 
-            var indexedRulePartsOfFactsList = strategyForGettingInfo.GetIndexedRulePartOfFactsByKeyOfRelation(Key);
+            var dataSource = context.DataSource;
+
+            var indexedRulePartsOfFactsList = dataSource.GetIndexedRulePartOfFactsByKeyOfRelation(Key);
 
 #if DEBUG
             //LogInstance.Log($"indexedRulePartsOfFactsList?.Count = {indexedRulePartsOfFactsList?.Count}");
@@ -165,7 +166,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             //LogInstance.Log($"~~~~~~~~~~~~~~~~~queryExecutingCard = {queryExecutingCard}");
 #endif
 
-            var indexedRulePartWithOneRelationsList = strategyForGettingInfo.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key);
+            var indexedRulePartWithOneRelationsList = dataSource.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key);
 
 #if DEBUG
             //LogInstance.Log($"indexedRulePartWithOneRelationsList?.Count = {indexedRulePartWithOneRelationsList?.Count}");

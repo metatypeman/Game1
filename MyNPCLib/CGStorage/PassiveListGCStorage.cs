@@ -1,11 +1,12 @@
 ﻿using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.CGStorage
 {
-    public class PassiveListGCStorage : BaseCGStorage
+    public class PassiveListGCStorage : BaseProxyStorage
     {
         public PassiveListGCStorage(ContextOfCGStorage context, IList<RuleInstance> ruleInstances)
             : base(context)
@@ -22,5 +23,14 @@ namespace MyNPCLib.CGStorage
         }
 
         public override KindOfCGStorage KindOfStorage => KindOfCGStorage.PassiveList;
+
+        public override IList<RuleInstance> AllRuleInstances => mRuleInstancesList;
+
+        private IList<RuleInstance> mRuleInstancesList;
+
+        public override RuleInstance GetRuleInstanceByKey(ulong key)
+        {
+            return mRuleInstancesList.FirstOrDefault(p => p.Key == key);
+        }
     }
 }

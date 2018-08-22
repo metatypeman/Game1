@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.CGStorage
 {
-    public class LocalCGStorage : BaseCGStorage
+    public class LocalCGStorage : BaseRealStorage
     {
         public LocalCGStorage(ContextOfCGStorage context)
             : base(context)

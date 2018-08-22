@@ -31,10 +31,7 @@ namespace MyNPCLib.LogicalSearchEngine
             var context = new LogicalSearchContext();
             context.QueryExpression = queryExpression;
             context.EntityDictionary = entityDictionary;
-
-            var dataSourcesSettingsOrderedByPriorityList = options.DataSourcesSettings.OrderBy(p => p.Priority).ToList();
-            context.DataSourcesSettingsOrderedByPriorityAndUseFactsList = dataSourcesSettingsOrderedByPriorityList.Where(p => p.UseFacts).ToList();
-            context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList = dataSourcesSettingsOrderedByPriorityList.Where(p => p.UseProductions).ToList();
+            context.DataSource = options.DataSource;
 
 #if DEBUG
             //LogInstance.Log($"context = {context}");

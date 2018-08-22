@@ -352,7 +352,11 @@ namespace TmpSandBox
                 globalStorageOptions.UseProductions = true;
                 globalStorageOptions.Priority = 1;
 
-                searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+
+                var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
+
+                searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
 
                 searchOptions.QueryExpression = indexedQuery;
 
@@ -430,7 +434,7 @@ namespace TmpSandBox
                 globalStorageOptions.UseProductions = true;
                 globalStorageOptions.Priority = 1;
 
-                searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
 
                 searchOptions.QueryExpression = indexedQuery;
 
@@ -709,7 +713,7 @@ namespace TmpSandBox
                 globalStorageOptions.UseProductions = true;
                 globalStorageOptions.Priority = 1;
 
-                searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
 
                 searchOptions.QueryExpression = indexedQuery;
 
@@ -736,7 +740,7 @@ namespace TmpSandBox
             LogInstance.Log("End");
         }
 
-        private static void AddSmokeFact(RuleInstance smokeFact, BaseCGStorage storage)
+        private static void AddSmokeFact(RuleInstance smokeFact, BaseRealStorage storage)
         {
             var indexedSmokeFact = ConvertorToIndexed.ConvertRuleInstance(smokeFact);
             //indexedSmokeFact.FillIndexedDataAsStorage();
@@ -1432,7 +1436,7 @@ namespace TmpSandBox
             globalStorageOptions.UseProductions = true;
             globalStorageOptions.Priority = 1;
 
-            searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+            searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
 
             searchOptions.QueryExpression = indexedQuery;
 

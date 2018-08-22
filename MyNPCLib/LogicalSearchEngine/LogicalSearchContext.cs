@@ -1,4 +1,5 @@
-﻿using MyNPCLib.IndexedPersistLogicalData;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.IndexedPersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,8 +10,7 @@ namespace MyNPCLib.LogicalSearchEngine
     {
         public IndexedRuleInstance QueryExpression { get; set; }
         public IEntityDictionary EntityDictionary { get; set; }
-        public IList<SettingsOfStorageForSearchingInThisSession> DataSourcesSettingsOrderedByPriorityAndUseFactsList { get; set; }
-        public IList<SettingsOfStorageForSearchingInThisSession> DataSourcesSettingsOrderedByPriorityAndUseProductionsList { get; set; }
+        public ICGStorage DataSource { get; set; }
 
         public override string ToString()
         {
@@ -37,19 +37,6 @@ namespace MyNPCLib.LogicalSearchEngine
                 sb.AppendLine($"{spaces}Begin {nameof(QueryExpression)}");
                 sb.Append(QueryExpression.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(QueryExpression)}");
-            }
-            if (DataSourcesSettingsOrderedByPriorityAndUseProductionsList == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(DataSourcesSettingsOrderedByPriorityAndUseProductionsList)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(DataSourcesSettingsOrderedByPriorityAndUseProductionsList)}");
-                foreach (var dataSourcesSettings in DataSourcesSettingsOrderedByPriorityAndUseProductionsList)
-                {
-                    sb.Append(dataSourcesSettings.ToString(nextN));
-                }
-                sb.AppendLine($"{spaces}End {nameof(DataSourcesSettingsOrderedByPriorityAndUseProductionsList)}");
             }
             return sb.ToString();
         }

@@ -18,7 +18,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IndexedRulePart RulePart { get; set; }
 
         public abstract void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context);
-        public abstract void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo);
+        public abstract void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context);
 
         public string GetHumanizeDbgString()
         {
