@@ -48,9 +48,9 @@ namespace MyNPCLib.IndexedPersistLogicalData
             //LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
 #endif
 
-            var strategyForGettingInfo = new StrategyForGettingInfoFromStoragesByLogicalSearchContext(context);
+            //var strategyForGettingInfo = new StrategyForGettingInfoFromStoragesByLogicalSearchContext(context);
 
-            NFillExecutingCard(queryExecutingCard, strategyForGettingInfo);
+            NFillExecutingCard(queryExecutingCard, context);
 
 #if DEBUG
             //LogInstance.Log($"^^^^^^queryExecutingCard = {queryExecutingCard}");

@@ -20,44 +20,47 @@ namespace MyNPCLib.IndexedPersistLogicalData
             //LogInstance.Log($"key = {key}");
 #endif
 
-            var result = new List<IndexedRulePart>();
+            //var result = new List<IndexedRulePart>();
 
-            var dataSourcesSettingsOrderedByPriorityList = Context.DataSourcesSettingsOrderedByPriorityAndUseFactsList;
+            //var dataSourcesSettingsOrderedByPriorityList = Context.DataSourcesSettingsOrderedByPriorityAndUseFactsList;
 
-            foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
-            {
-                var indexedRulePartsOfFactsList = dataSourcesSettings.Storage.GetIndexedRulePartOfFactsByKeyOfRelation(key);
+            //foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
+            //{
+            //    var indexedRulePartsOfFactsList = dataSourcesSettings.Storage.GetIndexedRulePartOfFactsByKeyOfRelation(key);
 
-                if (indexedRulePartsOfFactsList == null)
-                {
-                    continue;
-                }
+            //    if (indexedRulePartsOfFactsList == null)
+            //    {
+            //        continue;
+            //    }
 
-                result.AddRange(indexedRulePartsOfFactsList);
-            }
+            //    result.AddRange(indexedRulePartsOfFactsList);
+            //}
 
-            return result;
+            //return result;
+
+            throw new NotImplementedException();
         }
 
         public IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key)
         {
-            var result = new List<IndexedRulePart>();
+            throw new NotImplementedException();
+            //var result = new List<IndexedRulePart>();
 
-            var dataSourcesSettingsOrderedByPriorityAndUseProductionsList = Context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList;
+            //var dataSourcesSettingsOrderedByPriorityAndUseProductionsList = Context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList;
 
-            foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityAndUseProductionsList)
-            {
-                var indexedRulePartWithOneRelationsList = dataSourcesSettings.Storage.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(key);
+            //foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityAndUseProductionsList)
+            //{
+            //    var indexedRulePartWithOneRelationsList = dataSourcesSettings.Storage.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(key);
 
-                if (indexedRulePartWithOneRelationsList == null)
-                {
-                    continue;
-                }
+            //    if (indexedRulePartWithOneRelationsList == null)
+            //    {
+            //        continue;
+            //    }
 
-                result.AddRange(indexedRulePartWithOneRelationsList);
-            }
+            //    result.AddRange(indexedRulePartWithOneRelationsList);
+            //}
 
-            return result;
+            //return result;
         }
     }
 }
