@@ -5,6 +5,7 @@ using System.Text;
 
 namespace MyNPCLib.IndexedPersistLogicalData
 {
+    [Obsolete]
     public class StrategyForGettingInfoFromStoragesByLogicalSearchContext: IStrategyForGettingInfoFromStorages
     {
         public StrategyForGettingInfoFromStoragesByLogicalSearchContext(LogicalSearchContext context)
@@ -12,8 +13,10 @@ namespace MyNPCLib.IndexedPersistLogicalData
             Context = context;
         }
 
+        [Obsolete]
         public LogicalSearchContext Context { get; private set; }
 
+        [Obsolete]
         public IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
 #if DEBUG
@@ -41,6 +44,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             throw new NotImplementedException();
         }
 
+        [Obsolete]
         public IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key)
         {
             throw new NotImplementedException();

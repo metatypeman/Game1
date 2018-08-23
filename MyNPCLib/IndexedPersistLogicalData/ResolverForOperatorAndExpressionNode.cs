@@ -15,7 +15,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.And;
 
-        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
         {
             var senderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
             var senderIndexedRulePart = queryExecutingCard.SenderIndexedRulePart;
@@ -25,7 +25,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             leftQueryExecutingCard.SenderIndexedRulePart = senderIndexedRulePart;
             leftQueryExecutingCard.SenderExpressionNode = Origin;
             leftQueryExecutingCard.KnownInfoList = queryExecutingCard.KnownInfoList;
-            Left.FillExecutingCard(leftQueryExecutingCard, context);
+            Left.FillExecutingCard(leftQueryExecutingCard, dataSource);
 
             var leftQueryExecutingCardResultsOfQueryToRelationList = leftQueryExecutingCard.ResultsOfQueryToRelationList;
 
@@ -43,7 +43,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 rightQueryExecutingCard.SenderIndexedRulePart = senderIndexedRulePart;
                 rightQueryExecutingCard.SenderExpressionNode = Origin;
                 rightQueryExecutingCard.KnownInfoList = queryExecutingCard.KnownInfoList;
-                Right.FillExecutingCard(rightQueryExecutingCard, context);
+                Right.FillExecutingCard(rightQueryExecutingCard, dataSource);
 
                 var rightQueryExecutingCardResultsOfQueryToRelationList = rightQueryExecutingCard.ResultsOfQueryToRelationList;
 
@@ -143,7 +143,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
         }
 
-        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
         {
 #if DEBUG
             LogInstance.Log("Begin");

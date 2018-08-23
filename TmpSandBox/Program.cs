@@ -356,7 +356,8 @@ namespace TmpSandBox
 
                 var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
 
-                searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                //searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                searchOptions.DataSource = consolidatedCGStorage;
 
                 searchOptions.QueryExpression = indexedQuery;
 
@@ -434,7 +435,11 @@ namespace TmpSandBox
                 globalStorageOptions.UseProductions = true;
                 globalStorageOptions.Priority = 1;
 
-                searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
+
+                //searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                searchOptions.DataSource = consolidatedCGStorage;
 
                 searchOptions.QueryExpression = indexedQuery;
 
@@ -713,7 +718,11 @@ namespace TmpSandBox
                 globalStorageOptions.UseProductions = true;
                 globalStorageOptions.Priority = 1;
 
-                searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
+
+                //searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                searchOptions.DataSource = consolidatedCGStorage;
 
                 searchOptions.QueryExpression = indexedQuery;
 
@@ -1436,7 +1445,11 @@ namespace TmpSandBox
             globalStorageOptions.UseProductions = true;
             globalStorageOptions.Priority = 1;
 
-            searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+            var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+            var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
+
+            //searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+            searchOptions.DataSource = consolidatedCGStorage;
 
             searchOptions.QueryExpression = indexedQuery;
 

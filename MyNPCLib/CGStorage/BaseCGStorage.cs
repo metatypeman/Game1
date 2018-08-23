@@ -12,11 +12,11 @@ namespace MyNPCLib.CGStorage
     {
         protected BaseCGStorage(ContextOfCGStorage context)
         {
-            mContext = context;
-            DictionaryName = mContext.EntityDictionary.Name;
+            Context = context;
+            DictionaryName = Context?.EntityDictionary?.Name;
         }
 
-        protected ContextOfCGStorage mContext { get; private set; }
+        public ContextOfCGStorage Context { get; private set; }
         public abstract KindOfCGStorage KindOfStorage { get; }
 
         public virtual IList<RuleInstance> AllRuleInstances => null;
@@ -46,6 +46,8 @@ namespace MyNPCLib.CGStorage
         {
             throw new NotImplementedException();
         }
+
+        public virtual IList<ResolverForRelationExpressionNode> AllRelationsForProductions => throw new NotImplementedException();
 
         public override string ToString()
         {

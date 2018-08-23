@@ -23,7 +23,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IDictionary<ulong, IList<ResolverForRelationExpressionNode>> RelationsDict { get; set; }
         public IList<IndexedLogicalAnnotation> Annotations { get; set; }
 
-        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
         {
 #if DEBUG
             //LogInstance.Log("Begin");
@@ -33,7 +33,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var queryExecutingCardForExpression = new QueryExecutingCardForIndexedPersistLogicalData();
             queryExecutingCardForExpression.SenderIndexedRuleInstance = senderIndexedRuleInstance;
             queryExecutingCardForExpression.SenderIndexedRulePart = this;
-            Expression.FillExecutingCard(queryExecutingCardForExpression, context);
+            Expression.FillExecutingCard(queryExecutingCardForExpression, dataSource);
 
 #if DEBUG
             //LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");
@@ -49,7 +49,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
         }
 
-        public void FillExecutingCardForCallingFromRelationForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        public void FillExecutingCardForCallingFromRelationForFact(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
         {
 #if DEBUG
             //LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
@@ -159,7 +159,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             return ExpressionNodeHelper.Compare(knownInfoExpression, expressionNode);
         }
 
-        public void FillExecutingCardForCallingFromRelationForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        public void FillExecutingCardForCallingFromRelationForProduction(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
         {
 #if DEBUG
             //LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
@@ -223,7 +223,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             queryExecutingCardForNextPart.KnownInfoList = targetKnownInfoList;
             queryExecutingCardForNextPart.SenderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
             queryExecutingCardForNextPart.SenderIndexedRulePart = this;
-            NextPart.FillExecutingCardForCallingFromOtherPart(queryExecutingCardForNextPart, context);
+            NextPart.FillExecutingCardForCallingFromOtherPart(queryExecutingCardForNextPart, dataSource);
 
 #if DEBUG
             //LogInstance.Log($"queryExecutingCardForNextPart = {queryExecutingCardForNextPart}");
@@ -314,7 +314,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif 
         }
 
-        public void FillExecutingCardForCallingFromOtherPart(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        public void FillExecutingCardForCallingFromOtherPart(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
         {
 #if DEBUG
             //LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
@@ -323,7 +323,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             queryExecutingCardForExpression.SenderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
             queryExecutingCardForExpression.SenderIndexedRulePart = this;
             queryExecutingCardForExpression.KnownInfoList = queryExecutingCard.KnownInfoList;
-            Expression.FillExecutingCard(queryExecutingCardForExpression, context);
+            Expression.FillExecutingCard(queryExecutingCardForExpression, dataSource);
 
 #if DEBUG
             //LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");
@@ -336,7 +336,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
         }
 
-        public void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo)
+        public void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
         {
 #if DEBUG
             //LogInstance.Log("Begin");
@@ -347,7 +347,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var queryExecutingCardForExpression = new QueryExecutingCardForIndexedPersistLogicalData();
             queryExecutingCardForExpression.SenderIndexedRuleInstance = senderIndexedRuleInstance;
             queryExecutingCardForExpression.SenderIndexedRulePart = this;
-            Expression.FillExecutingCardForAnnotation(queryExecutingCardForExpression, strategyForGettingInfo);
+            Expression.FillExecutingCardForAnnotation(queryExecutingCardForExpression, dataSource);
 
 #if DEBUG
             //LogInstance.Log($"queryExecutingCardForExpression = {queryExecutingCardForExpression}");

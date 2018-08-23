@@ -28,10 +28,13 @@ namespace MyNPCLib.LogicalSearchEngine
 
             var entityDictionary = mContextOfCGStorage.EntityDictionary;
 
-            var context = new LogicalSearchContext();
-            context.QueryExpression = queryExpression;
-            context.EntityDictionary = entityDictionary;
-            context.DataSource = options.DataSource;
+            //var context = new LogicalSearchContext();
+            //context.QueryExpression = queryExpression;
+            //context.EntityDictionary = entityDictionary;
+
+            var dataSource = options.DataSource;
+
+            //context.DataSource = dataSource;
 
 #if DEBUG
             //LogInstance.Log($"context = {context}");
@@ -40,7 +43,7 @@ namespace MyNPCLib.LogicalSearchEngine
             var resultItemsList = new List<LogicalSearchResultItem>();
 
             var queryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
-            queryExpression.FillExecutingCard(queryExecutingCard, context);
+            queryExpression.FillExecutingCard(queryExecutingCard, dataSource);
 
 #if DEBUG
             //LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");

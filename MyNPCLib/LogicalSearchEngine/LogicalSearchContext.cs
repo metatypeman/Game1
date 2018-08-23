@@ -6,10 +6,14 @@ using System.Text;
 
 namespace MyNPCLib.LogicalSearchEngine
 {
+    [Obsolete]
     public class LogicalSearchContext: IObjectToString
     {
+        [Obsolete]
         public IndexedRuleInstance QueryExpression { get; set; }
+        [Obsolete]
         public IEntityDictionary EntityDictionary { get; set; }
+        [Obsolete]
         public ICGStorage DataSource { get; set; }
 
         public override string ToString()

@@ -67,5 +67,29 @@ namespace MyNPCLib.CGStorage
 
             return result;
         }
+
+        public override IList<ResolverForRelationExpressionNode> AllRelationsForProductions
+        {
+            get
+            {
+                var result = new List<ResolverForRelationExpressionNode>();
+
+                var dataSourcesSettingsOrderedByPriorityAndUseProductionsList = mDataSourcesSettingsOrderedByPriorityAndUseProductionsList;
+
+                foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityAndUseProductionsList)
+                {
+                    var targetRelationsList = dataSourcesSettings.Storage.GetAllRelations();
+
+                    if (targetRelationsList == null)
+                    {
+                        continue;
+                    }
+
+                    result.AddRange(targetRelationsList);
+                }
+
+                return result;
+            }
+        }
     }
 }

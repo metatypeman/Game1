@@ -5,6 +5,7 @@ using System.Text;
 
 namespace MyNPCLib.IndexedPersistLogicalData
 {
+    [Obsolete]
     public class StrategyForGettingInfoFromStoragesByAnnotation : IStrategyForGettingInfoFromStorages
     {
         public StrategyForGettingInfoFromStoragesByAnnotation(LogicalSearchContext context, IndexedLogicalAnnotation annotationOfStored)
@@ -13,9 +14,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
             mIndexedLogicalAnnotation = annotationOfStored;
         }
 
+        [Obsolete]
         public LogicalSearchContext Context { get; private set; }
         private IndexedLogicalAnnotation mIndexedLogicalAnnotation;
 
+        [Obsolete]
         public IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
 #if DEBUG
@@ -23,9 +26,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
             //LogInstance.Log($"Context.EntityDictionary.GetName(key) = {Context.EntityDictionary.GetName(key)}");
 #endif
 
-            return mIndexedLogicalAnnotation.RuleInstance.GetIndexedRulePartOfFactsByKeyOfRelation(key);
+            //return mIndexedLogicalAnnotation.RuleInstance.GetIndexedRulePartOfFactsByKeyOfRelation(key);
+            throw new NotImplementedException();
         }
 
+        [Obsolete]
         public IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key)
         {
 #if DEBUG
@@ -33,23 +38,24 @@ namespace MyNPCLib.IndexedPersistLogicalData
             //throw new NotImplementedException();
 #endif
 
-            var result = new List<IndexedRulePart>();
+            //var result = new List<IndexedRulePart>();
 
-            var dataSourcesSettingsOrderedByPriorityAndUseProductionsList = Context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList;
+            //var dataSourcesSettingsOrderedByPriorityAndUseProductionsList = Context.DataSourcesSettingsOrderedByPriorityAndUseProductionsList;
 
-            foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityAndUseProductionsList)
-            {
-                var indexedRulePartWithOneRelationsList = dataSourcesSettings.Storage.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(key);
+            //foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityAndUseProductionsList)
+            //{
+            //    var indexedRulePartWithOneRelationsList = dataSourcesSettings.Storage.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(key);
 
-                if (indexedRulePartWithOneRelationsList == null)
-                {
-                    continue;
-                }
+            //    if (indexedRulePartWithOneRelationsList == null)
+            //    {
+            //        continue;
+            //    }
 
-                result.AddRange(indexedRulePartWithOneRelationsList);
-            }
+            //    result.AddRange(indexedRulePartWithOneRelationsList);
+            //}
 
-            return result;
+            //return result;
+            throw new NotImplementedException();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
     public class AnnotationCGStorage: BaseProxyStorage
     {
         public AnnotationCGStorage(ICGStorage parentStorage, IndexedLogicalAnnotation annotationOfStored)
-            : base(null)
+            : base(parentStorage?.Context)
         {
             mParentStorage = parentStorage;
             mIndexedLogicalAnnotation = annotationOfStored;
@@ -56,5 +56,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
             //return result;
         }
+
+        public override IList<ResolverForRelationExpressionNode> AllRelationsForProductions => throw new NotImplementedException();
     }
 }

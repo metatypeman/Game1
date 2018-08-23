@@ -76,6 +76,17 @@ namespace MyNPCLib.CGStorage
             }
         }
 
+        public override IList<ResolverForRelationExpressionNode> AllRelationsForProductions
+        {
+            get
+            {
+                lock (mDataLockObj)
+                {
+                    return mCommonPersistIndexedLogicalData.GetAllRelations();
+                }
+            }
+        }
+
         public override RuleInstance GetRuleInstanceByKey(ulong key)
         {
             return mRuleInstancesList.FirstOrDefault(p => p.Key == key);
@@ -87,7 +98,7 @@ namespace MyNPCLib.CGStorage
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var nextNSpaces = StringHelper.Spaces(nextN);
-            var entityDictionary = mContext.EntityDictionary;
+            var entityDictionary = Context.EntityDictionary;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}mRuleInstancesList.Count = {mRuleInstancesList.Count}");
             sb.Append(mCommonPersistIndexedLogicalData.GetContentAsDbgStr(entityDictionary));

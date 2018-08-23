@@ -41,14 +41,14 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
         public virtual IList<RuleInstance> AllRuleInstances => new List<RuleInstance>() { Origin };
 
-        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, LogicalSearchContext context)
+        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
         {
             if (IsPart_1_Active)
             {
                 var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
                 queryExecutingCardForPart_1.SenderIndexedRuleInstance = this;
 
-                Part_1.FillExecutingCard(queryExecutingCardForPart_1, context);
+                Part_1.FillExecutingCard(queryExecutingCardForPart_1, dataSource);
 
                 foreach (var resultOfQueryToRelation in queryExecutingCardForPart_1.ResultsOfQueryToRelationList)
                 {
@@ -60,7 +60,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             {
                 var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
                 queryExecutingCardForPart_2.SenderIndexedRuleInstance = this;
-                Part_2.FillExecutingCard(queryExecutingCardForPart_2, context);
+                Part_2.FillExecutingCard(queryExecutingCardForPart_2, dataSource);
 
                 foreach (var resultOfQueryToRelation in queryExecutingCardForPart_2.ResultsOfQueryToRelationList)
                 {
@@ -69,14 +69,14 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
         }
 
-        public void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, IStrategyForGettingInfoFromStorages strategyForGettingInfo)
+        public void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
         {
             if (IsPart_1_Active)
             {
                 var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
                 queryExecutingCardForPart_1.SenderIndexedRuleInstance = this;
 
-                Part_1.FillExecutingCardForAnnotation(queryExecutingCardForPart_1, strategyForGettingInfo);
+                Part_1.FillExecutingCardForAnnotation(queryExecutingCardForPart_1, dataSource);
 
                 foreach (var resultOfQueryToRelation in queryExecutingCardForPart_1.ResultsOfQueryToRelationList)
                 {
@@ -89,7 +89,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
                 queryExecutingCardForPart_2.SenderIndexedRuleInstance = this;
 
-                Part_2.FillExecutingCardForAnnotation(queryExecutingCardForPart_2, strategyForGettingInfo);
+                Part_2.FillExecutingCardForAnnotation(queryExecutingCardForPart_2, dataSource);
 
                 foreach (var resultOfQueryToRelation in queryExecutingCardForPart_2.ResultsOfQueryToRelationList)
                 {
@@ -114,6 +114,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
             mCommonPersistIndexedLogicalData.NSetIndexedRuleInstanceToIndexData(this);
         }
 
+        public ContextOfCGStorage Context => throw new NotImplementedException();
+
         public IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
             return mCommonPersistIndexedLogicalData.GetIndexedRulePartOfFactsByKeyOfRelation(key);
@@ -127,6 +129,14 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IList<ResolverForRelationExpressionNode> GetAllRelations()
         {
             return mCommonPersistIndexedLogicalData.GetAllRelations();
+        }
+
+        public IList<ResolverForRelationExpressionNode> AllRelationsForProductions
+        {
+            get
+            {
+                return mCommonPersistIndexedLogicalData.GetAllRelations();
+            }
         }
 
         public RuleInstance GetRuleInstanceByKey(ulong key)
