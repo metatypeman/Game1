@@ -24,7 +24,9 @@ namespace MyNPCLib.LogicalSearchEngine
             var queryDataSource = options.QuerySource;
             var queryExpression = queryDataSource.MainIndexedRuleInstance;
 
-            var result = new LogicalSearchResult();
+            var externalDataSource = options.DataSource;
+
+            var result = new LogicalSearchResult(externalDataSource);
             result.QueryExpression = queryExpression;
 
             var entityDictionary = mContextOfCGStorage.EntityDictionary;
@@ -32,8 +34,6 @@ namespace MyNPCLib.LogicalSearchEngine
             //var context = new LogicalSearchContext();
             //context.QueryExpression = queryExpression;
             //context.EntityDictionary = entityDictionary;
-
-            var externalDataSource = options.DataSource;
 
             var searchOptions = new LogicalSearchOptions();
             var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
@@ -73,7 +73,7 @@ namespace MyNPCLib.LogicalSearchEngine
 
             foreach (var resultOfQueryToRelation in queryExecutingCard.ResultsOfQueryToRelationList)
             {
-                var resultItem = new LogicalSearchResultItem(entityDictionary);
+                var resultItem = new LogicalSearchResultItem(entityDictionary, externalDataSource, result);
                 resultItem.QueryExpression = queryExpression;
                 resultItem.ResultOfVarOfQueryToRelationList = resultOfQueryToRelation.ResultOfVarOfQueryToRelationList;
                 resultItemsList.Add(resultItem);

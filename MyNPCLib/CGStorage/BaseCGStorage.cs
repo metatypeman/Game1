@@ -59,6 +59,11 @@ namespace MyNPCLib.CGStorage
         public virtual RuleInstance MainRuleInstance => throw new NotImplementedException();
         public virtual IndexedRuleInstance MainIndexedRuleInstance => throw new NotImplementedException();
 
+        public virtual ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar)
+        {
+            return null;
+        }
+
         public override string ToString()
         {
             return ToString(0u);

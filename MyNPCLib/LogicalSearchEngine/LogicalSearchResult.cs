@@ -1,4 +1,5 @@
-﻿using MyNPCLib.IndexedPersistLogicalData;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.IndexedPersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +8,12 @@ namespace MyNPCLib.LogicalSearchEngine
 {
     public class LogicalSearchResult: IObjectToString
     {
+        public LogicalSearchResult(ICGStorage storage)
+        {
+            Storage = storage;
+        }
+
+        public ICGStorage Storage { get; private set; }
         public IndexedRuleInstance QueryExpression { get; set; }
         public IList<LogicalSearchResultItem> Items { get; set; }
 

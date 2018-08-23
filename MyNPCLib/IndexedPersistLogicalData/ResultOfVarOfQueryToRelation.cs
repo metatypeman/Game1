@@ -8,6 +8,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
 {
     public class ResultOfVarOfQueryToRelation : IObjectToString
     {
+        public 
+
         public ulong KeyOfVar { get; set; }
         public BaseExpressionNode FoundExpression { get; set; }
         public IDictionary<ulong, OriginOfVarOfQueryToRelation> OriginDict { get; set; } = new Dictionary<ulong, OriginOfVarOfQueryToRelation>();

@@ -379,37 +379,48 @@ namespace TmpSandBox
 
                 LogInstance.Log($"rearchResult = {rearchResult}");
 
-                var targetSearchResultItemsList = rearchResult.Items;
-
-                LogInstance.Log($"targetSearchResultItemsList.Count = {targetSearchResultItemsList.Count}");
+                var querySearchResultCGStorage = new QueryResultCGStorage(context, rearchResult);
 
                 var keyOfActionQuestionVar = globalEntityDictionary.GetKey("?Z");
 
-                LogInstance.Log($"keyOfActionQuestionVar = {keyOfActionQuestionVar}");
+                var actionExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
 
-                foreach (var targetSearchResultItem in targetSearchResultItemsList)
+                LogInstance.Log($"actionExpression = {actionExpression}");
+
+                if (actionExpression != null)
                 {
-                    LogInstance.Log($"targetSearchResultItem = {targetSearchResultItem}");
-
-                    var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
-
-                    //LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
-
-                    {
-                        var debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
-
-                        LogInstance.Log($"debugStr (zzz) = {debugStr}");
-                    }
-
-                    var actionExpression = targetSearchResultItem.GetResultOfVar(keyOfActionQuestionVar);
-
-                    LogInstance.Log($"actionExpression = {actionExpression}");
-
-                    if (actionExpression != null)
-                    {
-                        actionName = actionExpression?.FoundExpression?.AsRelation.Name;
-                    }
+                    actionName = actionExpression?.FoundExpression?.AsRelation.Name;
                 }
+
+                //var targetSearchResultItemsList = rearchResult.Items;
+
+                //LogInstance.Log($"targetSearchResultItemsList.Count = {targetSearchResultItemsList.Count}");
+
+                //LogInstance.Log($"keyOfActionQuestionVar = {keyOfActionQuestionVar}");
+
+                //foreach (var targetSearchResultItem in targetSearchResultItemsList)
+                //{
+                //    LogInstance.Log($"targetSearchResultItem = {targetSearchResultItem}");
+
+                //    var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
+
+                //    //LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
+
+                //    {
+                //        var debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
+
+                //        LogInstance.Log($"debugStr (zzz) = {debugStr}");
+                //    }
+
+                //    var actionExpression = targetSearchResultItem.GetResultOfVar(keyOfActionQuestionVar);
+
+                //    LogInstance.Log($"actionExpression = {actionExpression}");
+
+                //    if (actionExpression != null)
+                //    {
+                //        actionName = actionExpression?.FoundExpression?.AsRelation.Name;
+                //    }
+                //}
 
                 //actionName = "go";
             }
@@ -473,62 +484,99 @@ namespace TmpSandBox
 
                 LogInstance.Log($"rearchResult = {rearchResult}");
 
-                var targetSearchResultItemsList = rearchResult.Items;
-
-                LogInstance.Log($"targetSearchResultItemsList.Count = {targetSearchResultItemsList.Count}");
-
                 var varNameOfDirection = "?X";
                 var keyOfVarOfDirection = globalEntityDictionary.GetKey(varNameOfDirection);
 
                 LogInstance.Log($"keyOfVarOfDirection = {keyOfVarOfDirection}");
 
-                foreach (var targetSearchResultItem in targetSearchResultItemsList)
+                var querySearchResultCGStorage = new QueryResultCGStorage(context, rearchResult);
+
+                var targetValueOfDirection = querySearchResultCGStorage.GetResultOfVar(keyOfVarOfDirection);
+
+                LogInstance.Log($"targetValueOfDirection = {targetValueOfDirection}");
+
+                var foundExpressionOfValueOfDirection = targetValueOfDirection.FoundExpression;
+
+                if (foundExpressionOfValueOfDirection.IsEntityCondition)
                 {
-                    LogInstance.Log($"targetSearchResultItem = {targetSearchResultItem}");
+                    var foundExpressionOfValueOfDirectionAsEntityCondition = foundExpressionOfValueOfDirection.AsEntityCondition;
 
-                    var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
+                    LogInstance.Log($"foundExpressionOfValueOfDirectionAsEntityCondition = {foundExpressionOfValueOfDirectionAsEntityCondition}");
 
-                    //LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
+                    var dbgContentString = context.GlobalCGStorage.GetContentAsDbgStr();
 
-                    {
-                        var debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
+                    LogInstance.Log($"dbgContentString = {dbgContentString}");
 
-                        LogInstance.Log($"debugStr (yyyyyyyyyyyyyyyyy) = {debugStr}");
-                    }
+                    var entityConditionRec = completeFoundRuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == foundExpressionOfValueOfDirectionAsEntityCondition.Key);
 
-                    var targetValueOfDirection = targetSearchResultItem.GetResultOfVar(keyOfVarOfDirection);
+                    LogInstance.Log($"entityConditionRec = {entityConditionRec}");
 
-                    LogInstance.Log($"targetValueOfDirection = {targetValueOfDirection}");
+                    var keyOfEntityConditionFact = entityConditionRec.Key;
 
-                    var foundExpressionOfValueOfDirection = targetValueOfDirection.FoundExpression;
+                    LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
 
-                    if(foundExpressionOfValueOfDirection.IsEntityCondition)
-                    {
-                        var foundExpressionOfValueOfDirectionAsEntityCondition = foundExpressionOfValueOfDirection.AsEntityCondition;
+                    var entityConditionRuleInstance = context.GlobalCGStorage.GetRuleInstanceByKey(keyOfEntityConditionFact);
 
-                        LogInstance.Log($"foundExpressionOfValueOfDirectionAsEntityCondition = {foundExpressionOfValueOfDirectionAsEntityCondition}");
+                    LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
 
-                        var dbgContentString = context.GlobalCGStorage.GetContentAsDbgStr();
+                    var oldEntityConditionQueryString = RuleInstanceToOldEntityConditionConvertor.ConvertToOldQueryString(entityConditionRuleInstance);
 
-                        LogInstance.Log($"dbgContentString = {dbgContentString}");
-
-                        var entityConditionRec = completeFoundRuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == foundExpressionOfValueOfDirectionAsEntityCondition.Key);
-
-                        LogInstance.Log($"entityConditionRec = {entityConditionRec}");
-
-                        var keyOfEntityConditionFact = entityConditionRec.Key;
-
-                        LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
-
-                        var entityConditionRuleInstance = context.GlobalCGStorage.GetRuleInstanceByKey(keyOfEntityConditionFact);
-
-                        LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
-
-                        var oldEntityConditionQueryString = RuleInstanceToOldEntityConditionConvertor.ConvertToOldQueryString(entityConditionRuleInstance);
-
-                        LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
-                    }
+                    LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
                 }
+
+                //var targetSearchResultItemsList = rearchResult.Items;
+
+                //LogInstance.Log($"targetSearchResultItemsList.Count = {targetSearchResultItemsList.Count}");
+
+                //LogInstance.Log($"keyOfVarOfDirection = {keyOfVarOfDirection}");
+
+                //foreach (var targetSearchResultItem in targetSearchResultItemsList)
+                //{
+                //    LogInstance.Log($"targetSearchResultItem = {targetSearchResultItem}");
+
+                //    var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
+
+                //    //LogInstance.Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
+
+                //    {
+                //        var debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
+
+                //        LogInstance.Log($"debugStr (yyyyyyyyyyyyyyyyy) = {debugStr}");
+                //    }
+
+                //    var targetValueOfDirection = targetSearchResultItem.GetResultOfVar(keyOfVarOfDirection);
+
+                //    LogInstance.Log($"targetValueOfDirection = {targetValueOfDirection}");
+
+                //    var foundExpressionOfValueOfDirection = targetValueOfDirection.FoundExpression;
+
+                //    if(foundExpressionOfValueOfDirection.IsEntityCondition)
+                //    {
+                //        var foundExpressionOfValueOfDirectionAsEntityCondition = foundExpressionOfValueOfDirection.AsEntityCondition;
+
+                //        LogInstance.Log($"foundExpressionOfValueOfDirectionAsEntityCondition = {foundExpressionOfValueOfDirectionAsEntityCondition}");
+
+                //        var dbgContentString = context.GlobalCGStorage.GetContentAsDbgStr();
+
+                //        LogInstance.Log($"dbgContentString = {dbgContentString}");
+
+                //        var entityConditionRec = completeFoundRuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == foundExpressionOfValueOfDirectionAsEntityCondition.Key);
+
+                //        LogInstance.Log($"entityConditionRec = {entityConditionRec}");
+
+                //        var keyOfEntityConditionFact = entityConditionRec.Key;
+
+                //        LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
+
+                //        var entityConditionRuleInstance = context.GlobalCGStorage.GetRuleInstanceByKey(keyOfEntityConditionFact);
+
+                //        LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
+
+                //        var oldEntityConditionQueryString = RuleInstanceToOldEntityConditionConvertor.ConvertToOldQueryString(entityConditionRuleInstance);
+
+                //        LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
+                //    }
+                //}
             }
 
             LogInstance.Log("End");

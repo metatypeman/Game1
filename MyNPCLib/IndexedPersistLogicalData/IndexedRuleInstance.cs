@@ -156,6 +156,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
             return null;
         }
 
+        public ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar)
+        {
+            return null;
+        }
+
         public string GetHumanizeDbgString()
         {
             if (Origin == null)

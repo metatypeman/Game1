@@ -1,4 +1,5 @@
-﻿using MyNPCLib.IndexedPersistLogicalData;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.IndexedPersistLogicalData;
 using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,19 @@ namespace MyNPCLib.LogicalSearchEngine
 {
     public class LogicalSearchResultItem : IObjectToString
     {
-        public LogicalSearchResultItem(IEntityDictionary entityDictionary)
+        public LogicalSearchResultItem(IEntityDictionary entityDictionary, ICGStorage storage, LogicalSearchResult parent)
         {
             mEntityDictionary = entityDictionary;
+            Storage = storage;
+            mParent = parent;
         }
 
         private IEntityDictionary mEntityDictionary;
         public IndexedRuleInstance QueryExpression { get; set; }
+
+        public ICGStorage Storage { get; set; }
+        public LogicalSearchResult mParent;
+
         public IList<ResultOfVarOfQueryToRelation> ResultOfVarOfQueryToRelationList { get; set; }
         private Dictionary<ulong, ResultOfVarOfQueryToRelation> mResultOfVarOfQueryToRelationDict = new Dictionary<ulong, ResultOfVarOfQueryToRelation>();
 
