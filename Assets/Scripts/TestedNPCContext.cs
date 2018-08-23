@@ -113,7 +113,11 @@ namespace Assets.Scripts
                 globalStorageOptions.UseProductions = true;
                 globalStorageOptions.Priority = 1;
 
-                searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
+
+                //searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                searchOptions.DataSource = consolidatedCGStorage;
 
                 searchOptions.QueryExpression = indexedQuery;
 
@@ -224,7 +228,11 @@ namespace Assets.Scripts
             globalStorageOptions.UseProductions = true;
             globalStorageOptions.Priority = 1;
 
-            searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+            var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+            var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
+
+            //searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+            searchOptions.DataSource = consolidatedCGStorage;
 
             searchOptions.QueryExpression = indexedQuery;
 

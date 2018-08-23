@@ -12,6 +12,7 @@ namespace MyNPCLib.CGStorage
         Local,
         Query,
         IndexedQuery,
+        QueryResult,
         PassiveList,
         Consolidated,
         OtherProxy
