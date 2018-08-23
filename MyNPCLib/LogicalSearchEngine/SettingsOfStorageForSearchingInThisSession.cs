@@ -9,7 +9,8 @@ namespace MyNPCLib.LogicalSearchEngine
     {
         public ICGStorage Storage { get; set; }
         public bool UseFacts { get; set; }
-        public bool UseProductions { get; set; }
+        public bool UseAdditionalInstances { get; set; }
+        public bool UseProductions { get; set; }        
         public int? MaxDeph { get; set; }
         public int Priority { get; set; }
 
@@ -39,6 +40,7 @@ namespace MyNPCLib.LogicalSearchEngine
                 sb.AppendLine($"{spaces}End {nameof(Storage)}");
             }
             sb.AppendLine($"{spaces}{nameof(UseFacts)} = {UseFacts}");
+            sb.AppendLine($"{spaces}{nameof(UseAdditionalInstances)} = {UseAdditionalInstances}");
             sb.AppendLine($"{spaces}{nameof(UseProductions)} = {UseProductions}");
             sb.AppendLine($"{spaces}{nameof(MaxDeph)} = {MaxDeph}");
             sb.AppendLine($"{spaces}{nameof(Priority)} = {Priority}");

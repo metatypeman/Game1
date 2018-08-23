@@ -9,17 +9,20 @@ namespace MyNPCLib.IndexedPersistLogicalData
     public class IndexedLogicalAnnotation: IIndexedLogicalyAnnotated, IObjectToString, IShortObjectToString
     {
         public LogicalAnnotation Origin { get; set; }
-        public IndexedRuleInstance RuleInstance { get; set; }
+        public ulong RuleInstanceKey { get; set; }
         public IList<IndexedLogicalAnnotation> Annotations { get; set; }
 
         public string GetHumanizeDbgString()
         {
-            if(RuleInstance == null)
-            {
-                return string.Empty;
-            }
+            return string.Empty;
+            //if(RuleInstanceKey == 0)
+            //{
+            //    return string.Empty;
+            //}
 
-            return RuleInstance.GetHumanizeDbgString();
+            //var dataSource = Origin.Da
+
+            //return RuleInstance.GetHumanizeDbgString();
         }
 
         public override string ToString()
@@ -47,16 +50,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.Append(Origin.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Origin)}");
             }
-            if (RuleInstance == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(RuleInstance)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(RuleInstance)}");
-                sb.Append(RuleInstance.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(RuleInstance)}");
-            }
+
+            sb.AppendLine($"{spaces}{nameof(RuleInstanceKey)} = {RuleInstanceKey}");
 
             if (Annotations == null)
             {
@@ -99,16 +94,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 sb.Append(Origin.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(Origin)}");
             }
-            if (RuleInstance == null)
-            {
-                sb.AppendLine($"{spaces}{nameof(RuleInstance)} = null");
-            }
-            else
-            {
-                sb.AppendLine($"{spaces}Begin {nameof(RuleInstance)}");
-                sb.Append(RuleInstance.ToShortString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(RuleInstance)}");
-            }
+            sb.AppendLine($"{spaces}{nameof(RuleInstanceKey)} = {RuleInstanceKey}");
 
             if (Annotations == null)
             {

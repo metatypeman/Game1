@@ -14,7 +14,11 @@ namespace MyNPCLib.CGStorage
         IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key);
         IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key);
         RuleInstance GetRuleInstanceByKey(ulong key);
+        IndexedRuleInstance GetIndexedRuleInstanceByKey(ulong key);
+        IndexedRuleInstance GetIndexedAdditionalRuleInstanceByKey(ulong key);
         IList<ResolverForRelationExpressionNode> GetAllRelations();
         IList<ResolverForRelationExpressionNode> AllRelationsForProductions { get; }
+        RuleInstance MainRuleInstance { get; }
+        IndexedRuleInstance MainIndexedRuleInstance { get; }
     }
 }

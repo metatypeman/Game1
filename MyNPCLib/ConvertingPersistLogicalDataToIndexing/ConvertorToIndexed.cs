@@ -11,13 +11,21 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
     {
         public static IndexedRuleInstance ConvertRuleInstance(RuleInstance source)
         {
+#if DEBUG
+            //LogInstance.Log($"source = {source}");
+#endif
+
             var context = new ContextOfConvertingToIndexed();
             return ConvertRuleInstance(source, context);
         }
 
         private static IndexedRuleInstance ConvertRuleInstance(RuleInstance source, ContextOfConvertingToIndexed context)
         {
-            if(context.RuleInstancesDict.ContainsKey(source))
+#if DEBUG
+            //LogInstance.Log($"(2) source = {source}");
+#endif
+
+            if (context.RuleInstancesDict.ContainsKey(source))
             {
                 return context.RuleInstancesDict[source];
             }
@@ -736,9 +744,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
                 var resultItem = new IndexedLogicalAnnotation();
                 resultItem.Origin = sourceItem;
 
-                var originRuleInstance = dataSource.GetRuleInstanceByKey(sourceItem.RuleInstanceKey);
-
-                resultItem.RuleInstance = ConvertRuleInstance(originRuleInstance);
+                resultItem.RuleInstanceKey = sourceItem.RuleInstanceKey;
                 resultItem.Annotations = ConvertAnnotations(sourceItem.Annotations, parent);
                 result.Add(resultItem);
             }

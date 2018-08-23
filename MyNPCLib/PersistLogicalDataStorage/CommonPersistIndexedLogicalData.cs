@@ -9,21 +9,24 @@ namespace MyNPCLib.PersistLogicalDataStorage
     [Serializable]
     public class CommonPersistIndexedLogicalData
     {
+        public CommonPersistIndexedLogicalData()
+        {
+            IndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
+            AdditionalRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
+            IndexedRulePartsOfFactsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
+            IndexedRulePartsWithOneRelationWithVarsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
+            RelationsList = new List<ResolverForRelationExpressionNode>();
+        }
+
         //It is temporary public for construction time. It will be private after complete construction.
         public IDictionary<ulong, IndexedRuleInstance> IndexedRuleInstancesDict { get; set; }
+        public IDictionary<ulong, IndexedRuleInstance> AdditionalRuleInstancesDict { get; set; }
+
         //It is temporary public for construction time. It will be private after complete construction.
         public IDictionary<ulong, IList<IndexedRulePart>> IndexedRulePartsOfFactsDict { get; set; }
         //It is temporary public for construction time. It will be private after complete construction.
         public IDictionary<ulong, IList<IndexedRulePart>> IndexedRulePartsWithOneRelationWithVarsDict { get; set; }
         public IList<ResolverForRelationExpressionNode> RelationsList { get; set; }
-
-        public void Init()
-        {
-            IndexedRuleInstancesDict = new Dictionary<ulong, IndexedRuleInstance>();
-            IndexedRulePartsOfFactsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
-            IndexedRulePartsWithOneRelationWithVarsDict = new Dictionary<ulong, IList<IndexedRulePart>>();
-            RelationsList = new List<ResolverForRelationExpressionNode>();
-        }
 
         //It is temporary public for construction time. It will be private after complete construction.
         public void NSetIndexedRuleInstanceToIndexData(IndexedRuleInstance indexedRuleInstance)
@@ -78,6 +81,14 @@ namespace MyNPCLib.PersistLogicalDataStorage
 
                     default: throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
             }
+
+            switch (kind)
+            {
+                case KindOfRuleInstance.Annotation:
+                case KindOfRuleInstance.EntityCondition:
+                    AdditionalRuleInstancesDict[indexedRuleInstance.Key] = indexedRuleInstance;
+                    break;
+            }        
         }
 
         private void NAddIndexedRulePartToKeysOfRelationsIndex(IDictionary<ulong, IList<IndexedRulePart>> indexData, IndexedRulePart indexedRulePart)
@@ -140,6 +151,26 @@ namespace MyNPCLib.PersistLogicalDataStorage
         public IList<ResolverForRelationExpressionNode> GetAllRelations()
         {
             return RelationsList.ToList();
+        }
+
+        public IndexedRuleInstance GetIndexedRuleInstanceByKey(ulong key)
+        {
+            if(IndexedRuleInstancesDict.ContainsKey(key))
+            {
+                return IndexedRuleInstancesDict[key];
+            }
+
+            return null;
+        }
+
+        public IndexedRuleInstance GetIndexedAdditionalRuleInstanceByKey(ulong key)
+        {
+            if (AdditionalRuleInstancesDict.ContainsKey(key))
+            {
+                return AdditionalRuleInstancesDict[key];
+            }
+
+            return null;
         }
 
         public string GetContentAsDbgStr(IEntityDictionary entityDictionary)

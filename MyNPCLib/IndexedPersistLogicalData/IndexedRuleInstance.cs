@@ -110,7 +110,6 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public void FillIndexedDataAsStorage()
         {
             mCommonPersistIndexedLogicalData = new CommonPersistIndexedLogicalData();
-            mCommonPersistIndexedLogicalData.Init();
             mCommonPersistIndexedLogicalData.NSetIndexedRuleInstanceToIndexData(this);
         }
 
@@ -140,6 +139,19 @@ namespace MyNPCLib.IndexedPersistLogicalData
         }
 
         public RuleInstance GetRuleInstanceByKey(ulong key)
+        {
+            return null;
+        }
+
+        public IndexedRuleInstance GetIndexedRuleInstanceByKey(ulong key)
+        {
+            return null;
+        }
+
+        public RuleInstance MainRuleInstance => null;
+        public IndexedRuleInstance MainIndexedRuleInstance => null;
+
+        public IndexedRuleInstance GetIndexedAdditionalRuleInstanceByKey(ulong key)
         {
             return null;
         }

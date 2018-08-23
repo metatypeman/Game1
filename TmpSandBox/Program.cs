@@ -314,12 +314,14 @@ namespace TmpSandBox
                         LogInstance.Log($"debugStr = {debugStr}");
                     }
 
-                    var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+                    context.GlobalCGStorage.AddRuleInstance(ruleInstance);
+
+                    //var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
                     //indexedRuleInstance.FillIndexedDataAsStorage();
 
                     //LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 
-                    context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
+                    //context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
                 }
             }
 
@@ -330,9 +332,12 @@ namespace TmpSandBox
 
                 var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
 
+                var queryStorage = new QueryCGStorage(context, queryPackage);
+
                 //var queryPackage = CreateAnnotatedQueryForGoToGreenWaypoint(globalEntityDictionary);
-                var queryPackagePassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
-                var query = queryPackage.MainRuleInstance;
+                //var queryPackagePassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
+                //var query = queryPackage.MainRuleInstance;
+                var query = queryStorage.MainRuleInstance;
 
                 {
                     var debugStr = DebugHelperForRuleInstance.ToString(query);
@@ -340,26 +345,35 @@ namespace TmpSandBox
                     LogInstance.Log($"debugStr (query) = {debugStr}");
                 }
 
-                var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
+                //var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
 
                 var searcher = new LogicalSearcher(context);
 
                 var searchOptions = new LogicalSearchOptions();
-                var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
-                globalStorageOptions.Storage = context.GlobalCGStorage;
-                globalStorageOptions.MaxDeph = null;
-                globalStorageOptions.UseFacts = true;
-                globalStorageOptions.UseProductions = true;
-                globalStorageOptions.Priority = 1;
+                //var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
+                //globalStorageOptions.Storage = context.GlobalCGStorage;
+                //globalStorageOptions.MaxDeph = null;
+                //globalStorageOptions.UseFacts = true;
+                //globalStorageOptions.UseAdditionalInstances = true;
+                //globalStorageOptions.UseProductions = true;
+                //globalStorageOptions.Priority = 1;
 
-                var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+                //var globalStorageOptions_1 = new SettingsOfStorageForSearchingInThisSession();
+                //globalStorageOptions_1.Storage = queryStorage;
+                //globalStorageOptions_1.MaxDeph = null;
+                //globalStorageOptions_1.UseFacts = false;
+                //globalStorageOptions_1.UseAdditionalInstances = true;
+                //globalStorageOptions_1.UseProductions = false;
+                //globalStorageOptions_1.Priority = 1;
 
-                var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
+                //var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { context.GlobalCGStorage/*, globalStorageOptions_1*/ };
+
+                //var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
 
                 //searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
-                searchOptions.DataSource = consolidatedCGStorage;
+                searchOptions.DataSource = context.GlobalCGStorage;
 
-                searchOptions.QueryExpression = indexedQuery;
+                searchOptions.QuerySource = queryStorage;
 
                 var rearchResult = searcher.Run(searchOptions);
 
@@ -414,7 +428,8 @@ namespace TmpSandBox
 
                 var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
                 //var queryPackage = CreateQueryForDirectionOfGoing(globalEntityDictionary, actionName);
-                var queryPackagePassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
+                var queryStorage = new QueryCGStorage(context, queryPackage);
+                //var queryPackagePassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
                 var query = queryPackage.MainRuleInstance;
 
                 {
@@ -428,20 +443,31 @@ namespace TmpSandBox
                 var searcher = new LogicalSearcher(context);
 
                 var searchOptions = new LogicalSearchOptions();
-                var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
-                globalStorageOptions.Storage = context.GlobalCGStorage;
-                globalStorageOptions.MaxDeph = null;
-                globalStorageOptions.UseFacts = true;
-                globalStorageOptions.UseProductions = true;
-                globalStorageOptions.Priority = 1;
+                //var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
+                //globalStorageOptions.Storage = context.GlobalCGStorage;
+                //globalStorageOptions.MaxDeph = null;
+                //globalStorageOptions.UseFacts = true;
+                //globalStorageOptions.UseAdditionalInstances = true;
+                //globalStorageOptions.UseProductions = true;
+                //globalStorageOptions.Priority = 1;
 
-                var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
-                var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
+                //var globalStorageOptions_1 = new SettingsOfStorageForSearchingInThisSession();
+                //globalStorageOptions_1.Storage = queryStorage;
+                //globalStorageOptions_1.MaxDeph = null;
+                //globalStorageOptions_1.UseFacts = false;
+                //globalStorageOptions_1.UseAdditionalInstances = true;
+                //globalStorageOptions_1.UseProductions = false;
+                //globalStorageOptions_1.Priority = 1;
+
+                //var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions, globalStorageOptions_1 };
+                //var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
 
                 //searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
-                searchOptions.DataSource = consolidatedCGStorage;
+                //searchOptions.DataSource = consolidatedCGStorage;
+                searchOptions.DataSource = context.GlobalCGStorage;
 
-                searchOptions.QueryExpression = indexedQuery;
+                searchOptions.QuerySource = queryStorage;
+                //searchOptions.QueryExpression = indexedQuery;
 
                 var rearchResult = searcher.Run(searchOptions);
 
@@ -687,15 +713,18 @@ namespace TmpSandBox
 
                 LogInstance.Log($"debugStr = {debugStr}");
 
-                var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+                context.GlobalCGStorage.AddRuleInstance(ruleInstance);
+
+                //var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
                 //indexedRuleInstance.FillIndexedDataAsStorage();
-                context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
+                //context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
             }
 
             {
                 var queryPackage = CreateAnnotatedQuery(globalEntityDictionary);
 
-                var queryPassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
+                //var queryPassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
+                var queryStorage = new QueryCGStorage(context, queryPackage);
 
                 var query = queryPackage.MainRuleInstance;
 
@@ -705,26 +734,37 @@ namespace TmpSandBox
                     LogInstance.Log($"debugStr = {debugStr}");
                 }
 
-                var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
+                //var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
                 //indexedQuery.FillIndexedDataAsStorage();
 
                 var searcher = new LogicalSearcher(context);
 
                 var searchOptions = new LogicalSearchOptions();
-                var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
-                globalStorageOptions.Storage = context.GlobalCGStorage;
-                globalStorageOptions.MaxDeph = null;
-                globalStorageOptions.UseFacts = true;
-                globalStorageOptions.UseProductions = true;
-                globalStorageOptions.Priority = 1;
+                //var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
+                //globalStorageOptions.Storage = context.GlobalCGStorage;
+                //globalStorageOptions.MaxDeph = null;
+                //globalStorageOptions.UseFacts = true;
+                //globalStorageOptions.UseAdditionalInstances = true;
+                //globalStorageOptions.UseProductions = true;
+                //globalStorageOptions.Priority = 1;
 
-                var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
-                var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
+                //var globalStorageOptions_1 = new SettingsOfStorageForSearchingInThisSession();
+                //globalStorageOptions_1.Storage = queryStorage;
+                //globalStorageOptions_1.MaxDeph = null;
+                //globalStorageOptions_1.UseFacts = false;
+                //globalStorageOptions_1.UseAdditionalInstances = true;
+                //globalStorageOptions_1.UseProductions = false;
+                //globalStorageOptions_1.Priority = 1;
+
+                //var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions, globalStorageOptions_1 };
+                //var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
 
                 //searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
-                searchOptions.DataSource = consolidatedCGStorage;
+                //searchOptions.DataSource = consolidatedCGStorage;
+                searchOptions.DataSource = context.GlobalCGStorage;
 
-                searchOptions.QueryExpression = indexedQuery;
+                //searchOptions.QueryExpression = indexedQuery;
+                searchOptions.QuerySource = queryStorage;
 
                 var rearchResult = searcher.Run(searchOptions);
 
@@ -751,9 +791,11 @@ namespace TmpSandBox
 
         private static void AddSmokeFact(RuleInstance smokeFact, BaseRealStorage storage)
         {
+            storage.AddRuleInstance(smokeFact);
+
             var indexedSmokeFact = ConvertorToIndexed.ConvertRuleInstance(smokeFact);
             //indexedSmokeFact.FillIndexedDataAsStorage();
-            storage.NSetIndexedRuleInstanceToIndexData(indexedSmokeFact);
+            //storage.NSetIndexedRuleInstanceToIndexData(indexedSmokeFact);
             var debugStr = DebugHelperForRuleInstance.ToString(smokeFact);
             LogInstance.Log($"debugStr = {debugStr}");
         }
@@ -1216,6 +1258,7 @@ namespace TmpSandBox
             //globalStorageOptions.Storage = context.GlobalCGStorage;
             //globalStorageOptions.MaxDeph = null;
             //globalStorageOptions.UseFacts = true;
+            //globalStorageOptions.UseAdditionalInstances = true;
             //globalStorageOptions.UseProductions = true;
             //globalStorageOptions.Priority = 1;
 
@@ -1364,9 +1407,11 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
-            var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+            context.GlobalCGStorage.AddRuleInstance(ruleInstance);
 
-            context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
+            //var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+
+            //context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
 
             var factInstance = CreateSimpleFact(globalEntityDictionary);
             commonPersistLogicalData.RuleInstancesList.Add(factInstance);
@@ -1377,11 +1422,13 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
-            var indexedFactInstance = ConvertorToIndexed.ConvertRuleInstance(factInstance);
+            context.GlobalCGStorage.AddRuleInstance(factInstance);
 
-            commonPersistIndexedLogicalData.IndexedRuleInstancesDict[indexedFactInstance.Key] = indexedFactInstance;
+            //var indexedFactInstance = ConvertorToIndexed.ConvertRuleInstance(factInstance);
 
-            context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFactInstance);
+            //commonPersistIndexedLogicalData.IndexedRuleInstancesDict[indexedFactInstance.Key] = indexedFactInstance;
+
+            //context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFactInstance);
 
             //LogInstance.Log($"indexedFactInstance = {indexedFactInstance}");
 
@@ -1391,9 +1438,11 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
-            var indexedFact_2 = ConvertorToIndexed.ConvertRuleInstance(fact_2);
+            context.GlobalCGStorage.AddRuleInstance(fact_2);
 
-            context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFact_2);
+            //var indexedFact_2 = ConvertorToIndexed.ConvertRuleInstance(fact_2);
+
+            //context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFact_2);
 
             var fact_2_2 = CreateSimpleFact_2_2(globalEntityDictionary);
 
@@ -1401,9 +1450,11 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
-            var indexedFact_2_2 = ConvertorToIndexed.ConvertRuleInstance(fact_2_2);
+            context.GlobalCGStorage.AddRuleInstance(fact_2_2);
 
-            context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFact_2_2);
+            //var indexedFact_2_2 = ConvertorToIndexed.ConvertRuleInstance(fact_2_2);
+
+            //context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFact_2_2);
 
             var fact_3 = CreateSimpleFact_3(globalEntityDictionary);
 
@@ -1411,9 +1462,11 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
-            var indexedFact_3 = ConvertorToIndexed.ConvertRuleInstance(fact_3);
+            context.GlobalCGStorage.AddRuleInstance(fact_3);
 
-            context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFact_3);
+            //var indexedFact_3 = ConvertorToIndexed.ConvertRuleInstance(fact_3);
+
+            //context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFact_3);
 
             var fact_3_2 = CreateSimpleFact_3_2(globalEntityDictionary);
 
@@ -1421,37 +1474,52 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
-            var indexedFact_3_2 = ConvertorToIndexed.ConvertRuleInstance(fact_3_2);
+            context.GlobalCGStorage.AddRuleInstance(fact_3_2);
 
-            context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFact_3_2);
+            //var indexedFact_3_2 = ConvertorToIndexed.ConvertRuleInstance(fact_3_2);
 
-            var query = CreateSimpleQuery(globalEntityDictionary);
+            //context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedFact_3_2);
 
+            var queryPackage = CreateSimpleQuery(globalEntityDictionary);
+            var query = queryPackage.MainRuleInstance;
             //LogInstance.Log($"query = {query}");
 
             debugStr = DebugHelperForRuleInstance.ToString(query);
 
+            var queryStorage = new QueryCGStorage(context, queryPackage);
+
             LogInstance.Log($"debugStr = {debugStr}");
 
-            var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
+            //var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
 
             var searcher = new LogicalSearcher(context);
 
             var searchOptions = new LogicalSearchOptions();
-            var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
-            globalStorageOptions.Storage = context.GlobalCGStorage;
-            globalStorageOptions.MaxDeph = null;
-            globalStorageOptions.UseFacts = true;
-            globalStorageOptions.UseProductions = true;
-            globalStorageOptions.Priority = 1;
+            //var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
+            //globalStorageOptions.Storage = context.GlobalCGStorage;
+            //globalStorageOptions.MaxDeph = null;
+            //globalStorageOptions.UseFacts = true;
+            //globalStorageOptions.UseProductions = true;
+            //globalStorageOptions.UseAdditionalInstances = true;
+            //globalStorageOptions.Priority = 1;
 
-            var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
-            var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
+            //var globalStorageOptions_1 = new SettingsOfStorageForSearchingInThisSession();
+            //globalStorageOptions_1.Storage = queryStorage;
+            //globalStorageOptions_1.MaxDeph = null;
+            //globalStorageOptions_1.UseFacts = false;
+            //globalStorageOptions_1.UseAdditionalInstances = true;
+            //globalStorageOptions_1.UseProductions = false;
+            //globalStorageOptions_1.Priority = 1;
 
-            //searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
-            searchOptions.DataSource = consolidatedCGStorage;
+            //var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions, globalStorageOptions_1 };
+            //var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
 
-            searchOptions.QueryExpression = indexedQuery;
+            ////searchOptions.DataSource = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
+            //searchOptions.DataSource = consolidatedCGStorage;
+            searchOptions.DataSource = context.GlobalCGStorage;
+
+            //searchOptions.QueryExpression = indexedQuery;
+            searchOptions.QuerySource = queryStorage;
 
             var rearchResult = searcher.Run(searchOptions);
 
@@ -1736,8 +1804,12 @@ namespace TmpSandBox
             return ruleInstance;
         }
 
-        private static RuleInstance CreateSimpleQuery(IEntityDictionary globalEntityDictionary)
+        private static RuleInstancePackage CreateSimpleQuery(IEntityDictionary globalEntityDictionary)
         {
+            var result = new RuleInstancePackage();
+            var allRuleInstancesList = new List<RuleInstance>();
+            result.AllRuleInstances = allRuleInstancesList;
+
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = globalEntityDictionary.Name;
             ruleInstance.Kind = KindOfRuleInstance.QuestionVars;
@@ -1745,6 +1817,9 @@ namespace TmpSandBox
             ruleInstance.Key = globalEntityDictionary.GetKey(ruleInstance.Name);
             ruleInstance.ModuleName = "#simple_module";
             ruleInstance.ModuleKey = globalEntityDictionary.GetKey(ruleInstance.ModuleName);
+
+            result.MainRuleInstance = ruleInstance;
+            allRuleInstancesList.Add(ruleInstance);
 
             var rulePart_1 = new RulePart();
             rulePart_1.Parent = ruleInstance;
@@ -1773,7 +1848,7 @@ namespace TmpSandBox
 
             //son(Piter,$X1)
 
-            return ruleInstance;
+            return result;
         }
 
         private static RuleInstance CreateFirstRuleInstance(IEntityDictionary globalEntityDictionary)

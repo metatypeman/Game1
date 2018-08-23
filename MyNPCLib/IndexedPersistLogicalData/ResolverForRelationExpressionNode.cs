@@ -408,7 +408,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
             //var strategyForGettingInfo = new StrategyForGettingInfoFromStoragesByAnnotation(context, annotationOfStored);
 
             var executingCardForAnnotation = new QueryExecutingCardForIndexedPersistLogicalData();
-            annotationOfQuery.RuleInstance.FillExecutingCardForAnnotation(executingCardForAnnotation, dataSource);
+
+            var indexedRuleInstanceOfAnnotation = dataSource.GetIndexedAdditionalRuleInstanceByKey(annotationOfQuery.RuleInstanceKey);
+
+            //annotationOfQuery.RuleInstance.FillExecutingCardForAnnotation(executingCardForAnnotation, dataSource);
+            indexedRuleInstanceOfAnnotation.FillExecutingCardForAnnotation(executingCardForAnnotation, dataSource);
             //NFillExecutingCard(executingCardForAnnotation, strategyForGettingInfo);
 
 #if DEBUG
@@ -417,7 +421,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             //return false;//tmp
 #endif
 
-            if(executingCardForAnnotation.ResultsOfQueryToRelationList.IsEmpty())
+            if (executingCardForAnnotation.ResultsOfQueryToRelationList.IsEmpty())
             {
                 return false;
             }

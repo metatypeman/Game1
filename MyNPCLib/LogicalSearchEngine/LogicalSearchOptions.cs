@@ -8,7 +8,7 @@ namespace MyNPCLib.LogicalSearchEngine
 {
     public class LogicalSearchOptions : IObjectToString
     {
-        public IndexedRuleInstance QueryExpression { get; set; }
+        public ICGStorage QuerySource { get; set; }
         public ICGStorage DataSource { get; set; }
 
         public override string ToString()
@@ -26,15 +26,15 @@ namespace MyNPCLib.LogicalSearchEngine
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
-            if (QueryExpression == null)
+            if (QuerySource == null)
             {
-                sb.AppendLine($"{spaces}{nameof(QueryExpression)} = null");
+                sb.AppendLine($"{spaces}{nameof(QuerySource)} = null");
             }
             else
             {
-                sb.AppendLine($"{spaces}Begin {nameof(QueryExpression)}");
-                sb.Append(QueryExpression.ToString(nextN));
-                sb.AppendLine($"{spaces}End {nameof(QueryExpression)}");
+                sb.AppendLine($"{spaces}Begin {nameof(QuerySource)}");
+                sb.Append(QuerySource.MainIndexedRuleInstance?.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(QuerySource)}");
             }
             return sb.ToString();
         }

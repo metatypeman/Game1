@@ -22,7 +22,6 @@ namespace MyNPCLib.CGStorage
         public void Init()
         {
             mGlobalCGStorage = new GlobalCGStorage(this);
-            mGlobalCGStorage.Init();
         }
     }
 }

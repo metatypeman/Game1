@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,6 +20,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
         public override KindOfCGStorage KindOfStorage => KindOfCGStorage.OtherProxy;
 
+        public override IList<RuleInstance> AllRuleInstances => mParentStorage.AllRuleInstances;
+
         public override IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
 #if DEBUG
@@ -26,7 +29,9 @@ namespace MyNPCLib.IndexedPersistLogicalData
             //LogInstance.Log($"Context.EntityDictionary.GetName(key) = {Context.EntityDictionary.GetName(key)}");
 #endif
 
-            return mIndexedLogicalAnnotation.RuleInstance.GetIndexedRulePartOfFactsByKeyOfRelation(key);
+            var indexedRuleInstance = mParentStorage.GetIndexedRuleInstanceByKey(mIndexedLogicalAnnotation.RuleInstanceKey);
+
+            return indexedRuleInstance?.GetIndexedRulePartOfFactsByKeyOfRelation(key);
         }
 
         public override IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key)
@@ -57,6 +62,30 @@ namespace MyNPCLib.IndexedPersistLogicalData
             //return result;
         }
 
-        public override IList<ResolverForRelationExpressionNode> AllRelationsForProductions => throw new NotImplementedException();
+        public override RuleInstance GetRuleInstanceByKey(ulong key)
+        {
+            return mParentStorage.GetRuleInstanceByKey(key);
+        }
+
+        public override IndexedRuleInstance GetIndexedRuleInstanceByKey(ulong key)
+        {
+#if DEBUG
+            LogInstance.Log($"key = {key}");
+#endif
+
+            return mParentStorage.GetIndexedRuleInstanceByKey(key);
+        }
+
+        public override IndexedRuleInstance GetIndexedAdditionalRuleInstanceByKey(ulong key)
+        {
+            return mParentStorage.GetIndexedAdditionalRuleInstanceByKey(key);
+        }
+
+        public override IList<ResolverForRelationExpressionNode> GetAllRelations()
+        {
+            return mParentStorage.GetAllRelations();
+        }
+
+        public override IList<ResolverForRelationExpressionNode> AllRelationsForProductions => mParentStorage.AllRelationsForProductions;
     }
 }

@@ -1,13 +1,14 @@
-﻿using System;
+﻿using MyNPCLib.PersistLogicalData;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MyNPCLib.CGStorage
 {
-    public class QueryCGStorage : BaseProxyStorage
+    public class QueryCGStorage : BaseRealStorage
     {
-        public QueryCGStorage(ContextOfCGStorage context)
-            : base(context)
+        public QueryCGStorage(ContextOfCGStorage context, RuleInstancePackage ruleInstancePackage)
+            : base(context, ruleInstancePackage)
         {
         }
 

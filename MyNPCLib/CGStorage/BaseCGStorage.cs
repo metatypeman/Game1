@@ -23,10 +23,6 @@ namespace MyNPCLib.CGStorage
 
         public string DictionaryName { get; private set; }
 
-        public virtual void Init()
-        {
-        }
-
         public virtual IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
             throw new NotImplementedException();
@@ -47,7 +43,21 @@ namespace MyNPCLib.CGStorage
             throw new NotImplementedException();
         }
 
+        public virtual IndexedRuleInstance GetIndexedRuleInstanceByKey(ulong key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual IndexedRuleInstance GetIndexedAdditionalRuleInstanceByKey(ulong key)
+        {
+            var a = this;
+            throw new NotImplementedException();
+        }
+
         public virtual IList<ResolverForRelationExpressionNode> AllRelationsForProductions => throw new NotImplementedException();
+
+        public virtual RuleInstance MainRuleInstance => throw new NotImplementedException();
+        public virtual IndexedRuleInstance MainIndexedRuleInstance => throw new NotImplementedException();
 
         public override string ToString()
         {

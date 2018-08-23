@@ -1,4 +1,5 @@
-﻿using MyNPCLib.IndexedPersistLogicalData;
+﻿using MyNPCLib.ConvertingPersistLogicalDataToIndexing;
+using MyNPCLib.IndexedPersistLogicalData;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.PersistLogicalDataStorage;
 using System;
@@ -13,39 +14,81 @@ namespace MyNPCLib.CGStorage
         protected BaseRealStorage(ContextOfCGStorage context)
             : base(context)
         {
+            mRuleInstancesList = new List<RuleInstance>();
+            mRuleInstancesDict = new Dictionary<ulong, RuleInstance>();
+            mCommonPersistIndexedLogicalData = new CommonPersistIndexedLogicalData();
+        }
+
+        protected BaseRealStorage(ContextOfCGStorage context, RuleInstancePackage ruleInstancePackage)
+            : this(context)
+        {
+            var ruleInstancesList = ruleInstancePackage.AllRuleInstances;
+            var mainRuleInstance = ruleInstancePackage.MainRuleInstance;
+
+            foreach(var ruleInstance in ruleInstancesList)
+            {
+                AddRuleInstance(ruleInstance);
+            }
+
+            if(mainRuleInstance != null)
+            {
+                mMainRuleInstance = mainRuleInstance;
+                mMainIndexedRuleInstance = mCommonPersistIndexedLogicalData.GetIndexedRuleInstanceByKey(mainRuleInstance.Key);
+            }
         }
 
         public override IList<RuleInstance> AllRuleInstances => mRuleInstancesList;
         private readonly object mDataLockObj = new object();
-        //It is temporary public for construction time. It will be private after complete construction.
-        public IList<RuleInstance> mRuleInstancesList { get; set; }
+
+        private RuleInstance mMainRuleInstance;
+        private List<RuleInstance> mRuleInstancesList;
+        private Dictionary<ulong, RuleInstance> mRuleInstancesDict;
+        private IndexedRuleInstance mMainIndexedRuleInstance;
+
         private CommonPersistIndexedLogicalData mCommonPersistIndexedLogicalData { get; set; }
 
-        public override void Init()
+        public void AddRuleInstance(RuleInstance ruleInstance)
         {
+#if DEBUG
+            //LogInstance.Log($"ruleInstance = {ruleInstance}");
+#endif
             lock (mDataLockObj)
             {
-                mRuleInstancesList = new List<RuleInstance>();
-                mCommonPersistIndexedLogicalData = new CommonPersistIndexedLogicalData();
-                mCommonPersistIndexedLogicalData.Init();
+
+                var ruleInstanceKey = ruleInstance.Key;
+
+                if (ruleInstanceKey == 0)
+                {
+                    throw new NotSupportedException();
+                }
+
+                if (mRuleInstancesDict.ContainsKey(ruleInstanceKey))
+                {
+                    return;
+                }
+
+                if (mRuleInstancesList.Contains(ruleInstance))
+                {
+                    return;
+                }
+
+                var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+
+                ruleInstance.DataSource = this;
+
+                mRuleInstancesList.Add(ruleInstance);
+                mRuleInstancesDict[ruleInstanceKey] = ruleInstance;
+                NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
             }
         }
 
-        public void NSetIndexedRuleInstanceToIndexData(IndexedRuleInstance indexedRuleInstance)
+        private void NSetIndexedRuleInstanceToIndexData(IndexedRuleInstance indexedRuleInstance)
         {
-            lock (mDataLockObj)
-            {
 #if DEBUG
-                //LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
+            //LogInstance.Log($"indexedRuleInstance = {indexedRuleInstance}");
 #endif
 
-                if (!mRuleInstancesList.Contains(indexedRuleInstance.Origin))
-                {
-                    mRuleInstancesList.Add(indexedRuleInstance.Origin);
-                }
-
-                mCommonPersistIndexedLogicalData.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
-            }
+            mCommonPersistIndexedLogicalData.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
         }
 
         public override IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
@@ -89,7 +132,53 @@ namespace MyNPCLib.CGStorage
 
         public override RuleInstance GetRuleInstanceByKey(ulong key)
         {
-            return mRuleInstancesList.FirstOrDefault(p => p.Key == key);
+            lock (mDataLockObj)
+            {
+                if (mRuleInstancesDict.ContainsKey(key))
+                {
+                    return mRuleInstancesDict[key];
+                }
+
+                return null;
+            }
+        }
+
+        public override IndexedRuleInstance GetIndexedRuleInstanceByKey(ulong key)
+        {
+            lock (mDataLockObj)
+            {
+                return mCommonPersistIndexedLogicalData.GetIndexedRuleInstanceByKey(key);
+            }
+        }
+
+        public override IndexedRuleInstance GetIndexedAdditionalRuleInstanceByKey(ulong key)
+        {
+            lock (mDataLockObj)
+            {
+                return mCommonPersistIndexedLogicalData.GetIndexedAdditionalRuleInstanceByKey(key);
+            }
+        }
+
+        public override RuleInstance MainRuleInstance
+        {
+            get
+            {
+                lock (mDataLockObj)
+                {
+                    return mMainRuleInstance;
+                }
+            }
+        }
+
+        public override IndexedRuleInstance MainIndexedRuleInstance
+        {
+            get
+            {
+                lock (mDataLockObj)
+                {
+                    return mMainIndexedRuleInstance;
+                }
+            }
         }
 
         public string GetContentAsDbgStr()
