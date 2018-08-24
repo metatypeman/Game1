@@ -52,6 +52,7 @@ namespace TmpSandBox
 
             //TSTParsingUserQuery();
             //TSTLogicalSoundBus();
+            //TSTQueryEntityCondition();
             TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
             //TSTATNParsing();
@@ -261,6 +262,19 @@ namespace TmpSandBox
             LogInstance.Log("End");
         }
 
+        private static void TSTQueryEntityCondition()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+
+            var context = new ContextOfCGStorage(globalEntityDictionary);
+            context.Init();
+
+            var queryStr = "{: {clolor(#12345, black)} :}";
+            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+
+
+        }
+
         private static void TSTGoToGreenWaypoint()
         {
             LogInstance.Log("Begin");
@@ -330,9 +344,11 @@ namespace TmpSandBox
             {
                 var queryStr = "{: ?Z(?X,?Y)[: {: action :} :] :}";
 
-                var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
+                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
 
-                var queryStorage = new QueryCGStorage(context, queryPackage);
+                //var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
+
+                //var queryStorage = new QueryCGStorage(context, queryPackage);
 
                 //var queryPackage = CreateAnnotatedQueryForGoToGreenWaypoint(globalEntityDictionary);
                 //var queryPackagePassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
@@ -437,11 +453,12 @@ namespace TmpSandBox
             {
                 var queryStr = "{: direction(go,?X) :}";
 
-                var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
+                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+                //var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
                 //var queryPackage = CreateQueryForDirectionOfGoing(globalEntityDictionary, actionName);
-                var queryStorage = new QueryCGStorage(context, queryPackage);
+                //var queryStorage = new QueryCGStorage(context, queryPackage);
                 //var queryPackagePassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
-                var query = queryPackage.MainRuleInstance;
+                var query = queryStorage.MainRuleInstance;
 
                 {
                     var debugStr = DebugHelperForRuleInstance.ToString(query);
