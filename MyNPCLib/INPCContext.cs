@@ -1,4 +1,5 @@
-﻿using MyNPCLib.Logical;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,6 +31,12 @@ namespace MyNPCLib
         NPCResourcesResolutionKind ApproveNPCResourceProcessExecute(BaseNPCResourcesResolution existingsNPCResourcesResulution);
 
         object NoTypedBlackBoard { get; }
+
+        IEntityDictionary EntityDictionary { get; }
+
+        ContextOfCGStorage ContextOfCGStorage { get; }
+        ICGStorage MainCGStorage { get; }
+        GlobalCGStorage GlobalCGStorage { get; }
 
         T GetInstance<T>() where T : class;
 

@@ -21,8 +21,6 @@ namespace Assets.Scripts
         public TestedNPCContext(IEntityLogger entityLogger, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCHostContext npcHostContext, QueriesCache queriesCache)
             : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext, queriesCache)
         {
-            mEntityDictionary = entityDictionary;
-
             AddTypeOfProcess<TestedBootNPCProcess>();
             AddTypeOfProcess<TestedKeyListenerNPCProcess>();
             AddTypeOfProcess<TestedGoToEnemyBaseNPCProcess>();
@@ -44,8 +42,6 @@ namespace Assets.Scripts
             AddTypeOfProcess<TSTGoToPointNPCProcess>();
         }
 
-        private IEntityDictionary mEntityDictionary;
-
         public override void Bootstrap()
         {
             Bootstrap<TestedBootNPCProcess>();
@@ -56,11 +52,6 @@ namespace Assets.Scripts
 #if DEBUG
             Log($"logicalSoundPackage = {logicalSoundPackage}");
 #endif
-
-            var globalEntityDictionary = mEntityDictionary;
-
-            var context = new ContextOfCGStorage(globalEntityDictionary);
-            context.Init();
 
             var ruleInstancesList = logicalSoundPackage.SoundFactsDataSource.AllRuleInstances;
 
@@ -78,7 +69,7 @@ namespace Assets.Scripts
                 }
 #endif
 
-                context.GlobalCGStorage.AddRuleInstance(ruleInstance);
+                GlobalCGStorage.AddRuleInstance(ruleInstance);
             }
 
             var actionName = string.Empty;
@@ -86,8 +77,8 @@ namespace Assets.Scripts
             {
                 var queryStr = "{: ?Z(?X,?Y)[: {: action :} :] :}";
 
-                var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
-                var queryStorage = new QueryCGStorage(context, queryPackage);
+                var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, EntityDictionary);
+                var queryStorage = new QueryCGStorage(ContextOfCGStorage, queryPackage);
 
                 var query = queryPackage.MainRuleInstance;
 
@@ -99,10 +90,10 @@ namespace Assets.Scripts
                 }
 #endif
 
-                var searcher = new LogicalSearcher(context);
+                var searcher = new LogicalSearcher(ContextOfCGStorage);
 
                 var searchOptions = new LogicalSearchOptions();
-                searchOptions.DataSource = context.GlobalCGStorage;
+                searchOptions.DataSource = MainCGStorage;
                 searchOptions.QuerySource = queryStorage;
 
                 var rearchResult = searcher.Run(searchOptions);
@@ -111,9 +102,8 @@ namespace Assets.Scripts
                 Log($"rearchResult = {rearchResult}");
 #endif
 
-                var querySearchResultCGStorage = new QueryResultCGStorage(context, rearchResult);
-
-                var keyOfActionQuestionVar = globalEntityDictionary.GetKey("?Z");
+                var querySearchResultCGStorage = new QueryResultCGStorage(ContextOfCGStorage, rearchResult);
+                var keyOfActionQuestionVar = EntityDictionary.GetKey("?Z");
 
 #if DEBUG
                 Log($"keyOfActionQuestionVar = {keyOfActionQuestionVar}");
@@ -145,7 +135,7 @@ namespace Assets.Scripts
 
             if(actionName == "go")
             {
-                DispatchGo(actionName, context);
+                DispatchGo(actionName);
                 return;
             }
 
@@ -154,17 +144,16 @@ namespace Assets.Scripts
 #endif
         }
 
-        private void DispatchGo(string actionName, ContextOfCGStorage context)
+        private void DispatchGo(string actionName)
         {
 #if DEBUG
             Log($"actionName = {actionName}");
 #endif
-            var globalEntityDictionary = mEntityDictionary;
 
             var queryStr = "{: direction(go,?X) :}";
 
-            var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
-            var queryStorage = new QueryCGStorage(context, queryPackage);
+            var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, EntityDictionary);
+            var queryStorage = new QueryCGStorage(ContextOfCGStorage, queryPackage);
 
             var query = queryPackage.MainRuleInstance;
 
@@ -176,10 +165,10 @@ namespace Assets.Scripts
             }
 #endif
 
-            var searcher = new LogicalSearcher(context);
+            var searcher = new LogicalSearcher(ContextOfCGStorage);
 
             var searchOptions = new LogicalSearchOptions();
-            searchOptions.DataSource = context.GlobalCGStorage;
+            searchOptions.DataSource = MainCGStorage;
             searchOptions.QuerySource = queryStorage;
 
             var rearchResult = searcher.Run(searchOptions);
@@ -188,10 +177,10 @@ namespace Assets.Scripts
             Log($"rearchResult = {rearchResult}");
 #endif
 
-            var querySearchResultCGStorage = new QueryResultCGStorage(context, rearchResult);
+            var querySearchResultCGStorage = new QueryResultCGStorage(ContextOfCGStorage, rearchResult);
 
             var varNameOfDirection = "?X";
-            var keyOfVarOfDirection = globalEntityDictionary.GetKey(varNameOfDirection);
+            var keyOfVarOfDirection = EntityDictionary.GetKey(varNameOfDirection);
 
 #if DEBUG
             Log($"keyOfVarOfDirection = {keyOfVarOfDirection}");

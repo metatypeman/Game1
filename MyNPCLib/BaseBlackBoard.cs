@@ -1,4 +1,5 @@
-﻿using MyNPCLib.Logical;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -88,16 +89,22 @@ namespace MyNPCLib
             }
         }
 
+        public IEntityDictionary EntityDictionary => mContext?.EntityDictionary;
+
+        public ContextOfCGStorage ContextOfCGStorage => mContext?.ContextOfCGStorage;
+        public ICGStorage MainCGStorage => mContext?.MainCGStorage;
+        public GlobalCGStorage GlobalCGStorage => mContext?.GlobalCGStorage;
+
         public BaseAbstractLogicalObject GetLogicalObject(string query)
         {
-            return Context.GetLogicalObject(query);
+            return mContext?.GetLogicalObject(query);
         }
 
         public IList<VisionObject> VisibleObjects
         {
             get
             {
-                return Context.VisibleObjects;
+                return mContext?.VisibleObjects;
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using MyNPCLib.Logical;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.Logical;
 using MyNPCLib.LogicalSoundModeling;
 using System;
 using System.Collections.Generic;
@@ -116,6 +117,9 @@ namespace MyNPCLib
 
             mStorageOfSpecialEntities.SelfEntityId = mNPCHostContext.SelfEntityId;
 
+            mContextOfCGStorage = new ContextOfCGStorage(mEntityDictionary);
+            mContextOfCGStorage.Init();
+
             mLogicalStorage = new LogicalStorage(mEntityLogger, mEntityDictionary, mNPCHostContext.HostLogicalStorage, mStorageOfSpecialEntities);
 
             mVisionObjectsStorage.LogicalStorage = mLogicalStorage;
@@ -159,6 +163,7 @@ namespace MyNPCLib
         private readonly Dictionary<ulong, List<ulong>> mParentChildrenProcessesDict = new Dictionary<ulong, List<ulong>>();
         private readonly Dictionary<ulong, ulong> mChildParentDict = new Dictionary<ulong, ulong>();
         private readonly object mProcessesDictLockObj = new object();
+        private ContextOfCGStorage mContextOfCGStorage;
         private LogicalStorage mLogicalStorage;
         private StorageOfSpecialEntities mStorageOfSpecialEntities;
 
@@ -170,6 +175,41 @@ namespace MyNPCLib
         private bool mNeedDelayedBootstrap;
         private Type mDelayedBootstrapType;
         #endregion
+
+        public IEntityDictionary EntityDictionary => mEntityDictionary;
+
+        public ContextOfCGStorage ContextOfCGStorage
+        {
+            get
+            {
+                lock (mIsReadyLockObj)
+                {
+                    return mContextOfCGStorage;
+                }
+            }
+        }
+
+        public ICGStorage MainCGStorage
+        {
+            get
+            {
+                lock (mIsReadyLockObj)
+                {
+                    return mContextOfCGStorage?.MainCGStorage;
+                }
+            }
+        }
+
+        public GlobalCGStorage GlobalCGStorage
+        {
+            get
+            {
+                lock (mIsReadyLockObj)
+                {
+                    return mContextOfCGStorage?.GlobalCGStorage;
+                }
+            }
+        }
 
         public bool IsLogicalSubSystemReady
         {

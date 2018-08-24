@@ -19,6 +19,8 @@ namespace MyNPCLib.CGStorage
 
         public GlobalCGStorage GlobalCGStorage => mGlobalCGStorage;
 
+        public ICGStorage MainCGStorage => mGlobalCGStorage;
+
         public void Init()
         {
             mGlobalCGStorage = new GlobalCGStorage(this);
