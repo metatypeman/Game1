@@ -449,7 +449,7 @@ namespace TmpSandBox
                     LogInstance.Log($"debugStr (for going) = {debugStr}");
                 }
 
-                var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
+                //var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
 
                 var searcher = new LogicalSearcher(context);
 
@@ -495,34 +495,45 @@ namespace TmpSandBox
 
                 LogInstance.Log($"targetValueOfDirection = {targetValueOfDirection}");
 
-                var foundExpressionOfValueOfDirection = targetValueOfDirection.FoundExpression;
+                var entityConditionRuleInstance = targetValueOfDirection.GetEntityConditionRuleInstance();
 
-                if (foundExpressionOfValueOfDirection.IsEntityCondition)
-                {
-                    var foundExpressionOfValueOfDirectionAsEntityCondition = foundExpressionOfValueOfDirection.AsEntityCondition;
+                LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
 
-                    LogInstance.Log($"foundExpressionOfValueOfDirectionAsEntityCondition = {foundExpressionOfValueOfDirectionAsEntityCondition}");
+                var oldEntityConditionQueryString = RuleInstanceToOldEntityConditionConvertor.ConvertToOldQueryString(entityConditionRuleInstance);
 
-                    var dbgContentString = context.GlobalCGStorage.GetContentAsDbgStr();
+                LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
 
-                    LogInstance.Log($"dbgContentString = {dbgContentString}");
+                //var foundExpressionOfValueOfDirection = targetValueOfDirection.FoundExpression;
 
-                    var entityConditionRec = completeFoundRuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == foundExpressionOfValueOfDirectionAsEntityCondition.Key);
+                //if (foundExpressionOfValueOfDirection.IsEntityCondition)
+                //{
+                //    //var foundExpressionOfValueOfDirectionAsEntityCondition = foundExpressionOfValueOfDirection.AsEntityCondition;
 
-                    LogInstance.Log($"entityConditionRec = {entityConditionRec}");
+                //    //LogInstance.Log($"foundExpressionOfValueOfDirectionAsEntityCondition = {foundExpressionOfValueOfDirectionAsEntityCondition}");
 
-                    var keyOfEntityConditionFact = entityConditionRec.Key;
+                //    //var dbgContentString = context.GlobalCGStorage.GetContentAsDbgStr();
 
-                    LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
+                //    //LogInstance.Log($"dbgContentString = {dbgContentString}");
 
-                    var entityConditionRuleInstance = context.GlobalCGStorage.GetRuleInstanceByKey(keyOfEntityConditionFact);
+                //    //var entityConditionRec = targetValueOfDirection.Parent.RuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == foundExpressionOfValueOfDirectionAsEntityCondition.Key);
 
-                    LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
+                //    //var entityConditionRec = completeFoundRuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == foundExpressionOfValueOfDirectionAsEntityCondition.Key);
 
-                    var oldEntityConditionQueryString = RuleInstanceToOldEntityConditionConvertor.ConvertToOldQueryString(entityConditionRuleInstance);
+                //    //LogInstance.Log($"entityConditionRec = {entityConditionRec}");
 
-                    LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
-                }
+                //    //var keyOfEntityConditionFact = entityConditionRec.Key;
+
+                //    //LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
+
+                //    //var entityConditionRuleInstance = context.GlobalCGStorage.GetRuleInstanceByKey(keyOfEntityConditionFact);
+                //    var entityConditionRuleInstance = targetValueOfDirection.GetEntityConditionRuleInstance();
+
+                //    LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
+
+                //    var oldEntityConditionQueryString = RuleInstanceToOldEntityConditionConvertor.ConvertToOldQueryString(entityConditionRuleInstance);
+
+                //    LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
+                //}
 
                 //var targetSearchResultItemsList = rearchResult.Items;
 

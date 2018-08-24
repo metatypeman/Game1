@@ -75,7 +75,13 @@ namespace MyNPCLib.LogicalSearchEngine
             {
                 var resultItem = new LogicalSearchResultItem(entityDictionary, externalDataSource, result);
                 resultItem.QueryExpression = queryExpression;
-                resultItem.ResultOfVarOfQueryToRelationList = resultOfQueryToRelation.ResultOfVarOfQueryToRelationList;
+                var resultOfVarOfQueryToRelationList = resultOfQueryToRelation.ResultOfVarOfQueryToRelationList;
+                foreach(var resultOfVarOfQueryToRelation in resultOfVarOfQueryToRelationList)
+                {
+                    resultOfVarOfQueryToRelation.Parent = resultItem;
+                    resultOfVarOfQueryToRelation.Storage = externalDataSource;
+                }
+                resultItem.ResultOfVarOfQueryToRelationList = resultOfVarOfQueryToRelationList;
                 resultItemsList.Add(resultItem);
                 resultItem.Ready();
             }

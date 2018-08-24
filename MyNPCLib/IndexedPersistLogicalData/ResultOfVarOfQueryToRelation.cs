@@ -1,4 +1,6 @@
-﻿using MyNPCLib.PersistLogicalData;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.LogicalSearchEngine;
+using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +10,44 @@ namespace MyNPCLib.IndexedPersistLogicalData
 {
     public class ResultOfVarOfQueryToRelation : IObjectToString
     {
-        public 
-
+        public LogicalSearchResultItem Parent { get; set; }
+        public ICGStorage Storage { get; set; }
         public ulong KeyOfVar { get; set; }
         public BaseExpressionNode FoundExpression { get; set; }
         public IDictionary<ulong, OriginOfVarOfQueryToRelation> OriginDict { get; set; } = new Dictionary<ulong, OriginOfVarOfQueryToRelation>();
+
+        public RuleInstance GetEntityConditionRuleInstance()
+        {
+            var foundExpressionOfValueOfDirectionAsEntityCondition = FoundExpression.AsEntityCondition;
+
+            if(foundExpressionOfValueOfDirectionAsEntityCondition == null)
+            {
+                return null;
+            }
+
+            var entityConditionRec = Parent.RuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == foundExpressionOfValueOfDirectionAsEntityCondition.Key);
+
+            if(entityConditionRec == null)
+            {
+                return null;
+            }
+
+#if DEBUG
+            LogInstance.Log($"entityConditionRec = {entityConditionRec}");
+#endif
+            var keyOfEntityConditionFact = entityConditionRec.Key;
+
+#if DEBUG
+            LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
+#endif
+            var entityConditionRuleInstance = Storage.GetRuleInstanceByKey(keyOfEntityConditionFact);
+
+#if DEBUG
+            LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
+#endif
+
+            return entityConditionRuleInstance;
+        }
 
         public override string ToString()
         {

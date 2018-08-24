@@ -78,9 +78,7 @@ namespace Assets.Scripts
                 }
 #endif
 
-                var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
-
-                context.GlobalCGStorage.NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
+                context.GlobalCGStorage.AddRuleInstance(ruleInstance);
             }
 
             var actionName = string.Empty;
@@ -89,8 +87,8 @@ namespace Assets.Scripts
                 var queryStr = "{: ?Z(?X,?Y)[: {: action :} :] :}";
 
                 var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
-                //var queryPackage = CreateAnnotatedQueryForGoToGreenWaypoint(globalEntityDictionary);
-                var queryPassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
+                var queryStorage = new QueryCGStorage(context, queryPackage);
+
                 var query = queryPackage.MainRuleInstance;
 
 #if DEBUG
@@ -101,25 +99,11 @@ namespace Assets.Scripts
                 }
 #endif
 
-                var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
-
                 var searcher = new LogicalSearcher(context);
 
                 var searchOptions = new LogicalSearchOptions();
-                var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
-                globalStorageOptions.Storage = context.GlobalCGStorage;
-                globalStorageOptions.MaxDeph = null;
-                globalStorageOptions.UseFacts = true;
-                globalStorageOptions.UseProductions = true;
-                globalStorageOptions.Priority = 1;
-
-                var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
-                var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
-
-                //searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
-                searchOptions.DataSource = consolidatedCGStorage;
-
-                searchOptions.QueryExpression = indexedQuery;
+                searchOptions.DataSource = context.GlobalCGStorage;
+                searchOptions.QuerySource = queryStorage;
 
                 var rearchResult = searcher.Run(searchOptions);
 
@@ -127,11 +111,7 @@ namespace Assets.Scripts
                 Log($"rearchResult = {rearchResult}");
 #endif
 
-                var targetSearchResultItemsList = rearchResult.Items;
-
-#if DEBUG
-                Log($"targetSearchResultItemsList.Count = {targetSearchResultItemsList.Count}");
-#endif
+                var querySearchResultCGStorage = new QueryResultCGStorage(context, rearchResult);
 
                 var keyOfActionQuestionVar = globalEntityDictionary.GetKey("?Z");
 
@@ -139,34 +119,14 @@ namespace Assets.Scripts
                 Log($"keyOfActionQuestionVar = {keyOfActionQuestionVar}");
 #endif
 
-                foreach (var targetSearchResultItem in targetSearchResultItemsList)
+                var actionExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
+
+#if DEBUG
+                LogInstance.Log($"actionExpression = {actionExpression}");
+#endif
+                if (actionExpression != null)
                 {
-#if DEBUG
-                    Log($"targetSearchResultItem = {targetSearchResultItem}");
-#endif
-
-                    var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
-
-#if DEBUG
-                    //Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
-
-                    {
-                        var debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
-
-                        Log($"debugStr (zzz) = {debugStr}");
-                    }
-#endif
-
-                    var actionExpression = targetSearchResultItem.GetResultOfVar(keyOfActionQuestionVar);
-
-#if DEBUG
-                    Log($"actionExpression = {actionExpression}");
-#endif
-
-                    if (actionExpression != null)
-                    {
-                        actionName = actionExpression?.FoundExpression?.AsRelation.Name;
-                    }
+                    actionName = actionExpression?.FoundExpression?.AsRelation.Name;
                 }
             }
 
@@ -204,8 +164,8 @@ namespace Assets.Scripts
             var queryStr = "{: direction(go,?X) :}";
 
             var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
-            //var queryPackage = CreateQueryForDirectionOfGoing(globalEntityDictionary, actionName);
-            var queryPackagePassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
+            var queryStorage = new QueryCGStorage(context, queryPackage);
+
             var query = queryPackage.MainRuleInstance;
 
 #if DEBUG
@@ -216,25 +176,11 @@ namespace Assets.Scripts
             }
 #endif
 
-            var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
-
             var searcher = new LogicalSearcher(context);
 
             var searchOptions = new LogicalSearchOptions();
-            var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
-            globalStorageOptions.Storage = context.GlobalCGStorage;
-            globalStorageOptions.MaxDeph = null;
-            globalStorageOptions.UseFacts = true;
-            globalStorageOptions.UseProductions = true;
-            globalStorageOptions.Priority = 1;
-
-            var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
-            var consolidatedCGStorage = new ConsolidatedCGStorage(context, dataSourcesSettings);
-
-            //searchOptions.DataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions };
-            searchOptions.DataSource = consolidatedCGStorage;
-
-            searchOptions.QueryExpression = indexedQuery;
+            searchOptions.DataSource = context.GlobalCGStorage;
+            searchOptions.QuerySource = queryStorage;
 
             var rearchResult = searcher.Run(searchOptions);
 
@@ -242,11 +188,7 @@ namespace Assets.Scripts
             Log($"rearchResult = {rearchResult}");
 #endif
 
-            var targetSearchResultItemsList = rearchResult.Items;
-
-#if DEBUG
-            Log($"targetSearchResultItemsList.Count = {targetSearchResultItemsList.Count}");
-#endif
+            var querySearchResultCGStorage = new QueryResultCGStorage(context, rearchResult);
 
             var varNameOfDirection = "?X";
             var keyOfVarOfDirection = globalEntityDictionary.GetKey(varNameOfDirection);
@@ -255,69 +197,21 @@ namespace Assets.Scripts
             Log($"keyOfVarOfDirection = {keyOfVarOfDirection}");
 #endif
 
-            var oldEntityConditionQueryString = string.Empty;
-
-            foreach (var targetSearchResultItem in targetSearchResultItemsList)
-            {
-#if DEBUG
-                Log($"targetSearchResultItem = {targetSearchResultItem}");
-#endif
-
-                var completeFoundRuleInstance = targetSearchResultItem.RuleInstance;
+            var targetValueOfDirection = querySearchResultCGStorage.GetResultOfVar(keyOfVarOfDirection);
 
 #if DEBUG
-                //Log($"completeFoundRuleInstance = {completeFoundRuleInstance}");
-
-                {
-                    var debugStr = DebugHelperForRuleInstance.ToString(completeFoundRuleInstance);
-
-                    Log($"debugStr (yyyyyyyyyyyyyyyyy) = {debugStr}");
-                }
+            LogInstance.Log($"targetValueOfDirection = {targetValueOfDirection}");
 #endif
-
-                var targetValueOfDirection = targetSearchResultItem.GetResultOfVar(keyOfVarOfDirection);
+            var entityConditionRuleInstance = targetValueOfDirection.GetEntityConditionRuleInstance();
 
 #if DEBUG
-                Log($"targetValueOfDirection = {targetValueOfDirection}");
+            LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
 #endif
-
-                var foundExpressionOfValueOfDirection = targetValueOfDirection.FoundExpression;
-
-                if (foundExpressionOfValueOfDirection.IsEntityCondition)
-                {
-                    var foundExpressionOfValueOfDirectionAsEntityCondition = foundExpressionOfValueOfDirection.AsEntityCondition;
+            var oldEntityConditionQueryString = RuleInstanceToOldEntityConditionConvertor.ConvertToOldQueryString(entityConditionRuleInstance);
 
 #if DEBUG
-                    Log($"foundExpressionOfValueOfDirectionAsEntityCondition = {foundExpressionOfValueOfDirectionAsEntityCondition}");
+            LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
 #endif
-
-                    var dbgContentString = context.GlobalCGStorage.GetContentAsDbgStr();
-
-#if DEBUG
-                    Log($"dbgContentString = {dbgContentString}");
-#endif
-
-                    var entityConditionRec = completeFoundRuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == foundExpressionOfValueOfDirectionAsEntityCondition.Key);
-
-#if DEBUG
-                    Log($"entityConditionRec = {entityConditionRec}");
-#endif
-
-                    var keyOfEntityConditionFact = entityConditionRec.Key;
-
-#if DEBUG
-                    Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
-#endif
-
-                    var entityConditionRuleInstance = context.GlobalCGStorage.GetRuleInstanceByKey(keyOfEntityConditionFact);
-
-#if DEBUG
-                    Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
-#endif
-
-                    oldEntityConditionQueryString = RuleInstanceToOldEntityConditionConvertor.ConvertToOldQueryString(entityConditionRuleInstance);              
-                }
-            }
 
 #if DEBUG
             Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
