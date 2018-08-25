@@ -10,6 +10,9 @@ namespace MyNPCLib.CGStorage
     {
         KindOfCGStorage KindOfStorage { get; }
         ContextOfCGStorage Context { get; }
+        void Append(RuleInstance ruleInstance);
+        void Append(ICGStorage storage);
+        void Append(RuleInstancePackage ruleInstancePackage);
         IList<RuleInstance> AllRuleInstances { get; }
         IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key);
         IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key);

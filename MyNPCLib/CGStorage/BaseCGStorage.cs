@@ -19,6 +19,21 @@ namespace MyNPCLib.CGStorage
         public ContextOfCGStorage Context { get; private set; }
         public abstract KindOfCGStorage KindOfStorage { get; }
 
+        public virtual void Append(RuleInstance ruleInstance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Append(ICGStorage storage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Append(RuleInstancePackage ruleInstancePackage)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual IList<RuleInstance> AllRuleInstances => null;
 
         public string DictionaryName { get; private set; }

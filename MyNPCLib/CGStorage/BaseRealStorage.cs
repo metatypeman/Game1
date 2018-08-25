@@ -27,7 +27,7 @@ namespace MyNPCLib.CGStorage
 
             foreach(var ruleInstance in ruleInstancesList)
             {
-                AddRuleInstance(ruleInstance);
+                Append(ruleInstance);
             }
 
             if(mainRuleInstance != null)
@@ -47,7 +47,7 @@ namespace MyNPCLib.CGStorage
 
         private CommonPersistIndexedLogicalData mCommonPersistIndexedLogicalData { get; set; }
 
-        public void AddRuleInstance(RuleInstance ruleInstance)
+        public override void Append(RuleInstance ruleInstance)
         {
 #if DEBUG
             //LogInstance.Log($"ruleInstance = {ruleInstance}");
@@ -80,6 +80,16 @@ namespace MyNPCLib.CGStorage
                 mRuleInstancesDict[ruleInstanceKey] = ruleInstance;
                 NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
             }
+        }
+
+        public override void Append(ICGStorage storage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Append(RuleInstancePackage ruleInstancePackage)
+        {
+            throw new NotImplementedException();
         }
 
         private void NSetIndexedRuleInstanceToIndexData(IndexedRuleInstance indexedRuleInstance)

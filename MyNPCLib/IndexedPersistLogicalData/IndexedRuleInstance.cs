@@ -39,6 +39,21 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IndexedQuantityQualityFuzzyModality QuantityQualityModality { get; set; }
         public IList<IndexedLogicalAnnotation> Annotations { get; set; }
 
+        public void Append(RuleInstance ruleInstance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Append(ICGStorage storage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Append(RuleInstancePackage ruleInstancePackage)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual IList<RuleInstance> AllRuleInstances => new List<RuleInstance>() { Origin };
 
         public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)

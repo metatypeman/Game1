@@ -328,7 +328,7 @@ namespace TmpSandBox
                         LogInstance.Log($"debugStr = {debugStr}");
                     }
 
-                    context.GlobalCGStorage.AddRuleInstance(ruleInstance);
+                    context.GlobalCGStorage.Append(ruleInstance);
 
                     //var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
                     //indexedRuleInstance.FillIndexedDataAsStorage();
@@ -789,7 +789,7 @@ namespace TmpSandBox
 
                 LogInstance.Log($"debugStr = {debugStr}");
 
-                context.GlobalCGStorage.AddRuleInstance(ruleInstance);
+                context.GlobalCGStorage.Append(ruleInstance);
 
                 //var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
                 //indexedRuleInstance.FillIndexedDataAsStorage();
@@ -867,7 +867,7 @@ namespace TmpSandBox
 
         private static void AddSmokeFact(RuleInstance smokeFact, BaseRealStorage storage)
         {
-            storage.AddRuleInstance(smokeFact);
+            storage.Append(smokeFact);
 
             var indexedSmokeFact = ConvertorToIndexed.ConvertRuleInstance(smokeFact);
             //indexedSmokeFact.FillIndexedDataAsStorage();
@@ -1483,7 +1483,7 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
-            context.GlobalCGStorage.AddRuleInstance(ruleInstance);
+            context.GlobalCGStorage.Append(ruleInstance);
 
             //var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
 
@@ -1498,7 +1498,7 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
-            context.GlobalCGStorage.AddRuleInstance(factInstance);
+            context.GlobalCGStorage.Append(factInstance);
 
             //var indexedFactInstance = ConvertorToIndexed.ConvertRuleInstance(factInstance);
 
@@ -1514,7 +1514,7 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
-            context.GlobalCGStorage.AddRuleInstance(fact_2);
+            context.GlobalCGStorage.Append(fact_2);
 
             //var indexedFact_2 = ConvertorToIndexed.ConvertRuleInstance(fact_2);
 
@@ -1526,7 +1526,7 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
-            context.GlobalCGStorage.AddRuleInstance(fact_2_2);
+            context.GlobalCGStorage.Append(fact_2_2);
 
             //var indexedFact_2_2 = ConvertorToIndexed.ConvertRuleInstance(fact_2_2);
 
@@ -1538,7 +1538,7 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
-            context.GlobalCGStorage.AddRuleInstance(fact_3);
+            context.GlobalCGStorage.Append(fact_3);
 
             //var indexedFact_3 = ConvertorToIndexed.ConvertRuleInstance(fact_3);
 
@@ -1550,7 +1550,7 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr = {debugStr}");
 
-            context.GlobalCGStorage.AddRuleInstance(fact_3_2);
+            context.GlobalCGStorage.Append(fact_3_2);
 
             //var indexedFact_3_2 = ConvertorToIndexed.ConvertRuleInstance(fact_3_2);
 
