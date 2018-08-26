@@ -22,19 +22,7 @@ namespace MyNPCLib.CGStorage
         protected BaseRealStorage(ContextOfCGStorage context, RuleInstancePackage ruleInstancePackage)
             : this(context)
         {
-            var ruleInstancesList = ruleInstancePackage.AllRuleInstances;
-            var mainRuleInstance = ruleInstancePackage.MainRuleInstance;
-
-            foreach(var ruleInstance in ruleInstancesList)
-            {
-                Append(ruleInstance);
-            }
-
-            if(mainRuleInstance != null)
-            {
-                mMainRuleInstance = mainRuleInstance;
-                mMainIndexedRuleInstance = mCommonPersistIndexedLogicalData.GetIndexedRuleInstanceByKey(mainRuleInstance.Key);
-            }
+            Append(ruleInstancePackage);
         }
 
         public override IList<RuleInstance> AllRuleInstances => mRuleInstancesList;
@@ -54,42 +42,90 @@ namespace MyNPCLib.CGStorage
 #endif
             lock (mDataLockObj)
             {
-
-                var ruleInstanceKey = ruleInstance.Key;
-
-                if (ruleInstanceKey == 0)
-                {
-                    throw new NotSupportedException();
-                }
-
-                if (mRuleInstancesDict.ContainsKey(ruleInstanceKey))
-                {
-                    return;
-                }
-
-                if (mRuleInstancesList.Contains(ruleInstance))
-                {
-                    return;
-                }
-
-                var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
-
-                ruleInstance.DataSource = this;
-
-                mRuleInstancesList.Add(ruleInstance);
-                mRuleInstancesDict[ruleInstanceKey] = ruleInstance;
-                NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
+                NAppend(ruleInstance);
             }
         }
 
         public override void Append(ICGStorage storage)
         {
-            throw new NotImplementedException();
+            lock (mDataLockObj)
+            {
+                var ruleInstancesList = storage.AllRuleInstances;
+                var mainRuleInstance = storage.MainRuleInstance;
+
+                if (mainRuleInstance != null)
+                {
+                    NAppend(mainRuleInstance, true);
+                }
+
+                foreach (var ruleInstance in ruleInstancesList)
+                {
+                    NAppend(ruleInstance);
+                }
+            }            
         }
 
         public override void Append(RuleInstancePackage ruleInstancePackage)
         {
-            throw new NotImplementedException();
+            lock (mDataLockObj)
+            {
+                var ruleInstancesList = ruleInstancePackage.AllRuleInstances;
+                var mainRuleInstance = ruleInstancePackage.MainRuleInstance;
+
+                if (mainRuleInstance != null)
+                {
+                    NAppend(mainRuleInstance, true);
+                }
+
+                foreach (var ruleInstance in ruleInstancesList)
+                {
+                    NAppend(ruleInstance);
+                }
+            }
+        }
+
+        private void NAppend(RuleInstance ruleInstance, bool setAsMain = false)
+        {
+#if DEBUG
+            LogInstance.Log($"ruleInstance = {ruleInstance}");
+#endif
+
+            var ruleInstanceKey = ruleInstance.Key;
+
+            if (ruleInstanceKey == 0)
+            {
+                throw new NotSupportedException();
+            }
+
+            if (mRuleInstancesDict.ContainsKey(ruleInstanceKey))
+            {
+                return;
+            }
+
+            if (mRuleInstancesList.Contains(ruleInstance))
+            {
+                return;
+            }
+
+            ruleInstance = ruleInstance.Clone();
+
+#if DEBUG
+            //LogInstance.Log($"after ruleInstance = {ruleInstance}");
+#endif
+
+            var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+
+            ruleInstance.DataSource = this;
+
+            mRuleInstancesList.Add(ruleInstance);
+            mRuleInstancesDict[ruleInstanceKey] = ruleInstance;
+            NSetIndexedRuleInstanceToIndexData(indexedRuleInstance);
+
+            if(setAsMain)
+            {
+                mMainRuleInstance = ruleInstance;
+                mMainIndexedRuleInstance = indexedRuleInstance;
+            }
         }
 
         private void NSetIndexedRuleInstanceToIndexData(IndexedRuleInstance indexedRuleInstance)

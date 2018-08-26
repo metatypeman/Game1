@@ -21,7 +21,8 @@ namespace MyNPCLib.PersistLogicalData
             var result = new RelationExpressionNode();
             result.Name = Name;
             result.Key = Key;
-            if(Params != null)
+            result.IsQuestion = IsQuestion;
+            if (Params != null)
             {
                 var paramsList = new List<BaseExpressionNode>();
                 foreach(var item in Params)

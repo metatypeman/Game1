@@ -184,7 +184,11 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 
         private static IndexedRulePart ConvertRulePart(RulePart source, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context)
         {
-            if(context.RulePartDict.ContainsKey(source))
+#if DEBUG
+            //LogInstance.Log($"source = {source}");
+#endif
+
+            if (context.RulePartDict.ContainsKey(source))
             {
                 return context.RulePartDict[source];
             }

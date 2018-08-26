@@ -160,7 +160,12 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                 }
 
                 //throw new NotImplementedException();
-            }   
+            }
+
+#if DEBUG
+            //LogInstance.Log($"End source = {source}");
+            //LogInstance.Log($"End dest = {dest}");
+#endif
         }
 
         private static void PrepareForGraphConditionExpression(InternalConceptualGraph source, RuleInstance dest, ContextOfConvertingInternalCGToPersistLogicalData context)

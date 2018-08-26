@@ -29,6 +29,8 @@ namespace MyNPCLib.PersistLogicalData
                 result.VariablesQuantification = VariablesQuantification.Clone(context);
             }
 
+            result.IsActive = IsActive;
+
             if(Expression != null)
             {
                 result.Expression = Expression.Clone(context);
