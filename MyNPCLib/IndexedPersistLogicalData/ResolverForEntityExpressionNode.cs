@@ -1,5 +1,4 @@
 ﻿using MyNPCLib.CGStorage;
-using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
@@ -7,10 +6,9 @@ using System.Text;
 
 namespace MyNPCLib.IndexedPersistLogicalData
 {
-    [Serializable]
-    public class ResolverForConceptExpressionNode : ResolverForBaseExpressionNode
+    public class ResolverForEntityExpressionNode : ResolverForBaseExpressionNode
     {
-        public ConceptExpressionNode ConcreteOrigin { get; set; }
+        public EntityExpressionNode ConcreteOrigin { get; set; }
         public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Concept;
         public ulong Key { get; set; }
@@ -20,7 +18,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #if DEBUG
             LogInstance.Log("Begin");
 #endif
-            
+
 #if DEBUG
             LogInstance.Log("End");
 #endif

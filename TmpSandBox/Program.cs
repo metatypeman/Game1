@@ -3,6 +3,7 @@ using MyNPCLib.CG;
 using MyNPCLib.CGStorage;
 using MyNPCLib.ConvertingCGToInternal;
 using MyNPCLib.ConvertingInternalCGToPersistLogicalData;
+using MyNPCLib.ConvertingPersistLogicalData;
 using MyNPCLib.ConvertingPersistLogicalDataToIndexing;
 using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.Dot;
@@ -277,6 +278,46 @@ namespace TmpSandBox
             context.GlobalCGStorage.Append(queryStorage);
 
             LogInstance.Log($"after context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
+
+            queryStr = "{: {color(?X, black)} :}";
+
+            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+
+            var searcher = new LogicalSearcher(context);
+            var searchOptions = new LogicalSearchOptions();
+
+            searchOptions.DataSource = context.GlobalCGStorage;
+
+            searchOptions.QuerySource = queryStorage;
+
+            var rearchResult = searcher.Run(searchOptions);
+
+            LogInstance.Log($"rearchResult = {rearchResult}");
+
+            var querySearchResultCGStorage = new QueryResultCGStorage(context, rearchResult);
+
+            var keyOfActionQuestionVar = globalEntityDictionary.GetKey("?X");
+
+            var resultExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
+
+            LogInstance.Log($"resultExpression = {resultExpression}");
+
+            queryStr = "{: color=black :}";
+            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+
+            var mainRuleInstance = queryStorage.MainRuleInstance;
+
+            var debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
+
+            LogInstance.Log($"debugStr (query) = {debugStr}");
+
+            queryStorage = ConvertorEntityConditionToQuery.Convert(queryStorage);
+
+            mainRuleInstance = queryStorage.MainRuleInstance;
+
+            debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
+
+            LogInstance.Log($"debugStr (query) = {debugStr}");
         }
 
         private static void TSTGoToGreenWaypoint()

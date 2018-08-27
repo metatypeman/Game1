@@ -41,7 +41,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
             var entityDictionary = context.EntityDictionary;
 
-            var ruleInstancesPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, entityDictionary);
+            var ruleInstancesPackage = ConvertStringToRuleInstancePackage(queryStr, entityDictionary);
 
             var ruleInstancesList = ruleInstancesPackage.AllRuleInstances;
 

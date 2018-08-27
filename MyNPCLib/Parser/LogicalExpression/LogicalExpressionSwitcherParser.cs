@@ -121,7 +121,10 @@ namespace MyNPCLib.Parser.LogicalExpression
 #if DEBUG
             LogInstance.Log($"CONCEPT!!!!!!!! CurrToken = {CurrToken}");
 #endif
-            throw new NotImplementedException();
+            mASTNode = new ASTNodeOfLogicalQuery();
+            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.Entity;
+            mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
+            mASTNode.Name = CurrToken.Content;
         }
 
         private void ProcessConcept()

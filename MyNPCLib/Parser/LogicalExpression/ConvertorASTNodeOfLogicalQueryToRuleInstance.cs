@@ -201,6 +201,9 @@ namespace MyNPCLib.Parser.LogicalExpression
                 case KindOfASTNodeOfLogicalQuery.Concept:
                     return NConvertStandardExpressionConceptNode(node, context);
 
+                case KindOfASTNodeOfLogicalQuery.Entity:
+                    return NConvertStandardExpressionEntityNode(node, context);
+
                 case KindOfASTNodeOfLogicalQuery.Var:
                     return NConvertStandardExpressionVarNode(node, context);
 
@@ -318,6 +321,20 @@ namespace MyNPCLib.Parser.LogicalExpression
             var entityDictionary = context.EntityDictionary;
 
             var result = new ConceptExpressionNode();
+            result.Name = node.Name;
+            result.Key = entityDictionary.GetKey(node.Name);
+            FillAnnotationForExpression(result, node, context);
+            return result;
+        }
+
+        private static BaseExpressionNode NConvertStandardExpressionEntityNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
+        {
+#if DEBUG
+            LogInstance.Log($"node = {node}");
+#endif
+            var entityDictionary = context.EntityDictionary;
+
+            var result = new EntityExpressionNode();
             result.Name = node.Name;
             result.Key = entityDictionary.GetKey(node.Name);
             FillAnnotationForExpression(result, node, context);
@@ -526,6 +543,9 @@ namespace MyNPCLib.Parser.LogicalExpression
                 case KindOfASTNodeOfLogicalQuery.Concept:
                     return NConvertEntityConditionConceptNode(node, context);
 
+                case KindOfASTNodeOfLogicalQuery.Entity:
+                    return NConvertEntityConditionEntityNode(node, context);
+
                 case KindOfASTNodeOfLogicalQuery.Fact:
                     {
                         var secondaryKind = node.SecondaryKind;
@@ -679,6 +699,20 @@ namespace MyNPCLib.Parser.LogicalExpression
             var entityDictionary = context.EntityDictionary;
 
             var result = new ConceptExpressionNode();
+            result.Name = node.Name;
+            result.Key = entityDictionary.GetKey(node.Name);
+            FillAnnotationForExpression(result, node, context);
+            return result;
+        }
+
+        private static BaseExpressionNode NConvertEntityConditionEntityNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
+        {
+#if DEBUG
+            LogInstance.Log($"node = {node}");
+#endif
+            var entityDictionary = context.EntityDictionary;
+
+            var result = new EntityExpressionNode();
             result.Name = node.Name;
             result.Key = entityDictionary.GetKey(node.Name);
             FillAnnotationForExpression(result, node, context);

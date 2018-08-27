@@ -256,6 +256,9 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
                 case KindOfExpressionNode.Concept:
                     return ConvertConceptNode(source.AsConcept, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
+                case KindOfExpressionNode.Entity:
+                    return ConvertEntityNode(source.AsEntity, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
+
                 case KindOfExpressionNode.EntityRef:
                     return ConvertEntityRefNode(source.AsEntityRef, targetPart, parentIndexedRuleInstance, context, contextOfConvertingExpressionNode);
 
@@ -439,6 +442,17 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
         private static ResolverForConceptExpressionNode ConvertConceptNode(ConceptExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
         {
             var result = new ResolverForConceptExpressionNode();
+            result.ConcreteOrigin = source;
+            result.RulePart = targetPart;
+            result.RuleInstance = parentIndexedRuleInstance;
+            result.Key = source.Key;
+            result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
+            return result;
+        }
+
+        private static ResolverForEntityExpressionNode ConvertEntityNode(EntityExpressionNode source, IndexedRulePart targetPart, IndexedRuleInstance parentIndexedRuleInstance, ContextOfConvertingToIndexed context, ContextOfConvertingExpressionNode contextOfConvertingExpressionNode)
+        {
+            var result = new ResolverForEntityExpressionNode();
             result.ConcreteOrigin = source;
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
