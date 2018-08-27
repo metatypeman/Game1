@@ -52,8 +52,8 @@ namespace TmpSandBox
 
             //TSTParsingUserQuery();
             //TSTLogicalSoundBus();
-            //TSTQueryEntityCondition();
-            TSTGoToGreenWaypoint();
+            TSTQueryEntityCondition();
+            //TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
             //TSTATNParsing();
             //TSTWordNet();
@@ -269,10 +269,14 @@ namespace TmpSandBox
             var context = new ContextOfCGStorage(globalEntityDictionary);
             context.Init();
 
-            var queryStr = "{: {clolor(#12345, black)} :}";
+            var queryStr = "{: {color(#12345, black)} :}";
             var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
 
+            LogInstance.Log($"context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
 
+            context.GlobalCGStorage.Append(queryStorage);
+
+            LogInstance.Log($"after context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
         }
 
         private static void TSTGoToGreenWaypoint()

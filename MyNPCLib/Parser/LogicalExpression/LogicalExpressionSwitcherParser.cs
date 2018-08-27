@@ -101,6 +101,11 @@ namespace MyNPCLib.Parser.LogicalExpression
                             Exit();
                             break;
 
+                        case TokenKind.Entity:
+                            ProcessEntity();
+                            Exit();
+                            break;
+
                         default:
                             throw new UnexpectedTokenException(CurrToken);
                     }
@@ -109,6 +114,14 @@ namespace MyNPCLib.Parser.LogicalExpression
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mState), mState, null);
             }
+        }
+
+        private void ProcessEntity()
+        {
+#if DEBUG
+            LogInstance.Log($"CONCEPT!!!!!!!! CurrToken = {CurrToken}");
+#endif
+            throw new NotImplementedException();
         }
 
         private void ProcessConcept()

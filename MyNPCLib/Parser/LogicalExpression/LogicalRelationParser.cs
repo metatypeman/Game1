@@ -76,6 +76,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                         case TokenKind.QuestionParam:
                         case TokenKind.BeginFact:
                         case TokenKind.Mul:
+                        case TokenKind.Entity:
                             DispatchValueInParam();
                             break;
 

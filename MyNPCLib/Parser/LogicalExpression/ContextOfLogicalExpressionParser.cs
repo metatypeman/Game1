@@ -65,6 +65,24 @@ namespace MyNPCLib.Parser.LogicalExpression
                         }
                     }
                     break;
+
+                case TokenKind.Sharp:
+                    {
+                        var nextToken = NGetToken();
+                        var nextTokenKind = nextToken.TokenKind;
+                        switch (nextTokenKind)
+                        {
+                            case TokenKind.Word:
+                                nextToken.Content = $"#{nextToken.Content}";
+                                nextToken.TokenKind = TokenKind.Entity;
+                                return nextToken;
+
+                            default:
+                                Recovery(nextToken);
+                                break;
+                        }
+                    }
+                    break;
             }
 
             return result;

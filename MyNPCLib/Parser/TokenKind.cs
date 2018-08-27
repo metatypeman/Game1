@@ -25,6 +25,11 @@ namespace MyNPCLib.Parser
         QuestionParam,
 
         /// <summary>
+        /// Represents word which starts by #. Like '#some_entity'
+        /// </summary>
+        Entity,
+
+        /// <summary>
         /// Represents symbol `{`.
         /// </summary>
         OpenFigureBracket,
@@ -176,8 +181,6 @@ namespace MyNPCLib.Parser
         /// <summary>
         /// Represents symbols `&lt;-&gt;`.
         /// </summary>
-        LeftRightArrow,
-
-
+        LeftRightArrow
     }
 }
