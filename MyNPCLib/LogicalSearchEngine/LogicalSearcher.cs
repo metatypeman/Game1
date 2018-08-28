@@ -94,5 +94,18 @@ namespace MyNPCLib.LogicalSearchEngine
 
             return result;
         }
+
+        public IList<ulong> GetEntitiesIdList(LogicalSearchOptions options)
+        {
+            var searchResult = Run(options);
+
+#if DEBUG
+            LogInstance.Log($"searchResult = {searchResult}");
+#endif
+
+            var result = searchResult.Items.Select(p => p.ResultOfVarOfQueryToRelationList.Single()).Where(p => p.FoundExpression.IsEntityRef).Select(p => p.FoundExpression.AsEntityRef.Key).Distinct().ToList();
+
+            return result;
+        }
     }
 }

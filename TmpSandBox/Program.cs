@@ -324,6 +324,19 @@ namespace TmpSandBox
             debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
 
             LogInstance.Log($"debugStr (query) = {debugStr}");
+
+            searchOptions = new LogicalSearchOptions();
+            searchOptions.DataSource = context.GlobalCGStorage;
+            searchOptions.QuerySource = queryStorage;
+
+            var entitiesIdList = searcher.GetEntitiesIdList(searchOptions);
+
+            LogInstance.Log($"entitiesIdList.Count = {entitiesIdList.Count}");
+
+            foreach(var entityId in entitiesIdList)
+            {
+                LogInstance.Log($"entityId = {entityId}");
+            }
         }
 
         private static void TSTGoToGreenWaypoint()
