@@ -43,17 +43,30 @@ namespace MyNPCLib.ConvertingPersistLogicalData
             LogInstance.Log($"otherRuleInstancesList.Count = {otherRuleInstancesList.Count}");
 #endif
 
-            FindAllKeysOfAdditionalRuleInstances(otherRuleInstancesList, ref keysOfAdditionalRuleInstances);
+            IList<RuleInstance> targetRuleInstancesList = null;
+
+            if (keysOfAdditionalRuleInstances.Count == 0)
+            {
+                targetRuleInstancesList = new List<RuleInstance>();
+            }
+            else
+            {
+                keysOfAdditionalRuleInstances = keysOfAdditionalRuleInstances.Distinct().ToList();
+
+                FindAllKeysOfAdditionalRuleInstances(otherRuleInstancesList, ref keysOfAdditionalRuleInstances);
+
+                keysOfAdditionalRuleInstances = keysOfAdditionalRuleInstances.Distinct().ToList();
 
 #if DEBUG
-            LogInstance.Log($"keysOfAdditionalRuleInstances.Count = {keysOfAdditionalRuleInstances.Count}");
+                LogInstance.Log($"keysOfAdditionalRuleInstances.Count (2) = {keysOfAdditionalRuleInstances.Count}");
 #endif
 
-            var targetRuleInstancesList = CopyAllOfTargetAdditionalRuleInstances(otherRuleInstancesList, keysOfAdditionalRuleInstances);
+                targetRuleInstancesList = CopyAllOfTargetAdditionalRuleInstances(otherRuleInstancesList, keysOfAdditionalRuleInstances);
 
-            if(!targetRuleInstancesList.Any(p => p.Key != keyOfMainRuleInstance))
-            {
-                targetRuleInstancesList.Add(newMainRuleInstance);
+                if (!targetRuleInstancesList.Any(p => p.Key != keyOfMainRuleInstance))
+                {
+                    targetRuleInstancesList.Add(newMainRuleInstance);
+                }
             }
 
             var package = new RuleInstancePackage();
@@ -120,11 +133,9 @@ namespace MyNPCLib.ConvertingPersistLogicalData
                     break;
 
                 case KindOfExpressionNode.Concept:
-                    ReplaceVarToQuestionParamInConceptExpression(expressionNode.AsConcept, entityDictionary, ref keysOfAdditionalRuleInstances);
                     break;
 
                 case KindOfExpressionNode.EntityRef:
-                    ReplaceVarToQuestionParamInEntityRefExpression(expressionNode.AsEntityRef, entityDictionary, ref keysOfAdditionalRuleInstances);
                     break;
 
                 case KindOfExpressionNode.EntityCondition:
@@ -136,20 +147,20 @@ namespace MyNPCLib.ConvertingPersistLogicalData
                     break;
 
                 case KindOfExpressionNode.QuestionVar:
-                    ReplaceVarToQuestionParamInQuestionVarExpression(expressionNode.AsQuestionVar, entityDictionary, ref keysOfAdditionalRuleInstances);
                     break;
 
                 case KindOfExpressionNode.Value:
-                    ReplaceVarToQuestionParamInValueExpression(expressionNode.AsValue, entityDictionary, ref keysOfAdditionalRuleInstances);
-                    break;
-
-                case KindOfExpressionNode.FuzzyLogicValue:
-                    ReplaceVarToQuestionParamInFuzzyLogicValueExpression(expressionNode.AsFuzzyLogicValue, entityDictionary, ref keysOfAdditionalRuleInstances);
                     break;
 
                 case KindOfExpressionNode.Fact:
                     ReplaceVarToQuestionParamInFactExpression(expressionNode.AsFact, entityDictionary, ref keysOfAdditionalRuleInstances);
                     break;
+
+                case KindOfExpressionNode.ParamStub:
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
             }
 
             FillAllKeysOfAnnotation(expressionNode.Annotations, ref keysOfAdditionalRuleInstances);
@@ -160,7 +171,8 @@ namespace MyNPCLib.ConvertingPersistLogicalData
 #if DEBUG
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
-            throw new NotImplementedException();
+
+            ReplaceVarToQuestionParamInExpression(expressionNode.Left, null, -1, entityDictionary, ref keysOfAdditionalRuleInstances);
         }
 
         private static void ReplaceVarToQuestionParamInOperatorAndExpression(OperatorAndExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
@@ -168,31 +180,18 @@ namespace MyNPCLib.ConvertingPersistLogicalData
 #if DEBUG
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
-            throw new NotImplementedException();
+            ReplaceVarToQuestionParamInExpression(expressionNode.Left, null, -1, entityDictionary, ref keysOfAdditionalRuleInstances);
+            ReplaceVarToQuestionParamInExpression(expressionNode.Right, null, -1, entityDictionary, ref keysOfAdditionalRuleInstances);
         }
 
         private static void ReplaceVarToQuestionParamInOperatorOrExpression(OperatorOrExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
             LogInstance.Log($"expressionNode = {expressionNode}");
-#endif
-            throw new NotImplementedException();
-        }
 
-        private static void ReplaceVarToQuestionParamInConceptExpression(ConceptExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        {
-#if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
-            throw new NotImplementedException();
-        }
-
-        private static void ReplaceVarToQuestionParamInEntityRefExpression(EntityRefExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        {
-#if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
-#endif
-            throw new NotImplementedException();
+            ReplaceVarToQuestionParamInExpression(expressionNode.Left, null, -1, entityDictionary, ref keysOfAdditionalRuleInstances);
+            ReplaceVarToQuestionParamInExpression(expressionNode.Right, null, -1, entityDictionary, ref keysOfAdditionalRuleInstances);
         }
 
         private static void ReplaceVarToQuestionParamInEntityConditionExpression(EntityConditionExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
@@ -200,23 +199,24 @@ namespace MyNPCLib.ConvertingPersistLogicalData
 #if DEBUG
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
-            throw new NotImplementedException();
+            keysOfAdditionalRuleInstances.Add(expressionNode.Key);
         }
 
         private static void ReplaceVarToQuestionParamInVarExpression(VarExpressionNode expressionNode, RelationExpressionNode parentRelation, int paramIndex, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
             LogInstance.Log($"expressionNode = {expressionNode}");
+            LogInstance.Log($"parentRelation = {parentRelation}");
+            LogInstance.Log($"paramIndex = {paramIndex}");
 #endif
-            throw new NotImplementedException();
-        }
 
-        private static void ReplaceVarToQuestionParamInQuestionVarExpression(QuestionVarExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        {
-#if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
-#endif
-            throw new NotImplementedException();
+            var newExpressionNode = new QuestionVarExpressionNode();
+            var nodeName = expressionNode.Name.Replace("@", "?");
+            var nodeKey = entityDictionary.GetKey(nodeName);
+            newExpressionNode.Name = nodeName;
+            newExpressionNode.Key = nodeKey;
+
+            parentRelation.Params[paramIndex] = newExpressionNode;
         }
 
         private static void ReplaceVarToQuestionParamInFactExpression(FactExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
@@ -224,7 +224,8 @@ namespace MyNPCLib.ConvertingPersistLogicalData
 #if DEBUG
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
-            throw new NotImplementedException();
+
+            keysOfAdditionalRuleInstances.Add(expressionNode.Key);
         }
 
         private static void ReplaceVarToQuestionParamInRelationExpression(RelationExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
@@ -232,110 +233,185 @@ namespace MyNPCLib.ConvertingPersistLogicalData
 #if DEBUG
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
-            throw new NotImplementedException();
-        }
+            var paramsList = expressionNode.Params.ToList();
 
-        private static void ReplaceVarToQuestionParamInValueExpression(ValueExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        {
-#if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
-#endif
-            throw new NotImplementedException();
-        }
+            if (paramsList.Count > 0)
+            {
+                var n = 0;
 
-        private static void ReplaceVarToQuestionParamInFuzzyLogicValueExpression(FuzzyLogicValueExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        {
-#if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
-#endif
-            throw new NotImplementedException();
+                foreach (var paramInfo in paramsList)
+                {
+                    ReplaceVarToQuestionParamInExpression(paramInfo, expressionNode, n, entityDictionary, ref keysOfAdditionalRuleInstances);
+                    n++;
+                }
+            }
         }
 
         private static void FindAllKeysOfAdditionalRuleInstances(IList<RuleInstance> rulesInstancesList, ref List<ulong> keysOfAdditionalRuleInstances)
         {
-            throw new NotImplementedException();
+            var rulesInstancesDict = rulesInstancesList.ToDictionary(p => p.Key, p => p);
+
+            var initKeysOfkeysOfAdditionalRuleInstances = keysOfAdditionalRuleInstances.ToList();
+
+            var targetKeysOfkeysOfAdditionalRuleInstances = initKeysOfkeysOfAdditionalRuleInstances;
+            List<ulong> newKeysOfAdditionalRuleInstances = null;
+
+            while (targetKeysOfkeysOfAdditionalRuleInstances.Count > 0)
+            {
+                newKeysOfAdditionalRuleInstances = new List<ulong>();
+
+                foreach(var key in targetKeysOfkeysOfAdditionalRuleInstances)
+                {
+                    var ruleInstance = rulesInstancesDict[key];
+                    FindAllKeysOfAdditionalRuleInstance(ruleInstance, ref newKeysOfAdditionalRuleInstances);
+                }
+
+                if(newKeysOfAdditionalRuleInstances.Count == 0)
+                {
+                    break;
+                }
+
+                targetKeysOfkeysOfAdditionalRuleInstances = newKeysOfAdditionalRuleInstances.Distinct().Where(p => !initKeysOfkeysOfAdditionalRuleInstances.Contains(p)).ToList();
+            }
+        }
+
+        private static void FindAllKeysOfAdditionalRuleInstance(RuleInstance ruleInstance, ref List<ulong> keysOfAdditionalRuleInstances)
+        {
+            if(ruleInstance.Part_1 != null)
+            {
+                FindAllKeysOfRulePartOfAdditionalRuleInstance(ruleInstance.Part_1, ref keysOfAdditionalRuleInstances);
+            }
+
+            if(ruleInstance.Part_2 != null)
+            {
+                FindAllKeysOfRulePartOfAdditionalRuleInstance(ruleInstance.Part_2, ref keysOfAdditionalRuleInstances);
+            }
+
+            FillAllKeysOfAnnotation(ruleInstance.Annotations, ref keysOfAdditionalRuleInstances);
+        }
+
+        private static void FindAllKeysOfRulePartOfAdditionalRuleInstance(RulePart rulePart, ref List<ulong> keysOfAdditionalRuleInstances)
+        {
+            FindAllKeysOfExpressionOfAdditionalRuleInstance(rulePart.Expression, ref keysOfAdditionalRuleInstances);
+            FillAllKeysOfAnnotation(rulePart.Annotations, ref keysOfAdditionalRuleInstances);
+        }
+
+        private static void FindAllKeysOfExpressionOfAdditionalRuleInstance(BaseExpressionNode expressionNode, ref List<ulong> keysOfAdditionalRuleInstances)
+        {
+            var kind = expressionNode.Kind;
+
+            switch (kind)
+            {
+                case KindOfExpressionNode.And:
+                    FillAllKeysInOperatorAndExpression(expressionNode.AsOperatorAnd, ref keysOfAdditionalRuleInstances);
+                    break;
+
+                case KindOfExpressionNode.Or:
+                    FillAllKeysInOperatorOrExpression(expressionNode.AsOperatorOr, ref keysOfAdditionalRuleInstances);
+                    break;
+
+                case KindOfExpressionNode.Not:
+                    FillAllKeysInOperatorNotExpression(expressionNode.AsOperatorNot, ref keysOfAdditionalRuleInstances);
+                    break;
+
+                case KindOfExpressionNode.Relation:
+                    FillAllKeysInRelationExpression(expressionNode.AsRelation, ref keysOfAdditionalRuleInstances);
+                    break;
+
+                case KindOfExpressionNode.Concept:
+                    break;
+
+                case KindOfExpressionNode.EntityRef:
+                    break;
+
+                case KindOfExpressionNode.EntityCondition:
+                    FillAllKeysInEntityConditionExpression(expressionNode.AsEntityCondition, ref keysOfAdditionalRuleInstances);
+                    break;
+
+                case KindOfExpressionNode.Var:
+                    break;
+
+                case KindOfExpressionNode.QuestionVar:
+                    break;
+
+                case KindOfExpressionNode.Value:
+                    break;
+
+                case KindOfExpressionNode.Fact:
+                    FillAllKeysInFactExpression(expressionNode.AsFact, ref keysOfAdditionalRuleInstances);
+                    break;
+
+                case KindOfExpressionNode.ParamStub:
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+            }
+
+            FillAllKeysOfAnnotation(expressionNode.Annotations, ref keysOfAdditionalRuleInstances);
+        }
+
+        private static void FillAllKeysInOperatorNotExpression(OperatorNotExpressionNode expressionNode, ref List<ulong> keysOfAdditionalRuleInstances)
+        {
+            FindAllKeysOfExpressionOfAdditionalRuleInstance(expressionNode.Left, ref keysOfAdditionalRuleInstances);
+        }
+
+        private static void FillAllKeysInOperatorAndExpression(OperatorAndExpressionNode expressionNode, ref List<ulong> keysOfAdditionalRuleInstances)
+        {
+            FindAllKeysOfExpressionOfAdditionalRuleInstance(expressionNode.Left, ref keysOfAdditionalRuleInstances);
+            FindAllKeysOfExpressionOfAdditionalRuleInstance(expressionNode.Right, ref keysOfAdditionalRuleInstances);
+        }
+
+        private static void FillAllKeysInOperatorOrExpression(OperatorOrExpressionNode expressionNode, ref List<ulong> keysOfAdditionalRuleInstances)
+        {
+            FindAllKeysOfExpressionOfAdditionalRuleInstance(expressionNode.Left, ref keysOfAdditionalRuleInstances);
+            FindAllKeysOfExpressionOfAdditionalRuleInstance(expressionNode.Right, ref keysOfAdditionalRuleInstances);
+        }
+
+        private static void FillAllKeysInEntityConditionExpression(EntityConditionExpressionNode expressionNode, ref List<ulong> keysOfAdditionalRuleInstances)
+        {
+            keysOfAdditionalRuleInstances.Add(expressionNode.Key);
+        }
+
+        private static void FillAllKeysInFactExpression(FactExpressionNode expressionNode, ref List<ulong> keysOfAdditionalRuleInstances)
+        {
+            keysOfAdditionalRuleInstances.Add(expressionNode.Key);
+        }
+
+        private static void FillAllKeysInRelationExpression(RelationExpressionNode expressionNode, ref List<ulong> keysOfAdditionalRuleInstances)
+        {
+            foreach (var paramInfo in expressionNode.Params)
+            {
+                FindAllKeysOfExpressionOfAdditionalRuleInstance(paramInfo, ref keysOfAdditionalRuleInstances);
+            }
         }
 
         private static void FillAllKeysOfAnnotation(IList<LogicalAnnotation> annotations, ref List<ulong> keysOfAdditionalRuleInstances)
         {
-            throw new NotImplementedException();
+            if(annotations.IsEmpty())
+            {
+                return;
+            }
+
+            foreach(var annotation in annotations)
+            {
+                keysOfAdditionalRuleInstances.Add(annotation.RuleInstanceKey);
+            }
         }
-        /*
-                    switch(kind)
-        {
-            case KindOfExpressionNode.And:
-            case KindOfExpressionNode.Or:
-            case KindOfExpressionNode.Not:
-            case KindOfExpressionNode.Relation:
-            case KindOfExpressionNode.Concept:
-            case KindOfExpressionNode.EntityRef:
-            case KindOfExpressionNode.EntityCondition:
-            case KindOfExpressionNode.Var:
-            case KindOfExpressionNode.QuestionVar:
-            case KindOfExpressionNode.Value:
-            case KindOfExpressionNode.FuzzyLogicValue:
-            case KindOfExpressionNode.Fact:
-            case KindOfExpressionNode.ParamStub:
-
-            default:
-                throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
-        }
-         */
-
-        /*
-public virtual bool IsUnaryOperator => false;
-public virtual UnaryOperatorExpressionNode UnaryOperator => null;
-public virtual bool IsOperatorNot => false;
-public virtual OperatorNotExpressionNode AsOperatorNot => null;
-public virtual bool IsBinaryOperator => false;
-public virtual BinaryOperatorExpressionNode AsBinaryOperator => null;
-public virtual bool IsOperatorAnd => false;
-public virtual OperatorAndExpressionNode AsOperatorAnd => null;
-public virtual bool IsOperatorOr => false;
-public virtual OperatorOrExpressionNode AsOperatorOr => null;
-public virtual bool IsBaseRef => false;
-public virtual BaseRefExpressionNode AsBaseRef => null;
-public virtual bool IsConcept => false;
-public virtual ConceptExpressionNode AsConcept => null;
-public virtual bool IsEntityRef => false;
-public virtual EntityRefExpressionNode AsEntityRef => null;
-public virtual bool IsEntityCondition => false;
-public virtual EntityConditionExpressionNode AsEntityCondition => null;
-public virtual bool IsVar => false;
-public virtual VarExpressionNode AsVar => null;
-public virtual bool IsQuestionVar => false;
-public virtual QuestionVarExpressionNode AsQuestionVar => null;
-public virtual bool IsFact => false;
-public virtual FactExpressionNode AsFact => null;
-public virtual bool IsRelation => false;
-public virtual RelationExpressionNode AsRelation => null;
-public virtual bool IsValue => false;
-public virtual ValueExpressionNode AsValue => null;
-public virtual bool IsFuzzyLogicValue => false;
-public virtual FuzzyLogicValueExpressionNode AsFuzzyLogicValue => null;
-public virtual bool IsParamStub => false;
-public virtual ParamStubExpressionNode AsParamStub => null; 
-*/
-
-        /*
-                private static void ReplaceVarToQuestionParamInOperatorNotExpression(OperatorNotExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        private static void ReplaceVarToQuestionParamInOperatorAndExpression(OperatorAndExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        private static void ReplaceVarToQuestionParamInOperatorOrExpression(OperatorOrExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        private static void ReplaceVarToQuestionParamInConceptExpression(ConceptExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        private static void ReplaceVarToQuestionParamInEntityRefExpression(EntityRefExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        private static void ReplaceVarToQuestionParamInEntityConditionExpression(EntityConditionExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        private static void ReplaceVarToQuestionParamInVarExpression(VarExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        private static void ReplaceVarToQuestionParamInQuestionVarExpression(QuestionVarExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        private static void ReplaceVarToQuestionParamInFactExpression(FactExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        private static void ReplaceVarToQuestionParamInRelationExpression(RelationExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        private static void ReplaceVarToQuestionParamInValueExpression(ValueExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        private static void ReplaceVarToQuestionParamInFuzzyLogicValueExpression(FuzzyLogicValueExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-        private static void ReplaceVarToQuestionParamInParamStubExpression(ParamStubExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
-*/
 
         private static IList<RuleInstance> CopyAllOfTargetAdditionalRuleInstances(IList<RuleInstance> rulesInstancesList, List<ulong> keysOfAdditionalRuleInstances)
         {
-            throw new NotImplementedException();
+            var result = new List<RuleInstance>();
+            var rulesInstancesDict = rulesInstancesList.ToDictionary(p => p.Key, p => p);
+
+            foreach(var key in keysOfAdditionalRuleInstances)
+            {
+                var ruleInstance = rulesInstancesDict[key];
+                var newRuleInstance = ruleInstance.Clone();
+                result.Add(newRuleInstance);
+            }
+
+            return result;
         }
     }
 }
