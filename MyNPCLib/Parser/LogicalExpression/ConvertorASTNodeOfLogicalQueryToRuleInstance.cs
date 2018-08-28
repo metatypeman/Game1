@@ -47,7 +47,11 @@ namespace MyNPCLib.Parser.LogicalExpression
             result.Name = nameOfFact;
             result.Key = entityDictionary.GetKey(nameOfFact);
 
-            if(node.Part_1 != null)
+            var accessPolicyToFactModality = new AccessPolicyToFactModality();
+            accessPolicyToFactModality.Kind = KindOfAccessPolicyToFact.Public;
+            result.AccessPolicyToFactModality = accessPolicyToFactModality;
+
+            if (node.Part_1 != null)
             {
                 result.Part_1 = new RulePart();
             }

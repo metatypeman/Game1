@@ -15,7 +15,12 @@ namespace MyNPCLib.PersistLogicalData
         {
             var result = new AccessPolicyToFactModality();
             result.Kind = Kind;
-            result.Expression = Expression.Clone(context);
+
+            if(Expression != null)
+            {
+                result.Expression = Expression.Clone(context);
+            }
+            
             result.Annotations = LogicalAnnotation.CloneListOfAnnotations(Annotations, context);
             return result;
         }

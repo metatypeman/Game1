@@ -52,7 +52,12 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
                 sb.Append(ToString(source.Annotations, context));
             }
 
-            if(source.EntitiesConditions != null)
+            if (source.AccessPolicyToFactModality != null)
+            {
+                sb.Append(ToString(source.AccessPolicyToFactModality, context));
+            }
+
+            if (source.EntitiesConditions != null)
             {
                 sb.Append(ToString(source.EntitiesConditions, context));
             }
@@ -87,11 +92,6 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
             if (source.NotContradict != null)
             {
                 sb.Append(ToString(source.NotContradict, context));
-            }
-
-            if(source.AccessPolicyToFactModality != null)
-            {
-                sb.Append(ToString(source.AccessPolicyToFactModality, context));
             }
 
             if (source.DesirableModality != null)
