@@ -89,11 +89,11 @@ namespace MyNPCLib.ConvertingPersistLogicalData
             LogInstance.Log($"rulePart = {rulePart}");
 #endif
 
-            ReplaceVarToQuestionParamInExpression(rulePart.Expression, entityDictionary, ref keysOfAdditionalRuleInstances);
+            ReplaceVarToQuestionParamInExpression(rulePart.Expression, null, -1, entityDictionary, ref keysOfAdditionalRuleInstances);
             FillAllKeysOfAnnotation(rulePart.Annotations, ref keysOfAdditionalRuleInstances);
         }
 
-        private static void ReplaceVarToQuestionParamInExpression(BaseExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
+        private static void ReplaceVarToQuestionParamInExpression(BaseExpressionNode expressionNode, RelationExpressionNode parentRelation, int paramIndex, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
             LogInstance.Log($"expressionNode = {expressionNode}");
@@ -132,7 +132,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
                     break;
 
                 case KindOfExpressionNode.Var:
-                    ReplaceVarToQuestionParamInVarExpression(expressionNode.AsVar, entityDictionary, ref keysOfAdditionalRuleInstances);
+                    ReplaceVarToQuestionParamInVarExpression(expressionNode.AsVar, parentRelation, paramIndex, entityDictionary, ref keysOfAdditionalRuleInstances);
                     break;
 
                 case KindOfExpressionNode.QuestionVar:
@@ -203,7 +203,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
             throw new NotImplementedException();
         }
 
-        private static void ReplaceVarToQuestionParamInVarExpression(VarExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
+        private static void ReplaceVarToQuestionParamInVarExpression(VarExpressionNode expressionNode, RelationExpressionNode parentRelation, int paramIndex, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
             LogInstance.Log($"expressionNode = {expressionNode}");
