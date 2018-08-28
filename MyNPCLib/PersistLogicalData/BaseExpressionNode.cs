@@ -23,8 +23,6 @@ namespace MyNPCLib.PersistLogicalData
         public virtual BaseRefExpressionNode AsBaseRef => null;
         public virtual bool IsConcept => false;
         public virtual ConceptExpressionNode AsConcept => null;
-        public virtual bool IsEntity => false;
-        public virtual EntityExpressionNode AsEntity => null;
         public virtual bool IsEntityRef => false;
         public virtual EntityRefExpressionNode AsEntityRef => null;
         public virtual bool IsEntityCondition => false;

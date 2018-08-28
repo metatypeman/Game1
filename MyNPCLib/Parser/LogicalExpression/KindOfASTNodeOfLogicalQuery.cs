@@ -11,7 +11,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         RulePart,
         Relation,
         Concept,
-        Entity,
+        EntityRef,
         EntityCondition,
         Var,
         QuestionParam,

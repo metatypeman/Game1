@@ -39,8 +39,6 @@ namespace MyNPCLib.PersistLogicalData
         /// </summary>
         Concept,
 
-        Entity,
-
         /// <summary>
         /// Represents an entity like #1.
         /// </summary>

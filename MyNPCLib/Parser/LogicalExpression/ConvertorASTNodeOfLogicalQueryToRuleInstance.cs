@@ -201,7 +201,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                 case KindOfASTNodeOfLogicalQuery.Concept:
                     return NConvertStandardExpressionConceptNode(node, context);
 
-                case KindOfASTNodeOfLogicalQuery.Entity:
+                case KindOfASTNodeOfLogicalQuery.EntityRef:
                     return NConvertStandardExpressionEntityNode(node, context);
 
                 case KindOfASTNodeOfLogicalQuery.Var:
@@ -334,7 +334,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 #endif
             var entityDictionary = context.EntityDictionary;
 
-            var result = new EntityExpressionNode();
+            var result = new EntityRefExpressionNode();
             result.Name = node.Name;
             result.Key = entityDictionary.GetKey(node.Name);
             FillAnnotationForExpression(result, node, context);
@@ -435,7 +435,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             item.VariableName = varName;
             item.VariableKey = varKey;
 
-            var result = new EntityRefExpressionNode();
+            var result = new EntityConditionExpressionNode();
             result.Name = varName;
             result.Key = varKey;
             FillAnnotationForExpression(result, node, context);
@@ -543,7 +543,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                 case KindOfASTNodeOfLogicalQuery.Concept:
                     return NConvertEntityConditionConceptNode(node, context);
 
-                case KindOfASTNodeOfLogicalQuery.Entity:
+                case KindOfASTNodeOfLogicalQuery.EntityRef:
                     return NConvertEntityConditionEntityNode(node, context);
 
                 case KindOfASTNodeOfLogicalQuery.Fact:
@@ -712,7 +712,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 #endif
             var entityDictionary = context.EntityDictionary;
 
-            var result = new EntityExpressionNode();
+            var result = new EntityRefExpressionNode();
             result.Name = node.Name;
             result.Key = entityDictionary.GetKey(node.Name);
             FillAnnotationForExpression(result, node, context);
@@ -797,7 +797,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             item.VariableName = varName;
             item.VariableKey = varKey;
 
-            var result = new EntityRefExpressionNode();
+            var result = new EntityConditionExpressionNode();
             result.Name = varName;
             result.Key = varKey;
             FillAnnotationForExpression(result, node, context);

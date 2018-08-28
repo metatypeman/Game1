@@ -122,7 +122,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             LogInstance.Log($"CONCEPT!!!!!!!! CurrToken = {CurrToken}");
 #endif
             mASTNode = new ASTNodeOfLogicalQuery();
-            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.Entity;
+            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.EntityRef;
             mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
             mASTNode.Name = CurrToken.Content;
         }
