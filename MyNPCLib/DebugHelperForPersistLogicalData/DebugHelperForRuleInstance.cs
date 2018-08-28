@@ -448,7 +448,7 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
             var sb = new StringBuilder();
             sb.Append(source.Name);
             sb.Append(ToString(source.Annotations, context));
-            return source.Name.ToString();
+            return sb.ToString();
         }
 
         private static string ParamStubToSting(ParamStubExpressionNode source, ContextForDebugHelperForRuleInstance context)
@@ -484,7 +484,36 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
 
         private static string ToString(AccessPolicyToFactModality source, ContextForDebugHelperForRuleInstance context)
         {
-            throw new NotImplementedException();
+            var kind = source.Kind;
+
+            var sb = new StringBuilder(" !:");
+
+            switch (kind)
+            {
+                case KindOfAccessPolicyToFact.Public:
+                    sb.Append("public");
+                    break;
+
+                case KindOfAccessPolicyToFact.ForVisible:
+                    sb.Append("visible");
+                    break;
+
+                case KindOfAccessPolicyToFact.Private:
+                    sb.Append("private");
+                    break;
+
+                case KindOfAccessPolicyToFact.IfCondition:
+                    sb.Append("{");
+                    sb.Append(ToString(source.Expression, context));
+                    sb.Append("}");
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+            }
+
+            sb.Append(ToString(source.Annotations, context));
+            return sb.ToString();
         }
 
         private static string ToString(DesirableFuzzyModality source, ContextForDebugHelperForRuleInstance context)

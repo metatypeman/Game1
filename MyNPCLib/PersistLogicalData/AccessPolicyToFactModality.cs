@@ -7,7 +7,7 @@ namespace MyNPCLib.PersistLogicalData
     [Serializable]
     public class AccessPolicyToFactModality: ILogicalyAnnotated, IObjectToString, IShortObjectToString
     {
-        public KindOfAccessPolicyToFact Kind { get; set; }
+        public KindOfAccessPolicyToFact Kind { get; set; } = KindOfAccessPolicyToFact.Public;
         public BaseExpressionNode Expression { get; set; }
         public IList<LogicalAnnotation> Annotations { get; set; }
 
