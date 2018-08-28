@@ -270,7 +270,7 @@ namespace TmpSandBox
             var context = new ContextOfCGStorage(globalEntityDictionary);
             context.Init();
 
-            var queryStr = "{: {color(#12345, black)} :}";
+            var queryStr = "{: !:visible {color(#12345, black)} :}";
             var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
 
             LogInstance.Log($"context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
@@ -278,6 +278,12 @@ namespace TmpSandBox
             context.GlobalCGStorage.Append(queryStorage);
 
             LogInstance.Log($"after context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
+
+            var mainRuleInstance = queryStorage.MainRuleInstance;
+
+            var debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
+
+            LogInstance.Log($"debugStr (query) = {debugStr}");
 
             queryStr = "{: {color(?X, black)} :}";
 
@@ -305,9 +311,9 @@ namespace TmpSandBox
             queryStr = "{: color=black :}";
             queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
 
-            var mainRuleInstance = queryStorage.MainRuleInstance;
+            mainRuleInstance = queryStorage.MainRuleInstance;
 
-            var debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
+            debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
 
             LogInstance.Log($"debugStr (query) = {debugStr}");
 

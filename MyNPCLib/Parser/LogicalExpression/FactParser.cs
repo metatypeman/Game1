@@ -69,6 +69,10 @@ namespace MyNPCLib.Parser.LogicalExpression
                             ProcessBracketRulePart();
                             break;
 
+                        case TokenKind.BeginAccessPolicy:
+                            ProcessAccessPolicy();
+                            break;
+
                         default:
                             throw new UnexpectedTokenException(CurrToken);
                     }
@@ -138,6 +142,23 @@ namespace MyNPCLib.Parser.LogicalExpression
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mState), mState, null);
             }
+        }
+
+        private void ProcessAccessPolicy()
+        {
+            Recovery(CurrToken);
+
+            var accessPolicyParser = new AccessPolicyParser(Context);
+            accessPolicyParser.Run();
+            var accessPolicyResult = accessPolicyParser.Result;
+
+            mASTNode.AccessPolicy = accessPolicyResult;
+
+#if DEBUG
+            LogInstance.Log($"accessPolicyResult = {accessPolicyResult}");
+#endif
+
+            mState = State.WaitForContent;
         }
 
         private void ProcessUnBracketRulePart()

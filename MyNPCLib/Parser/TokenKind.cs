@@ -181,6 +181,15 @@ namespace MyNPCLib.Parser
         /// <summary>
         /// Represents symbols `&lt;-&gt;`.
         /// </summary>
-        LeftRightArrow
+        LeftRightArrow,
+
+        /// <summary>
+        /// Represents symbols `!:`.
+        /// </summary>
+        BeginAccessPolicy,
+
+        Public,
+        Private,
+        Visible
     }
 }

@@ -224,6 +224,21 @@ namespace MyNPCLib.Parser
                 case TokenKind.Word:
                     {
                         contentLength = content.Length - 1;
+                        if (string.Compare(content, "public", true) == 0)
+                        {
+                            kindOfKeyWord = TokenKind.Public;
+                            break;
+                        }
+                        if (string.Compare(content, "private", true) == 0)
+                        {
+                            kindOfKeyWord = TokenKind.Private;
+                            break;
+                        }
+                        if (string.Compare(content, "visible", true) == 0)
+                        {
+                            kindOfKeyWord = TokenKind.Visible;
+                            break;
+                        }
                     }
                     break;
 
@@ -334,6 +349,19 @@ namespace MyNPCLib.Parser
 
                             case '@':
                                 kind = TokenKind.SharpAtSign;
+                                mItems.Dequeue();
+                                break;
+                        }
+                    }
+                    break;
+
+                case TokenKind.Not:
+                    {
+                        var tmpNextChar = mItems.Peek();
+                        switch(tmpNextChar)
+                        {
+                            case ':':
+                                kind = TokenKind.BeginAccessPolicy;
                                 mItems.Dequeue();
                                 break;
                         }

@@ -47,9 +47,19 @@ namespace MyNPCLib.Parser.LogicalExpression
             result.Name = nameOfFact;
             result.Key = entityDictionary.GetKey(nameOfFact);
 
-            var accessPolicyToFactModality = new AccessPolicyToFactModality();
-            accessPolicyToFactModality.Kind = KindOfAccessPolicyToFact.Public;
-            result.AccessPolicyToFactModality = accessPolicyToFactModality;
+            var initAccessPolicy = node.AccessPolicy;
+
+            if(initAccessPolicy == null)
+            {
+                var accessPolicyToFactModality = new AccessPolicyToFactModality();
+                accessPolicyToFactModality.Kind = KindOfAccessPolicyToFact.Public;
+                result.AccessPolicyToFactModality = accessPolicyToFactModality;
+            }
+            else
+            {
+                var accessPolicyToFactModality = ConvertAccessPolicy(initAccessPolicy, result, context);
+                result.AccessPolicyToFactModality = accessPolicyToFactModality;
+            }
 
             if (node.Part_1 != null)
             {
@@ -102,6 +112,23 @@ namespace MyNPCLib.Parser.LogicalExpression
             return result;
         }
 
+        private static AccessPolicyToFactModality ConvertAccessPolicy(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
+        {
+#if DEBUG
+            LogInstance.Log($"node = {node}");
+#endif
+
+            var accessPolicyToFactModality = new AccessPolicyToFactModality();
+            accessPolicyToFactModality.Kind = node.KindOfAccessPolicy;
+
+            if(accessPolicyToFactModality.Kind == KindOfAccessPolicyToFact.IfCondition)
+            {
+                accessPolicyToFactModality.Expression = NConvertExpression(node.Expression, parent, context);
+            }
+
+            return accessPolicyToFactModality;
+        }
+
         private static void NConvertRulePart(ASTNodeOfLogicalQuery node, RuleInstance parent, RulePart dest, RulePart nextPart, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
@@ -124,25 +151,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             var expressionNode = node.Expression;
 
-            var secondKindOfExpressionNode = expressionNode.SecondaryKind;
-
-            switch(secondKindOfExpressionNode)
-            {
-                case SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression:
-                    dest.Expression = NConvertStandardExpression(expressionNode, parent, context);
-                    break;
-
-                case SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition:
-                    dest.Expression = NConvertEntityConditionExpression(expressionNode, parent, context);
-                    break;
-
-                case SecondaryKindOfASTNodeOfLogicalQuery.SimpleConcept:
-                    dest.Expression = NConvertSimpleConcept(expressionNode, parent, context);
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(secondKindOfExpressionNode), secondKindOfExpressionNode, null);
-            }
+            dest.Expression = NConvertExpression(expressionNode, parent, context);
 
             if (!node.AnnotationsList.IsEmpty())
             {
@@ -155,6 +164,26 @@ namespace MyNPCLib.Parser.LogicalExpression
                 }
 
                 dest.Annotations = completeAnnotationsList;
+            }
+        }
+
+        private static BaseExpressionNode NConvertExpression(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
+        {
+            var secondKindOfExpressionNode = node.SecondaryKind;
+
+            switch (secondKindOfExpressionNode)
+            {
+                case SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression:
+                    return NConvertStandardExpression(node, parent, context);
+
+                case SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition:
+                    return NConvertEntityConditionExpression(node, parent, context);
+
+                case SecondaryKindOfASTNodeOfLogicalQuery.SimpleConcept:
+                    return NConvertSimpleConcept(node, parent, context);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(secondKindOfExpressionNode), secondKindOfExpressionNode, null);
             }
         }
 

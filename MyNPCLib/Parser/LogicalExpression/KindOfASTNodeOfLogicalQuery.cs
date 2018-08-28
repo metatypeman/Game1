@@ -19,6 +19,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         UnaryOperator,
         Condition,
         StubParam,
-        Value
+        Value,
+        AccessPolicy
     }
 }

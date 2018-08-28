@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.PersistLogicalData;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,6 +11,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         public SecondaryKindOfASTNodeOfLogicalQuery SecondaryKind { get; set; } = SecondaryKindOfASTNodeOfLogicalQuery.Unknown;
         public KindOfOperatorOfASTNodeOfLogicalQuery KindOfOperator { get; set; } = KindOfOperatorOfASTNodeOfLogicalQuery.Unknown;
         public string Name { get; set; }
+        public KindOfAccessPolicyToFact KindOfAccessPolicy { get; set; } = KindOfAccessPolicyToFact.Public;
+        public ASTNodeOfLogicalQuery AccessPolicy { get; set; }
         public ASTNodeOfLogicalQuery Part_1 { get; set; }
         public ASTNodeOfLogicalQuery Part_2 { get; set; }
         public bool IsActivePart { get; set; }
@@ -44,6 +47,18 @@ namespace MyNPCLib.Parser.LogicalExpression
             sb.AppendLine($"{spaces}{nameof(SecondaryKind)} = {SecondaryKind}");
             sb.AppendLine($"{spaces}{nameof(KindOfOperator)} = {KindOfOperator}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.AppendLine($"{spaces}{nameof(KindOfAccessPolicy)} = {KindOfAccessPolicy}");
+            if (AccessPolicy == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(AccessPolicy)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(AccessPolicy)}");
+                sb.Append(AccessPolicy.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(AccessPolicy)}");
+            }
+
             if (Part_1 == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Part_1)} = null");
@@ -185,6 +200,17 @@ namespace MyNPCLib.Parser.LogicalExpression
             sb.AppendLine($"{spaces}{nameof(SecondaryKind)} = {SecondaryKind}");
             sb.AppendLine($"{spaces}{nameof(KindOfOperator)} = {KindOfOperator}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.AppendLine($"{spaces}{nameof(KindOfAccessPolicy)} = {KindOfAccessPolicy}");
+            if (AccessPolicy == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(AccessPolicy)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(AccessPolicy)}");
+                sb.Append(AccessPolicy.ToShortString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(AccessPolicy)}");
+            }
             if (Part_1 == null)
             {
                 sb.AppendLine($"{spaces}{nameof(Part_1)} = null");
@@ -327,6 +353,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             sb.AppendLine($"{spaces}{nameof(SecondaryKind)} = {SecondaryKind}");
             sb.AppendLine($"{spaces}{nameof(KindOfOperator)} = {KindOfOperator}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.AppendLine($"{spaces}{nameof(KindOfAccessPolicy)} = {KindOfAccessPolicy}");
             sb.AppendLine($"{spaces}{nameof(IsActivePart)} = {IsActivePart}");
             sb.AppendLine($"{spaces}{nameof(IsQuestion)} = {IsQuestion}");
             sb.AppendLine($"{spaces}{nameof(IsGroup)} = {IsGroup}");
