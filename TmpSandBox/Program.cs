@@ -2473,6 +2473,9 @@ namespace TmpSandBox
             entityLogger.Marker = Guid.NewGuid().ToString("D");
             entityLogger.Enabled = true;
 
+            var context = new ContextOfCGStorage(globalEntityDictionary);
+            context.Init();
+
             var indexingStorage = new LogicalIndexStorage(entityLogger);
 
             var namePropertyId = globalEntityDictionary.GetKey("name");
@@ -2540,7 +2543,7 @@ namespace TmpSandBox
             var visionObjectsStorage = new VisionObjectsStorage(entityLogger, globalEntityDictionary, npcHostContext, systemPropertiesDictionary, storageOfSpecialEntities);
 
             var queryStr = "!((name=helen|name=ann)&class=girl)";
-            var logicalObject = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
+            var logicalObject = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, indexingStorage, context.MainCGStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
 
             var entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
@@ -2562,7 +2565,7 @@ namespace TmpSandBox
                 LogInstance.Log($"(2) entityId = {entityId}");
             }
 
-            var logicalObject_2 = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, indexingStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
+            var logicalObject_2 = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, indexingStorage, context.MainCGStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
 
             entitiesIdList = logicalObject.CurrentEntitiesIdList;
 

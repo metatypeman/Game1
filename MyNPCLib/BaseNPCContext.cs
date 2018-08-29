@@ -825,7 +825,7 @@ namespace MyNPCLib
 #if DEBUG
             Log($"GetLogicalObject query = {query}");
 #endif
-            return new LogicalObject(mEntityLogger, query, mEntityDictionary, mLogicalStorage, mQueriesCache, mSystemPropertiesDictionary, mVisionObjectsStorage);
+            return new LogicalObject(mEntityLogger, query, mEntityDictionary, mLogicalStorage, mContextOfCGStorage.MainCGStorage, mQueriesCache, mSystemPropertiesDictionary, mVisionObjectsStorage);
         }
 
         public IList<VisionObject> VisibleObjects
