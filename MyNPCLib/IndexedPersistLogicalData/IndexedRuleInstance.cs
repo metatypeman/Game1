@@ -176,6 +176,18 @@ namespace MyNPCLib.IndexedPersistLogicalData
             return null;
         }
 
+        public event Action OnChanged;
+
+        public IList<ulong> GetEntitiesIdList(ICGStorage query)
+        {
+            return null;
+        }
+
+        public ICGStorage Search(ICGStorage query)
+        {
+            return null;
+        }
+
         public string GetHumanizeDbgString()
         {
             if (Origin == null)

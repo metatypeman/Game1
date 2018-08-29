@@ -517,6 +517,7 @@ namespace MyNPCLib.LogicalSearchEngine
         {
             var result = new ValueExpressionNode();
             result.Value = source.Value;
+            result.KindOfValueType = source.KindOfValueType;
             result.Annotations = ConvertAnnotations(source.Annotations, context);
             return result;
         }

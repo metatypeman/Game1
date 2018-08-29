@@ -499,6 +499,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             var valueNode = new ValueExpressionNode();
             valueNode.Value = node.ObjValue;
+            valueNode.KindOfValueType = node.KindOfValueType;
             FillAnnotationForExpression(valueNode, node, context);
             return valueNode;
         }
@@ -845,6 +846,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             var valueNode = new ValueExpressionNode();
             valueNode.Value = node.ObjValue;
+            valueNode.KindOfValueType = node.KindOfValueType;
             FillAnnotationForExpression(valueNode, node, context);
             return valueNode;
         }

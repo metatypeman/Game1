@@ -14,6 +14,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Value;
         public object Value { get; set; }
+        public KindOfValueType KindOfValueType { get; set; } = KindOfValueType.Unknown;
 
         public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options)
         {
@@ -44,6 +45,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToSting(n));
             sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
+            sb.AppendLine($"{spaces}{nameof(KindOfValueType)} = {KindOfValueType}");
             return sb.ToString();
         }
 
@@ -53,6 +55,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToShortSting(n));
             sb.AppendLine($"{spaces}{nameof(Value)} = {Value}");
+            sb.AppendLine($"{spaces}{nameof(KindOfValueType)} = {KindOfValueType}");
             return sb.ToString();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.IndexedPersistLogicalData;
+using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.PersistLogicalDataStorage;
 using System;
@@ -14,8 +15,10 @@ namespace MyNPCLib.CGStorage
         {
             Context = context;
             DictionaryName = Context?.EntityDictionary?.Name;
+            mLogicalSearcher = new LogicalSearcher(context);
         }
 
+        private LogicalSearcher mLogicalSearcher;
         public ContextOfCGStorage Context { get; private set; }
         public abstract KindOfCGStorage KindOfStorage { get; }
 
@@ -77,6 +80,34 @@ namespace MyNPCLib.CGStorage
         public virtual ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar)
         {
             return null;
+        }
+
+        public event Action OnChanged;
+
+        protected void EmitOnChanged()
+        {
+            OnChanged?.Invoke();
+        }
+
+        public IList<ulong> GetEntitiesIdList(ICGStorage query)
+        {
+            var searchOptions = new LogicalSearchOptions();
+            searchOptions.DataSource = this;
+            searchOptions.QuerySource = query;
+
+            return mLogicalSearcher.GetEntitiesIdList(searchOptions);
+        }
+
+        public ICGStorage Search(ICGStorage query)
+        {
+            var searchOptions = new LogicalSearchOptions();
+            searchOptions.DataSource = this;
+            searchOptions.QuerySource = query;
+
+            var searchResult = mLogicalSearcher.Run(searchOptions);
+
+            var querySearchResultCGStorage = new QueryResultCGStorage(Context, searchResult);
+            return querySearchResultCGStorage;
         }
 
         public override string ToString()

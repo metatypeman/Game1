@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MyNPCLib.CGStorage
 {
@@ -16,6 +17,25 @@ namespace MyNPCLib.CGStorage
             mDataSourcesSettingsOrderedByPriorityAndUseFactsList = mDataSourcesSettingsOrderedByPriorityList.Where(p => p.UseFacts).ToList();
             mDataSourcesSettingsOrderedByPriorityAndUseProductionsList = mDataSourcesSettingsOrderedByPriorityList.Where(p => p.UseProductions).ToList();
             mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances = mDataSourcesSettingsOrderedByPriorityList.Where(p => p.UseAdditionalInstances).ToList();
+
+            foreach(var settingsOfStorage in mDataSourcesSettingsOrderedByPriorityList)
+            {
+                var storage = settingsOfStorage.Storage;
+                storage.OnChanged += Storage_OnChanged;
+            }
+        }
+
+        private void Storage_OnChanged()
+        {
+            Task.Run(() => {
+                try
+                {
+                    EmitOnChanged();
+                }catch(Exception e)
+                {
+                    LogInstance.Error($"e = {e}");
+                }
+            });
         }
 
         public override KindOfCGStorage KindOfStorage => KindOfCGStorage.Consolidated;

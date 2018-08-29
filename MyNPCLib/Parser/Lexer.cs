@@ -24,7 +24,7 @@ namespace MyNPCLib.Parser
         private LexerState mLexerState = LexerState.Init;
         private bool mIsDigitOnly = false;
         private Queue<Token> mRecoveriesTokens = new Queue<Token>();
-        private CultureInfo mCultureInfo = new CultureInfo("en-GB");
+        private static CultureInfo mCultureInfo = new CultureInfo("en-GB");
 
         private int mCurrentPos;
         private int mCurrentLine = 1;
@@ -46,7 +46,7 @@ namespace MyNPCLib.Parser
                 mCurrentPos++;
 
 #if DEBUG
-                LogInstance.Log($"tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
+                //LogInstance.Log($"tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
 #endif
 
                 switch (mLexerState)
@@ -140,6 +140,9 @@ namespace MyNPCLib.Parser
 
                             case '#':
                                 return CreateToken(TokenKind.Sharp);
+
+                            case '.':
+                                return CreateToken(TokenKind.Point);
 
                             case '`':
                                 mEndStringChar = tmpChar;

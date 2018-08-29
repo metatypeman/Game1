@@ -500,6 +500,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
             result.Value = source.Value;
+            result.KindOfValueType = source.KindOfValueType;
             result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }

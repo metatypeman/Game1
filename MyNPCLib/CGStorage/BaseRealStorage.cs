@@ -126,6 +126,8 @@ namespace MyNPCLib.CGStorage
                 mMainRuleInstance = ruleInstance;
                 mMainIndexedRuleInstance = indexedRuleInstance;
             }
+
+            EmitOnChanged();
         }
 
         private void NSetIndexedRuleInstanceToIndexData(IndexedRuleInstance indexedRuleInstance)

@@ -58,10 +58,16 @@ namespace MyNPCLib.Parser
         /// Represents symbol `]`.
         /// </summary>
         CloseSquareBracket,
+
         /// <summary>
         /// Represents symbol `,`.
         /// </summary>
         Comma,
+
+        /// <summary>
+        /// Represents symbol `.`.
+        /// </summary>
+        Point,
 
         /// <summary>
         /// Represents symbol `+`.

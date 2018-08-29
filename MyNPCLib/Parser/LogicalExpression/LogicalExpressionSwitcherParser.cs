@@ -1,6 +1,7 @@
 ﻿using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace MyNPCLib.Parser.LogicalExpression
@@ -133,6 +134,8 @@ namespace MyNPCLib.Parser.LogicalExpression
             mASTNode.Name = CurrToken.Content;
         }
 
+        private static CultureInfo mDefaultCultureInfo = new CultureInfo("en-US");
+
         private void ProcessNumber()
         {
 #if DEBUG
@@ -144,7 +147,20 @@ namespace MyNPCLib.Parser.LogicalExpression
             mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
             mASTNode.KindOfValueType = KindOfValueType.Number;
 
-            throw new NotImplementedException();
+            var content = CurrToken.Content;
+
+            if(content.IndexOf(".") == -1)
+            {
+                mASTNode.ObjValue = int.Parse(content);
+            }
+            else
+            {
+                mASTNode.ObjValue = float.Parse(content, mDefaultCultureInfo);
+            }
+
+#if DEBUG
+            LogInstance.Log($"ProcessNumber!!!!!!!! mASTNode = {mASTNode}");
+#endif
         }
 
         private void ProcessConcept()

@@ -24,5 +24,8 @@ namespace MyNPCLib.CGStorage
         RuleInstance MainRuleInstance { get; }
         IndexedRuleInstance MainIndexedRuleInstance { get; }
         ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar);
+        event Action OnChanged;
+        IList<ulong> GetEntitiesIdList(ICGStorage query);
+        ICGStorage Search(ICGStorage query);
     }
 }

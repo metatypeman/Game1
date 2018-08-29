@@ -30,6 +30,40 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             switch(tokenKind)
             {
+                case TokenKind.Number:
+                    {
+                        var nextToken = NGetToken();
+                        var nextTokenKind = nextToken.TokenKind;
+
+                        switch (nextTokenKind)
+                        {
+                            case TokenKind.Point:
+                                {
+                                    var nextNextToken = NGetToken();
+                                    var nextNextTokenKind = nextNextToken.TokenKind;
+
+                                    switch(nextNextTokenKind)
+                                    {
+                                        case TokenKind.Number:
+                                            {
+                                                result.Content = $"{result.Content}.{nextNextToken.Content}";
+                                            }
+                                            break;
+                                            
+                                        default:
+                                            Recovery(nextToken);
+                                            break;
+                                    }
+                                }
+                                break;
+
+                            default:
+                                Recovery(nextToken);
+                                break;
+                        }
+                    }
+                    break;
+
                 case TokenKind.AtSign:
                     {
                         var nextToken = NGetToken();
