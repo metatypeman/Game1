@@ -25,6 +25,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         public ASTNodeOfLogicalQuery PropertyValue { get; set; }
         public List<ASTNodeOfLogicalQuery> VarsList { get; set; }
         public object ObjValue { get; set; }
+        public KindOfValueType KindOfValueType { get; set; } = KindOfValueType.Unknown;
         public List<ASTNodeOfLogicalQuery> AnnotationsList { get; set; }
 
         public override string ToString()
@@ -163,7 +164,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{nextNSpaces}{ObjValue}");
                 sb.AppendLine($"{spaces}End {nameof(ObjValue)}");
             }
-
+            sb.AppendLine($"{spaces}{nameof(KindOfValueType)} = {KindOfValueType}");
+            
             if (AnnotationsList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(AnnotationsList)} = null");
@@ -317,6 +319,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{spaces}End {nameof(ObjValue)}");
             }
 
+            sb.AppendLine($"{spaces}{nameof(KindOfValueType)} = {KindOfValueType}");
+
             if (AnnotationsList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(AnnotationsList)} = null");
@@ -367,6 +371,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{nextNSpaces}{ObjValue}");
                 sb.AppendLine($"{spaces}End {nameof(ObjValue)}");
             }
+            sb.AppendLine($"{spaces}{nameof(KindOfValueType)} = {KindOfValueType}");
             return sb.ToString();
         }
     }

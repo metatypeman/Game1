@@ -73,6 +73,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     switch (currTokenKind)
                     {
                         case TokenKind.Word:
+                        case TokenKind.Number:
                         case TokenKind.QuestionParam:
                         case TokenKind.BeginFact:
                         case TokenKind.Mul:

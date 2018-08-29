@@ -22,12 +22,14 @@ namespace MyNPCLib.Parser
 
         private Queue<char> mItems;
         private LexerState mLexerState = LexerState.Init;
+        private bool mIsDigitOnly = false;
         private Queue<Token> mRecoveriesTokens = new Queue<Token>();
         private CultureInfo mCultureInfo = new CultureInfo("en-GB");
 
         private int mCurrentPos;
         private int mCurrentLine = 1;
         private char mEndStringChar { get; set; }
+
         public Token GetToken()
         {
             if (mRecoveriesTokens.Count > 0)
@@ -44,7 +46,7 @@ namespace MyNPCLib.Parser
                 mCurrentPos++;
 
 #if DEBUG
-                //LogInstance.Log($"tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
+                LogInstance.Log($"tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
 #endif
 
                 switch (mLexerState)
@@ -54,6 +56,11 @@ namespace MyNPCLib.Parser
                         {
                             tmpBuffer = new StringBuilder();
                             tmpBuffer.Append(tmpChar);
+
+                            if(char.IsDigit(tmpChar))
+                            {
+                                mIsDigitOnly = true;
+                            }
 
                             if (char.IsLetterOrDigit(mItems.Peek()))
                             {
@@ -170,6 +177,15 @@ namespace MyNPCLib.Parser
                     case LexerState.InWord:
                         {
                             tmpBuffer.Append(tmpChar);
+
+                            if(mIsDigitOnly)
+                            {
+                                if(!char.IsDigit(tmpChar))
+                                {
+                                    mIsDigitOnly = false;
+                                }
+                            }
+
                             mLexerState = LexerState.InWord;
 
                             if (mItems.Count == 0)
@@ -224,6 +240,14 @@ namespace MyNPCLib.Parser
                 case TokenKind.Word:
                     {
                         contentLength = content.Length - 1;
+
+                        if(mIsDigitOnly)
+                        {
+                            mIsDigitOnly = false;
+                            kind = TokenKind.Number;
+                            break;
+                        }
+
                         if (string.Compare(content, "public", true) == 0)
                         {
                             kindOfKeyWord = TokenKind.Public;

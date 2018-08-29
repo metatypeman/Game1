@@ -73,6 +73,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                         switch (nextTokenKind)
                         {
                             case TokenKind.Word:
+                            case TokenKind.Number:
                                 nextToken.Content = $"#{nextToken.Content}";
                                 nextToken.TokenKind = TokenKind.Entity;
                                 return nextToken;

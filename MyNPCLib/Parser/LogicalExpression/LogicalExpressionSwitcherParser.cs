@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.PersistLogicalData;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -66,6 +67,11 @@ namespace MyNPCLib.Parser.LogicalExpression
                             }
                             break;
 
+                        case TokenKind.Number:
+                            ProcessNumber();
+                            Exit();
+                            break;
+
                         case TokenKind.BeginFact:
                             ProcessFact();
                             Exit();
@@ -119,12 +125,26 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessEntity()
         {
 #if DEBUG
-            LogInstance.Log($"CONCEPT!!!!!!!! CurrToken = {CurrToken}");
+            LogInstance.Log($"ProcessEntity!!!!!!!! CurrToken = {CurrToken}");
 #endif
             mASTNode = new ASTNodeOfLogicalQuery();
             mASTNode.Kind = KindOfASTNodeOfLogicalQuery.EntityRef;
             mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
             mASTNode.Name = CurrToken.Content;
+        }
+
+        private void ProcessNumber()
+        {
+#if DEBUG
+            LogInstance.Log($"ProcessNumber!!!!!!!! CurrToken = {CurrToken}");
+#endif
+
+            mASTNode = new ASTNodeOfLogicalQuery();
+            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.Value;
+            mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
+            mASTNode.KindOfValueType = KindOfValueType.Number;
+
+            throw new NotImplementedException();
         }
 
         private void ProcessConcept()

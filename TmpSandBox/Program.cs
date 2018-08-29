@@ -270,7 +270,7 @@ namespace TmpSandBox
             var context = new ContextOfCGStorage(globalEntityDictionary);
             context.Init();
 
-            var queryStr = "{: !:public {color(#12345, black)} :}";
+            var queryStr = "{: !:public {color(#12345, 12)} :}";
             var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
 
             LogInstance.Log($"context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
@@ -285,73 +285,73 @@ namespace TmpSandBox
 
             LogInstance.Log($"debugStr (query) = {debugStr}");
 
-            queryStr = "{: !:public {color(dog, black)} :}";
-            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+            //queryStr = "{: !:public {color(dog, black)} :}";
+            //queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
 
-            LogInstance.Log($"context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
+            //LogInstance.Log($"context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
 
-            context.GlobalCGStorage.Append(queryStorage);
+            //context.GlobalCGStorage.Append(queryStorage);
 
-            LogInstance.Log($"after context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
+            //LogInstance.Log($"after context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
 
-            mainRuleInstance = queryStorage.MainRuleInstance;
+            //mainRuleInstance = queryStorage.MainRuleInstance;
 
-            debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
+            //debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
 
-            LogInstance.Log($"debugStr (query) = {debugStr}");
+            //LogInstance.Log($"debugStr (query) = {debugStr}");
 
-            queryStr = "{: {color(?X, black)} :}";
+            //queryStr = "{: {color(?X, black)} :}";
 
-            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+            //queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
 
-            var searcher = new LogicalSearcher(context);
-            var searchOptions = new LogicalSearchOptions();
+            //var searcher = new LogicalSearcher(context);
+            //var searchOptions = new LogicalSearchOptions();
 
-            searchOptions.DataSource = context.GlobalCGStorage;
+            //searchOptions.DataSource = context.GlobalCGStorage;
 
-            searchOptions.QuerySource = queryStorage;
+            //searchOptions.QuerySource = queryStorage;
 
-            var rearchResult = searcher.Run(searchOptions);
+            //var rearchResult = searcher.Run(searchOptions);
 
-            LogInstance.Log($"rearchResult = {rearchResult}");
+            //LogInstance.Log($"rearchResult = {rearchResult}");
 
-            var querySearchResultCGStorage = new QueryResultCGStorage(context, rearchResult);
+            //var querySearchResultCGStorage = new QueryResultCGStorage(context, rearchResult);
 
-            var keyOfActionQuestionVar = globalEntityDictionary.GetKey("?X");
+            //var keyOfActionQuestionVar = globalEntityDictionary.GetKey("?X");
 
-            var resultExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
+            //var resultExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
 
-            LogInstance.Log($"resultExpression = {resultExpression}");
+            //LogInstance.Log($"resultExpression = {resultExpression}");
 
-            queryStr = "{: color=black :}";
-            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+            //queryStr = "{: color=black :}";
+            //queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
 
-            mainRuleInstance = queryStorage.MainRuleInstance;
+            //mainRuleInstance = queryStorage.MainRuleInstance;
 
-            debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
+            //debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
 
-            LogInstance.Log($"debugStr (query) = {debugStr}");
+            //LogInstance.Log($"debugStr (query) = {debugStr}");
 
-            queryStorage = ConvertorEntityConditionToQuery.Convert(queryStorage);
+            //queryStorage = ConvertorEntityConditionToQuery.Convert(queryStorage);
 
-            mainRuleInstance = queryStorage.MainRuleInstance;
+            //mainRuleInstance = queryStorage.MainRuleInstance;
 
-            debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
+            //debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
 
-            LogInstance.Log($"debugStr (query) = {debugStr}");
+            //LogInstance.Log($"debugStr (query) = {debugStr}");
 
-            searchOptions = new LogicalSearchOptions();
-            searchOptions.DataSource = context.GlobalCGStorage;
-            searchOptions.QuerySource = queryStorage;
+            //searchOptions = new LogicalSearchOptions();
+            //searchOptions.DataSource = context.GlobalCGStorage;
+            //searchOptions.QuerySource = queryStorage;
 
-            var entitiesIdList = searcher.GetEntitiesIdList(searchOptions);
+            //var entitiesIdList = searcher.GetEntitiesIdList(searchOptions);
 
-            LogInstance.Log($"entitiesIdList.Count = {entitiesIdList.Count}");
+            //LogInstance.Log($"entitiesIdList.Count = {entitiesIdList.Count}");
 
-            foreach(var entityId in entitiesIdList)
-            {
-                LogInstance.Log($"entityId = {entityId}");
-            }
+            //foreach(var entityId in entitiesIdList)
+            //{
+            //    LogInstance.Log($"entityId = {entityId}");
+            //}
         }
 
         private static void TSTGoToGreenWaypoint()
