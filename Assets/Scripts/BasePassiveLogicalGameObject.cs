@@ -24,7 +24,7 @@ namespace Assets.Scripts
         }
 
         public bool EnableLogging = false;
-        public string Marker = $"#{Guid.NewGuid().ToString("D")}";
+        public string Marker = NamesHelper.CreateEntityName();
 
         [MethodForLoggingSupport]
         protected void Log(string message)

@@ -51,9 +51,9 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            //TSTParsingUserQuery();
+            TSTParsingUserQuery();
             //TSTLogicalSoundBus();
-            TSTQueryEntityCondition();
+            //TSTQueryEntityCondition();
             //TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
             //TSTATNParsing();
@@ -104,8 +104,8 @@ namespace TmpSandBox
             //var queryStr = "{: class = dog & determiner = {:time=past & location=forest :} :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            var queryStr = "{: class = dog & determiner = {:time=past & location=forest :}[:{:state:}:] :}";
-            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+            //var queryStr = "{: class = dog & determiner = {:time=past & location=forest :}[:{:state:}:] :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //var queryStr = "{: !(class=dog & determiner=the) | !male=neuter :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
@@ -124,6 +124,9 @@ namespace TmpSandBox
 
             //var queryStr = "{: @x = know(I, dog) :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            var queryStr = "{: know(I, @$a) :}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //queryStr = "{: @x = know(I, {:class=dog&determiner=the:})[:{:class=state:}:]:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
