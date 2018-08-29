@@ -308,19 +308,6 @@ namespace TmpSandBox
 
             var querySearchResultCGStorage = globalDataSource.Search(queryStorage);
 
-            //var searcher = new LogicalSearcher(context);
-            //var searchOptions = new LogicalSearchOptions();
-
-            //searchOptions.DataSource = context.GlobalCGStorage;
-
-            //searchOptions.QuerySource = queryStorage;
-
-            //var searchResult = searcher.Run(searchOptions);
-
-            //LogInstance.Log($"searchResult = {searchResult}");
-
-            //var querySearchResultCGStorage = new QueryResultCGStorage(context, searchResult);
-
             var keyOfActionQuestionVar = globalEntityDictionary.GetKey("?X");
 
             var resultExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
@@ -345,14 +332,6 @@ namespace TmpSandBox
             LogInstance.Log($"debugStr (query) = {debugStr}");
 
             var entitiesIdList = globalDataSource.GetEntitiesIdList(queryStorage);
-
-            //var searchOptions = new LogicalSearchOptions();
-            //searchOptions.DataSource = context.GlobalCGStorage;
-            //searchOptions.QuerySource = queryStorage;
-
-            //var searcher = new LogicalSearcher(context);
-
-            //var entitiesIdList = searcher.GetEntitiesIdList(searchOptions);
 
             LogInstance.Log($"entitiesIdList.Count = {entitiesIdList.Count}");
 

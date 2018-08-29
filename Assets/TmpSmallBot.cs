@@ -68,7 +68,7 @@ public class TmpSmallBot : MonoBehaviour {
             Debug.LogErrorFormat("Dictation error: {0}; HResult = {1}.", error, hresult);
         };
 
-        m_DictationRecognizer.Start();
+        //m_DictationRecognizer.Start();
     }
 
     // Update is called once per frame

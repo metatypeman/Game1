@@ -53,24 +53,7 @@ namespace Assets.Scripts
             Log($"logicalSoundPackage = {logicalSoundPackage}");
 #endif
 
-            var ruleInstancesList = logicalSoundPackage.SoundFactsDataSource.AllRuleInstances;
-
-#if DEBUG
-            Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
-#endif
-
-            foreach (var ruleInstance in ruleInstancesList)
-            {
-#if DEBUG
-                {
-                    var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
-
-                    Log($"debugStr = {debugStr}");
-                }
-#endif
-
-                GlobalCGStorage.AddRuleInstance(ruleInstance);
-            }
+            GlobalCGStorage.Append(logicalSoundPackage.SoundFactsDataSource);
 
             var actionName = string.Empty;
 
@@ -87,20 +70,8 @@ namespace Assets.Scripts
                     Log($"debugStr = {debugStr}");
                 }
 #endif
+                var querySearchResultCGStorage = MainCGStorage.Search(queryStorage);
 
-                var searcher = new LogicalSearcher(ContextOfCGStorage);
-
-                var searchOptions = new LogicalSearchOptions();
-                searchOptions.DataSource = MainCGStorage;
-                searchOptions.QuerySource = queryStorage;
-
-                var rearchResult = searcher.Run(searchOptions);
-
-#if DEBUG
-                Log($"rearchResult = {rearchResult}");
-#endif
-
-                var querySearchResultCGStorage = new QueryResultCGStorage(ContextOfCGStorage, rearchResult);
                 var keyOfActionQuestionVar = EntityDictionary.GetKey("?Z");
 
 #if DEBUG
@@ -160,20 +131,7 @@ namespace Assets.Scripts
                 Log($"debugStr (for going) = {debugStr}");
             }
 #endif
-
-            var searcher = new LogicalSearcher(ContextOfCGStorage);
-
-            var searchOptions = new LogicalSearchOptions();
-            searchOptions.DataSource = MainCGStorage;
-            searchOptions.QuerySource = queryStorage;
-
-            var rearchResult = searcher.Run(searchOptions);
-
-#if DEBUG
-            Log($"rearchResult = {rearchResult}");
-#endif
-
-            var querySearchResultCGStorage = new QueryResultCGStorage(ContextOfCGStorage, rearchResult);
+            var querySearchResultCGStorage = MainCGStorage.Search(queryStorage);
 
             var varNameOfDirection = "?X";
             var keyOfVarOfDirection = EntityDictionary.GetKey(varNameOfDirection);

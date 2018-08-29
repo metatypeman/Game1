@@ -74,8 +74,8 @@ namespace MyNPCLib.CGStorage
 
         public virtual IList<ResolverForRelationExpressionNode> AllRelationsForProductions => throw new NotImplementedException();
 
-        public virtual RuleInstance MainRuleInstance => throw new NotImplementedException();
-        public virtual IndexedRuleInstance MainIndexedRuleInstance => throw new NotImplementedException();
+        public virtual RuleInstance MainRuleInstance => null;
+        public virtual IndexedRuleInstance MainIndexedRuleInstance => null;
 
         public virtual ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar)
         {
