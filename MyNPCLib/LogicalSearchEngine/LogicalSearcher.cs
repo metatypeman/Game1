@@ -62,10 +62,13 @@ namespace MyNPCLib.LogicalSearchEngine
             //LogInstance.Log($"context = {context}");
 #endif
 
+            var optionsOfFillExecutingCard = new OptionsOfFillExecutingCard();
+            optionsOfFillExecutingCard.EntityIdOnly = options.EntityIdOnly;
+
             var resultItemsList = new List<LogicalSearchResultItem>();
 
             var queryExecutingCard = new QueryExecutingCardForIndexedPersistLogicalData();
-            queryExpression.FillExecutingCard(queryExecutingCard, dataSource);
+            queryExpression.FillExecutingCard(queryExecutingCard, dataSource, optionsOfFillExecutingCard);
 
 #if DEBUG
             //LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
@@ -97,13 +100,15 @@ namespace MyNPCLib.LogicalSearchEngine
 
         public IList<ulong> GetEntitiesIdList(LogicalSearchOptions options)
         {
+            options.EntityIdOnly = true;
+
             var searchResult = Run(options);
 
 #if DEBUG
             LogInstance.Log($"searchResult = {searchResult}");
 #endif
 
-            var result = searchResult.Items.Select(p => p.ResultOfVarOfQueryToRelationList.Single()).Where(p => p.FoundExpression.IsEntityRef).Select(p => p.FoundExpression.AsEntityRef.Key).Distinct().ToList();
+            var result = searchResult.Items.Select(p => p.ResultOfVarOfQueryToRelationList.Single()).Select(p => p.FoundExpression.AsEntityRef.Key).Distinct().ToList();
 
             return result;
         }

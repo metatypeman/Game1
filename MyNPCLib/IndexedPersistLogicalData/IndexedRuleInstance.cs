@@ -55,15 +55,15 @@ namespace MyNPCLib.IndexedPersistLogicalData
         }
 
         public virtual IList<RuleInstance> AllRuleInstances => new List<RuleInstance>() { Origin };
-
-        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
+        
+        public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options)
         {
             if (IsPart_1_Active)
             {
                 var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
                 queryExecutingCardForPart_1.SenderIndexedRuleInstance = this;
 
-                Part_1.FillExecutingCard(queryExecutingCardForPart_1, dataSource);
+                Part_1.FillExecutingCard(queryExecutingCardForPart_1, dataSource, options);
 
                 foreach (var resultOfQueryToRelation in queryExecutingCardForPart_1.ResultsOfQueryToRelationList)
                 {
@@ -75,7 +75,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             {
                 var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
                 queryExecutingCardForPart_2.SenderIndexedRuleInstance = this;
-                Part_2.FillExecutingCard(queryExecutingCardForPart_2, dataSource);
+                Part_2.FillExecutingCard(queryExecutingCardForPart_2, dataSource, options);
 
                 foreach (var resultOfQueryToRelation in queryExecutingCardForPart_2.ResultsOfQueryToRelationList)
                 {
@@ -84,14 +84,14 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
         }
 
-        public void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
+        public void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options)
         {
             if (IsPart_1_Active)
             {
                 var queryExecutingCardForPart_1 = new QueryExecutingCardForIndexedPersistLogicalData();
                 queryExecutingCardForPart_1.SenderIndexedRuleInstance = this;
 
-                Part_1.FillExecutingCardForAnnotation(queryExecutingCardForPart_1, dataSource);
+                Part_1.FillExecutingCardForAnnotation(queryExecutingCardForPart_1, dataSource, options);
 
                 foreach (var resultOfQueryToRelation in queryExecutingCardForPart_1.ResultsOfQueryToRelationList)
                 {
@@ -104,7 +104,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 var queryExecutingCardForPart_2 = new QueryExecutingCardForIndexedPersistLogicalData();
                 queryExecutingCardForPart_2.SenderIndexedRuleInstance = this;
 
-                Part_2.FillExecutingCardForAnnotation(queryExecutingCardForPart_2, dataSource);
+                Part_2.FillExecutingCardForAnnotation(queryExecutingCardForPart_2, dataSource, options);
 
                 foreach (var resultOfQueryToRelation in queryExecutingCardForPart_2.ResultsOfQueryToRelationList)
                 {

@@ -17,8 +17,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IndexedRuleInstance RuleInstance { get; set; }
         public IndexedRulePart RulePart { get; set; }
 
-        public abstract void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource);
-        public abstract void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource);
+        public abstract void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options);
+        public abstract void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options);
 
         public string GetHumanizeDbgString()
         {

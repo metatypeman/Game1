@@ -14,7 +14,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.Or;
 
-        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
+        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options)
         {
 #if DEBUG
             LogInstance.Log("Begin");
@@ -25,7 +25,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
         }
 
-        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
+        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options)
         {
 #if DEBUG
             LogInstance.Log("Begin");
@@ -33,7 +33,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
 #if DEBUG
             throw new NotImplementedException();
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
     }

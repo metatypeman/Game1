@@ -15,7 +15,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public override KindOfExpressionNode Kind => KindOfExpressionNode.QuestionVar;
         public ulong Key { get; set; }
 
-        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
+        public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options)
         {
 #if DEBUG
             LogInstance.Log("Begin");
@@ -26,7 +26,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
         }
 
-        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource)
+        public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options)
         {
 #if DEBUG
             LogInstance.Log("Begin");
@@ -34,7 +34,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
 #if DEBUG
             throw new NotImplementedException();
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
 

@@ -8,6 +8,7 @@ namespace MyNPCLib.LogicalSearchEngine
 {
     public class LogicalSearchOptions : IObjectToString
     {
+        public bool EntityIdOnly { get; set; }
         public ICGStorage QuerySource { get; set; }
         public ICGStorage DataSource { get; set; }
 
@@ -26,6 +27,7 @@ namespace MyNPCLib.LogicalSearchEngine
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(EntityIdOnly)} = {EntityIdOnly}");
             if (QuerySource == null)
             {
                 sb.AppendLine($"{spaces}{nameof(QuerySource)} = null");
