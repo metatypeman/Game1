@@ -51,9 +51,9 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTParsingUserQuery();
+            //TSTParsingUserQuery();
             //TSTLogicalSoundBus();
-            //TSTQueryEntityCondition();
+            TSTQueryEntityCondition();
             //TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
             //TSTATNParsing();
@@ -311,9 +311,7 @@ namespace TmpSandBox
 
             var querySearchResultCGStorage = globalDataSource.Search(queryStorage);
 
-            var keyOfActionQuestionVar = globalEntityDictionary.GetKey("?X");
-
-            var resultExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
+            var resultExpression = querySearchResultCGStorage.GetResultOfVar("?X");
 
             LogInstance.Log($"resultExpression = {resultExpression}");
 
@@ -338,10 +336,23 @@ namespace TmpSandBox
 
             LogInstance.Log($"entitiesIdList.Count = {entitiesIdList.Count}");
 
+            if(entitiesIdList.Count == 0)
+            {
+                return;
+            }
+
             foreach (var entityId in entitiesIdList)
             {
                 LogInstance.Log($"entityId = {entityId}");
             }
+
+            var firstEntityId = entitiesIdList.First();
+
+            LogInstance.Log($"firstEntityId = {firstEntityId}");
+
+            var propertyValue = globalDataSource.GetPropertyValueAsVariant(firstEntityId, "color");
+
+            LogInstance.Log($"propertyValue = {propertyValue}");
         }
 
         private static void TSTGoToGreenWaypoint()

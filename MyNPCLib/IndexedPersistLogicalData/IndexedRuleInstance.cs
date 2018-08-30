@@ -3,6 +3,7 @@ using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.PersistLogicalDataStorage;
+using MyNPCLib.Variants;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -171,6 +172,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
             return null;
         }
 
+        public ResultOfVarOfQueryToRelation GetResultOfVar(string varName)
+        {
+            return null;
+        }
+
         public ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar)
         {
             return null;
@@ -186,6 +192,42 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public ICGStorage Search(ICGStorage query)
         {
             return null;
+        }
+
+        public BaseVariant GetPropertyValueAsVariant(ulong entityId, ulong propertyId)
+        {
+            return null;
+        }
+
+        public BaseVariant GetPropertyValueAsVariant(ulong entityId, string propertyName)
+        {
+            return null;
+        }
+
+        public object GetPropertyValueAsObject(ulong entityId, ulong propertyId)
+        {
+            return null;
+        }
+
+        public object GetPropertyValueAsObject(ulong entityId, string propertyName)
+        {
+            return null;
+        }
+
+        public void SetPropertyValueAsAsVariant(ulong entityId, ulong propertyId, BaseVariant value)
+        {
+        }
+
+        public void SetPropertyValueAsAsVariant(ulong entityId, string propertyName, BaseVariant value)
+        {
+        }
+
+        public void SetPropertyValueAsAsObject(ulong entityId, ulong propertyId, object value)
+        {
+        }
+
+        public void SetPropertyValueAsAsObject(ulong entityId, string propertyName, object value)
+        {
         }
 
         public string GetHumanizeDbgString()

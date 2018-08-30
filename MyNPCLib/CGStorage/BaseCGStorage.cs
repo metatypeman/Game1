@@ -2,6 +2,7 @@
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.PersistLogicalDataStorage;
+using MyNPCLib.Variants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace MyNPCLib.CGStorage
         protected BaseCGStorage(ContextOfCGStorage context)
         {
             Context = context;
-            DictionaryName = Context?.EntityDictionary?.Name;
+            mEntityDictionary = Context?.EntityDictionary;
+            DictionaryName = mEntityDictionary?.Name;
             mLogicalSearcher = new LogicalSearcher(context);
         }
 
+        private IEntityDictionary mEntityDictionary;
         private LogicalSearcher mLogicalSearcher;
         public ContextOfCGStorage Context { get; private set; }
         public abstract KindOfCGStorage KindOfStorage { get; }
@@ -77,6 +80,12 @@ namespace MyNPCLib.CGStorage
         public virtual RuleInstance MainRuleInstance => null;
         public virtual IndexedRuleInstance MainIndexedRuleInstance => null;
 
+        public virtual ResultOfVarOfQueryToRelation GetResultOfVar(string varName)
+        {
+            var keyOfVar = mEntityDictionary.GetKey(varName);
+            return GetResultOfVar(keyOfVar);
+        }
+
         public virtual ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar)
         {
             return null;
@@ -108,6 +117,79 @@ namespace MyNPCLib.CGStorage
 
             var querySearchResultCGStorage = new QueryResultCGStorage(Context, searchResult);
             return querySearchResultCGStorage;
+        }
+
+        public virtual BaseVariant GetPropertyValueAsVariant(ulong entityId, ulong propertyId)
+        {
+#if DEBUG
+            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        public virtual BaseVariant GetPropertyValueAsVariant(ulong entityId, string propertyName)
+        {
+#if DEBUG
+            LogInstance.Log($"entityId = {entityId} propertyName = {propertyName}");
+#endif
+            var propertyId = mEntityDictionary.GetKey(propertyName);
+            return GetPropertyValueAsVariant(entityId, propertyId);
+        }
+
+        public virtual object GetPropertyValueAsObject(ulong entityId, ulong propertyId)
+        {
+#if DEBUG
+            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        public virtual object GetPropertyValueAsObject(ulong entityId, string propertyName)
+        {
+#if DEBUG
+            LogInstance.Log($"entityId = {entityId} propertyName = {propertyName}");
+#endif
+            var propertyId = mEntityDictionary.GetKey(propertyName);
+            return GetPropertyValueAsObject(entityId, propertyId);
+        }
+
+        public virtual void SetPropertyValueAsAsVariant(ulong entityId, ulong propertyId, BaseVariant value)
+        {
+#if DEBUG
+            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        public virtual void SetPropertyValueAsAsVariant(ulong entityId, string propertyName, BaseVariant value)
+        {
+#if DEBUG
+            LogInstance.Log($"entityId = {entityId} propertyName = {propertyName} value = {value}");
+#endif
+            var propertyId = mEntityDictionary.GetKey(propertyName);
+
+            SetPropertyValueAsAsVariant(entityId, propertyId, value);
+        }
+
+        public virtual void SetPropertyValueAsAsObject(ulong entityId, ulong propertyId, object value)
+        {
+#if DEBUG
+            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        public virtual void SetPropertyValueAsAsObject(ulong entityId, string propertyName, object value)
+        {
+#if DEBUG
+            LogInstance.Log($"entityId = {entityId} propertyName = {propertyName} value = {value}");
+#endif
+            var propertyId = mEntityDictionary.GetKey(propertyName);
+            SetPropertyValueAsAsObject(entityId, propertyId, value);
         }
 
         public override string ToString()

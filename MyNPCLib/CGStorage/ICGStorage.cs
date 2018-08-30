@@ -1,5 +1,6 @@
 ﻿using MyNPCLib.IndexedPersistLogicalData;
 using MyNPCLib.PersistLogicalData;
+using MyNPCLib.Variants;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,9 +24,18 @@ namespace MyNPCLib.CGStorage
         IList<ResolverForRelationExpressionNode> AllRelationsForProductions { get; }
         RuleInstance MainRuleInstance { get; }
         IndexedRuleInstance MainIndexedRuleInstance { get; }
+        ResultOfVarOfQueryToRelation GetResultOfVar(string varName);
         ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar);
         event Action OnChanged;
         IList<ulong> GetEntitiesIdList(ICGStorage query);
         ICGStorage Search(ICGStorage query);
+        BaseVariant GetPropertyValueAsVariant(ulong entityId, ulong propertyId);
+        BaseVariant GetPropertyValueAsVariant(ulong entityId, string propertyName);
+        object GetPropertyValueAsObject(ulong entityId, ulong propertyId);
+        object GetPropertyValueAsObject(ulong entityId, string propertyName);
+        void SetPropertyValueAsAsVariant(ulong entityId, ulong propertyId, BaseVariant value);
+        void SetPropertyValueAsAsVariant(ulong entityId, string propertyName, BaseVariant value);
+        void SetPropertyValueAsAsObject(ulong entityId, ulong propertyId, object value);
+        void SetPropertyValueAsAsObject(ulong entityId, string propertyName, object value);
     }
 }
