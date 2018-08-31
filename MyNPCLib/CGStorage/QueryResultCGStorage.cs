@@ -1,5 +1,6 @@
 ﻿using MyNPCLib.IndexedPersistLogicalData;
 using MyNPCLib.LogicalSearchEngine;
+using MyNPCLib.Variants;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,21 +21,17 @@ namespace MyNPCLib.CGStorage
 
         public override ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar)
         {
-            var targetSearchResultItemsList = mLogicalSearchResult.Items;
+            return mLogicalSearchResult.GetResultOfVar(keyOfVar);
+        }
 
-            foreach (var targetSearchResultItem in targetSearchResultItemsList)
-            {
-                var resultItem = targetSearchResultItem.GetResultOfVar(keyOfVar);
+        public override BaseVariant GetResultOfVarAsVariant(ulong keyOfVar)
+        {
+            return mLogicalSearchResult.GetResultOfVarAsVariant(keyOfVar);
+        }
 
-                if(resultItem == null)
-                {
-                    continue;
-                }
-
-                return resultItem;
-            }
-
-            return null;
+        public override object GetResultOfVarAsObject(ulong keyOfVar)
+        {
+            return mLogicalSearchResult.GetResultOfVarAsObject(keyOfVar);
         }
     }
 }

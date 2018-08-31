@@ -1,6 +1,8 @@
 ﻿using MyNPCLib.CGStorage;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
+using MyNPCLib.Variants;
+using MyNPCLib.VariantsConverting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,8 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public ulong KeyOfVar { get; set; }
         public BaseExpressionNode FoundExpression { get; set; }
         public IDictionary<ulong, OriginOfVarOfQueryToRelation> OriginDict { get; set; } = new Dictionary<ulong, OriginOfVarOfQueryToRelation>();
+        private readonly object mVariantLockObj = new object();
+        private BaseVariant mVariant;
 
         public RuleInstance GetEntityConditionRuleInstance()
         {
@@ -47,6 +51,38 @@ namespace MyNPCLib.IndexedPersistLogicalData
 #endif
 
             return entityConditionRuleInstance;
+        }
+
+        public BaseVariant AsVariant
+        {
+            get
+            {
+                lock(mVariantLockObj)
+                {
+                    return NGetVariant();
+                }
+            }
+        }
+
+        private BaseVariant NGetVariant()
+        {
+            if (mVariant == null)
+            {
+                mVariant = VariantsConvertor.ConvertResultOfVarToVariant(this);
+            }
+            return mVariant;
+        }
+
+        public object AsObject
+        {
+            get
+            {
+                lock (mVariantLockObj)
+                {
+                    var variant = NGetVariant();
+                    return variant?.AsValue?.Value;
+                }
+            }
         }
 
         public override string ToString()

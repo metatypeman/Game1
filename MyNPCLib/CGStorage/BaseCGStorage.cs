@@ -85,13 +85,35 @@ namespace MyNPCLib.CGStorage
         public virtual RuleInstance MainRuleInstance => null;
         public virtual IndexedRuleInstance MainIndexedRuleInstance => null;
 
-        public virtual ResultOfVarOfQueryToRelation GetResultOfVar(string varName)
+        public ResultOfVarOfQueryToRelation GetResultOfVar(string varName)
         {
             var keyOfVar = mEntityDictionary.GetKey(varName);
             return GetResultOfVar(keyOfVar);
         }
 
         public virtual ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar)
+        {
+            return null;
+        }
+
+        public BaseVariant GetResultOfVarAsVariant(string varName)
+        {
+            var keyOfVar = mEntityDictionary.GetKey(varName);
+            return GetResultOfVarAsVariant(keyOfVar);
+        }
+
+        public virtual BaseVariant GetResultOfVarAsVariant(ulong keyOfVar)
+        {
+            return null;
+        }
+
+        public object GetResultOfVarAsObject(string varName)
+        {
+            var keyOfVar = mEntityDictionary.GetKey(varName);
+            return GetResultOfVarAsObject(keyOfVar);
+        }
+
+        public virtual object GetResultOfVarAsObject(ulong keyOfVar)
         {
             return null;
         }
@@ -130,23 +152,8 @@ namespace MyNPCLib.CGStorage
             LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
 
-            var queryIndexedRuleInstance = CreateGetQuery(entityId, propertyId);
-
-#if DEBUG
-            LogInstance.Log($"queryIndexedRuleInstance = {queryIndexedRuleInstance}");
-#endif
-
-            var searchOptions = new LogicalSearchOptions();
-            searchOptions.DataSource = this;
-            searchOptions.QueryExpression = queryIndexedRuleInstance;
-
-            var rearchResult = mLogicalSearcher.Run(searchOptions);
-
-#if DEBUG
-            LogInstance.Log($"rearchResult = {rearchResult}");
-#endif
-
-            throw new NotImplementedException();
+            var searchResult = CreateLogicalSearchResultForGetProperty(entityId, propertyId);
+            return searchResult.GetResultOfVarAsVariant(mKeyOfVarForProperty);
         }
 
         public virtual BaseVariant GetPropertyValueAsVariant(ulong entityId, string propertyName)
@@ -164,7 +171,33 @@ namespace MyNPCLib.CGStorage
             LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
 
-            throw new NotImplementedException();
+            var searchResult = CreateLogicalSearchResultForGetProperty(entityId, propertyId);
+            return searchResult.GetResultOfVarAsObject(mKeyOfVarForProperty);
+        }
+
+        private LogicalSearchResult CreateLogicalSearchResultForGetProperty(ulong entityId, ulong propertyId)
+        {
+#if DEBUG
+            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
+#endif
+
+            var queryIndexedRuleInstance = CreateGetQuery(entityId, propertyId);
+
+#if DEBUG
+            LogInstance.Log($"queryIndexedRuleInstance = {queryIndexedRuleInstance}");
+#endif
+
+            var searchOptions = new LogicalSearchOptions();
+            searchOptions.DataSource = this;
+            searchOptions.QueryExpression = queryIndexedRuleInstance;
+
+            var searchResult = mLogicalSearcher.Run(searchOptions);
+
+#if DEBUG
+            LogInstance.Log($"searchResult = {searchResult}");
+#endif
+
+            return searchResult;
         }
 
         private IndexedRuleInstance CreateGetQuery(ulong entityId, ulong propertyId)
@@ -208,11 +241,6 @@ namespace MyNPCLib.CGStorage
                 param_1.Name = entityName;
                 param_1.Key = entityId;
             }
-
-            /*
-                     private string  = "?X";
-        private ulong ;
-             */
 
             var param_2 = new QuestionVarExpressionNode();
             expr3.Params.Add(param_2);

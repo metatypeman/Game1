@@ -488,7 +488,7 @@ namespace TmpSandBox
                     actionName = actionExpression?.FoundExpression?.AsRelation.Name;
                 }
 
-                //var targetSearchResultItemsList = rearchResult.Items;
+                //var targetSearchResultItemsList = searchResult.Items;
 
                 //LogInstance.Log($"targetSearchResultItemsList.Count = {targetSearchResultItemsList.Count}");
 
@@ -632,7 +632,7 @@ namespace TmpSandBox
                 //    LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
                 //}
 
-                //var targetSearchResultItemsList = rearchResult.Items;
+                //var targetSearchResultItemsList = searchResult.Items;
 
                 //LogInstance.Log($"targetSearchResultItemsList.Count = {targetSearchResultItemsList.Count}");
 
@@ -922,11 +922,11 @@ namespace TmpSandBox
                 //searchOptions.QueryExpression = indexedQuery;
                 searchOptions.QuerySource = queryStorage;
 
-                var rearchResult = searcher.Run(searchOptions);
+                var searchResult = searcher.Run(searchOptions);
 
-                LogInstance.Log($"rearchResult = {rearchResult}");
+                LogInstance.Log($"searchResult = {searchResult}");
 
-                var targetSearchResultItemsList = rearchResult.Items;
+                var targetSearchResultItemsList = searchResult.Items;
 
                 foreach (var targetSearchResultItem in targetSearchResultItemsList)
                 {
@@ -1422,11 +1422,11 @@ namespace TmpSandBox
 
             //searchOptions.QueryExpression = indexedQuery;
 
-            //var rearchResult = searcher.Run(searchOptions);
+            //var searchResult = searcher.Run(searchOptions);
 
-            //LogInstance.Log($"rearchResult = {rearchResult}");
+            //LogInstance.Log($"searchResult = {searchResult}");
 
-            //var targetSearchResultItemsList = rearchResult.Items;
+            //var targetSearchResultItemsList = searchResult.Items;
 
             //foreach (var targetSearchResultItem in targetSearchResultItemsList)
             //{
@@ -1677,11 +1677,11 @@ namespace TmpSandBox
             //searchOptions.QueryExpression = indexedQuery;
             searchOptions.QuerySource = queryStorage;
 
-            var rearchResult = searcher.Run(searchOptions);
+            var searchResult = searcher.Run(searchOptions);
 
-            //LogInstance.Log($"rearchResult = {rearchResult}");
+            //LogInstance.Log($"searchResult = {searchResult}");
 
-            var targetSearchResultItemsList = rearchResult.Items;
+            var targetSearchResultItemsList = searchResult.Items;
 
             foreach(var targetSearchResultItem in targetSearchResultItemsList)
             {

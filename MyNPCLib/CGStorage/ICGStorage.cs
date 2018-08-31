@@ -26,6 +26,10 @@ namespace MyNPCLib.CGStorage
         IndexedRuleInstance MainIndexedRuleInstance { get; }
         ResultOfVarOfQueryToRelation GetResultOfVar(string varName);
         ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar);
+        BaseVariant GetResultOfVarAsVariant(string varName);
+        BaseVariant GetResultOfVarAsVariant(ulong keyOfVar);
+        object GetResultOfVarAsObject(string varName);
+        object GetResultOfVarAsObject(ulong keyOfVar);
         event Action OnChanged;
         IList<ulong> GetEntitiesIdList(ICGStorage query);
         ICGStorage Search(ICGStorage query);

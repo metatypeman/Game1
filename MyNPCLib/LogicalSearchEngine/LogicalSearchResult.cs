@@ -1,5 +1,6 @@
 ﻿using MyNPCLib.CGStorage;
 using MyNPCLib.IndexedPersistLogicalData;
+using MyNPCLib.Variants;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,11 +12,74 @@ namespace MyNPCLib.LogicalSearchEngine
         public LogicalSearchResult(ICGStorage storage)
         {
             Storage = storage;
+            mEntityDictionary = storage.Context.EntityDictionary;
         }
 
         public ICGStorage Storage { get; private set; }
+        private IEntityDictionary mEntityDictionary;
         public IndexedRuleInstance QueryExpression { get; set; }
         public IList<LogicalSearchResultItem> Items { get; set; }
+
+        public ResultOfVarOfQueryToRelation GetResultOfVar(string varName)
+        {
+            var keyOfVar = mEntityDictionary.GetKey(varName);
+            return GetResultOfVar(keyOfVar);
+        }
+
+        public ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar)
+        {
+            var targetSearchResultItemsList = Items;
+
+            foreach (var targetSearchResultItem in targetSearchResultItemsList)
+            {
+                var resultItem = targetSearchResultItem.GetResultOfVar(keyOfVar);
+
+                if (resultItem == null)
+                {
+                    continue;
+                }
+
+                return resultItem;
+            }
+
+            return null;
+        }
+
+        public BaseVariant GetResultOfVarAsVariant(string varName)
+        {
+            var keyOfVar = mEntityDictionary.GetKey(varName);
+            return GetResultOfVarAsVariant(keyOfVar);
+        }
+
+        public BaseVariant GetResultOfVarAsVariant(ulong keyOfVar)
+        {
+            var resultItem = GetResultOfVar(keyOfVar);
+
+            if (resultItem == null)
+            {
+                return null;
+            }
+
+            return resultItem.AsVariant;
+        }
+
+        public object GetResultOfVarAsObject(string varName)
+        {
+            var keyOfVar = mEntityDictionary.GetKey(varName);
+            return GetResultOfVarAsObject(keyOfVar);
+        }
+
+        public object GetResultOfVarAsObject(ulong keyOfVar)
+        {
+            var resultItem = GetResultOfVar(keyOfVar);
+
+            if (resultItem == null)
+            {
+                return null;
+            }
+
+            return resultItem.AsVariant;
+        }
 
         public override string ToString()
         {

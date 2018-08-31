@@ -10,5 +10,7 @@ namespace MyNPCLib.Variants
 
         public override bool IsValue => true;
         public override ValueVariant AsValue => this;
+
+        public object Value => throw new NotImplementedException();
     }
 }

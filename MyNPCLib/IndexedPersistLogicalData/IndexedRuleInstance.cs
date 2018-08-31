@@ -182,6 +182,26 @@ namespace MyNPCLib.IndexedPersistLogicalData
             return null;
         }
 
+        public BaseVariant GetResultOfVarAsVariant(string varName)
+        {
+            return null;
+        }
+
+        public BaseVariant GetResultOfVarAsVariant(ulong keyOfVar)
+        {
+            return null;
+        }
+
+        public object GetResultOfVarAsObject(string varName)
+        {
+            return null;
+        }
+
+        public object GetResultOfVarAsObject(ulong keyOfVar)
+        {
+            return null;
+        }
+
         public event Action OnChanged;
 
         public IList<ulong> GetEntitiesIdList(ICGStorage query)

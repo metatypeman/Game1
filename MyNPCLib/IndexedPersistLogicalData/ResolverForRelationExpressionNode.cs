@@ -172,7 +172,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             //LogInstance.Log($"indexedRulePartWithOneRelationsList?.Count = {indexedRulePartWithOneRelationsList?.Count}");
 #endif
 
-            if (indexedRulePartWithOneRelationsList.Count > 0)
+            if (!indexedRulePartWithOneRelationsList.IsEmpty())
             {
                 foreach (var indexedRulePartsOfRule in indexedRulePartWithOneRelationsList)
                 {
