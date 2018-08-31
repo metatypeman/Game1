@@ -22,7 +22,16 @@ namespace MyNPCLib.LogicalSearchEngine
             //LogInstance.Log($"options = {options}");
 #endif
             var queryDataSource = options.QuerySource;
-            var queryExpression = queryDataSource.MainIndexedRuleInstance;
+            IndexedRuleInstance queryExpression = null;
+
+            if(queryDataSource == null)
+            {
+                queryExpression = options.QueryExpression;
+            }
+            else
+            {
+                queryExpression = queryDataSource.MainIndexedRuleInstance;
+            }
 
             var externalDataSource = options.DataSource;
 

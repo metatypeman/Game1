@@ -1,4 +1,6 @@
-﻿using MyNPCLib.IndexedPersistLogicalData;
+﻿using MyNPCLib.ConvertingPersistLogicalDataToIndexing;
+using MyNPCLib.DebugHelperForPersistLogicalData;
+using MyNPCLib.IndexedPersistLogicalData;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.PersistLogicalDataStorage;
@@ -125,6 +127,12 @@ namespace MyNPCLib.CGStorage
             LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
 
+            var queryIndexedRuleInstance = CreateGetQuery(entityId, propertyId);
+
+#if DEBUG
+            LogInstance.Log($"queryIndexedRuleInstance = {queryIndexedRuleInstance}");
+#endif
+
             throw new NotImplementedException();
         }
 
@@ -144,6 +152,63 @@ namespace MyNPCLib.CGStorage
 #endif
 
             throw new NotImplementedException();
+        }
+
+        private IndexedRuleInstance CreateGetQuery(ulong entityId, ulong propertyId)
+        {
+            var relationKey = propertyId;
+            var relationName = mEntityDictionary.GetName(relationKey);
+
+            var entityName = mEntityDictionary.GetName(entityId);
+
+            var ruleInstance = new RuleInstance();
+            ruleInstance.DictionaryName = mEntityDictionary.Name;
+            ruleInstance.Kind = KindOfRuleInstance.QuestionVars;
+            ruleInstance.Name = NamesHelper.CreateEntityName();
+            ruleInstance.Key = mEntityDictionary.GetKey(ruleInstance.Name);
+
+            var rulePart_1 = new RulePart();
+            rulePart_1.Parent = ruleInstance;
+            ruleInstance.Part_1 = rulePart_1;
+
+            rulePart_1.IsActive = true;
+
+            var expr3 = new RelationExpressionNode();
+            rulePart_1.Expression = expr3;
+            expr3.Params = new List<BaseExpressionNode>();
+            expr3.Annotations = new List<LogicalAnnotation>();
+
+            expr3.Name = relationName;
+            expr3.Key = relationKey;
+
+            if(mEntityDictionary.IsEntity(entityId))
+            {
+                var param_1 = new EntityRefExpressionNode();
+                expr3.Params.Add(param_1);
+                param_1.Name = entityName;
+                param_1.Key = entityId;
+            }
+            else
+            {
+                var param_1 = new ConceptExpressionNode();
+                expr3.Params.Add(param_1);
+                param_1.Name = entityName;
+                param_1.Key = entityId;
+            }
+
+            var param_2 = new QuestionVarExpressionNode();
+            expr3.Params.Add(param_2);
+            param_2.Name = "?X";
+            param_2.Key = mEntityDictionary.GetKey(param_2.Name);
+
+#if DEBUG
+            var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+
+            LogInstance.Log($"debugStr (yyyyyyyyyyyyyyyyy) = {debugStr}");
+#endif
+            var indexedRuleInstance = ConvertorToIndexed.ConvertRuleInstance(ruleInstance);
+
+            return indexedRuleInstance;
         }
 
         public virtual object GetPropertyValueAsObject(ulong entityId, string propertyName)

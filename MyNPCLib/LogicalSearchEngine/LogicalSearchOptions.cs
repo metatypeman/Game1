@@ -10,6 +10,7 @@ namespace MyNPCLib.LogicalSearchEngine
     {
         public bool EntityIdOnly { get; set; }
         public ICGStorage QuerySource { get; set; }
+        public IndexedRuleInstance QueryExpression { get; set; }
         public ICGStorage DataSource { get; set; }
 
         public override string ToString()
@@ -37,6 +38,16 @@ namespace MyNPCLib.LogicalSearchEngine
                 sb.AppendLine($"{spaces}Begin {nameof(QuerySource)}");
                 sb.Append(QuerySource.MainIndexedRuleInstance?.ToString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(QuerySource)}");
+            }
+            if (QueryExpression == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(QueryExpression)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(QueryExpression)}");
+                sb.Append(QueryExpression.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(QueryExpression)}");
             }
             return sb.ToString();
         }

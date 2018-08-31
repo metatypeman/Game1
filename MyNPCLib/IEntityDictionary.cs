@@ -9,5 +9,7 @@ namespace MyNPCLib
         string Name { get; }
         ulong GetKey(string name);
         string GetName(ulong key);
+        KindOfKey GetKindOfKey(ulong key);
+        bool IsEntity(ulong key);
     }
 }
