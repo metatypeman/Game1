@@ -16,7 +16,45 @@ namespace MyNPCLib.VariantsConverting
             LogInstance.Log($"source = {source}");
 #endif
 
+            var type = source.GetType();
+
+            if(type == typeof(string))
+            {
+                return ConvertStringToVariant((string)source);
+            }
+
+            if(type == typeof(bool))
+            {
+                throw new NotImplementedException();
+            }
+
+            if(type.IsSubclassOf(typeof(BaseVariant)))
+            {
+                return (BaseVariant)source;
+            }
+
+            if (type.IsSubclassOf(typeof(RuleInstance)))
+            {
+                return ConvertRuleInstanceToVariant((RuleInstance)source);
+            }
+
+            return ConvertObjectValueToVariant(source);
+        }
+
+        private static BaseVariant ConvertStringToVariant(string source)
+        {
             throw new NotImplementedException();
+        }
+
+        private static BaseVariant ConvertRuleInstanceToVariant(RuleInstance ruleInstance)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static BaseVariant ConvertObjectValueToVariant(object source)
+        {
+            var result = new ValueVariant(source);
+            return result;
         }
 
         public static BaseVariant ConvertResultOfVarToVariant(ResultOfVarOfQueryToRelation source)
@@ -62,7 +100,7 @@ namespace MyNPCLib.VariantsConverting
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
-            var result = new ConceptVariant(expressionNode);
+            var result = new ConceptVariant(expressionNode.Key, expressionNode.Name, expressionNode.Annotations);
             return result;
         }
 
@@ -72,7 +110,7 @@ namespace MyNPCLib.VariantsConverting
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
-            var result = new EntityVariant(expressionNode);
+            var result = new EntityVariant(expressionNode.Key, expressionNode.Name, expressionNode.Annotations);
             return result;
         }
 
@@ -82,7 +120,7 @@ namespace MyNPCLib.VariantsConverting
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
-            var result = new ValueVariant(expressionNode);
+            var result = new ValueVariant(expressionNode.Value, expressionNode.Annotations);
             return result;
         }
 

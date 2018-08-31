@@ -353,6 +353,14 @@ namespace TmpSandBox
             var propertyValue = globalDataSource.GetPropertyValueAsVariant(firstEntityId, "color");
 
             LogInstance.Log($"propertyValue = {propertyValue}");
+
+            globalDataSource.SetPropertyValueAsAsObject(firstEntityId, "distance", new Vector3(1, 1, 1));
+
+            //globalDataSource.SetPropertyValueAsAsObject(firstEntityId, "color", "red");
+
+            //globalDataSource.SetPropertyValueAsAsObject(firstEntityId, "color", "#dog1");
+
+
         }
 
         private static void TSTGoToGreenWaypoint()

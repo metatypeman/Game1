@@ -5,6 +5,7 @@ using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.PersistLogicalDataStorage;
 using MyNPCLib.Variants;
+using MyNPCLib.VariantsConverting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -289,6 +290,12 @@ namespace MyNPCLib.CGStorage
         {
 #if DEBUG
             LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
+#endif
+
+            var variant = VariantsConvertor.ConvertObjectToVariant(value);
+
+#if DEBUG
+            LogInstance.Log($"variant = {variant}");
 #endif
 
             throw new NotImplementedException();

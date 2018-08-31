@@ -7,20 +7,26 @@ namespace MyNPCLib.Variants
 {
     public class EntityVariant: BaseVariant
     {
-        public EntityVariant(EntityRefExpressionNode expressionNode)
+        public EntityVariant(ulong key, string name)
         {
-            mExpressionNode = expressionNode;
-            Key = expressionNode.Key;
-            Name = expressionNode.Name;
+            Key = key;
+            Name = name;
+        }
+
+        public EntityVariant(ulong key, string name, IList<LogicalAnnotation> annotations)
+            : this(key, name)
+        {
+            Annotations = annotations;
         }
 
         public override KindOfVariant Kind => KindOfVariant.Entity;
         public override bool IsEntity => true;
         public override EntityVariant AsEntity => this;
 
-        private EntityRefExpressionNode mExpressionNode;
+        public IList<LogicalAnnotation> Annotations { get; private set; }
         public ulong Key { get; private set; }
         public string Name { get; private set; }
+
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);

@@ -7,11 +7,16 @@ namespace MyNPCLib.Variants
 {
     public class ConceptVariant : BaseVariant
     {
-        public ConceptVariant(ConceptExpressionNode expressionNode)
+        public ConceptVariant(ulong key, string name)
         {
-            mExpressionNode = expressionNode;
-            Key = expressionNode.Key;
-            Name = expressionNode.Name;
+            Key = key;
+            Name = name;
+        }
+
+        public ConceptVariant(ulong key, string name, IList<LogicalAnnotation> annotations)
+            : this(key, name)
+        {
+            Annotations = annotations;
         }
 
         public override KindOfVariant Kind => KindOfVariant.Concept;
@@ -19,7 +24,7 @@ namespace MyNPCLib.Variants
         public override bool IsConcept => true;
         public override ConceptVariant AsConcept => this;
 
-        private ConceptExpressionNode mExpressionNode;
+        public IList<LogicalAnnotation> Annotations { get; private set; }
         public ulong Key { get; private set; }
         public string Name { get; private set; }
 

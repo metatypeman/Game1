@@ -7,10 +7,15 @@ namespace MyNPCLib.Variants
 {
     public class ValueVariant : BaseVariant
     {
-        public ValueVariant(ValueExpressionNode expressionNode)
+        public ValueVariant(object value)
         {
-            mExpressionNode = expressionNode;
-            Value = mExpressionNode.Value;
+            Value = value;
+        }
+
+        public ValueVariant(object value, IList<LogicalAnnotation> annotations)
+            : this(value)
+        {
+            Annotations = annotations;
         }
 
         public override KindOfVariant Kind => KindOfVariant.Value;
@@ -18,7 +23,7 @@ namespace MyNPCLib.Variants
         public override bool IsValue => true;
         public override ValueVariant AsValue => this;
 
-        private ValueExpressionNode mExpressionNode;
+        public IList<LogicalAnnotation> Annotations { get; private set; }
         public object Value { get; private set; }
 
         public override string PropertiesToSting(uint n)
