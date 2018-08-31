@@ -40,36 +40,35 @@ namespace MyNPCLib.LogicalSearchEngine
 
             var entityDictionary = mContextOfCGStorage.EntityDictionary;
 
-            //var context = new LogicalSearchContext();
-            //context.QueryExpression = queryExpression;
-            //context.EntityDictionary = entityDictionary;
+            ICGStorage dataSource = null;
 
-            var searchOptions = new LogicalSearchOptions();
-            var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
-            globalStorageOptions.Storage = externalDataSource;
-            globalStorageOptions.MaxDeph = null;
-            globalStorageOptions.UseFacts = true;
-            globalStorageOptions.UseProductions = true;
-            globalStorageOptions.UseAdditionalInstances = true;
-            globalStorageOptions.Priority = 1;
+            if (queryDataSource == null)
+            {
+                dataSource = externalDataSource;
+            }
+            else
+            {
+                var searchOptions = new LogicalSearchOptions();
+                var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
+                globalStorageOptions.Storage = externalDataSource;
+                globalStorageOptions.MaxDeph = null;
+                globalStorageOptions.UseFacts = true;
+                globalStorageOptions.UseProductions = true;
+                globalStorageOptions.UseAdditionalInstances = true;
+                globalStorageOptions.Priority = 1;
 
-            var globalStorageOptions_1 = new SettingsOfStorageForSearchingInThisSession();
-            globalStorageOptions_1.Storage = queryDataSource;
-            globalStorageOptions_1.MaxDeph = null;
-            globalStorageOptions_1.UseFacts = false;
-            globalStorageOptions_1.UseAdditionalInstances = true;
-            globalStorageOptions_1.UseProductions = false;
-            globalStorageOptions_1.Priority = 1;
+                var globalStorageOptions_1 = new SettingsOfStorageForSearchingInThisSession();
+                globalStorageOptions_1.Storage = queryDataSource;
+                globalStorageOptions_1.MaxDeph = null;
+                globalStorageOptions_1.UseFacts = false;
+                globalStorageOptions_1.UseAdditionalInstances = true;
+                globalStorageOptions_1.UseProductions = false;
+                globalStorageOptions_1.Priority = 1;
 
-            var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions, globalStorageOptions_1 };
+                var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions, globalStorageOptions_1 };
 
-            var dataSource = new ConsolidatedCGStorage(externalDataSource.Context, dataSourcesSettings);
-
-            //context.DataSource = dataSource;
-
-#if DEBUG
-            //LogInstance.Log($"context = {context}");
-#endif
+                dataSource = new ConsolidatedCGStorage(externalDataSource.Context, dataSourcesSettings);
+            }
 
             var optionsOfFillExecutingCard = new OptionsOfFillExecutingCard();
             optionsOfFillExecutingCard.EntityIdOnly = options.EntityIdOnly;

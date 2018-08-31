@@ -20,10 +20,13 @@ namespace MyNPCLib.CGStorage
             mEntityDictionary = Context?.EntityDictionary;
             DictionaryName = mEntityDictionary?.Name;
             mLogicalSearcher = new LogicalSearcher(context);
+            mKeyOfVarForProperty = mEntityDictionary.GetKey(mNameOfVarForProperty);
         }
 
         private IEntityDictionary mEntityDictionary;
         private LogicalSearcher mLogicalSearcher;
+        private string mNameOfVarForProperty = "?X";
+        private ulong mKeyOfVarForProperty;
         public ContextOfCGStorage Context { get; private set; }
         public abstract KindOfCGStorage KindOfStorage { get; }
 
@@ -133,6 +136,16 @@ namespace MyNPCLib.CGStorage
             LogInstance.Log($"queryIndexedRuleInstance = {queryIndexedRuleInstance}");
 #endif
 
+            var searchOptions = new LogicalSearchOptions();
+            searchOptions.DataSource = this;
+            searchOptions.QueryExpression = queryIndexedRuleInstance;
+
+            var rearchResult = mLogicalSearcher.Run(searchOptions);
+
+#if DEBUG
+            LogInstance.Log($"rearchResult = {rearchResult}");
+#endif
+
             throw new NotImplementedException();
         }
 
@@ -196,10 +209,15 @@ namespace MyNPCLib.CGStorage
                 param_1.Key = entityId;
             }
 
+            /*
+                     private string  = "?X";
+        private ulong ;
+             */
+
             var param_2 = new QuestionVarExpressionNode();
             expr3.Params.Add(param_2);
-            param_2.Name = "?X";
-            param_2.Key = mEntityDictionary.GetKey(param_2.Name);
+            param_2.Name = mNameOfVarForProperty;
+            param_2.Key = mKeyOfVarForProperty;
 
 #if DEBUG
             var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
