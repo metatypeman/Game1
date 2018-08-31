@@ -3,6 +3,7 @@ using MyNPCLib.PersistLogicalData;
 using MyNPCLib.Variants;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.VariantsConverting
@@ -45,10 +46,10 @@ namespace MyNPCLib.VariantsConverting
                     return ConvertResultOfVarToVariantAsValue(foundExpression.AsValue);
 
                 case KindOfExpressionNode.Fact:
-                    return ConvertResultOfVarToVariantAsFact(foundExpression.AsFact);
+                    return ConvertResultOfVarToVariantAsFact(foundExpression.AsFact, source);
 
                 case KindOfExpressionNode.EntityCondition:
-                    return ConvertResultOfVarToVariantAsEntityCondition(foundExpression.AsEntityCondition);
+                    return ConvertResultOfVarToVariantAsEntityCondition(foundExpression.AsEntityCondition, source);
 
                 default:
                     return null;
@@ -61,7 +62,8 @@ namespace MyNPCLib.VariantsConverting
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
-            throw new NotImplementedException();
+            var result = new ConceptVariant(expressionNode);
+            return result;
         }
 
         private static BaseVariant ConvertResultOfVarToVariantAsEntity(EntityRefExpressionNode expressionNode)
@@ -70,7 +72,8 @@ namespace MyNPCLib.VariantsConverting
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
-            throw new NotImplementedException();
+            var result = new EntityVariant(expressionNode);
+            return result;
         }
 
         private static BaseVariant ConvertResultOfVarToVariantAsValue(ValueExpressionNode expressionNode)
@@ -79,25 +82,51 @@ namespace MyNPCLib.VariantsConverting
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
-            throw new NotImplementedException();
+            var result = new ValueVariant(expressionNode);
+            return result;
         }
 
-        private static BaseVariant ConvertResultOfVarToVariantAsFact(FactExpressionNode expressionNode)
+        private static BaseVariant ConvertResultOfVarToVariantAsFact(FactExpressionNode expressionNode, ResultOfVarOfQueryToRelation source)
         {
 #if DEBUG
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
-            throw new NotImplementedException();
+            var factRuleInstance = source.Parent.Storage.GetRuleInstanceByKey(expressionNode.Key);
+
+            var result = new FactVariant(factRuleInstance);
+            return result;
         }
 
-        private static BaseVariant ConvertResultOfVarToVariantAsEntityCondition(EntityConditionExpressionNode expressionNode)
+        private static BaseVariant ConvertResultOfVarToVariantAsEntityCondition(EntityConditionExpressionNode expressionNode, ResultOfVarOfQueryToRelation source)
         {
 #if DEBUG
             LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
-            throw new NotImplementedException();
+            var entityConditionRec = source.Parent.RuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == expressionNode.Key);
+
+            if (entityConditionRec == null)
+            {
+                return null;
+            }
+
+#if DEBUG
+            LogInstance.Log($"entityConditionRec = {entityConditionRec}");
+#endif
+            var keyOfEntityConditionFact = entityConditionRec.Key;
+
+#if DEBUG
+            LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
+#endif
+            var entityConditionRuleInstance = source.Parent.Storage.GetRuleInstanceByKey(keyOfEntityConditionFact);
+
+#if DEBUG
+            LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
+#endif
+
+            var result = new EntityConditionVariant(entityConditionRuleInstance);
+            return result;
         }
 
         public static BaseExpressionNode ConvertVariantToExpressionNode(BaseVariant source)

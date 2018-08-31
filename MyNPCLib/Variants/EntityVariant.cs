@@ -5,24 +5,22 @@ using System.Text;
 
 namespace MyNPCLib.Variants
 {
-    public class ConceptVariant : BaseVariant
+    public class EntityVariant: BaseVariant
     {
-        public ConceptVariant(ConceptExpressionNode expressionNode)
+        public EntityVariant(EntityRefExpressionNode expressionNode)
         {
             mExpressionNode = expressionNode;
             Key = expressionNode.Key;
             Name = expressionNode.Name;
         }
 
-        public override KindOfVariant Kind => KindOfVariant.Concept;
+        public override KindOfVariant Kind => KindOfVariant.Entity;
+        public override bool IsEntity => true;
+        public override EntityVariant AsEntity => this;
 
-        public override bool IsConcept => true;
-        public override ConceptVariant AsConcept => this;
-
-        private ConceptExpressionNode mExpressionNode;
+        private EntityRefExpressionNode mExpressionNode;
         public ulong Key { get; private set; }
         public string Name { get; private set; }
-
         public override string PropertiesToSting(uint n)
         {
             var spaces = StringHelper.Spaces(n);

@@ -14,14 +14,17 @@ namespace MyNPCLib.Variants
         public virtual bool IsConcept => false;
         public virtual ConceptVariant AsConcept => null;
 
+        public virtual bool IsEntity => false;
+        public virtual EntityVariant AsEntity => null;
+
         public virtual bool IsValue => false;
         public virtual ValueVariant AsValue => null;
 
         public virtual bool IsFact => false;
         public virtual FactVariant AsFact => null;
 
-        public virtual bool IsEntity => false;
-        public virtual EntityConditionVariant AsEntity => null;
+        public virtual bool IsEntityCondition => false;
+        public virtual EntityConditionVariant AsEntityCondition => null;
 
         public override string ToString()
         {

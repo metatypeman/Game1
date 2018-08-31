@@ -9,6 +9,7 @@ namespace MyNPCLib.Variants
         Unknown,
         Empty,
         Concept,
+        Entity,
         Value,
         Fact,
         EntityCondition
