@@ -10,7 +10,7 @@ namespace MyNPCLib.VariantsConverting
 {
     public static class VariantsConvertor
     {
-        public static BaseVariant ConvertObjectToVariant(object source)
+        public static BaseVariant ConvertObjectToVariant(object source, IEntityDictionary entityDictionary)
         {
 #if DEBUG
             LogInstance.Log($"source = {source}");
@@ -20,7 +20,7 @@ namespace MyNPCLib.VariantsConverting
 
             if(type == typeof(string))
             {
-                return ConvertStringToVariant((string)source);
+                return ConvertStringToVariant((string)source, entityDictionary);
             }
 
             if(type == typeof(bool))
@@ -51,7 +51,20 @@ namespace MyNPCLib.VariantsConverting
 
             switch(kindOfKey)
             {
-                
+                case KindOfKey.Concept:
+                    {
+                        var result = new ConceptVariant(key, source);
+                        return result;
+                    }
+
+                case KindOfKey.Entity:
+                    {
+                        var result = new EntityVariant(key, source);
+                        return result;
+                    }
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kindOfKey), kindOfKey, null);
             }
 
             throw new NotImplementedException();
@@ -268,13 +281,11 @@ namespace MyNPCLib.VariantsConverting
             LogInstance.Log($"source = {source}");
 #endif
 
+            var ruleInstance = source.RuleInstance;
+
             var result = new FactExpressionNode();
-
-            throw new NotImplementedException();
-
-            //result.Key = source.Key;
-            //result.Name = source.Name;
-            //result.Annotations = source.Annotations;
+            result.Key = ruleInstance.Key;
+            result.Name = ruleInstance.Name;
             return result;
         }
 
@@ -285,7 +296,7 @@ namespace MyNPCLib.VariantsConverting
 #endif
 
             var result = new EntityConditionExpressionNode();
-
+            
             throw new NotImplementedException();
 
             //result.Key = source.;

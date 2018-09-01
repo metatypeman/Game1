@@ -292,7 +292,7 @@ namespace MyNPCLib.CGStorage
             LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
 
-            var variant = VariantsConvertor.ConvertObjectToVariant(value);
+            var variant = VariantsConvertor.ConvertObjectToVariant(value, mEntityDictionary);
 
 #if DEBUG
             LogInstance.Log($"variant = {variant}");
@@ -322,11 +322,37 @@ namespace MyNPCLib.CGStorage
 
         private RuleInstancePackage CreateRuleInstanceForSetQuery(ulong entityId, ulong propertyId, BaseVariant variant)
         {
+            var kind = variant.Kind;
+
+            switch(kind)
+            {
+                case KindOfVariant.Concept:
+                case KindOfVariant.Entity:
+                case KindOfVariant.Value:
+                    return CreateUsualRuleInstanceForSetQuery(entityId, propertyId, variant);
+
+                case KindOfVariant.EntityCondition:
+                    return CreateRuleInstanceWithEntityConditionForSetQuery(entityId, propertyId, variant.AsEntityCondition);
+
+                case KindOfVariant.Fact:
+                    return CreateRuleInstanceWithFactForSetQuery(entityId, propertyId, variant.AsFact);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+            }
+        }
+
+        private RuleInstancePackage CreateUsualRuleInstanceForSetQuery(ulong entityId, ulong propertyId, BaseVariant variant)
+        {
             var expressionOfVariant = VariantsConvertor.ConvertVariantToExpressionNode(variant);
 
 #if DEBUG
             LogInstance.Log($"expressionOfVariant = {expressionOfVariant}");
 #endif
+
+            var result = new RuleInstancePackage();
+            var allRuleInstancesList = new List<RuleInstance>();
+            result.AllRuleInstances = allRuleInstancesList;
 
             var relationKey = propertyId;
             var relationName = mEntityDictionary.GetName(relationKey);
@@ -335,17 +361,13 @@ namespace MyNPCLib.CGStorage
 
             var ruleInstance = new RuleInstance();
             ruleInstance.DictionaryName = mEntityDictionary.Name;
-            if(variant.IsEntityCondition)
-            {
-                ruleInstance.Kind = KindOfRuleInstance.EntityCondition;
-            }
-            else
-            {
-                ruleInstance.Kind = KindOfRuleInstance.Fact;
-            }
-            
+            ruleInstance.Kind = KindOfRuleInstance.Fact;
+
             ruleInstance.Name = NamesHelper.CreateEntityName();
             ruleInstance.Key = mEntityDictionary.GetKey(ruleInstance.Name);
+
+            allRuleInstancesList.Add(ruleInstance);
+            result.MainRuleInstance = ruleInstance;
 
             var rulePart_1 = new RulePart();
             rulePart_1.Parent = ruleInstance;
@@ -377,14 +399,169 @@ namespace MyNPCLib.CGStorage
             }
 
             var param_2 = expressionOfVariant;
+            expr3.Params.Add(param_2);
+#if DEBUG
+            var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
 
+            LogInstance.Log($"debugStr (yyyyyyyyyyyyyyyyy) = {debugStr}");
+#endif
+            
+            return result;
+        }
+
+        private RuleInstancePackage CreateRuleInstanceWithEntityConditionForSetQuery(ulong entityId, ulong propertyId, EntityConditionVariant variant)
+        {
+            var result = new RuleInstancePackage();
+            var allRuleInstancesList = new List<RuleInstance>();
+            result.AllRuleInstances = allRuleInstancesList;
+
+            var addedRuleInstance = variant.RuleInstance;
+            allRuleInstancesList.Add(addedRuleInstance);
+
+            var relationKey = propertyId;
+            var relationName = mEntityDictionary.GetName(relationKey);
+
+            var entityName = mEntityDictionary.GetName(entityId);
+
+            var ruleInstance = new RuleInstance();
+            ruleInstance.DictionaryName = mEntityDictionary.Name;
+            ruleInstance.Kind = KindOfRuleInstance.Fact;
+
+            ruleInstance.Name = NamesHelper.CreateEntityName();
+            ruleInstance.Key = mEntityDictionary.GetKey(ruleInstance.Name);
+
+            allRuleInstancesList.Add(ruleInstance);
+            result.MainRuleInstance = ruleInstance;
+
+            var entityConditionVarName = "#@X1";
+            var entityConditionVarKey = mEntityDictionary.GetKey(entityConditionVarName);
+
+            var entitiesConditions = new EntitiesConditions();
+            ruleInstance.EntitiesConditions = entitiesConditions;
+            entitiesConditions.Items = new List<EntityConditionItem>();
+
+            var entityConditionName = addedRuleInstance.Name;
+            var entityConditionKey = addedRuleInstance.Key;
+
+            var entityCondition_1 = new EntityConditionItem();
+            entitiesConditions.Items.Add(entityCondition_1);
+            entityCondition_1.Name = entityConditionName;
+            entityCondition_1.Key = entityConditionKey;
+            entityCondition_1.VariableName = entityConditionVarName;
+            entityCondition_1.VariableKey = entityConditionVarKey;
+
+            var expressionOfVariant = new EntityConditionExpressionNode();
+            expressionOfVariant.Key = entityConditionVarKey;
+            expressionOfVariant.Name = entityConditionVarName;
+
+            var rulePart_1 = new RulePart();
+            rulePart_1.Parent = ruleInstance;
+            ruleInstance.Part_1 = rulePart_1;
+
+            rulePart_1.IsActive = true;
+
+            var expr3 = new RelationExpressionNode();
+            rulePart_1.Expression = expr3;
+            expr3.Params = new List<BaseExpressionNode>();
+            expr3.Annotations = new List<LogicalAnnotation>();
+
+            expr3.Name = relationName;
+            expr3.Key = relationKey;
+
+            if (mEntityDictionary.IsEntity(entityId))
+            {
+                var param_1 = new EntityRefExpressionNode();
+                expr3.Params.Add(param_1);
+                param_1.Name = entityName;
+                param_1.Key = entityId;
+            }
+            else
+            {
+                var param_1 = new ConceptExpressionNode();
+                expr3.Params.Add(param_1);
+                param_1.Name = entityName;
+                param_1.Key = entityId;
+            }
+
+            var param_2 = expressionOfVariant;
+            expr3.Params.Add(param_2);
 #if DEBUG
             var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
 
             LogInstance.Log($"debugStr (yyyyyyyyyyyyyyyyy) = {debugStr}");
 #endif
 
-            return ruleInstance;
+            return result;
+        }
+
+        private RuleInstancePackage CreateRuleInstanceWithFactForSetQuery(ulong entityId, ulong propertyId, FactVariant variant)
+        {
+            var expressionOfVariant = VariantsConvertor.ConvertVariantToExpressionNode(variant);
+
+#if DEBUG
+            LogInstance.Log($"expressionOfVariant = {expressionOfVariant}");
+#endif
+
+            var result = new RuleInstancePackage();
+            var allRuleInstancesList = new List<RuleInstance>();
+            result.AllRuleInstances = allRuleInstancesList;
+
+            var addedRuleInstance = variant.RuleInstance;
+            allRuleInstancesList.Add(addedRuleInstance);
+
+            var relationKey = propertyId;
+            var relationName = mEntityDictionary.GetName(relationKey);
+
+            var entityName = mEntityDictionary.GetName(entityId);
+
+            var ruleInstance = new RuleInstance();
+            ruleInstance.DictionaryName = mEntityDictionary.Name;
+            ruleInstance.Kind = KindOfRuleInstance.Fact;
+
+            ruleInstance.Name = NamesHelper.CreateEntityName();
+            ruleInstance.Key = mEntityDictionary.GetKey(ruleInstance.Name);
+
+            allRuleInstancesList.Add(ruleInstance);
+            result.MainRuleInstance = ruleInstance;
+
+            var rulePart_1 = new RulePart();
+            rulePart_1.Parent = ruleInstance;
+            ruleInstance.Part_1 = rulePart_1;
+
+            rulePart_1.IsActive = true;
+
+            var expr3 = new RelationExpressionNode();
+            rulePart_1.Expression = expr3;
+            expr3.Params = new List<BaseExpressionNode>();
+            expr3.Annotations = new List<LogicalAnnotation>();
+
+            expr3.Name = relationName;
+            expr3.Key = relationKey;
+
+            if (mEntityDictionary.IsEntity(entityId))
+            {
+                var param_1 = new EntityRefExpressionNode();
+                expr3.Params.Add(param_1);
+                param_1.Name = entityName;
+                param_1.Key = entityId;
+            }
+            else
+            {
+                var param_1 = new ConceptExpressionNode();
+                expr3.Params.Add(param_1);
+                param_1.Name = entityName;
+                param_1.Key = entityId;
+            }
+
+            var param_2 = expressionOfVariant;
+            expr3.Params.Add(param_2);
+#if DEBUG
+            var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+
+            LogInstance.Log($"debugStr (yyyyyyyyyyyyyyyyy) = {debugStr}");
+#endif
+
+            return result;
         }
 
         public override string ToString()
