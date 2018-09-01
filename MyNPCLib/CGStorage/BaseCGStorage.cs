@@ -273,7 +273,7 @@ namespace MyNPCLib.CGStorage
             LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
 
-            throw new NotImplementedException();
+            NSetPropertyValue(entityId, propertyId, value);
         }
 
         public virtual void SetPropertyValueAsAsVariant(ulong entityId, string propertyName, BaseVariant value)
@@ -298,7 +298,7 @@ namespace MyNPCLib.CGStorage
             LogInstance.Log($"variant = {variant}");
 #endif
 
-            throw new NotImplementedException();
+            NSetPropertyValue(entityId, propertyId, variant);
         }
 
         public virtual void SetPropertyValueAsAsObject(ulong entityId, string propertyName, object value)
@@ -308,6 +308,83 @@ namespace MyNPCLib.CGStorage
 #endif
             var propertyId = mEntityDictionary.GetKey(propertyName);
             SetPropertyValueAsAsObject(entityId, propertyId, value);
+        }
+
+        private void NSetPropertyValue(ulong entityId, ulong propertyId, BaseVariant value)
+        {
+#if DEBUG
+            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
+#endif
+            var ruleInstance = CreateRuleInstanceForSetQuery(entityId, propertyId,  value);
+
+            Append(ruleInstance);
+        }
+
+        private RuleInstancePackage CreateRuleInstanceForSetQuery(ulong entityId, ulong propertyId, BaseVariant variant)
+        {
+            var expressionOfVariant = VariantsConvertor.ConvertVariantToExpressionNode(variant);
+
+#if DEBUG
+            LogInstance.Log($"expressionOfVariant = {expressionOfVariant}");
+#endif
+
+            var relationKey = propertyId;
+            var relationName = mEntityDictionary.GetName(relationKey);
+
+            var entityName = mEntityDictionary.GetName(entityId);
+
+            var ruleInstance = new RuleInstance();
+            ruleInstance.DictionaryName = mEntityDictionary.Name;
+            if(variant.IsEntityCondition)
+            {
+                ruleInstance.Kind = KindOfRuleInstance.EntityCondition;
+            }
+            else
+            {
+                ruleInstance.Kind = KindOfRuleInstance.Fact;
+            }
+            
+            ruleInstance.Name = NamesHelper.CreateEntityName();
+            ruleInstance.Key = mEntityDictionary.GetKey(ruleInstance.Name);
+
+            var rulePart_1 = new RulePart();
+            rulePart_1.Parent = ruleInstance;
+            ruleInstance.Part_1 = rulePart_1;
+
+            rulePart_1.IsActive = true;
+
+            var expr3 = new RelationExpressionNode();
+            rulePart_1.Expression = expr3;
+            expr3.Params = new List<BaseExpressionNode>();
+            expr3.Annotations = new List<LogicalAnnotation>();
+
+            expr3.Name = relationName;
+            expr3.Key = relationKey;
+
+            if (mEntityDictionary.IsEntity(entityId))
+            {
+                var param_1 = new EntityRefExpressionNode();
+                expr3.Params.Add(param_1);
+                param_1.Name = entityName;
+                param_1.Key = entityId;
+            }
+            else
+            {
+                var param_1 = new ConceptExpressionNode();
+                expr3.Params.Add(param_1);
+                param_1.Name = entityName;
+                param_1.Key = entityId;
+            }
+
+            var param_2 = expressionOfVariant;
+
+#if DEBUG
+            var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance);
+
+            LogInstance.Log($"debugStr (yyyyyyyyyyyyyyyyy) = {debugStr}");
+#endif
+
+            return ruleInstance;
         }
 
         public override string ToString()

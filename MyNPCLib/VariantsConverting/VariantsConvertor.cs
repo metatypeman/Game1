@@ -41,18 +41,46 @@ namespace MyNPCLib.VariantsConverting
             return ConvertObjectValueToVariant(source);
         }
 
-        private static BaseVariant ConvertStringToVariant(string source)
+        private static BaseVariant ConvertStringToVariant(string source, IEntityDictionary entityDictionary)
         {
+#if DEBUG
+            LogInstance.Log($"source = {source}");
+#endif
+            var key = entityDictionary.GetKey(source);
+            var kindOfKey = entityDictionary.GetKindOfKey(key);
+
+            switch(kindOfKey)
+            {
+                
+            }
+
             throw new NotImplementedException();
         }
 
         private static BaseVariant ConvertRuleInstanceToVariant(RuleInstance ruleInstance)
         {
-            throw new NotImplementedException();
+#if DEBUG
+            LogInstance.Log($"ruleInstance = {ruleInstance}");
+#endif
+
+            if (ruleInstance.Kind == KindOfRuleInstance.EntityCondition)
+            {
+                var result = new EntityConditionVariant(ruleInstance);
+                return result;
+            }
+
+            {
+                var result = new FactVariant(ruleInstance);
+                return result;
+            }
         }
 
         private static BaseVariant ConvertObjectValueToVariant(object source)
         {
+#if DEBUG
+            LogInstance.Log($"source = {source}");
+#endif
+
             var result = new ValueVariant(source);
             return result;
         }
@@ -172,8 +200,98 @@ namespace MyNPCLib.VariantsConverting
 #if DEBUG
             LogInstance.Log($"source = {source}");
 #endif
+            var kind = source.Kind;
+
+            switch(kind)
+            {
+                case KindOfVariant.Concept:
+                    return ConvertConceptVariant(source.AsConcept);
+
+                case KindOfVariant.Entity:
+                    return ConvertEntityVariant(source.AsEntity);
+
+                case KindOfVariant.Value:
+                    return ConvertValueVariant(source.AsValue);
+
+                case KindOfVariant.Fact:
+                    return ConvertFactVariant(source.AsFact);
+
+                case KindOfVariant.EntityCondition:
+                    return ConvertEntityConditionVariant(source.AsEntityCondition);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+            }
+        }
+
+        private static BaseExpressionNode ConvertConceptVariant(ConceptVariant source)
+        {
+#if DEBUG
+            LogInstance.Log($"source = {source}");
+#endif
+
+            var result = new ConceptExpressionNode();
+            result.Key = source.Key;
+            result.Name = source.Name;
+            result.Annotations = source.Annotations;
+            return result;
+        }
+
+        private static BaseExpressionNode ConvertEntityVariant(EntityVariant source)
+        {
+#if DEBUG
+            LogInstance.Log($"source = {source}");
+#endif
+
+            var result = new EntityRefExpressionNode();
+            result.Key = source.Key;
+            result.Name = source.Name;
+            result.Annotations = source.Annotations;
+            return result;
+        }
+
+        private static BaseExpressionNode ConvertValueVariant(ValueVariant source)
+        {
+#if DEBUG
+            LogInstance.Log($"source = {source}");
+#endif
+
+            var result = new ValueExpressionNode();
+            result.Value = source.Value;
+            result.Annotations = source.Annotations;
+            return result;
+        }
+
+        private static BaseExpressionNode ConvertFactVariant(FactVariant source)
+        {
+#if DEBUG
+            LogInstance.Log($"source = {source}");
+#endif
+
+            var result = new FactExpressionNode();
 
             throw new NotImplementedException();
+
+            //result.Key = source.Key;
+            //result.Name = source.Name;
+            //result.Annotations = source.Annotations;
+            return result;
+        }
+
+        private static BaseExpressionNode ConvertEntityConditionVariant(EntityConditionVariant source)
+        {
+#if DEBUG
+            LogInstance.Log($"source = {source}");
+#endif
+
+            var result = new EntityConditionExpressionNode();
+
+            throw new NotImplementedException();
+
+            //result.Key = source.;
+            //result.Name = source.Name;
+            //result.Annotations = source.Annotations;
+            return result;
         }
     }
 }
