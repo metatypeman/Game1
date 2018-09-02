@@ -53,6 +53,7 @@ namespace TmpSandBox
 
             //TSTParsingUserQuery();
             //TSTLogicalSoundBus();
+            TSTQueryWithAccessPolicy();
             TSTQueryEntityCondition();
             //TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
@@ -264,6 +265,11 @@ namespace TmpSandBox
             Thread.Sleep(10000);
 
             LogInstance.Log("End");
+        }
+
+        private static void TSTQueryWithAccessPolicy()
+        {
+
         }
 
         private static void TSTQueryEntityCondition()
