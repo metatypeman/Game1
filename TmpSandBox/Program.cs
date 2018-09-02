@@ -356,11 +356,13 @@ namespace TmpSandBox
 
             globalDataSource.SetPropertyValueAsAsObject(firstEntityId, "distance", new Vector3(1, 1, 1));
 
-            //globalDataSource.SetPropertyValueAsAsObject(firstEntityId, "color", "red");
+            var distanceValue = globalDataSource.GetPropertyValueAsObject(firstEntityId, "distance");
 
-            //globalDataSource.SetPropertyValueAsAsObject(firstEntityId, "color", "#dog1");
+            LogInstance.Log($"distanceValue = {distanceValue}");
 
+            globalDataSource.SetPropertyValueAsAsObject(firstEntityId, "color", "red");
 
+            globalDataSource.SetPropertyValueAsAsObject(firstEntityId, "target", "#dog1");
         }
 
         private static void TSTGoToGreenWaypoint()

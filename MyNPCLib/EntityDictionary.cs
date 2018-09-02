@@ -41,7 +41,7 @@ namespace MyNPCLib
                 mCaseInsensitiveBackWordsDict[mCurrIndex] = name;
 
                 var kindOfKey = NGetKindOfKeyByName(name);
-
+                mKindOfKeyDict[mCurrIndex] = kindOfKey;
                 return mCurrIndex;
             }
         }

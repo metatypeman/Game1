@@ -78,7 +78,7 @@ namespace MyNPCLib.LogicalSearchEngine
                 return null;
             }
 
-            return resultItem.AsVariant;
+            return resultItem.AsObject;
         }
 
         public override string ToString()
