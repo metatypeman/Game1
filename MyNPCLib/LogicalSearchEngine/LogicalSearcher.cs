@@ -24,13 +24,18 @@ namespace MyNPCLib.LogicalSearchEngine
             var queryDataSource = options.QuerySource;
             IndexedRuleInstance queryExpression = null;
 
-            if(queryDataSource == null)
+            var optionsOfFillExecutingCard = new OptionsOfFillExecutingCard();
+            optionsOfFillExecutingCard.EntityIdOnly = options.EntityIdOnly;
+
+            if (queryDataSource == null)
             {
                 queryExpression = options.QueryExpression;
+                optionsOfFillExecutingCard.AccessPolicyToFactModalityList = queryExpression.AccessPolicyToFactModality.ToList();
             }
             else
             {
                 queryExpression = queryDataSource.MainIndexedRuleInstance;
+                optionsOfFillExecutingCard.AccessPolicyToFactModalityList = queryExpression.AccessPolicyToFactModality.ToList();
             }
 
             var externalDataSource = options.DataSource;
@@ -69,9 +74,6 @@ namespace MyNPCLib.LogicalSearchEngine
 
                 dataSource = new ConsolidatedCGStorage(externalDataSource.Context, dataSourcesSettings);
             }
-
-            var optionsOfFillExecutingCard = new OptionsOfFillExecutingCard();
-            optionsOfFillExecutingCard.EntityIdOnly = options.EntityIdOnly;
 
             var resultItemsList = new List<LogicalSearchResultItem>();
 
