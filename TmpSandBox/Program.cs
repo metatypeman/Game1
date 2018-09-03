@@ -311,9 +311,13 @@ namespace TmpSandBox
 
             var querySearchResultCGStorage = globalDataSource.Search(queryStorage);
 
-            var resultExpression = querySearchResultCGStorage.GetResultOfVar("?X");
+            var resultExpressionsList = querySearchResultCGStorage.GetResultsListOfVar("?X");
 
-            LogInstance.Log($"resultExpression = {resultExpression}");
+            LogInstance.Log($"resultExpressionsList.Count = {resultExpressionsList.Count}");
+            foreach(var resultExpression in resultExpressionsList)
+            {
+                LogInstance.Log($"resultExpression = {resultExpression}");
+            }
         }
 
         private static void TSTQueryEntityCondition()

@@ -19,6 +19,21 @@ namespace MyNPCLib.CGStorage
 
         private LogicalSearchResult mLogicalSearchResult;
 
+        public override IList<ResultOfVarOfQueryToRelation> GetResultsListOfVar(ulong keyOfVar)
+        {
+            return mLogicalSearchResult.GetResultsListOfVar(keyOfVar);
+        }
+
+        public override IList<BaseVariant> GetResultsListOfVarAsVariant(ulong keyOfVar)
+        {
+            return mLogicalSearchResult.GetResultsListOfVarAsVariant(keyOfVar);
+        }
+
+        public override IList<object> GetResultsListOfVarAsObject(ulong keyOfVar)
+        {
+            return mLogicalSearchResult.GetResultsListOfVarAsObject(keyOfVar);
+        }
+
         public override ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar)
         {
             return mLogicalSearchResult.GetResultOfVar(keyOfVar);

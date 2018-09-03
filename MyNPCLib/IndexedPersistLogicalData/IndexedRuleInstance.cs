@@ -172,6 +172,36 @@ namespace MyNPCLib.IndexedPersistLogicalData
             return null;
         }
 
+        public IList<ResultOfVarOfQueryToRelation> GetResultsListOfVar(string varName)
+        {
+            return null;
+        }
+
+        public IList<ResultOfVarOfQueryToRelation> GetResultsListOfVar(ulong keyOfVar)
+        {
+            return null;
+        }
+
+        public IList<BaseVariant> GetResultsListOfVarAsVariant(string varName)
+        {
+            return null;
+        }
+
+        public IList<BaseVariant> GetResultsListOfVarAsVariant(ulong keyOfVar)
+        {
+            return null;
+        }
+
+        public IList<object> GetResultsListOfVarAsObject(string varName)
+        {
+            return null;
+        }
+
+        public IList<object> GetResultsListOfVarAsObject(ulong keyOfVar)
+        {
+            return null;
+        }
+
         public ResultOfVarOfQueryToRelation GetResultOfVar(string varName)
         {
             return null;

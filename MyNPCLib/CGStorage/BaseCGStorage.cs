@@ -86,6 +86,39 @@ namespace MyNPCLib.CGStorage
         public virtual RuleInstance MainRuleInstance => null;
         public virtual IndexedRuleInstance MainIndexedRuleInstance => null;
 
+        public IList<ResultOfVarOfQueryToRelation> GetResultsListOfVar(string varName)
+        {
+            var keyOfVar = mEntityDictionary.GetKey(varName);
+            return GetResultsListOfVar(keyOfVar);
+        }
+
+        public virtual IList<ResultOfVarOfQueryToRelation> GetResultsListOfVar(ulong keyOfVar)
+        {
+            return null;
+        }
+
+        public IList<BaseVariant> GetResultsListOfVarAsVariant(string varName)
+        {
+            var keyOfVar = mEntityDictionary.GetKey(varName);
+            return GetResultsListOfVarAsVariant(keyOfVar);
+        }
+
+        public virtual IList<BaseVariant> GetResultsListOfVarAsVariant(ulong keyOfVar)
+        {
+            return null;
+        }
+
+        public IList<object> GetResultsListOfVarAsObject(string varName)
+        {
+            var keyOfVar = mEntityDictionary.GetKey(varName);
+            return GetResultsListOfVarAsObject(keyOfVar);
+        }
+
+        public virtual IList<object> GetResultsListOfVarAsObject(ulong keyOfVar)
+        {
+            return null;
+        }
+
         public ResultOfVarOfQueryToRelation GetResultOfVar(string varName)
         {
             var keyOfVar = mEntityDictionary.GetKey(varName);
