@@ -129,7 +129,17 @@ namespace MyNPCLib.IndexedPersistLogicalData
             mCommonPersistIndexedLogicalData.NSetIndexedRuleInstanceToIndexData(this);
         }
 
-        public ContextOfCGStorage Context => throw new NotImplementedException();
+        public ContextOfCGStorage Context
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+            }
+        }
 
         public IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
