@@ -239,6 +239,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
             return null;
         }
 
+        public ICGStorage Search(LogicalSearchOptions options)
+        {
+            return null;
+        }
+
         public ICGStorage Search(ICGStorage query)
         {
             return null;

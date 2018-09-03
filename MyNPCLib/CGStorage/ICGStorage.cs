@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.IndexedPersistLogicalData;
+using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.Variants;
 using System;
@@ -38,6 +39,7 @@ namespace MyNPCLib.CGStorage
         object GetResultOfVarAsObject(ulong keyOfVar);
         event Action OnChanged;
         IList<ulong> GetEntitiesIdList(ICGStorage query);
+        ICGStorage Search(LogicalSearchOptions options);
         ICGStorage Search(ICGStorage query);
         BaseVariant GetPropertyValueAsVariant(ulong entityId, ulong propertyId);
         BaseVariant GetPropertyValueAsVariant(ulong entityId, string propertyName);

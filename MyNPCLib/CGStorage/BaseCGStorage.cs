@@ -168,6 +168,16 @@ namespace MyNPCLib.CGStorage
             return mLogicalSearcher.GetEntitiesIdList(searchOptions);
         }
 
+        public ICGStorage Search(LogicalSearchOptions options)
+        {
+            options.DataSource = this;
+
+            var searchResult = mLogicalSearcher.Run(options);
+
+            var querySearchResultCGStorage = new QueryResultCGStorage(Context, searchResult);
+            return querySearchResultCGStorage;
+        }
+
         public ICGStorage Search(ICGStorage query)
         {
             var searchOptions = new LogicalSearchOptions();

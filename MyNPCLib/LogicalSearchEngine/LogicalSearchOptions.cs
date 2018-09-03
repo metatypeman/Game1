@@ -9,6 +9,7 @@ namespace MyNPCLib.LogicalSearchEngine
     public class LogicalSearchOptions : IObjectToString
     {
         public bool EntityIdOnly { get; set; }
+        public bool IgnoreAccessPolicy { get; set; } = true;
         public ICGStorage QuerySource { get; set; }
         public IndexedRuleInstance QueryExpression { get; set; }
         public ICGStorage DataSource { get; set; }
@@ -29,6 +30,7 @@ namespace MyNPCLib.LogicalSearchEngine
             var nextN = n + 4;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(EntityIdOnly)} = {EntityIdOnly}");
+            sb.AppendLine($"{spaces}{nameof(IgnoreAccessPolicy)} = {IgnoreAccessPolicy}");
             if (QuerySource == null)
             {
                 sb.AppendLine($"{spaces}{nameof(QuerySource)} = null");

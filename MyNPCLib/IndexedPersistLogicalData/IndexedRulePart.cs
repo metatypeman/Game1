@@ -120,6 +120,22 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     var resultOfQueryToRelation = new ResultOfQueryToRelation();
 
                     var isEntityIdOnly = options.EntityIdOnly;
+                    var useAccessPolicy = options.UseAccessPolicy;
+
+                    if (useAccessPolicy)
+                    {
+                        foreach (var accessPolicy in options.AccessPolicyToFactModalityList)
+                        {
+#if DEBUG
+                            LogInstance.Log($"accessPolicy = {accessPolicy}");
+#endif
+
+                            if (!Parent.AccessPolicyToFactModality.Any(p => p.Kind == accessPolicy.Kind))
+                            {
+                                return;
+                            }
+                        }
+                    }
 
                     foreach (var varItem in queryExecutingCard.VarsInfoList)
                     {

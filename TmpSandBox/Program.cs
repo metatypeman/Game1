@@ -309,7 +309,11 @@ namespace TmpSandBox
 
             var globalDataSource = context.GlobalCGStorage;
 
-            var querySearchResultCGStorage = globalDataSource.Search(queryStorage);
+            var searchOptions = new LogicalSearchOptions();
+            searchOptions.IgnoreAccessPolicy = false;
+            searchOptions.QuerySource = queryStorage;
+
+            var querySearchResultCGStorage = globalDataSource.Search(searchOptions);
 
             var resultExpressionsList = querySearchResultCGStorage.GetResultsListOfVar("?X");
 
