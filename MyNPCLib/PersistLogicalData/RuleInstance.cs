@@ -25,7 +25,7 @@ namespace MyNPCLib.PersistLogicalData
         public RulePart Part_2 { get; set; }
         public IfConditionsPart IfConditions { get; set; }
         public NotContradictPart NotContradict { get; set; }
-        public AccessPolicyToFactModality AccessPolicyToFactModality { get; set; }
+        public IList<AccessPolicyToFactModality> AccessPolicyToFactModality { get; set; }
         public DesirableFuzzyModality DesirableModality { get; set; }
         public NecessityFuzzyModality NecessityModality { get; set; }
         public ImperativeFuzzyModality ImperativeModality { get; set; }
@@ -89,7 +89,15 @@ namespace MyNPCLib.PersistLogicalData
 
             if (AccessPolicyToFactModality != null)
             {
-                result.AccessPolicyToFactModality = AccessPolicyToFactModality.Clone(context);
+                var accessPolicyToFactModality = new List<AccessPolicyToFactModality>();
+
+                foreach(var initAccessPolicyToFactItem in AccessPolicyToFactModality)
+                {
+                    var newAccessPolicyToFactItem = initAccessPolicyToFactItem.Clone(context);
+                    accessPolicyToFactModality.Add(newAccessPolicyToFactItem);
+                }
+
+                result.AccessPolicyToFactModality = accessPolicyToFactModality;
             }
 
             if (DesirableModality != null)
@@ -244,6 +252,7 @@ namespace MyNPCLib.PersistLogicalData
                 sb.Append(NotContradict.ToShortString(nextN));
                 sb.AppendLine($"{spaces}End {nameof(NotContradict)}");
             }
+
             if (AccessPolicyToFactModality == null)
             {
                 sb.AppendLine($"{spaces}{nameof(AccessPolicyToFactModality)} = null");
@@ -251,7 +260,10 @@ namespace MyNPCLib.PersistLogicalData
             else
             {
                 sb.AppendLine($"{spaces}Begin {nameof(AccessPolicyToFactModality)}");
-                sb.Append(AccessPolicyToFactModality.ToShortString(nextN));
+                foreach (var accessPolicy in AccessPolicyToFactModality)
+                {
+                    sb.Append(accessPolicy.ToShortString(nextN));
+                }
                 sb.AppendLine($"{spaces}End {nameof(AccessPolicyToFactModality)}");
             }
             
@@ -485,7 +497,10 @@ namespace MyNPCLib.PersistLogicalData
             else
             {
                 sb.AppendLine($"{spaces}Begin {nameof(AccessPolicyToFactModality)}");
-                sb.Append(AccessPolicyToFactModality.ToShortString(nextN));
+                foreach (var accessPolicy in AccessPolicyToFactModality)
+                {
+                    sb.Append(accessPolicy.ToShortString(nextN));
+                }
                 sb.AppendLine($"{spaces}End {nameof(AccessPolicyToFactModality)}");
             }
 

@@ -10,21 +10,20 @@ namespace MyNPCLib.Parser.LogicalExpression
         private enum State
         {
             Init,
-            WaitForContent
+            WaitForContent,
+            WaitForContentInFigureBracket,
+            GotContentInFigureBracket
         }
 
         public AccessPolicyParser(IParserContext context)
             : base(context, TokenKind.EndFact)
         {
-            mASTNode = new ASTNodeOfLogicalQuery();
-            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.AccessPolicy;
         }
 
         private State mState = State.Init;
 
-        public ASTNodeOfLogicalQuery Result => mASTNode;
-
-        private ASTNodeOfLogicalQuery mASTNode;
+        private List<ASTNodeOfLogicalQuery> mResult = new List<ASTNodeOfLogicalQuery>();
+        public List<ASTNodeOfLogicalQuery> Result => mResult;
 
         protected override void OnRun()
         {
@@ -59,18 +58,57 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 switch(kindOfKeyWord)
                                 {
                                     case TokenKind.Public:
-                                        mASTNode.KindOfAccessPolicy = KindOfAccessPolicyToFact.Public;
+                                        PutSingleAccessPolicy(KindOfAccessPolicyToFact.Public);
                                         Exit();
                                         break;
 
                                     case TokenKind.Private:
-                                        mASTNode.KindOfAccessPolicy = KindOfAccessPolicyToFact.Private;
+                                        PutSingleAccessPolicy(KindOfAccessPolicyToFact.Private);
                                         Exit();
                                         break;
 
                                     case TokenKind.Visible:
-                                        mASTNode.KindOfAccessPolicy = KindOfAccessPolicyToFact.ForVisible;
+                                        PutSingleAccessPolicy(KindOfAccessPolicyToFact.ForVisible);
                                         Exit();
+                                        break;
+
+                                    default:
+                                        throw new UnexpectedTokenException(CurrToken);
+                                }
+                            }
+                            break;
+
+                        case TokenKind.OpenFigureBracket:
+                            mState = State.WaitForContentInFigureBracket;
+                            break;
+
+                        default:
+                            throw new UnexpectedTokenException(CurrToken);
+                    }
+                    break;
+
+                case State.WaitForContentInFigureBracket:
+                    switch (currTokenKind)
+                    {
+                        case TokenKind.Word:
+                            {
+                                var kindOfKeyWord = CurrToken.KeyWordTokenKind;
+
+                                switch (kindOfKeyWord)
+                                {
+                                    case TokenKind.Public:
+                                        PutSingleAccessPolicy(KindOfAccessPolicyToFact.Public);
+                                        mState = State.GotContentInFigureBracket;
+                                        break;
+
+                                    case TokenKind.Private:
+                                        PutSingleAccessPolicy(KindOfAccessPolicyToFact.Private);
+                                        mState = State.GotContentInFigureBracket;
+                                        break;
+
+                                    case TokenKind.Visible:
+                                        PutSingleAccessPolicy(KindOfAccessPolicyToFact.ForVisible);
+                                        mState = State.GotContentInFigureBracket;
                                         break;
 
                                     default:
@@ -84,9 +122,38 @@ namespace MyNPCLib.Parser.LogicalExpression
                     }
                     break;
 
+                case State.GotContentInFigureBracket:
+                    switch (currTokenKind)
+                    {
+                        case TokenKind.CloseFigureBracket:
+                            Exit();
+                            break;
+
+                        case TokenKind.Comma:
+                            mState = State.WaitForContentInFigureBracket;
+                            break;
+
+                        default:
+                            throw new UnexpectedTokenException(CurrToken);
+                    }
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mState), mState, null);
             }
+        }
+
+        private void PutSingleAccessPolicy(KindOfAccessPolicyToFact kindOfAccessPolicy)
+        {
+#if DEBUG
+            LogInstance.Log($"kindOfAccessPolicy = {kindOfAccessPolicy}");
+#endif
+
+            var astNode = new ASTNodeOfLogicalQuery();
+            astNode.Kind = KindOfASTNodeOfLogicalQuery.AccessPolicy;
+            astNode.KindOfAccessPolicy = kindOfAccessPolicy;
+
+            mResult.Add(astNode);
         }
     }
 }

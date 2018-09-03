@@ -47,18 +47,27 @@ namespace MyNPCLib.Parser.LogicalExpression
             result.Name = nameOfFact;
             result.Key = entityDictionary.GetKey(nameOfFact);
 
-            var initAccessPolicy = node.AccessPolicy;
+            var initAccessPoliciesList = node.AccessPolicy;
 
-            if(initAccessPolicy == null)
+            if(initAccessPoliciesList == null)
             {
+                var accessPolicyToFactModalityList = new List<AccessPolicyToFactModality>();
                 var accessPolicyToFactModality = new AccessPolicyToFactModality();
                 accessPolicyToFactModality.Kind = KindOfAccessPolicyToFact.Public;
-                result.AccessPolicyToFactModality = accessPolicyToFactModality;
+                accessPolicyToFactModalityList.Add(accessPolicyToFactModality);
+                result.AccessPolicyToFactModality = accessPolicyToFactModalityList;
             }
             else
             {
-                var accessPolicyToFactModality = ConvertAccessPolicy(initAccessPolicy, result, context);
-                result.AccessPolicyToFactModality = accessPolicyToFactModality;
+                var accessPolicyToFactModalityList = new List<AccessPolicyToFactModality>();
+
+                foreach (var initAccessPolicy in initAccessPoliciesList)
+                {
+                    var accessPolicyToFactModality = ConvertAccessPolicy(initAccessPolicy, result, context);
+                    accessPolicyToFactModalityList.Add(accessPolicyToFactModality);
+                }
+              
+                result.AccessPolicyToFactModality = accessPolicyToFactModalityList;
             }
 
             if (node.Part_1 != null)

@@ -80,7 +80,15 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
 
             if(source.AccessPolicyToFactModality != null)
             {
-                result.AccessPolicyToFactModality = ConvertAccessPolicyToFactModality(source.AccessPolicyToFactModality, result, context);
+                var accessPolicyToFactModality = new List<IndexedAccessPolicyToFactModality>();
+
+                foreach (var initAccessPolicyToFactModality in source.AccessPolicyToFactModality)
+                {
+                    var indexedAccessPolicyToFactModality = ConvertAccessPolicyToFactModality(initAccessPolicyToFactModality, result, context);
+                    accessPolicyToFactModality.Add(indexedAccessPolicyToFactModality);
+                }
+
+                result.AccessPolicyToFactModality = accessPolicyToFactModality;
             }
             
             if (source.DesirableModality != null)

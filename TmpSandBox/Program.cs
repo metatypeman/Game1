@@ -54,7 +54,7 @@ namespace TmpSandBox
             //TSTParsingUserQuery();
             //TSTLogicalSoundBus();
             TSTQueryWithAccessPolicy();
-            TSTQueryEntityCondition();
+            //TSTQueryEntityCondition();
             //TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
             //TSTATNParsing();
@@ -269,7 +269,51 @@ namespace TmpSandBox
 
         private static void TSTQueryWithAccessPolicy()
         {
+            var globalEntityDictionary = new EntityDictionary();
 
+            var context = new ContextOfCGStorage(globalEntityDictionary);
+            context.Init();
+
+            var queryStr = "{: !:{public} {color(#12345, black)} :}";
+            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+
+            LogInstance.Log($"context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
+
+            context.GlobalCGStorage.Append(queryStorage);
+
+            LogInstance.Log($"after context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
+
+            var mainRuleInstance = queryStorage.MainRuleInstance;
+
+            var debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
+
+            LogInstance.Log($"debugStr (query) = {debugStr}");
+
+            queryStr = "{: !:{visible} {color(#12345, red)} :}";
+            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+
+            LogInstance.Log($"context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
+
+            context.GlobalCGStorage.Append(queryStorage);
+
+            LogInstance.Log($"after context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
+
+            mainRuleInstance = queryStorage.MainRuleInstance;
+
+            debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
+
+            LogInstance.Log($"debugStr (query) = {debugStr}");
+
+            queryStr = "{: !:{visible} {color(#12345, ?x)} :}";
+            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+
+            var globalDataSource = context.GlobalCGStorage;
+
+            var querySearchResultCGStorage = globalDataSource.Search(queryStorage);
+
+            var resultExpression = querySearchResultCGStorage.GetResultOfVar("?X");
+
+            LogInstance.Log($"resultExpression = {resultExpression}");
         }
 
         private static void TSTQueryEntityCondition()
@@ -279,7 +323,7 @@ namespace TmpSandBox
             var context = new ContextOfCGStorage(globalEntityDictionary);
             context.Init();
 
-            var queryStr = "{: !:public {color(#12345, black)} :}";
+            var queryStr = "{: !:{public, visible} {color(#12345, black)} :}";
             var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
 
             LogInstance.Log($"context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");

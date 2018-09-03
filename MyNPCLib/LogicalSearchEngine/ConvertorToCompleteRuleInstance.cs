@@ -65,7 +65,15 @@ namespace MyNPCLib.LogicalSearchEngine
 
             if (queryExpression.AccessPolicyToFactModality != null)
             {
-                result.AccessPolicyToFactModality = ConvertAccessPolicyToFactModality(queryExpression.AccessPolicyToFactModality, result, context);
+                var accessPolicyToFactModality = new List<AccessPolicyToFactModality>();
+
+                foreach (var initAccessPolicyToFactModality in queryExpression.AccessPolicyToFactModality)
+                {
+                    var newAccessPolicyToFactModality = ConvertAccessPolicyToFactModality(initAccessPolicyToFactModality, result, context);
+                    accessPolicyToFactModality.Add(newAccessPolicyToFactModality);
+                }
+
+                result.AccessPolicyToFactModality = accessPolicyToFactModality;
             }
 
             if (queryExpression.DesirableModality != null)

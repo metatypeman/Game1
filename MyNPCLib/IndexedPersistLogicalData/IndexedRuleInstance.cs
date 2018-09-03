@@ -27,7 +27,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public IndexedRulePart Part_2 { get; set; }
         public IndexedIfConditionsPart IfConditions { get; set; }
         public IndexedNotContradictPart NotContradict { get; set; }
-        public IndexedAccessPolicyToFactModality AccessPolicyToFactModality { get; set; }
+        public IList<IndexedAccessPolicyToFactModality> AccessPolicyToFactModality { get; set; }
         public IndexedDesirableFuzzyModality DesirableModality { get; set; }
         public IndexedNecessityFuzzyModality NecessityModality { get; set; }
         public IndexedImperativeFuzzyModality ImperativeModality { get; set; }
@@ -375,7 +375,10 @@ namespace MyNPCLib.IndexedPersistLogicalData
             else
             {
                 sb.AppendLine($"{spaces}Begin {nameof(AccessPolicyToFactModality)}");
-                sb.Append(AccessPolicyToFactModality.ToShortString(nextN));
+                foreach (var accessPolicy in AccessPolicyToFactModality)
+                {
+                    sb.Append(accessPolicy.ToShortString(nextN));
+                }
                 sb.AppendLine($"{spaces}End {nameof(AccessPolicyToFactModality)}");
             }
 
@@ -617,7 +620,10 @@ namespace MyNPCLib.IndexedPersistLogicalData
             else
             {
                 sb.AppendLine($"{spaces}Begin {nameof(AccessPolicyToFactModality)}");
-                sb.Append(AccessPolicyToFactModality.ToShortString(nextN));
+                foreach (var accessPolicy in AccessPolicyToFactModality)
+                {
+                    sb.Append(accessPolicy.ToShortString(nextN));
+                }
                 sb.AppendLine($"{spaces}End {nameof(AccessPolicyToFactModality)}");
             }
 

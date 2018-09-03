@@ -214,6 +214,12 @@ namespace MyNPCLib.CGStorage
             ruleInstance.Name = NamesHelper.CreateEntityName();
             ruleInstance.Key = mEntityDictionary.GetKey(ruleInstance.Name);
 
+            var accessPolicyToFactModalityList = new List<AccessPolicyToFactModality>();
+            var accessPolicyToFactModality = new AccessPolicyToFactModality();
+            accessPolicyToFactModality.Kind = KindOfAccessPolicyToFact.Public;
+            accessPolicyToFactModalityList.Add(accessPolicyToFactModality);
+            ruleInstance.AccessPolicyToFactModality = accessPolicyToFactModalityList;
+
             var rulePart_1 = new RulePart();
             rulePart_1.Parent = ruleInstance;
             ruleInstance.Part_1 = rulePart_1;
@@ -368,6 +374,12 @@ namespace MyNPCLib.CGStorage
 
             allRuleInstancesList.Add(ruleInstance);
             result.MainRuleInstance = ruleInstance;
+
+            var accessPolicyToFactModalityList = new List<AccessPolicyToFactModality>();
+            var accessPolicyToFactModality = new AccessPolicyToFactModality();
+            accessPolicyToFactModality.Kind = KindOfAccessPolicyToFact.Public;
+            accessPolicyToFactModalityList.Add(accessPolicyToFactModality);
+            ruleInstance.AccessPolicyToFactModality = accessPolicyToFactModalityList;
 
             var rulePart_1 = new RulePart();
             rulePart_1.Parent = ruleInstance;

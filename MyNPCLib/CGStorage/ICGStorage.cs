@@ -24,6 +24,12 @@ namespace MyNPCLib.CGStorage
         IList<ResolverForRelationExpressionNode> AllRelationsForProductions { get; }
         RuleInstance MainRuleInstance { get; }
         IndexedRuleInstance MainIndexedRuleInstance { get; }
+        IList<ResultOfVarOfQueryToRelation> GetResultsListOfVar(string varName);
+        IList<ResultOfVarOfQueryToRelation> GetResultsListOfVar(ulong keyOfVar);
+        IList<BaseVariant> GetResultsListOfVarAsVariant(string varName);
+        IList<BaseVariant> GetResultsListOfVarAsVariant(ulong keyOfVar);
+        IList<object> GetResultsListOfVarAsObject(string varName);
+        IList<object> GetResultsListOfVarAsObject(ulong keyOfVar);
         ResultOfVarOfQueryToRelation GetResultOfVar(string varName);
         ResultOfVarOfQueryToRelation GetResultOfVar(ulong keyOfVar);
         BaseVariant GetResultOfVarAsVariant(string varName);

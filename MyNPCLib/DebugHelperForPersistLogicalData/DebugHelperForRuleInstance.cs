@@ -3,6 +3,7 @@ using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace MyNPCLib.DebugHelperForPersistLogicalData
@@ -482,12 +483,39 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
             return sb.ToString();
         }
 
+        private static string ToString(IList<AccessPolicyToFactModality> source, ContextForDebugHelperForRuleInstance context)
+        {
+            var sb = new StringBuilder(" !:");
+
+            if(source.Count == 1)
+            {
+                sb.Append(ToString(source.Single(), context));
+                return sb.ToString();
+            }
+
+            var n = 0;
+            sb.Append("{");
+            foreach (var item in source)
+            {
+                sb.Append(ToString(item, context));
+                n++;
+
+                if (n == source.Count)
+                {
+                    continue;
+                }
+               
+                sb.Append(",");
+            }
+            sb.Append("}");
+            return sb.ToString();
+        }
+
         private static string ToString(AccessPolicyToFactModality source, ContextForDebugHelperForRuleInstance context)
         {
             var kind = source.Kind;
 
-            var sb = new StringBuilder(" !:");
-
+            var sb = new StringBuilder();
             switch (kind)
             {
                 case KindOfAccessPolicyToFact.Public:
@@ -513,7 +541,7 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
             }
 
             sb.Append(ToString(source.Annotations, context));
-            return sb.ToString();
+            return sb.ToString();;
         }
 
         private static string ToString(DesirableFuzzyModality source, ContextForDebugHelperForRuleInstance context)

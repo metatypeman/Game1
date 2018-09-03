@@ -12,7 +12,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         public KindOfOperatorOfASTNodeOfLogicalQuery KindOfOperator { get; set; } = KindOfOperatorOfASTNodeOfLogicalQuery.Unknown;
         public string Name { get; set; }
         public KindOfAccessPolicyToFact KindOfAccessPolicy { get; set; } = KindOfAccessPolicyToFact.Public;
-        public ASTNodeOfLogicalQuery AccessPolicy { get; set; }
+        public List<ASTNodeOfLogicalQuery> AccessPolicy { get; set; }
         public ASTNodeOfLogicalQuery Part_1 { get; set; }
         public ASTNodeOfLogicalQuery Part_2 { get; set; }
         public bool IsActivePart { get; set; }
@@ -56,7 +56,10 @@ namespace MyNPCLib.Parser.LogicalExpression
             else
             {
                 sb.AppendLine($"{spaces}Begin {nameof(AccessPolicy)}");
-                sb.Append(AccessPolicy.ToShortString(nextN));
+                foreach (var accessPolicy in AccessPolicy)
+                {
+                    sb.Append(accessPolicy.ToShortString(nextN));
+                }
                 sb.AppendLine($"{spaces}End {nameof(AccessPolicy)}");
             }
 
@@ -210,7 +213,10 @@ namespace MyNPCLib.Parser.LogicalExpression
             else
             {
                 sb.AppendLine($"{spaces}Begin {nameof(AccessPolicy)}");
-                sb.Append(AccessPolicy.ToShortString(nextN));
+                foreach (var accessPolicy in AccessPolicy)
+                {
+                    sb.Append(accessPolicy.ToShortString(nextN));
+                }
                 sb.AppendLine($"{spaces}End {nameof(AccessPolicy)}");
             }
             if (Part_1 == null)
