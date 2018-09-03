@@ -127,7 +127,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                         foreach (var accessPolicy in options.AccessPolicyToFactModalityList)
                         {
 #if DEBUG
-                            LogInstance.Log($"accessPolicy = {accessPolicy}");
+                            //LogInstance.Log($"accessPolicy = {accessPolicy}");
 #endif
 
                             if (!Parent.AccessPolicyToFactModality.Any(p => p.Kind == accessPolicy.Kind))
