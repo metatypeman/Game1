@@ -1,4 +1,6 @@
-﻿using MyNPCLib.Logical;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.Logical;
+using MyNPCLib.LogicalHostEnvironment;
 using MyNPCLib.LogicalSoundModeling;
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,9 @@ namespace MyNPCLib
         INPCBodyHost BodyHost { get; }
         INPCHandHost RightHandHost { get; }
         INPCHandHost LeftHandHost { get; }
-        ILogicalStorage HostLogicalStorage { get; }
+        IOldLogicalStorage OldHostLogicalStorage { get; }
+        ICGStorage SelfHostStorage { get; }
+        BusOfCGStorages BusOfCGStorages { get; }
         ulong SelfEntityId { get; }
         bool IsReady { get; }
         event Action OnReady;

@@ -10,7 +10,7 @@ namespace MyNPCLib.Logical
     {
         public override bool IsConcrete => false;
 
-        public LogicalObject(IEntityLogger entityLogger, string query, IEntityDictionary entityDictionary, ILogicalStorage oldSource, ICGStorage source, QueriesCache queriesCache, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
+        public LogicalObject(IEntityLogger entityLogger, string query, IEntityDictionary entityDictionary, IOldLogicalStorage oldSource, ICGStorage source, QueriesCache queriesCache, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
             : base (entityLogger, systemPropertiesDictionary)
         {
 #if DEBUG
@@ -44,7 +44,7 @@ namespace MyNPCLib.Logical
         }
 
         private BaseQueryResolverASTNode mPlan;
-        private ILogicalStorage mOldSource;
+        private IOldLogicalStorage mOldSource;
         private ICGStorage mSource;
         private VisionObjectsStorage mVisionObjectsStorage;
         private bool mNeedUpdateEnitiesIdList = true;

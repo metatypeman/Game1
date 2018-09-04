@@ -6,7 +6,7 @@ namespace MyNPCLib.Logical
 {
     public class VisionObject: OtherLogicalObject
     {
-        public VisionObject(IEntityLogger entityLogger, ulong entityId, VisionObjectImpl visionObjectImpl, IEntityDictionary entityDictionary, ILogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary)
+        public VisionObject(IEntityLogger entityLogger, ulong entityId, VisionObjectImpl visionObjectImpl, IEntityDictionary entityDictionary, IOldLogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary)
             : base(entityLogger, systemPropertiesDictionary)
         {
             mEntityId = entityId;
@@ -17,7 +17,7 @@ namespace MyNPCLib.Logical
 
         private ulong mEntityId;
         private IEntityDictionary mEntityDictionary;
-        private ILogicalStorage mSource;
+        private IOldLogicalStorage mSource;
 
         public override bool IsConcrete => true;
         public override IList<ulong> CurrentEntitiesIdList => new List<ulong>() { mEntityId };

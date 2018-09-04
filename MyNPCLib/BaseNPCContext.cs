@@ -120,7 +120,7 @@ namespace MyNPCLib
             mContextOfCGStorage = new ContextOfCGStorage(mEntityDictionary);
             mContextOfCGStorage.Init();
 
-            mLogicalStorage = new LogicalStorage(mEntityLogger, mEntityDictionary, mNPCHostContext.HostLogicalStorage, mStorageOfSpecialEntities);
+            mLogicalStorage = new LogicalStorage(mEntityLogger, mEntityDictionary, mNPCHostContext.OldHostLogicalStorage, mStorageOfSpecialEntities);
 
             mVisionObjectsStorage.LogicalStorage = mLogicalStorage;
 

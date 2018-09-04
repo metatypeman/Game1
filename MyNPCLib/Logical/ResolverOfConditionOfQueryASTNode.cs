@@ -13,7 +13,7 @@ namespace MyNPCLib.Logical
 
         private ConditionOfQueryASTNode mQueryNode;
 
-        public override void FillExecutingCard(QueryExecutingCard queryExecutingCard, ILogicalStorage source)
+        public override void FillExecutingCard(QueryExecutingCard queryExecutingCard, IOldLogicalStorage source)
         {
 #if DEBUG
             LogInstance.Log($"mQueryNode = {mQueryNode}");

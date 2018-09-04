@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyNPCLib.Logical
 {
-    public class LogicalIndexStorage: ILogicalStorage
+    public class LogicalIndexStorage: IOldLogicalStorage
     {
         public LogicalIndexStorage(IEntityLogger entityLogger)
         {

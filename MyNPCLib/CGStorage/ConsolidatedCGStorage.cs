@@ -10,6 +10,8 @@ namespace MyNPCLib.CGStorage
 {
     public class ConsolidatedCGStorage: BaseProxyStorage
     {
+        public ConsolidatedCGStorage()
+
         public ConsolidatedCGStorage(IEntityDictionary entityDictionary, IList<SettingsOfStorageForSearchingInThisSession> settings)
             : base(entityDictionary)
         {

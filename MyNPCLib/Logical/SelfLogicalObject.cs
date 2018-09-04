@@ -6,7 +6,7 @@ namespace MyNPCLib.Logical
 {
     public class SelfLogicalObject : BaseAbstractLogicalObject
     {
-        public SelfLogicalObject(IEntityLogger entityLogger, IEntityDictionary entityDictionary, ILogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary, INPCHostContext npcHostContext)
+        public SelfLogicalObject(IEntityLogger entityLogger, IEntityDictionary entityDictionary, IOldLogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary, INPCHostContext npcHostContext)
              : base(entityLogger, systemPropertiesDictionary)
         {
             mSelfEntityId = npcHostContext.SelfEntityId;
@@ -17,7 +17,7 @@ namespace MyNPCLib.Logical
 
         private ulong mSelfEntityId;
         private IEntityDictionary mEntityDictionary;
-        private ILogicalStorage mSource;
+        private IOldLogicalStorage mSource;
         private INPCHostContext mNPCHostContext;
 
         public override bool IsConcrete => true;

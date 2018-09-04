@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace MyNPCLib.Logical
 {
-    public class LogicalStorage : ILogicalStorage
+    public class LogicalStorage : IOldLogicalStorage
     {
-        public LogicalStorage(IEntityLogger entityLogger, IEntityDictionary entityDictionary, ILogicalStorage hostLogicalStorage, StorageOfSpecialEntities storageOfSpecialEntities)
+        public LogicalStorage(IEntityLogger entityLogger, IEntityDictionary entityDictionary, IOldLogicalStorage hostLogicalStorage, StorageOfSpecialEntities storageOfSpecialEntities)
         {
             mEntityLogger = entityLogger;
-
+            
 #if DEBUG
             //Log("1");
 #endif
@@ -91,7 +91,7 @@ namespace MyNPCLib.Logical
         }
 
         private IEntityLogger mEntityLogger;
-        private ILogicalStorage mHostLogicalStorage;
+        private IOldLogicalStorage mHostLogicalStorage;
         private IEntityDictionary mEntityDictionary;
         private StorageOfPassiveLogicalObjects mStorageOfPassiveLogicalObjects;
         private LogicalIndexStorage mLogicalIndexStorage;

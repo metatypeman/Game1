@@ -7,7 +7,7 @@ namespace MyNPCLib.Logical
 {
     public class ResolverOfAndBinaryOperatorOfQueryASTNode: ResolverOfBinaryOperatorOfQueryASTNode
     {
-        public override void FillExecutingCard(QueryExecutingCard queryExecutingCard, ILogicalStorage source)
+        public override void FillExecutingCard(QueryExecutingCard queryExecutingCard, IOldLogicalStorage source)
         {
 #if DEBUG
             LogInstance.Log("Begin");

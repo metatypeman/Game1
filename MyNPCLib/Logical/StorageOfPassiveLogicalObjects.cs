@@ -110,7 +110,6 @@ namespace MyNPCLib.Logical
 
             lock (mLockObj)
             {
-
                 targetLogicalObjects = mObjectsDict.Where(p => entitiesIdsList.Contains(p.Key)).Select(p => p.Value).ToList();
             }
 

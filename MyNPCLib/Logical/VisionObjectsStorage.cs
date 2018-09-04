@@ -19,7 +19,7 @@ namespace MyNPCLib.Logical
         private IEntityLogger mEntityLogger;
         private readonly INPCHostContext mNPCHostContext;
         private readonly IEntityDictionary mEntityDictionary;
-        private ILogicalStorage mLogicalStorage;
+        private IOldLogicalStorage mLogicalStorage;
         private readonly SystemPropertiesDictionary mSystemPropertiesDictionary;
         private readonly object mLockObj = new object();
         private Dictionary<ulong, VisionObject> mVisibleObjectsDict = new Dictionary<ulong, VisionObject>();
@@ -44,7 +44,7 @@ namespace MyNPCLib.Logical
             mEntityLogger?.Warning(message);
         }
 
-        public ILogicalStorage LogicalStorage
+        public IOldLogicalStorage LogicalStorage
         {
             set
             {

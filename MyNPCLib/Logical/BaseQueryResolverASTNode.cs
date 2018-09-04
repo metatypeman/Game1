@@ -6,7 +6,7 @@ namespace MyNPCLib.Logical
 {
     public abstract class BaseQueryResolverASTNode
     {
-        public IList<ulong> GetEntitiesIdList(ILogicalStorage source)
+        public IList<ulong> GetEntitiesIdList(IOldLogicalStorage source)
         {
 #if DEBUG
             LogInstance.Log("Begin");
@@ -28,6 +28,6 @@ namespace MyNPCLib.Logical
             return queryExecutingCard.EntitiesIdList;
         }
 
-        public abstract void FillExecutingCard(QueryExecutingCard queryExecutingCard, ILogicalStorage source);
+        public abstract void FillExecutingCard(QueryExecutingCard queryExecutingCard, IOldLogicalStorage source);
     }
 }
