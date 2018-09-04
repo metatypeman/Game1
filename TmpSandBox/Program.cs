@@ -51,9 +51,10 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
+            TSTChangeContext();
             //TSTParsingUserQuery();
             //TSTLogicalSoundBus();
-            TSTQueryWithAccessPolicy();
+            //TSTQueryWithAccessPolicy();
             //TSTQueryEntityCondition();
             //TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
@@ -75,6 +76,13 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTChangeContextInHostStorage()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+
+
         }
 
         private static void TSTParsingUserQuery()

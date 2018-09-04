@@ -9,7 +9,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
     public class AnnotationCGStorage: BaseProxyStorage
     {
         public AnnotationCGStorage(ICGStorage parentStorage, IndexedLogicalAnnotation annotationOfStored)
-            : base(parentStorage?.Context)
+            : base(parentStorage?.EntityDictionary)
         {
             mParentStorage = parentStorage;
             mIndexedLogicalAnnotation = annotationOfStored;

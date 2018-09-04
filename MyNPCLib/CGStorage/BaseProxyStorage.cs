@@ -6,8 +6,8 @@ namespace MyNPCLib.CGStorage
 {
     public abstract class BaseProxyStorage: BaseCGStorage
     {
-        protected BaseProxyStorage(ContextOfCGStorage context)
-            : base(context)
+        protected BaseProxyStorage(IEntityDictionary entityDictionary)
+            : base(entityDictionary)
         {
         }
     }

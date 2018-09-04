@@ -15,20 +15,19 @@ namespace MyNPCLib.CGStorage
 {
     public abstract class BaseCGStorage: ICGStorage
     {
-        protected BaseCGStorage(ContextOfCGStorage context)
+        protected BaseCGStorage(IEntityDictionary entityDictionary)
         {
-            Context = context;
-            mEntityDictionary = Context?.EntityDictionary;
-            DictionaryName = mEntityDictionary?.Name;
-            mLogicalSearcher = new LogicalSearcher(context);
-            mKeyOfVarForProperty = mEntityDictionary.GetKey(mNameOfVarForProperty);
+            EntityDictionary = entityDictionary;
+            DictionaryName = EntityDictionary?.Name;
+            mLogicalSearcher = new LogicalSearcher(EntityDictionary);
+            mKeyOfVarForProperty = EntityDictionary.GetKey(mNameOfVarForProperty);
         }
 
-        private IEntityDictionary mEntityDictionary;
+        public IEntityDictionary EntityDictionary { get; private set; }
         private LogicalSearcher mLogicalSearcher;
         private string mNameOfVarForProperty = "?X";
         private ulong mKeyOfVarForProperty;
-        public ContextOfCGStorage Context { get; private set; }
+
         public abstract KindOfCGStorage KindOfStorage { get; }
 
         public virtual void Append(RuleInstance ruleInstance)

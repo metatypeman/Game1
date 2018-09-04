@@ -11,7 +11,7 @@ namespace MyNPCLib.CGStorage
     public interface ICGStorage : IObjectToString
     {
         KindOfCGStorage KindOfStorage { get; }
-        ContextOfCGStorage Context { get; set; }
+        IEntityDictionary EntityDictionary { get; }
         void Append(RuleInstance ruleInstance);
         void Append(ICGStorage storage);
         void Append(RuleInstancePackage ruleInstancePackage);

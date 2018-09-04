@@ -9,12 +9,12 @@ namespace MyNPCLib.LogicalSearchEngine
 {
     public class LogicalSearcher
     {
-        public LogicalSearcher(ContextOfCGStorage contextOfCGStorage)
+        public LogicalSearcher(IEntityDictionary entityDictionary)
         {
-            mContextOfCGStorage = contextOfCGStorage;
+            mEntityDictionary = entityDictionary;
         }
 
-        private ContextOfCGStorage mContextOfCGStorage;
+        private IEntityDictionary mEntityDictionary;
 
         public LogicalSearchResult Run(LogicalSearchOptions options)
         {
@@ -43,8 +43,6 @@ namespace MyNPCLib.LogicalSearchEngine
 
             var result = new LogicalSearchResult(externalDataSource);
             result.QueryExpression = queryExpression;
-
-            var entityDictionary = mContextOfCGStorage.EntityDictionary;
 
             ICGStorage dataSource = null;
 
@@ -87,7 +85,7 @@ namespace MyNPCLib.LogicalSearchEngine
 
             foreach (var resultOfQueryToRelation in queryExecutingCard.ResultsOfQueryToRelationList)
             {
-                var resultItem = new LogicalSearchResultItem(entityDictionary, externalDataSource, result);
+                var resultItem = new LogicalSearchResultItem(mEntityDictionary, externalDataSource, result);
                 resultItem.QueryExpression = queryExpression;
                 var resultOfVarOfQueryToRelationList = resultOfQueryToRelation.ResultOfVarOfQueryToRelationList;
                 foreach(var resultOfVarOfQueryToRelation in resultOfVarOfQueryToRelationList)
