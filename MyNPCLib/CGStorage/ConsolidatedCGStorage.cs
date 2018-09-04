@@ -10,8 +10,8 @@ namespace MyNPCLib.CGStorage
 {
     public class ConsolidatedCGStorage: BaseProxyStorage
     {
-        public ConsolidatedCGStorage(ContextOfCGStorage context, IList<SettingsOfStorageForSearchingInThisSession> settings)
-            : base(context)
+        public ConsolidatedCGStorage(IEntityDictionary entityDictionary, IList<SettingsOfStorageForSearchingInThisSession> settings)
+            : base(entityDictionary)
         {
             mDataSourcesSettingsOrderedByPriorityList = settings.OrderBy(p => p.Priority).ToList();
             mDataSourcesSettingsOrderedByPriorityAndUseFactsList = mDataSourcesSettingsOrderedByPriorityList.Where(p => p.UseFacts).ToList();

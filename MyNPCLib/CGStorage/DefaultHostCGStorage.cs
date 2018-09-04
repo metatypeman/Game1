@@ -6,8 +6,8 @@ namespace MyNPCLib.CGStorage
 {
     public class DefaultHostCGStorage : BaseRealStorage
     {
-        public DefaultHostCGStorage(ContextOfCGStorage context)
-            : base(context)
+        public DefaultHostCGStorage(IEntityDictionary entityDictionary)
+            : base(entityDictionary)
         {
         }
 

@@ -87,7 +87,7 @@ namespace MyNPCLib.CGStorage
 
         public IList<ResultOfVarOfQueryToRelation> GetResultsListOfVar(string varName)
         {
-            var keyOfVar = mEntityDictionary.GetKey(varName);
+            var keyOfVar = EntityDictionary.GetKey(varName);
             return GetResultsListOfVar(keyOfVar);
         }
 
@@ -98,7 +98,7 @@ namespace MyNPCLib.CGStorage
 
         public IList<BaseVariant> GetResultsListOfVarAsVariant(string varName)
         {
-            var keyOfVar = mEntityDictionary.GetKey(varName);
+            var keyOfVar = EntityDictionary.GetKey(varName);
             return GetResultsListOfVarAsVariant(keyOfVar);
         }
 
@@ -109,7 +109,7 @@ namespace MyNPCLib.CGStorage
 
         public IList<object> GetResultsListOfVarAsObject(string varName)
         {
-            var keyOfVar = mEntityDictionary.GetKey(varName);
+            var keyOfVar = EntityDictionary.GetKey(varName);
             return GetResultsListOfVarAsObject(keyOfVar);
         }
 
@@ -120,7 +120,7 @@ namespace MyNPCLib.CGStorage
 
         public ResultOfVarOfQueryToRelation GetResultOfVar(string varName)
         {
-            var keyOfVar = mEntityDictionary.GetKey(varName);
+            var keyOfVar = EntityDictionary.GetKey(varName);
             return GetResultOfVar(keyOfVar);
         }
 
@@ -131,7 +131,7 @@ namespace MyNPCLib.CGStorage
 
         public BaseVariant GetResultOfVarAsVariant(string varName)
         {
-            var keyOfVar = mEntityDictionary.GetKey(varName);
+            var keyOfVar = EntityDictionary.GetKey(varName);
             return GetResultOfVarAsVariant(keyOfVar);
         }
 
@@ -142,7 +142,7 @@ namespace MyNPCLib.CGStorage
 
         public object GetResultOfVarAsObject(string varName)
         {
-            var keyOfVar = mEntityDictionary.GetKey(varName);
+            var keyOfVar = EntityDictionary.GetKey(varName);
             return GetResultOfVarAsObject(keyOfVar);
         }
 
@@ -173,7 +173,7 @@ namespace MyNPCLib.CGStorage
 
             var searchResult = mLogicalSearcher.Run(options);
 
-            var querySearchResultCGStorage = new QueryResultCGStorage(Context, searchResult);
+            var querySearchResultCGStorage = new QueryResultCGStorage(EntityDictionary, searchResult);
             return querySearchResultCGStorage;
         }
 
@@ -185,7 +185,7 @@ namespace MyNPCLib.CGStorage
 
             var searchResult = mLogicalSearcher.Run(searchOptions);
 
-            var querySearchResultCGStorage = new QueryResultCGStorage(Context, searchResult);
+            var querySearchResultCGStorage = new QueryResultCGStorage(EntityDictionary, searchResult);
             return querySearchResultCGStorage;
         }
 
@@ -204,7 +204,7 @@ namespace MyNPCLib.CGStorage
 #if DEBUG
             LogInstance.Log($"entityId = {entityId} propertyName = {propertyName}");
 #endif
-            var propertyId = mEntityDictionary.GetKey(propertyName);
+            var propertyId = EntityDictionary.GetKey(propertyName);
             return GetPropertyValueAsVariant(entityId, propertyId);
         }
 
@@ -246,15 +246,15 @@ namespace MyNPCLib.CGStorage
         private IndexedRuleInstance CreateGetQuery(ulong entityId, ulong propertyId)
         {
             var relationKey = propertyId;
-            var relationName = mEntityDictionary.GetName(relationKey);
+            var relationName = EntityDictionary.GetName(relationKey);
 
-            var entityName = mEntityDictionary.GetName(entityId);
+            var entityName = EntityDictionary.GetName(entityId);
 
             var ruleInstance = new RuleInstance();
-            ruleInstance.DictionaryName = mEntityDictionary.Name;
+            ruleInstance.DictionaryName = EntityDictionary.Name;
             ruleInstance.Kind = KindOfRuleInstance.QuestionVars;
             ruleInstance.Name = NamesHelper.CreateEntityName();
-            ruleInstance.Key = mEntityDictionary.GetKey(ruleInstance.Name);
+            ruleInstance.Key = EntityDictionary.GetKey(ruleInstance.Name);
 
             var accessPolicyToFactModalityList = new List<AccessPolicyToFactModality>();
             var accessPolicyToFactModality = new AccessPolicyToFactModality();
@@ -276,7 +276,7 @@ namespace MyNPCLib.CGStorage
             expr3.Name = relationName;
             expr3.Key = relationKey;
 
-            if(mEntityDictionary.IsEntity(entityId))
+            if(EntityDictionary.IsEntity(entityId))
             {
                 var param_1 = new EntityRefExpressionNode();
                 expr3.Params.Add(param_1);
@@ -311,7 +311,7 @@ namespace MyNPCLib.CGStorage
 #if DEBUG
             LogInstance.Log($"entityId = {entityId} propertyName = {propertyName}");
 #endif
-            var propertyId = mEntityDictionary.GetKey(propertyName);
+            var propertyId = EntityDictionary.GetKey(propertyName);
             return GetPropertyValueAsObject(entityId, propertyId);
         }
 
@@ -329,7 +329,7 @@ namespace MyNPCLib.CGStorage
 #if DEBUG
             LogInstance.Log($"entityId = {entityId} propertyName = {propertyName} value = {value}");
 #endif
-            var propertyId = mEntityDictionary.GetKey(propertyName);
+            var propertyId = EntityDictionary.GetKey(propertyName);
 
             SetPropertyValueAsAsVariant(entityId, propertyId, value);
         }
@@ -340,7 +340,7 @@ namespace MyNPCLib.CGStorage
             LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
 
-            var variant = VariantsConvertor.ConvertObjectToVariant(value, mEntityDictionary);
+            var variant = VariantsConvertor.ConvertObjectToVariant(value, EntityDictionary);
 
 #if DEBUG
             LogInstance.Log($"variant = {variant}");
@@ -354,7 +354,7 @@ namespace MyNPCLib.CGStorage
 #if DEBUG
             LogInstance.Log($"entityId = {entityId} propertyName = {propertyName} value = {value}");
 #endif
-            var propertyId = mEntityDictionary.GetKey(propertyName);
+            var propertyId = EntityDictionary.GetKey(propertyName);
             SetPropertyValueAsAsObject(entityId, propertyId, value);
         }
 
@@ -403,16 +403,16 @@ namespace MyNPCLib.CGStorage
             result.AllRuleInstances = allRuleInstancesList;
 
             var relationKey = propertyId;
-            var relationName = mEntityDictionary.GetName(relationKey);
+            var relationName = EntityDictionary.GetName(relationKey);
 
-            var entityName = mEntityDictionary.GetName(entityId);
+            var entityName = EntityDictionary.GetName(entityId);
 
             var ruleInstance = new RuleInstance();
-            ruleInstance.DictionaryName = mEntityDictionary.Name;
+            ruleInstance.DictionaryName = EntityDictionary.Name;
             ruleInstance.Kind = KindOfRuleInstance.Fact;
 
             ruleInstance.Name = NamesHelper.CreateEntityName();
-            ruleInstance.Key = mEntityDictionary.GetKey(ruleInstance.Name);
+            ruleInstance.Key = EntityDictionary.GetKey(ruleInstance.Name);
 
             allRuleInstancesList.Add(ruleInstance);
             result.MainRuleInstance = ruleInstance;
@@ -437,7 +437,7 @@ namespace MyNPCLib.CGStorage
             expr3.Name = relationName;
             expr3.Key = relationKey;
 
-            if (mEntityDictionary.IsEntity(entityId))
+            if (EntityDictionary.IsEntity(entityId))
             {
                 var param_1 = new EntityRefExpressionNode();
                 expr3.Params.Add(param_1);
@@ -473,22 +473,22 @@ namespace MyNPCLib.CGStorage
             allRuleInstancesList.Add(addedRuleInstance);
 
             var relationKey = propertyId;
-            var relationName = mEntityDictionary.GetName(relationKey);
+            var relationName = EntityDictionary.GetName(relationKey);
 
-            var entityName = mEntityDictionary.GetName(entityId);
+            var entityName = EntityDictionary.GetName(entityId);
 
             var ruleInstance = new RuleInstance();
-            ruleInstance.DictionaryName = mEntityDictionary.Name;
+            ruleInstance.DictionaryName = EntityDictionary.Name;
             ruleInstance.Kind = KindOfRuleInstance.Fact;
 
             ruleInstance.Name = NamesHelper.CreateEntityName();
-            ruleInstance.Key = mEntityDictionary.GetKey(ruleInstance.Name);
+            ruleInstance.Key = EntityDictionary.GetKey(ruleInstance.Name);
 
             allRuleInstancesList.Add(ruleInstance);
             result.MainRuleInstance = ruleInstance;
 
             var entityConditionVarName = "#@X1";
-            var entityConditionVarKey = mEntityDictionary.GetKey(entityConditionVarName);
+            var entityConditionVarKey = EntityDictionary.GetKey(entityConditionVarName);
 
             var entitiesConditions = new EntitiesConditions();
             ruleInstance.EntitiesConditions = entitiesConditions;
@@ -522,7 +522,7 @@ namespace MyNPCLib.CGStorage
             expr3.Name = relationName;
             expr3.Key = relationKey;
 
-            if (mEntityDictionary.IsEntity(entityId))
+            if (EntityDictionary.IsEntity(entityId))
             {
                 var param_1 = new EntityRefExpressionNode();
                 expr3.Params.Add(param_1);
@@ -564,16 +564,16 @@ namespace MyNPCLib.CGStorage
             allRuleInstancesList.Add(addedRuleInstance);
 
             var relationKey = propertyId;
-            var relationName = mEntityDictionary.GetName(relationKey);
+            var relationName = EntityDictionary.GetName(relationKey);
 
-            var entityName = mEntityDictionary.GetName(entityId);
+            var entityName = EntityDictionary.GetName(entityId);
 
             var ruleInstance = new RuleInstance();
-            ruleInstance.DictionaryName = mEntityDictionary.Name;
+            ruleInstance.DictionaryName = EntityDictionary.Name;
             ruleInstance.Kind = KindOfRuleInstance.Fact;
 
             ruleInstance.Name = NamesHelper.CreateEntityName();
-            ruleInstance.Key = mEntityDictionary.GetKey(ruleInstance.Name);
+            ruleInstance.Key = EntityDictionary.GetKey(ruleInstance.Name);
 
             allRuleInstancesList.Add(ruleInstance);
             result.MainRuleInstance = ruleInstance;
@@ -592,7 +592,7 @@ namespace MyNPCLib.CGStorage
             expr3.Name = relationName;
             expr3.Key = relationKey;
 
-            if (mEntityDictionary.IsEntity(entityId))
+            if (EntityDictionary.IsEntity(entityId))
             {
                 var param_1 = new EntityRefExpressionNode();
                 expr3.Params.Add(param_1);

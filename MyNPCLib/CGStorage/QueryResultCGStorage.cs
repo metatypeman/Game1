@@ -9,8 +9,8 @@ namespace MyNPCLib.CGStorage
 {
     public class QueryResultCGStorage : BaseProxyStorage
     {
-        public QueryResultCGStorage(ContextOfCGStorage context, LogicalSearchResult logicalSearchResult)
-            : base(context)
+        public QueryResultCGStorage(IEntityDictionary entityDictionary, LogicalSearchResult logicalSearchResult)
+            : base(entityDictionary)
         {
             mLogicalSearchResult = logicalSearchResult;
         }

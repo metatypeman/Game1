@@ -11,16 +11,16 @@ namespace MyNPCLib.CGStorage
 {
     public abstract class BaseRealStorage: BaseCGStorage
     {
-        protected BaseRealStorage(ContextOfCGStorage context)
-            : base(context)
+        protected BaseRealStorage(IEntityDictionary entityDictionary)
+            : base(entityDictionary)
         {
             mRuleInstancesList = new List<RuleInstance>();
             mRuleInstancesDict = new Dictionary<ulong, RuleInstance>();
             mCommonPersistIndexedLogicalData = new CommonPersistIndexedLogicalData();
         }
 
-        protected BaseRealStorage(ContextOfCGStorage context, RuleInstancePackage ruleInstancePackage)
-            : this(context)
+        protected BaseRealStorage(IEntityDictionary entityDictionary, RuleInstancePackage ruleInstancePackage)
+            : this(entityDictionary)
         {
             Append(ruleInstancePackage);
         }
@@ -235,10 +235,9 @@ namespace MyNPCLib.CGStorage
             var spaces = StringHelper.Spaces(n);
             var nextN = n + 4;
             var nextNSpaces = StringHelper.Spaces(nextN);
-            var entityDictionary = Context.EntityDictionary;
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}mRuleInstancesList.Count = {mRuleInstancesList.Count}");
-            sb.Append(mCommonPersistIndexedLogicalData.GetContentAsDbgStr(entityDictionary));
+            sb.Append(mCommonPersistIndexedLogicalData.GetContentAsDbgStr(EntityDictionary));
             return sb.ToString();
         }
     }

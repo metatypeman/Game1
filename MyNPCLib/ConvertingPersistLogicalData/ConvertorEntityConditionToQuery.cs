@@ -27,7 +27,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
 
             var newMainRuleInstance = mainRuleInstance.Clone();
 
-            var entityDictionary = source.Context.EntityDictionary;
+            var entityDictionary = source.EntityDictionary;
 
             var keysOfAdditionalRuleInstances = new List<ulong>();
 
@@ -73,7 +73,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
             package.MainRuleInstance = newMainRuleInstance;
             package.AllRuleInstances = targetRuleInstancesList;
 
-            var queryStorage = new QueryCGStorage(source.Context, package);
+            var queryStorage = new QueryCGStorage(entityDictionary, package);
             return queryStorage;
         }
 

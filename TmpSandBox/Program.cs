@@ -51,10 +51,9 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTChangeContext();
             //TSTParsingUserQuery();
             //TSTLogicalSoundBus();
-            //TSTQueryWithAccessPolicy();
+            TSTQueryWithAccessPolicy();
             //TSTQueryEntityCondition();
             //TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
@@ -76,13 +75,6 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
-        }
-
-        private static void TSTChangeContextInHostStorage()
-        {
-            var globalEntityDictionary = new EntityDictionary();
-
-
         }
 
         private static void TSTParsingUserQuery()
@@ -228,7 +220,7 @@ namespace TmpSandBox
             var context = new ContextOfCGStorage(entityDictionary);
             context.Init();
 
-            var passiveListStorage = RuleInstanceFactory.ConvertStringToPassiveListGCStorage(queryStr, context);
+            var passiveListStorage = RuleInstanceFactory.ConvertStringToPassiveListGCStorage(queryStr, entityDictionary);
 
             var ruleInstancesList = passiveListStorage.AllRuleInstances;
 
@@ -266,7 +258,7 @@ namespace TmpSandBox
 
             var tstFact = CreateSimpleFact(globalEntityDictionary);
 
-            var soundPackage = new InputLogicalSoundPackage(new Vector3(1, 0, 0), 60, new List<string>() { "human_speech" }, new PassiveListGCStorage(context, new List<RuleInstance>() { tstFact }));
+            var soundPackage = new InputLogicalSoundPackage(new Vector3(1, 0, 0), 60, new List<string>() { "human_speech" }, new PassiveListGCStorage(globalEntityDictionary, new List<RuleInstance>() { tstFact }));
 
             soundBus.PushSoundPackage(soundPackage);
 
@@ -283,7 +275,7 @@ namespace TmpSandBox
             context.Init();
 
             var queryStr = "{: !:{public} {color(#12345, black)} :}";
-            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
             LogInstance.Log($"context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
 
@@ -298,7 +290,7 @@ namespace TmpSandBox
             LogInstance.Log($"debugStr (query) = {debugStr}");
 
             queryStr = "{: !:{visible} {color(#12345, red)} :}";
-            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
             LogInstance.Log($"context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
 
@@ -313,7 +305,7 @@ namespace TmpSandBox
             LogInstance.Log($"debugStr (query) = {debugStr}");
 
             queryStr = "{: !:{visible} {color(#12345, ?x)} :}";
-            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
             var globalDataSource = context.GlobalCGStorage;
 
@@ -340,7 +332,7 @@ namespace TmpSandBox
             context.Init();
 
             var queryStr = "{: !:{public, visible} {color(#12345, black)} :}";
-            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
             LogInstance.Log($"context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
 
@@ -355,7 +347,7 @@ namespace TmpSandBox
             LogInstance.Log($"debugStr (query) = {debugStr}");
 
             queryStr = "{: !:public {color(dog, black)} :}";
-            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
             LogInstance.Log($"context.GlobalCGStorage.AllRuleInstances.Count = {context.GlobalCGStorage.AllRuleInstances.Count}");
 
@@ -371,7 +363,7 @@ namespace TmpSandBox
 
             queryStr = "{: {color(?X, black)} :}";
 
-            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
             var globalDataSource = context.GlobalCGStorage;
 
@@ -382,7 +374,7 @@ namespace TmpSandBox
             LogInstance.Log($"resultExpression = {resultExpression}");
 
             queryStr = "{: color=black :}";
-            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
             mainRuleInstance = queryStorage.MainRuleInstance;
 
@@ -470,7 +462,7 @@ namespace TmpSandBox
 
                 var ruleInstancesList = ConvertorInternalCGToPersistLogicalData.ConvertConceptualGraph(internalCG, globalEntityDictionary);
 
-                var ruleInstancesPassiveListStorage = new PassiveListGCStorage(context, ruleInstancesList);
+                var ruleInstancesPassiveListStorage = new PassiveListGCStorage(globalEntityDictionary, ruleInstancesList);
 
                 LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
                 //ruleInstancesList = ruleInstancesList.Take(1).ToList();
@@ -500,7 +492,7 @@ namespace TmpSandBox
             {
                 var queryStr = "{: ?Z(?X,?Y)[: {: action :} :] :}";
 
-                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
                 //var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
 
@@ -519,7 +511,7 @@ namespace TmpSandBox
 
                 //var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
 
-                var searcher = new LogicalSearcher(context);
+                var searcher = new LogicalSearcher(globalEntityDictionary);
 
                 var searchOptions = new LogicalSearchOptions();
                 //var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
@@ -551,7 +543,7 @@ namespace TmpSandBox
 
                 LogInstance.Log($"searchResult = {searchResult}");
 
-                var querySearchResultCGStorage = new QueryResultCGStorage(context, searchResult);
+                var querySearchResultCGStorage = new QueryResultCGStorage(globalEntityDictionary, searchResult);
 
                 var keyOfActionQuestionVar = globalEntityDictionary.GetKey("?Z");
 
@@ -609,7 +601,7 @@ namespace TmpSandBox
             {
                 var queryStr = "{: direction(go,?X) :}";
 
-                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, context);
+                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
                 //var queryPackage = RuleInstanceFactory.ConvertStringToRuleInstancePackage(queryStr, globalEntityDictionary);
                 //var queryPackage = CreateQueryForDirectionOfGoing(globalEntityDictionary, actionName);
                 //var queryStorage = new QueryCGStorage(context, queryPackage);
@@ -624,7 +616,7 @@ namespace TmpSandBox
 
                 //var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
 
-                var searcher = new LogicalSearcher(context);
+                var searcher = new LogicalSearcher(globalEntityDictionary);
 
                 var searchOptions = new LogicalSearchOptions();
                 //var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
@@ -662,7 +654,7 @@ namespace TmpSandBox
 
                 LogInstance.Log($"keyOfVarOfDirection = {keyOfVarOfDirection}");
 
-                var querySearchResultCGStorage = new QueryResultCGStorage(context, searchResult);
+                var querySearchResultCGStorage = new QueryResultCGStorage(globalEntityDictionary, searchResult);
 
                 var targetValueOfDirection = querySearchResultCGStorage.GetResultOfVar(keyOfVarOfDirection);
 
@@ -937,7 +929,7 @@ namespace TmpSandBox
             var annotatedFactList = annotatedFactsPackage.AllRuleInstances;
             LogInstance.Log($"annotatedFactList.Count = {annotatedFactList.Count}");
 
-            var annotatedFactPassiveListStorage = new PassiveListGCStorage(context, annotatedFactList);
+            var annotatedFactPassiveListStorage = new PassiveListGCStorage(globalEntityDictionary, annotatedFactList);
 
             foreach (var ruleInstance in annotatedFactList)
             {
@@ -956,7 +948,7 @@ namespace TmpSandBox
                 var queryPackage = CreateAnnotatedQuery(globalEntityDictionary);
 
                 //var queryPassiveListStorage = new PassiveListGCStorage(context, queryPackage.AllRuleInstances);
-                var queryStorage = new QueryCGStorage(context, queryPackage);
+                var queryStorage = new QueryCGStorage(globalEntityDictionary, queryPackage);
 
                 var query = queryPackage.MainRuleInstance;
 
@@ -969,7 +961,7 @@ namespace TmpSandBox
                 //var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
                 //indexedQuery.FillIndexedDataAsStorage();
 
-                var searcher = new LogicalSearcher(context);
+                var searcher = new LogicalSearcher(globalEntityDictionary);
 
                 var searchOptions = new LogicalSearchOptions();
                 //var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();
@@ -1718,13 +1710,13 @@ namespace TmpSandBox
 
             debugStr = DebugHelperForRuleInstance.ToString(query);
 
-            var queryStorage = new QueryCGStorage(context, queryPackage);
+            var queryStorage = new QueryCGStorage(globalEntityDictionary, queryPackage);
 
             LogInstance.Log($"debugStr = {debugStr}");
 
             //var indexedQuery = ConvertorToIndexed.ConvertRuleInstance(query);
 
-            var searcher = new LogicalSearcher(context);
+            var searcher = new LogicalSearcher(globalEntityDictionary);
 
             var searchOptions = new LogicalSearchOptions();
             //var globalStorageOptions = new SettingsOfStorageForSearchingInThisSession();

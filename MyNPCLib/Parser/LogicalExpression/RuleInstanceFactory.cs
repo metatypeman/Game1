@@ -29,23 +29,21 @@ namespace MyNPCLib.Parser.LogicalExpression
             return ruleInstancesPackage;
         }
 
-        public static ICGStorage ConvertStringToQueryCGStorage(string queryStr, ContextOfCGStorage context)
+        public static ICGStorage ConvertStringToQueryCGStorage(string queryStr, IEntityDictionary entityDictionary)
         {
-            var ruleInstancesPackage = ConvertStringToRuleInstancePackage(queryStr, context.EntityDictionary);
+            var ruleInstancesPackage = ConvertStringToRuleInstancePackage(queryStr, entityDictionary);
 
-            var storage = new QueryCGStorage(context, ruleInstancesPackage);
+            var storage = new QueryCGStorage(entityDictionary, ruleInstancesPackage);
             return storage;
         }
 
-        public static PassiveListGCStorage ConvertStringToPassiveListGCStorage(string queryStr, ContextOfCGStorage context)
+        public static PassiveListGCStorage ConvertStringToPassiveListGCStorage(string queryStr, IEntityDictionary entityDictionary)
         {
-            var entityDictionary = context.EntityDictionary;
-
             var ruleInstancesPackage = ConvertStringToRuleInstancePackage(queryStr, entityDictionary);
 
             var ruleInstancesList = ruleInstancesPackage.AllRuleInstances;
 
-            var result = new PassiveListGCStorage(context, ruleInstancesList);
+            var result = new PassiveListGCStorage(entityDictionary, ruleInstancesList);
 
             return result;
         }

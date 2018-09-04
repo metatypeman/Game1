@@ -6,8 +6,8 @@ namespace MyNPCLib.CGStorage
 {
     public class ShardingCGStorage : BaseRealStorage
     {
-        public ShardingCGStorage(ContextOfCGStorage context)
-            : base(context)
+        public ShardingCGStorage(IEntityDictionary entityDictionary)
+            : base(entityDictionary)
         {
         }
 

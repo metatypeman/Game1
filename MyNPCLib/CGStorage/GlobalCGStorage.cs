@@ -6,8 +6,8 @@ namespace MyNPCLib.CGStorage
 {
     public class GlobalCGStorage: BaseRealStorage
     {
-        public GlobalCGStorage(ContextOfCGStorage context)
-            : base(context)
+        public GlobalCGStorage(IEntityDictionary entityDictionary)
+            : base(entityDictionary)
         {
         }
 

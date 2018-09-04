@@ -7,8 +7,8 @@ namespace MyNPCLib.CGStorage
 {
     public class QueryCGStorage : BaseRealStorage
     {
-        public QueryCGStorage(ContextOfCGStorage context, RuleInstancePackage ruleInstancePackage)
-            : base(context, ruleInstancePackage)
+        public QueryCGStorage(IEntityDictionary entityDictionary, RuleInstancePackage ruleInstancePackage)
+            : base(entityDictionary, ruleInstancePackage)
         {
         }
 

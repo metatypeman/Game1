@@ -8,8 +8,8 @@ namespace MyNPCLib.CGStorage
 {
     public class PassiveListGCStorage : BaseProxyStorage
     {
-        public PassiveListGCStorage(ContextOfCGStorage context, IList<RuleInstance> ruleInstances)
-            : base(context)
+        public PassiveListGCStorage(IEntityDictionary entityDictionary, IList<RuleInstance> ruleInstances)
+            : base(entityDictionary)
         {
             mRuleInstancesList = ruleInstances;
 

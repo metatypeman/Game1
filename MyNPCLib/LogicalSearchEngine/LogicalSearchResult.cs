@@ -12,7 +12,7 @@ namespace MyNPCLib.LogicalSearchEngine
         public LogicalSearchResult(ICGStorage storage)
         {
             Storage = storage;
-            mEntityDictionary = storage.Context.EntityDictionary;
+            mEntityDictionary = storage.EntityDictionary;
         }
 
         public ICGStorage Storage { get; private set; }

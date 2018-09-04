@@ -71,7 +71,7 @@ namespace MyNPCLib.LogicalSearchEngine
 
                 var dataSourcesSettings = new List<SettingsOfStorageForSearchingInThisSession>() { globalStorageOptions, globalStorageOptions_1 };
 
-                dataSource = new ConsolidatedCGStorage(externalDataSource.Context, dataSourcesSettings);
+                dataSource = new ConsolidatedCGStorage(externalDataSource.EntityDictionary, dataSourcesSettings);
             }
 
             var resultItemsList = new List<LogicalSearchResultItem>();
