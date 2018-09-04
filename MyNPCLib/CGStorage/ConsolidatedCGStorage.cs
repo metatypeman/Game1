@@ -10,12 +10,19 @@ namespace MyNPCLib.CGStorage
 {
     public class ConsolidatedCGStorage: BaseProxyStorage
     {
-        public ConsolidatedCGStorage()
+        public ConsolidatedCGStorage(IEntityDictionary entityDictionary)
+            : base(entityDictionary)
+        {
+            mDataSourcesSettingsOrderedByPriorityList = new List<SettingsOfStorageForSearchingInThisSession>();
+            mDataSourcesSettingsOrderedByPriorityAndUseFactsList = new List<SettingsOfStorageForSearchingInThisSession>();
+            mDataSourcesSettingsOrderedByPriorityAndUseProductionsList = new List<SettingsOfStorageForSearchingInThisSession>();
+            mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances = new List<SettingsOfStorageForSearchingInThisSession>();
+        }
 
         public ConsolidatedCGStorage(IEntityDictionary entityDictionary, IList<SettingsOfStorageForSearchingInThisSession> settings)
             : base(entityDictionary)
         {
-            mDataSourcesSettingsOrderedByPriorityList = settings.OrderBy(p => p.Priority).ToList();
+            mDataSourcesSettingsOrderedByPriorityList = settings.OrderByDescending(p => p.Priority).ToList();
             mDataSourcesSettingsOrderedByPriorityAndUseFactsList = mDataSourcesSettingsOrderedByPriorityList.Where(p => p.UseFacts).ToList();
             mDataSourcesSettingsOrderedByPriorityAndUseProductionsList = mDataSourcesSettingsOrderedByPriorityList.Where(p => p.UseProductions).ToList();
             mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances = mDataSourcesSettingsOrderedByPriorityList.Where(p => p.UseAdditionalInstances).ToList();
@@ -40,6 +47,38 @@ namespace MyNPCLib.CGStorage
             });
         }
 
+        private readonly object mLockObj = new object();
+
+        public void AddStorage(SettingsOfStorageForSearchingInThisSession settings)
+        {
+            lock(mLockObj)
+            {
+                mDataSourcesSettingsOrderedByPriorityList.Add(settings);
+                mDataSourcesSettingsOrderedByPriorityList = mDataSourcesSettingsOrderedByPriorityList.OrderByDescending(p => p.Priority).ToList();
+
+                if (settings.UseFacts)
+                {
+                    mDataSourcesSettingsOrderedByPriorityAndUseFactsList.Add(settings);
+                    mDataSourcesSettingsOrderedByPriorityAndUseFactsList = mDataSourcesSettingsOrderedByPriorityAndUseFactsList.OrderByDescending(p => p.Priority).ToList();
+                }
+
+                if (settings.UseProductions)
+                {
+                    mDataSourcesSettingsOrderedByPriorityAndUseProductionsList.Add(settings);
+                    mDataSourcesSettingsOrderedByPriorityAndUseProductionsList = mDataSourcesSettingsOrderedByPriorityAndUseProductionsList.OrderByDescending(p => p.Priority).ToList();
+                }
+
+                if (settings.UseAdditionalInstances)
+                {
+                    mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances.Add(settings);
+                    mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances = mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances.OrderByDescending(p => p.Priority).ToList();
+                }
+
+                var storage = settings.Storage;
+                storage.OnChanged += Storage_OnChanged;
+            }
+        }
+
         public override KindOfCGStorage KindOfStorage => KindOfCGStorage.Consolidated;
 
         private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityList;
@@ -49,109 +88,124 @@ namespace MyNPCLib.CGStorage
 
         public override IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
+            lock (mLockObj)
+            {
 #if DEBUG
-            //LogInstance.Log($"key = {key}");
+                //LogInstance.Log($"key = {key}");
 #endif
 
-            var result = new List<IndexedRulePart>();
+                var result = new List<IndexedRulePart>();
 
-            var dataSourcesSettingsOrderedByPriorityList = mDataSourcesSettingsOrderedByPriorityAndUseFactsList;
+                var dataSourcesSettingsOrderedByPriorityList = mDataSourcesSettingsOrderedByPriorityAndUseFactsList;
 
-            foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
-            {
-                var indexedRulePartsOfFactsList = dataSourcesSettings.Storage.GetIndexedRulePartOfFactsByKeyOfRelation(key);
-
-                if (indexedRulePartsOfFactsList == null)
+                foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
                 {
-                    continue;
+                    var indexedRulePartsOfFactsList = dataSourcesSettings.Storage.GetIndexedRulePartOfFactsByKeyOfRelation(key);
+
+                    if (indexedRulePartsOfFactsList == null)
+                    {
+                        continue;
+                    }
+
+                    result.AddRange(indexedRulePartsOfFactsList);
                 }
 
-                result.AddRange(indexedRulePartsOfFactsList);
+                return result;
             }
-
-            return result;
         }
 
         public override IndexedRuleInstance GetIndexedRuleInstanceByKey(ulong key)
         {
-            var dataSourcesSettingsOrderedByPriorityList = mDataSourcesSettingsOrderedByPriorityAndUseFactsList;
-
-            foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
+            lock (mLockObj)
             {
-                var indexedRuleInstance = dataSourcesSettings.Storage.GetIndexedRuleInstanceByKey(key);
+                var dataSourcesSettingsOrderedByPriorityList = mDataSourcesSettingsOrderedByPriorityAndUseFactsList;
 
-                if (indexedRuleInstance == null)
+                foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
                 {
-                    continue;
+                    var indexedRuleInstance = dataSourcesSettings.Storage.GetIndexedRuleInstanceByKey(key);
+
+                    if (indexedRuleInstance == null)
+                    {
+                        continue;
+                    }
+
+                    return indexedRuleInstance;
                 }
 
-                return indexedRuleInstance;
+                return null;
             }
-
-            return null;
         }
 
         public override IndexedRuleInstance GetIndexedAdditionalRuleInstanceByKey(ulong key)
         {
-            var dataSourcesSettingsOrderedByPriorityList = mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances;
-
-            foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
+            lock (mLockObj)
             {
-                var indexedRuleInstance = dataSourcesSettings.Storage.GetIndexedAdditionalRuleInstanceByKey(key);
+                var dataSourcesSettingsOrderedByPriorityList = mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances;
 
-                if (indexedRuleInstance == null)
+                foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
                 {
-                    continue;
+                    var indexedRuleInstance = dataSourcesSettings.Storage.GetIndexedAdditionalRuleInstanceByKey(key);
+
+                    if (indexedRuleInstance == null)
+                    {
+                        continue;
+                    }
+
+                    return indexedRuleInstance;
                 }
 
-                return indexedRuleInstance;
+                return null;
             }
-
-            return null;
         }
 
         public override IList<IndexedRulePart> GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(ulong key)
         {
-            var result = new List<IndexedRulePart>();
-
-            var dataSourcesSettingsOrderedByPriorityAndUseProductionsList = mDataSourcesSettingsOrderedByPriorityAndUseProductionsList;
-
-            foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityAndUseProductionsList)
+            lock (mLockObj)
             {
-                var indexedRulePartWithOneRelationsList = dataSourcesSettings.Storage.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(key);
+                var result = new List<IndexedRulePart>();
 
-                if (indexedRulePartWithOneRelationsList == null)
+                var dataSourcesSettingsOrderedByPriorityAndUseProductionsList = mDataSourcesSettingsOrderedByPriorityAndUseProductionsList;
+
+                foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityAndUseProductionsList)
                 {
-                    continue;
+                    var indexedRulePartWithOneRelationsList = dataSourcesSettings.Storage.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(key);
+
+                    if (indexedRulePartWithOneRelationsList == null)
+                    {
+                        continue;
+                    }
+
+                    result.AddRange(indexedRulePartWithOneRelationsList);
                 }
 
-                result.AddRange(indexedRulePartWithOneRelationsList);
+                return result;
             }
-
-            return result;
         }
 
         public override IList<ResolverForRelationExpressionNode> AllRelationsForProductions
         {
             get
             {
-                var result = new List<ResolverForRelationExpressionNode>();
-
-                var dataSourcesSettingsOrderedByPriorityAndUseProductionsList = mDataSourcesSettingsOrderedByPriorityAndUseProductionsList;
-
-                foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityAndUseProductionsList)
+                lock (mLockObj)
                 {
-                    var targetRelationsList = dataSourcesSettings.Storage.GetAllRelations();
+                    var result = new List<ResolverForRelationExpressionNode>();
 
-                    if (targetRelationsList == null)
+                    var dataSourcesSettingsOrderedByPriorityAndUseProductionsList = mDataSourcesSettingsOrderedByPriorityAndUseProductionsList;
+
+                    foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityAndUseProductionsList)
                     {
-                        continue;
+                        var targetRelationsList = dataSourcesSettings.Storage.GetAllRelations();
+
+                        if (targetRelationsList == null)
+                        {
+                            continue;
+                        }
+
+                        result.AddRange(targetRelationsList);
                     }
 
-                    result.AddRange(targetRelationsList);
+                    return result;
                 }
-
-                return result;
             }
         }
     }

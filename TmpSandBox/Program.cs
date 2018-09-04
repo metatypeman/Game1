@@ -11,6 +11,7 @@ using MyNPCLib.IndexedPersistLogicalData;
 using MyNPCLib.LegacyConvertors;
 using MyNPCLib.LegacyParser;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalHostEnvironment;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.LogicalSoundModeling;
 using MyNPCLib.NLToCGParsing;
@@ -51,9 +52,10 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
+            TSTHostLogicalObjectStorage();
             //TSTParsingUserQuery();
             //TSTLogicalSoundBus();
-            TSTQueryWithAccessPolicy();
+            //TSTQueryWithAccessPolicy();
             //TSTQueryEntityCondition();
             //TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
@@ -75,6 +77,17 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTHostLogicalObjectStorage()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var storage = new HostLogicalObjectStorage(globalEntityDictionary);
+
+            var queryStr = "{: !:{public} {color(#12345, black)} :}";
+            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
+
+            storage.Append(queryStorage);
         }
 
         private static void TSTParsingUserQuery()
