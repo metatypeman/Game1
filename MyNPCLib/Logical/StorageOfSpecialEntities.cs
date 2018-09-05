@@ -9,6 +9,7 @@ namespace MyNPCLib.Logical
     {
         private object mLockObj = new object();
         public ulong SelfEntityId { get; set; }
+
         public void SetVisibleEntitiesId(IList<ulong> visibleEntitiesId)
         {
             lock(mLockObj)

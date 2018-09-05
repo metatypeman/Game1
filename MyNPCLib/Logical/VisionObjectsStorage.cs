@@ -73,7 +73,7 @@ namespace MyNPCLib.Logical
                 //Log($"hostVisibleObjectsList.Count = {hostVisibleObjectsList?.Count}");
 #endif
                 var result = new List<VisionObject>();
-
+                
                 lock (mLockObj)
                 {
                     if (hostVisibleObjectsList.IsEmpty())

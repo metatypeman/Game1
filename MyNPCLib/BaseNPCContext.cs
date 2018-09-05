@@ -119,6 +119,7 @@ namespace MyNPCLib
 
             mContextOfCGStorage = new ContextOfCGStorage(mEntityDictionary);
             mContextOfCGStorage.SetHostStorage(mNPCHostContext.SelfHostStorage);
+            mContextOfCGStorage.SetWorlHostStorage(mNPCHostContext.BusOfCGStorages.GeneralStorageWithPublicFacts);
 
             var mainStorage = mContextOfCGStorage.MainCGStorage;
 

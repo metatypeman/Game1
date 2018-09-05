@@ -11,7 +11,7 @@ namespace MyNPCLib.CGStorage
         {
             mEntityDictionary = entityDictionary;
             mGlobalCGStorage = new GlobalCGStorage(entityDictionary);
-            mMainCGStorage = new NPCConsolidatedCGStorage(entityDictionary);
+            mMainCGStorage = new ConsolidatedCGStorage(entityDictionary);
 
             var storageOptions = new SettingsOfStorageForSearchingInThisSession();
             storageOptions.Storage = mGlobalCGStorage;
@@ -32,7 +32,7 @@ namespace MyNPCLib.CGStorage
 
         public GlobalCGStorage GlobalCGStorage => mGlobalCGStorage;
 
-        private NPCConsolidatedCGStorage mMainCGStorage;
+        private ConsolidatedCGStorage mMainCGStorage;
 
         public ICGStorage MainCGStorage => mMainCGStorage;
 
@@ -44,6 +44,19 @@ namespace MyNPCLib.CGStorage
         {
             mHostStorage = storage;
 
+            var storageOptions = new SettingsOfStorageForSearchingInThisSession();
+            storageOptions.Storage = mGlobalCGStorage;
+            storageOptions.MaxDeph = null;
+            storageOptions.UseFacts = true;
+            storageOptions.UseAdditionalInstances = true;
+            storageOptions.UseProductions = false;
+            storageOptions.Priority = 1;
+
+            mMainCGStorage.AddStorage(storageOptions);
+        }
+
+        public void SetWorlHostStorage(ICGStorage storage)
+        {
             var storageOptions = new SettingsOfStorageForSearchingInThisSession();
             storageOptions.Storage = mGlobalCGStorage;
             storageOptions.MaxDeph = null;
