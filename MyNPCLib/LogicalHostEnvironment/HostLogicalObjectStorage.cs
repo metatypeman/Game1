@@ -45,7 +45,17 @@ namespace MyNPCLib.LogicalHostEnvironment
                 }
 #endif
 
-                throw new NotImplementedException();
+                if (listOfKindOfAcessPolicy.Contains(KindOfAccessPolicyToFact.Public))
+                {
+                    PublicHost.Append(ruleInstance);
+                }
+
+                if (listOfKindOfAcessPolicy.Contains(KindOfAccessPolicyToFact.ForVisible))
+                {
+                    VisibleHost.Append(ruleInstance);
+                }
+
+                GeneralHost.Append(ruleInstance);
             }
         }
 
@@ -68,7 +78,17 @@ namespace MyNPCLib.LogicalHostEnvironment
                 }
 #endif
 
-                throw new NotImplementedException();
+                if(listOfKindOfAcessPolicy.Contains(KindOfAccessPolicyToFact.Public))
+                {
+                    PublicHost.Append(storage);
+                }
+
+                if(listOfKindOfAcessPolicy.Contains(KindOfAccessPolicyToFact.ForVisible))
+                {
+                    VisibleHost.Append(storage);
+                }
+
+                GeneralHost.Append(storage);
             }
         }
 
@@ -92,7 +112,17 @@ namespace MyNPCLib.LogicalHostEnvironment
                 }
 #endif
 
-                throw new NotImplementedException();
+                if (listOfKindOfAcessPolicy.Contains(KindOfAccessPolicyToFact.Public))
+                {
+                    PublicHost.Append(ruleInstancePackage);
+                }
+
+                if (listOfKindOfAcessPolicy.Contains(KindOfAccessPolicyToFact.ForVisible))
+                {
+                    VisibleHost.Append(ruleInstancePackage);
+                }
+
+                GeneralHost.Append(ruleInstancePackage);
             }
         }
     }

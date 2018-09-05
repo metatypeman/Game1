@@ -137,7 +137,7 @@ namespace TmpSandBox.NPCBehaviour
             LogicalIndexStorageImpl = new LogicalIndexStorage(entityLogger);
 
             mHostLogicalObjectStorage = new HostLogicalObjectStorage(entityDictionary);
-            mBusOfCGStorages = new BusOfCGStorages();
+            mBusOfCGStorages = new BusOfCGStorages(entityDictionary);
             mBusOfCGStorages.AddStorage(mHostLogicalObjectStorage);
 
             mSelfLogicalObject = new PassiveLogicalObject(entityLogger, entityDictionary, LogicalIndexStorageImpl, mHostLogicalObjectStorage.EntityId);
@@ -161,7 +161,7 @@ namespace TmpSandBox.NPCBehaviour
         public ICGStorage SelfHostStorage => mHostLogicalObjectStorage.GeneralHost;
 
         private BusOfCGStorages mBusOfCGStorages;
-        public BusOfCGStorages BusOfCGStorages => mBusOfCGStorages;
+        public IBusOfCGStorages BusOfCGStorages => mBusOfCGStorages;
 
         public ulong SelfEntityId => mSelfLogicalObject.EntityId;
         public bool IsReady => mBodyHost.IsReady;

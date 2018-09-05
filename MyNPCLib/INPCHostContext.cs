@@ -16,7 +16,7 @@ namespace MyNPCLib
         INPCHandHost LeftHandHost { get; }
         IOldLogicalStorage OldHostLogicalStorage { get; }
         ICGStorage SelfHostStorage { get; }
-        BusOfCGStorages BusOfCGStorages { get; }
+        IBusOfCGStorages BusOfCGStorages { get; }
         ulong SelfEntityId { get; }
         bool IsReady { get; }
         event Action OnReady;

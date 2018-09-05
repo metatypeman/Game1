@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.Parser.LogicalExpression;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace MyNPCLib.Logical
     {
         public override bool IsConcrete => false;
 
-        public LogicalObject(IEntityLogger entityLogger, string query, IEntityDictionary entityDictionary, IOldLogicalStorage oldSource, ICGStorage source, QueriesCache queriesCache, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
+        public LogicalObject(IEntityLogger entityLogger, string query, IEntityDictionary entityDictionary, ICGStorage source, QueriesCache queriesCache, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
             : base (entityLogger, systemPropertiesDictionary)
         {
 #if DEBUG
@@ -19,10 +20,11 @@ namespace MyNPCLib.Logical
             mEntityDictionary = entityDictionary;
             mVisionObjectsStorage = visionObjectsStorage;
             mSource = source;
-            mOldSource = oldSource;
-            mOldSource.OnChanged += MSource_OnChanged;
+            mSource.OnChanged += MSource_OnChanged;
 
-            mPlan = queriesCache.CreatePlan(query);
+            mQueryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(query, entityDictionary);
+
+            //mPlan = queriesCache.CreatePlan(query);
 
 #if DEBUG
             Log($"End query = {query}");
@@ -43,8 +45,7 @@ namespace MyNPCLib.Logical
             }
         }
 
-        private BaseQueryResolverASTNode mPlan;
-        private IOldLogicalStorage mOldSource;
+        private ICGStorage mQueryStorage;
         private ICGStorage mSource;
         private VisionObjectsStorage mVisionObjectsStorage;
         private bool mNeedUpdateEnitiesIdList = true;
@@ -182,7 +183,7 @@ namespace MyNPCLib.Logical
 
             mNeedUpdateEnitiesIdList = false;
 
-            mCurrentEnitiesIdList = mOldSource.GetEntitiesIdList(mPlan);
+            mCurrentEnitiesIdList = mSource.GetEntitiesIdList(mQueryStorage);
 
             FindPrimaryEntityId();
 
@@ -253,7 +254,7 @@ namespace MyNPCLib.Logical
 
         protected override void ConcreteSetProperty(ulong propertyKey, object value)
         {
-            mOldSource.SetPropertyValue(mPrimaryEntityId, propertyKey, value);
+            mSource.SetPropertyValueAsAsObject(mPrimaryEntityId, propertyKey, value);
         }
 
         private object NGetProperty(ulong propertyKey)
@@ -272,7 +273,7 @@ namespace MyNPCLib.Logical
 
         protected override object ConcreteGetPropertyFromStorage(ulong propertyKey)
         {
-            return mOldSource.GetPropertyValue(mPrimaryEntityId, propertyKey);
+            return mSource.GetPropertyValueAsObject(mPrimaryEntityId, propertyKey);
         }
 
         public override string PropertiesToSting(uint n)

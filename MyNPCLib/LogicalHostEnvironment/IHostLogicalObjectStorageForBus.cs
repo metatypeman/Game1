@@ -7,8 +7,8 @@ namespace MyNPCLib.LogicalHostEnvironment
 {
     public interface IHostLogicalObjectStorageForBus
     {
-        ulong EntityId { get; }
-        DefaultHostCGStorage GeneralHost { get; }
+        ulong EntityId { get; } 
         DefaultHostCGStorage VisibleHost { get; }
+        DefaultHostCGStorage PublicHost { get; }
     }
 }

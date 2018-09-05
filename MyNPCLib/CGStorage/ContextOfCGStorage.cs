@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.LogicalSearchEngine;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,6 +10,18 @@ namespace MyNPCLib.CGStorage
         public ContextOfCGStorage(IEntityDictionary entityDictionary)
         {
             mEntityDictionary = entityDictionary;
+            mGlobalCGStorage = new GlobalCGStorage(entityDictionary);
+            mMainCGStorage = new NPCConsolidatedCGStorage(entityDictionary);
+
+            var storageOptions = new SettingsOfStorageForSearchingInThisSession();
+            storageOptions.Storage = mGlobalCGStorage;
+            storageOptions.MaxDeph = null;
+            storageOptions.UseFacts = true;
+            storageOptions.UseAdditionalInstances = true;
+            storageOptions.UseProductions = true;
+            storageOptions.Priority = 1;
+
+            mMainCGStorage.AddStorage(storageOptions);
         }
 
         private IEntityDictionary mEntityDictionary;
@@ -19,11 +32,27 @@ namespace MyNPCLib.CGStorage
 
         public GlobalCGStorage GlobalCGStorage => mGlobalCGStorage;
 
-        public ICGStorage MainCGStorage => mGlobalCGStorage;
+        private NPCConsolidatedCGStorage mMainCGStorage;
 
-        public void Init()
+        public ICGStorage MainCGStorage => mMainCGStorage;
+
+        private ICGStorage mHostStorage;
+
+        public ICGStorage HostStorage => mHostStorage;
+
+        public void SetHostStorage(ICGStorage storage)
         {
-            mGlobalCGStorage = new GlobalCGStorage(mEntityDictionary);
+            mHostStorage = storage;
+
+            var storageOptions = new SettingsOfStorageForSearchingInThisSession();
+            storageOptions.Storage = mGlobalCGStorage;
+            storageOptions.MaxDeph = null;
+            storageOptions.UseFacts = true;
+            storageOptions.UseAdditionalInstances = true;
+            storageOptions.UseProductions = false;
+            storageOptions.Priority = 1;
+
+            mMainCGStorage.AddStorage(storageOptions);
         }
     }
 }

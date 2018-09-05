@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyNPCLib.CGStorage;
+using MyNPCLib.LogicalHostEnvironment;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +21,8 @@ namespace MyNPCLib.Logical
         private IEntityLogger mEntityLogger;
         private readonly INPCHostContext mNPCHostContext;
         private readonly IEntityDictionary mEntityDictionary;
-        private IOldLogicalStorage mLogicalStorage;
+        private IBusOfCGStorages mBusOfHostStorage;
+        private ICGStorage mLogicalStorage;
         private readonly SystemPropertiesDictionary mSystemPropertiesDictionary;
         private readonly object mLockObj = new object();
         private Dictionary<ulong, VisionObject> mVisibleObjectsDict = new Dictionary<ulong, VisionObject>();
@@ -44,7 +47,15 @@ namespace MyNPCLib.Logical
             mEntityLogger?.Warning(message);
         }
 
-        public IOldLogicalStorage LogicalStorage
+        public IBusOfCGStorages BusOfHostStorage
+        {
+            set
+            {
+                mBusOfHostStorage = value;
+            }
+        }
+
+        public ICGStorage LogicalStorage
         {
             set
             {

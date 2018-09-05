@@ -84,13 +84,33 @@ namespace TmpSandBox
             var globalEntityDictionary = new EntityDictionary();
             var storage = new HostLogicalObjectStorage(globalEntityDictionary);
 
-            var busOfCGStorages = new BusOfCGStorages();
+            var busOfCGStorages = new BusOfCGStorages(globalEntityDictionary);
             busOfCGStorages.AddStorage(storage);
 
             var queryStr = "{: !:{public} {color(#12345, black)} :}";
             var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
             storage.Append(queryStorage);
+
+            queryStr = "{: !:{visible} {direction(#12345, forest)} :}";
+            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
+
+            storage.Append(queryStorage);
+
+            var mainPublicStorage = busOfCGStorages.GeneralStorageWithPublicFacts;
+            var visibleStorage = busOfCGStorages.GetStorageWithVisibleFacts(storage.EntityId);
+
+            queryStr = "{: color(#12345, ?x) :}";
+            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
+
+            var searchResult = mainPublicStorage.Search(queryStorage);
+
+            var result = searchResult.GetResultOfVarAsVariant("?x");
+            LogInstance.Log($"result = {result}");
+
+            searchResult = visibleStorage.Search(queryStorage);
+            result = searchResult.GetResultOfVarAsVariant("?x");
+            LogInstance.Log($"result (2)= {result}");
         }
 
         private static void TSTParsingUserQuery()
@@ -234,8 +254,7 @@ namespace TmpSandBox
             LogInstance.Log($"queryStr = {queryStr}");
 
             var context = new ContextOfCGStorage(entityDictionary);
-            context.Init();
-
+            
             var passiveListStorage = RuleInstanceFactory.ConvertStringToPassiveListGCStorage(queryStr, entityDictionary);
 
             var ruleInstancesList = passiveListStorage.AllRuleInstances;
@@ -262,8 +281,7 @@ namespace TmpSandBox
             var globalEntityDictionary = new EntityDictionary();
 
             var context = new ContextOfCGStorage(globalEntityDictionary);
-            context.Init();
-
+            
             var soundBus = new LogicalSoundBus();
 
             var fakeListener = new TSTFakeLogicalSoundBusListener(new Vector3(200, 0, 0));
@@ -288,8 +306,7 @@ namespace TmpSandBox
             var globalEntityDictionary = new EntityDictionary();
 
             var context = new ContextOfCGStorage(globalEntityDictionary);
-            context.Init();
-
+            
             var queryStr = "{: !:{public} {color(#12345, black)} :}";
             var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
@@ -345,8 +362,7 @@ namespace TmpSandBox
             var globalEntityDictionary = new EntityDictionary();
 
             var context = new ContextOfCGStorage(globalEntityDictionary);
-            context.Init();
-
+            
             var queryStr = "{: !:{public, visible} {color(#12345, black)} :}";
             var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
@@ -445,8 +461,7 @@ namespace TmpSandBox
 
             var globalEntityDictionary = new EntityDictionary();
             var context = new ContextOfCGStorage(globalEntityDictionary);
-            context.Init();
-
+            
             var paragraph = "Go to Green Waypoint";
 
             var wordsDict = new WordsDict();
@@ -920,8 +935,7 @@ namespace TmpSandBox
             LogInstance.Log($"globalEntityDictionary.Name = {globalEntityDictionary.Name}");
 
             var context = new ContextOfCGStorage(globalEntityDictionary);
-            context.Init();
-
+            
             var smokeFact = CreateSimpleFact(globalEntityDictionary);
             AddSmokeFact(smokeFact, context.GlobalCGStorage);
 
@@ -1381,8 +1395,7 @@ namespace TmpSandBox
             var globalEntityDictionary = new EntityDictionary();
 
             var context = new ContextOfCGStorage(globalEntityDictionary);
-            context.Init();
-
+            
             //var path = AppDomain.CurrentDomain.BaseDirectory;
 
             //LogInstance.Log($"path = {path}");
@@ -1616,8 +1629,7 @@ namespace TmpSandBox
             LogInstance.Log($"globalEntityDictionary.Name = {globalEntityDictionary.Name}");
 
             var context = new ContextOfCGStorage(globalEntityDictionary);
-            context.Init();
-
+            
             var commonPersistLogicalData = new CommonPersistLogicalData();
             commonPersistLogicalData.DictionaryName = globalEntityDictionary.Name;
             commonPersistLogicalData.RuleInstancesList = new List<RuleInstance>();
@@ -2314,8 +2326,7 @@ namespace TmpSandBox
             var globalEntityDictionary = new EntityDictionary();
 
             var context = new ContextOfCGStorage(globalEntityDictionary);
-            context.Init();
-
+            
             var graph = new ConceptualGraph();
             graph.Name = "#1";
 
@@ -2574,8 +2585,7 @@ namespace TmpSandBox
             entityLogger.Enabled = true;
 
             var context = new ContextOfCGStorage(globalEntityDictionary);
-            context.Init();
-
+            
             var indexingStorage = new LogicalIndexStorage(entityLogger);
 
             var namePropertyId = globalEntityDictionary.GetKey("name");
@@ -2643,7 +2653,7 @@ namespace TmpSandBox
             var visionObjectsStorage = new VisionObjectsStorage(entityLogger, globalEntityDictionary, npcHostContext, systemPropertiesDictionary, storageOfSpecialEntities);
 
             var queryStr = "!((name=helen|name=ann)&class=girl)";
-            var logicalObject = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, indexingStorage, context.MainCGStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
+            var logicalObject = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, context.MainCGStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
 
             var entitiesIdList = logicalObject.CurrentEntitiesIdList;
 
@@ -2665,7 +2675,7 @@ namespace TmpSandBox
                 LogInstance.Log($"(2) entityId = {entityId}");
             }
 
-            var logicalObject_2 = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, indexingStorage, context.MainCGStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
+            var logicalObject_2 = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, context.MainCGStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
 
             entitiesIdList = logicalObject.CurrentEntitiesIdList;
 

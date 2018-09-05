@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.CGStorage;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +7,7 @@ namespace MyNPCLib.Logical
 {
     public class SelfLogicalObject : BaseAbstractLogicalObject
     {
-        public SelfLogicalObject(IEntityLogger entityLogger, IEntityDictionary entityDictionary, IOldLogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary, INPCHostContext npcHostContext)
+        public SelfLogicalObject(IEntityLogger entityLogger, IEntityDictionary entityDictionary, ICGStorage source, SystemPropertiesDictionary systemPropertiesDictionary, INPCHostContext npcHostContext)
              : base(entityLogger, systemPropertiesDictionary)
         {
             mSelfEntityId = npcHostContext.SelfEntityId;
@@ -17,8 +18,8 @@ namespace MyNPCLib.Logical
 
         private ulong mSelfEntityId;
         private IEntityDictionary mEntityDictionary;
-        private IOldLogicalStorage mSource;
-        private INPCHostContext mNPCHostContext;
+        private ICGStorage mSource;
+        private INPCHostContext mNPCHostContext { get; set; }
 
         public override bool IsConcrete => true;
         public override IList<ulong> CurrentEntitiesIdList => new List<ulong>() { mSelfEntityId };
@@ -80,7 +81,7 @@ namespace MyNPCLib.Logical
                 return;
             }
 
-            mSource.SetPropertyValue(mSelfEntityId, propertyKey, value);        
+            mSource.SetPropertyValueAsAsObject(mSelfEntityId, propertyKey, value);        
         }
 
         private object NGetProperty(ulong propertyKey)
@@ -93,7 +94,7 @@ namespace MyNPCLib.Logical
             switch (kindOfSystemProperty)
             {
                 case KindOfSystemProperties.Undefined:
-                    return mSource.GetPropertyValue(mSelfEntityId, propertyKey);
+                    return mSource.GetPropertyValueAsObject(mSelfEntityId, propertyKey);
 
                 case KindOfSystemProperties.GlobalPosition:
                     return mNPCHostContext.GlobalPosition;

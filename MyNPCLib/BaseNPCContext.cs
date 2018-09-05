@@ -118,17 +118,21 @@ namespace MyNPCLib
             mStorageOfSpecialEntities.SelfEntityId = mNPCHostContext.SelfEntityId;
 
             mContextOfCGStorage = new ContextOfCGStorage(mEntityDictionary);
-            mContextOfCGStorage.Init();
+            mContextOfCGStorage.SetHostStorage(mNPCHostContext.SelfHostStorage);
 
-            mLogicalStorage = new LogicalStorage(mEntityLogger, mEntityDictionary, mNPCHostContext.OldHostLogicalStorage, mStorageOfSpecialEntities);
+            var mainStorage = mContextOfCGStorage.MainCGStorage;
 
-            mVisionObjectsStorage.LogicalStorage = mLogicalStorage;
+            //mLogicalStorage = new LogicalStorage(mEntityLogger, mEntityDictionary, mNPCHostContext.OldHostLogicalStorage, mStorageOfSpecialEntities);
+
+            mVisionObjectsStorage.BusOfHostStorage = mNPCHostContext.BusOfCGStorages;
+            mVisionObjectsStorage.LogicalStorage = mainStorage;
+            //mVisionObjectsStorage.LogicalStorage = mLogicalStorage;
 
 #if DEBUG
             Log("NEXT");
 #endif
-
-            mSelfLogicalObject = new SelfLogicalObject(mEntityLogger, mEntityDictionary, mLogicalStorage, mSystemPropertiesDictionary, mNPCHostContext);
+            mSelfLogicalObject = new SelfLogicalObject(mEntityLogger, mEntityDictionary, mainStorage, mSystemPropertiesDictionary, mNPCHostContext);
+            //mSelfLogicalObject = new SelfLogicalObject(mEntityLogger, mEntityDictionary, mLogicalStorage, mSystemPropertiesDictionary, mNPCHostContext);
 
 #if DEBUG
             Log("NEXT NEXT");
@@ -164,7 +168,7 @@ namespace MyNPCLib
         private readonly Dictionary<ulong, ulong> mChildParentDict = new Dictionary<ulong, ulong>();
         private readonly object mProcessesDictLockObj = new object();
         private ContextOfCGStorage mContextOfCGStorage;
-        private LogicalStorage mLogicalStorage;
+        //private LogicalStorage mLogicalStorage;
         private StorageOfSpecialEntities mStorageOfSpecialEntities;
 
         private readonly object mStateLockObj = new object();
@@ -825,7 +829,7 @@ namespace MyNPCLib
 #if DEBUG
             Log($"GetLogicalObject query = {query}");
 #endif
-            return new LogicalObject(mEntityLogger, query, mEntityDictionary, mLogicalStorage, mContextOfCGStorage.MainCGStorage, mQueriesCache, mSystemPropertiesDictionary, mVisionObjectsStorage);
+            return new LogicalObject(mEntityLogger, query, mEntityDictionary, mContextOfCGStorage.MainCGStorage, mQueriesCache, mSystemPropertiesDictionary, mVisionObjectsStorage);
         }
 
         public IList<VisionObject> VisibleObjects

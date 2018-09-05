@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.CGStorage;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +7,7 @@ namespace MyNPCLib.Logical
 {
     public class VisionObject: OtherLogicalObject
     {
-        public VisionObject(IEntityLogger entityLogger, ulong entityId, VisionObjectImpl visionObjectImpl, IEntityDictionary entityDictionary, IOldLogicalStorage source, SystemPropertiesDictionary systemPropertiesDictionary)
+        public VisionObject(IEntityLogger entityLogger, ulong entityId, VisionObjectImpl visionObjectImpl, IEntityDictionary entityDictionary, ICGStorage source, SystemPropertiesDictionary systemPropertiesDictionary)
             : base(entityLogger, systemPropertiesDictionary)
         {
             mEntityId = entityId;
@@ -17,7 +18,7 @@ namespace MyNPCLib.Logical
 
         private ulong mEntityId;
         private IEntityDictionary mEntityDictionary;
-        private IOldLogicalStorage mSource;
+        private ICGStorage mSource;
 
         public override bool IsConcrete => true;
         public override IList<ulong> CurrentEntitiesIdList => new List<ulong>() { mEntityId };
@@ -70,12 +71,12 @@ namespace MyNPCLib.Logical
 
         protected override void ConcreteSetProperty(ulong propertyKey, object value)
         {
-            mSource.SetPropertyValue(mEntityId, propertyKey, value);
+            mSource.SetPropertyValueAsAsObject(mEntityId, propertyKey, value);
         }
 
         protected override object ConcreteGetPropertyFromStorage(ulong propertyKey)
         {
-            return mSource.GetPropertyValue(mEntityId, propertyKey);
+            return mSource.GetPropertyValueAsObject(mEntityId, propertyKey);
         }
 
         public IList<IVisionItem> VisionItems => CurrentVisionObjectImpl.VisionItems;

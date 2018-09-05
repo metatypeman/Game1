@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.LogicalSearchEngine;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,28 +10,37 @@ namespace MyNPCLib.LogicalHostEnvironment
     {
         public BusOfCGStorages(IEntityDictionary entityDictionary)
         {
-            mStorageWithPublicFacts
+            mStorageWithPublicFacts = new ConsolidatedCGStorage(entityDictionary);
         }
 
         private readonly object mStoragesDictLockObj = new object();
         private ConsolidatedCGStorage mStorageWithPublicFacts;
+
+        public ICGStorage GeneralStorageWithPublicFacts => mStorageWithPublicFacts;
+
         private Dictionary<ulong, ICGStorage> mStoragesWithVisibleFactsDict = new Dictionary<ulong, ICGStorage>();
 
         public void AddStorage(IHostLogicalObjectStorageForBus storage)
         {
             lock(mStoragesDictLockObj)
             {
-                throw new NotImplementedException();
-                //mStoragesDict[entityId] = storage;
-            }
-        }
+                var entityKey = storage.EntityId;
 
-        public void RemoveStorage(ulong entityKey)
-        {
-            lock (mStoragesDictLockObj)
-            {
-                throw new NotImplementedException();
-                //mStoragesDict.Remove(entityId);
+#if DEBUG
+                LogInstance.Log($"entityKey = {entityKey}");
+#endif
+
+                mStoragesWithVisibleFactsDict[entityKey] = storage.VisibleHost;
+
+                var storageOptions = new SettingsOfStorageForSearchingInThisSession();
+                storageOptions.Storage = storage.PublicHost;
+                storageOptions.MaxDeph = null;
+                storageOptions.UseFacts = true;
+                storageOptions.UseAdditionalInstances = true;
+                storageOptions.UseProductions = false;
+                storageOptions.Priority = 1;
+
+                mStorageWithPublicFacts.AddStorage(storageOptions);
             }
         }
 
@@ -38,13 +48,12 @@ namespace MyNPCLib.LogicalHostEnvironment
         {
             lock (mStoragesDictLockObj)
             {
-                throw new NotImplementedException();
-                //if(mStoragesDict.ContainsKey(entityId))
-                //{
-                //    return mStoragesDict[entityId];
-                //}
+                if (mStoragesWithVisibleFactsDict.ContainsKey(entityKey))
+                {
+                    return mStoragesWithVisibleFactsDict[entityKey];
+                }
 
-                //return null;
+                return null;
             }
         }
     }
