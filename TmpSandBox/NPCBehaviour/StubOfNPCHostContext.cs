@@ -135,12 +135,13 @@ namespace TmpSandBox.NPCBehaviour
             mRightHandHost = new StubOfNPCHandHost(entityLogger);
             mLeftHandHost = new StubOfNPCHandHost(entityLogger);
             LogicalIndexStorageImpl = new LogicalIndexStorage(entityLogger);
-            mSelfLogicalObject = new PassiveLogicalObject(entityLogger, entityDictionary, LogicalIndexStorageImpl);
-            LogicalIndexStorageImpl.RegisterObject(mSelfLogicalObject);
 
-            mSelfHostStorage = new DefaultHostCGStorage(entityDictionary);
+            mHostLogicalObjectStorage = new HostLogicalObjectStorage(entityDictionary);
             mBusOfCGStorages = new BusOfCGStorages();
-            mBusOfCGStorages.AddStorage(mSelfLogicalObject.EntityId, mSelfHostStorage);
+            mBusOfCGStorages.AddStorage(mHostLogicalObjectStorage);
+
+            mSelfLogicalObject = new PassiveLogicalObject(entityLogger, entityDictionary, LogicalIndexStorageImpl, mHostLogicalObjectStorage.EntityId);
+            LogicalIndexStorageImpl.RegisterObject(mSelfLogicalObject);
         }
 
         private IEntityLogger mEntityLogger;
@@ -156,8 +157,8 @@ namespace TmpSandBox.NPCBehaviour
         public INPCHandHost LeftHandHost => mLeftHandHost;
         public IOldLogicalStorage OldHostLogicalStorage => LogicalIndexStorageImpl;
 
-        private ICGStorage mSelfHostStorage;
-        public ICGStorage SelfHostStorage => mSelfHostStorage;
+        private HostLogicalObjectStorage mHostLogicalObjectStorage;
+        public ICGStorage SelfHostStorage => mHostLogicalObjectStorage.GeneralHost;
 
         private BusOfCGStorages mBusOfCGStorages;
         public BusOfCGStorages BusOfCGStorages => mBusOfCGStorages;

@@ -5,10 +5,16 @@ using System.Text;
 
 namespace MyNPCLib.LogicalHostEnvironment
 {
-    public class BusOfCGStorages: IBusOfCGStorages
+    public class BusOfCGStorages : IBusOfCGStorages
     {
+        public BusOfCGStorages(IEntityDictionary entityDictionary)
+        {
+            mStorageWithPublicFacts
+        }
+
         private readonly object mStoragesDictLockObj = new object();
-        private Dictionary<ulong, ICGStorage> mStoragesDict = new Dictionary<ulong, ICGStorage>();
+        private ConsolidatedCGStorage mStorageWithPublicFacts;
+        private Dictionary<ulong, ICGStorage> mStoragesWithVisibleFactsDict = new Dictionary<ulong, ICGStorage>();
 
         public void AddStorage(IHostLogicalObjectStorageForBus storage)
         {
@@ -28,7 +34,7 @@ namespace MyNPCLib.LogicalHostEnvironment
             }
         }
 
-        public ICGStorage GetStorage(ulong entityKey)
+        public ICGStorage GetStorageWithVisibleFacts(ulong entityKey)
         {
             lock (mStoragesDictLockObj)
             {

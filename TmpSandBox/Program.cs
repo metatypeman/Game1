@@ -84,6 +84,9 @@ namespace TmpSandBox
             var globalEntityDictionary = new EntityDictionary();
             var storage = new HostLogicalObjectStorage(globalEntityDictionary);
 
+            var busOfCGStorages = new BusOfCGStorages();
+            busOfCGStorages.AddStorage(storage);
+
             var queryStr = "{: !:{public} {color(#12345, black)} :}";
             var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 

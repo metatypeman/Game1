@@ -12,14 +12,20 @@ namespace MyNPCLib.LogicalHostEnvironment
         public HostLogicalObjectStorage(IEntityDictionary entityDictionary)
             : base(entityDictionary)
         {
+            var name = NamesHelper.CreateEntityName();
+            EntityId = entityDictionary.GetKey(name);
+
+            GeneralHost = new DefaultHostCGStorage(entityDictionary);
+            VisibleHost = new DefaultHostCGStorage(entityDictionary);
+            PublicHost = new DefaultHostCGStorage(entityDictionary);
         }
 
         public override KindOfCGStorage KindOfStorage => KindOfCGStorage.OtherProxy;
         private readonly object mLockObj = new object();
-        private ulong mEntityId;
-        private DefaultHostCGStorage mGeneralHost;
-        private DefaultHostCGStorage mVisibleHost;
-        private DefaultHostCGStorage mPublicHost;
+        public ulong EntityId { get; private set; }
+        public DefaultHostCGStorage GeneralHost { get; private set; }
+        public DefaultHostCGStorage VisibleHost { get; private set; }
+        public DefaultHostCGStorage PublicHost { get; private set; }
 
         public override void Append(RuleInstance ruleInstance)
         {

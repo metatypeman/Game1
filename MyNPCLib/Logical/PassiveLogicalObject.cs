@@ -6,14 +6,25 @@ namespace MyNPCLib.Logical
 {
     public class PassiveLogicalObject : IPassiveLogicalObject, IReadOnlyLogicalObject, ILogicalObject
     {
-        public PassiveLogicalObject(IEntityLogger entityLogger, IEntityDictionary entityDictionary, IOldLogicalStorage logicalIndexingBus)
+        public PassiveLogicalObject(IEntityLogger entityLogger, IEntityDictionary entityDictionary, IOldLogicalStorage logicalIndexingBus, ulong entityId)
         {
+            mEntityId = entityId;
             mEntityLogger = entityLogger;
             mEntityDictionary = entityDictionary;
             mLogicalIndexingBus = logicalIndexingBus;
 
-            var name = Guid.NewGuid().ToString("D");
+            mLogicalFrame = new LogicalFrame(entityLogger, mEntityId);
+        }
+
+        public PassiveLogicalObject(IEntityLogger entityLogger, IEntityDictionary entityDictionary, IOldLogicalStorage logicalIndexingBus)
+        {
+            var name = NamesHelper.CreateEntityName();
             mEntityId = mEntityDictionary.GetKey(name);
+
+            mEntityLogger = entityLogger;
+            mEntityDictionary = entityDictionary;
+            mLogicalIndexingBus = logicalIndexingBus;
+
             mLogicalFrame = new LogicalFrame(entityLogger, mEntityId);
         }
 
