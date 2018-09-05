@@ -1,6 +1,8 @@
 ﻿using Assets.Scripts;
 using MyNPCLib;
+using MyNPCLib.CGStorage;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalHostEnvironment;
 using MyNPCLib.LogicalSoundModeling;
 using System;
 using System.Collections;
@@ -136,11 +138,17 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     }
 
     private IInternalHumanoidHostContext mInternalHumanoidHostContext;
-    private LogicalObjectsBus mLogicalObjectsBus;
+    private OldLogicalObjectsBus mOldLogicalObjectsBus;
    
-    public ILogicalStorage HostLogicalStorage => mLogicalObjectsBus;
+    public IOldLogicalStorage OldHostLogicalStorage => mOldLogicalObjectsBus;
 
     private PassiveLogicalObject mSelfLogicalObject;
+
+    private HostLogicalObjectStorage mHostLogicalObjectStorage;
+    public ICGStorage SelfHostStorage => mHostLogicalObjectStorage.GeneralHost;
+
+    private BusOfCGStorages mBusOfCGStorages;
+    public IBusOfCGStorages BusOfCGStorages => mBusOfCGStorages;
 
     public ulong SelfEntityId => mSelfEntityId;
 
@@ -206,7 +214,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 #endif
 
         var commonLevelHost = LevelCommonHostFactory.Get();
-        mLogicalObjectsBus = commonLevelHost.LogicalObjectsBus;
+        mBusOfCGStorages = commonLevelHost.BusOfCGStorages;
+        mOldLogicalObjectsBus = commonLevelHost.OldLogicalObjectsBus;
         mHandThingsBus = commonLevelHost.HandThingsBus;
         mLogicalSoundBus = commonLevelHost.LogicalSoundBus;
         mLogicalSoundBus.AddListener(this);
@@ -214,14 +223,21 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         var tmpGameObject = gameObject;
         var instanceId = tmpGameObject.GetInstanceID();
 
-        mSelfLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, mLogicalObjectsBus);
-        mLogicalObjectsBus.RegisterObject(instanceId, mSelfLogicalObject);
+        mHostLogicalObjectStorage = new HostLogicalObjectStorage(commonLevelHost.EntityDictionary);
+        mBusOfCGStorages.AddStorage(mHostLogicalObjectStorage);
 
+        mSelfLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, mOldLogicalObjectsBus, mHostLogicalObjectStorage.EntityId);
+        mOldLogicalObjectsBus.RegisterObject(instanceId, mSelfLogicalObject);
+
+        mHostLogicalObjectStorage.SetPropertyValueAsAsObject("name", tmpGameObject.name);
         mSelfLogicalObject["name"] = tmpGameObject.name;
         mSelfLogicalObject.SetAccessPolicyToFact("alive", AccessPolicyToFact.ForVisible);
         mSelfLogicalObject.SetAccessPolicyToFact("died", AccessPolicyToFact.ForVisible);
 
+        mHostLogicalObjectStorage.SetPropertyValueAsAsObject("alive", true);
         mSelfLogicalObject["alive"] = true;
+
+        mHostLogicalObjectStorage.SetPropertyValueAsAsObject("died", false);
         mSelfLogicalObject["died"] = false;
 
         mSelfEntityId = mSelfLogicalObject.EntityId;

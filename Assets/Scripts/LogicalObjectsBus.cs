@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public class LogicalObjectsBus: ILogicalStorage
+    public class OldLogicalObjectsBus : IOldLogicalStorage
     {
-        public LogicalObjectsBus()
+        public OldLogicalObjectsBus()
         {
             mLogicalIndexStorage = new LogicalIndexStorage(null);
             mLogicalIndexStorage.OnChanged += MLogicalIndexStorage_OnChanged;

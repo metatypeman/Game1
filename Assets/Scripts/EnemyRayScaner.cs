@@ -17,12 +17,12 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
     public Transform Head;
 
     private List<Vector3> mRayDirectionsList = new List<Vector3>();
-    private LogicalObjectsBus mLogicalObjectsBus;
+    private OldLogicalObjectsBus mOldLogicalObjectsBus;
 
     // Use this for initialization
     void Start () {
         var commonLevelHost = LevelCommonHostFactory.Get();
-        mLogicalObjectsBus = commonLevelHost.LogicalObjectsBus;
+        mOldLogicalObjectsBus = commonLevelHost.OldLogicalObjectsBus;
 
         var dz = 0f;
 
@@ -93,7 +93,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
             var tmpGroupedVisibleItems = tmpVisibleItems.GroupBy(p => p.InstanceID).ToDictionary(p => p.Key, p => p.ToList());
             var instancesIdList = tmpGroupedVisibleItems.Keys.ToList();
 
-            var entitiesIdDict = mLogicalObjectsBus.GetEntitiesIdListByInstancesIdList(instancesIdList);
+            var entitiesIdDict = mOldLogicalObjectsBus.GetEntitiesIdListByInstancesIdList(instancesIdList);
 
             foreach (var tmpGroupedVisibleKVPItems in tmpGroupedVisibleItems)
             {

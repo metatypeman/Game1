@@ -1,5 +1,7 @@
 ﻿using MyNPCLib;
+using MyNPCLib.CGStorage;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalHostEnvironment;
 using MyNPCLib.LogicalSoundModeling;
 using System;
 using System.Collections.Generic;
@@ -304,7 +306,9 @@ namespace Assets.Scripts
         public INPCBodyHost BodyHost => mBodyHost;
         public INPCHandHost RightHandHost => mRightHandHost;
         public INPCHandHost LeftHandHost => mLeftHandHost;
-        public ILogicalStorage HostLogicalStorage => mInternalBodyHumanoidHost.HostLogicalStorage;
+        public IOldLogicalStorage OldHostLogicalStorage => mInternalBodyHumanoidHost.OldHostLogicalStorage;
+        public ICGStorage SelfHostStorage => mInternalBodyHumanoidHost.SelfHostStorage;
+        public IBusOfCGStorages BusOfCGStorages => mInternalBodyHumanoidHost.BusOfCGStorages;
         public ulong SelfEntityId => mInternalBodyHumanoidHost.SelfEntityId;
         public bool IsReady => mBodyHost.IsReady;
         private event Action mOnReady;

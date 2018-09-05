@@ -1,5 +1,6 @@
 ﻿using MyNPCLib;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalHostEnvironment;
 using MyNPCLib.LogicalSoundModeling;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace Assets.Scripts
     {
         IEntityDictionary EntityDictionary { get; }
         NPCProcessInfoCache NPCProcessInfoCache { get; }
-        LogicalObjectsBus LogicalObjectsBus { get; }
+        OldLogicalObjectsBus OldLogicalObjectsBus { get; }
+        BusOfCGStorages BusOfCGStorages { get; }
         QueriesCache QueriesCache { get; }
         HandThingsBus HandThingsBus { get; }
         LogicalSoundBus LogicalSoundBus { get; }

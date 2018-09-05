@@ -1,5 +1,7 @@
 ﻿using MyNPCLib;
+using MyNPCLib.CGStorage;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalHostEnvironment;
 using MyNPCLib.LogicalSoundModeling;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,9 @@ namespace Assets.Scripts
         void SetInternalHumanoidHostContext(IInternalHumanoidHostContext intenalHostContext);
         void CallInMainUI(Action function);
         TResult CallInMainUI<TResult>(Func<TResult> function);
-        ILogicalStorage HostLogicalStorage { get; }
+        IOldLogicalStorage OldHostLogicalStorage { get; }
+        ICGStorage SelfHostStorage { get; }
+        IBusOfCGStorages BusOfCGStorages { get; }
         ulong SelfEntityId { get; }
         bool IsReady { get; }
         event Action OnReady;

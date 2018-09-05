@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts;
 using MyNPCLib;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalHostEnvironment;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,6 +38,8 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     private bool mUseDebugLine;
     private Collider mBodyCollider;
     private Rigidbody mBodyRigidbody;
+
+    private HostLogicalObjectStorage mHostLogicalObjectStorage;
     private PassiveLogicalObject mPassiveLogicalObject;
     #endregion
 
@@ -111,16 +114,20 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
 
         var commonLevelHost = LevelCommonHostFactory.Get();
 
-        mPassiveLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.LogicalObjectsBus);
+        mHostLogicalObjectStorage = new HostLogicalObjectStorage(commonLevelHost.EntityDictionary);
+        commonLevelHost.BusOfCGStorages.AddStorage(mHostLogicalObjectStorage);
+
+        mPassiveLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.OldLogicalObjectsBus, mHostLogicalObjectStorage.EntityId);
 
         var entityId = mPassiveLogicalObject.EntityId;
 
         var tmpGameObject = gameObject;
         var instanceId = tmpGameObject.GetInstanceID();
 
+        mHostLogicalObjectStorage.SetPropertyValueAsAsObject("name", tmpGameObject.name);
         mPassiveLogicalObject["name"] = tmpGameObject.name;
 
-        commonLevelHost.LogicalObjectsBus.RegisterObject(instanceId, this);
+        commonLevelHost.OldLogicalObjectsBus.RegisterObject(instanceId, this);
         commonLevelHost.HandThingsBus.RegisterThing(entityId, this);
         
         mGunParticles = GetComponent<ParticleSystem>();

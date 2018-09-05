@@ -1,5 +1,6 @@
 ﻿using MyNPCLib.CGStorage;
 using MyNPCLib.PersistLogicalData;
+using MyNPCLib.Variants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,5 +126,22 @@ namespace MyNPCLib.LogicalHostEnvironment
                 GeneralHost.Append(ruleInstancePackage);
             }
         }
+
+        public override BaseVariant GetPropertyValueAsVariant(ulong entityId, ulong propertyId);
+        public BaseVariant GetPropertyValueAsVariant(ulong propertyId);
+        public override BaseVariant GetPropertyValueAsVariant(ulong entityId, string propertyName);
+        public BaseVariant GetPropertyValueAsVariant(string propertyName);
+        public override object GetPropertyValueAsObject(ulong entityId, ulong propertyId);
+        public object GetPropertyValueAsObject(ulong propertyId);
+        public override object GetPropertyValueAsObject(ulong entityId, string propertyName);
+        public object GetPropertyValueAsObject(string propertyName);
+        public override void SetPropertyValueAsAsVariant(ulong entityId, ulong propertyId, BaseVariant value);
+        public void SetPropertyValueAsAsVariant(ulong propertyId, BaseVariant value);
+        public override void SetPropertyValueAsAsVariant(ulong entityId, string propertyName, BaseVariant value);
+        public void SetPropertyValueAsAsVariant(string propertyName, BaseVariant value);
+        public override void SetPropertyValueAsAsObject(ulong entityId, ulong propertyId, object value);
+        public void SetPropertyValueAsAsObject(ulong propertyId, object value);
+        public override void SetPropertyValueAsAsObject(ulong entityId, string propertyName, object value);
+        public void SetPropertyValueAsAsObject(string propertyName, object value);
     }
 }

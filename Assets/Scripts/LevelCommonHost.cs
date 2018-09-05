@@ -1,5 +1,6 @@
 ﻿using MyNPCLib;
 using MyNPCLib.Logical;
+using MyNPCLib.LogicalHostEnvironment;
 using MyNPCLib.LogicalSoundModeling;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,7 +21,8 @@ namespace Assets.Scripts
 
             mEntityDictionary = new EntityDictionary();
             mNPCProcessInfoCache = new NPCProcessInfoCache();
-            mLogicalObjectsBus = new LogicalObjectsBus();
+            mOldLogicalObjectsBus = new OldLogicalObjectsBus();
+            mBusOfCGStorages = new BusOfCGStorages(mEntityDictionary);
             mQueriesCache = new QueriesCache(mEntityDictionary);
             mHandThingsBus = new HandThingsBus();
             mLogicalSoundBus = new LogicalSoundBus();
@@ -34,8 +36,11 @@ namespace Assets.Scripts
 
         public NPCProcessInfoCache NPCProcessInfoCache => mNPCProcessInfoCache;
 
-        private LogicalObjectsBus mLogicalObjectsBus;
-        public LogicalObjectsBus LogicalObjectsBus => mLogicalObjectsBus;
+        private OldLogicalObjectsBus mOldLogicalObjectsBus;
+        public OldLogicalObjectsBus OldLogicalObjectsBus => mOldLogicalObjectsBus;
+
+        private BusOfCGStorages mBusOfCGStorages;
+        public BusOfCGStorages BusOfCGStorages => mBusOfCGStorages;
 
         private QueriesCache mQueriesCache;
 
