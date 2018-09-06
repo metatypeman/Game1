@@ -144,7 +144,29 @@ namespace MyNPCLib.Logical
 
         private void UpdateVisibleEntitiesIdList()
         {
+            var hostVisibleObjectsList = mNPCHostContext.VisibleObjects;
 
+            if (hostVisibleObjectsList.IsEmpty())
+            {
+                mStorageOfSpecialEntities.SetVisibleEntitiesId(new List<ulong>());
+                return;
+            }
+
+            var visibleEntitiesIdList = new List<ulong>();
+
+            foreach (var hostVisibleObject in hostVisibleObjectsList)
+            {
+#if DEBUG
+                //Log($"hostVisibleObject = {hostVisibleObject}");
+#endif
+
+                var entityId = hostVisibleObject.EntityId;
+
+                visibleEntitiesIdList.Add(entityId);
+            }
+
+            mStorageOfSpecialEntities.SetVisibleEntitiesId(visibleEntitiesIdList);
+            return;
         }
 
         public VisionObjectImpl GetVisionObjectImpl(ulong entityId)

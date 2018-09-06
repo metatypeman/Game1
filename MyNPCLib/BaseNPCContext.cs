@@ -121,7 +121,7 @@ namespace MyNPCLib
             mContextOfCGStorage.SetHostStorage(mNPCHostContext.SelfHostStorage);
             mContextOfCGStorage.SetWorldHostStorage(mNPCHostContext.BusOfCGStorages.GeneralStorageWithPublicFacts);
 
-            var visibleObjectsCGStorage = new VisibleObjectsCGStorage(mEntityDictionary, mStorageOfSpecialEntities);
+            var visibleObjectsCGStorage = new VisibleObjectsCGStorage(mEntityDictionary, mStorageOfSpecialEntities, mNPCHostContext.BusOfCGStorages);
             mContextOfCGStorage.SetWorldHostStorage(visibleObjectsCGStorage);
 
             var mainStorage = mContextOfCGStorage.MainCGStorage;

@@ -82,9 +82,9 @@ namespace MyNPCLib.CGStorage
         public override KindOfCGStorage KindOfStorage => KindOfCGStorage.Consolidated;
 
         private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityList;
-        private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityAndUseFactsList { get; set; }
-        private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityAndUseProductionsList { get; set; }
-        private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances { get; set; }
+        private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityAndUseFactsList;
+        private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityAndUseProductionsList;
+        private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances;
 
         public override IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
