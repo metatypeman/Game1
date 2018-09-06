@@ -119,7 +119,10 @@ namespace MyNPCLib
 
             mContextOfCGStorage = new ContextOfCGStorage(mEntityDictionary);
             mContextOfCGStorage.SetHostStorage(mNPCHostContext.SelfHostStorage);
-            mContextOfCGStorage.SetWorlHostStorage(mNPCHostContext.BusOfCGStorages.GeneralStorageWithPublicFacts);
+            mContextOfCGStorage.SetWorldHostStorage(mNPCHostContext.BusOfCGStorages.GeneralStorageWithPublicFacts);
+
+            var visibleObjectsCGStorage = new VisibleObjectsCGStorage(mEntityDictionary, mStorageOfSpecialEntities);
+            mContextOfCGStorage.SetWorldHostStorage(visibleObjectsCGStorage);
 
             var mainStorage = mContextOfCGStorage.MainCGStorage;
 
@@ -862,6 +865,7 @@ namespace MyNPCLib
             mRightHandResourcesManager.Dispose();
            
             mStorageOfNPCProcesses.Dispose();
+            mVisionObjectsStorage.Dispose();
 
             foreach(var processesKVPItem in mProcessesDict)
             {

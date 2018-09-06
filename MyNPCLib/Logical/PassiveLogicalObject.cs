@@ -143,9 +143,9 @@ namespace MyNPCLib.Logical
 
         private void NSetAccessPolicyToFact(ulong propertyKey, AccessPolicyToFact value)
         {
-            var currentPopicy = mLogicalFrame.GetAccessPolicyToFact(propertyKey);
+            var currentPolicy = mLogicalFrame.GetAccessPolicyToFact(propertyKey);
 
-            if (currentPopicy == value)
+            if (currentPolicy == value)
             {
                 return;
             }

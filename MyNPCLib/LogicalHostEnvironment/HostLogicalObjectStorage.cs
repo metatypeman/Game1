@@ -1,6 +1,9 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.CGStorage.Helpers;
+using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.Variants;
+using MyNPCLib.VariantsConverting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,18 +22,28 @@ namespace MyNPCLib.LogicalHostEnvironment
             GeneralHost = new DefaultHostCGStorage(entityDictionary);
             VisibleHost = new DefaultHostCGStorage(entityDictionary);
             PublicHost = new DefaultHostCGStorage(entityDictionary);
+
+            mLogicalSearcher = new LogicalSearcher(EntityDictionary);
+            mKeyOfVarForProperty = entityDictionary.GetKey(mNameOfVarForProperty);
         }
 
         public override KindOfCGStorage KindOfStorage => KindOfCGStorage.OtherProxy;
-        private readonly object mLockObj = new object();
+        private readonly object mHostsLockObj = new object();
         public ulong EntityId { get; private set; }
         public DefaultHostCGStorage GeneralHost { get; private set; }
         public DefaultHostCGStorage VisibleHost { get; private set; }
         public DefaultHostCGStorage PublicHost { get; private set; }
 
+        private LogicalSearcher mLogicalSearcher;
+        private string mNameOfVarForProperty = "?X";
+        private ulong mKeyOfVarForProperty;
+
+        private readonly object mAccessPolicyToFactLockObj = new object();
+        private Dictionary<ulong, KindOfAccessPolicyToFact> mPropertiesAccessPolicyToFactDict = new Dictionary<ulong, KindOfAccessPolicyToFact>();
+
         public override void Append(RuleInstance ruleInstance)
         {
-            lock(mLockObj)
+            lock(mHostsLockObj)
             {
 #if DEBUG
                 LogInstance.Log($"ruleInstance = {ruleInstance}");
@@ -62,7 +75,7 @@ namespace MyNPCLib.LogicalHostEnvironment
 
         public override void Append(ICGStorage storage)
         {
-            lock (mLockObj)
+            lock (mHostsLockObj)
             {
 #if DEBUG
                 LogInstance.Log($"storage = {storage}");
@@ -95,7 +108,7 @@ namespace MyNPCLib.LogicalHostEnvironment
 
         public override void Append(RuleInstancePackage ruleInstancePackage)
         {
-            lock (mLockObj)
+            lock (mHostsLockObj)
             {
 #if DEBUG
                 LogInstance.Log($"ruleInstancePackage = {ruleInstancePackage}");
@@ -129,7 +142,11 @@ namespace MyNPCLib.LogicalHostEnvironment
 
         public override BaseVariant GetPropertyValueAsVariant(ulong entityId, ulong propertyId)
         {
-            d
+            entityId = EntityId;
+            var currentPolicy = GetAccessPolicyToFact(propertyId);
+
+            var searchResult = CreateLogicalSearchResultForGetProperty(entityId, propertyId, currentPolicy);
+            return searchResult.GetResultOfVarAsVariant(mKeyOfVarForProperty);
         }
 
         public BaseVariant GetPropertyValueAsVariant(ulong propertyId)
@@ -145,7 +162,37 @@ namespace MyNPCLib.LogicalHostEnvironment
 
         public override object GetPropertyValueAsObject(ulong entityId, ulong propertyId)
         {
-            d
+            entityId = EntityId;
+            var currentPolicy = GetAccessPolicyToFact(propertyId);
+
+            var searchResult = CreateLogicalSearchResultForGetProperty(entityId, propertyId, currentPolicy);
+            return searchResult.GetResultOfVarAsObject(mKeyOfVarForProperty);
+        }
+
+        private LogicalSearchResult CreateLogicalSearchResultForGetProperty(ulong entityId, ulong propertyId, KindOfAccessPolicyToFact currentPolicy)
+        {
+#if DEBUG
+            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
+#endif
+
+            var queryIndexedRuleInstance = PropertiesOfCGStorageHelper.CreateGetQuery(entityId, propertyId, EntityDictionary, mNameOfVarForProperty, mKeyOfVarForProperty, new List<KindOfAccessPolicyToFact>() { currentPolicy });
+
+#if DEBUG
+            LogInstance.Log($"queryIndexedRuleInstance = {queryIndexedRuleInstance}");
+#endif
+
+            var searchOptions = new LogicalSearchOptions();
+            searchOptions.DataSource = GeneralHost;
+            searchOptions.QueryExpression = queryIndexedRuleInstance;
+            searchOptions.IgnoreAccessPolicy = false;
+
+            var searchResult = mLogicalSearcher.Run(searchOptions);
+
+#if DEBUG
+            LogInstance.Log($"searchResult = {searchResult}");
+#endif
+
+            return searchResult;
         }
 
         public object GetPropertyValueAsObject(ulong propertyId)
@@ -161,7 +208,10 @@ namespace MyNPCLib.LogicalHostEnvironment
 
         public override void SetPropertyValueAsAsVariant(ulong entityId, ulong propertyId, BaseVariant value)
         {
-            d
+            entityId = EntityId;
+            var currentPolicy = GetAccessPolicyToFact(propertyId);
+
+            NSetPropertyValue(entityId, propertyId, value, currentPolicy);
         }
 
         public void SetPropertyValueAsAsVariant(ulong propertyId, BaseVariant value)
@@ -177,7 +227,16 @@ namespace MyNPCLib.LogicalHostEnvironment
 
         public override void SetPropertyValueAsAsObject(ulong entityId, ulong propertyId, object value)
         {
-            d
+            entityId = EntityId;
+            var currentPolicy = GetAccessPolicyToFact(propertyId);
+
+            var variant = VariantsConvertor.ConvertObjectToVariant(value, EntityDictionary);
+
+#if DEBUG
+            LogInstance.Log($"variant = {variant}");
+#endif
+
+            NSetPropertyValue(entityId, propertyId, variant, currentPolicy);
         }
 
         public void SetPropertyValueAsAsObject(ulong propertyId, object value)
@@ -189,6 +248,12 @@ namespace MyNPCLib.LogicalHostEnvironment
         {
             var propertyId = EntityDictionary.GetKey(propertyName);
             SetPropertyValueAsAsObject(EntityId, propertyId, value);
+        }
+
+        private void NSetPropertyValue(ulong entityId, ulong propertyId, BaseVariant value, KindOfAccessPolicyToFact currentPolicy)
+        {
+            var ruleInstance = PropertiesOfCGStorageHelper.CreateRuleInstanceForSetQuery(entityId, propertyId, value, EntityDictionary, new List<KindOfAccessPolicyToFact>() { currentPolicy });
+            Append(ruleInstance);
         }
 
         public object this[ulong propertyKey]
@@ -219,7 +284,10 @@ namespace MyNPCLib.LogicalHostEnvironment
 
         public void SetAccessPolicyToFact(ulong propertyKey, KindOfAccessPolicyToFact value)
         {
-            d
+            lock(mAccessPolicyToFactLockObj)
+            {
+                mPropertiesAccessPolicyToFactDict[propertyKey] = value;
+            }
         }
 
         public void SetAccessPolicyToFact(string propertyName, KindOfAccessPolicyToFact value)
@@ -230,7 +298,15 @@ namespace MyNPCLib.LogicalHostEnvironment
 
         public KindOfAccessPolicyToFact GetAccessPolicyToFact(ulong propertyKey)
         {
-            
+            lock (mAccessPolicyToFactLockObj)
+            {
+                if (mPropertiesAccessPolicyToFactDict.ContainsKey(propertyKey))
+                {
+                    return mPropertiesAccessPolicyToFactDict[propertyKey];
+                }
+
+                return KindOfAccessPolicyToFact.Public;
+            }
         }
 
         public KindOfAccessPolicyToFact GetAccessPolicyToFact(string propertyName)

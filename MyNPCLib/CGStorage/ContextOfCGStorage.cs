@@ -55,7 +55,7 @@ namespace MyNPCLib.CGStorage
             mMainCGStorage.AddStorage(storageOptions);
         }
 
-        public void SetWorlHostStorage(ICGStorage storage)
+        public void SetWorldHostStorage(ICGStorage storage)
         {
             var storageOptions = new SettingsOfStorageForSearchingInThisSession();
             storageOptions.Storage = mGlobalCGStorage;

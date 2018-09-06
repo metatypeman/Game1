@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MyNPCLib.Logical
 {
-    public class VisionObjectsStorage
+    public class VisionObjectsStorage: IDisposable
     {
         public VisionObjectsStorage(IEntityLogger entityLogger, IEntityDictionary entityDictionary, INPCHostContext npcHostContext, SystemPropertiesDictionary systemPropertiesDictionary, StorageOfSpecialEntities storageOfSpecialEntities)
         {
@@ -16,6 +18,8 @@ namespace MyNPCLib.Logical
             mEntityDictionary = entityDictionary;
             mSystemPropertiesDictionary = systemPropertiesDictionary;
             mStorageOfSpecialEntities = storageOfSpecialEntities;
+
+            Task.Run(() => { ThUpdateVisibleEntitiesIdList(); });
         }
 
         private IEntityLogger mEntityLogger;
@@ -138,6 +142,11 @@ namespace MyNPCLib.Logical
             }
         }
 
+        private void UpdateVisibleEntitiesIdList()
+        {
+
+        }
+
         public VisionObjectImpl GetVisionObjectImpl(ulong entityId)
         {
             lock (mLockObj)
@@ -156,6 +165,35 @@ namespace MyNPCLib.Logical
             lock (mLockObj)
             {
                 return mVisibleObjectsImplDict.Where(p => p.Value.IsVisible && entitiesIdList.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value);
+            }
+        }
+
+        private void ThUpdateVisibleEntitiesIdList()
+        {
+            while(true)
+            {
+                lock (mNeedStopLockObj)
+                {
+                    if(mNeedStop)
+                    {
+                        return;
+                    }
+                }
+
+                UpdateVisibleEntitiesIdList();
+
+                Thread.Sleep(500);
+            }
+        }
+
+        private volatile bool mNeedStop;
+        private readonly object mNeedStopLockObj = new object();
+
+        public void Dispose()
+        {
+            lock(mNeedStopLockObj)
+            {
+                mNeedStop = true;
             }
         }
     }
