@@ -4,6 +4,7 @@ using MyNPCLib.CGStorage;
 using MyNPCLib.Logical;
 using MyNPCLib.LogicalHostEnvironment;
 using MyNPCLib.LogicalSoundModeling;
+using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -230,18 +231,18 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mOldLogicalObjectsBus.RegisterObject(instanceId, mSelfLogicalObject);
 
         mHostLogicalObjectStorage["name"] = tmpGameObject.name;
-        mHostLogicalObjectStorage.SetAccessPolicyToFact("alive", AccessPolicyToFact.ForVisible);
-        mHostLogicalObjectStorage.SetAccessPolicyToFact("died", AccessPolicyToFact.ForVisible);
+        mHostLogicalObjectStorage.SetAccessPolicyToFact("alive", KindOfAccessPolicyToFact.ForVisible);
+        mHostLogicalObjectStorage.SetAccessPolicyToFact("died", KindOfAccessPolicyToFact.ForVisible);
 
         mSelfLogicalObject["name"] = tmpGameObject.name;
         mSelfLogicalObject.SetAccessPolicyToFact("alive", AccessPolicyToFact.ForVisible);
         mSelfLogicalObject.SetAccessPolicyToFact("died", AccessPolicyToFact.ForVisible);
 
-        mHostLogicalObjectStorage["alive"] = true;
-        mSelfLogicalObject["alive"] = true;
+        //mHostLogicalObjectStorage["alive"] = true;
+        //mSelfLogicalObject["alive"] = true;
 
-        mHostLogicalObjectStorage["died"] = false;
-        mSelfLogicalObject["died"] = false;
+        //mHostLogicalObjectStorage["died"] = false;
+        //mSelfLogicalObject["died"] = false;
 
         mSelfEntityId = mSelfLogicalObject.EntityId;
 

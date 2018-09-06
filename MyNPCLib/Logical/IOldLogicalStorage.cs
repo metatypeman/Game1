@@ -4,6 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
+    [Obsolete]
     public interface IOldLogicalStorage
     {
         void SetPropertyValue(ulong entityId, ulong propertyId, object value);

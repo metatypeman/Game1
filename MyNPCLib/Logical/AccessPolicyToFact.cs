@@ -4,6 +4,7 @@ using System.Text;
 
 namespace MyNPCLib.Logical
 {
+    [Obsolete]
     public enum AccessPolicyToFact
     {
         Public,
