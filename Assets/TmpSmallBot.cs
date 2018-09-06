@@ -29,8 +29,7 @@ public class TmpSmallBot : MonoBehaviour {
         mLogicalSoundBus = commonLevelHost.LogicalSoundBus;
 
         mContextOfCGStorage = new ContextOfCGStorage(mEntityDictionary);
-        mContextOfCGStorage.Init();
-
+     
         mWordsDict = new WordsDict();
         var cgParserOptions = new CGParserOptions();
         cgParserOptions.WordsDict = mWordsDict;
@@ -126,7 +125,7 @@ public class TmpSmallBot : MonoBehaviour {
 
             //var tstFact = CreateSimpleFact(mEntityDictionary);
 
-            var soundPackage = new InputLogicalSoundPackage(new System.Numerics.Vector3(1, 0, 0), 60, new List<string>() { "human_speech" }, new PassiveListGCStorage(mContextOfCGStorage, ruleInstancesList));
+            var soundPackage = new InputLogicalSoundPackage(new System.Numerics.Vector3(1, 0, 0), 60, new List<string>() { "human_speech" }, new PassiveListGCStorage(mEntityDictionary, ruleInstancesList));
 
             mLogicalSoundBus.PushSoundPackage(soundPackage);
         }

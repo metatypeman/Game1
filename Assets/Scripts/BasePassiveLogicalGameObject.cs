@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using MyNPCLib.Logical;
 using MyNPCLib;
+using MyNPCLib.LogicalHostEnvironment;
 
 namespace Assets.Scripts
 {
@@ -46,18 +47,22 @@ namespace Assets.Scripts
 
         private EntityLogger mEntityLogger = new EntityLogger();
         private PassiveLogicalGameObjectOptions mOptions;
+
+        private HostLogicalObjectStorage mHostLogicalObjectStorage;
         private PassiveLogicalObject mPassiveLogicalObject;
-        public ulong EntityId => mPassiveLogicalObject.EntityId;
+        public ulong EntityId => mHostLogicalObjectStorage.EntityId;
         public object this[ulong propertyKey]
         {
             get
             {
-                return mPassiveLogicalObject[propertyKey];
+                return mHostLogicalObjectStorage[propertyKey];
+                //return mPassiveLogicalObject[propertyKey];
             }
 
             protected set
             {
-                mPassiveLogicalObject[propertyKey] = value;
+                mHostLogicalObjectStorage[propertyKey] = value;
+                //mPassiveLogicalObject[propertyKey] = value;
             }
         }
 
@@ -78,21 +83,28 @@ namespace Assets.Scripts
 
             var commonLevelHost = LevelCommonHostFactory.Get();
 
-            mPassiveLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.LogicalObjectsBus);
+            mHostLogicalObjectStorage = new HostLogicalObjectStorage(commonLevelHost.EntityDictionary);
+            commonLevelHost.BusOfCGStorages.AddStorage(mHostLogicalObjectStorage);
+
+            mPassiveLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.OldLogicalObjectsBus);
 
             var tmpGameObject = gameObject;
             var instanceId = tmpGameObject.GetInstanceID();
+
+            mHostLogicalObjectStorage["name"] = tmpGameObject.name;
 
             mPassiveLogicalObject["name"] = tmpGameObject.name;
 
             if(mOptions.ShowGlobalPosition)
             {
-                mPassiveLogicalObject["global position"] = VectorsConvertor.UnityToNumeric(tmpGameObject.transform.position);
+                var position = VectorsConvertor.UnityToNumeric(tmpGameObject.transform.position);
+                mHostLogicalObjectStorage["global position"] = position;
+                mPassiveLogicalObject["global position"] = position;
             }
 
             OnInitFacts();
 
-            commonLevelHost.LogicalObjectsBus.RegisterObject(instanceId, this);
+            commonLevelHost.OldLogicalObjectsBus.RegisterObject(instanceId, this);
         }
 
         // Update is called once per frame
@@ -106,12 +118,14 @@ namespace Assets.Scripts
         {
             get
             {
-                return mPassiveLogicalObject[propertyName];
+                return mHostLogicalObjectStorage[propertyName];
+                //return mPassiveLogicalObject[propertyName];
             }
 
             set
             {
-                mPassiveLogicalObject[propertyName] = value;
+                mHostLogicalObjectStorage[propertyName] = value;
+                //mPassiveLogicalObject[propertyName] = value;
             }
         }
 

@@ -60,7 +60,7 @@ namespace Assets.Scripts
             {
                 var queryStr = "{: ?Z(?X,?Y)[: {: action :} :] :}";
 
-                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, ContextOfCGStorage);
+                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, EntityDictionary);
                 var query = queryStorage.MainRuleInstance;
 
 #if DEBUG
@@ -121,7 +121,7 @@ namespace Assets.Scripts
 
             var queryStr = "{: direction(go,?X) :}";
 
-            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, ContextOfCGStorage);
+            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, EntityDictionary);
             var query = queryStorage.MainRuleInstance;
 
 #if DEBUG

@@ -127,21 +127,116 @@ namespace MyNPCLib.LogicalHostEnvironment
             }
         }
 
-        public override BaseVariant GetPropertyValueAsVariant(ulong entityId, ulong propertyId);
-        public BaseVariant GetPropertyValueAsVariant(ulong propertyId);
-        public override BaseVariant GetPropertyValueAsVariant(ulong entityId, string propertyName);
-        public BaseVariant GetPropertyValueAsVariant(string propertyName);
-        public override object GetPropertyValueAsObject(ulong entityId, ulong propertyId);
-        public object GetPropertyValueAsObject(ulong propertyId);
-        public override object GetPropertyValueAsObject(ulong entityId, string propertyName);
-        public object GetPropertyValueAsObject(string propertyName);
-        public override void SetPropertyValueAsAsVariant(ulong entityId, ulong propertyId, BaseVariant value);
-        public void SetPropertyValueAsAsVariant(ulong propertyId, BaseVariant value);
-        public override void SetPropertyValueAsAsVariant(ulong entityId, string propertyName, BaseVariant value);
-        public void SetPropertyValueAsAsVariant(string propertyName, BaseVariant value);
-        public override void SetPropertyValueAsAsObject(ulong entityId, ulong propertyId, object value);
-        public void SetPropertyValueAsAsObject(ulong propertyId, object value);
-        public override void SetPropertyValueAsAsObject(ulong entityId, string propertyName, object value);
-        public void SetPropertyValueAsAsObject(string propertyName, object value);
+        public override BaseVariant GetPropertyValueAsVariant(ulong entityId, ulong propertyId)
+        {
+            d
+        }
+
+        public BaseVariant GetPropertyValueAsVariant(ulong propertyId)
+        {
+            return GetPropertyValueAsVariant(EntityId, propertyId);
+        }
+
+        public BaseVariant GetPropertyValueAsVariant(string propertyName)
+        {
+            var propertyId = EntityDictionary.GetKey(propertyName);
+            return GetPropertyValueAsVariant(EntityId, propertyId);
+        }
+
+        public override object GetPropertyValueAsObject(ulong entityId, ulong propertyId)
+        {
+            d
+        }
+
+        public object GetPropertyValueAsObject(ulong propertyId)
+        {
+            return GetPropertyValueAsObject(EntityId, propertyId);
+        }
+
+        public object GetPropertyValueAsObject(string propertyName)
+        {
+            var propertyId = EntityDictionary.GetKey(propertyName);
+            return GetPropertyValueAsObject(EntityId, propertyId);
+        }
+
+        public override void SetPropertyValueAsAsVariant(ulong entityId, ulong propertyId, BaseVariant value)
+        {
+            d
+        }
+
+        public void SetPropertyValueAsAsVariant(ulong propertyId, BaseVariant value)
+        {
+            SetPropertyValueAsAsVariant(EntityId, propertyId, value);
+        }
+
+        public void SetPropertyValueAsAsVariant(string propertyName, BaseVariant value)
+        {
+            var propertyId = EntityDictionary.GetKey(propertyName);
+            SetPropertyValueAsAsVariant(EntityId, propertyId, value);
+        }
+
+        public override void SetPropertyValueAsAsObject(ulong entityId, ulong propertyId, object value)
+        {
+            d
+        }
+
+        public void SetPropertyValueAsAsObject(ulong propertyId, object value)
+        {
+            SetPropertyValueAsAsObject(EntityId, propertyId, value);
+        }
+
+        public void SetPropertyValueAsAsObject(string propertyName, object value)
+        {
+            var propertyId = EntityDictionary.GetKey(propertyName);
+            SetPropertyValueAsAsObject(EntityId, propertyId, value);
+        }
+
+        public object this[ulong propertyKey]
+        {
+            get
+            {
+                return GetPropertyValueAsObject(propertyKey);
+            }
+
+            set
+            {
+                SetPropertyValueAsAsObject(propertyKey, value);
+            }
+        }
+
+        public object this[string propertyName]
+        {
+            get
+            {
+                return GetPropertyValueAsObject(propertyName);
+            }
+
+            set
+            {
+                SetPropertyValueAsAsObject(propertyName, value);
+            }
+        }
+
+        public void SetAccessPolicyToFact(ulong propertyKey, KindOfAccessPolicyToFact value)
+        {
+            d
+        }
+
+        public void SetAccessPolicyToFact(string propertyName, KindOfAccessPolicyToFact value)
+        {
+            var propertyId = EntityDictionary.GetKey(propertyName);
+            SetAccessPolicyToFact(propertyId, value);
+        }
+
+        public KindOfAccessPolicyToFact GetAccessPolicyToFact(ulong propertyKey)
+        {
+            
+        }
+
+        public KindOfAccessPolicyToFact GetAccessPolicyToFact(string propertyName)
+        {
+            var propertyId = EntityDictionary.GetKey(propertyName);
+            return GetAccessPolicyToFact(propertyId);
+        }
     }
 }

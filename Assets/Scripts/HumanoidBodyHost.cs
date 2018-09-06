@@ -229,15 +229,18 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mSelfLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, mOldLogicalObjectsBus, mHostLogicalObjectStorage.EntityId);
         mOldLogicalObjectsBus.RegisterObject(instanceId, mSelfLogicalObject);
 
-        mHostLogicalObjectStorage.SetPropertyValueAsAsObject("name", tmpGameObject.name);
+        mHostLogicalObjectStorage["name"] = tmpGameObject.name;
+        mHostLogicalObjectStorage.SetAccessPolicyToFact("alive", AccessPolicyToFact.ForVisible);
+        mHostLogicalObjectStorage.SetAccessPolicyToFact("died", AccessPolicyToFact.ForVisible);
+
         mSelfLogicalObject["name"] = tmpGameObject.name;
         mSelfLogicalObject.SetAccessPolicyToFact("alive", AccessPolicyToFact.ForVisible);
         mSelfLogicalObject.SetAccessPolicyToFact("died", AccessPolicyToFact.ForVisible);
 
-        mHostLogicalObjectStorage.SetPropertyValueAsAsObject("alive", true);
+        mHostLogicalObjectStorage["alive"] = true;
         mSelfLogicalObject["alive"] = true;
 
-        mHostLogicalObjectStorage.SetPropertyValueAsAsObject("died", false);
+        mHostLogicalObjectStorage["died"] = false;
         mSelfLogicalObject["died"] = false;
 
         mSelfEntityId = mSelfLogicalObject.EntityId;

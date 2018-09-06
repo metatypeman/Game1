@@ -66,12 +66,14 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     {
         get
         {
-            return mPassiveLogicalObject[propertyKey];
+            return mHostLogicalObjectStorage[propertyKey];
+            //return mPassiveLogicalObject[propertyKey];
         }
 
         protected set
         {
-            mPassiveLogicalObject[propertyKey] = value;
+            mHostLogicalObjectStorage[propertyKey] = value;
+            //mPassiveLogicalObject[propertyKey] = value;
         }
     }
 
@@ -124,7 +126,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         var tmpGameObject = gameObject;
         var instanceId = tmpGameObject.GetInstanceID();
 
-        mHostLogicalObjectStorage.SetPropertyValueAsAsObject("name", tmpGameObject.name);
+        mHostLogicalObjectStorage["name"] = tmpGameObject.name;
         mPassiveLogicalObject["name"] = tmpGameObject.name;
 
         commonLevelHost.OldLogicalObjectsBus.RegisterObject(instanceId, this);
