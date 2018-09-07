@@ -16,7 +16,6 @@ namespace Assets.Scripts
         NPCProcessInfoCache NPCProcessInfoCache { get; }
         OldLogicalObjectsBus OldLogicalObjectsBus { get; }
         BusOfCGStorages BusOfCGStorages { get; }
-        QueriesCache QueriesCache { get; }
         HandThingsBus HandThingsBus { get; }
         LogicalSoundBus LogicalSoundBus { get; }
     }

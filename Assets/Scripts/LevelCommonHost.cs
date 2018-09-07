@@ -23,7 +23,6 @@ namespace Assets.Scripts
             mNPCProcessInfoCache = new NPCProcessInfoCache();
             mOldLogicalObjectsBus = new OldLogicalObjectsBus();
             mBusOfCGStorages = new BusOfCGStorages(mEntityDictionary);
-            mQueriesCache = new QueriesCache(mEntityDictionary);
             mHandThingsBus = new HandThingsBus();
             mLogicalSoundBus = new LogicalSoundBus();
         }
@@ -41,10 +40,6 @@ namespace Assets.Scripts
 
         private BusOfCGStorages mBusOfCGStorages;
         public BusOfCGStorages BusOfCGStorages => mBusOfCGStorages;
-
-        private QueriesCache mQueriesCache;
-
-        public QueriesCache QueriesCache => mQueriesCache;
 
         private HandThingsBus mHandThingsBus;
 

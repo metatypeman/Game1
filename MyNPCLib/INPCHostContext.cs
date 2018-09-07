@@ -14,7 +14,6 @@ namespace MyNPCLib
         INPCBodyHost BodyHost { get; }
         INPCHandHost RightHandHost { get; }
         INPCHandHost LeftHandHost { get; }
-        IOldLogicalStorage OldHostLogicalStorage { get; }
         ICGStorage SelfHostStorage { get; }
         IBusOfCGStorages BusOfCGStorages { get; }
         ulong SelfEntityId { get; }

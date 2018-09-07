@@ -8,8 +8,8 @@ namespace MyNPCLib
     public class BaseNPCContextWithBlackBoard<BlackBoardType>: BaseNPCContext 
         where BlackBoardType: BaseBlackBoard, new()
     {
-        public BaseNPCContextWithBlackBoard(IEntityLogger entityLogger, IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, INPCHostContext npcHostContext = null, QueriesCache queriesCache = null)
-            : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext, queriesCache)
+        public BaseNPCContextWithBlackBoard(IEntityLogger entityLogger, IEntityDictionary entityDictionary = null, NPCProcessInfoCache npcProcessInfoCache = null, INPCHostContext npcHostContext = null)
+            : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext)
         {
             mBlackBoard = new BlackBoardType();
             mBlackBoard.EntityLogger = entityLogger;

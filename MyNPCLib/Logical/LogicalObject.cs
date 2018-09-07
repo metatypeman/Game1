@@ -11,7 +11,7 @@ namespace MyNPCLib.Logical
     {
         public override bool IsConcrete => false;
 
-        public LogicalObject(IEntityLogger entityLogger, string query, IEntityDictionary entityDictionary, ICGStorage source, QueriesCache queriesCache, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
+        public LogicalObject(IEntityLogger entityLogger, string query, IEntityDictionary entityDictionary, ICGStorage source, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
             : base (entityLogger, systemPropertiesDictionary)
         {
 #if DEBUG
@@ -23,8 +23,6 @@ namespace MyNPCLib.Logical
             mSource.OnChanged += MSource_OnChanged;
 
             mQueryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(query, entityDictionary);
-
-            //mPlan = queriesCache.CreatePlan(query);
 
 #if DEBUG
             Log($"End query = {query}");
