@@ -9,7 +9,6 @@ using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.Dot;
 using MyNPCLib.IndexedPersistLogicalData;
 using MyNPCLib.LegacyConvertors;
-using MyNPCLib.LegacyParser;
 using MyNPCLib.Logical;
 using MyNPCLib.LogicalHostEnvironment;
 using MyNPCLib.LogicalSearchEngine;
@@ -2489,90 +2488,6 @@ namespace TmpSandBox
 
         private static void TSTLexer()
         {
-            var queryStr = "!((name='helen'|name='ann')&class='girl')";
-            LogInstance.Log($"queryStr = {queryStr}");
-
-            //var lexer = new Lexer(queryStr);
-            //Token token = null;
-            //while ((token = lexer.GetToken()) != null)
-            //{
-            //    LogInstance.Log($"token = {token}");
-            //}
-            var globalEntityDictionary = new EntityDictionary();
-            var context = new LegacyParserContext(queryStr, globalEntityDictionary);
-            //Token token = null;
-            //while ((token = context.GetToken()) != null)
-            //{
-            //    LogInstance.Log($"token = {token}");
-            //}
-            //var parser = new LogicalExpressionParser(context);
-            //parser.Run();
-            var node = LegacyLogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"node = {node}");
-            
-            queryStr = "!((name='helen'&name='ann')|class='girl')";
-            LogInstance.Log($"queryStr = {queryStr}");
-
-            context = new LegacyParserContext(queryStr, globalEntityDictionary);
-
-            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"node = {node}");
-
-            queryStr = "(name='helen'&name='ann')|class='girl'";
-            LogInstance.Log($"queryStr = {queryStr}");
-
-            context = new LegacyParserContext(queryStr, globalEntityDictionary);
-           
-            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"node = {node}");
-
-            queryStr = "class='girl'|(name='helen'&name='ann')";
-            LogInstance.Log($"queryStr = {queryStr}");
-
-            context = new LegacyParserContext(queryStr, globalEntityDictionary);
-
-            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"node = {node}");
-
-            queryStr = "class='girl'&(name='helen'&name='ann')";
-            LogInstance.Log($"queryStr = {queryStr}");
-
-            context = new LegacyParserContext(queryStr, globalEntityDictionary);
-
-            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"node = {node}");
-
-            queryStr = "class='girl'&!(name='helen'&name='ann')";
-            LogInstance.Log($"queryStr = {queryStr}");
-
-            context = new LegacyParserContext(queryStr, globalEntityDictionary);
-
-            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"node = {node}");
-
-            queryStr = "class='girl'|!(name='helen'&name='ann')";
-            LogInstance.Log($"queryStr = {queryStr}");
-
-            context = new LegacyParserContext(queryStr, globalEntityDictionary);
-
-            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"node = {node}");
-
-            queryStr = "!class='girl'";
-            LogInstance.Log($"queryStr = {queryStr}");
-
-            context = new LegacyParserContext(queryStr, globalEntityDictionary);
-
-            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"node = {node}");
-
-            queryStr = "class='girl'";
-            LogInstance.Log($"queryStr = {queryStr}");
-
-            context = new LegacyParserContext(queryStr, globalEntityDictionary);
-
-            node = LegacyLogicalExpressionParserHelper.CreateNode(context);
-            LogInstance.Log($"node = {node}");
         }
 
         private static void TSTLogicalAST()
@@ -2586,63 +2501,8 @@ namespace TmpSandBox
 
             var context = new ContextOfCGStorage(globalEntityDictionary);
             
-            var indexingStorage = new LogicalIndexStorage(entityLogger);
-
             var namePropertyId = globalEntityDictionary.GetKey("name");
             var classPropertyId = globalEntityDictionary.GetKey("class");
-
-            var passiveLogicalObject = new PassiveLogicalObject(entityLogger, globalEntityDictionary, indexingStorage);
-
-            indexingStorage.RegisterObject(passiveLogicalObject);
-
-            passiveLogicalObject[namePropertyId] = "helen";
-            passiveLogicalObject[classPropertyId] = "girl";
-
-            var passiveLogicalObject_2 = new PassiveLogicalObject(entityLogger, globalEntityDictionary, indexingStorage);
-
-            indexingStorage.RegisterObject(passiveLogicalObject_2);
-
-            passiveLogicalObject_2[namePropertyId] = "ann";
-            passiveLogicalObject_2[classPropertyId] = "girl";
-
-            var passiveLogicalObject_3 = new PassiveLogicalObject(entityLogger, globalEntityDictionary, indexingStorage);
-
-            indexingStorage.RegisterObject(passiveLogicalObject_3);
-
-            passiveLogicalObject_3[namePropertyId] = "Beatles";
-            passiveLogicalObject_3[classPropertyId] = "band";
-
-            //indexingStorage.PutPropertyValue(12, namePropertyId, "helen");
-
-            var conditionNode = new ConditionOfQueryASTNode();
-            conditionNode.PropertyId = namePropertyId;
-            conditionNode.Value = "helen";
-
-            var conditionNode_2 = new ConditionOfQueryASTNode();
-            conditionNode_2.PropertyId = namePropertyId;
-            conditionNode_2.Value = "ann";
-
-            var orNode = new BinaryOperatorOfQueryASTNode();
-            orNode.OperatorId = KindOfBinaryOperators.Or;
-            orNode.Left = conditionNode;
-            orNode.Right = conditionNode_2;
-
-            var conditionNode_1 = new ConditionOfQueryASTNode();
-            conditionNode_1.PropertyId = classPropertyId;
-            conditionNode_1.Value = "girl";
-
-            var andNode = new BinaryOperatorOfQueryASTNode();
-            andNode.OperatorId = KindOfBinaryOperators.And;
-            andNode.Left = orNode;
-            andNode.Right = conditionNode_1;
-
-            var notNode = new UnaryOperatorOfQueryASTNode();
-            notNode.OperatorId = KindOfUnaryOperators.Not;
-            notNode.Left = andNode;
-
-            LogInstance.Log($"notNode = {notNode}");
-
-            var queryCache = new QueriesCache(globalEntityDictionary);
 
             var systemPropertiesDictionary = new SystemPropertiesDictionary(globalEntityDictionary);
 
@@ -2651,64 +2511,6 @@ namespace TmpSandBox
             var storageOfSpecialEntities = new StorageOfSpecialEntities();
             storageOfSpecialEntities.SelfEntityId = npcHostContext.SelfEntityId;
             var visionObjectsStorage = new VisionObjectsStorage(entityLogger, globalEntityDictionary, npcHostContext, systemPropertiesDictionary, storageOfSpecialEntities);
-
-            var queryStr = "!((name=helen|name=ann)&class=girl)";
-            var logicalObject = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, context.MainCGStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
-
-            var entitiesIdList = logicalObject.CurrentEntitiesIdList;
-
-            LogInstance.Log($"entitiesIdList.Count = {entitiesIdList.Count}");
-            foreach (var entityId in entitiesIdList)
-            {
-                LogInstance.Log($"entityId = {entityId}");
-            }
-
-            passiveLogicalObject_2[classPropertyId] = "boy";
-
-            Thread.Sleep(100);
-
-            entitiesIdList = logicalObject.CurrentEntitiesIdList;
-
-            LogInstance.Log($"(2) entitiesIdList.Count = {entitiesIdList.Count}");
-            foreach (var entityId in entitiesIdList)
-            {
-                LogInstance.Log($"(2) entityId = {entityId}");
-            }
-
-            var logicalObject_2 = new LogicalObject(entityLogger, queryStr, globalEntityDictionary, context.MainCGStorage, queryCache, systemPropertiesDictionary, visionObjectsStorage);
-
-            entitiesIdList = logicalObject.CurrentEntitiesIdList;
-
-            LogInstance.Log($"(3) entitiesIdList.Count = {entitiesIdList.Count}");
-            foreach (var entityId in entitiesIdList)
-            {
-                LogInstance.Log($"(3) entityId = {entityId}");
-            }
-
-            var resultOfcomparsing = logicalObject == logicalObject_2;
-
-            LogInstance.Log($"resultOfcomparsing = {resultOfcomparsing}");
-
-            resultOfcomparsing = logicalObject_2 == logicalObject;
-
-            LogInstance.Log($"(2) resultOfcomparsing = {resultOfcomparsing}");
-
-            /*var list1 = new List<int>() { 1 };
-            var list2 = new List<int>() { 1, 2 };
-
-            var except1_2 = list1.Except(list2).ToList();
-            LogInstance.Log($"except1_2.Count = {except1_2.Count}");
-            foreach (var entityId in except1_2)
-            {
-                LogInstance.Log($"(1_2) entityId = {entityId}");
-            }
-
-            var except2_1 = list2.Except(list1).ToList();
-            LogInstance.Log($"except2_1.Count = {except2_1.Count}");
-            foreach (var entityId in except2_1)
-            {
-                LogInstance.Log($"(2_1) entityId = {entityId}");
-            }*/
         }
 
         private static Dictionary<int, CancellationToken> mCancelationTokenDict = new Dictionary<int, CancellationToken>();
@@ -2830,8 +2632,6 @@ namespace TmpSandBox
 
             var stubOfHumanoidBodyController = new StubOfNPCHostContext(entityLogger, globalEntityDictionary);
 
-            var indexingStorage = stubOfHumanoidBodyController.LogicalIndexStorageImpl;
-
             var context = new MyNPCContext(entityLogger, globalEntityDictionary, stubOfHumanoidBodyController);
             context.Bootstrap();
 
@@ -2845,27 +2645,6 @@ namespace TmpSandBox
 
             var namePropertyId = globalEntityDictionary.GetKey("name");
             var classPropertyId = globalEntityDictionary.GetKey("class");
-
-            var passiveLogicalObject = new PassiveLogicalObject(entityLogger, globalEntityDictionary, indexingStorage);
-
-            indexingStorage.RegisterObject(passiveLogicalObject);
-
-            passiveLogicalObject[namePropertyId] = "helen";
-            passiveLogicalObject[classPropertyId] = "girl";
-
-            var passiveLogicalObject_2 = new PassiveLogicalObject(entityLogger, globalEntityDictionary, indexingStorage);
-
-            indexingStorage.RegisterObject(passiveLogicalObject_2);
-
-            passiveLogicalObject_2[namePropertyId] = "ann";
-            passiveLogicalObject_2[classPropertyId] = "girl";
-
-            var passiveLogicalObject_3 = new PassiveLogicalObject(entityLogger, globalEntityDictionary, indexingStorage);
-
-            indexingStorage.RegisterObject(passiveLogicalObject_3);
-
-            passiveLogicalObject_3[namePropertyId] = "Beatles";
-            passiveLogicalObject_3[classPropertyId] = "band";
 
             var queryStr = "!((name=helen|name=ann)&class=girl)";
 

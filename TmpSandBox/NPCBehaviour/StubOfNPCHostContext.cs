@@ -134,36 +134,28 @@ namespace TmpSandBox.NPCBehaviour
             mBodyHost = new StubOfNPCBodyHost();
             mRightHandHost = new StubOfNPCHandHost(entityLogger);
             mLeftHandHost = new StubOfNPCHandHost(entityLogger);
-            LogicalIndexStorageImpl = new LogicalIndexStorage(entityLogger);
-
+            
             mHostLogicalObjectStorage = new HostLogicalObjectStorage(entityDictionary);
             mBusOfCGStorages = new BusOfCGStorages(entityDictionary);
             mBusOfCGStorages.AddStorage(mHostLogicalObjectStorage);
-
-            mSelfLogicalObject = new PassiveLogicalObject(entityLogger, entityDictionary, LogicalIndexStorageImpl, mHostLogicalObjectStorage.EntityId);
-            LogicalIndexStorageImpl.RegisterObject(mSelfLogicalObject);
         }
 
         private IEntityLogger mEntityLogger;
         private StubOfNPCBodyHost mBodyHost;
         private StubOfNPCHandHost mRightHandHost;
         private StubOfNPCHandHost mLeftHandHost;
-        public LogicalIndexStorage LogicalIndexStorageImpl { get; private set; }
-
-        private PassiveLogicalObject mSelfLogicalObject;
-
+        
         public INPCBodyHost BodyHost => mBodyHost;
         public INPCHandHost RightHandHost => mRightHandHost;
         public INPCHandHost LeftHandHost => mLeftHandHost;
-        public IOldLogicalStorage OldHostLogicalStorage => LogicalIndexStorageImpl;
-
+        
         private HostLogicalObjectStorage mHostLogicalObjectStorage;
         public ICGStorage SelfHostStorage => mHostLogicalObjectStorage.GeneralHost;
 
         private BusOfCGStorages mBusOfCGStorages;
         public IBusOfCGStorages BusOfCGStorages => mBusOfCGStorages;
 
-        public ulong SelfEntityId => mSelfLogicalObject.EntityId;
+        public ulong SelfEntityId => mHostLogicalObjectStorage.EntityId;
         public bool IsReady => mBodyHost.IsReady;
         public event Action OnReady;
 

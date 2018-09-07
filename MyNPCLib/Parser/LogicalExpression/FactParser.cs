@@ -34,8 +34,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnRun()
         {
 #if DEBUG
-            LogInstance.Log($"mState = {mState}");
-            LogInstance.Log($"CurrToken = {CurrToken}");
+            //LogInstance.Log($"mState = {mState}");
+            //LogInstance.Log($"CurrToken = {CurrToken}");
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -83,7 +83,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     {
                         case TokenKind.EndFact:
 #if DEBUG
-                            LogInstance.Log($"Context.TailOfString = {Context.TailOfString}");
+                            //LogInstance.Log($"Context.TailOfString = {Context.TailOfString}");
 #endif
 
                             ProcessEndFact();
@@ -91,7 +91,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
                         default:
 #if DEBUG
-                            LogInstance.Log($"Context.TailOfString = {Context.TailOfString}");
+                            //LogInstance.Log($"Context.TailOfString = {Context.TailOfString}");
 #endif
                             if (currTokenKind == TerminateTokenKind && currTokenKind != TokenKind.Unknown)
                             {
@@ -107,7 +107,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     {
                         case TokenKind.EndFact:
 #if DEBUG
-                            LogInstance.Log($"Context.TailOfString = {Context.TailOfString}");
+                            //LogInstance.Log($"Context.TailOfString = {Context.TailOfString}");
 #endif
                             ProcessEndFact();
                             break;
@@ -155,7 +155,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             mASTNode.AccessPolicy = accessPolicyResult;
 
 #if DEBUG
-            LogInstance.Log($"accessPolicyResult = {accessPolicyResult}");
+            //LogInstance.Log($"accessPolicyResult = {accessPolicyResult}");
 #endif
 
             mState = State.WaitForContent;
@@ -184,7 +184,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             mASTNode.SecondaryKind = rulePartResult.SecondaryKind;
 
 #if DEBUG
-            LogInstance.Log($"Part_1Filled = {Part_1Filled}");
+            //LogInstance.Log($"Part_1Filled = {Part_1Filled}");
 #endif
 
             if(Part_1Filled)
@@ -201,7 +201,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessArrow()
         {
 #if DEBUG
-            LogInstance.Log($"ProcessArrow !!!!! CurrToken = {CurrToken}");
+            //LogInstance.Log($"ProcessArrow !!!!! CurrToken = {CurrToken}");
 #endif
 
             mArrowToken = CurrToken;
@@ -211,7 +211,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessEndFact()
         {
 #if DEBUG
-            LogInstance.Log("ProcessEndFact !!!!!!");
+            //LogInstance.Log("ProcessEndFact !!!!!!");
 #endif
 
             var nextToken = GetToken();
@@ -224,7 +224,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             var nextTokenKind = nextToken.TokenKind;
 
 #if DEBUG
-            LogInstance.Log($"nextToken = {nextToken}");
+            //LogInstance.Log($"nextToken = {nextToken}");
 #endif
             Recovery(nextToken);
 
@@ -243,7 +243,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessAnnotation()
         {
 #if DEBUG
-            LogInstance.Log("ProcessAnnotation !!!!!!!");
+            //LogInstance.Log("ProcessAnnotation !!!!!!!");
 #endif
 
             var annotationParser = new AnnotationParser(Context);
@@ -255,11 +255,11 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnExit()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
 #endif
 
 #if DEBUG
-            LogInstance.Log($"mASTNode = {mASTNode}");
+            //LogInstance.Log($"mASTNode = {mASTNode}");
 #endif
 
             if(mArrowToken == null)
@@ -313,7 +313,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
     }
