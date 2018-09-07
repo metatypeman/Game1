@@ -19,7 +19,7 @@ namespace MyNPCLib.LogicalSearchEngine
         public LogicalSearchResult Run(LogicalSearchOptions options)
         {
 #if DEBUG
-            LogInstance.Log($"options = {options}");
+            //LogInstance.Log($"options = {options}");
 #endif
             var queryDataSource = options.QuerySource;
             IndexedRuleInstance queryExpression = null;

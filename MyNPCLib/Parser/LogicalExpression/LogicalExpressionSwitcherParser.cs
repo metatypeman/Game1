@@ -26,8 +26,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnRun()
         {
 #if DEBUG
-            LogInstance.Log($"mState = {mState}");
-            LogInstance.Log($"CurrToken = {CurrToken}");
+            //LogInstance.Log($"mState = {mState}");
+            //LogInstance.Log($"CurrToken = {CurrToken}");
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -42,8 +42,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 var nextToken = GetToken();
                                 var nextTokenKind = nextToken.TokenKind;
 #if DEBUG
-                                LogInstance.Log($"nextToken = {nextToken}");
-                                LogInstance.Log($"nextTokenKind = {nextTokenKind}");
+                                //LogInstance.Log($"nextToken = {nextToken}");
+                                //LogInstance.Log($"nextTokenKind = {nextTokenKind}");
 #endif
 
                                 switch(nextTokenKind)
@@ -83,8 +83,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 var nextToken = GetToken();
                                 var nextTokenKind = nextToken.TokenKind;
 #if DEBUG
-                                LogInstance.Log($"nextToken = {nextToken}");
-                                LogInstance.Log($"nextTokenKind = {nextTokenKind}");
+                                //LogInstance.Log($"nextToken = {nextToken}");
+                                //LogInstance.Log($"nextTokenKind = {nextTokenKind}");
 #endif
 
                                 switch (nextTokenKind)
@@ -126,7 +126,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessEntity()
         {
 #if DEBUG
-            LogInstance.Log($"ProcessEntity!!!!!!!! CurrToken = {CurrToken}");
+            //LogInstance.Log($"ProcessEntity!!!!!!!! CurrToken = {CurrToken}");
 #endif
             mASTNode = new ASTNodeOfLogicalQuery();
             mASTNode.Kind = KindOfASTNodeOfLogicalQuery.EntityRef;
@@ -139,7 +139,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessNumber()
         {
 #if DEBUG
-            LogInstance.Log($"ProcessNumber!!!!!!!! CurrToken = {CurrToken}");
+            //LogInstance.Log($"ProcessNumber!!!!!!!! CurrToken = {CurrToken}");
 #endif
 
             mASTNode = new ASTNodeOfLogicalQuery();
@@ -159,14 +159,14 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
 
 #if DEBUG
-            LogInstance.Log($"ProcessNumber!!!!!!!! mASTNode = {mASTNode}");
+            //LogInstance.Log($"ProcessNumber!!!!!!!! mASTNode = {mASTNode}");
 #endif
         }
 
         private void ProcessConcept()
         {
 #if DEBUG
-            LogInstance.Log($"CONCEPT!!!!!!!! CurrToken = {CurrToken}");
+            //LogInstance.Log($"CONCEPT!!!!!!!! CurrToken = {CurrToken}");
 #endif
 
             mASTNode = new ASTNodeOfLogicalQuery();
@@ -178,7 +178,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessQuestionParam()
         {
 #if DEBUG
-            LogInstance.Log($"ProcessQuestionParam!!!!!!!! CurrToken = {CurrToken}");
+            //LogInstance.Log($"ProcessQuestionParam!!!!!!!! CurrToken = {CurrToken}");
 #endif
 
             mASTNode = new ASTNodeOfLogicalQuery();
@@ -191,7 +191,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessStubOfConcept()
         {
 #if DEBUG
-            LogInstance.Log("ProcessStubOfConcept!!!!!!!!");
+            //LogInstance.Log("ProcessStubOfConcept!!!!!!!!");
 #endif
 
             mASTNode = new ASTNodeOfLogicalQuery();
@@ -211,7 +211,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessRelation()
         {
 #if DEBUG
-            LogInstance.Log("ProcessRelation!!!!!!!!");
+            //LogInstance.Log("ProcessRelation!!!!!!!!");
 #endif
 
             Recovery(CurrToken);
@@ -225,11 +225,11 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnExit()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
 #endif
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
     }

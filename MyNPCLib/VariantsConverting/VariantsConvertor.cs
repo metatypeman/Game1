@@ -13,7 +13,7 @@ namespace MyNPCLib.VariantsConverting
         public static BaseVariant ConvertObjectToVariant(object source, IEntityDictionary entityDictionary)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             var type = source.GetType();
@@ -44,7 +44,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseVariant ConvertStringToVariant(string source, IEntityDictionary entityDictionary)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
             var key = entityDictionary.GetKey(source);
             var kindOfKey = entityDictionary.GetKindOfKey(key);
@@ -73,7 +73,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseVariant ConvertRuleInstanceToVariant(RuleInstance ruleInstance)
         {
 #if DEBUG
-            LogInstance.Log($"ruleInstance = {ruleInstance}");
+            //LogInstance.Log($"ruleInstance = {ruleInstance}");
 #endif
 
             if (ruleInstance.Kind == KindOfRuleInstance.EntityCondition)
@@ -91,7 +91,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseVariant ConvertObjectValueToVariant(object source)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             var result = new ValueVariant(source);
@@ -101,7 +101,7 @@ namespace MyNPCLib.VariantsConverting
         public static BaseVariant ConvertResultOfVarToVariant(ResultOfVarOfQueryToRelation source)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             var foundExpression = source.FoundExpression;
@@ -138,7 +138,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseVariant ConvertResultOfVarToVariantAsConcept(ConceptExpressionNode expressionNode)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
             var result = new ConceptVariant(expressionNode.Key, expressionNode.Name, expressionNode.Annotations);
@@ -148,7 +148,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseVariant ConvertResultOfVarToVariantAsEntity(EntityRefExpressionNode expressionNode)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
             var result = new EntityVariant(expressionNode.Key, expressionNode.Name, expressionNode.Annotations);
@@ -158,7 +158,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseVariant ConvertResultOfVarToVariantAsValue(ValueExpressionNode expressionNode)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
             var result = new ValueVariant(expressionNode.Value, expressionNode.Annotations);
@@ -168,7 +168,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseVariant ConvertResultOfVarToVariantAsFact(FactExpressionNode expressionNode, ResultOfVarOfQueryToRelation source)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
             var factRuleInstance = source.Parent.Storage.GetRuleInstanceByKey(expressionNode.Key);
@@ -180,7 +180,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseVariant ConvertResultOfVarToVariantAsEntityCondition(EntityConditionExpressionNode expressionNode, ResultOfVarOfQueryToRelation source)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
             var entityConditionRec = source.Parent.RuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == expressionNode.Key);
@@ -191,12 +191,12 @@ namespace MyNPCLib.VariantsConverting
             }
 
 #if DEBUG
-            LogInstance.Log($"entityConditionRec = {entityConditionRec}");
+            //LogInstance.Log($"entityConditionRec = {entityConditionRec}");
 #endif
             var keyOfEntityConditionFact = entityConditionRec.Key;
 
 #if DEBUG
-            LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
+            //LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");
 #endif
             var entityConditionRuleInstance = source.Parent.Storage.GetRuleInstanceByKey(keyOfEntityConditionFact);
 
@@ -211,7 +211,7 @@ namespace MyNPCLib.VariantsConverting
         public static BaseExpressionNode ConvertVariantToExpressionNode(BaseVariant source)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
             var kind = source.Kind;
 
@@ -240,7 +240,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseExpressionNode ConvertConceptVariant(ConceptVariant source)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             var result = new ConceptExpressionNode();
@@ -253,7 +253,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseExpressionNode ConvertEntityVariant(EntityVariant source)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             var result = new EntityRefExpressionNode();
@@ -266,7 +266,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseExpressionNode ConvertValueVariant(ValueVariant source)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             var result = new ValueExpressionNode();
@@ -278,7 +278,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseExpressionNode ConvertFactVariant(FactVariant source)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             var ruleInstance = source.RuleInstance;
@@ -292,7 +292,7 @@ namespace MyNPCLib.VariantsConverting
         private static BaseExpressionNode ConvertEntityConditionVariant(EntityConditionVariant source)
         {
 #if DEBUG
-            LogInstance.Log($"source = {source}");
+            //LogInstance.Log($"source = {source}");
 #endif
 
             var result = new EntityConditionExpressionNode();

@@ -35,8 +35,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnRun()
         {
 #if DEBUG
-            LogInstance.Log($"mState = {mState}");
-            LogInstance.Log($"CurrToken = {CurrToken}");
+            //LogInstance.Log($"mState = {mState}");
+            //LogInstance.Log($"CurrToken = {CurrToken}");
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -163,7 +163,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessPropertyName()
         {
 #if DEBUG
-            LogInstance.Log($"ProcessPropertyName !!!!!!!!! CurrToken = {CurrToken}");
+            //LogInstance.Log($"ProcessPropertyName !!!!!!!!! CurrToken = {CurrToken}");
 #endif
 
             mPropertyName = CurrToken.Content;
@@ -174,8 +174,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessPropertyValue()
         {
 #if DEBUG
-            LogInstance.Log($"ProcessPropertyValue !!!!!!!! CurrToken = {CurrToken}");
-            LogInstance.Log($"mPropertyName = {mPropertyName}");
+            //LogInstance.Log($"ProcessPropertyValue !!!!!!!! CurrToken = {CurrToken}");
+            //LogInstance.Log($"mPropertyName = {mPropertyName}");
 #endif
 
             var propertyValue = new ASTNodeOfLogicalQuery();
@@ -216,10 +216,10 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void PutRelationLikeNodeToTree(ASTNodeOfLogicalQuery node)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
-            LogInstance.Log($"mASTNode = {mASTNode}");
-            LogInstance.Log($"mCurrentNode = {mCurrentNode}");
-            LogInstance.Log($"mClusterNode = {mClusterNode}");
+            //LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"mASTNode = {mASTNode}");
+            //LogInstance.Log($"mCurrentNode = {mCurrentNode}");
+            //LogInstance.Log($"mClusterNode = {mClusterNode}");
 #endif
             if (mASTNode == null)
             {
@@ -265,9 +265,9 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
 
 #if DEBUG
-            LogInstance.Log($"after mASTNode = {mASTNode}");
-            LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
-            LogInstance.Log($"after mClusterNode = {mClusterNode}");
+            //LogInstance.Log($"after mASTNode = {mASTNode}");
+            //LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+            //LogInstance.Log($"after mClusterNode = {mClusterNode}");
 #endif
 
             //throw new NotImplementedException();
@@ -276,7 +276,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessUnaryOperator()
         {
 #if DEBUG
-            LogInstance.Log("ProcessUnaryOperator !!!!!");
+            //LogInstance.Log("ProcessUnaryOperator !!!!!");
 #endif
 
             var operatorToken = CurrToken;
@@ -297,9 +297,9 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
 
 #if DEBUG
-            LogInstance.Log($"mASTNode = {mASTNode}");
-            LogInstance.Log($"mCurrentNode = {mCurrentNode}");
-            LogInstance.Log($"mClusterNode = {mClusterNode}");
+            //LogInstance.Log($"mASTNode = {mASTNode}");
+            //LogInstance.Log($"mCurrentNode = {mCurrentNode}");
+            //LogInstance.Log($"mClusterNode = {mClusterNode}");
 #endif
 
             if (mASTNode == null)
@@ -374,9 +374,9 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
 
 #if DEBUG
-            LogInstance.Log($"after mASTNode = {mASTNode}");
-            LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
-            LogInstance.Log($"after mClusterNode = {mClusterNode}");
+            //LogInstance.Log($"after mASTNode = {mASTNode}");
+            //LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+            //LogInstance.Log($"after mClusterNode = {mClusterNode}");
 #endif
 
             mState = State.GotUnaryOperator;
@@ -386,7 +386,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessBinaryOperator()
         {
 #if DEBUG
-            LogInstance.Log("ProcessBinaryOperator !!!!!!!");
+            //LogInstance.Log("ProcessBinaryOperator !!!!!!!");
 #endif
 
             var operatorToken = CurrToken;
@@ -416,9 +416,9 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
 
 #if DEBUG
-            LogInstance.Log($"mASTNode = {mASTNode}");
-            LogInstance.Log($"mCurrentNode = {mCurrentNode}");
-            LogInstance.Log($"mClusterNode = {mClusterNode}");
+            //LogInstance.Log($"mASTNode = {mASTNode}");
+            //LogInstance.Log($"mCurrentNode = {mCurrentNode}");
+            //LogInstance.Log($"mClusterNode = {mClusterNode}");
 #endif
 
             var kindOfClusterNode = mClusterNode.Kind;
@@ -471,9 +471,9 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
 
 #if DEBUG
-            LogInstance.Log($"after mASTNode = {mASTNode}");
-            LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
-            LogInstance.Log($"after mClusterNode = {mClusterNode}");
+            //LogInstance.Log($"after mASTNode = {mASTNode}");
+            //LogInstance.Log($"after mCurrentNode = {mCurrentNode}");
+            //LogInstance.Log($"after mClusterNode = {mClusterNode}");
 #endif
 
             mState = State.GotBinaryOperator;
@@ -484,7 +484,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessAnnotation()
         {
 #if DEBUG
-            LogInstance.Log("ProcessAnnotation !!!!!!!");
+            //LogInstance.Log("ProcessAnnotation !!!!!!!");
 #endif
 
             Recovery(CurrToken);
@@ -492,7 +492,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             annotationParser.Run();
 
 #if DEBUG
-            LogInstance.Log($"mLastNode = {mLastNode}");
+            //LogInstance.Log($"mLastNode = {mLastNode}");
 #endif
 
             var annotationsResult = annotationParser.ResultsList;
@@ -500,7 +500,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             mLastNode.AnnotationsList = annotationsResult;
 
 #if DEBUG
-            LogInstance.Log($"after mLastNode = {mLastNode}");
+            //LogInstance.Log($"after mLastNode = {mLastNode}");
 #endif
 
             //throw new NotImplementedException();
@@ -509,7 +509,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessGroup()
         {
 #if DEBUG
-            LogInstance.Log("ProcessGroup !!!!!!!");
+            //LogInstance.Log("ProcessGroup !!!!!!!");
 #endif
             var logicalExpressionParser = new EntityConditionLogicalExpressionParser(Context, TokenKind.CloseRoundBracket);
             logicalExpressionParser.Run();
@@ -535,7 +535,7 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             mState = State.GotProperyValue;
 #if DEBUG
-            LogInstance.Log("End ProcessGroup !!!!!!!");
+            //LogInstance.Log("End ProcessGroup !!!!!!!");
 #endif
 
             //throw new NotImplementedException();
@@ -544,15 +544,15 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnExit()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
 #endif
 
 #if DEBUG
-            LogInstance.Log($"mASTNode = {mASTNode}");
+            //LogInstance.Log($"mASTNode = {mASTNode}");
 #endif
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
     }

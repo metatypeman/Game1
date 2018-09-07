@@ -37,8 +37,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnRun()
         {
 #if DEBUG
-            LogInstance.Log($"mState = {mState}");
-            LogInstance.Log($"CurrToken = {CurrToken}");
+            //LogInstance.Log($"mState = {mState}");
+            //LogInstance.Log($"CurrToken = {CurrToken}");
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -186,7 +186,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void DispatchValueInParam()
         {
 #if DEBUG
-            LogInstance.Log("DispatchValueInParam !!!!!!");
+            //LogInstance.Log("DispatchValueInParam !!!!!!");
 #endif
 
             Recovery(CurrToken);
@@ -196,7 +196,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             var paramASTNode = paramExpressionParser.Result;
             paramASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
 #if DEBUG
-            LogInstance.Log($"DispatchValueInParam !!!!!! paramASTNode = {paramASTNode}");
+            //LogInstance.Log($"DispatchValueInParam !!!!!! paramASTNode = {paramASTNode}");
 #endif
 
             mLastNode = paramASTNode;
@@ -221,7 +221,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void DispatchVar()
         {
 #if DEBUG
-            LogInstance.Log("DispatchVar !!!!!!");
+            //LogInstance.Log("DispatchVar !!!!!!");
 #endif
 
             var varNode = new ASTNodeOfLogicalQuery();
@@ -241,7 +241,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void PutVarInParam()
         {
 #if DEBUG
-            LogInstance.Log("PutVarInParam !!!!!!");
+            //LogInstance.Log("PutVarInParam !!!!!!");
 #endif
 
             mASTNode.ParamsList.Add(mLastNode);
@@ -254,8 +254,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessAnnotation()
         {
 #if DEBUG
-            LogInstance.Log("ProcessAnnotation !!!!!!!");
-            LogInstance.Log($"mLastNode = {mLastNode}");
+            //LogInstance.Log("ProcessAnnotation !!!!!!!");
+            //LogInstance.Log($"mLastNode = {mLastNode}");
 #endif
             Recovery(CurrToken);
             var annotationParser = new AnnotationParser(Context);
@@ -266,7 +266,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             mLastNode.AnnotationsList = annotationsResult;
 
 #if DEBUG
-            LogInstance.Log($"after mLastNode = {mLastNode}");
+            //LogInstance.Log($"after mLastNode = {mLastNode}");
 #endif
 
             //throw new NotImplementedException();
@@ -275,17 +275,17 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnExit()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
 #endif
 
 #if DEBUG
-            LogInstance.Log($"mASTNode = {mASTNode}");
+            //LogInstance.Log($"mASTNode = {mASTNode}");
 #endif
 
             //throw new NotImplementedException();
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
     }

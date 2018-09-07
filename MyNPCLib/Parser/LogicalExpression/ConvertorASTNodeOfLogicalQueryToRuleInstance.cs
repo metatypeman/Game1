@@ -25,7 +25,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static RuleInstance NConvertFact(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var kindOfNode = node.Kind;
@@ -124,7 +124,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static AccessPolicyToFactModality ConvertAccessPolicy(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var accessPolicyToFactModality = new AccessPolicyToFactModality();
@@ -141,7 +141,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static void NConvertRulePart(ASTNodeOfLogicalQuery node, RuleInstance parent, RulePart dest, RulePart nextPart, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
             var kindOfNode = node.Kind;
 
@@ -199,7 +199,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpression(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var kindOfNode = node.Kind;
@@ -284,7 +284,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionAndNode(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var result = new OperatorAndExpressionNode();
@@ -297,7 +297,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionOrNode(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var result = new OperatorOrExpressionNode();
@@ -310,7 +310,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionNotNode(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var result = new OperatorNotExpressionNode();
@@ -322,7 +322,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionRelationNode(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var entityDictionary = context.EntityDictionary;
@@ -358,7 +358,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionConceptNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
             var entityDictionary = context.EntityDictionary;
 
@@ -372,7 +372,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionEntityNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
             var entityDictionary = context.EntityDictionary;
 
@@ -386,7 +386,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionVarNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var entityDictionary = context.EntityDictionary;
@@ -401,7 +401,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionFactNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var entityDictionary = context.EntityDictionary;
@@ -415,7 +415,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             var factKey = entityDictionary.GetKey(factName);
 
 #if DEBUG
-            LogInstance.Log($"factName = {factName}");
+            //LogInstance.Log($"factName = {factName}");
 #endif
 
             var factExprNode = new FactExpressionNode();
@@ -429,7 +429,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionEntityRefNode(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var entityDictionary = context.EntityDictionary;
@@ -444,7 +444,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             var factKey = entityDictionary.GetKey(factName);
 
 #if DEBUG
-            LogInstance.Log($"factName = {factName}");
+            //LogInstance.Log($"factName = {factName}");
 #endif
 
             var entitiesConditions = GetEntitiesConditions(parent);
@@ -464,7 +464,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
 
 #if DEBUG
-            LogInstance.Log($"varName = {varName}");
+            //LogInstance.Log($"varName = {varName}");
 #endif
 
             var varKey = entityDictionary.GetKey(varName);
@@ -487,7 +487,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionQuestionVarNode(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
             var entityDictionary = context.EntityDictionary;
 
@@ -503,7 +503,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionValueNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var valueNode = new ValueExpressionNode();
@@ -516,7 +516,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionStubNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var result = new ParamStubExpressionNode();
@@ -543,7 +543,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertEntityConditionExpression(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
             var kindOfNode = node.Kind;
 
@@ -618,7 +618,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertEntityConditionAndNode(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var result = new OperatorAndExpressionNode();
@@ -631,7 +631,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertEntityConditionOrNode(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var result = new OperatorOrExpressionNode();
@@ -644,7 +644,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertEntityConditionNotNode(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var result = new OperatorNotExpressionNode();
@@ -656,7 +656,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertEntityConditionConditionNode(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
             var relationName = node.Name;
 
@@ -670,8 +670,8 @@ namespace MyNPCLib.Parser.LogicalExpression
             var propertyValue = node.PropertyValue;
 
 #if DEBUG
-            LogInstance.Log($"relationName = {relationName}");
-            LogInstance.Log($"propertyValue = {propertyValue}");
+            //LogInstance.Log($"relationName = {relationName}");
+            //LogInstance.Log($"propertyValue = {propertyValue}");
 #endif
 
             var varName = "@x";
@@ -698,20 +698,20 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertEntityConditionConditionNodeAsClass(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
             var entityDictionary = context.EntityDictionary;
 
             var propertyValue = node.PropertyValue;
 
 #if DEBUG
-            LogInstance.Log($"propertyValue = {propertyValue}");
+            //LogInstance.Log($"propertyValue = {propertyValue}");
 #endif
 
             var relationName = propertyValue.Name;
 
 #if DEBUG
-            LogInstance.Log($"relationName = {relationName}");
+            //LogInstance.Log($"relationName = {relationName}");
 #endif
 
             var varName = "@x";
@@ -736,7 +736,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertEntityConditionConceptNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var entityDictionary = context.EntityDictionary;
@@ -751,7 +751,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertEntityConditionEntityNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
             var entityDictionary = context.EntityDictionary;
 
@@ -765,7 +765,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertEntityConditionFactNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
             var entityDictionary = context.EntityDictionary;
 
@@ -778,7 +778,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             var factKey = entityDictionary.GetKey(factName);
 
 #if DEBUG
-            LogInstance.Log($"factName = {factName}");
+            //LogInstance.Log($"factName = {factName}");
 #endif
 
             var factExprNode = new FactExpressionNode();
@@ -792,7 +792,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertEntityConditionEntityRefNode(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var entityDictionary = context.EntityDictionary;
@@ -807,7 +807,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             var factKey = entityDictionary.GetKey(factName);
 
 #if DEBUG
-            LogInstance.Log($"factName = {factName}");
+            //LogInstance.Log($"factName = {factName}");
 #endif
 
             var entitiesConditions = GetEntitiesConditions(parent);
@@ -827,7 +827,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
 
 #if DEBUG
-            LogInstance.Log($"varName = {varName}");
+            //LogInstance.Log($"varName = {varName}");
 #endif
 
             var varKey = entityDictionary.GetKey(varName);
@@ -850,7 +850,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertEntityConditionValueNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var valueNode = new ValueExpressionNode();
@@ -863,7 +863,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertSimpleConcept(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var entityDictionary = context.EntityDictionary;

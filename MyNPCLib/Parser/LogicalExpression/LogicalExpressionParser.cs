@@ -25,12 +25,12 @@ namespace MyNPCLib.Parser.LogicalExpression
             : base(context, terminateTokenKind)
         {
 #if DEBUG
-            mInitTailOfString = Context.TailOfString;
+            //mInitTailOfString = Context.TailOfString;
 #endif
         }
 
 #if DEBUG
-        private string mInitTailOfString;
+        //private string mInitTailOfString;
 #endif
 
         private State mState = State.Init;
@@ -41,8 +41,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnRun()
         {
 #if DEBUG
-            LogInstance.Log($"mState = {mState}");
-            LogInstance.Log($"CurrToken = {CurrToken}");
+            //LogInstance.Log($"mState = {mState}");
+            //LogInstance.Log($"CurrToken = {CurrToken}");
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -97,8 +97,8 @@ namespace MyNPCLib.Parser.LogicalExpression
                                 return;
                             }
 #if DEBUG
-                            LogInstance.Log($"mInitTailOfString = {mInitTailOfString}");
-                            LogInstance.Log($"Context.TailOfString = {Context.TailOfString}");
+                            //LogInstance.Log($"mInitTailOfString = {mInitTailOfString}");
+                            //LogInstance.Log($"Context.TailOfString = {Context.TailOfString}");
 #endif
 
                             throw new UnexpectedTokenException(CurrToken);
@@ -125,7 +125,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessSingleConcept()
         {
 #if DEBUG
-            LogInstance.Log("ProcessSingleConcept !!!!!!");
+            //LogInstance.Log("ProcessSingleConcept !!!!!!");
 #endif
 
             var nextToken = GetToken();
@@ -146,7 +146,7 @@ namespace MyNPCLib.Parser.LogicalExpression
             mASTNode.Name = nextToken.Content;
           
 #if DEBUG
-            LogInstance.Log($"ProcessSingleConcept !!!!!! nextToken = {nextToken}");
+            //LogInstance.Log($"ProcessSingleConcept !!!!!! nextToken = {nextToken}");
 #endif
 
             //throw new NotImplementedException();
@@ -375,11 +375,11 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnExit()
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
 #endif
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
     }

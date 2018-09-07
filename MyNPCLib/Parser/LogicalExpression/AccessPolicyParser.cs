@@ -28,8 +28,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnRun()
         {
 #if DEBUG
-            LogInstance.Log($"mState = {mState}");
-            LogInstance.Log($"CurrToken = {CurrToken}");
+            //LogInstance.Log($"mState = {mState}");
+            //LogInstance.Log($"CurrToken = {CurrToken}");
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -146,7 +146,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void PutSingleAccessPolicy(KindOfAccessPolicyToFact kindOfAccessPolicy)
         {
 #if DEBUG
-            LogInstance.Log($"kindOfAccessPolicy = {kindOfAccessPolicy}");
+            //LogInstance.Log($"kindOfAccessPolicy = {kindOfAccessPolicy}");
 #endif
 
             var astNode = new ASTNodeOfLogicalQuery();

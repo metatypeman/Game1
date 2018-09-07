@@ -87,7 +87,7 @@ namespace MyNPCLib.CGStorage
         private void NAppend(RuleInstance ruleInstance, bool setAsMain = false)
         {
 #if DEBUG
-            LogInstance.Log($"ruleInstance = {ruleInstance}");
+            //LogInstance.Log($"ruleInstance = {ruleInstance}");
 #endif
 
             var ruleInstanceKey = ruleInstance.Key;
