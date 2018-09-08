@@ -104,7 +104,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
             Log($"(commonLevelHost == null) = {commonLevelHost == null}");
 
             var hostContext = new TestedNPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
-            mNPCProcessesContext = new TestedNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext, commonLevelHost.QueriesCache);
+            mNPCProcessesContext = new TestedNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext);
 
             mNPCProcessesContext.Bootstrap();
         });

@@ -40,7 +40,6 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
     private Rigidbody mBodyRigidbody;
 
     private HostLogicalObjectStorage mHostLogicalObjectStorage;
-    private PassiveLogicalObject mPassiveLogicalObject;
     #endregion
 
     [MethodForLoggingSupport]
@@ -61,25 +60,23 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         mEntityLogger?.Warning(message);
     }
 
-    public ulong EntityId => mPassiveLogicalObject.EntityId;
+    public ulong EntityId => mHostLogicalObjectStorage.EntityId;
     public object this[ulong propertyKey]
     {
         get
         {
             return mHostLogicalObjectStorage[propertyKey];
-            //return mPassiveLogicalObject[propertyKey];
         }
 
         protected set
         {
             mHostLogicalObjectStorage[propertyKey] = value;
-            //mPassiveLogicalObject[propertyKey] = value;
         }
     }
 
     public AccessPolicyToFact GetAccessPolicyToFact(ulong propertyKey)
     {
-        return mPassiveLogicalObject.GetAccessPolicyToFact(propertyKey);
+        return AccessPolicyToFact.Public;
     }
 
     public bool IsReady => true;
@@ -119,17 +116,14 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         mHostLogicalObjectStorage = new HostLogicalObjectStorage(commonLevelHost.EntityDictionary);
         commonLevelHost.BusOfCGStorages.AddStorage(mHostLogicalObjectStorage);
 
-        mPassiveLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.OldLogicalObjectsBus, mHostLogicalObjectStorage.EntityId);
-
-        var entityId = mPassiveLogicalObject.EntityId;
+        var entityId = mHostLogicalObjectStorage.EntityId;
 
         var tmpGameObject = gameObject;
         var instanceId = tmpGameObject.GetInstanceID();
 
         mHostLogicalObjectStorage["name"] = tmpGameObject.name;
-        mPassiveLogicalObject["name"] = tmpGameObject.name;
-
-        commonLevelHost.OldLogicalObjectsBus.RegisterObject(instanceId, this);
+        
+        commonLevelHost.OldLogicalObjectsBus.RegisterObject(instanceId, entityId);
         commonLevelHost.HandThingsBus.RegisterThing(entityId, this);
         
         mGunParticles = GetComponent<ParticleSystem>();

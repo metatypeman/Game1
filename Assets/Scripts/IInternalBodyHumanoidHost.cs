@@ -24,7 +24,6 @@ namespace Assets.Scripts
         void SetInternalHumanoidHostContext(IInternalHumanoidHostContext intenalHostContext);
         void CallInMainUI(Action function);
         TResult CallInMainUI<TResult>(Func<TResult> function);
-        IOldLogicalStorage OldHostLogicalStorage { get; }
         ICGStorage SelfHostStorage { get; }
         IBusOfCGStorages BusOfCGStorages { get; }
         ulong SelfEntityId { get; }

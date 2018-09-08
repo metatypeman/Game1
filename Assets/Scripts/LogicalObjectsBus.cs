@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
-    public class OldLogicalObjectsBus : IOldLogicalStorage
+    public class OldLogicalObjectsBus
     {
         public OldLogicalObjectsBus()
         {
-            mLogicalIndexStorage = new LogicalIndexStorage(null);
-            mLogicalIndexStorage.OnChanged += MLogicalIndexStorage_OnChanged;
         }
 
         private void MLogicalIndexStorage_OnChanged()
@@ -32,22 +30,18 @@ namespace Assets.Scripts
             });          
         }
 
-        private LogicalIndexStorage mLogicalIndexStorage;
         private readonly object mLockObj = new object();
         private Dictionary<int, ulong> mInstanceIdToEntityIdDict = new Dictionary<int, ulong>();
         private Dictionary<ulong, int> mEntityIdToInstanceIdDict = new Dictionary<ulong, int>();
 
         public event Action OnChanged;
 
-        public void RegisterObject(int instanceId, IReadOnlyLogicalObject value)
+        public void RegisterObject(int instanceId, ulong entityId)
         {
             lock(mLockObj)
             {
-                var entityId = value.EntityId;
                 mInstanceIdToEntityIdDict[instanceId] = entityId;
                 mEntityIdToInstanceIdDict[entityId] = instanceId;
-
-                mLogicalIndexStorage.RegisterObject(value);
             }
         }
 
@@ -75,54 +69,6 @@ namespace Assets.Scripts
             {
                 return mInstanceIdToEntityIdDict.Where(p => instancesIdList.Contains(p.Key)).ToDictionary(p => p.Key, p => p.Value);
             }
-        }
-
-        public IList<ulong> GetAllEntitiesIdsList()
-        {
-            return mLogicalIndexStorage.GetAllEntitiesIdsList();
-        }
-
-        public IList<ulong> GetEntitiesIdList(BaseQueryResolverASTNode plan)
-        {
-            return mLogicalIndexStorage.GetEntitiesIdList(plan);
-        }
-
-        public IList<ulong> GetEntitiesIdsList(ulong propertyId, object value)
-        {
-            return mLogicalIndexStorage.GetEntitiesIdsList(propertyId, value);
-        }
-
-        public object GetPropertyValue(ulong entityId, ulong propertyId)
-        {
-            return mLogicalIndexStorage.GetPropertyValue(entityId, propertyId);
-        }
-
-        public void PutPropertyValueAsIndex(ulong entityId, ulong propertyId, object value)
-        {
-            mLogicalIndexStorage.PutPropertyValueAsIndex(entityId, propertyId, value);
-        }
-
-        public void PutAccessPolicyToFactAsIndex(ulong entityId, ulong propertyId, AccessPolicyToFact value)
-        {
-#if DEBUG
-            //LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
-#endif
-
-            mLogicalIndexStorage.PutAccessPolicyToFactAsIndex(entityId, propertyId, value);
-        }
-
-        public AccessPolicyToFact GetAccessPolicyToFact(ulong entityId, ulong propertyId)
-        {
-#if DEBUG
-            //LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
-#endif
-
-            return mLogicalIndexStorage.GetAccessPolicyToFact(entityId, propertyId);
-        }
-
-        public void SetPropertyValue(ulong entityId, ulong propertyId, object value)
-        {
-            mLogicalIndexStorage.SetPropertyValue(entityId, propertyId, value);
         }
     }
 }

@@ -141,10 +141,6 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private IInternalHumanoidHostContext mInternalHumanoidHostContext;
     private OldLogicalObjectsBus mOldLogicalObjectsBus;
    
-    public IOldLogicalStorage OldHostLogicalStorage => mOldLogicalObjectsBus;
-
-    private PassiveLogicalObject mSelfLogicalObject;
-
     private HostLogicalObjectStorage mHostLogicalObjectStorage;
     public ICGStorage SelfHostStorage => mHostLogicalObjectStorage.GeneralHost;
 
@@ -227,24 +223,26 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mHostLogicalObjectStorage = new HostLogicalObjectStorage(commonLevelHost.EntityDictionary);
         mBusOfCGStorages.AddStorage(mHostLogicalObjectStorage);
 
-        mSelfLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, mOldLogicalObjectsBus, mHostLogicalObjectStorage.EntityId);
-        mOldLogicalObjectsBus.RegisterObject(instanceId, mSelfLogicalObject);
+        mSelfEntityId = mHostLogicalObjectStorage.EntityId;
+
+        //mSelfLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, mOldLogicalObjectsBus, mHostLogicalObjectStorage.EntityId);
+        mOldLogicalObjectsBus.RegisterObject(instanceId, mSelfEntityId);
 
         mHostLogicalObjectStorage["name"] = tmpGameObject.name;
         mHostLogicalObjectStorage.SetAccessPolicyToFact("alive", KindOfAccessPolicyToFact.ForVisible);
         mHostLogicalObjectStorage.SetAccessPolicyToFact("died", KindOfAccessPolicyToFact.ForVisible);
 
-        mSelfLogicalObject["name"] = tmpGameObject.name;
-        mSelfLogicalObject.SetAccessPolicyToFact("alive", AccessPolicyToFact.ForVisible);
-        mSelfLogicalObject.SetAccessPolicyToFact("died", AccessPolicyToFact.ForVisible);
+        //mSelfLogicalObject["name"] = tmpGameObject.name;
+        //mSelfLogicalObject.SetAccessPolicyToFact("alive", AccessPolicyToFact.ForVisible);
+        //mSelfLogicalObject.SetAccessPolicyToFact("died", AccessPolicyToFact.ForVisible);
 
+        //I do not support boolean value now! Uncomment me in the future.
         //mHostLogicalObjectStorage["alive"] = true;
         //mSelfLogicalObject["alive"] = true;
 
+        //I do not support boolean value now! Uncomment me in the future.
         //mHostLogicalObjectStorage["died"] = false;
         //mSelfLogicalObject["died"] = false;
-
-        mSelfEntityId = mSelfLogicalObject.EntityId;
 
         mStates = new InternalStatesOfHumanoidController();
         mBehaviourFlags = new BehaviourFlagsOfHumanoidController();
@@ -595,8 +593,11 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 break;
         }
 
-        mSelfLogicalObject["alive"] = false;
-        mSelfLogicalObject["died"] = true;
+        //I do not support boolean value now! Uncomment me in the future.
+        //mHostLogicalObjectStorage["alive"] = false;
+        //mHostLogicalObjectStorage["alive"] = false;
+        //mSelfLogicalObject["alive"] = false;
+        //mSelfLogicalObject["died"] = true;
 
         Task.Run(() => {
             try

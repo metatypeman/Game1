@@ -43,7 +43,7 @@ namespace Assets.Scripts
 #endif
 
             //var targetObject = GetLogicalObject("name='TrafficBarrierRed'");
-            var targetObject = Context.GetLogicalObject("name='Ethan'");
+            var targetObject = Context.GetLogicalObject("{: name='Ethan' :}");
 
 #if UNITY_EDITOR
             Log("NEXT");
@@ -96,7 +96,7 @@ namespace Assets.Scripts
         {
 #if UNITY_EDITOR
             Error("Begin");
-            var targetObject = Context.GetLogicalObject("name='Ethan'");
+            var targetObject = Context.GetLogicalObject("{: name='Ethan' :}");
             var targetPosition = targetObject.GetValue<System.Numerics.Vector3?>("global position");
             Error($"targetPosition = {targetPosition}");
 #endif
@@ -174,7 +174,7 @@ namespace Assets.Scripts
                     
                 case KeyCode.I:
                     {
-                        var ethan = Context.GetLogicalObject("name='Ethan'");
+                        var ethan = Context.GetLogicalObject("{: name='Ethan' :}");
                         
 #if UNITY_EDITOR
                         Log($"ethan = {ethan}");
@@ -208,13 +208,13 @@ namespace Assets.Scripts
                     
                 case KeyCode.B:
                     {
-                        var rifle = Context.GetLogicalObject("name='M4A1 Sopmod'");
+                        var rifle = Context.GetLogicalObject("{: name='M4A1 Sopmod' :}");
                         
 #if UNITY_EDITOR
-                        Log($"rifle = {rifle}");
+                        Log($"rifle !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! = {rifle}");
 #endif
 
-                        var tmpB = Context.GetLogicalObject("name='TrafficBarrierHazards (1)'");
+                        //var tmpB = Context.GetLogicalObject("{: name='TrafficBarrierHazards (1)' :}");
 
                         //var tmpP = tmpB.GetValue<System.Numerics.Vector3?>("global position");
 
@@ -288,7 +288,7 @@ namespace Assets.Scripts
 #if UNITY_EDITOR
             Log("Begin");
 #endif
-            var targetWayPoint = Context.GetLogicalObject($"name='FarWaypoint'&class='waypoint'");
+            var targetWayPoint = Context.GetLogicalObject("{: name='FarWaypoint'&class='waypoint' :}");
             //var targetWayPoint = WaypointsBus.GetByTag("enemy military base");
 
             if(targetWayPoint == null)

@@ -306,7 +306,6 @@ namespace Assets.Scripts
         public INPCBodyHost BodyHost => mBodyHost;
         public INPCHandHost RightHandHost => mRightHandHost;
         public INPCHandHost LeftHandHost => mLeftHandHost;
-        public IOldLogicalStorage OldHostLogicalStorage => mInternalBodyHumanoidHost.OldHostLogicalStorage;
         public ICGStorage SelfHostStorage => mInternalBodyHumanoidHost.SelfHostStorage;
         public IBusOfCGStorages BusOfCGStorages => mInternalBodyHumanoidHost.BusOfCGStorages;
         public ulong SelfEntityId => mInternalBodyHumanoidHost.SelfEntityId;
@@ -322,6 +321,9 @@ namespace Assets.Scripts
                     Task.Run(() => {
                         try
                         {
+#if DEBUG
+                            Log($"value == null = ({value == null}) value = {value}");
+#endif
                             value();
                         }
                         catch (Exception e)

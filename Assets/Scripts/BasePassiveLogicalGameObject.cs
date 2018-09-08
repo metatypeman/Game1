@@ -105,7 +105,7 @@ namespace Assets.Scripts
 
             OnInitFacts();
 
-            commonLevelHost.OldLogicalObjectsBus.RegisterObject(instanceId, this);
+            commonLevelHost.OldLogicalObjectsBus.RegisterObject(instanceId, mHostLogicalObjectStorage.EntityId);
         }
 
         // Update is called once per frame
