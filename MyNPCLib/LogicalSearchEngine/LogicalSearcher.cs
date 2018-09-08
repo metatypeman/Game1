@@ -80,7 +80,7 @@ namespace MyNPCLib.LogicalSearchEngine
             queryExpression.FillExecutingCard(queryExecutingCard, dataSource, optionsOfFillExecutingCard);
 
 #if DEBUG
-            LogInstance.Log($"@!@!@!@!@!@!@! queryExecutingCard = {queryExecutingCard}");
+            //LogInstance.Log($"@!@!@!@!@!@!@! queryExecutingCard = {queryExecutingCard}");
 #endif
 
             foreach (var resultOfQueryToRelation in queryExecutingCard.ResultsOfQueryToRelationList)
@@ -114,13 +114,13 @@ namespace MyNPCLib.LogicalSearchEngine
             var searchResult = Run(options);
 
 #if DEBUG
-            LogInstance.Log($"searchResult = {searchResult}");
+            //LogInstance.Log($"searchResult = {searchResult}");
 #endif
 
             var result = searchResult.Items.Select(p => p.ResultOfVarOfQueryToRelationList.Single()).Select(p => p.FoundExpression.AsEntityRef.Key).Distinct().ToList();
 
 #if DEBUG
-            LogInstance.Log($"result.Count = {result.Count}");
+            //LogInstance.Log($"result.Count = {result.Count}");
 #endif
 
             return result;

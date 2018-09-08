@@ -193,7 +193,7 @@ namespace MyNPCLib.CGStorage
         public virtual BaseVariant GetPropertyValueAsVariant(ulong entityId, ulong propertyId)
         {
 #if DEBUG
-            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
+            //LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
 
             var searchResult = CreateLogicalSearchResultForGetProperty(entityId, propertyId);
@@ -203,7 +203,7 @@ namespace MyNPCLib.CGStorage
         public virtual BaseVariant GetPropertyValueAsVariant(ulong entityId, string propertyName)
         {
 #if DEBUG
-            LogInstance.Log($"entityId = {entityId} propertyName = {propertyName}");
+            //LogInstance.Log($"entityId = {entityId} propertyName = {propertyName}");
 #endif
             var propertyId = EntityDictionary.GetKey(propertyName);
             return GetPropertyValueAsVariant(entityId, propertyId);
@@ -212,7 +212,7 @@ namespace MyNPCLib.CGStorage
         public virtual object GetPropertyValueAsObject(ulong entityId, ulong propertyId)
         {
 #if DEBUG
-            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
+            //LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
 
             var searchResult = CreateLogicalSearchResultForGetProperty(entityId, propertyId);
@@ -222,13 +222,13 @@ namespace MyNPCLib.CGStorage
         private LogicalSearchResult CreateLogicalSearchResultForGetProperty(ulong entityId, ulong propertyId)
         {
 #if DEBUG
-            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
+            //LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
 
             var queryIndexedRuleInstance = PropertiesOfCGStorageHelper.CreateGetQuery(entityId, propertyId, EntityDictionary, mNameOfVarForProperty, mKeyOfVarForProperty);
 
 #if DEBUG
-            LogInstance.Log($"queryIndexedRuleInstance = {queryIndexedRuleInstance}");
+            //LogInstance.Log($"queryIndexedRuleInstance = {queryIndexedRuleInstance}");
 #endif
 
             var searchOptions = new LogicalSearchOptions();
@@ -238,7 +238,7 @@ namespace MyNPCLib.CGStorage
             var searchResult = mLogicalSearcher.Run(searchOptions);
 
 #if DEBUG
-            LogInstance.Log($"searchResult = {searchResult}");
+            //LogInstance.Log($"searchResult = {searchResult}");
 #endif
 
             return searchResult;
@@ -247,7 +247,7 @@ namespace MyNPCLib.CGStorage
         public virtual object GetPropertyValueAsObject(ulong entityId, string propertyName)
         {
 #if DEBUG
-            LogInstance.Log($"entityId = {entityId} propertyName = {propertyName}");
+            //LogInstance.Log($"entityId = {entityId} propertyName = {propertyName}");
 #endif
             var propertyId = EntityDictionary.GetKey(propertyName);
             return GetPropertyValueAsObject(entityId, propertyId);
@@ -256,7 +256,7 @@ namespace MyNPCLib.CGStorage
         public virtual void SetPropertyValueAsAsVariant(ulong entityId, ulong propertyId, BaseVariant value)
         {
 #if DEBUG
-            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
+            //LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
 
             NSetPropertyValue(entityId, propertyId, value);
@@ -265,7 +265,7 @@ namespace MyNPCLib.CGStorage
         public virtual void SetPropertyValueAsAsVariant(ulong entityId, string propertyName, BaseVariant value)
         {
 #if DEBUG
-            LogInstance.Log($"entityId = {entityId} propertyName = {propertyName} value = {value}");
+            //LogInstance.Log($"entityId = {entityId} propertyName = {propertyName} value = {value}");
 #endif
             var propertyId = EntityDictionary.GetKey(propertyName);
 
@@ -275,13 +275,13 @@ namespace MyNPCLib.CGStorage
         public virtual void SetPropertyValueAsAsObject(ulong entityId, ulong propertyId, object value)
         {
 #if DEBUG
-            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
+            //LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
 
             var variant = VariantsConvertor.ConvertObjectToVariant(value, EntityDictionary);
 
 #if DEBUG
-            LogInstance.Log($"variant = {variant}");
+            //LogInstance.Log($"variant = {variant}");
 #endif
 
             NSetPropertyValue(entityId, propertyId, variant);
@@ -290,7 +290,7 @@ namespace MyNPCLib.CGStorage
         public virtual void SetPropertyValueAsAsObject(ulong entityId, string propertyName, object value)
         {
 #if DEBUG
-            LogInstance.Log($"entityId = {entityId} propertyName = {propertyName} value = {value}");
+            //LogInstance.Log($"entityId = {entityId} propertyName = {propertyName} value = {value}");
 #endif
             var propertyId = EntityDictionary.GetKey(propertyName);
             SetPropertyValueAsAsObject(entityId, propertyId, value);
@@ -299,7 +299,7 @@ namespace MyNPCLib.CGStorage
         private void NSetPropertyValue(ulong entityId, ulong propertyId, BaseVariant value)
         {
 #if DEBUG
-            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
+            //LogInstance.Log($"entityId = {entityId} propertyId = {propertyId} value = {value}");
 #endif
             var ruleInstance = PropertiesOfCGStorageHelper.CreateRuleInstanceForSetQuery(entityId, propertyId,  value, EntityDictionary);
 

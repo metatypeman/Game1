@@ -27,7 +27,7 @@ namespace MyNPCLib.LogicalHostEnvironment
                 var entityKey = storage.EntityId;
 
 #if DEBUG
-                LogInstance.Log($"entityKey = {entityKey}");
+                //LogInstance.Log($"entityKey = {entityKey}");
 #endif
 
                 mStoragesWithVisibleFactsDict[entityKey] = storage.VisibleHost;

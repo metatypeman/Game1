@@ -49,27 +49,24 @@ namespace Assets.Scripts
         private PassiveLogicalGameObjectOptions mOptions;
 
         private HostLogicalObjectStorage mHostLogicalObjectStorage;
-        //private PassiveLogicalObject mPassiveLogicalObject;
+        
         public ulong EntityId => mHostLogicalObjectStorage.EntityId;
         public object this[ulong propertyKey]
         {
             get
             {
                 return mHostLogicalObjectStorage[propertyKey];
-                //return mPassiveLogicalObject[propertyKey];
             }
 
             protected set
             {
                 mHostLogicalObjectStorage[propertyKey] = value;
-                //mPassiveLogicalObject[propertyKey] = value;
             }
         }
 
         public AccessPolicyToFact GetAccessPolicyToFact(ulong propertyKey)
         {
             return AccessPolicyToFact.Public;
-            //return mPassiveLogicalObject.GetAccessPolicyToFact(propertyKey);
         }
 
         // Use this for initialization
@@ -87,20 +84,15 @@ namespace Assets.Scripts
             mHostLogicalObjectStorage = new HostLogicalObjectStorage(commonLevelHost.EntityDictionary);
             commonLevelHost.BusOfCGStorages.AddStorage(mHostLogicalObjectStorage);
 
-            //mPassiveLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.OldLogicalObjectsBus);
-
             var tmpGameObject = gameObject;
             var instanceId = tmpGameObject.GetInstanceID();
 
             mHostLogicalObjectStorage["name"] = tmpGameObject.name;
 
-            //mPassiveLogicalObject["name"] = tmpGameObject.name;
-
             if(mOptions.ShowGlobalPosition)
             {
                 var position = VectorsConvertor.UnityToNumeric(tmpGameObject.transform.position);
                 mHostLogicalObjectStorage["global position"] = position;
-                //mPassiveLogicalObject["global position"] = position;
             }
 
             OnInitFacts();
@@ -120,13 +112,11 @@ namespace Assets.Scripts
             get
             {
                 return mHostLogicalObjectStorage[propertyName];
-                //return mPassiveLogicalObject[propertyName];
             }
 
             set
             {
                 mHostLogicalObjectStorage[propertyName] = value;
-                //mPassiveLogicalObject[propertyName] = value;
             }
         }
 

@@ -26,7 +26,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options)
         {
 #if DEBUG
-            LogInstance.Log($"Begin~~~~~~ GetHumanizeDbgString() = {GetHumanizeDbgString()}");
+            //LogInstance.Log($"Begin~~~~~~ GetHumanizeDbgString() = {GetHumanizeDbgString()}");
 #endif
             var senderIndexedRuleInstance = queryExecutingCard.SenderIndexedRuleInstance;
 
@@ -36,7 +36,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             Expression.FillExecutingCard(queryExecutingCardForExpression, dataSource, options);
 
 #if DEBUG
-            LogInstance.Log($"#$%^$%^^ queryExecutingCardForExpression = {queryExecutingCardForExpression}");
+            //LogInstance.Log($"#$%^$%^^ queryExecutingCardForExpression = {queryExecutingCardForExpression}");
 #endif
 
             foreach (var resultOfQueryToRelation in queryExecutingCardForExpression.ResultsOfQueryToRelationList)
@@ -146,7 +146,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                         var paramOfTargetRelation = paramsListOfTargetRelation[varItem.Position];
 
 #if DEBUG
-                        LogInstance.Log($"paramOfTargetRelation = {paramOfTargetRelation}");
+                        //LogInstance.Log($"paramOfTargetRelation = {paramOfTargetRelation}");
 #endif
 
                         if(isEntityIdOnly && !paramOfTargetRelation.IsEntityRef)
@@ -155,7 +155,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                         }
 
 #if DEBUG
-                        LogInstance.Log($"NEXT paramOfTargetRelation = {paramOfTargetRelation}");
+                        //LogInstance.Log($"NEXT paramOfTargetRelation = {paramOfTargetRelation}");
 #endif
 
                         var resultOfVarOfQueryToRelation = new ResultOfVarOfQueryToRelation();
@@ -349,7 +349,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public void FillExecutingCardForCallingFromOtherPart(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options)
         {
 #if DEBUG
-            LogInstance.Log("Begin ^&*^&*");
+            //LogInstance.Log("Begin ^&*^&*");
             //LogInstance.Log($"queryExecutingCard = {queryExecutingCard}");
 #endif
             var queryExecutingCardForExpression = new QueryExecutingCardForIndexedPersistLogicalData();
@@ -359,7 +359,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             Expression.FillExecutingCard(queryExecutingCardForExpression, dataSource, options);
 
 #if DEBUG
-            LogInstance.Log($"%%%%%%%% queryExecutingCardForExpression = {queryExecutingCardForExpression}");
+            //LogInstance.Log($"%%%%%%%% queryExecutingCardForExpression = {queryExecutingCardForExpression}");
 #endif
 
             queryExecutingCard.ResultsOfQueryToRelationList = queryExecutingCardForExpression.ResultsOfQueryToRelationList;

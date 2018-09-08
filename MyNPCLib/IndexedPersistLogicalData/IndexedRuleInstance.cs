@@ -115,7 +115,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
 
 #if DEBUG
             //throw new NotImplementedException();
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
         }
 

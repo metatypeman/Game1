@@ -99,12 +99,6 @@ namespace MyNPCLib.CGStorage
 
                 foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
                 {
-#if DEBUG
-                    if(dataSourcesSettings.Storage == null)
-                    {
-                        throw new ArgumentNullException("dataSourcesSettings.Storage");
-                    }
-#endif
                     var indexedRulePartsOfFactsList = dataSourcesSettings.Storage.GetIndexedRulePartOfFactsByKeyOfRelation(key);
 
                     if (indexedRulePartsOfFactsList == null)

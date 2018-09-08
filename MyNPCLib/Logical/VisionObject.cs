@@ -28,7 +28,7 @@ namespace MyNPCLib.Logical
             get
             {
 #if DEBUG
-                Log($"propertyKey = {propertyKey}");
+                //Log($"propertyKey = {propertyKey}");
 #endif
 
                 return CommonGetProperty(propertyKey);
@@ -37,7 +37,7 @@ namespace MyNPCLib.Logical
             set
             {
 #if DEBUG
-                Log($"propertyKey = {propertyKey} value = {value}");
+                //Log($"propertyKey = {propertyKey} value = {value}");
 #endif
 
                 CommonSetProperty(propertyKey, value);
@@ -51,7 +51,7 @@ namespace MyNPCLib.Logical
                 var propertyKey = mEntityDictionary.GetKey(propertyName);
 
 #if DEBUG
-                Log($"propertyName = {propertyName} propertyKey = {propertyKey}");
+                //Log($"propertyName = {propertyName} propertyKey = {propertyKey}");
 #endif
 
                 return CommonGetProperty(propertyKey);
@@ -62,7 +62,7 @@ namespace MyNPCLib.Logical
                 var propertyKey = mEntityDictionary.GetKey(propertyName);
 
 #if DEBUG
-                Log($"propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
+                //Log($"propertyName = {propertyName} propertyKey = {propertyKey} value = {value}");
 #endif
 
                 CommonSetProperty(propertyKey, value);

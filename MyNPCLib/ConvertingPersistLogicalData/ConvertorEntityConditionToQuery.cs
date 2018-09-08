@@ -20,9 +20,9 @@ namespace MyNPCLib.ConvertingPersistLogicalData
             }
 
 #if DEBUG
-            var debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
+            //var debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
 
-            LogInstance.Log($"debugStr (query) = {debugStr}");
+            //LogInstance.Log($"debugStr (query) = {debugStr}");
 #endif
 
             var newMainRuleInstance = mainRuleInstance.Clone();
@@ -34,13 +34,13 @@ namespace MyNPCLib.ConvertingPersistLogicalData
             ReplaceVarToQuestionParam(newMainRuleInstance, entityDictionary, ref keysOfAdditionalRuleInstances);
 
 #if DEBUG
-            LogInstance.Log($"keysOfAdditionalRuleInstances.Count = {keysOfAdditionalRuleInstances.Count}");
+            //LogInstance.Log($"keysOfAdditionalRuleInstances.Count = {keysOfAdditionalRuleInstances.Count}");
 #endif
             var keyOfMainRuleInstance = newMainRuleInstance.Key;
             var otherRuleInstancesList = source.AllRuleInstances.Where(p => p.Key != keyOfMainRuleInstance).ToList();
 
 #if DEBUG
-            LogInstance.Log($"otherRuleInstancesList.Count = {otherRuleInstancesList.Count}");
+            //LogInstance.Log($"otherRuleInstancesList.Count = {otherRuleInstancesList.Count}");
 #endif
 
             IList<RuleInstance> targetRuleInstancesList = null;
@@ -58,7 +58,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
                 keysOfAdditionalRuleInstances = keysOfAdditionalRuleInstances.Distinct().ToList();
 
 #if DEBUG
-                LogInstance.Log($"keysOfAdditionalRuleInstances.Count (2) = {keysOfAdditionalRuleInstances.Count}");
+                //LogInstance.Log($"keysOfAdditionalRuleInstances.Count (2) = {keysOfAdditionalRuleInstances.Count}");
 #endif
 
                 targetRuleInstancesList = CopyAllOfTargetAdditionalRuleInstances(otherRuleInstancesList, keysOfAdditionalRuleInstances);
@@ -80,7 +80,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
         private static void ReplaceVarToQuestionParam(RuleInstance ruleInstance, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
-            LogInstance.Log($"ruleInstance = {ruleInstance}");
+            //LogInstance.Log($"ruleInstance = {ruleInstance}");
 #endif
 
             if(ruleInstance.Part_1 != null)
@@ -99,7 +99,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
         private static void ReplaceVarToQuestionParam(RulePart rulePart, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
-            LogInstance.Log($"rulePart = {rulePart}");
+            //LogInstance.Log($"rulePart = {rulePart}");
 #endif
 
             ReplaceVarToQuestionParamInExpression(rulePart.Expression, null, -1, entityDictionary, ref keysOfAdditionalRuleInstances);
@@ -109,7 +109,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
         private static void ReplaceVarToQuestionParamInExpression(BaseExpressionNode expressionNode, RelationExpressionNode parentRelation, int paramIndex, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
             var kind = expressionNode.Kind;
@@ -169,7 +169,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
         private static void ReplaceVarToQuestionParamInOperatorNotExpression(OperatorNotExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
             ReplaceVarToQuestionParamInExpression(expressionNode.Left, null, -1, entityDictionary, ref keysOfAdditionalRuleInstances);
@@ -178,7 +178,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
         private static void ReplaceVarToQuestionParamInOperatorAndExpression(OperatorAndExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
             ReplaceVarToQuestionParamInExpression(expressionNode.Left, null, -1, entityDictionary, ref keysOfAdditionalRuleInstances);
             ReplaceVarToQuestionParamInExpression(expressionNode.Right, null, -1, entityDictionary, ref keysOfAdditionalRuleInstances);
@@ -187,7 +187,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
         private static void ReplaceVarToQuestionParamInOperatorOrExpression(OperatorOrExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
 
 #endif
             ReplaceVarToQuestionParamInExpression(expressionNode.Left, null, -1, entityDictionary, ref keysOfAdditionalRuleInstances);
@@ -197,7 +197,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
         private static void ReplaceVarToQuestionParamInEntityConditionExpression(EntityConditionExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
             keysOfAdditionalRuleInstances.Add(expressionNode.Key);
         }
@@ -205,9 +205,9 @@ namespace MyNPCLib.ConvertingPersistLogicalData
         private static void ReplaceVarToQuestionParamInVarExpression(VarExpressionNode expressionNode, RelationExpressionNode parentRelation, int paramIndex, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
-            LogInstance.Log($"parentRelation = {parentRelation}");
-            LogInstance.Log($"paramIndex = {paramIndex}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"parentRelation = {parentRelation}");
+            //LogInstance.Log($"paramIndex = {paramIndex}");
 #endif
 
             var newExpressionNode = new QuestionVarExpressionNode();
@@ -222,7 +222,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
         private static void ReplaceVarToQuestionParamInFactExpression(FactExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
             keysOfAdditionalRuleInstances.Add(expressionNode.Key);
@@ -231,7 +231,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
         private static void ReplaceVarToQuestionParamInRelationExpression(RelationExpressionNode expressionNode, IEntityDictionary entityDictionary, ref List<ulong> keysOfAdditionalRuleInstances)
         {
 #if DEBUG
-            LogInstance.Log($"expressionNode = {expressionNode}");
+            //LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
             var paramsList = expressionNode.Params.ToList();
 

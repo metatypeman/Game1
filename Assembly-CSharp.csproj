@@ -125,6 +125,7 @@
     <Compile Include="Assets\Scripts\VectorsConvertor.cs" />
     <Compile Include="Assets\TmpSmallBot.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
+    <None Include="app.config" />
     <None Include="Assets\packages\System.Numerics.Vectors.4.4.0\version.txt" />
     <None Include="Assets\Fortress\Shader\Diffuse.shader" />
     <None Include="Assets\packages\System.Numerics.Vectors.4.4.0\lib\netstandard1.0\System.Numerics.Vectors.xml" />
@@ -137,6 +138,7 @@
     <None Include="Assets\packages\System.Data.Common.4.3.0\dotnet_library_license.txt" />
     <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />
     <None Include="Assets\packages\System.Numerics.Vectors.4.4.0\useSharedDesignerContext.txt" />
+    <None Include="packages.config" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
@@ -373,9 +375,6 @@
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/Sergey/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/NLog.4.5.9/lib/netstandard2.0/NLog.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

@@ -28,7 +28,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             Left.FillExecutingCard(leftQueryExecutingCard, dataSource, options);
 
 #if DEBUG
-            LogInstance.Log($"leftQueryExecutingCard = {leftQueryExecutingCard}");
+            //LogInstance.Log($"leftQueryExecutingCard = {leftQueryExecutingCard}");
 #endif
 
             var leftQueryExecutingCardResultsOfQueryToRelationList = leftQueryExecutingCard.ResultsOfQueryToRelationList;
@@ -50,7 +50,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 Right.FillExecutingCard(rightQueryExecutingCard, dataSource, options);
 
 #if DEBUG
-                LogInstance.Log($"rightQueryExecutingCard = {rightQueryExecutingCard}");
+                //LogInstance.Log($"rightQueryExecutingCard = {rightQueryExecutingCard}");
 #endif
 
                 var rightQueryExecutingCardResultsOfQueryToRelationList = rightQueryExecutingCard.ResultsOfQueryToRelationList;
@@ -70,7 +70,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     var intersectOfVarsKeysList = leftVarsKeysList.Intersect(rightVarsKeysList).ToList();
 
 #if DEBUG
-                    LogInstance.Log($"intersectOfVarsKeysList.Count = {intersectOfVarsKeysList.Count}");
+                    //LogInstance.Log($"intersectOfVarsKeysList.Count = {intersectOfVarsKeysList.Count}");
 #endif
 
                     var isFit = true;
@@ -158,7 +158,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public override void FillExecutingCardForAnnotation(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options)
         {
 #if DEBUG
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
 #endif
 
 #if DEBUG

@@ -404,6 +404,9 @@
     <Reference Include="TestedNPCLogic">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/TestedNPCLogic.dll</HintPath>
     </Reference>
+    <Reference Include="NLog">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/NLog.4.5.9/lib/netstandard2.0/NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Common">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/System.Data.Common.4.3.0/lib/netstandard1.2/System.Data.Common.dll</HintPath>
     </Reference>
@@ -421,9 +424,6 @@
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/Sergey/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/NLog.4.5.9/lib/netstandard2.0/NLog.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

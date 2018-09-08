@@ -75,8 +75,8 @@ namespace MyNPCLib.CGStorage
                 }
 
 #if DEBUG
-                LogInstance.Log($"mDataSourcesSettingsOrderedByPriorityList.Count = {mDataSourcesSettingsOrderedByPriorityList.Count}");
-                LogInstance.Log($"mDataSourcesSettingsOrderedByPriorityAndUseFactsList.Count = {mDataSourcesSettingsOrderedByPriorityAndUseFactsList.Count}");
+                //LogInstance.Log($"mDataSourcesSettingsOrderedByPriorityList.Count = {mDataSourcesSettingsOrderedByPriorityList.Count}");
+                //LogInstance.Log($"mDataSourcesSettingsOrderedByPriorityAndUseFactsList.Count = {mDataSourcesSettingsOrderedByPriorityAndUseFactsList.Count}");
 #endif
 
                 var storage = settings.Storage;

@@ -96,7 +96,7 @@ namespace MyNPCLib
 #endif
 
 #if DEBUG
-            Log($"mNPCHostContext.SelfEntityId = {mNPCHostContext.SelfEntityId} mNPCHostContext.IsReady = {mNPCHostContext.IsReady}");
+            //Log($"mNPCHostContext.SelfEntityId = {mNPCHostContext.SelfEntityId} mNPCHostContext.IsReady = {mNPCHostContext.IsReady}");
 #endif
 
             InitLogicalSubSystem();
@@ -108,93 +108,18 @@ namespace MyNPCLib
             //Log("Begin");
 #endif
 
-#if DEBUG
-            if(mNPCHostContext == null)
-            {
-                throw new ArgumentNullException(nameof(mNPCHostContext));
-            }
-#endif
-
-#if DEBUG
-            if (mStorageOfSpecialEntities == null)
-            {
-                throw new ArgumentNullException("mStorageOfSpecialEntities");
-            }
-#endif
-
             mStorageOfSpecialEntities.SelfEntityId = mNPCHostContext.SelfEntityId;
-
-#if DEBUG
-            if (mContextOfCGStorage == null)
-            {
-                throw new ArgumentNullException("mContextOfCGStorage");
-            }
-#endif
-
-#if DEBUG
-            if (mNPCHostContext.BusOfCGStorages == null)
-            {
-                throw new ArgumentNullException("mNPCHostContext.BusOfCGStorages");
-            }
-#endif
-
-#if DEBUG
-            if (mNPCHostContext.BusOfCGStorages.GeneralStorageWithPublicFacts == null)
-            {
-                throw new ArgumentNullException("mNPCHostContext.BusOfCGStorages.GeneralStorageWithPublicFacts");
-            }
-#endif
-
-#if DEBUG
-            if (mNPCHostContext.SelfHostStorage == null)
-            {
-                throw new ArgumentNullException("mNPCHostContext.SelfHostStorage");
-            }
-#endif
 
             mContextOfCGStorage.SetHostStorage(mNPCHostContext.SelfHostStorage);
             mContextOfCGStorage.SetWorldHostStorage(mNPCHostContext.BusOfCGStorages.GeneralStorageWithPublicFacts);
-
-#if DEBUG
-            if (mStorageOfSpecialEntities == null)
-            {
-                throw new ArgumentNullException("mStorageOfSpecialEntities");
-            }
-#endif
-#if DEBUG
-            //if ( == null)
-            //{
-            //    throw new ArgumentNullException("");
-            //}
-#endif
 
             var visibleObjectsCGStorage = new VisibleObjectsCGStorage(mEntityDictionary, mStorageOfSpecialEntities, mNPCHostContext.BusOfCGStorages);
             mContextOfCGStorage.SetWorldHostStorage(visibleObjectsCGStorage);
 
             var mainStorage = mContextOfCGStorage.MainCGStorage;
 
-#if DEBUG
-            if (mainStorage == null)
-            {
-                throw new ArgumentNullException("mainStorage");
-            }
-#endif
-#if DEBUG
-            if (mSystemPropertiesDictionary == null)
-            {
-                throw new ArgumentNullException("mSystemPropertiesDictionary");
-            }
-#endif
-
             mVisionObjectsStorage.BusOfHostStorage = mNPCHostContext.BusOfCGStorages;
             mVisionObjectsStorage.LogicalStorage = mainStorage;
-
-#if DEBUG
-            if (mVisionObjectsStorage == null)
-            {
-                throw new ArgumentNullException("mVisionObjectsStorage");
-            }
-#endif
 
 #if DEBUG
             //Log("NEXT");

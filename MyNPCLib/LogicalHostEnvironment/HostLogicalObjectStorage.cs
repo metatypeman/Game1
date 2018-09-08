@@ -1,5 +1,6 @@
 ﻿using MyNPCLib.CGStorage;
 using MyNPCLib.CGStorage.Helpers;
+using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.Variants;
@@ -46,17 +47,17 @@ namespace MyNPCLib.LogicalHostEnvironment
             lock(mHostsLockObj)
             {
 #if DEBUG
-                LogInstance.Log($"ruleInstance = {ruleInstance}");
+                //LogInstance.Log($"ruleInstance = {ruleInstance}");
 #endif
 
                 var listOfKindOfAcessPolicy = ruleInstance.AccessPolicyToFactModality.Select(p => p.Kind).ToList();
 
 #if DEBUG
-                LogInstance.Log($"listOfKindOfAcessPolicy.Count = {listOfKindOfAcessPolicy.Count}");
-                foreach(var kindOfAcessPolicy in listOfKindOfAcessPolicy)
-                {
-                    LogInstance.Log($"kindOfAcessPolicy = {kindOfAcessPolicy}");
-                }
+                //LogInstance.Log($"listOfKindOfAcessPolicy.Count = {listOfKindOfAcessPolicy.Count}");
+                //foreach(var kindOfAcessPolicy in listOfKindOfAcessPolicy)
+                //{
+                //    LogInstance.Log($"kindOfAcessPolicy = {kindOfAcessPolicy}");
+                //}
 #endif
 
                 if (listOfKindOfAcessPolicy.Contains(KindOfAccessPolicyToFact.Public))
@@ -78,18 +79,18 @@ namespace MyNPCLib.LogicalHostEnvironment
             lock (mHostsLockObj)
             {
 #if DEBUG
-                LogInstance.Log($"storage = {storage}");
+                //LogInstance.Log($"storage = {storage}");
 #endif
                 var mainRuleInstance = storage.MainRuleInstance;
 
                 var listOfKindOfAcessPolicy = mainRuleInstance.AccessPolicyToFactModality.Select(p => p.Kind).ToList();
 
 #if DEBUG
-                LogInstance.Log($"listOfKindOfAcessPolicy.Count = {listOfKindOfAcessPolicy.Count}");
-                foreach (var kindOfAcessPolicy in listOfKindOfAcessPolicy)
-                {
-                    LogInstance.Log($"kindOfAcessPolicy = {kindOfAcessPolicy}");
-                }
+                //LogInstance.Log($"listOfKindOfAcessPolicy.Count = {listOfKindOfAcessPolicy.Count}");
+                //foreach (var kindOfAcessPolicy in listOfKindOfAcessPolicy)
+                //{
+                //    LogInstance.Log($"kindOfAcessPolicy = {kindOfAcessPolicy}");
+                //}
 #endif
 
                 if(listOfKindOfAcessPolicy.Contains(KindOfAccessPolicyToFact.Public))
@@ -111,7 +112,7 @@ namespace MyNPCLib.LogicalHostEnvironment
             lock (mHostsLockObj)
             {
 #if DEBUG
-                LogInstance.Log($"ruleInstancePackage = {ruleInstancePackage}");
+                //LogInstance.Log($"ruleInstancePackage = {ruleInstancePackage}");
 #endif
 
                 var mainRuleInstance = ruleInstancePackage.MainRuleInstance;
@@ -119,11 +120,11 @@ namespace MyNPCLib.LogicalHostEnvironment
                 var listOfKindOfAcessPolicy = mainRuleInstance.AccessPolicyToFactModality.Select(p => p.Kind).ToList();
 
 #if DEBUG
-                LogInstance.Log($"listOfKindOfAcessPolicy.Count = {listOfKindOfAcessPolicy.Count}");
-                foreach (var kindOfAcessPolicy in listOfKindOfAcessPolicy)
-                {
-                    LogInstance.Log($"kindOfAcessPolicy = {kindOfAcessPolicy}");
-                }
+                //LogInstance.Log($"listOfKindOfAcessPolicy.Count = {listOfKindOfAcessPolicy.Count}");
+                //foreach (var kindOfAcessPolicy in listOfKindOfAcessPolicy)
+                //{
+                //    LogInstance.Log($"kindOfAcessPolicy = {kindOfAcessPolicy}");
+                //}
 #endif
 
                 if (listOfKindOfAcessPolicy.Contains(KindOfAccessPolicyToFact.Public))
@@ -172,13 +173,13 @@ namespace MyNPCLib.LogicalHostEnvironment
         private LogicalSearchResult CreateLogicalSearchResultForGetProperty(ulong entityId, ulong propertyId, KindOfAccessPolicyToFact currentPolicy)
         {
 #if DEBUG
-            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
+            //LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
 
             var queryIndexedRuleInstance = PropertiesOfCGStorageHelper.CreateGetQuery(entityId, propertyId, EntityDictionary, mNameOfVarForProperty, mKeyOfVarForProperty, new List<KindOfAccessPolicyToFact>() { currentPolicy });
 
 #if DEBUG
-            LogInstance.Log($"queryIndexedRuleInstance = {queryIndexedRuleInstance}");
+            //LogInstance.Log($"queryIndexedRuleInstance = {queryIndexedRuleInstance}");
 #endif
 
             var searchOptions = new LogicalSearchOptions();
@@ -189,7 +190,7 @@ namespace MyNPCLib.LogicalHostEnvironment
             var searchResult = mLogicalSearcher.Run(searchOptions);
 
 #if DEBUG
-            LogInstance.Log($"searchResult = {searchResult}");
+            //LogInstance.Log($"searchResult = {searchResult}");
 #endif
 
             return searchResult;
@@ -233,7 +234,7 @@ namespace MyNPCLib.LogicalHostEnvironment
             var variant = VariantsConvertor.ConvertObjectToVariant(value, EntityDictionary);
 
 #if DEBUG
-            LogInstance.Log($"variant = {variant}");
+            //LogInstance.Log($"variant = {variant}");
 #endif
 
             NSetPropertyValue(entityId, propertyId, variant, currentPolicy);
@@ -253,6 +254,14 @@ namespace MyNPCLib.LogicalHostEnvironment
         private void NSetPropertyValue(ulong entityId, ulong propertyId, BaseVariant value, KindOfAccessPolicyToFact currentPolicy)
         {
             var ruleInstance = PropertiesOfCGStorageHelper.CreateRuleInstanceForSetQuery(entityId, propertyId, value, EntityDictionary, new List<KindOfAccessPolicyToFact>() { currentPolicy });
+
+#if DEBUG
+            //LogInstance.Log($"ruleInstance = {ruleInstance}");
+            //var debugStr = DebugHelperForRuleInstance.ToString(ruleInstance.MainRuleInstance);
+
+            //LogInstance.Log($"debugStr = {debugStr}");
+#endif
+
             Append(ruleInstance);
         }
 
@@ -278,6 +287,10 @@ namespace MyNPCLib.LogicalHostEnvironment
 
             set
             {
+#if DEBUG
+                //LogInstance.Log($"propertyName = {propertyName}");
+#endif
+
                 SetPropertyValueAsAsObject(propertyName, value);
             }
         }
