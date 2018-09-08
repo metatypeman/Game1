@@ -27,6 +27,10 @@ namespace MyNPCLib.IndexedPersistLogicalData
             leftQueryExecutingCard.KnownInfoList = queryExecutingCard.KnownInfoList;
             Left.FillExecutingCard(leftQueryExecutingCard, dataSource, options);
 
+#if DEBUG
+            LogInstance.Log($"leftQueryExecutingCard = {leftQueryExecutingCard}");
+#endif
+
             var leftQueryExecutingCardResultsOfQueryToRelationList = leftQueryExecutingCard.ResultsOfQueryToRelationList;
 
             if (leftQueryExecutingCardResultsOfQueryToRelationList.Count == 0)
@@ -45,6 +49,10 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 rightQueryExecutingCard.KnownInfoList = queryExecutingCard.KnownInfoList;
                 Right.FillExecutingCard(rightQueryExecutingCard, dataSource, options);
 
+#if DEBUG
+                LogInstance.Log($"rightQueryExecutingCard = {rightQueryExecutingCard}");
+#endif
+
                 var rightQueryExecutingCardResultsOfQueryToRelationList = rightQueryExecutingCard.ResultsOfQueryToRelationList;
 
                 if (rightQueryExecutingCardResultsOfQueryToRelationList.Count == 0)
@@ -60,6 +68,10 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     var rightVarsList = rightResultOfQueryToRelation.ResultOfVarOfQueryToRelationList;
                     var rightVarsKeysList = rightVarsList.Select(p => p.KeyOfVar).Distinct().ToList();
                     var intersectOfVarsKeysList = leftVarsKeysList.Intersect(rightVarsKeysList).ToList();
+
+#if DEBUG
+                    LogInstance.Log($"intersectOfVarsKeysList.Count = {intersectOfVarsKeysList.Count}");
+#endif
 
                     var isFit = true;
 

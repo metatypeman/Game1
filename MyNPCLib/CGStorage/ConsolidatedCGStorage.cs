@@ -74,6 +74,11 @@ namespace MyNPCLib.CGStorage
                     mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances = mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances.OrderByDescending(p => p.Priority).ToList();
                 }
 
+#if DEBUG
+                LogInstance.Log($"mDataSourcesSettingsOrderedByPriorityList.Count = {mDataSourcesSettingsOrderedByPriorityList.Count}");
+                LogInstance.Log($"mDataSourcesSettingsOrderedByPriorityAndUseFactsList.Count = {mDataSourcesSettingsOrderedByPriorityAndUseFactsList.Count}");
+#endif
+
                 var storage = settings.Storage;
                 storage.OnChanged += Storage_OnChanged;
             }

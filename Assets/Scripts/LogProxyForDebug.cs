@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.NLogHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,17 @@ namespace Assets.Scripts
 {
     public class LogProxyForDebug : ILogProxy
     {
+        //public LogProxyForDebug()
+        //{
+            //NLogConfigurator.Config(new NLogConfiguratOptions()
+            //{
+            //    UseFile = true,
+            //    UseConsole = true,
+            //    SeparateFiles = NLogConfiguratOptionsSeparateFiles.ByDate,
+            //    TargetDirectory = NLogConfiguratOptionsTargetDirectory.USERPROFILE
+            //});
+        //}
+
         [MethodForLoggingSupport]
         public void Log(string message)
         {
@@ -19,6 +31,7 @@ namespace Assets.Scripts
 
 #if UNITY_EDITOR
             Debug.Log(result);
+            //NLog.LogManager.GetCurrentClassLogger().Info(result);
 #endif
         }
 

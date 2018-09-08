@@ -16,7 +16,11 @@ namespace Assets.Scripts
             //Log($"Begin nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
 #endif
 
-            var targetWayPoint = Context.GetLogicalObject($"name='{nameOfThisWaypoint}'&class='waypoint'");
+            var targetWayPoint = Context.GetLogicalObject($"{{: name='{nameOfThisWaypoint}':}}");//Context.GetLogicalObject($"{{: name='{nameOfThisWaypoint}'&class='waypoint' :}}");
+
+#if UNITY_EDITOR
+            Log($"targetWayPoint = {targetWayPoint}");
+#endif
 
             if (targetWayPoint != null)
             {

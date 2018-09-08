@@ -47,8 +47,8 @@ namespace MyNPCLib.Logical
         private ICGStorage mSource;
         private VisionObjectsStorage mVisionObjectsStorage;
         private bool mNeedUpdateEnitiesIdList = true;
-        private readonly object mCurrentEnitiesIdListLockObj = new object();     
-        private IList<ulong> mCurrentEnitiesIdList;
+        private readonly object mCurrentEnitiesIdListLockObj = new object();
+        private IList<ulong> mCurrentEnitiesIdList;// = new List<ulong>();
         private readonly object mPrimaryEntityIdLockObj = new object(); 
         private ulong mPrimaryEntityId;
 
@@ -182,6 +182,14 @@ namespace MyNPCLib.Logical
             mNeedUpdateEnitiesIdList = false;
 
             mCurrentEnitiesIdList = mSource.GetEntitiesIdList(mQueryStorage);
+
+#if DEBUG
+            //Log($"mCurrentEnitiesIdList == null = {mCurrentEnitiesIdList == null}");
+            //if(mCurrentEnitiesIdList == null)
+            //{
+            //    throw new ArgumentNullException(nameof(mCurrentEnitiesIdList));
+            //}
+#endif
 
             FindPrimaryEntityId();
 

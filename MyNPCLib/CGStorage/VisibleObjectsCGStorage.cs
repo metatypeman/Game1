@@ -16,6 +16,12 @@ namespace MyNPCLib.CGStorage
             : base(entityDictionary)
         {
             mBusOfCGStorages = busOfCGStorages;
+
+            mDataSourcesSettingsOrderedByPriorityList = new List<SettingsOfStorageForSearchingInThisSession>();
+            mDataSourcesSettingsOrderedByPriorityAndUseFactsList = new List<SettingsOfStorageForSearchingInThisSession>();
+            mDataSourcesSettingsOrderedByPriorityAndUseProductionsList = new List<SettingsOfStorageForSearchingInThisSession>();
+            mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances = new List<SettingsOfStorageForSearchingInThisSession>();
+
             storageOfSpecialEntities.OnUpdateVisibleEntitiesIdList += StorageOfSpecialEntities_OnUpdateVisibleEntitiesIdList;
         }
 
@@ -93,6 +99,12 @@ namespace MyNPCLib.CGStorage
 
                 foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
                 {
+#if DEBUG
+                    if(dataSourcesSettings.Storage == null)
+                    {
+                        throw new ArgumentNullException("dataSourcesSettings.Storage");
+                    }
+#endif
                     var indexedRulePartsOfFactsList = dataSourcesSettings.Storage.GetIndexedRulePartOfFactsByKeyOfRelation(key);
 
                     if (indexedRulePartsOfFactsList == null)

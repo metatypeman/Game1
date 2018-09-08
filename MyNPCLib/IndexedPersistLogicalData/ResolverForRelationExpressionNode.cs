@@ -53,11 +53,11 @@ namespace MyNPCLib.IndexedPersistLogicalData
             NFillExecutingCard(queryExecutingCard, dataSource, options);
 
 #if DEBUG
-            //LogInstance.Log($"^^^^^^queryExecutingCard = {queryExecutingCard}");
+            LogInstance.Log($"^^^^^^queryExecutingCard = {queryExecutingCard}");
             //LogInstance.Log($"queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString() = {queryExecutingCard.GetSenderExpressionNodeHumanizeDbgString()}");
             //LogInstance.Log($"queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRulePartHumanizeDbgString()}");
             //LogInstance.Log($"queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString() = {queryExecutingCard.GetSenderIndexedRuleInstanceHumanizeDbgString()}");
-            //LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
+            LogInstance.Log($"GetHumanizeDbgString() = {GetHumanizeDbgString()}");
 
             //throw new NotImplementedException();
 
@@ -152,7 +152,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                     indexedRulePartsOfFacts.FillExecutingCardForCallingFromRelationForFact(queryExecutingCardForTargetFact, dataSource, options);
 
 #if DEBUG
-                    //LogInstance.Log($"++++++queryExecutingCardForTargetFact = {queryExecutingCardForTargetFact}");
+                    LogInstance.Log($"++++++queryExecutingCardForTargetFact = {queryExecutingCardForTargetFact}");
 #endif
 
                     foreach (var resultOfQueryToRelation in queryExecutingCardForTargetFact.ResultsOfQueryToRelationList)
@@ -163,7 +163,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             }
 
 #if DEBUG
-            //LogInstance.Log($"~~~~~~~~~~~~~~~~~queryExecutingCard = {queryExecutingCard}");
+            LogInstance.Log($"~~~~~~~~~~~~~~~~~queryExecutingCard = {queryExecutingCard}");
 #endif
 
             var indexedRulePartWithOneRelationsList = dataSource.GetIndexedRulePartWithOneRelationWithVarsByKeyOfRelation(Key);

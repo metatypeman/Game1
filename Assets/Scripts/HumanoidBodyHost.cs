@@ -225,7 +225,6 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         mSelfEntityId = mHostLogicalObjectStorage.EntityId;
 
-        //mSelfLogicalObject = new PassiveLogicalObject(mEntityLogger, commonLevelHost.EntityDictionary, mOldLogicalObjectsBus, mHostLogicalObjectStorage.EntityId);
         mOldLogicalObjectsBus.RegisterObject(instanceId, mSelfEntityId);
 
         mHostLogicalObjectStorage["name"] = tmpGameObject.name;

@@ -45,7 +45,7 @@ namespace MyNPCLib.CGStorage
             mHostStorage = storage;
 
             var storageOptions = new SettingsOfStorageForSearchingInThisSession();
-            storageOptions.Storage = mGlobalCGStorage;
+            storageOptions.Storage = storage;
             storageOptions.MaxDeph = null;
             storageOptions.UseFacts = true;
             storageOptions.UseAdditionalInstances = true;
@@ -58,7 +58,7 @@ namespace MyNPCLib.CGStorage
         public void SetWorldHostStorage(ICGStorage storage)
         {
             var storageOptions = new SettingsOfStorageForSearchingInThisSession();
-            storageOptions.Storage = mGlobalCGStorage;
+            storageOptions.Storage = storage;
             storageOptions.MaxDeph = null;
             storageOptions.UseFacts = true;
             storageOptions.UseAdditionalInstances = true;

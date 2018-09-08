@@ -52,7 +52,7 @@ namespace Assets.Scripts
         private void MInternalBodyHumanoidHost_OnReady()
         {
 #if DEBUG
-            Log("Begin");
+            //Log("Begin");
 #endif
             Task.Run(() => {
                 try
@@ -126,19 +126,19 @@ namespace Assets.Scripts
         public void Execute(TargetStateOfHumanoidBody targetState)
         {
 #if DEBUG
-            Log($"targetState = {targetState}");
+            //Log($"targetState = {targetState}");
 #endif
 
             var internalTargetStateOfHumanoidBody = InternalTargetStateOfHumanoidControllerConverter.ConvertToInternal(targetState);
 
 #if DEBUG
-            Log($"internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
+            //Log($"internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
 #endif
 
             mInternalBodyHumanoidHost.Execute(internalTargetStateOfHumanoidBody);
 
 #if DEBUG
-            Log($"End internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
+            //Log($"End internalTargetStateOfHumanoidBody = {internalTargetStateOfHumanoidBody}");
 #endif
         }
         
@@ -215,7 +215,7 @@ namespace Assets.Scripts
 
         public INPCProcess Send(INPCCommand command)
         {
-            Log($"Begin command = {command}");
+            //Log($"Begin command = {command}");
 
             if(mInternalHumanoidHostContext.RightHandThing != null)
             {
@@ -230,7 +230,7 @@ namespace Assets.Scripts
         public object Get(string propertyName)
         {
 #if DEBUG
-            Log($"propertyName = {propertyName}");
+            //Log($"propertyName = {propertyName}");
 #endif
             if (mInternalHumanoidHostContext.RightHandThing != null)
             {
@@ -281,7 +281,7 @@ namespace Assets.Scripts
         private void MBodyHost_OnReady()
         {
 #if DEBUG
-            Log("Begin");
+            //Log("Begin");
 #endif
 
             Task.Run(() => {
@@ -322,7 +322,11 @@ namespace Assets.Scripts
                         try
                         {
 #if DEBUG
-                            Log($"value == null = ({value == null}) value = {value}");
+                            //Log($"value == null = ({value == null}) value = {value}");
+                            if(value == null)
+                            {
+                                throw new ArgumentNullException(nameof(value));
+                            }
 #endif
                             value();
                         }
