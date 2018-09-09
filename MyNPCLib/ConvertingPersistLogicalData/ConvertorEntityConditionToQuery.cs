@@ -26,6 +26,7 @@ namespace MyNPCLib.ConvertingPersistLogicalData
 #endif
 
             var newMainRuleInstance = mainRuleInstance.Clone();
+            newMainRuleInstance.Kind = KindOfRuleInstance.QuestionVars;
 
             var entityDictionary = source.EntityDictionary;
 

@@ -139,13 +139,18 @@ namespace Assets.Scripts
 #if DEBUG
             Log($"keyOfVarOfDirection = {keyOfVarOfDirection}");
 #endif
-
-            var targetValueOfDirection = querySearchResultCGStorage.GetResultOfVar(keyOfVarOfDirection);
+            var targetValueOfDirection = querySearchResultCGStorage.GetResultOfVarAsVariant("?X");
 
 #if DEBUG
             LogInstance.Log($"targetValueOfDirection = {targetValueOfDirection}");
 #endif
-            var entityConditionRuleInstance = targetValueOfDirection.GetEntityConditionRuleInstance();
+
+            var targetValueOfDirection_1 = querySearchResultCGStorage.GetResultOfVar(keyOfVarOfDirection);
+
+#if DEBUG
+            LogInstance.Log($"targetValueOfDirection_1 = {targetValueOfDirection_1}");
+#endif
+            var entityConditionRuleInstance = targetValueOfDirection_1.GetEntityConditionRuleInstance();
 
 #if DEBUG
             LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
@@ -160,7 +165,8 @@ namespace Assets.Scripts
             Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
 #endif
 
-            var targetObject = GetLogicalObject(oldEntityConditionQueryString);
+            //var targetObject = GetLogicalObject(oldEntityConditionQueryString);
+            var targetObject = GetLogicalObject(targetValueOfDirection);
             var targetPosition = targetObject.GetValue<System.Numerics.Vector3?>("global position");
 
 #if DEBUG

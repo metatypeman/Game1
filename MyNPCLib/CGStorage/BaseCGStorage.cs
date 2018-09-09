@@ -62,11 +62,19 @@ namespace MyNPCLib.CGStorage
 
         public virtual IList<ResolverForRelationExpressionNode> GetAllRelations()
         {
+#if DEBUG
+            LogInstance.Log($"GetType().FullName = {GetType().FullName}");
+#endif
+
             throw new NotImplementedException();
         }
 
         public virtual RuleInstance GetRuleInstanceByKey(ulong key)
         {
+#if DEBUG
+            LogInstance.Log($"GetType().FullName = {GetType().FullName}");
+#endif
+
             throw new NotImplementedException();
         }
 

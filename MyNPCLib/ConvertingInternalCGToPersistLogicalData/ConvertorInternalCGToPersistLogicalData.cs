@@ -74,6 +74,12 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                 ruleInstance.Kind = KindOfRuleInstance.Fact;
             }
 
+            var accessPolicyToFactModalityList = new List<AccessPolicyToFactModality>();
+            var accessPolicyToFactModality = new AccessPolicyToFactModality();
+            accessPolicyToFactModality.Kind = KindOfAccessPolicyToFact.Public;
+            accessPolicyToFactModalityList.Add(accessPolicyToFactModality);
+            ruleInstance.AccessPolicyToFactModality = accessPolicyToFactModalityList;
+
             var graphsChildrenList = source.Children.Where(p => p.IsConceptualGraph).Select(p => p.AsConceptualGraph).ToList();
 
             foreach(var graphsChild in graphsChildrenList)

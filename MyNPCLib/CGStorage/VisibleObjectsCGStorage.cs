@@ -85,6 +85,30 @@ namespace MyNPCLib.CGStorage
         private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityAndUseProductionsList;
         private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances;
 
+        public override IList<ResolverForRelationExpressionNode> GetAllRelations()
+        {
+            lock (mLockObj)
+            {
+                var result = new List<ResolverForRelationExpressionNode>();
+
+                var dataSourcesSettingsOrderedByPriorityList = mDataSourcesSettingsOrderedByPriorityAndUseFactsList;
+
+                foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
+                {
+                    var allRelationsOfStorage = dataSourcesSettings.Storage.GetAllRelations();
+
+                    if (allRelationsOfStorage == null)
+                    {
+                        continue;
+                    }
+
+                    result.AddRange(allRelationsOfStorage);
+                }
+
+                return result;
+            }
+        }
+
         public override IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {
             lock (mLockObj)

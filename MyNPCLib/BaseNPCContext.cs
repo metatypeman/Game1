@@ -1,6 +1,9 @@
 ﻿using MyNPCLib.CGStorage;
+using MyNPCLib.ConvertingPersistLogicalData;
 using MyNPCLib.Logical;
 using MyNPCLib.LogicalSoundModeling;
+using MyNPCLib.PersistLogicalData;
+using MyNPCLib.Variants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -822,6 +825,51 @@ namespace MyNPCLib
             //Log($"GetLogicalObject query = {query}");
 #endif
             return new LogicalObject(mEntityLogger, query, mEntityDictionary, mContextOfCGStorage.MainCGStorage, mSystemPropertiesDictionary, mVisionObjectsStorage);
+        }
+
+        public BaseAbstractLogicalObject GetLogicalObject(ICGStorage query)
+        {
+#if DEBUG
+            //Log($"GetLogicalObject query = {query}");
+#endif
+            return new LogicalObject(mEntityLogger, query, mEntityDictionary, mContextOfCGStorage.MainCGStorage, mSystemPropertiesDictionary, mVisionObjectsStorage);
+        }
+
+        public BaseAbstractLogicalObject GetLogicalObject(RuleInstancePackage query)
+        {
+#if DEBUG
+            //Log($"GetLogicalObject query = {query}");
+#endif
+            return new LogicalObject(mEntityLogger, query, mEntityDictionary, mContextOfCGStorage.MainCGStorage, mSystemPropertiesDictionary, mVisionObjectsStorage);
+        }
+
+        public BaseAbstractLogicalObject GetLogicalObject(RuleInstance query)
+        {
+#if DEBUG
+            //Log($"GetLogicalObject query = {query}");
+#endif
+            return new LogicalObject(mEntityLogger, query, mEntityDictionary, mContextOfCGStorage.MainCGStorage, mSystemPropertiesDictionary, mVisionObjectsStorage);
+        }
+
+        public BaseAbstractLogicalObject GetLogicalObject(BaseVariant query)
+        {
+#if DEBUG
+            Log($"GetLogicalObject query = {query}");
+#endif
+
+            if (!query.IsEntityCondition)
+            {
+                throw new NotImplementedException();
+                //return;
+            }
+
+            var entityConditionRuleInstance = query.AsEntityCondition.RuleInstance;
+            var ruleInstancesPackage = new RuleInstancePackage(entityConditionRuleInstance);
+            var initQueryStorage = new QueryCGStorage(mEntityDictionary, ruleInstancesPackage);
+
+            var queryStorage = ConvertorEntityConditionToQuery.Convert(initQueryStorage);
+
+            return new LogicalObject(mEntityLogger, queryStorage, mEntityDictionary, mContextOfCGStorage.MainCGStorage, mSystemPropertiesDictionary, mVisionObjectsStorage);
         }
 
         public IList<VisionObject> VisibleObjects

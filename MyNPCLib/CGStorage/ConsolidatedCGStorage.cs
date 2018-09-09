@@ -1,5 +1,6 @@
 ﻿using MyNPCLib.IndexedPersistLogicalData;
 using MyNPCLib.LogicalSearchEngine;
+using MyNPCLib.PersistLogicalData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -90,6 +91,50 @@ namespace MyNPCLib.CGStorage
         private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityAndUseFactsList;
         private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityAndUseProductionsList;
         private IList<SettingsOfStorageForSearchingInThisSession> mDataSourcesSettingsOrderedByPriorityAndUseAdditionalInstances;
+
+        public override IList<ResolverForRelationExpressionNode> GetAllRelations()
+        {
+            lock (mLockObj)
+            {
+                var result = new List<ResolverForRelationExpressionNode>();
+
+                var dataSourcesSettingsOrderedByPriorityList = mDataSourcesSettingsOrderedByPriorityAndUseFactsList;
+
+                foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
+                {
+                    var allRelationsOfStorage = dataSourcesSettings.Storage.GetAllRelations();
+
+                    if (allRelationsOfStorage == null)
+                    {
+                        continue;
+                    }
+
+                    result.AddRange(allRelationsOfStorage);
+                }
+
+                return result;
+            }
+        }
+
+        public override RuleInstance GetRuleInstanceByKey(ulong key)
+        {
+            lock (mLockObj)
+            {
+                var dataSourcesSettingsOrderedByPriorityList = mDataSourcesSettingsOrderedByPriorityAndUseFactsList;
+
+                foreach (var dataSourcesSettings in dataSourcesSettingsOrderedByPriorityList)
+                {
+                    var ruleInstanceOfStorage = dataSourcesSettings.Storage.GetRuleInstanceByKey(key);
+
+                    if (ruleInstanceOfStorage != null)
+                    {
+                        return ruleInstanceOfStorage;
+                    }
+                }
+
+                return null;
+            }
+        }
 
         public override IList<IndexedRulePart> GetIndexedRulePartOfFactsByKeyOfRelation(ulong key)
         {

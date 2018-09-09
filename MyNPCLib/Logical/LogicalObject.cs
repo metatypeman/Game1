@@ -1,5 +1,7 @@
 ﻿using MyNPCLib.CGStorage;
 using MyNPCLib.Parser.LogicalExpression;
+using MyNPCLib.PersistLogicalData;
+using MyNPCLib.Variants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,16 +19,73 @@ namespace MyNPCLib.Logical
 #if DEBUG
             Log($"Begin query = {query}");
 #endif
-            mEntityDictionary = entityDictionary;
-            mVisionObjectsStorage = visionObjectsStorage;
-            mSource = source;
-            mSource.OnChanged += MSource_OnChanged;
 
-            mQueryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(query, entityDictionary);
+            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(query, entityDictionary);
+
+            Init(queryStorage, entityDictionary, source, visionObjectsStorage);
 
 #if DEBUG
             Log($"End query = {query}");
 #endif
+        }
+
+        public LogicalObject(IEntityLogger entityLogger, ICGStorage query, IEntityDictionary entityDictionary, ICGStorage source, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
+            : base(entityLogger, systemPropertiesDictionary)
+        {
+#if DEBUG
+            Log($"Begin query = {query}");
+            Log($"Begin query.MainIndexedRuleInstance = {query.MainIndexedRuleInstance}");
+#endif
+
+            Init(query, entityDictionary, source, visionObjectsStorage);
+
+#if DEBUG
+            Log($"End query = {query}");
+#endif
+        }
+
+        public LogicalObject(IEntityLogger entityLogger, RuleInstancePackage query, IEntityDictionary entityDictionary, ICGStorage source, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
+            : base(entityLogger, systemPropertiesDictionary)
+        {
+#if DEBUG
+            Log($"Begin query = {query}");
+#endif
+
+            var queryStorage = new QueryCGStorage(entityDictionary, query);
+
+            Init(queryStorage, entityDictionary, source, visionObjectsStorage);
+
+#if DEBUG
+            Log($"End query = {query}");
+#endif
+        }
+
+        public LogicalObject(IEntityLogger entityLogger, RuleInstance query, IEntityDictionary entityDictionary, ICGStorage source, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
+            : base(entityLogger, systemPropertiesDictionary)
+        {
+#if DEBUG
+            Log($"Begin query = {query}");
+#endif
+            var ruleInstancesPackage = new RuleInstancePackage(query);
+            var queryStorage = new QueryCGStorage(entityDictionary, ruleInstancesPackage);
+
+            Init(queryStorage, entityDictionary, source, visionObjectsStorage);
+
+#if DEBUG
+            Log($"End query = {query}");
+#endif
+        }
+
+        private void Init(ICGStorage queryStorage, IEntityDictionary entityDictionary, ICGStorage source, VisionObjectsStorage visionObjectsStorage)
+        {
+            mQueryStorage = queryStorage;
+
+            mEntityDictionary = entityDictionary;
+            mVisionObjectsStorage = visionObjectsStorage;
+
+            mSource = source;
+
+            mSource.OnChanged += MSource_OnChanged;
         }
 
         private IEntityDictionary mEntityDictionary;
@@ -170,7 +229,7 @@ namespace MyNPCLib.Logical
         private void UpdateCurrentEnitiesIdList()
         {
 #if DEBUG
-            //Log("Begin");
+            //Log($"Begin mNeedUpdateEnitiesIdList = {mNeedUpdateEnitiesIdList}");
 #endif
 
             if(!mNeedUpdateEnitiesIdList)
@@ -179,11 +238,16 @@ namespace MyNPCLib.Logical
                 return;
             }
 
+#if DEBUG
+            //Log($"NEXT mNeedUpdateEnitiesIdList = {mNeedUpdateEnitiesIdList}");
+#endif
+
             mNeedUpdateEnitiesIdList = false;
 
             mCurrentEnitiesIdList = mSource.GetEntitiesIdList(mQueryStorage);
 
 #if DEBUG
+            //Log($"mCurrentEnitiesIdList.Count = {mCurrentEnitiesIdList.Count}");
             //Log($"mCurrentEnitiesIdList == null = {mCurrentEnitiesIdList == null}");
             //if(mCurrentEnitiesIdList == null)
             //{
@@ -194,7 +258,7 @@ namespace MyNPCLib.Logical
             FindPrimaryEntityId();
 
 #if DEBUG
-            //Log("End");
+            Log("End");
 #endif
         }
 
