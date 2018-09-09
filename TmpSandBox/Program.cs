@@ -8,24 +8,20 @@ using MyNPCLib.ConvertingPersistLogicalDataToIndexing;
 using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.Dot;
 using MyNPCLib.IndexedPersistLogicalData;
-using MyNPCLib.LegacyConvertors;
 using MyNPCLib.Logical;
 using MyNPCLib.LogicalHostEnvironment;
 using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.LogicalSoundModeling;
 using MyNPCLib.NLToCGParsing;
-using MyNPCLib.Parser;
 using MyNPCLib.Parser.LogicalExpression;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.PersistLogicalDataStorage;
 using MyNPCLib.SimpleWordsDict;
-using OpenNLP.Tools.Parser;
 using OpenNLP.Tools.PosTagger;
 using SharpWordNet;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
@@ -694,9 +690,9 @@ namespace TmpSandBox
 
                 LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
 
-                var oldEntityConditionQueryString = RuleInstanceToOldEntityConditionConvertor.ConvertToOldQueryString(entityConditionRuleInstance);
+                //var oldEntityConditionQueryString = RuleInstanceToOldEntityConditionConvertor.ConvertToOldQueryString(entityConditionRuleInstance);
 
-                LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
+                //LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
 
                 //var foundExpressionOfValueOfDirection = targetValueOfDirection.FoundExpression;
 

@@ -1,18 +1,8 @@
 ﻿using MyNPCLib;
 using MyNPCLib.CGStorage;
-using MyNPCLib.ConvertingPersistLogicalDataToIndexing;
 using MyNPCLib.DebugHelperForPersistLogicalData;
-using MyNPCLib.LegacyConvertors;
-using MyNPCLib.Logical;
-using MyNPCLib.LogicalSearchEngine;
 using MyNPCLib.LogicalSoundModeling;
 using MyNPCLib.Parser.LogicalExpression;
-using MyNPCLib.PersistLogicalData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assets.Scripts
 {
@@ -134,38 +124,13 @@ namespace Assets.Scripts
             var querySearchResultCGStorage = MainCGStorage.Search(queryStorage);
 
             var varNameOfDirection = "?X";
-            var keyOfVarOfDirection = EntityDictionary.GetKey(varNameOfDirection);
-
-#if DEBUG
-            Log($"keyOfVarOfDirection = {keyOfVarOfDirection}");
-#endif
-            var targetValueOfDirection = querySearchResultCGStorage.GetResultOfVarAsVariant("?X");
+           
+            var targetValueOfDirection = querySearchResultCGStorage.GetResultOfVarAsVariant(varNameOfDirection);
 
 #if DEBUG
             LogInstance.Log($"targetValueOfDirection = {targetValueOfDirection}");
 #endif
 
-            var targetValueOfDirection_1 = querySearchResultCGStorage.GetResultOfVar(keyOfVarOfDirection);
-
-#if DEBUG
-            LogInstance.Log($"targetValueOfDirection_1 = {targetValueOfDirection_1}");
-#endif
-            var entityConditionRuleInstance = targetValueOfDirection_1.GetEntityConditionRuleInstance();
-
-#if DEBUG
-            LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
-#endif
-            var oldEntityConditionQueryString = RuleInstanceToOldEntityConditionConvertor.ConvertToOldQueryString(entityConditionRuleInstance);
-
-#if DEBUG
-            LogInstance.Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
-#endif
-
-#if DEBUG
-            Log($"oldEntityConditionQueryString = {oldEntityConditionQueryString}");
-#endif
-
-            //var targetObject = GetLogicalObject(oldEntityConditionQueryString);
             var targetObject = GetLogicalObject(targetValueOfDirection);
             var targetPosition = targetObject.GetValue<System.Numerics.Vector3?>("global position");
 

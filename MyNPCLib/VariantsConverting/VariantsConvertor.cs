@@ -201,7 +201,7 @@ namespace MyNPCLib.VariantsConverting
             var entityConditionRuleInstance = source.Parent.Storage.GetRuleInstanceByKey(keyOfEntityConditionFact);
 
 #if DEBUG
-            LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
+            //LogInstance.Log($"entityConditionRuleInstance = {entityConditionRuleInstance}");
 #endif
 
             var result = new EntityConditionVariant(entityConditionRuleInstance);

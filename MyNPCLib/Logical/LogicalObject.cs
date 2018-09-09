@@ -17,7 +17,7 @@ namespace MyNPCLib.Logical
             : base (entityLogger, systemPropertiesDictionary)
         {
 #if DEBUG
-            Log($"Begin query = {query}");
+            //Log($"Begin query = {query}");
 #endif
 
             var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(query, entityDictionary);
@@ -25,7 +25,7 @@ namespace MyNPCLib.Logical
             Init(queryStorage, entityDictionary, source, visionObjectsStorage);
 
 #if DEBUG
-            Log($"End query = {query}");
+            //Log($"End query = {query}");
 #endif
         }
 
@@ -33,14 +33,14 @@ namespace MyNPCLib.Logical
             : base(entityLogger, systemPropertiesDictionary)
         {
 #if DEBUG
-            Log($"Begin query = {query}");
-            Log($"Begin query.MainIndexedRuleInstance = {query.MainIndexedRuleInstance}");
+            //Log($"Begin query = {query}");
+            //Log($"Begin query.MainIndexedRuleInstance = {query.MainIndexedRuleInstance}");
 #endif
 
             Init(query, entityDictionary, source, visionObjectsStorage);
 
 #if DEBUG
-            Log($"End query = {query}");
+            //Log($"End query = {query}");
 #endif
         }
 
@@ -48,7 +48,7 @@ namespace MyNPCLib.Logical
             : base(entityLogger, systemPropertiesDictionary)
         {
 #if DEBUG
-            Log($"Begin query = {query}");
+            //Log($"Begin query = {query}");
 #endif
 
             var queryStorage = new QueryCGStorage(entityDictionary, query);
@@ -56,7 +56,7 @@ namespace MyNPCLib.Logical
             Init(queryStorage, entityDictionary, source, visionObjectsStorage);
 
 #if DEBUG
-            Log($"End query = {query}");
+            //Log($"End query = {query}");
 #endif
         }
 
@@ -64,7 +64,7 @@ namespace MyNPCLib.Logical
             : base(entityLogger, systemPropertiesDictionary)
         {
 #if DEBUG
-            Log($"Begin query = {query}");
+            //Log($"Begin query = {query}");
 #endif
             var ruleInstancesPackage = new RuleInstancePackage(query);
             var queryStorage = new QueryCGStorage(entityDictionary, ruleInstancesPackage);
@@ -72,7 +72,7 @@ namespace MyNPCLib.Logical
             Init(queryStorage, entityDictionary, source, visionObjectsStorage);
 
 #if DEBUG
-            Log($"End query = {query}");
+            //Log($"End query = {query}");
 #endif
         }
 
@@ -93,7 +93,7 @@ namespace MyNPCLib.Logical
         private void MSource_OnChanged()
         {
 #if DEBUG
-            Log("Begin");
+            //Log("Begin");
 #endif
 
             lock (mCurrentEnitiesIdListLockObj)

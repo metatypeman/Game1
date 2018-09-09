@@ -19,7 +19,7 @@ namespace MyNPCLib.LogicalSearchEngine
         public LogicalSearchResult Run(LogicalSearchOptions options)
         {
 #if DEBUG
-            LogInstance.Log($"options = {options}");
+            //LogInstance.Log($"options = {options}");
 #endif
             var queryDataSource = options.QuerySource;
             IndexedRuleInstance queryExpression = null;
@@ -40,7 +40,7 @@ namespace MyNPCLib.LogicalSearchEngine
             }
 
 #if DEBUG
-            LogInstance.Log($"NEXT");
+            //LogInstance.Log($"NEXT");
 #endif
 
             var externalDataSource = options.DataSource;
@@ -84,7 +84,7 @@ namespace MyNPCLib.LogicalSearchEngine
             queryExpression.FillExecutingCard(queryExecutingCard, dataSource, optionsOfFillExecutingCard);
 
 #if DEBUG
-            LogInstance.Log($"@!@!@!@!@!@!@! queryExecutingCard = {queryExecutingCard}");
+            //LogInstance.Log($"@!@!@!@!@!@!@! queryExecutingCard = {queryExecutingCard}");
 #endif
 
             foreach (var resultOfQueryToRelation in queryExecutingCard.ResultsOfQueryToRelationList)
@@ -105,7 +105,7 @@ namespace MyNPCLib.LogicalSearchEngine
             result.Items = resultItemsList;
 
 #if DEBUG
-            LogInstance.Log("End");
+            //LogInstance.Log("End");
 #endif
 
             return result;
@@ -124,7 +124,7 @@ namespace MyNPCLib.LogicalSearchEngine
             var result = searchResult.Items.Select(p => p.ResultOfVarOfQueryToRelationList.Single()).Select(p => p.FoundExpression.AsEntityRef.Key).Distinct().ToList();
 
 #if DEBUG
-            LogInstance.Log($"result.Count = {result.Count}");
+            //LogInstance.Log($"result.Count = {result.Count}");
 #endif
 
             return result;
