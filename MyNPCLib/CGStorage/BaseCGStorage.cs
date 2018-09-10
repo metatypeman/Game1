@@ -195,7 +195,7 @@ namespace MyNPCLib.CGStorage
             var searchResult = mLogicalSearcher.Run(searchOptions);
 
 #if DEBUG
-            LogInstance.Log($"searchResult = {searchResult}");
+            //LogInstance.Log($"searchResult = {searchResult}");
 #endif
 
             var querySearchResultCGStorage = new QueryResultCGStorage(EntityDictionary, searchResult);
@@ -205,7 +205,7 @@ namespace MyNPCLib.CGStorage
         public virtual BaseVariant GetPropertyValueAsVariant(ulong entityId, ulong propertyId)
         {
 #if DEBUG
-            //LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
+            LogInstance.Log($"entityId = {entityId} propertyId = {propertyId}");
 #endif
 
             var searchResult = CreateLogicalSearchResultForGetProperty(entityId, propertyId);

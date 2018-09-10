@@ -103,9 +103,9 @@ namespace TmpSandBox
             var result = searchResult.GetResultOfVarAsVariant("?x");
             LogInstance.Log($"result = {result}");
 
-            searchResult = visibleStorage.Search(queryStorage);
-            result = searchResult.GetResultOfVarAsVariant("?x");
-            LogInstance.Log($"result (2)= {result}");
+            //searchResult = visibleStorage.Search(queryStorage);
+            //result = searchResult.GetResultOfVarAsVariant("?x");
+            //LogInstance.Log($"result (2)= {result}");
         }
 
         private static void TSTParsingUserQuery()

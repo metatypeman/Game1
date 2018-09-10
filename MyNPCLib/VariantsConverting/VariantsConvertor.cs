@@ -101,7 +101,7 @@ namespace MyNPCLib.VariantsConverting
         public static BaseVariant ConvertResultOfVarToVariant(ResultOfVarOfQueryToRelation source)
         {
 #if DEBUG
-            //LogInstance.Log($"source = {source}");
+            LogInstance.Log($"source = {source}");
 #endif
 
             var foundExpression = source.FoundExpression;
@@ -123,6 +123,9 @@ namespace MyNPCLib.VariantsConverting
 
                 case KindOfExpressionNode.Value:
                     return ConvertResultOfVarToVariantAsValue(foundExpression.AsValue);
+
+                case KindOfExpressionNode.FuzzyLogicValue:
+                    return ConvertResultOfVarToVariantAsLogicalValue(foundExpression.AsFuzzyLogicValue);
 
                 case KindOfExpressionNode.Fact:
                     return ConvertResultOfVarToVariantAsFact(foundExpression.AsFact, source);
@@ -162,6 +165,16 @@ namespace MyNPCLib.VariantsConverting
 #endif
 
             var result = new ValueVariant(expressionNode.Value, expressionNode.Annotations);
+            return result;
+        }
+
+        private static BaseVariant ConvertResultOfVarToVariantAsLogicalValue(FuzzyLogicValueExpressionNode expressionNode)
+        {
+#if DEBUG
+            LogInstance.Log($"expressionNode = {expressionNode}");
+#endif
+
+            var result = new FuzzyLogicalValueVariant(expressionNode.Value, expressionNode.Annotations);
             return result;
         }
 

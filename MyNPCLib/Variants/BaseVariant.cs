@@ -20,6 +20,9 @@ namespace MyNPCLib.Variants
         public virtual bool IsValue => false;
         public virtual ValueVariant AsValue => null;
 
+        public virtual bool IsFuzzyLogicalValue => false;
+        public virtual FuzzyLogicalValueVariant AsFuzzyLogicalValue => null;
+
         public virtual bool IsFact => false;
         public virtual FactVariant AsFact => null;
 
