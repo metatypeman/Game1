@@ -14,6 +14,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.EntityCondition;
         public ulong Key { get; set; }
+        public ulong VariableKey { get; set; }
 
         public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options)
         {
@@ -44,6 +45,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToSting(n));
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            sb.AppendLine($"{spaces}{nameof(VariableKey)} = {VariableKey}");
             return sb.ToString();
         }
 
@@ -53,6 +55,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
             var sb = new StringBuilder();
             sb.Append(base.PropertiesToShortSting(n));
             sb.AppendLine($"{spaces}{nameof(Key)} = {Key}");
+            sb.AppendLine($"{spaces}{nameof(VariableKey)} = {VariableKey}");
             return sb.ToString();
         }
     }

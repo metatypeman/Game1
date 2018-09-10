@@ -183,17 +183,18 @@ namespace MyNPCLib.VariantsConverting
             //LogInstance.Log($"expressionNode = {expressionNode}");
 #endif
 
-            var entityConditionRec = source.Parent.RuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == expressionNode.Key);
+            //var entityConditionRec = source.Parent.RuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == expressionNode.VariableKey);
 
-            if (entityConditionRec == null)
-            {
-                return null;
-            }
+            //if (entityConditionRec == null)
+            //{
+            //    return null;
+            //}
 
 #if DEBUG
             //LogInstance.Log($"entityConditionRec = {entityConditionRec}");
 #endif
-            var keyOfEntityConditionFact = entityConditionRec.Key;
+            //var keyOfEntityConditionFact = entityConditionRec.Key;
+            var keyOfEntityConditionFact = expressionNode.Key;
 
 #if DEBUG
             //LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");

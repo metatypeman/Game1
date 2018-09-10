@@ -801,14 +801,17 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                     {
                         var aliasOfEntityCondition = string.Empty;
 
-                        if(contextForSingleRuleInstance.EntityConditionsDict.ContainsKey(graphOrConcept.Name))
+                        var futureEntityName = graphOrConcept.Name;
+                        var futureEntityKey = context.EntityDictionary.GetKey(futureEntityName);
+
+                        if (contextForSingleRuleInstance.EntityConditionsDict.ContainsKey(futureEntityName))
                         {
-                            aliasOfEntityCondition = contextForSingleRuleInstance.EntityConditionsDict[graphOrConcept.Name];
+                            aliasOfEntityCondition = contextForSingleRuleInstance.EntityConditionsDict[futureEntityName];
                         }
                         else
                         {
                             aliasOfEntityCondition = $"#@X{contextForSingleRuleInstance.EntityConditionsDict.Count + 1}";
-                            contextForSingleRuleInstance.EntityConditionsDict[graphOrConcept.Name] = aliasOfEntityCondition;
+                            contextForSingleRuleInstance.EntityConditionsDict[futureEntityName] = aliasOfEntityCondition;
                         }
 
 #if DEBUG
@@ -818,8 +821,10 @@ namespace MyNPCLib.ConvertingInternalCGToPersistLogicalData
                         //throw new NotImplementedException();
 
                         var entityCondition = new EntityConditionExpressionNode();
-                        entityCondition.Name = aliasOfEntityCondition;
-                        entityCondition.Key = context.EntityDictionary.GetKey(aliasOfEntityCondition);
+                        entityCondition.Name = futureEntityName;
+                        entityCondition.Key = futureEntityKey;
+                        entityCondition.VariableName = aliasOfEntityCondition;
+                        entityCondition.VariableKey = context.EntityDictionary.GetKey(aliasOfEntityCondition);
                         return entityCondition;
                     }
 

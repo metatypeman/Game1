@@ -478,8 +478,10 @@ namespace MyNPCLib.Parser.LogicalExpression
             item.VariableKey = varKey;
 
             var result = new EntityConditionExpressionNode();
-            result.Name = varName;
-            result.Key = varKey;
+            result.Name = factName;
+            result.Key = factKey;
+            result.VariableName = varName;
+            result.VariableKey = varKey;
             FillAnnotationForExpression(result, node, context);
             return result;
         }
@@ -841,8 +843,10 @@ namespace MyNPCLib.Parser.LogicalExpression
             item.VariableKey = varKey;
 
             var result = new EntityConditionExpressionNode();
-            result.Name = varName;
-            result.Key = varKey;
+            result.Name = factName;
+            result.Key = factKey;
+            result.VariableName = varName;
+            result.VariableKey = varKey;
             FillAnnotationForExpression(result, node, context);
             return result;
         }

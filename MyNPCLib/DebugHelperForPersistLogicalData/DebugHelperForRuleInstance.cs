@@ -383,9 +383,9 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
         private static string EntityConditionToString(EntityConditionExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
             var sb = new StringBuilder();
-            sb.Append(source.Name);
+            sb.Append(source.VariableName);
             sb.Append(ToString(source.Annotations, context));
-            return source.Name.ToString();
+            return source.VariableName.ToString();
         }
 
         private static string VarToString(VarExpressionNode source, ContextForDebugHelperForRuleInstance context)

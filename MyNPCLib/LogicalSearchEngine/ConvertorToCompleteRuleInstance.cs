@@ -152,7 +152,7 @@ namespace MyNPCLib.LogicalSearchEngine
                 //LogInstance.Log($"foundEntityCondition = {foundEntityCondition}");
 #endif
 
-                var tagetEntityConditionName = foundEntityCondition.Name;
+                var tagetEntityConditionName = foundEntityCondition.VariableName;
 
 #if DEBUG
                 //LogInstance.Log($"tagetEntityConditionName = {tagetEntityConditionName}");
@@ -183,7 +183,7 @@ namespace MyNPCLib.LogicalSearchEngine
                     //LogInstance.Log($"entityConditions = {entityConditions}");
 #endif
 
-                    var targetEntityCondition = entityConditions.Items.FirstOrDefault(p => p.VariableKey == foundEntityCondition.Key);
+                    var targetEntityCondition = entityConditions.Items.FirstOrDefault(p => p.VariableKey == foundEntityCondition.VariableKey);
 
 #if DEBUG
                     //LogInstance.Log($"targetEntityCondition = {targetEntityCondition}");
@@ -490,6 +490,8 @@ namespace MyNPCLib.LogicalSearchEngine
             var result = new EntityConditionExpressionNode();
             result.Name = source.Name;
             result.Key = source.Key;
+            result.VariableName = source.VariableName;
+            result.VariableKey = source.VariableKey;
             result.Annotations = ConvertAnnotations(source.Annotations, context);
             return result;
         }

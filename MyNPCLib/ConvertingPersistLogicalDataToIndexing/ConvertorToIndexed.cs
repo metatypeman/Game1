@@ -473,6 +473,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
             result.Key = source.Key;
+            result.VariableKey = source.VariableKey;
             result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }

@@ -285,8 +285,10 @@ namespace MyNPCLib.CGStorage.Helpers
             entityCondition_1.VariableKey = entityConditionVarKey;
 
             var expressionOfVariant = new EntityConditionExpressionNode();
+            expressionOfVariant.VariableKey = entityConditionVarKey;
+            expressionOfVariant.VariableName = entityConditionVarName;
+            expressionOfVariant.Name = entityConditionName;
             expressionOfVariant.Key = entityConditionVarKey;
-            expressionOfVariant.Name = entityConditionVarName;
 
             var rulePart_1 = new RulePart();
             rulePart_1.Parent = ruleInstance;

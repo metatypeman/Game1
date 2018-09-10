@@ -29,17 +29,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
                 return null;
             }
 
-            var entityConditionRec = Parent.RuleInstance.EntitiesConditions.Items.FirstOrDefault(p => p.VariableKey == foundExpressionOfValueOfDirectionAsEntityCondition.Key);
-
-            if(entityConditionRec == null)
-            {
-                return null;
-            }
-
-#if DEBUG
-            LogInstance.Log($"entityConditionRec = {entityConditionRec}");
-#endif
-            var keyOfEntityConditionFact = entityConditionRec.Key;
+            var keyOfEntityConditionFact = foundExpressionOfValueOfDirectionAsEntityCondition.Key;
 
 #if DEBUG
             LogInstance.Log($"keyOfEntityConditionFact = {keyOfEntityConditionFact}");

@@ -1250,8 +1250,10 @@ namespace TmpSandBox
 
             var entityCondition = new EntityConditionExpressionNode();
             relation.Params.Add(entityCondition);
-            entityCondition.Name = entityConditionVarName;
-            entityCondition.Key = entityConditionVarKey;
+            entityCondition.Name = entityConditionInstance.Name;
+            entityCondition.Key = entityConditionInstance.Key;
+            entityCondition.VariableName = entityConditionVarName;
+            entityCondition.VariableKey = entityConditionVarKey;
 
             var entitiesConditions = new EntitiesConditions();
             ruleInstance.EntitiesConditions = entitiesConditions;
