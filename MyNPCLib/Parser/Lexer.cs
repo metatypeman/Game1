@@ -251,6 +251,25 @@ namespace MyNPCLib.Parser
                             break;
                         }
 
+                        if(content.EndsWith("l") || content.EndsWith("L"))
+                        {
+#if DEBUG
+                            //LogInstance.Log($"content = {content}");
+#endif
+
+                            if(content.Count(p => char.IsDigit(p)) == content.Length - 1)
+                            {
+                                content = content.Substring(0, content.Length - 1);
+
+#if DEBUG
+                                //LogInstance.Log($"content (2) = {content}");
+#endif
+                                contentLength = content.Length - 1;
+                                kind = TokenKind.FuzzyLogicalValue;
+                                break;
+                            }             
+                        }
+
                         if (string.Compare(content, "public", true) == 0)
                         {
                             kindOfKeyWord = TokenKind.Public;
@@ -264,6 +283,18 @@ namespace MyNPCLib.Parser
                         if (string.Compare(content, "visible", true) == 0)
                         {
                             kindOfKeyWord = TokenKind.Visible;
+                            break;
+                        }
+
+                        if(string.Compare(content, "true", true) == 0)
+                        {
+                            kindOfKeyWord = TokenKind.True;
+                            break;
+                        }
+
+                        if (string.Compare(content, "false", true) == 0)
+                        {
+                            kindOfKeyWord = TokenKind.False;
                             break;
                         }
                     }

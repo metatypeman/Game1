@@ -35,6 +35,10 @@ namespace MyNPCLib.Parser.LogicalExpression
                         var nextToken = NGetToken();
                         var nextTokenKind = nextToken.TokenKind;
 
+#if DEBUG
+                        //LogInstance.Log($"nextToken = {nextToken}");
+#endif
+
                         switch (nextTokenKind)
                         {
                             case TokenKind.Point:
@@ -42,11 +46,22 @@ namespace MyNPCLib.Parser.LogicalExpression
                                     var nextNextToken = NGetToken();
                                     var nextNextTokenKind = nextNextToken.TokenKind;
 
-                                    switch(nextNextTokenKind)
+#if DEBUG
+                                    //LogInstance.Log($"nextNextToken = {nextNextToken}");
+#endif
+
+                                    switch (nextNextTokenKind)
                                     {
                                         case TokenKind.Number:
                                             {
                                                 result.Content = $"{result.Content}.{nextNextToken.Content}";
+                                            }
+                                            break;
+
+                                        case TokenKind.FuzzyLogicalValue:
+                                            {
+                                                result.Content = $"{result.Content}.{nextNextToken.Content}";
+                                                result.TokenKind = TokenKind.FuzzyLogicalValue;
                                             }
                                             break;
                                             

@@ -47,11 +47,11 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            //TSTHostLogicalObjectStorage();
+            TSTHostLogicalObjectStorage();
             //TSTParsingUserQuery();
             //TSTLogicalSoundBus();
             //TSTQueryWithAccessPolicy();
-            TSTQueryEntityCondition();
+            //TSTQueryEntityCondition();
             //TSTGoToGreenWaypoint();
             //TSTProcessAnnotations();
             //TSTATNParsing();
@@ -82,12 +82,12 @@ namespace TmpSandBox
             var busOfCGStorages = new BusOfCGStorages(globalEntityDictionary);
             busOfCGStorages.AddStorage(storage);
 
-            var queryStr = "{: !:{public} {color(#12345, black)} :}";
+            var queryStr = "{: !:{public} {color(#12345, 0.5l)} :}";
             var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
             storage.Append(queryStorage);
 
-            queryStr = "{: !:{visible} {direction(#12345, forest)} :}";
+            queryStr = "{: !:{visible} {direction(#12345, 0.2l)} :}";
             queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary);
 
             storage.Append(queryStorage);
@@ -133,6 +133,12 @@ namespace TmpSandBox
             //var queryStr = "{:class=dog&determiner=the:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
+            //var queryStr = "{:class=dog&determiner=true :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            var queryStr = "{:class=dog&determiner=0.5l :}";
+            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
             //var queryStr = "{: class = dog & determiner = {:time=past & location=forest :} :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
@@ -157,8 +163,8 @@ namespace TmpSandBox
             //var queryStr = "{: @x = know(I, dog) :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
-            var queryStr = "{: know(I, @$a) :}";
-            NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+            //var queryStr = "{: know(I, @$a) :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //queryStr = "{: @x = know(I, {:class=dog&determiner=the:})[:{:class=state:}:]:}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
@@ -233,6 +239,15 @@ namespace TmpSandBox
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
 
             //var queryStr = "{: ?x(?y, ?z):}[:{:info_1:}:]";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            //var queryStr = "{: know(I, true) :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            //var queryStr = "{: know(I, false) :}";
+            //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
+
+            //var queryStr = "{: know(I, 0.5l) :}";
             //NTSTParsingUserQuery(queryStr, globalEntityDictionary);
         }
 

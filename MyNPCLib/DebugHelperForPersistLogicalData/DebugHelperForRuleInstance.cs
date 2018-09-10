@@ -441,7 +441,9 @@ namespace MyNPCLib.DebugHelperForPersistLogicalData
 
         private static string FuzzyLogicValueToString(FuzzyLogicValueExpressionNode source, ContextForDebugHelperForRuleInstance context)
         {
-            throw new NotImplementedException();
+            var value = source.Value;
+
+            return $"{value}l";
         }
 
         private static string FactToString(FactExpressionNode source, ContextForDebugHelperForRuleInstance context)

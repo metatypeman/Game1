@@ -74,6 +74,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     {
                         case TokenKind.Word:
                         case TokenKind.Number:
+                        case TokenKind.FuzzyLogicalValue:
                         case TokenKind.QuestionParam:
                         case TokenKind.BeginFact:
                         case TokenKind.Mul:

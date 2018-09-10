@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace MyNPCLib.Parser.LogicalExpression
@@ -35,8 +36,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnRun()
         {
 #if DEBUG
-            //LogInstance.Log($"mState = {mState}");
-            //LogInstance.Log($"CurrToken = {CurrToken}");
+            LogInstance.Log($"mState = {mState}");
+            LogInstance.Log($"CurrToken = {CurrToken}");
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -84,6 +85,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                     switch (currTokenKind)
                     {
                         case TokenKind.Word:
+                        case TokenKind.FuzzyLogicalValue:
                             ProcessPropertyValue();                      
                             break;
 
@@ -160,6 +162,8 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
         }
 
+        private static CultureInfo mDefaultCultureInfo = new CultureInfo("en-US");
+
         private void ProcessPropertyName()
         {
 #if DEBUG
@@ -174,16 +178,92 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessPropertyValue()
         {
 #if DEBUG
-            //LogInstance.Log($"ProcessPropertyValue !!!!!!!! CurrToken = {CurrToken}");
-            //LogInstance.Log($"mPropertyName = {mPropertyName}");
+            LogInstance.Log($"ProcessPropertyValue !!!!!!!! CurrToken = {CurrToken}");
+            LogInstance.Log($"mPropertyName = {mPropertyName}");
 #endif
 
-            var propertyValue = new ASTNodeOfLogicalQuery();
-            propertyValue.Kind = KindOfASTNodeOfLogicalQuery.Concept;
-            propertyValue.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition;
-            propertyValue.Name = CurrToken.Content;
+            var tokenKind = CurrToken.TokenKind;
 
-            NProcessPropertyValue(propertyValue);
+            switch(tokenKind)
+            {
+                case TokenKind.Word:
+                    {
+                        var keyWordTokenKind = CurrToken.KeyWordTokenKind;
+
+                        switch (keyWordTokenKind)
+                        {
+                            case TokenKind.Unknown:
+                                {
+                                    var propertyValue = new ASTNodeOfLogicalQuery();
+                                    propertyValue.Kind = KindOfASTNodeOfLogicalQuery.Concept;
+                                    propertyValue.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition;
+                                    propertyValue.Name = CurrToken.Content;
+
+                                    NProcessPropertyValue(propertyValue);
+                                }
+                                break;
+
+                            case TokenKind.True:
+                                ProcessTrueLogicalConst();
+                                break;
+
+                            case TokenKind.False:
+                                ProcessFalseLogicalConst();
+                                break;
+                            default:
+                                throw new UnexpectedTokenException(CurrToken);
+                        }
+                    }
+                    break;
+
+                case TokenKind.FuzzyLogicalValue:
+                    ProcessNumberLogicalConst();
+                    break;
+
+                default:
+                    throw new UnexpectedTokenException(CurrToken);
+            }
+
+      
+        }
+
+        private void ProcessTrueLogicalConst()
+        {
+            NProcessLogicalValue("1.0");
+        }
+
+        private void ProcessFalseLogicalConst()
+        {
+            NProcessLogicalValue("0.0");
+        }
+
+        private void ProcessNumberLogicalConst()
+        {
+            NProcessLogicalValue(CurrToken.Content);
+        }
+
+        private void NProcessLogicalValue(string content)
+        {
+            var propertyValue = new ASTNodeOfLogicalQuery();
+            propertyValue.Kind = KindOfASTNodeOfLogicalQuery.LogicalValue;
+            propertyValue.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition;
+
+            if (content.IndexOf(".") == -1)
+            {
+                content = $"{content}.0";
+            }
+
+            propertyValue.ObjValue = float.Parse(content, mDefaultCultureInfo);
+
+            PutRelationLikeNodeToTree(propertyValue);
+
+            mLastNode = propertyValue;
+
+#if DEBUG
+            LogInstance.Log($"propertyValue = {propertyValue}");
+#endif
+
+            mState = State.GotProperyValue;
         }
 
         private void ProcessFactValue()

@@ -89,13 +89,13 @@ namespace MyNPCLib.IndexedPersistLogicalData
                         var paramOfTargetRelation = paramsListOfTargetRelation[position.Value];
 
 #if DEBUG
-                        //LogInstance.Log($"paramOfTargetRelation = {paramOfTargetRelation}");
+                        LogInstance.Log($"paramOfTargetRelation = {paramOfTargetRelation}");
 #endif
 
                         var resultOfComparison = CompareKnownInfoAndExpressionNode(knownInfo, paramOfTargetRelation);
 
 #if DEBUG
-                        //LogInstance.Log($"resultOfComparison = {resultOfComparison}");
+                        LogInstance.Log($"resultOfComparison = {resultOfComparison}");
 #endif
 
                         if (!resultOfComparison)

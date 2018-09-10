@@ -13,6 +13,7 @@ namespace MyNPCLib.IndexedPersistLogicalData
         public FuzzyLogicValueExpressionNode ConcreteOrigin { get; set; }
         public override BaseExpressionNode Origin => ConcreteOrigin;
         public override KindOfExpressionNode Kind => KindOfExpressionNode.FuzzyLogicValue;
+        public object Value { get; set; }
 
         public override void FillExecutingCard(QueryExecutingCardForIndexedPersistLogicalData queryExecutingCard, ICGStorage dataSource, OptionsOfFillExecutingCard options)
         {

@@ -418,6 +418,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
                             knownInfo.Kind = kindOfParam;
                             knownInfo.Expression = param;
                             knownInfo.Position = i;
+                            knownInfo.Value = originParam.Value;
                             knownInfoList.Add(knownInfo);
                         }
                         break;
@@ -520,6 +521,7 @@ namespace MyNPCLib.ConvertingPersistLogicalDataToIndexing
             result.ConcreteOrigin = source;
             result.RulePart = targetPart;
             result.RuleInstance = parentIndexedRuleInstance;
+            result.Value = source.Value;
             result.Annotations = ConvertAnnotations(source.Annotations, parentIndexedRuleInstance);
             return result;
         }

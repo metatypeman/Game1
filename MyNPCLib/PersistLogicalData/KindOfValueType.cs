@@ -8,6 +8,5 @@ namespace MyNPCLib.PersistLogicalData
     {
         Unknown,
         Number
-        /*Logical*/
     }
 }

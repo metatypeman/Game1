@@ -12,7 +12,7 @@ namespace MyNPCLib.PersistLogicalData
         public override ValueExpressionNode AsValue => this;
         public object Value { get; set; }
         public KindOfValueType KindOfValueType { get; set; } = KindOfValueType.Unknown;
-
+        
         public override BaseExpressionNode Clone(CloneContextOfPersistLogicalData context)
         {
             var result = new ValueExpressionNode();

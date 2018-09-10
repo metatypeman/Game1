@@ -194,6 +194,10 @@ namespace MyNPCLib.CGStorage
 
             var searchResult = mLogicalSearcher.Run(searchOptions);
 
+#if DEBUG
+            LogInstance.Log($"searchResult = {searchResult}");
+#endif
+
             var querySearchResultCGStorage = new QueryResultCGStorage(EntityDictionary, searchResult);
             return querySearchResultCGStorage;
         }

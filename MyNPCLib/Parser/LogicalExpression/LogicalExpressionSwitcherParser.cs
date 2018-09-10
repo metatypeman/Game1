@@ -39,37 +39,64 @@ namespace MyNPCLib.Parser.LogicalExpression
                     {
                         case TokenKind.Word:
                             {
-                                var nextToken = GetToken();
-                                var nextTokenKind = nextToken.TokenKind;
+                                var keyWordTokenKind = CurrToken.KeyWordTokenKind;
+
+                                switch(keyWordTokenKind)
+                                {
+                                    case TokenKind.Unknown:
+                                        {
+                                            var nextToken = GetToken();
+                                            var nextTokenKind = nextToken.TokenKind;
 #if DEBUG
-                                //LogInstance.Log($"nextToken = {nextToken}");
-                                //LogInstance.Log($"nextTokenKind = {nextTokenKind}");
+                                            //LogInstance.Log($"nextToken = {nextToken}");
+                                            //LogInstance.Log($"nextTokenKind = {nextTokenKind}");
 #endif
 
-                                switch(nextTokenKind)
-                                {
-                                    case TokenKind.Comma:
-                                    case TokenKind.CloseRoundBracket:
-                                    case TokenKind.BeginAnnotaion:
-                                        Recovery(nextToken);
-                                        ProcessConcept();
+                                            switch (nextTokenKind)
+                                            {
+                                                case TokenKind.Comma:
+                                                case TokenKind.CloseRoundBracket:
+                                                case TokenKind.BeginAnnotaion:
+                                                    Recovery(nextToken);
+                                                    ProcessConcept();
+                                                    Exit();
+                                                    break;
+
+                                                case TokenKind.OpenRoundBracket:
+                                                    Recovery(nextToken);
+                                                    ProcessRelation();
+                                                    Exit();
+                                                    break;
+
+                                                default:
+                                                    throw new UnexpectedTokenException(nextToken);
+                                            }
+                                        }
+                                        break;
+
+                                    case TokenKind.True:
+                                        ProcessTrueLogicalConst();
                                         Exit();
                                         break;
 
-                                    case TokenKind.OpenRoundBracket:
-                                        Recovery(nextToken);
-                                        ProcessRelation();
+                                    case TokenKind.False:
+                                        ProcessFalseLogicalConst();
                                         Exit();
                                         break;
 
                                     default:
-                                        throw new UnexpectedTokenException(nextToken);
+                                        throw new UnexpectedTokenException(CurrToken);
                                 }
                             }
                             break;
 
                         case TokenKind.Number:
                             ProcessNumber();
+                            Exit();
+                            break;
+
+                        case TokenKind.FuzzyLogicalValue:
+                            ProcessNumberLogicalConst();
                             Exit();
                             break;
 
@@ -121,6 +148,35 @@ namespace MyNPCLib.Parser.LogicalExpression
                 default:
                     throw new ArgumentOutOfRangeException(nameof(mState), mState, null);
             }
+        }
+
+        private void ProcessTrueLogicalConst()
+        {
+            NProcessLogicalValue("1.0");
+        }
+
+        private void ProcessFalseLogicalConst()
+        {
+            NProcessLogicalValue("0.0");
+        }
+
+        private void ProcessNumberLogicalConst()
+        {
+            NProcessLogicalValue(CurrToken.Content);
+        }
+
+        private void NProcessLogicalValue(string content)
+        {
+            mASTNode = new ASTNodeOfLogicalQuery();
+            mASTNode.Kind = KindOfASTNodeOfLogicalQuery.LogicalValue;
+            mASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
+
+            if (content.IndexOf(".") == -1)
+            {
+                content = $"{content}.0";
+            }
+
+            mASTNode.ObjValue = float.Parse(content, mDefaultCultureInfo);
         }
 
         private void ProcessEntity()

@@ -14,6 +14,8 @@ namespace MyNPCLib.Parser
         /// </summary>
         Number,
 
+        FuzzyLogicalValue,
+
         /// <summary>
         /// Represents a variable.
         /// </summary>
@@ -196,6 +198,8 @@ namespace MyNPCLib.Parser
 
         Public,
         Private,
-        Visible
+        Visible,
+        True,
+        False
     }
 }

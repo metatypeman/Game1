@@ -20,6 +20,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         Condition,
         StubParam,
         Value,
+        LogicalValue,
         AccessPolicy
     }
 }

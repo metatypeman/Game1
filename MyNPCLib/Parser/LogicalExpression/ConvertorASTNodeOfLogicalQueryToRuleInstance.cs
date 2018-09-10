@@ -273,6 +273,9 @@ namespace MyNPCLib.Parser.LogicalExpression
                 case KindOfASTNodeOfLogicalQuery.Value:
                     return NConvertStandardExpressionValueNode(node, context);
 
+                case KindOfASTNodeOfLogicalQuery.LogicalValue:
+                    return NConvertStandardExpressionLogicalValueNode(node, context);
+
                 case KindOfASTNodeOfLogicalQuery.StubParam:
                     return NConvertStandardExpressionStubNode(node, context);
 
@@ -515,6 +518,18 @@ namespace MyNPCLib.Parser.LogicalExpression
             return valueNode;
         }
 
+        private static BaseExpressionNode NConvertStandardExpressionLogicalValueNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
+        {
+#if DEBUG
+            LogInstance.Log($"node = {node}");
+#endif
+
+            var valueNode = new FuzzyLogicValueExpressionNode();
+            valueNode.Value = (float)node.ObjValue;
+            FillAnnotationForExpression(valueNode, node, context);
+            return valueNode;
+        }
+
         private static BaseExpressionNode NConvertStandardExpressionStubNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
@@ -611,6 +626,9 @@ namespace MyNPCLib.Parser.LogicalExpression
 
                 case KindOfASTNodeOfLogicalQuery.Value:
                     return NConvertEntityConditionValueNode(node, context);
+
+                case KindOfASTNodeOfLogicalQuery.LogicalValue:
+                    return NConvertEntityConditionLogicalValueNode(node, context);
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kindOfNode), kindOfNode, null);
@@ -860,6 +878,14 @@ namespace MyNPCLib.Parser.LogicalExpression
             var valueNode = new ValueExpressionNode();
             valueNode.Value = node.ObjValue;
             valueNode.KindOfValueType = node.KindOfValueType;
+            FillAnnotationForExpression(valueNode, node, context);
+            return valueNode;
+        }
+
+        private static BaseExpressionNode NConvertEntityConditionLogicalValueNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
+        {
+            var valueNode = new FuzzyLogicValueExpressionNode();
+            valueNode.Value = (float)node.ObjValue;
             FillAnnotationForExpression(valueNode, node, context);
             return valueNode;
         }
