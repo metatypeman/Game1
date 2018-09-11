@@ -11,6 +11,7 @@ namespace MyNPCLib.Variants
         Concept,
         Entity,
         Value,
+        FuzzyLogicalValue,
         Fact,
         EntityCondition
     }

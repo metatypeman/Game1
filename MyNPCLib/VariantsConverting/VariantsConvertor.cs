@@ -25,7 +25,7 @@ namespace MyNPCLib.VariantsConverting
 
             if(type == typeof(bool))
             {
-                throw new NotImplementedException();
+                return ConvertLogicalValueToVariant((bool)source);
             }
 
             if(type.IsSubclassOf(typeof(BaseVariant)))
@@ -95,6 +95,19 @@ namespace MyNPCLib.VariantsConverting
 #endif
 
             var result = new ValueVariant(source);
+            return result;
+        }
+
+        private static BaseVariant ConvertLogicalValueToVariant(bool source)
+        {
+            float fuzzySource = 0;
+
+            if(source)
+            {
+                fuzzySource = 1;
+            }
+
+            var result = new FuzzyLogicalValueVariant(fuzzySource);
             return result;
         }
 
@@ -240,6 +253,9 @@ namespace MyNPCLib.VariantsConverting
                 case KindOfVariant.Value:
                     return ConvertValueVariant(source.AsValue);
 
+                case KindOfVariant.FuzzyLogicalValue:
+                    return ConvertFuzzyLogicalValueVariant(source.AsFuzzyLogicalValue);
+
                 case KindOfVariant.Fact:
                     return ConvertFactVariant(source.AsFact);
 
@@ -289,6 +305,14 @@ namespace MyNPCLib.VariantsConverting
             return result;
         }
 
+        private static BaseExpressionNode ConvertFuzzyLogicalValueVariant(FuzzyLogicalValueVariant source)
+        {
+            var result = new FuzzyLogicValueExpressionNode();
+            result.Value = source.Value;
+            result.Annotations = source.Annotations;
+            return result;
+        }
+
         private static BaseExpressionNode ConvertFactVariant(FactVariant source)
         {
 #if DEBUG
@@ -309,13 +333,11 @@ namespace MyNPCLib.VariantsConverting
             //LogInstance.Log($"source = {source}");
 #endif
 
-            var result = new EntityConditionExpressionNode();
-            
-            throw new NotImplementedException();
+            var ruleInstance = source.RuleInstance;
 
-            //result.Key = source.;
-            //result.Name = source.Name;
-            //result.Annotations = source.Annotations;
+            var result = new EntityConditionExpressionNode();
+            result.Key = ruleInstance.Key;
+            result.Name = ruleInstance.Name;
             return result;
         }
     }

@@ -103,6 +103,11 @@ namespace TmpSandBox
             var result = searchResult.GetResultOfVarAsVariant("?x");
             LogInstance.Log($"result = {result}");
 
+            storage["alive"] = true;
+
+            var propertyValue = storage["alive"];
+            LogInstance.Log($"propertyValue = {propertyValue}");
+
             //searchResult = visibleStorage.Search(queryStorage);
             //result = searchResult.GetResultOfVarAsVariant("?x");
             //LogInstance.Log($"result (2)= {result}");

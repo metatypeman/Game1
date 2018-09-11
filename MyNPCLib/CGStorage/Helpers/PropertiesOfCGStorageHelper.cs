@@ -29,6 +29,7 @@ namespace MyNPCLib.CGStorage.Helpers
                 case KindOfVariant.Concept:
                 case KindOfVariant.Entity:
                 case KindOfVariant.Value:
+                case KindOfVariant.FuzzyLogicalValue:
                     return CreateUsualRuleInstanceForSetQuery(entityId, propertyId, variant, entityDictionary, kindOfAccessPolicyToFactList);
 
                 case KindOfVariant.EntityCondition:
