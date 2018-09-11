@@ -258,7 +258,7 @@ namespace MyNPCLib.Logical
             FindPrimaryEntityId();
 
 #if DEBUG
-            Log("End");
+            //Log("End");
 #endif
         }
 

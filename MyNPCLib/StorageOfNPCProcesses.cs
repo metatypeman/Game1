@@ -69,7 +69,7 @@ namespace MyNPCLib
         public BaseNPCProcessInvocablePackage GetProcess(NPCInternalCommand command)
         {
 #if DEBUG
-            Log($"command = {command}");
+            //Log($"command = {command}");
 #endif
 
             lock (mDisposeLockObj)

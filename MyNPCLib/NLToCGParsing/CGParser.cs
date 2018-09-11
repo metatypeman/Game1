@@ -16,7 +16,7 @@ namespace MyNPCLib.NLToCGParsing
         {
             var modelPath = OpenNLPPathsHelper.EnglishSDnbinPath(options.BasePath);
 #if DEBUG
-            LogInstance.Log($"modelPath = {modelPath}");
+            //LogInstance.Log($"modelPath = {modelPath}");
 #endif
 
             mSentenceDetector = new EnglishMaximumEntropySentenceDetector(modelPath);

@@ -43,7 +43,7 @@ namespace MyNPCLib.Logical
         protected KindOfSystemProperties GetKindOfSystemProperty(ulong propertyKey)
         {
 #if DEBUG
-            Log($"propertyKey = {propertyKey}");
+            //Log($"propertyKey = {propertyKey}");
 #endif
 
             return mSystemPropertiesDictionary.GetKindOfSystemProperty(propertyKey);

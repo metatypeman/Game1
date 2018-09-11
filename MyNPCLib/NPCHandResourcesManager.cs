@@ -89,7 +89,7 @@ namespace MyNPCLib
         public INPCProcess Send(INPCCommand command)
         {
 #if DEBUG
-            Log($"command = {command}");
+            //Log($"command = {command}");
 #endif
 
             lock (mStateLockObj)
@@ -131,7 +131,7 @@ namespace MyNPCLib
         private void NExecute(INPCCommand command, ProxyForNPCResourceProcess process)
         {
 #if DEBUG
-            Log($"Begin command = {command}");
+            //Log($"Begin command = {command}");
 #endif
 
             try
@@ -141,13 +141,13 @@ namespace MyNPCLib
                 var resolution = CreateResolution(command, processId);
 
 #if DEBUG
-                Log($"resolution = {resolution}");
+                //Log($"resolution = {resolution}");
 #endif
 
                 var kindOfResolution = resolution.KindOfResult;
 
 #if DEBUG
-                Log($"kindOfResolution = {kindOfResolution}");
+                //Log($"kindOfResolution = {kindOfResolution}");
 #endif
 
                 switch (kindOfResolution)
@@ -160,13 +160,13 @@ namespace MyNPCLib
                     case NPCResourcesResolutionKind.Forbiden:
                         {
 #if DEBUG
-                            Log($"case NPCResourcesResolutionKind.Forbiden:");
+                            //Log($"case NPCResourcesResolutionKind.Forbiden:");
 #endif
 
                             var kindOfResolutionOfContext = mContext.ApproveNPCResourceProcessExecute(resolution);
 
 #if DEBUG
-                            Log($"kindOfResolutionOfContext = {kindOfResolutionOfContext}");
+                            //Log($"kindOfResolutionOfContext = {kindOfResolutionOfContext}");
 #endif
 
                             switch (kindOfResolutionOfContext)
@@ -210,16 +210,16 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            Log($"End command = {command}");
+            //Log($"End command = {command}");
 #endif
         }
 
         private NPCHandResourcesResolution CreateResolution(INPCCommand command, ulong processId)
         {
 #if DEBUG
-            Log($"command = {command}");
-            Log($"processId = {processId}");
-            DumpProcesses();
+            //Log($"command = {command}");
+            //Log($"processId = {processId}");
+            //DumpProcesses();
 #endif
 
             lock (mDataLockObj)
@@ -257,8 +257,8 @@ namespace MyNPCLib
                 }
 
 #if DEBUG
-                Log("NEXT");
-                Log("End");
+                //Log("NEXT");
+                //Log("End");
 #endif
                 return result;
             }
@@ -267,26 +267,26 @@ namespace MyNPCLib
         private void ProcessAllow(INPCCommand command, ulong processId, ProxyForNPCResourceProcess process, NPCResourcesResolutionKind resolutionKind)
         {
 #if DEBUG
-            Log($"command = {command}");
-            Log($"processId = {processId}");
+            //Log($"command = {command}");
+            //Log($"processId = {processId}");
 #endif
 
             RegProcessId(processId, process, resolutionKind);
 
 #if DEBUG
-            Log("before mNPCHandHost.Send");
+            //Log("before mNPCHandHost.Send");
 #endif
 
             var processOfHost = mNPCHandHost.Send(command);
 
 #if DEBUG
-            Log("after mNPCHandHost.Send");
-            Log($"processOfHost.State = {processOfHost.State}");
+            //Log("after mNPCHandHost.Send");
+            //Log($"processOfHost.State = {processOfHost.State}");
 #endif
 
             processOfHost.OnStateChanged += (INPCProcess sender, StateOfNPCProcess state) => {
 #if DEBUG
-                Log($"processOfHost.OnStateChanged sender.Id = {sender.Id} state = {state}");
+                //Log($"processOfHost.OnStateChanged sender.Id = {sender.Id} state = {state}");
 #endif
 
                 process.State = state;
@@ -298,13 +298,13 @@ namespace MyNPCLib
         private void RegProcessId(ulong processId, ProxyForNPCResourceProcess process, NPCResourcesResolutionKind resolutionKind)
         {
 #if DEBUG
-            Log($"processId = {processId} process = {process} resolutionKind = {resolutionKind}");
+            //Log($"processId = {processId} process = {process} resolutionKind = {resolutionKind}");
 #endif
 
             lock (mDataLockObj)
             {
 #if DEBUG
-                Log($"processId = {processId} NEXT");
+                //Log($"processId = {processId} NEXT");
 #endif
 
                 var displacedProcessesIdList = new List<ulong>();
@@ -334,7 +334,7 @@ namespace MyNPCLib
                     foreach (var displacedProcessId in displacedProcessesIdList)
                     {
 #if DEBUG
-                        Log($"displacedProcessId = {displacedProcessId}");
+                        //Log($"displacedProcessId = {displacedProcessId}");
 #endif
 
                         RemoveProcessId(displacedProcessId);
@@ -346,13 +346,13 @@ namespace MyNPCLib
                 }
 
 #if DEBUG
-                Log($"before mProcessesDict.Count = {mProcessesDict.Count}");
+                //Log($"before mProcessesDict.Count = {mProcessesDict.Count}");
 #endif
 
                 mProcessesDict[processId] = process;
 
 #if DEBUG
-                Log($"after mProcessesDict.Count = {mProcessesDict.Count}");
+                //Log($"after mProcessesDict.Count = {mProcessesDict.Count}");
 #endif
             }
         }
@@ -408,7 +408,7 @@ namespace MyNPCLib
         public object Get(string propertyName)
         {
 #if DEBUG
-            Log($"propertyName = {propertyName}");
+            //Log($"propertyName = {propertyName}");
 #endif
 
             lock (mStateLockObj)
@@ -425,7 +425,7 @@ namespace MyNPCLib
         public void UnRegProcess(ulong processId)
         {
 #if DEBUG
-            Log($"processId = {processId}");
+            //Log($"processId = {processId}");
 #endif
 
             lock (mStateLockObj)
@@ -442,7 +442,7 @@ namespace MyNPCLib
         public void Dispose()
         {
 #if DEBUG
-            Log("Begin");
+            //Log("Begin");
 #endif
 
             lock (mStateLockObj)

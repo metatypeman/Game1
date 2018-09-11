@@ -180,7 +180,7 @@ namespace MyNPCLib
         public INPCProcess Send(IHumanoidBodyCommand command)
         {
 #if DEBUG
-            Log($"command = {command}");
+            //Log($"command = {command}");
 #endif
 
             lock (mStateLockObj)
@@ -221,7 +221,7 @@ namespace MyNPCLib
         private void NExecute(IHumanoidBodyCommand command, ProxyForNPCResourceProcess process)
         {
 #if DEBUG
-            Log($"Begin command = {command}");
+            //Log($"Begin command = {command}");
 #endif
             try
             {
@@ -230,12 +230,12 @@ namespace MyNPCLib
                 var targetState = CreateTargetState(command);
 
 #if DEBUG
-                Log($"targetState = {targetState}");
+                //Log($"targetState = {targetState}");
 #endif
                 var resolution = CreateResolution(mNPCBodyHost.States, targetState, processId);
 
 #if DEBUG
-                Log($"resolution = {resolution}");
+                //Log($"resolution = {resolution}");
 #endif
 
                 var kindOfResolution = resolution.KindOfResult;
@@ -296,14 +296,14 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            Log($"End command = {command}");
+            //Log($"End command = {command}");
 #endif
         }
 
         private TargetStateOfHumanoidBody CreateTargetState(IHumanoidBodyCommand command)
         {
 #if DEBUG
-            Log($"command = {command}");
+            //Log($"command = {command}");
 #endif
 
             var result = new TargetStateOfHumanoidBody();
@@ -403,7 +403,7 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            Log($"result = {result}");
+            //Log($"result = {result}");
 #endif
 
             return result;
@@ -412,9 +412,9 @@ namespace MyNPCLib
         private NPCBodyResourcesResolution CreateResolution(IStatesOfHumanoidBodyHost sourceState, TargetStateOfHumanoidBody targetState, ulong processId)
         {
 #if DEBUG
-            Log($"sourceState = {sourceState}");
-            Log($"targetState = {targetState}");
-            Log($"processId = {processId}");
+            //Log($"sourceState = {sourceState}");
+            //Log($"targetState = {targetState}");
+            //Log($"processId = {processId}");
             //DumpProcesses();
 #endif
 
@@ -529,7 +529,7 @@ namespace MyNPCLib
                     }
 
 #if DEBUG
-                    Log($"targetHandsState = {targetHandsState}");
+                    //Log($"targetHandsState = {targetHandsState}");
 #endif
 
                     if (mHandsState.Count == 0)
@@ -641,8 +641,8 @@ namespace MyNPCLib
                 }
 
 #if DEBUG
-                Log("NEXT");
-                Log("End");
+                //Log("NEXT");
+                //Log("End");
 #endif
                 return result;
             }
@@ -735,13 +735,13 @@ namespace MyNPCLib
             RegProcessId(targetState, processId, process, resolutionKind);
 
 #if DEBUG
-            Log("before mNPCBodyHost.ExecuteAsync");
+            //Log("before mNPCBodyHost.ExecuteAsync");
 #endif
 
             mNPCBodyHost.Execute(targetState);
 
 #if DEBUG
-            Log("after mNPCBodyHost.ExecuteAsync");
+            //Log("after mNPCBodyHost.ExecuteAsync");
 #endif
 
             process.State = StateOfNPCProcess.Running;
@@ -987,7 +987,7 @@ namespace MyNPCLib
         public void UnRegProcess(ulong processId)
         {
 #if DEBUG
-            Log($"processId = {processId}");
+            //Log($"processId = {processId}");
 #endif
 
             lock (mStateLockObj)
@@ -1067,7 +1067,7 @@ namespace MyNPCLib
         public void Dispose()
         {
 #if DEBUG
-            Log("Begin");
+            //Log("Begin");
 #endif
 
             lock (mStateLockObj)

@@ -93,7 +93,7 @@ namespace MyNPCLib
         protected INPCProcess Execute(NPCCommand command)
         {
 #if DEBUG
-           Log($"command = {command}");
+           //Log($"command = {command}");
 #endif
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
@@ -117,7 +117,7 @@ namespace MyNPCLib
         public INPCProcess ExecuteAsChild(NPCCommand command)
         {
 #if DEBUG
-            Log($"command = {command}");
+            //Log($"command = {command}");
 #endif
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
@@ -144,7 +144,7 @@ namespace MyNPCLib
         public INPCProcess ExecuteBody(HumanoidBodyCommand command)
         {
 #if DEBUG
-            Log($"command = {command}");
+            //Log($"command = {command}");
 #endif
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
@@ -170,7 +170,7 @@ namespace MyNPCLib
         public INPCProcess ExecuteDefaultHand(NPCCommand command)
         {
 #if DEBUG
-            Log($"command = {command}");
+            //Log($"command = {command}");
 #endif
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
@@ -196,7 +196,7 @@ namespace MyNPCLib
         public object GetDefaultHandProperty(string propertyName)
         {
 #if DEBUG
-            Log($"propertyName = {propertyName}");
+            //Log($"propertyName = {propertyName}");
 #endif
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
@@ -211,7 +211,7 @@ namespace MyNPCLib
         public T GetDefaultHandProperty<T>(string propertyName)
         {
 #if DEBUG
-            Log($"propertyName = {propertyName}");
+            //Log($"propertyName = {propertyName}");
 #endif
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
@@ -237,7 +237,7 @@ namespace MyNPCLib
         public INPCProcess ExecuteRightHand(NPCCommand command)
         {
 #if DEBUG
-            Log($"command = {command}");
+            //Log($"command = {command}");
 #endif
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
@@ -263,7 +263,7 @@ namespace MyNPCLib
         public object GetRightHandProperty(string propertyName)
         {
 #if DEBUG
-            Log($"propertyName = {propertyName}");
+            //Log($"propertyName = {propertyName}");
 #endif
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
@@ -278,7 +278,7 @@ namespace MyNPCLib
         public T GetRightHandProperty<T>(string propertyName)
         {
 #if DEBUG
-            Log($"propertyName = {propertyName}");
+            //Log($"propertyName = {propertyName}");
 #endif
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
@@ -304,7 +304,7 @@ namespace MyNPCLib
         public INPCProcess ExecuteLeftHand(NPCCommand command)
         {
 #if DEBUG
-            Log($"command = {command}");
+            //Log($"command = {command}");
 #endif
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
@@ -330,7 +330,7 @@ namespace MyNPCLib
         public object GetLeftHandProperty(string propertyName)
         {
 #if DEBUG
-            Log($"propertyName = {propertyName}");
+            //Log($"propertyName = {propertyName}");
 #endif
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
@@ -345,7 +345,7 @@ namespace MyNPCLib
         public T GetLeftHandProperty<T>(string propertyName)
         {
 #if DEBUG
-            Log($"propertyName = {propertyName}");
+            //Log($"propertyName = {propertyName}");
 #endif
             var cancelationToken = GetCancellationToken();
             cancelationToken?.ThrowIfCancellationRequested();
@@ -397,7 +397,7 @@ namespace MyNPCLib
                     proxy.StartupMode = StartupMode;
 #if DEBUG
 
-                    Log($"End (1) proxy.StartupMode = {proxy.StartupMode} command = {command}");
+                    //Log($"End (1) proxy.StartupMode = {proxy.StartupMode} command = {command}");
 #endif
                     break;
 
@@ -405,7 +405,7 @@ namespace MyNPCLib
                 case NPCProcessStartupMode.NewStandaloneInstance:              
                     proxy = this;
 #if DEBUG
-                    Log($"End (2) proxy.StartupMode = {proxy.StartupMode} command = {command}");
+                    //Log($"End (2) proxy.StartupMode = {proxy.StartupMode} command = {command}");
 #endif
                     break;
             }
@@ -441,14 +441,14 @@ namespace MyNPCLib
         private void NRun(NPCProcessEntryPointInfo entryPointInfo, NPCInternalCommand command, BaseCommonNPCProcess proxy, CancellationToken cancellationToken)
         {
 #if DEBUG
-            Log($"Begin proxy.Id = {proxy.Id} proxy.State = {proxy.State} command = {command}");
+            //Log($"Begin proxy.Id = {proxy.Id} proxy.State = {proxy.State} command = {command}");
 #endif
             cancellationToken.ThrowIfCancellationRequested();
 
             var startupMode = Info.StartupMode;
 
 #if DEBUG
-            Log($"proxy.Id = {proxy.Id} proxy.State = {proxy.State} startupMode = {startupMode}");
+            //Log($"proxy.Id = {proxy.Id} proxy.State = {proxy.State} startupMode = {startupMode}");
 #endif
 
             try
@@ -464,13 +464,13 @@ namespace MyNPCLib
                 cancellationToken.ThrowIfCancellationRequested();
 
 #if DEBUG
-                Log($"proxy.Id = {proxy.Id} proxy.State = {proxy.State} Step 1");
+                //Log($"proxy.Id = {proxy.Id} proxy.State = {proxy.State} Step 1");
 #endif
 
                 NPCProcessHelpers.RegProcess(Context, proxy, startupMode, command.KindOfLinkingToInitiator, command.InitiatingProcessId, true);
 
 #if DEBUG
-                Log($"proxy.Id = {proxy.Id} proxy.State = {proxy.State} Step 2");
+                //Log($"proxy.Id = {proxy.Id} proxy.State = {proxy.State} Step 2");
 #endif
 
                 cancellationToken.ThrowIfCancellationRequested();
@@ -478,13 +478,13 @@ namespace MyNPCLib
                 proxy.State = StateOfNPCProcess.Running;
 
 #if DEBUG
-                Log($"proxy.Id = {proxy.Id} proxy.State = {proxy.State} Step 3");
+                //Log($"proxy.Id = {proxy.Id} proxy.State = {proxy.State} Step 3");
 #endif
 
                 mActivator.CallEntryPoint(this, entryPointInfo, command.Params);
 
 #if DEBUG
-                Log($"proxy.Id = {proxy.Id} proxy.State = {proxy.State} Step 4");
+                //Log($"proxy.Id = {proxy.Id} proxy.State = {proxy.State} Step 4");
 #endif
 
                 proxy.State = StateOfNPCProcess.RanToCompletion;
@@ -509,7 +509,7 @@ namespace MyNPCLib
             finally
             {
 #if DEBUG
-                Log($"Begin finally proxy.Id = {proxy.Id} proxy.State = {proxy.State}");
+                //Log($"Begin finally proxy.Id = {proxy.Id} proxy.State = {proxy.State}");
 #endif
 
                 var taskId = Task.CurrentId;
@@ -517,7 +517,7 @@ namespace MyNPCLib
                 Context.UnRegCancellationToken(taskId.Value);
 
 #if DEBUG
-                Log($"End finally proxy.Id = {proxy.Id} proxy.State = {proxy.State}");
+                //Log($"End finally proxy.Id = {proxy.Id} proxy.State = {proxy.State}");
 #endif
             }
 
@@ -530,7 +530,7 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            Log($"End proxy.Id = {proxy.Id} proxy.State = {proxy.State} command = {command}");
+            //Log($"End proxy.Id = {proxy.Id} proxy.State = {proxy.State} command = {command}");
 #endif
         }
 
@@ -659,7 +659,7 @@ namespace MyNPCLib
         public void AddChildComponent(IChildComponentOfNPCProcess component)
         {
 #if DEBUG
-            Log("Begin");
+            //Log("Begin");
 #endif
 
             lock (StateLockObj)
@@ -684,7 +684,7 @@ namespace MyNPCLib
         public void RemoveChildComponent(IChildComponentOfNPCProcess component)
         {
 #if DEBUG
-            Log("Begin");
+            //Log("Begin");
 #endif
             lock (StateLockObj)
             {

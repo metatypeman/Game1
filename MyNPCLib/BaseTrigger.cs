@@ -46,7 +46,7 @@ namespace MyNPCLib
         public void Start()
         {
 #if DEBUG
-            Log($"Begin");
+            //Log($"Begin");
 #endif
             lock (mStateLockObj)
             {
@@ -64,20 +64,20 @@ namespace MyNPCLib
             }
 
 #if DEBUG
-            Log($"NEXT");
-            try
-            {
-                Log($"NEXT {mPredicate.Invoke()}");
-            }catch(Exception e)
-            {
-                Error($"e = {e}");
-            }    
+            //Log($"NEXT");
+            //try
+            //{
+            //    Log($"NEXT {mPredicate.Invoke()}");
+            //}catch(Exception e)
+            //{
+            //    Error($"e = {e}");
+            //}    
 #endif
 
             TryStartNRun();
 
 #if DEBUG
-            Log($"End");
+            //Log($"End");
 #endif
         }
 

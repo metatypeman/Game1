@@ -854,7 +854,7 @@ namespace MyNPCLib
         public BaseAbstractLogicalObject GetLogicalObject(BaseVariant query)
         {
 #if DEBUG
-            Log($"GetLogicalObject query = {query}");
+            //Log($"query = {query}");
 #endif
 
             if (!query.IsEntityCondition)

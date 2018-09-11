@@ -207,7 +207,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mEntityLogger.Marker = Marker;
 
 #if DEBUG
-        Log("Begin");
+        //Log("Begin");
 #endif
 
         var commonLevelHost = LevelCommonHostFactory.Get();
@@ -231,18 +231,9 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mHostLogicalObjectStorage.SetAccessPolicyToFact("alive", KindOfAccessPolicyToFact.ForVisible);
         mHostLogicalObjectStorage.SetAccessPolicyToFact("died", KindOfAccessPolicyToFact.ForVisible);
 
-        //mSelfLogicalObject["name"] = tmpGameObject.name;
-        //mSelfLogicalObject.SetAccessPolicyToFact("alive", AccessPolicyToFact.ForVisible);
-        //mSelfLogicalObject.SetAccessPolicyToFact("died", AccessPolicyToFact.ForVisible);
-
-        //I do not support boolean value now! Uncomment me in the future.
-        //mHostLogicalObjectStorage["alive"] = true;
-        //mSelfLogicalObject["alive"] = true;
-
-        //I do not support boolean value now! Uncomment me in the future.
-        //mHostLogicalObjectStorage["died"] = false;
-        //mSelfLogicalObject["died"] = false;
-
+        mHostLogicalObjectStorage["alive"] = true;
+        mHostLogicalObjectStorage["died"] = false;
+        
         mStates = new InternalStatesOfHumanoidController();
         mBehaviourFlags = new BehaviourFlagsOfHumanoidController();
 
@@ -304,7 +295,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
             });
         }
 #if DEBUG
-        Log("End");
+        //Log("End");
 #endif
     }
 
@@ -387,13 +378,13 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void NExecute(InternalTargetStateOfHumanoidController targetState)
     {
 #if DEBUG
-        Log($"targetState = {targetState}");
+        //Log($"targetState = {targetState}");
 #endif
 
         var newState = CreateTargetState(mStates, targetState);
 
 #if DEBUG
-        Log($"newState = {newState}");
+        //Log($"newState = {newState}");
 #endif
 
         if (newState.KindOfThingsCommand != KindOfHumanoidThingsCommand.Undefined && newState.EntityIdOfThing != 0)
@@ -592,11 +583,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                 break;
         }
 
-        //I do not support boolean value now! Uncomment me in the future.
-        //mHostLogicalObjectStorage["alive"] = false;
-        //mHostLogicalObjectStorage["alive"] = false;
-        //mSelfLogicalObject["alive"] = false;
-        //mSelfLogicalObject["died"] = true;
+        mHostLogicalObjectStorage["alive"] = false;
+        mHostLogicalObjectStorage["alive"] = false;
 
         Task.Run(() => {
             try
@@ -619,7 +607,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void ApplyTargetState(InternalStatesOfHumanoidController targetState)
     {
 #if DEBUG
-        Log($"targetState = {targetState}");
+        //Log($"targetState = {targetState}");
 #endif
 
         var targetBehaviourFlags = CreateBehaviourFlags(targetState);
@@ -639,7 +627,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         UpdateAnimator();
 
 #if DEBUG
-        Log($"mStates = {mStates}");
+        //Log($"mStates = {mStates}");
 #endif
 
         var hState = mStates.HState;
@@ -727,7 +715,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     mAbsBodyAngleDelta = Math.Abs(mBodyAngleDelta);
 
 #if DEBUG
-                    Log("case HumanoidHState.Rotate");
+                    //Log("case HumanoidHState.Rotate");
 #endif
                 }
                 break;
@@ -807,7 +795,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     public void ApplyAchieveDestinationOfMoving()
     {
 #if DEBUG
-        Log("Begin");
+        //Log("Begin");
 #endif
 
         mStates.HState = HumanoidHState.Stop;
@@ -866,7 +854,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
                     var newAngle = mCurrentBodyAngle + mBodyAngleDelta;
 
 #if DEBUG
-                    Log($"newAngle = {newAngle}");
+                    //Log($"newAngle = {newAngle}");
 #endif
                     var tmpDelta = mTargetBodyAngle - newAngle;
 

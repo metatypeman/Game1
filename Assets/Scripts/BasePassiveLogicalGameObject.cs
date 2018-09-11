@@ -64,11 +64,6 @@ namespace Assets.Scripts
             }
         }
 
-        public AccessPolicyToFact GetAccessPolicyToFact(ulong propertyKey)
-        {
-            return AccessPolicyToFact.Public;
-        }
-
         // Use this for initialization
         void Start()
         {
