@@ -47,7 +47,8 @@ namespace TmpSandBox
             var logProxy = new LogProxyForNLog();
             LogInstance.SetLogProxy(logProxy);
 
-            TSTHostLogicalObjectStorage();
+            TSTQueryWithParams();
+            //TSTHostLogicalObjectStorage();
             //TSTParsingUserQuery();
             //TSTLogicalSoundBus();
             //TSTQueryWithAccessPolicy();
@@ -72,6 +73,13 @@ namespace TmpSandBox
             //TSTActivatorOfNPCProcessEntryPointInfo();
             //CreateContextAndProcessesCase1();
             //CreateInfoOfConcreteProcess();
+        }
+
+        private static void TSTQueryWithParams()
+        {
+            var globalEntityDictionary = new EntityDictionary();
+            var queryStr = "{: !:{public} {color(#12345, @$x1)} :}";
+            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary, new QueryParam("@$x1", true));
         }
 
         private static void TSTHostLogicalObjectStorage()

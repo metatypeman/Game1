@@ -27,6 +27,11 @@ namespace MyNPCLib.Parser
         QuestionParam,
 
         /// <summary>
+        /// Represents a value from program.
+        /// </summary>
+        BindedParam,
+
+        /// <summary>
         /// Represents word which starts by #. Like '#some_entity'
         /// </summary>
         Entity,
@@ -140,6 +145,11 @@ namespace MyNPCLib.Parser
         /// Represents symbols `@@`.
         /// </summary>
         DoubleAtSign,
+
+        /// <summary>
+        /// Represents symbols `@$`.
+        /// </summary>
+        AtSignDollar,
 
         /// <summary>
         /// Represents symbol `#`.

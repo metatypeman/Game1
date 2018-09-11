@@ -1,4 +1,5 @@
 ﻿using MyNPCLib.PersistLogicalData;
+using MyNPCLib.Variants;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,6 +27,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         public List<ASTNodeOfLogicalQuery> VarsList { get; set; }
         public object ObjValue { get; set; }
         public KindOfValueType KindOfValueType { get; set; } = KindOfValueType.Unknown;
+        public BaseVariant BindedValue { get; set; }
         public List<ASTNodeOfLogicalQuery> AnnotationsList { get; set; }
 
         public override string ToString()
@@ -168,7 +170,18 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{spaces}End {nameof(ObjValue)}");
             }
             sb.AppendLine($"{spaces}{nameof(KindOfValueType)} = {KindOfValueType}");
-            
+
+            if (BindedValue == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(BindedValue)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(BindedValue)}");
+                sb.Append(BindedValue.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(BindedValue)}");
+            }
+
             if (AnnotationsList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(AnnotationsList)} = null");
@@ -327,6 +340,17 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             sb.AppendLine($"{spaces}{nameof(KindOfValueType)} = {KindOfValueType}");
 
+            if (BindedValue == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(BindedValue)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(BindedValue)}");
+                sb.Append(BindedValue.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(BindedValue)}");
+            }
+
             if (AnnotationsList == null)
             {
                 sb.AppendLine($"{spaces}{nameof(AnnotationsList)} = null");
@@ -378,6 +402,16 @@ namespace MyNPCLib.Parser.LogicalExpression
                 sb.AppendLine($"{spaces}End {nameof(ObjValue)}");
             }
             sb.AppendLine($"{spaces}{nameof(KindOfValueType)} = {KindOfValueType}");
+            if (BindedValue == null)
+            {
+                sb.AppendLine($"{spaces}{nameof(BindedValue)} = null");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {nameof(BindedValue)}");
+                sb.Append(BindedValue.ToString(nextN));
+                sb.AppendLine($"{spaces}End {nameof(BindedValue)}");
+            }
             return sb.ToString();
         }
     }

@@ -46,7 +46,7 @@ namespace MyNPCLib.Parser
                 mCurrentPos++;
 
 #if DEBUG
-                //LogInstance.Log($"tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
+                LogInstance.Log($"tmpChar = {tmpChar} (int)tmpChar = {(int)tmpChar} mLexerState = {mLexerState}");
 #endif
 
                 switch (mLexerState)
@@ -384,10 +384,19 @@ namespace MyNPCLib.Parser
                     {
                         var tmpNextChar = mItems.Peek();
 
+#if DEBUG
+                        //LogInstance.Log($"tmpNextChar = {tmpNextChar}");
+#endif
+
                         switch (tmpNextChar)
                         {
                             case '@':
                                 kind = TokenKind.DoubleAtSign;
+                                mItems.Dequeue();
+                                break;
+
+                            case '$':
+                                kind = TokenKind.AtSignDollar;
                                 mItems.Dequeue();
                                 break;
                         }

@@ -21,6 +21,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         StubParam,
         Value,
         LogicalValue,
+        BindedParam,
         AccessPolicy
     }
 }

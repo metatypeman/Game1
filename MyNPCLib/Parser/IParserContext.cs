@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.Variants;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,5 +13,6 @@ namespace MyNPCLib.Parser
         int Count { get; }
         ulong GetKey(string name);
         string TailOfString { get; }
+        BaseVariant GetVariantByParamName(string nameOfParam);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyNPCLib.Variants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,18 @@ namespace MyNPCLib.Parser.LogicalExpression
         {
             mLexer = new Lexer(text);
             mEntityDictionary = entityDictionary;
+        }
+
+        public Dictionary<string, BaseVariant> QueryParamsDict { get; set; } = new Dictionary<string, BaseVariant>();
+
+        public BaseVariant GetVariantByParamName(string nameOfParam)
+        {
+            if(QueryParamsDict.ContainsKey(nameOfParam))
+            {
+                return QueryParamsDict[nameOfParam];
+            }
+
+            return null;
         }
 
         private Lexer mLexer;
@@ -88,6 +101,24 @@ namespace MyNPCLib.Parser.LogicalExpression
                             case TokenKind.Word:
                                 nextToken.Content = $"@{nextToken.Content}";
                                 nextToken.TokenKind = TokenKind.Var;
+                                return nextToken;
+
+                            default:
+                                Recovery(nextToken);
+                                break;
+                        }
+                    }
+                    break;
+
+                case TokenKind.AtSignDollar:
+                    {
+                        var nextToken = NGetToken();
+                        var nextTokenKind = nextToken.TokenKind;
+                        switch (nextTokenKind)
+                        {
+                            case TokenKind.Word:
+                                nextToken.Content = $"@${nextToken.Content}";
+                                nextToken.TokenKind = TokenKind.BindedParam;
                                 return nextToken;
 
                             default:

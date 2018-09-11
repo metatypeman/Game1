@@ -37,8 +37,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnRun()
         {
 #if DEBUG
-            //LogInstance.Log($"mState = {mState}");
-            //LogInstance.Log($"CurrToken = {CurrToken}");
+            LogInstance.Log($"mState = {mState}");
+            LogInstance.Log($"CurrToken = {CurrToken}");
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -80,6 +80,10 @@ namespace MyNPCLib.Parser.LogicalExpression
                         case TokenKind.Mul:
                         case TokenKind.Entity:
                             DispatchValueInParam();
+                            break;
+
+                        case TokenKind.BindedParam:
+                            DispatchBindedVarInParam();
                             break;
 
                         case TokenKind.Var:
@@ -145,6 +149,10 @@ namespace MyNPCLib.Parser.LogicalExpression
                         case TokenKind.Word:
                         case TokenKind.BeginFact:
                             DispatchValueInParam();
+                            break;
+
+                        case TokenKind.BindedParam:
+                            DispatchBindedVarInParam();
                             break;
 
                         case TokenKind.Var:
@@ -215,6 +223,23 @@ namespace MyNPCLib.Parser.LogicalExpression
             }
             
             mASTNode.ParamsList.Add(paramASTNode);
+
+            mState = State.GotParam;
+        }
+
+        private void DispatchBindedVarInParam()
+        {
+#if DEBUG
+            LogInstance.Log("DispatchBindedVarInParam !!!!!!");
+#endif
+
+            var valueOfParam = Context.GetVariantByParamName(CurrToken.Content);
+
+#if DEBUG
+            LogInstance.Log($"valueOfParam = {valueOfParam}");
+#endif
+
+            throw new NotImplementedException();
 
             mState = State.GotParam;
         }
