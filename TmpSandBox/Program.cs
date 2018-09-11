@@ -78,8 +78,14 @@ namespace TmpSandBox
         private static void TSTQueryWithParams()
         {
             var globalEntityDictionary = new EntityDictionary();
-            var queryStr = "{: !:{public} {color(#12345, @$x1)} :}";
+            //var queryStr = "{: !:{public} {color(#12345, @$x1)} :}";
+            var queryStr = "{: color = @$x1 :}";
             var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, globalEntityDictionary, new QueryParam("@$x1", true));
+            var mainRuleInstance = queryStorage.MainRuleInstance;
+
+            var debugStr = DebugHelperForRuleInstance.ToString(mainRuleInstance);
+
+            LogInstance.Log($"debugStr = {debugStr}");
         }
 
         private static void TSTHostLogicalObjectStorage()

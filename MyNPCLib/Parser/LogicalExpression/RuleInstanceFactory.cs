@@ -12,7 +12,7 @@ namespace MyNPCLib.Parser.LogicalExpression
         public static ASTNodeOfLogicalQuery ConvertStringToASTNodeOfLogicalQuery(string queryStr, IEntityDictionary entityDictionary, params QueryParam[] paramsCollection)
         {
 #if DEBUG
-            LogInstance.Log($"paramsCollection.Length = {paramsCollection.Length}");
+            //LogInstance.Log($"paramsCollection.Length = {paramsCollection.Length}");
 #endif
 
             var contextOfParser = new ContextOfLogicalExpressionParser(queryStr, entityDictionary);
@@ -22,13 +22,13 @@ namespace MyNPCLib.Parser.LogicalExpression
                 foreach(var queryParam in paramsCollection)
                 {
 #if DEBUG
-                    LogInstance.Log($"queryParam = {queryParam}");
+                    //LogInstance.Log($"queryParam = {queryParam}");
 #endif
 
                     var variant = VariantsConvertor.ConvertObjectToVariant(queryParam.Value, entityDictionary);
 
 #if DEBUG
-                    LogInstance.Log($"variant = {variant}");
+                    //LogInstance.Log($"variant = {variant}");
 #endif
 
                     contextOfParser.QueryParamsDict[queryParam.Name] = variant;

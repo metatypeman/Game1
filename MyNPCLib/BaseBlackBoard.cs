@@ -95,9 +95,9 @@ namespace MyNPCLib
         public ICGStorage MainCGStorage => mContext?.MainCGStorage;
         public GlobalCGStorage GlobalCGStorage => mContext?.GlobalCGStorage;
 
-        public BaseAbstractLogicalObject GetLogicalObject(string query)
+        public BaseAbstractLogicalObject GetLogicalObject(string query, params QueryParam[] paramsCollection)
         {
-            return mContext?.GetLogicalObject(query);
+            return mContext?.GetLogicalObject(query, paramsCollection);
         }
 
         public IList<VisionObject> VisibleObjects

@@ -37,8 +37,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnRun()
         {
 #if DEBUG
-            LogInstance.Log($"mState = {mState}");
-            LogInstance.Log($"CurrToken = {CurrToken}");
+            //LogInstance.Log($"mState = {mState}");
+            //LogInstance.Log($"CurrToken = {CurrToken}");
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -230,16 +230,23 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void DispatchBindedVarInParam()
         {
 #if DEBUG
-            LogInstance.Log("DispatchBindedVarInParam !!!!!!");
+            //LogInstance.Log("DispatchBindedVarInParam !!!!!!");
 #endif
 
             var valueOfParam = Context.GetVariantByParamName(CurrToken.Content);
 
 #if DEBUG
-            LogInstance.Log($"valueOfParam = {valueOfParam}");
+            //LogInstance.Log($"valueOfParam = {valueOfParam}");
 #endif
 
-            throw new NotImplementedException();
+            var paramASTNode = new ASTNodeOfLogicalQuery();
+            paramASTNode.Kind = KindOfASTNodeOfLogicalQuery.BindedParam;
+            paramASTNode.BindedValue = valueOfParam;
+            paramASTNode.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.StandardExpression;
+
+            mLastNode = paramASTNode;
+
+            mASTNode.ParamsList.Add(paramASTNode);
 
             mState = State.GotParam;
         }

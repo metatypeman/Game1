@@ -13,14 +13,14 @@ namespace MyNPCLib.Logical
     {
         public override bool IsConcrete => false;
 
-        public LogicalObject(IEntityLogger entityLogger, string query, IEntityDictionary entityDictionary, ICGStorage source, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
+        public LogicalObject(IEntityLogger entityLogger, string query, QueryParam[] paramsCollection, IEntityDictionary entityDictionary, ICGStorage source, SystemPropertiesDictionary systemPropertiesDictionary, VisionObjectsStorage visionObjectsStorage)
             : base (entityLogger, systemPropertiesDictionary)
         {
 #if DEBUG
             //Log($"Begin query = {query}");
 #endif
 
-            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(query, entityDictionary);
+            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(query, entityDictionary, paramsCollection);
 
             Init(queryStorage, entityDictionary, source, visionObjectsStorage);
 

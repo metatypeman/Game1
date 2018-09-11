@@ -819,12 +819,12 @@ namespace MyNPCLib
             }
         }
 
-        public BaseAbstractLogicalObject GetLogicalObject(string query)
+        public BaseAbstractLogicalObject GetLogicalObject(string query, params QueryParam[] paramsCollection)
         {
 #if DEBUG
             //Log($"GetLogicalObject query = {query}");
 #endif
-            return new LogicalObject(mEntityLogger, query, mEntityDictionary, mContextOfCGStorage.MainCGStorage, mSystemPropertiesDictionary, mVisionObjectsStorage);
+            return new LogicalObject(mEntityLogger, query, paramsCollection, mEntityDictionary, mContextOfCGStorage.MainCGStorage, mSystemPropertiesDictionary, mVisionObjectsStorage);
         }
 
         public BaseAbstractLogicalObject GetLogicalObject(ICGStorage query)

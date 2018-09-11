@@ -1,5 +1,6 @@
 ﻿using MyNPCLib.CGStorage;
 using MyNPCLib.PersistLogicalData;
+using MyNPCLib.VariantsConverting;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -276,6 +277,9 @@ namespace MyNPCLib.Parser.LogicalExpression
                 case KindOfASTNodeOfLogicalQuery.LogicalValue:
                     return NConvertStandardExpressionLogicalValueNode(node, context);
 
+                case KindOfASTNodeOfLogicalQuery.BindedParam:
+                    return NConvertStandardExpressionBindedParamNode(node, context);
+
                 case KindOfASTNodeOfLogicalQuery.StubParam:
                     return NConvertStandardExpressionStubNode(node, context);
 
@@ -521,13 +525,29 @@ namespace MyNPCLib.Parser.LogicalExpression
         private static BaseExpressionNode NConvertStandardExpressionLogicalValueNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
         {
 #if DEBUG
-            LogInstance.Log($"node = {node}");
+            //LogInstance.Log($"node = {node}");
 #endif
 
             var valueNode = new FuzzyLogicValueExpressionNode();
             valueNode.Value = (float)node.ObjValue;
             FillAnnotationForExpression(valueNode, node, context);
             return valueNode;
+        }
+
+        private static BaseExpressionNode NConvertStandardExpressionBindedParamNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
+        {
+#if DEBUG
+            //LogInstance.Log($"node = {node}");
+#endif
+
+            var targetExpressionNode = VariantsConvertor.ConvertVariantToExpressionNode(node.BindedValue);
+
+#if DEBUG
+            //LogInstance.Log($"targetExpressionNode = {targetExpressionNode}");
+#endif
+
+            FillAnnotationForExpression(targetExpressionNode, node, context);
+            return targetExpressionNode;
         }
 
         private static BaseExpressionNode NConvertStandardExpressionStubNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
@@ -629,6 +649,9 @@ namespace MyNPCLib.Parser.LogicalExpression
 
                 case KindOfASTNodeOfLogicalQuery.LogicalValue:
                     return NConvertEntityConditionLogicalValueNode(node, context);
+
+                case KindOfASTNodeOfLogicalQuery.BindedParam:
+                    return NConvertEntityConditionBindedParamNode(node, context);
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kindOfNode), kindOfNode, null);
@@ -888,6 +911,22 @@ namespace MyNPCLib.Parser.LogicalExpression
             valueNode.Value = (float)node.ObjValue;
             FillAnnotationForExpression(valueNode, node, context);
             return valueNode;
+        }
+
+        private static BaseExpressionNode NConvertEntityConditionBindedParamNode(ASTNodeOfLogicalQuery node, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)
+        {
+#if DEBUG
+            //LogInstance.Log($"node = {node}");
+#endif
+
+            var targetExpressionNode = VariantsConvertor.ConvertVariantToExpressionNode(node.BindedValue);
+
+#if DEBUG
+            //LogInstance.Log($"targetExpressionNode = {targetExpressionNode}");
+#endif
+
+            FillAnnotationForExpression(targetExpressionNode, node, context);
+            return targetExpressionNode;
         }
 
         private static BaseExpressionNode NConvertSimpleConcept(ASTNodeOfLogicalQuery node, RuleInstance parent, ContextOfConvertorASTNodeOfLogicalQueryToRuleInstance context)

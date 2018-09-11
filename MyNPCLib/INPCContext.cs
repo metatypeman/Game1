@@ -44,7 +44,7 @@ namespace MyNPCLib
         TResult CallInMainUI<TResult>(Func<TResult> function);
 
         BaseAbstractLogicalObject SelfLogicalObject { get; }
-        BaseAbstractLogicalObject GetLogicalObject(string query);
+        BaseAbstractLogicalObject GetLogicalObject(string query, params QueryParam[] paramsCollection);
 
         IList<VisionObject> VisibleObjects { get; }
     }

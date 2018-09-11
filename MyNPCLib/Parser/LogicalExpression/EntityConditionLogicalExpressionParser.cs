@@ -36,8 +36,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         protected override void OnRun()
         {
 #if DEBUG
-            LogInstance.Log($"mState = {mState}");
-            LogInstance.Log($"CurrToken = {CurrToken}");
+            //LogInstance.Log($"mState = {mState}");
+            //LogInstance.Log($"CurrToken = {CurrToken}");
 #endif
 
             var currTokenKind = CurrToken.TokenKind;
@@ -91,6 +91,10 @@ namespace MyNPCLib.Parser.LogicalExpression
 
                         case TokenKind.BeginFact:
                             ProcessFactValue();
+                            break;
+
+                        case TokenKind.BindedParam:
+                            DispatchBindedVarInParam();
                             break;
 
                         default:
@@ -178,8 +182,8 @@ namespace MyNPCLib.Parser.LogicalExpression
         private void ProcessPropertyValue()
         {
 #if DEBUG
-            LogInstance.Log($"ProcessPropertyValue !!!!!!!! CurrToken = {CurrToken}");
-            LogInstance.Log($"mPropertyName = {mPropertyName}");
+            //LogInstance.Log($"ProcessPropertyValue !!!!!!!! CurrToken = {CurrToken}");
+            //LogInstance.Log($"mPropertyName = {mPropertyName}");
 #endif
 
             var tokenKind = CurrToken.TokenKind;
@@ -210,6 +214,7 @@ namespace MyNPCLib.Parser.LogicalExpression
                             case TokenKind.False:
                                 ProcessFalseLogicalConst();
                                 break;
+
                             default:
                                 throw new UnexpectedTokenException(CurrToken);
                         }
@@ -223,8 +228,30 @@ namespace MyNPCLib.Parser.LogicalExpression
                 default:
                     throw new UnexpectedTokenException(CurrToken);
             }
+        }
 
-      
+        private void DispatchBindedVarInParam()
+        {
+#if DEBUG
+            //LogInstance.Log("DispatchBindedVarInParam !!!!!!");
+#endif
+
+            var valueOfParam = Context.GetVariantByParamName(CurrToken.Content);
+
+#if DEBUG
+            //LogInstance.Log($"valueOfParam = {valueOfParam}");
+#endif
+
+            var propertyValue = new ASTNodeOfLogicalQuery();
+            propertyValue.Kind = KindOfASTNodeOfLogicalQuery.BindedParam;
+            propertyValue.BindedValue = valueOfParam;
+            propertyValue.SecondaryKind = SecondaryKindOfASTNodeOfLogicalQuery.EntityCondition;
+
+            NProcessPropertyValue(propertyValue);
+
+            mLastNode = propertyValue;
+
+            mState = State.GotProperyValue;
         }
 
         private void ProcessTrueLogicalConst()
@@ -255,12 +282,12 @@ namespace MyNPCLib.Parser.LogicalExpression
 
             propertyValue.ObjValue = float.Parse(content, mDefaultCultureInfo);
 
-            PutRelationLikeNodeToTree(propertyValue);
+            NProcessPropertyValue(propertyValue);
 
             mLastNode = propertyValue;
 
 #if DEBUG
-            LogInstance.Log($"propertyValue = {propertyValue}");
+            //LogInstance.Log($"propertyValue = {propertyValue}");
 #endif
 
             mState = State.GotProperyValue;
