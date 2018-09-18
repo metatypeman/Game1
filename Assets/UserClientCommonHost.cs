@@ -9,11 +9,14 @@ public class UserClientCommonHost : MonoBehaviour, IUserClientCommonHost
     {
     }
 
-    public UserClientMode UserClientMode { get; set; } = UserClientMode.Character;
+    private bool mNeedLockingCursor;
+    private UserClientMode mUserClientMode = UserClientMode.Character;
+    private int mCounter;
+    private readonly object mLockObj = new object();
 
     public float GetAxis(string name)
     {
-        if(UserClientMode == UserClientMode.Window)
+        if(mUserClientMode == UserClientMode.Window)
         {
             return 0f;
         }
@@ -23,7 +26,7 @@ public class UserClientCommonHost : MonoBehaviour, IUserClientCommonHost
 
     public bool GetKeyUp(KeyCode key)
     {
-        if (UserClientMode == UserClientMode.Window)
+        if (mUserClientMode == UserClientMode.Window)
         {
             return false;
         }
@@ -31,14 +34,73 @@ public class UserClientCommonHost : MonoBehaviour, IUserClientCommonHost
         return Input.GetKeyUp(key);
     }
 
+    public bool GetKeyDown(KeyCode key)
+    {
+        if (mUserClientMode == UserClientMode.Window)
+        {
+            return false;
+        }
+
+        return Input.GetKeyDown(key);
+    }
+
     public bool GetMouseButtonUp(int button)
     {
-        if (UserClientMode == UserClientMode.Window)
+        if (mUserClientMode == UserClientMode.Window)
         {
             return false;
         }
 
         return Input.GetMouseButtonUp(0);
+    }
+
+    public void SetCharacterMode()
+    {
+        lock(mLockObj)
+        {
+            var oldValue = mUserClientMode;
+
+            mUserClientMode = UserClientMode.Character;
+
+            if (oldValue != mUserClientMode)
+            {
+                mCounter = 0;
+            }
+
+            mNeedLockingCursor = true;
+        }
+    }
+
+    public void AddWindow()
+    {
+        lock (mLockObj)
+        {
+            if(!mNeedLockingCursor)
+            {
+                return;
+            }
+
+            mUserClientMode = UserClientMode.Window;
+            mCounter++;
+        }
+    }
+
+    public void ReleaseWindow()
+    {
+        lock (mLockObj)
+        {
+            if (!mNeedLockingCursor)
+            {
+                return;
+            }
+
+            mCounter--;
+
+            if(mCounter == 0)
+            {
+                mUserClientMode = UserClientMode.Character;
+            }
+        }
     }
 
     // Use this for initialization
@@ -50,11 +112,6 @@ public class UserClientCommonHost : MonoBehaviour, IUserClientCommonHost
 	// Update is called once per frame
 	void Update ()
     {
-        UpdateCursorLock();
-    }
-
-    public void UpdateCursorLock()
-    {
         InternalLockUpdate();
     }
 
@@ -62,7 +119,7 @@ public class UserClientCommonHost : MonoBehaviour, IUserClientCommonHost
     {
         if(GetKeyUp(KeyCode.Escape))
         {
-            UserClientMode = UserClientMode.Window;
+            mUserClientMode = UserClientMode.Window;
         }
         else
         {
@@ -72,7 +129,7 @@ public class UserClientCommonHost : MonoBehaviour, IUserClientCommonHost
             //}
         }
 
-        if(UserClientMode == UserClientMode.Character)
+        if(mUserClientMode == UserClientMode.Character)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

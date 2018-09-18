@@ -7,11 +7,13 @@ using UnityEngine;
 public class ConcreteFirstPersonController : MonoBehaviour
 {
     private InputKeyHelper mInputKeyHelper;
+    private IUserClientCommonHost mUserClientCommonHost;
 
     // Use this for initialization
     void Start ()
     {
-        mInputKeyHelper = new InputKeyHelper();
+        mUserClientCommonHost = UserClientCommonHostFactory.Get();
+        mInputKeyHelper = new InputKeyHelper(mUserClientCommonHost);
         mInputKeyHelper.AddListener(KeyCode.Y, OnYPressAction);
     }
 	
@@ -27,6 +29,6 @@ public class ConcreteFirstPersonController : MonoBehaviour
 
         //LogInstance.Log($"canvasComponent != null = {canvasComponent != null}");
 
-        MessengerDialog.Instance.Show();
+        MessengerDialog.Instance.ShowDialog();
     }
 }

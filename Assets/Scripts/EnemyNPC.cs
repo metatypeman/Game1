@@ -17,6 +17,7 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
 
     private InputKeyHelper mInputKeyHelper;
     private IInternalBodyHumanoidHost mInternalBodyHumanoidHost;
+    private IUserClientCommonHost mUserClientCommonHost;
 
     private readonly object mEntityLoggerLockObj = new object();
     private IEntityLogger mEntityLogger;
@@ -56,8 +57,10 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         mInternalBodyHumanoidHost = internalBodyHost;
 
         internalBodyHost.OnReady += InternalBodyHost_OnReady;
-  
-        mInputKeyHelper = new InputKeyHelper();
+
+        mUserClientCommonHost = UserClientCommonHostFactory.Get();
+
+        mInputKeyHelper = new InputKeyHelper(mUserClientCommonHost);
         mInputKeyHelper.AddListener(KeyCode.F, OnFPressAction);
         mInputKeyHelper.AddListener(KeyCode.G, OnGPressAction);
         mInputKeyHelper.AddListener(KeyCode.K, OnKPressAction);

@@ -5,12 +5,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public interface IMessengerDialog
+public interface IMessengerDialog: IBaseDialog
 {
-    void Show();
 }
 
-public class MessengerDialog : MonoBehaviour, IMessengerDialog
+public class MessengerDialog : BaseDialog, IMessengerDialog
 {
     private static object mInstanceLockObj = new object();
     private static IMessengerDialog mInstance;
@@ -26,49 +25,32 @@ public class MessengerDialog : MonoBehaviour, IMessengerDialog
         }
     }
 
-    public void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         lock(mInstanceLockObj)
         {
             mInstance = this;
         }
     }
 
-    public void Show()
-    {
-        LogInstance.Log("Show");
-        GetComponent<Canvas>().enabled = true;
-        mUserClientCommonHost.UserClientMode = UserClientMode.Window;
-    }
-
-    public GameObject CloseButton;
     public GameObject SendMessageButton;
     public GameObject InputField;
     public GameObject ScrollView;
-    private IUserClientCommonHost mUserClientCommonHost;
-
+    
     // Use this for initialization
-    void Start ()
+    protected override void Start ()
     {
-        mUserClientCommonHost = UserClientCommonHostFactory.Get();
-        var closeBtn = CloseButton.GetComponent<Button>();
-        closeBtn.onClick.AddListener(OnCloseClick);
+        base.Start();
         var sendMessgeBtn = SendMessageButton.GetComponent<Button>();
         sendMessgeBtn.onClick.AddListener(SendMessage);
+        var scrollView = ScrollView.GetComponent<ScrollRect>();
     }
 	
 	// Update is called once per frame
 	void Update ()
-    {
-		
+    {		
 	}
-
-    private void OnCloseClick()
-    {
-        LogInstance.Log("OnCloseClick");
-        GetComponent<Canvas>().enabled = false;
-        mUserClientCommonHost.UserClientMode = UserClientMode.Character;
-    }
 
     private void SendMessage()
     {

@@ -13,11 +13,13 @@ namespace Assets.Scripts
     {
         public class InputKeyHandlers
         {
-            public InputKeyHandlers(KeyCode keyCode)
+            public InputKeyHandlers(KeyCode keyCode, IUserClientCommonHost userClientCommonHost)
             {
                 mKeyCode = keyCode;
+                mUserClientCommonHost = userClientCommonHost;
             }
 
+            private IUserClientCommonHost mUserClientCommonHost;
             private KeyCode mKeyCode;
 
             private object mLockObj = new object();
@@ -29,8 +31,8 @@ namespace Assets.Scripts
             {
                 lock(mLockObj)
                 {
-                    var tmpKeyDownValue = Input.GetKeyDown(mKeyCode);
-                    var tmpKeyUpValue = Input.GetKeyUp(mKeyCode);
+                    var tmpKeyDownValue = mUserClientCommonHost.GetKeyDown(mKeyCode);
+                    var tmpKeyUpValue = mUserClientCommonHost.GetKeyUp(mKeyCode);
 
                     if(tmpKeyDownValue)
                     {
@@ -66,6 +68,12 @@ namespace Assets.Scripts
             }
         }
 
+        public InputKeyHelper(IUserClientCommonHost userClientCommonHost)
+        {
+            mUserClientCommonHost = userClientCommonHost;
+        }
+
+        private IUserClientCommonHost mUserClientCommonHost;
         private object mLockObj = new object();
         private Dictionary<KeyCode, InputKeyHandlers> mHandlersDict = new Dictionary<KeyCode, InputKeyHandlers>();
 
@@ -92,7 +100,7 @@ namespace Assets.Scripts
                 }
                 else
                 {
-                    mHandler = new InputKeyHandlers(key);
+                    mHandler = new InputKeyHandlers(key, mUserClientCommonHost);
                     mHandlersDict[key] = mHandler;
                 }
             }

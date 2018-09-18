@@ -11,7 +11,10 @@ namespace Assets.Scripts
     {
         float GetAxis(string name);
         bool GetKeyUp(KeyCode key);
+        bool GetKeyDown(KeyCode key);
         bool GetMouseButtonUp(int button);
-        UserClientMode UserClientMode { get; set; }
+        void SetCharacterMode();
+        void AddWindow();
+        void ReleaseWindow();
     }
 }

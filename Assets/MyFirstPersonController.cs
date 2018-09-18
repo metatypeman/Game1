@@ -25,6 +25,7 @@ public class MyMouseLook
         mCharacterTargetRot = character.localRotation;
         mCameraTargetRot = camera.localRotation;
         mUserClientCommonHost = userClientCommonHost;
+        mUserClientCommonHost.SetCharacterMode();
     }
 
     public void LookRotation(Transform character, Transform camera)

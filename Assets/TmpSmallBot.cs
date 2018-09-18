@@ -37,7 +37,9 @@ public class TmpSmallBot : MonoBehaviour {
 
         mCGParser = new CGParser(cgParserOptions);
 
-        mInputKeyHelper = new InputKeyHelper();
+        var userClientCommonHost = UserClientCommonHostFactory.Get();
+
+        mInputKeyHelper = new InputKeyHelper(userClientCommonHost);
         mInputKeyHelper.AddListener(KeyCode.Z, OnZPressAction);
 
         m_DictationRecognizer = new DictationRecognizer();
