@@ -9,7 +9,7 @@ namespace UnityStandardAssets.CrossPlatformInput.PlatformSpecific
         {
             return raw ? Input.GetAxisRaw(name) : Input.GetAxis(name);
         }
-
+        
 
         public override bool GetButton(string name)
         {

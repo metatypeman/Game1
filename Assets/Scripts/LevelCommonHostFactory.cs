@@ -2,16 +2,28 @@
 {
     public static class LevelCommonHostFactory
     {
+        private static object mLockObj = new object();
+        private static ILevelCommonHost mLevelCommonHost;
+
         public static ILevelCommonHost Get()
         {
-            var gameObjectOfCommonLevelHost = UnityEngine.Object.FindObjectOfType<LevelCommonHost>();
-
-            if(gameObjectOfCommonLevelHost == null)
+            lock(mLockObj)
             {
-                return null;
-            }
+                if(mLevelCommonHost != null)
+                {
+                    return mLevelCommonHost;
+                }
 
-            return gameObjectOfCommonLevelHost.GetComponent<ILevelCommonHost>();
+                var gameObjectOfCommonLevelHost = UnityEngine.Object.FindObjectOfType<LevelCommonHost>();
+
+                if (gameObjectOfCommonLevelHost == null)
+                {
+                    return null;
+                }
+
+                mLevelCommonHost = gameObjectOfCommonLevelHost.GetComponent<ILevelCommonHost>();
+                return mLevelCommonHost;
+            }
         }
     }
 }
