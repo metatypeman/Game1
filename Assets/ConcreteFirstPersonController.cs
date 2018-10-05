@@ -31,6 +31,8 @@ public class ConcreteFirstPersonController : MonoBehaviour
     public GameObject Rifle;
     private IHandThing mRifleInstance;
 
+    private GateOfMilitaryBase mGateOfMilitaryBase;
+
     // Use this for initialization
     void Start ()
     {
@@ -56,6 +58,8 @@ public class ConcreteFirstPersonController : MonoBehaviour
         mInputKeyHelper.AddPressListener(KeyCode.Z, OnZPressAction);
         mInputKeyHelper.AddPressListener(KeyCode.F, OnFPressAction);
         mInputKeyHelper.AddUpListener(KeyCode.F, OnFUpAction);
+        mInputKeyHelper.AddPressListener(KeyCode.C, OnCPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.X, OnXPressAction);
 
         mInputMouseKeyHelper = new InputMouseKeyHelper(mUserClientCommonHost);
         mInputMouseKeyHelper.AddPressListener(0, OnFPressAction);
@@ -91,6 +95,8 @@ public class ConcreteFirstPersonController : MonoBehaviour
         //m_DictationRecognizer.Start();
 
         mRifleInstance = Rifle.GetComponent<IHandThing>();
+
+        mGateOfMilitaryBase = GameObject.Find("GateOfMilitaryBase").GetComponent<GateOfMilitaryBase>();
     }
 
     // Update is called once per frame
@@ -154,6 +160,24 @@ public class ConcreteFirstPersonController : MonoBehaviour
         var paragraph = "Go to Green Waypoint";
 
         DispatchText(paragraph);
+    }
+
+    private void OnCPressAction()
+    {
+#if DEBUG
+        LogInstance.Log("Begin");
+#endif
+
+        mGateOfMilitaryBase.Open();
+    }
+
+    private void OnXPressAction()
+    {
+#if DEBUG
+        LogInstance.Log("Begin");
+#endif
+
+        mGateOfMilitaryBase.Close();
     }
 
     private void DispatchText(string text)

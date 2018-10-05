@@ -67,6 +67,7 @@
     <Compile Include="Assets\Dead\Script\PlayGUI.cs" />
     <Compile Include="Assets\EthansHealthHelper.cs" />
     <Compile Include="Assets\GameInfoObject.cs" />
+    <Compile Include="Assets\GateOfMilitaryBase.cs" />
     <Compile Include="Assets\GreenWaypoint.cs" />
     <Compile Include="Assets\ISpellHelperDialog.cs" />
     <Compile Include="Assets\MyFirstPersonController.cs" />
