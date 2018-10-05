@@ -51,7 +51,17 @@ public class UserClientCommonHost : MonoBehaviour, IUserClientCommonHost
             return false;
         }
 
-        return Input.GetMouseButtonUp(0);
+        return Input.GetMouseButtonUp(button);
+    }
+
+    public bool GetMouseButtonDown(int button)
+    {
+        if (mUserClientMode == UserClientMode.Window)
+        {
+            return false;
+        }
+
+        return Input.GetMouseButtonDown(button);
     }
 
     public void SetCharacterMode()

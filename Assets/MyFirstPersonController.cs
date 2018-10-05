@@ -200,19 +200,18 @@ public class MyFirstPersonController : MonoBehaviour {
     private void FixedUpdate()
     {
         GroundCheck();
-        Vector2 input = GetInput();
+        var input = GetInput();
 
         if ((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || mIsGrounded))
         {
             // always move along the camera forward as it is the direction that it being aimed at
-            Vector3 desiredMove = cam.transform.forward * input.y + cam.transform.right * input.x;
+            var desiredMove = cam.transform.forward * input.y + cam.transform.right * input.x;
             desiredMove = Vector3.ProjectOnPlane(desiredMove, mGroundContactNormal).normalized;
 
             desiredMove.x = desiredMove.x * movementSettings.CurrentTargetSpeed;
             desiredMove.z = desiredMove.z * movementSettings.CurrentTargetSpeed;
             desiredMove.y = desiredMove.y * movementSettings.CurrentTargetSpeed;
-            if (mRigidBody.velocity.sqrMagnitude <
-                (movementSettings.CurrentTargetSpeed * movementSettings.CurrentTargetSpeed))
+            if (mRigidBody.velocity.sqrMagnitude < (movementSettings.CurrentTargetSpeed * movementSettings.CurrentTargetSpeed))
             {
                 mRigidBody.AddForce(desiredMove * SlopeMultiplier(), ForceMode.Impulse);
             }

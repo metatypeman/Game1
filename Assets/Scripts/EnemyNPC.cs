@@ -61,19 +61,19 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         mUserClientCommonHost = UserClientCommonHostFactory.Get();
 
         mInputKeyHelper = new InputKeyHelper(mUserClientCommonHost);
-        mInputKeyHelper.AddListener(KeyCode.F, OnFPressAction);
-        mInputKeyHelper.AddListener(KeyCode.G, OnGPressAction);
-        mInputKeyHelper.AddListener(KeyCode.K, OnKPressAction);
-        mInputKeyHelper.AddListener(KeyCode.N, OnNPressAction);
-        mInputKeyHelper.AddListener(KeyCode.H, OnHPressAction);
-        mInputKeyHelper.AddListener(KeyCode.L, OnLPressAction);
-        mInputKeyHelper.AddListener(KeyCode.I, OnIPressAction);
-        mInputKeyHelper.AddListener(KeyCode.P, OnPPressAction);
-        mInputKeyHelper.AddListener(KeyCode.U, OnUPressAction);
-        mInputKeyHelper.AddListener(KeyCode.M, OnMPressAction);
-        mInputKeyHelper.AddListener(KeyCode.B, OnBPressAction);
-        mInputKeyHelper.AddListener(KeyCode.J, OnJPressAction);
-        mInputKeyHelper.AddListener(KeyCode.Q, OnQPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.F, OnFPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.G, OnGPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.K, OnKPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.N, OnNPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.H, OnHPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.L, OnLPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.I, OnIPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.P, OnPPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.U, OnUPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.M, OnMPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.B, OnBPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.J, OnJPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.Q, OnQPressAction);
 
         Task.Run(() => {
             try
@@ -190,118 +190,118 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         //mGunBody.SetActive(false);
     }
 
-    private void OnQPressAction(KeyCode key)
+    private void OnQPressAction()
     {
-        Log($"key = {key}");
-        
-        var command = KeyToNPCCommandConverter.Convert(key);
+        Log("Begin");
+
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.Q);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command);
     }
 
-    private void OnJPressAction(KeyCode key)
+    private void OnJPressAction()
     {
-        Log($"key = {key}");
-        
-        var command = KeyToNPCCommandConverter.Convert(key);
+        Log("Begin");
+
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.J);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command);
     }
 
-    private void OnBPressAction(KeyCode key)
+    private void OnBPressAction()
     {
-        Log($"key = {key}");
+        Log("Begin");
 
-        var command = KeyToNPCCommandConverter.Convert(key);
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.B);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command);
     }
 
-    private void OnMPressAction(KeyCode key)
+    private void OnMPressAction()
     {
-        Log($"key = {key}");
+        Log("Begin");
 
-        var command = KeyToNPCCommandConverter.Convert(key);
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.M);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command);
     }
 
-    private void OnFPressAction(KeyCode key)
+    private void OnFPressAction()
     {
-        Log($"key = {key}");
-        var command = KeyToNPCCommandConverter.Convert(key);
+        Log("Begin");
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.F);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command);
     }
 
-    private void OnGPressAction(KeyCode key)
+    private void OnGPressAction()
     {
-        Log($"key = {key}");
+        Log("Begin");
 
-        var command = KeyToNPCCommandConverter.Convert(key);
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.G);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command);
     }
 
-    private void OnKPressAction(KeyCode key)
+    private void OnKPressAction()
     {
-        Log($"key = {key}");
+        Log("Begin");
 
-        var command = KeyToNPCCommandConverter.Convert(key);
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.K);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command);
     }
 
-    private void OnNPressAction(KeyCode key)
+    private void OnNPressAction()
     {
-        Log($"key = {key}");
+        Log("Begin");
 
-        var command = KeyToNPCCommandConverter.Convert(key);
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.N);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command);
     }
 
-    private void OnHPressAction(KeyCode key)
+    private void OnHPressAction()
     {
-        Log($"key = {key}");
+        Log("Begin");
 
-        var command = KeyToNPCCommandConverter.Convert(key);
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.H);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command); 
     }
 
-    private void OnLPressAction(KeyCode key)
+    private void OnLPressAction()
     {
-        Log($"key = {key}");
+        Log("Begin");
 
-        var command = KeyToNPCCommandConverter.Convert(key);
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.L);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command);
     }
 
-    private void OnIPressAction(KeyCode key)
+    private void OnIPressAction()
     {
-        Log($"key = {key}");        
+        Log("Begin");
 
-        var command = KeyToNPCCommandConverter.Convert(key);
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.I);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command);
     }
 
-    private void OnPPressAction(KeyCode key)
+    private void OnPPressAction()
     {
-        Log($"key = {key}");
+        Log("Begin");
 
-        var command = KeyToNPCCommandConverter.Convert(key);
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.P);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command);
     }
     
-    private void OnUPressAction(KeyCode key)
+    private void OnUPressAction()
     {
-        Log($"key = {key}");
+        Log("Begin");
 
-        var command = KeyToNPCCommandConverter.Convert(key);
+        var command = KeyToNPCCommandConverter.Convert(KeyCode.U);
         Log($"command = {command}");
         mNPCProcessesContext?.Send(command);
     }

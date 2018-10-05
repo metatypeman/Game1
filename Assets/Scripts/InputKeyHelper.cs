@@ -7,8 +7,6 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public delegate void KeyPressAction(KeyCode key);
-
     public class InputKeyHelper
     {
         public class InputKeyHandlers
@@ -22,9 +20,10 @@ namespace Assets.Scripts
             private IUserClientCommonHost mUserClientCommonHost;
             private KeyCode mKeyCode;
 
-            private object mLockObj = new object();
+            private readonly object mLockObj = new object();
 
-            private event KeyPressAction mHandlers;
+            private event Action mPressHandlers;
+            private event Action mUpHandlers;
             private bool mIsPressed;
 
             public void Update()
@@ -42,7 +41,7 @@ namespace Assets.Scripts
                         }
 
                         mIsPressed = true;
-                        mHandlers?.Invoke(mKeyCode);
+                        mPressHandlers?.Invoke();
                     }
                     else
                     {
@@ -54,16 +53,25 @@ namespace Assets.Scripts
                             }
 
                             mIsPressed = false;
+                            mUpHandlers?.Invoke();
                         }
                     }            
                 }
             }
 
-            public void AddHandler(KeyPressAction action)
+            public void AddPressHandler(Action action)
             {
                 lock (mLockObj)
                 {
-                    mHandlers += action;
+                    mPressHandlers += action;
+                }
+            }
+
+            public void AddUpHandler(Action action)
+            {
+                lock (mLockObj)
+                {
+                    mUpHandlers += action;
                 }
             }
         }
@@ -74,7 +82,7 @@ namespace Assets.Scripts
         }
 
         private IUserClientCommonHost mUserClientCommonHost;
-        private object mLockObj = new object();
+        private readonly object mLockObj = new object();
         private Dictionary<KeyCode, InputKeyHandlers> mHandlersDict = new Dictionary<KeyCode, InputKeyHandlers>();
 
         public void Update()
@@ -88,7 +96,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void AddListener(KeyCode key, KeyPressAction action)
+        public void AddPressListener(KeyCode key, Action action)
         {
             InputKeyHandlers mHandler = null;
 
@@ -105,7 +113,27 @@ namespace Assets.Scripts
                 }
             }
 
-            mHandler.AddHandler(action);
+            mHandler.AddPressHandler(action);
+        }
+
+        public void AddUpListener(KeyCode key, Action action)
+        {
+            InputKeyHandlers mHandler = null;
+
+            lock (mLockObj)
+            {
+                if (mHandlersDict.ContainsKey(key))
+                {
+                    mHandler = mHandlersDict[key];
+                }
+                else
+                {
+                    mHandler = new InputKeyHandlers(key, mUserClientCommonHost);
+                    mHandlersDict[key] = mHandler;
+                }
+            }
+
+            mHandler.AddUpHandler(action);
         }
     }
 }
