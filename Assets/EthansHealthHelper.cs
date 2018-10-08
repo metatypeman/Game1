@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts;
+using MyNPCLib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,11 +16,6 @@ public class EthansHealthHelper : MonoBehaviour, ITargetOfShoot
         mEnemyController = GetComponent<HumanoidBodyHost>();
     }
 	
-	// Update is called once per frame
-	//void Update () {
-		
-	//}
-
     public void SetHit(RaycastHit shootHit, int damagePerShot)
     {
 #if UNITY_EDITOR

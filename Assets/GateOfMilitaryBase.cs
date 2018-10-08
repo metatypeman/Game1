@@ -8,7 +8,7 @@ public class GateOfMilitaryBase : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         mClosedZPosition = transform.position.z;
-        mOpenedZPosition = mClosedZPosition + 7;
+        mOpenedZPosition = mClosedZPosition + 8;
     }
 
     private float mClosedZPosition;

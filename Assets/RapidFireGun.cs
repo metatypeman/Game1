@@ -349,7 +349,14 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
 
         if (Physics.Raycast(shootRay, out shootHit, Range))
         {
+#if UNITY_EDITOR
+            //Log("Physics.Raycast");
+#endif
             var targetOfShoot = shootHit.collider.GetComponentInParent<ITargetOfShoot>();
+
+#if UNITY_EDITOR
+            //Log($"Physics.Raycast targetOfShoot == null = {targetOfShoot == null}");
+#endif
 
             if (targetOfShoot != null)
             {
@@ -360,6 +367,9 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         }
         else
         {
+#if UNITY_EDITOR
+            //Log("Not Physics.Raycast");
+#endif
             mGunLine.SetPosition(1, shootRay.origin + shootRay.direction * Range);
         }
     }
