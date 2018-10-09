@@ -400,9 +400,6 @@
     <Reference Include="MyNPCHostLib">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/MyNPCHostLib.dll</HintPath>
     </Reference>
-    <Reference Include="MyNPCLib">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/MyNPCLib.dll</HintPath>
-    </Reference>
     <Reference Include="OpenNLPForNS">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/OpenNLPForNS.dll</HintPath>
     </Reference>
