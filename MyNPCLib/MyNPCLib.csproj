@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PostBuildEvent>copy $(SolutionDir)\MyNPCLib\bin\Debug\netstandard2.0\MyNPCLib.dll $(SolutionDir)Assets\MyNPCLib.dll</PostBuildEvent>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="BaseCommonNPCProcessWithEvents.cs~RF336892a0.TMP" />
+    <None Remove="CGStorage\ConsolidatedCGStorage.cs~RF3cf78fd3.TMP" />
+    <None Remove="Parser\LogicalExpression\ContextOfLogicalExpressionParser.cs~RFa9b0668d.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.Common" Version="4.3.0" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.4.0" />
+    <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenNLPForNS\OpenNLPForNS.csproj" />
+    <ProjectReference Include="..\SharpEntropyForNS\SharpEntropyForNS.csproj" />
+    <ProjectReference Include="..\SharpWordNetForNS\SharpWordNetForNS.csproj" />
+  </ItemGroup>
+
+</Project>
