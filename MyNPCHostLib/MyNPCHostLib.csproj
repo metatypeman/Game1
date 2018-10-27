@@ -9,10 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyNPCLib\MyNPCLib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
