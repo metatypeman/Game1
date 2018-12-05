@@ -11,13 +11,15 @@ using System.Linq;
 
 [RequireComponent(typeof(HumanoidBodyHost))]
 [RequireComponent(typeof(EnemyRayScaner))]
-public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
+public class EnemyNPC : MonoBehaviour
 {
     private TestedNPCContext mNPCProcessesContext;
 
     private InputKeyHelper mInputKeyHelper;
     private IInternalBodyHumanoidHost mInternalBodyHumanoidHost;
     private IUserClientCommonHost mUserClientCommonHost;
+
+    private InvokingInMainThreadHelper mInvokingInMainThreadHelper;
 
     private readonly object mEntityLoggerLockObj = new object();
     private IEntityLogger mEntityLogger;
@@ -52,6 +54,8 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
     // Use this for initialization
     void Start()
     {
+        mInvokingInMainThreadHelper = new InvokingInMainThreadHelper();
+
         var internalBodyHost = GetComponent<IInternalBodyHumanoidHost>();
 
         mInternalBodyHumanoidHost = internalBodyHost;
@@ -74,19 +78,6 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         mInputKeyHelper.AddPressListener(KeyCode.B, OnBPressAction);
         mInputKeyHelper.AddPressListener(KeyCode.J, OnJPressAction);
         mInputKeyHelper.AddPressListener(KeyCode.Q, OnQPressAction);
-
-        Task.Run(() => {
-            try
-            {
-                var gameObj = ThreadSafeGameObj();
-
-                Log($"gameObj = {gameObj}");
-            }
-            catch(Exception e)
-            {
-                Error($"e = {e}");
-            }
-        });
     }
 
     private void InternalBodyHost_OnReady()
@@ -94,18 +85,18 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         CreateNPCHostContext();
     }
 
-    public void CreateNPCHostContext()
+    private void CreateNPCHostContext()
     {
         lock (mEntityLoggerLockObj)
         {
             mEntityLogger = mInternalBodyHumanoidHost.EntityLogger;
         }
 
-        CallInMainUI(() => {
+        mInvokingInMainThreadHelper.CallInMainUI(() => {
             var commonLevelHost = LevelCommonHostFactory.Get();
-
+#if DEBUG
             Log($"(commonLevelHost == null) = {commonLevelHost == null}");
-
+#endif
             var hostContext = new TestedNPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
             mNPCProcessesContext = new TestedNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext);
 
@@ -113,80 +104,13 @@ public class EnemyNPC : MonoBehaviour, IInvokingInMainThread
         });
     }
 
-    private void CallInMainUI(Action function)
-    {
-        var invocable = new InvocableInMainThreadObj(function, this);
-        invocable.Run();
-    }
-
-    private TResult CallInMainUI<TResult>(Func<TResult> function)
-    {
-        var invocable = new InvocableInMainThreadObj<TResult>(function, this);
-        return invocable.Run();
-    }
-
-    public void SetInvocableObj(IInvocableInMainThreadObj invokableObj)
-    {
-        lock (mTmpQueueLockObj)
-        {
-            mTmpQueue.Enqueue(invokableObj);
-        }
-    }
-
-    private string ThreadSafeGameObj()
-    {
-        var invocableWithoutResult = new InvocableInMainThreadObj(() =>
-        {
-            var gunBody = GameObject.Find("M4A1 Sopmod");
-            Log($"fun = () gunBody.name = {gunBody.name}");
-            var position = gunBody.transform.position;
-            Log($"End fun = () position = {position}");
-        }, this);
-
-        invocableWithoutResult.Run();
-
-        var invocable = new InvocableInMainThreadObj<string>(() => {
-            var gunBody = GameObject.Find("M4A1 Sopmod");
-            Log($"End fun = () gunBody.name = {gunBody.name}");
-            return gunBody.name;
-        }, this);
-
-        return invocable.Run();
-    }
-
-    private object mTmpQueueLockObj = new object();
-    private Queue<IInvocableInMainThreadObj> mTmpQueue = new Queue<IInvocableInMainThreadObj>();
-
-    private void ProcessInvocable()
-    {
-        List<IInvocableInMainThreadObj> invocableList = null;
-
-        lock (mTmpQueueLockObj)
-        {
-            if (mTmpQueue.Count > 0)
-            {
-                invocableList = mTmpQueue.ToList();
-                mTmpQueue.Clear();
-            }
-        }
-
-        if(invocableList == null)
-        {
-            return;
-        }
-
-        foreach(var invocable in invocableList)
-        {
-            invocable.Invoke();
-        }
-    }
-
     // Update is called once per frame
     void Update()
     {
         //Log("Begin");
         mInputKeyHelper.Update();
-        ProcessInvocable();
+        mInvokingInMainThreadHelper.Update();
+
         //mGunBody.SetActive(false);
     }
 

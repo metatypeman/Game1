@@ -76,6 +76,18 @@
     <Compile Include="Assets\MyThirdPersonCharacter.cs" />
     <Compile Include="Assets\MyThirdPersonUserControl.cs" />
     <Compile Include="Assets\NewBehaviourScript.cs" />
+    <Compile Include="Assets\NPCScripts\Antagonist\AntagonistBlackBoard.cs" />
+    <Compile Include="Assets\NPCScripts\Antagonist\AntagonistNPC.cs" />
+    <Compile Include="Assets\NPCScripts\Antagonist\AntagonistNPCContext.cs" />
+    <Compile Include="Assets\NPCScripts\Common\NPCBodyHost.cs" />
+    <Compile Include="Assets\NPCScripts\Common\NPCHandHost.cs" />
+    <Compile Include="Assets\NPCScripts\Common\NPCHostContext.cs" />
+    <Compile Include="Assets\NPCScripts\Hipster\HipsterBlackBoard.cs" />
+    <Compile Include="Assets\NPCScripts\Hipster\HipsterNPC.cs" />
+    <Compile Include="Assets\NPCScripts\Hipster\HipsterNPCContext.cs" />
+    <Compile Include="Assets\NPCScripts\PixKeeper\PixKeeperBlackBoard.cs" />
+    <Compile Include="Assets\NPCScripts\PixKeeper\PixKeeperNPC.cs" />
+    <Compile Include="Assets\NPCScripts\PixKeeper\PixKeeperNPCContext.cs" />
     <Compile Include="Assets\RapidFireGun.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\MenuSceneLoader.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\PauseMenu.cs" />
@@ -91,6 +103,7 @@
     <Compile Include="Assets\Scripts\BasePassiveLogicalGameObject.cs" />
     <Compile Include="Assets\Scripts\BaseWayPoint.cs" />
     <Compile Include="Assets\Scripts\BehaviourFlagsOfHumanoidController.cs" />
+    <Compile Include="Assets\Scripts\BlueWaypoint.cs" />
     <Compile Include="Assets\Scripts\ChangeColor.cs" />
     <Compile Include="Assets\Scripts\DragMe.cs" />
     <Compile Include="Assets\Scripts\DragPanel.cs" />
@@ -119,6 +132,7 @@
     <Compile Include="Assets\Scripts\InternalTargetStateOfHumanoidControllerConverter.cs" />
     <Compile Include="Assets\Scripts\InternalVisionItem.cs" />
     <Compile Include="Assets\Scripts\InvocableInMainThreadObj.cs" />
+    <Compile Include="Assets\Scripts\InvokingInMainThreadHelper.cs" />
     <Compile Include="Assets\Scripts\IObject.cs" />
     <Compile Include="Assets\Scripts\IRapidFireGun.cs" />
     <Compile Include="Assets\Scripts\IThing.cs" />
@@ -133,6 +147,7 @@
     <Compile Include="Assets\Scripts\PanelManager.cs" />
     <Compile Include="Assets\Scripts\PassiveLogicalGameObjectOptions.cs" />
     <Compile Include="Assets\Scripts\ProxyForStatesOfHumanoidBodyHost.cs" />
+    <Compile Include="Assets\Scripts\RedWaypoint.cs" />
     <Compile Include="Assets\Scripts\ResizePanel.cs" />
     <Compile Include="Assets\Scripts\RightHandLocator.cs" />
     <Compile Include="Assets\Scripts\RightHandWPLocator.cs" />
@@ -147,6 +162,7 @@
     <Compile Include="Assets\Scripts\UserClientCommonHostFactory.cs" />
     <Compile Include="Assets\Scripts\UserClientMode.cs" />
     <Compile Include="Assets\Scripts\VectorsConvertor.cs" />
+    <Compile Include="Assets\Scripts\YellowWaypoint.cs" />
     <Compile Include="Assets\SpellHelperDialog.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
     <Compile Include="Assets\UserClientCommonHost.cs" />
