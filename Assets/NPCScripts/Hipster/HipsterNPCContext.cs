@@ -1,4 +1,5 @@
-﻿using MyNPCLib;
+﻿using Assets.NPCScripts.Hipster.Processes;
+using MyNPCLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,13 @@ namespace Assets.NPCScripts.Hipster
         public HipsterNPCContext(IEntityLogger entityLogger, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCHostContext npcHostContext)
             : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext)
         {
+            AddTypeOfProcess<HipsterBootNPCProcess>();
+            AddTypeOfProcess<HipsterKeyListenerNPCProcess>();
+        }
 
+        public override void Bootstrap()
+        {
+            Bootstrap<HipsterBootNPCProcess>();
         }
     }
 }

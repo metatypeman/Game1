@@ -8,6 +8,7 @@ using MyNPCLib;
 using System;
 using System.Threading;
 using System.Linq;
+using Assets.NPCScripts.Common;
 
 [RequireComponent(typeof(HumanoidBodyHost))]
 [RequireComponent(typeof(EnemyRayScaner))]
@@ -97,7 +98,7 @@ public class EnemyNPC : MonoBehaviour
 #if DEBUG
             Log($"(commonLevelHost == null) = {commonLevelHost == null}");
 #endif
-            var hostContext = new TestedNPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
+            var hostContext = new NPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
             mNPCProcessesContext = new TestedNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext);
 
             mNPCProcessesContext.Bootstrap();

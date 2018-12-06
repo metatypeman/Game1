@@ -1,4 +1,5 @@
-﻿using MyNPCLib;
+﻿using Assets.NPCScripts.PixKeeper.Processes;
+using MyNPCLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,13 @@ namespace Assets.NPCScripts.PixKeeper
         public PixKeeperNPCContext(IEntityLogger entityLogger, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCHostContext npcHostContext)
             : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext)
         {
+            AddTypeOfProcess<PixKeeperBootNPCProcess>();
+            AddTypeOfProcess<PixKeeperKeyListenerNPCProcess>();
+        }
 
+        public override void Bootstrap()
+        {
+            Bootstrap<PixKeeperBootNPCProcess>();
         }
     }
 }

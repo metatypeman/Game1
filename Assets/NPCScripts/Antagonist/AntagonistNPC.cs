@@ -1,4 +1,5 @@
-﻿using Assets.Scripts;
+﻿using Assets.NPCScripts.Common;
+using Assets.Scripts;
 using MyNPCLib;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace Assets.NPCScripts.Antagonist
         private InputKeyHelper mInputKeyHelper;
         private IInternalBodyHumanoidHost mInternalBodyHumanoidHost;
         private IUserClientCommonHost mUserClientCommonHost;
+
+        private InvokingInMainThreadHelper mInvokingInMainThreadHelper;
 
         private readonly object mEntityLoggerLockObj = new object();
         private IEntityLogger mEntityLogger;
@@ -49,6 +52,50 @@ namespace Assets.NPCScripts.Antagonist
             }
         }
 
+        void Start()
+        {
+            mInvokingInMainThreadHelper = new InvokingInMainThreadHelper();
 
+            var internalBodyHost = GetComponent<IInternalBodyHumanoidHost>();
+
+            mInternalBodyHumanoidHost = internalBodyHost;
+
+            internalBodyHost.OnReady += InternalBodyHost_OnReady;
+
+            mUserClientCommonHost = UserClientCommonHostFactory.Get();
+
+            mInputKeyHelper = new InputKeyHelper(mUserClientCommonHost);
+        }
+
+        private void InternalBodyHost_OnReady()
+        {
+            CreateNPCHostContext();
+        }
+
+        private void CreateNPCHostContext()
+        {
+            lock (mEntityLoggerLockObj)
+            {
+                mEntityLogger = mInternalBodyHumanoidHost.EntityLogger;
+            }
+
+            mInvokingInMainThreadHelper.CallInMainUI(() => {
+                var commonLevelHost = LevelCommonHostFactory.Get();
+#if DEBUG
+                Log($"(commonLevelHost == null) = {commonLevelHost == null}");
+#endif
+                var hostContext = new NPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
+                mNPCProcessesContext = new AntagonistNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext);
+
+                mNPCProcessesContext.Bootstrap();
+            });
+        }
+
+        void Update()
+        {
+            //Log("Begin");
+            mInputKeyHelper.Update();
+            mInvokingInMainThreadHelper.Update();
+        }
     }
 }

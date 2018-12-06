@@ -112,7 +112,7 @@ namespace Assets.Scripts
     
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
     [NPCProcessName("key press")]
-    public class TestedKeyListenerNPCProcess : TestedBaseNPCProcess
+    public class TestedKeyListenerNPCProcess: TestedBaseNPCProcess
     {
         public static NPCCommand CreateCommand(KeyCode key)
         {
