@@ -154,9 +154,9 @@ public class EnemyNPC : MonoBehaviour
     private void OnFPressAction()
     {
         Log("Begin");
-        var command = KeyToNPCCommandConverter.Convert(KeyCode.F);
-        Log($"command = {command}");
-        mNPCProcessesContext?.Send(command);
+        //var command = KeyToNPCCommandConverter.Convert(KeyCode.F);
+        //Log($"command = {command}");
+        //mNPCProcessesContext?.Send(command);
     }
 
     private void OnGPressAction()

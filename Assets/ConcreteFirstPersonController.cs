@@ -56,8 +56,8 @@ public class ConcreteFirstPersonController : MonoBehaviour
         mInputKeyHelper = new InputKeyHelper(mUserClientCommonHost);
         mInputKeyHelper.AddPressListener(KeyCode.Y, OnYPressAction);
         mInputKeyHelper.AddPressListener(KeyCode.Z, OnZPressAction);
-        mInputKeyHelper.AddPressListener(KeyCode.F, OnFPressAction);
-        mInputKeyHelper.AddUpListener(KeyCode.F, OnFUpAction);
+        //mInputKeyHelper.AddPressListener(KeyCode.F, OnFPressAction);
+        //mInputKeyHelper.AddUpListener(KeyCode.F, OnFUpAction);
         mInputKeyHelper.AddPressListener(KeyCode.C, OnCPressAction);
         mInputKeyHelper.AddPressListener(KeyCode.X, OnXPressAction);
 

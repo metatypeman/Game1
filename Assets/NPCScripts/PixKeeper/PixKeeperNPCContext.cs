@@ -17,9 +17,9 @@ namespace Assets.NPCScripts.PixKeeper
             AddTypeOfProcess<PixKeeperKeyListenerNPCProcess>();
         }
 
-        public override void Bootstrap()
-        {
-            Bootstrap<PixKeeperBootNPCProcess>();
-        }
+        //public override void Bootstrap()
+        //{
+        //    Bootstrap<PixKeeperBootNPCProcess>();
+        //}
     }
 }

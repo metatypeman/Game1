@@ -7,6 +7,8 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
+    public delegate void OnKeyPressAction(KeyCode keyCode);
+
     public class InputKeyHelper
     {
         public class InputKeyHandlers
@@ -22,8 +24,10 @@ namespace Assets.Scripts
 
             private readonly object mLockObj = new object();
 
-            private event Action mPressHandlers;
-            private event Action mUpHandlers;
+            private event OnKeyPressAction mPressHandlers;
+            private event OnKeyPressAction mUpHandlers;
+            private event Action mPressActionsHadnlers;
+            private event Action mUpActionsHandlers;
             private bool mIsPressed;
 
             public void Update()
@@ -41,7 +45,8 @@ namespace Assets.Scripts
                         }
 
                         mIsPressed = true;
-                        mPressHandlers?.Invoke();
+                        mPressHandlers?.Invoke(mKeyCode);
+                        mPressActionsHadnlers?.Invoke();
                     }
                     else
                     {
@@ -53,13 +58,14 @@ namespace Assets.Scripts
                             }
 
                             mIsPressed = false;
-                            mUpHandlers?.Invoke();
+                            mUpHandlers?.Invoke(mKeyCode);
+                            mUpActionsHandlers?.Invoke();
                         }
                     }            
                 }
             }
 
-            public void AddPressHandler(Action action)
+            public void AddPressHandler(OnKeyPressAction action)
             {
                 lock (mLockObj)
                 {
@@ -67,11 +73,27 @@ namespace Assets.Scripts
                 }
             }
 
-            public void AddUpHandler(Action action)
+            public void AddUpHandler(OnKeyPressAction action)
             {
                 lock (mLockObj)
                 {
                     mUpHandlers += action;
+                }
+            }
+
+            public void AddPressHandler(Action action)
+            {
+                lock (mLockObj)
+                {
+                    mPressActionsHadnlers += action;
+                }
+            }
+
+            public void AddUpHandler(Action action)
+            {
+                lock (mLockObj)
+                {
+                    mUpActionsHandlers += action;
                 }
             }
         }
@@ -96,44 +118,43 @@ namespace Assets.Scripts
             }
         }
 
-        public void AddPressListener(KeyCode key, Action action)
+        private InputKeyHandlers GetHandler(KeyCode key)
         {
-            InputKeyHandlers mHandler = null;
-
             lock (mLockObj)
             {
                 if (mHandlersDict.ContainsKey(key))
                 {
-                    mHandler = mHandlersDict[key];
+                    return mHandlersDict[key];
                 }
-                else
-                {
-                    mHandler = new InputKeyHandlers(key, mUserClientCommonHost);
-                    mHandlersDict[key] = mHandler;
-                }
-            }
 
-            mHandler.AddPressHandler(action);
+                var handler = new InputKeyHandlers(key, mUserClientCommonHost);
+                mHandlersDict[key] = handler;
+                return handler;
+            }
+        }
+
+        public void AddPressListener(KeyCode key, OnKeyPressAction action)
+        {
+            var handler = GetHandler(key);
+            handler.AddPressHandler(action);
+        }
+
+        public void AddPressListener(KeyCode key, Action action)
+        {
+            var handler = GetHandler(key);
+            handler.AddPressHandler(action);
+        }
+
+        public void AddUpListener(KeyCode key, OnKeyPressAction action)
+        {
+            var handler = GetHandler(key);
+            handler.AddUpHandler(action);
         }
 
         public void AddUpListener(KeyCode key, Action action)
         {
-            InputKeyHandlers mHandler = null;
-
-            lock (mLockObj)
-            {
-                if (mHandlersDict.ContainsKey(key))
-                {
-                    mHandler = mHandlersDict[key];
-                }
-                else
-                {
-                    mHandler = new InputKeyHandlers(key, mUserClientCommonHost);
-                    mHandlersDict[key] = mHandler;
-                }
-            }
-
-            mHandler.AddUpHandler(action);
+            var handler = GetHandler(key);
+            handler.AddUpHandler(action);
         }
     }
 }

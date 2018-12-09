@@ -454,7 +454,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         if (targetState.HState.HasValue)
         {
             result.HState = targetState.HState.Value;
-            result.TargetPosition = targetState.TargetPosition.Value;
+            result.TargetPosition = targetState.TargetPosition;
         }
 
         if (targetState.VState.HasValue)
@@ -633,6 +633,10 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         var hState = mStates.HState;
         switch (hState)
         {
+            case HumanoidHState.Stop:
+                mNavMeshAgent.ResetPath();
+                break;
+
             case HumanoidHState.Walk:
             case HumanoidHState.Run:
                 {

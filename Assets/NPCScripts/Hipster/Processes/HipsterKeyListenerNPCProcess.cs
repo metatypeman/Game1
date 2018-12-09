@@ -26,7 +26,97 @@ namespace Assets.NPCScripts.Hipster.Processes
             Log($"key = {key}");
 #endif
 
+            switch (key)
+            {
+                case KeyCode.F:
+                    ProcessGoToRedWaypoint();
+                    break;
 
+                case KeyCode.G:
+                    ProcessGoToGreenWaypoint();
+                    break;
+
+                case KeyCode.H:
+                    ProcessGoToBlueWaypoint();
+                    break;
+
+                case KeyCode.J:
+                    ProcessGoToYellowWaypoint();
+                    break;
+
+                case KeyCode.K:
+                    ProcessStop();
+                    break;
+
+                case KeyCode.L:
+                    ProcessContinue();
+                    break;
+            }
+        }
+
+        private void ProcessGoToRedWaypoint()
+        {
+            ProcessGoToTargetWaypoint("RedWaypoint");
+        }
+
+        private void ProcessGoToGreenWaypoint()
+        {
+            ProcessGoToTargetWaypoint("GreenWaypoint");
+        }
+
+        private void ProcessGoToBlueWaypoint()
+        {
+            ProcessGoToTargetWaypoint("BlueWaypoint");
+        }
+
+        private void ProcessGoToYellowWaypoint()
+        {
+            ProcessGoToTargetWaypoint("YellowWaypoint");
+        }
+
+        private void ProcessGoToTargetWaypoint(string nameOfWaypoint)
+        {
+            var targetWayPoint = Context.GetLogicalObject("{: name='" + nameOfWaypoint + "'&class='waypoint' :}");
+
+            if (targetWayPoint == null)
+            {
+                return;
+            }
+
+            var moveCommand = new HumanoidHStateCommand();
+            moveCommand.State = HumanoidHState.Walk;
+            moveCommand.TargetPosition = targetWayPoint.GetValue<System.Numerics.Vector3?>("global position");
+
+            BlackBoard.LastCommand = moveCommand;
+
+#if UNITY_EDITOR
+            Log($"moveCommand = {moveCommand}");
+#endif
+
+            /*var childProcess = */ExecuteBody(moveCommand);
+            //Wait(childProcess);
+        }
+
+        private void ProcessStop()
+        {
+            //Log("Begin");
+
+            var moveCommand = new HumanoidHStateCommand();
+            moveCommand.State = HumanoidHState.Stop;
+
+            ExecuteBody(moveCommand);
+        }
+
+        private void ProcessContinue()
+        {
+            var moveCommand = BlackBoard.LastCommand;
+
+            if (moveCommand == null)
+            {
+                return;
+            }
+
+            ExecuteBody(moveCommand);
         }
     }
 }

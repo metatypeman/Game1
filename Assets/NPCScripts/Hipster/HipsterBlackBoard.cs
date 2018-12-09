@@ -9,6 +9,8 @@ namespace Assets.NPCScripts.Hipster
 {
     public class HipsterBlackBoard : BaseBlackBoard, IObjectToString
     {
+        public HumanoidBodyCommand LastCommand { get; set; }
+
         public override string ToString()
         {
             return ToString(0u);

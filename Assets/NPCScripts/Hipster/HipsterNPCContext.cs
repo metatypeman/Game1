@@ -15,11 +15,12 @@ namespace Assets.NPCScripts.Hipster
         {
             AddTypeOfProcess<HipsterBootNPCProcess>();
             AddTypeOfProcess<HipsterKeyListenerNPCProcess>();
+            AddTypeOfProcess<HipsterGoToPointNPCProcess>();
         }
 
-        public override void Bootstrap()
-        {
-            Bootstrap<HipsterBootNPCProcess>();
-        }
+        //public override void Bootstrap()
+        //{
+            //Bootstrap<HipsterBootNPCProcess>();
+        //}
     }
 }
