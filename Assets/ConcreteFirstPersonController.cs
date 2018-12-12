@@ -67,11 +67,17 @@ public class ConcreteFirstPersonController : MonoBehaviour
 
         m_DictationRecognizer = new DictationRecognizer();
 
+        m_DictationRecognizer.InitialSilenceTimeoutSeconds = 120;
+        m_DictationRecognizer.AutoSilenceTimeoutSeconds = 120;
+
+        Debug.LogFormat("Dictation m_DictationRecognizer.InitialSilenceTimeoutSeconds: {0}", m_DictationRecognizer.InitialSilenceTimeoutSeconds);
+        Debug.LogFormat("Dictation m_DictationRecognizer.AutoSilenceTimeoutSeconds: {0}", m_DictationRecognizer.AutoSilenceTimeoutSeconds);
+
         m_DictationRecognizer.DictationResult += (text, confidence) =>
         {
             Debug.LogFormat("Dictation result: {0}", text);
 
-            DispatchText(text);
+            //DispatchText(text);
         };
 
         m_DictationRecognizer.DictationHypothesis += (text) =>
