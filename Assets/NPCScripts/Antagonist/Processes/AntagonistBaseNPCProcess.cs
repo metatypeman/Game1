@@ -15,7 +15,7 @@ namespace Assets.NPCScripts.Antagonist.Processes
 #if UNITY_EDITOR
             Log($"Begin nameOfThisWaypoint = {nameOfThisWaypoint} withWaiting = {withWaiting}");
 #endif
-            var targetWayPoint = Context.GetLogicalObject($"{{: name='{nameOfThisWaypoint}'&class='waypoint' :}}");
+            var targetWayPoint = Context.GetLogicalObject($"{{: name='{nameOfThisWaypoint}'&class='place' :}}");
             //var targetWayPoint = Context.GetLogicalObject($"{{: name='{nameOfThisWaypoint}':}}");
 
 #if UNITY_EDITOR

@@ -19,7 +19,8 @@ namespace Assets.Scripts
         {
             base.OnInitFacts();
 
-            this["class"] = "waypoint";
+            //this["class"] = "waypoint";
+            this["class"] = "place";
         }
     }
 }

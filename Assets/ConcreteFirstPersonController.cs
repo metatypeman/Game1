@@ -5,6 +5,7 @@ using MyNPCLib.ConvertingCGToInternal;
 using MyNPCLib.ConvertingInternalCGToPersistLogicalData;
 using MyNPCLib.LogicalSoundModeling;
 using MyNPCLib.NLToCGParsing;
+using MyNPCLib.NLToCGParsing_v2;
 using MyNPCLib.PersistLogicalData;
 using MyNPCLib.SimpleWordsDict;
 using System;
@@ -24,7 +25,7 @@ public class ConcreteFirstPersonController : MonoBehaviour
     private LogicalSoundBus mLogicalSoundBus;
     private IEntityDictionary mEntityDictionary;
     private WordsDict mWordsDict;
-    private CGParser mCGParser;
+    private CGParser_v2 mCGParser;
     private ContextOfCGStorage mContextOfCGStorage;
 
     public Texture2D CrosshairImage;
@@ -41,13 +42,15 @@ public class ConcreteFirstPersonController : MonoBehaviour
         mLogicalSoundBus = commonLevelHost.LogicalSoundBus;
 
         mContextOfCGStorage = new ContextOfCGStorage(mEntityDictionary);
+        //c:\Users\Sergey\Documents\GitHub\Game1\Assets\working.dict
+        var pathOfWordsDict = @"c:\Users\Sergey\Documents\GitHub\Game1\Assets\Resources\";
 
-        mWordsDict = new WordsDict();
-        var cgParserOptions = new CGParserOptions();
+        mWordsDict = new WordsDict(pathOfWordsDict);
+        var cgParserOptions = new CGParserOptions_v2();
         cgParserOptions.WordsDict = mWordsDict;
         cgParserOptions.BasePath = @"c:\Users\Sergey\Documents\GitHub\Game1\Assets\";
 
-        mCGParser = new CGParser(cgParserOptions);
+        mCGParser = new CGParser_v2(cgParserOptions);
 
         mSpellHelperDialog = SpellHelperDialog.Instance;
         mSpellHelperDialog.OnSpellMessage += OnSpellMessage;
@@ -69,6 +72,8 @@ public class ConcreteFirstPersonController : MonoBehaviour
 
         m_DictationRecognizer.InitialSilenceTimeoutSeconds = 120;
         m_DictationRecognizer.AutoSilenceTimeoutSeconds = 120;
+
+        Debug.LogFormat($"AppDomain.CurrentDomain.BaseDirectory = {AppDomain.CurrentDomain.BaseDirectory}");
 
         Debug.LogFormat("Dictation m_DictationRecognizer.InitialSilenceTimeoutSeconds: {0}", m_DictationRecognizer.InitialSilenceTimeoutSeconds);
         Debug.LogFormat("Dictation m_DictationRecognizer.AutoSilenceTimeoutSeconds: {0}", m_DictationRecognizer.AutoSilenceTimeoutSeconds);
@@ -163,7 +168,8 @@ public class ConcreteFirstPersonController : MonoBehaviour
         LogInstance.Log("Begin");
 #endif
 
-        var paragraph = "Go to Green Waypoint";
+        //var paragraph = "Go to green place";
+        var paragraph = "Tom";
 
         DispatchText(paragraph);
     }

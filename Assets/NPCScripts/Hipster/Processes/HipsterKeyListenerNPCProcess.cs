@@ -76,7 +76,7 @@ namespace Assets.NPCScripts.Hipster.Processes
 
         private void ProcessGoToTargetWaypoint(string nameOfWaypoint)
         {
-            var targetWayPoint = Context.GetLogicalObject("{: name='" + nameOfWaypoint + "'&class='waypoint' :}");
+            var targetWayPoint = Context.GetLogicalObject("{: name='" + nameOfWaypoint + "'&class='place' :}");
 
             if (targetWayPoint == null)
             {
