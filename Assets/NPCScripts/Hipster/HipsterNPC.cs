@@ -70,7 +70,7 @@ namespace Assets.NPCScripts.Hipster
             mInputKeyHelper.AddPressListener(KeyCode.H, OnPressAction);
             mInputKeyHelper.AddPressListener(KeyCode.J, OnPressAction);
             mInputKeyHelper.AddPressListener(KeyCode.K, OnPressAction);
-            mInputKeyHelper.AddPressListener(KeyCode.L, OnPressAction);
+            mInputKeyHelper.AddPressListener(KeyCode.L, OnPressAction);      
         }
 
         private void OnPressAction(KeyCode key)

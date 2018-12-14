@@ -10,6 +10,7 @@ namespace Assets.NPCScripts.Hipster
     public class HipsterBlackBoard : BaseBlackBoard, IObjectToString
     {
         public HumanoidBodyCommand LastCommand { get; set; }
+        public bool IsReadyForsoundCommandExecuting { get; set; }
 
         public override string ToString()
         {

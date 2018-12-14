@@ -63,6 +63,8 @@ public class ConcreteFirstPersonController : MonoBehaviour
         //mInputKeyHelper.AddUpListener(KeyCode.F, OnFUpAction);
         mInputKeyHelper.AddPressListener(KeyCode.C, OnCPressAction);
         mInputKeyHelper.AddPressListener(KeyCode.X, OnXPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.V, OnVPressAction);
+        mInputKeyHelper.AddPressListener(KeyCode.B, OnBPressAction);
 
         mInputMouseKeyHelper = new InputMouseKeyHelper(mUserClientCommonHost);
         mInputMouseKeyHelper.AddPressListener(0, OnFPressAction);
@@ -168,8 +170,8 @@ public class ConcreteFirstPersonController : MonoBehaviour
         LogInstance.Log("Begin");
 #endif
 
-        //var paragraph = "Go to green place";
-        var paragraph = "Tom";
+        var paragraph = "Go to green place";
+        //var paragraph = "Tom";
 
         DispatchText(paragraph);
     }
@@ -190,6 +192,28 @@ public class ConcreteFirstPersonController : MonoBehaviour
 #endif
 
         mGateOfMilitaryBase.Close();
+    }
+
+    private void OnVPressAction()
+    {
+#if DEBUG
+        LogInstance.Log("Begin");
+#endif
+
+        var paragraph = "Tom";
+
+        DispatchText(paragraph);
+    }
+
+    private void OnBPressAction()
+    {
+#if DEBUG
+        LogInstance.Log("Begin");
+#endif
+
+        var paragraph = "Ethan";
+
+        DispatchText(paragraph);
     }
 
     private void DispatchText(string text)

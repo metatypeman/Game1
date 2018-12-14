@@ -92,6 +92,8 @@
     <Compile Include="Assets\NPCScripts\Hipster\Processes\HipsterBootNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Hipster\Processes\HipsterGoToPointNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Hipster\Processes\HipsterKeyListenerNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Hipster\Processes\HipsterSoundCommandNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Hipster\Processes\HipsterSoundEntityConditionNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\PixKeeper\PixKeeperBlackBoard.cs" />
     <Compile Include="Assets\NPCScripts\PixKeeper\PixKeeperNPC.cs" />
     <Compile Include="Assets\NPCScripts\PixKeeper\PixKeeperNPCContext.cs" />
