@@ -11,6 +11,7 @@ namespace Assets.NPCScripts.Hipster
     {
         public HumanoidBodyCommand LastCommand { get; set; }
         public bool IsReadyForsoundCommandExecuting { get; set; }
+        public string Name { get; set; } = "Jonh";
 
         public override string ToString()
         {
@@ -28,6 +29,8 @@ namespace Assets.NPCScripts.Hipster
             var nextN = n + 4;
             var nextSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(IsReadyForsoundCommandExecuting)} = {IsReadyForsoundCommandExecuting}");
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             return sb.ToString();
         }
     }

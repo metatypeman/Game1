@@ -26,32 +26,32 @@ namespace Assets.NPCScripts.Hipster.Processes
             Log($"key = {key}");
 #endif
 
-            switch (key)
-            {
-                case KeyCode.F:
-                    ProcessGoToRedWaypoint();
-                    break;
+            //switch (key)
+            //{
+            //    case KeyCode.F:
+            //        ProcessGoToRedWaypoint();
+            //        break;
 
-                case KeyCode.G:
-                    ProcessGoToGreenWaypoint();
-                    break;
+            //    case KeyCode.G:
+            //        ProcessGoToGreenWaypoint();
+            //        break;
 
-                case KeyCode.H:
-                    ProcessGoToBlueWaypoint();
-                    break;
+            //    case KeyCode.H:
+            //        ProcessGoToBlueWaypoint();
+            //        break;
 
-                case KeyCode.J:
-                    ProcessGoToYellowWaypoint();
-                    break;
+            //    case KeyCode.J:
+            //        ProcessGoToYellowWaypoint();
+            //        break;
 
-                case KeyCode.K:
-                    ProcessStop();
-                    break;
+            //    case KeyCode.K:
+            //        ProcessStop();
+            //        break;
 
-                case KeyCode.L:
-                    ProcessContinue();
-                    break;
-            }
+            //    case KeyCode.L:
+            //        ProcessContinue();
+            //        break;
+            //}
         }
 
         private void ProcessGoToRedWaypoint()

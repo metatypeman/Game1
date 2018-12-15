@@ -63,8 +63,16 @@ public class ConcreteFirstPersonController : MonoBehaviour
         //mInputKeyHelper.AddUpListener(KeyCode.F, OnFUpAction);
         mInputKeyHelper.AddPressListener(KeyCode.C, OnCPressAction);
         mInputKeyHelper.AddPressListener(KeyCode.X, OnXPressAction);
-        mInputKeyHelper.AddPressListener(KeyCode.V, OnVPressAction);
-        mInputKeyHelper.AddPressListener(KeyCode.B, OnBPressAction);
+
+        mInputKeyHelper.AddPressListener(KeyCode.V, OnVPressAction);//Jonh
+        mInputKeyHelper.AddPressListener(KeyCode.B, OnBPressAction);//Jake
+
+        mInputKeyHelper.AddPressListener(KeyCode.F, ProcessGoToRedWaypoint);
+        mInputKeyHelper.AddPressListener(KeyCode.G, ProcessGoToGreenWaypoint);
+        mInputKeyHelper.AddPressListener(KeyCode.H, ProcessGoToBlueWaypoint);
+        mInputKeyHelper.AddPressListener(KeyCode.J, ProcessGoToYellowWaypoint);
+        mInputKeyHelper.AddPressListener(KeyCode.K, ProcessStop);
+        mInputKeyHelper.AddPressListener(KeyCode.L, ProcessContinue);
 
         mInputMouseKeyHelper = new InputMouseKeyHelper(mUserClientCommonHost);
         mInputMouseKeyHelper.AddPressListener(0, OnFPressAction);
@@ -171,7 +179,6 @@ public class ConcreteFirstPersonController : MonoBehaviour
 #endif
 
         var paragraph = "Go to green place";
-        //var paragraph = "Tom";
 
         DispatchText(paragraph);
     }
@@ -194,24 +201,72 @@ public class ConcreteFirstPersonController : MonoBehaviour
         mGateOfMilitaryBase.Close();
     }
 
+    /// <summary>
+    /// Jonh
+    /// </summary>
     private void OnVPressAction()
     {
 #if DEBUG
         LogInstance.Log("Begin");
 #endif
 
-        var paragraph = "Tom";
+        var paragraph = "Jonh";
 
         DispatchText(paragraph);
     }
 
+    /// <summary>
+    /// Jake
+    /// </summary>
     private void OnBPressAction()
     {
 #if DEBUG
         LogInstance.Log("Begin");
 #endif
 
-        var paragraph = "Ethan";
+        var paragraph = "Jake";
+
+        DispatchText(paragraph);
+    }
+
+    private void ProcessGoToRedWaypoint()
+    {
+        var paragraph = "Go to red place";
+
+        DispatchText(paragraph);
+    }
+
+    private void ProcessGoToGreenWaypoint()
+    {
+        var paragraph = "Go to green place";
+
+        DispatchText(paragraph);
+    }
+
+    private void ProcessGoToBlueWaypoint()
+    {
+        var paragraph = "Go to blue place";
+
+        DispatchText(paragraph);
+    }
+
+    private void ProcessGoToYellowWaypoint()
+    {
+        var paragraph = "Go to yellow place";
+
+        DispatchText(paragraph);
+    }
+
+    private void ProcessStop()
+    {
+        var paragraph = "Stop";
+
+        DispatchText(paragraph);
+    }
+
+    private void ProcessContinue()
+    {
+        var paragraph = "Continue";
 
         DispatchText(paragraph);
     }

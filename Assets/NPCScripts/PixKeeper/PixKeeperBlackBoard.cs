@@ -9,6 +9,10 @@ namespace Assets.NPCScripts.PixKeeper
 {
     public class PixKeeperBlackBoard : BaseBlackBoard, IObjectToString
     {
+        public HumanoidBodyCommand LastCommand { get; set; }
+        public bool IsReadyForsoundCommandExecuting { get; set; }
+        public string Name { get; set; } = "Jake";
+
         public override string ToString()
         {
             return ToString(0u);
@@ -25,6 +29,8 @@ namespace Assets.NPCScripts.PixKeeper
             var nextN = n + 4;
             var nextSpaces = StringHelper.Spaces(nextN);
             var sb = new StringBuilder();
+            sb.AppendLine($"{spaces}{nameof(IsReadyForsoundCommandExecuting)} = {IsReadyForsoundCommandExecuting}");
+            sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             return sb.ToString();
         }
     }

@@ -20,33 +20,33 @@ namespace Assets.NPCScripts.Hipster.Processes
             Log($"logicalSoundInfo = {logicalSoundInfo}");
 #endif
 
-            var myName = string.Empty;
+//            var myName = string.Empty;
 
-            {
-                var queryStr = "{: name(?X,?Y) :}";
+//            {
+//                var queryStr = "{: name(?X,?Y) :}";
 
-                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, Context.EntityDictionary);
-                var query = queryStorage.MainRuleInstance;
+//                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, Context.EntityDictionary);
+//                var query = queryStorage.MainRuleInstance;
 
-                var querySearchResultCGStorage = Context.MainCGStorage.Search(queryStorage);
+//                var querySearchResultCGStorage = Context.MainCGStorage.Search(queryStorage);
 
-                var keyOfActionQuestionVar = Context.EntityDictionary.GetKey("?Y");
+//                var keyOfActionQuestionVar = Context.EntityDictionary.GetKey("?Y");
 
-                var actionExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
+//                var actionExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
 
-#if DEBUG
-                LogInstance.Log($"actionExpression = {actionExpression}");
-#endif
+//#if DEBUG
+//                LogInstance.Log($"actionExpression = {actionExpression}");
+//#endif
 
-                if (actionExpression != null)
-                {
-                    myName = actionExpression?.FoundExpression?.AsConcept.Name;
-                }
-            }
+//                if (actionExpression != null)
+//                {
+//                    myName = actionExpression?.FoundExpression?.AsConcept.Name;
+//                }
+//            }
 
-#if DEBUG
-            LogInstance.Log($"myName = {myName}");
-#endif
+//#if DEBUG
+//            LogInstance.Log($"myName = {myName}");
+//#endif
 
             var localStorage = new LocalCGStorage(Context.EntityDictionary);
 
@@ -80,9 +80,7 @@ namespace Assets.NPCScripts.Hipster.Processes
             LogInstance.Log($"targetName = {targetName}");
 #endif
 
-            myName = "Tom";
-
-            if (myName == targetName)
+            if (BlackBoard.Name == targetName)
             {
                 BlackBoard.IsReadyForsoundCommandExecuting = true;
             }
