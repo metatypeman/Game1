@@ -11,7 +11,7 @@ namespace Assets.NPCScripts.Hipster
     {
         public HumanoidBodyCommand LastCommand { get; set; }
         public bool IsReadyForsoundCommandExecuting { get; set; }
-        public string Name { get; set; } = "Jonh";
+        public string Name { get; set; } = "John";
 
         public override string ToString()
         {

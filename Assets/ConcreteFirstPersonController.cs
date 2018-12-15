@@ -12,6 +12,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Windows.Speech;
 
 public class ConcreteFirstPersonController : MonoBehaviour
@@ -33,6 +34,8 @@ public class ConcreteFirstPersonController : MonoBehaviour
     private IHandThing mRifleInstance;
 
     private GateOfMilitaryBase mGateOfMilitaryBase;
+
+    public Text DebugDictationText;
 
     // Use this for initialization
     void Start ()
@@ -80,8 +83,8 @@ public class ConcreteFirstPersonController : MonoBehaviour
 
         m_DictationRecognizer = new DictationRecognizer();
 
-        m_DictationRecognizer.InitialSilenceTimeoutSeconds = 120;
-        m_DictationRecognizer.AutoSilenceTimeoutSeconds = 120;
+        m_DictationRecognizer.InitialSilenceTimeoutSeconds = 5;
+        m_DictationRecognizer.AutoSilenceTimeoutSeconds = 100000;
 
         Debug.LogFormat($"AppDomain.CurrentDomain.BaseDirectory = {AppDomain.CurrentDomain.BaseDirectory}");
 
@@ -90,9 +93,9 @@ public class ConcreteFirstPersonController : MonoBehaviour
 
         m_DictationRecognizer.DictationResult += (text, confidence) =>
         {
-            Debug.LogFormat("Dictation result: {0}", text);
+            //Debug.LogFormat("Dictation result: {0}", text);
 
-            //DispatchText(text);
+            DispatchText(text);
         };
 
         m_DictationRecognizer.DictationHypothesis += (text) =>
@@ -102,9 +105,20 @@ public class ConcreteFirstPersonController : MonoBehaviour
 
         m_DictationRecognizer.DictationComplete += (completionCause) =>
         {
-            if (completionCause != DictationCompletionCause.Complete)
+            if (completionCause == DictationCompletionCause.Complete)
             {
-                Debug.LogErrorFormat("Dictation completed unsuccessfully: {0}.", completionCause);
+                Debug.LogFormat("Dictation completed successfully: {0}.", completionCause);
+            }
+            else
+            {
+                if(completionCause == DictationCompletionCause.TimeoutExceeded)
+                {
+                    m_DictationRecognizer.Start();
+                }
+                else
+                {
+                    Debug.LogErrorFormat("Dictation completed unsuccessfully: {0}.", completionCause);
+                }         
             }
         };
 
@@ -113,7 +127,7 @@ public class ConcreteFirstPersonController : MonoBehaviour
             Debug.LogErrorFormat("Dictation error: {0}; HResult = {1}.", error, hresult);
         };
 
-        //m_DictationRecognizer.Start();
+        m_DictationRecognizer.Start();
 
         mRifleInstance = Rifle.GetComponent<IHandThing>();
 
@@ -178,7 +192,7 @@ public class ConcreteFirstPersonController : MonoBehaviour
         LogInstance.Log("Begin");
 #endif
 
-        var paragraph = "Go to green place";
+        var paragraph = "go to green place";
 
         DispatchText(paragraph);
     }
@@ -210,7 +224,7 @@ public class ConcreteFirstPersonController : MonoBehaviour
         LogInstance.Log("Begin");
 #endif
 
-        var paragraph = "Jonh";
+        var paragraph = "john";
 
         DispatchText(paragraph);
     }
@@ -224,49 +238,49 @@ public class ConcreteFirstPersonController : MonoBehaviour
         LogInstance.Log("Begin");
 #endif
 
-        var paragraph = "Jake";
+        var paragraph = "jake";
 
         DispatchText(paragraph);
     }
 
     private void ProcessGoToRedWaypoint()
     {
-        var paragraph = "Go to red place";
+        var paragraph = "go to red place";
 
         DispatchText(paragraph);
     }
 
     private void ProcessGoToGreenWaypoint()
     {
-        var paragraph = "Go to green place";
+        var paragraph = "go to green place";
 
         DispatchText(paragraph);
     }
 
     private void ProcessGoToBlueWaypoint()
     {
-        var paragraph = "Go to blue place";
+        var paragraph = "go to blue place";
 
         DispatchText(paragraph);
     }
 
     private void ProcessGoToYellowWaypoint()
     {
-        var paragraph = "Go to yellow place";
+        var paragraph = "go to yellow place";
 
         DispatchText(paragraph);
     }
 
     private void ProcessStop()
     {
-        var paragraph = "Stop";
+        var paragraph = "stop";
 
         DispatchText(paragraph);
     }
 
     private void ProcessContinue()
     {
-        var paragraph = "Continue";
+        var paragraph = "continue";
 
         DispatchText(paragraph);
     }
@@ -279,14 +293,48 @@ public class ConcreteFirstPersonController : MonoBehaviour
             LogInstance.Log($"pre text = {text}");
 #endif
 
+            if(string.IsNullOrWhiteSpace(text))
+            {
+                return;
+            }
+
             if (text.Contains("bay point"))
             {
                 text = text.Replace("bay point", "waypoint");
             }
 
+            if(text.Contains("continuum"))
+            {
+                text = text.Replace("continuum", "continue");
+            }
+
+            if (text.Contains("thank you knew him"))
+            {
+                text = text.Replace("thank you knew him", "continue");
+            }
+
+            if (text.Contains("thanking you"))
+            {
+                text = text.Replace("thanking you", "continue");
+            }
+
+            if (text.Contains("thank UM"))
+            {
+                text = text.Replace("thank UM", "continue");
+            }
+
+            var firstChar = text[0];
+
+            if (char.IsLetter(firstChar))
+            {
+                text = $"{char.ToUpper(firstChar)}{text.Substring(1)}";
+            }
+
 #if DEBUG
             LogInstance.Log($"after text = {text}");
 #endif
+
+            DebugDictationText.text = text;
 
             var result = mCGParser.Run(text);
 #if DEBUG
