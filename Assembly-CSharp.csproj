@@ -184,6 +184,7 @@
     <Compile Include="Assets\SpellHelperDialog.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
     <Compile Include="Assets\UserClientCommonHost.cs" />
+    <None Include="Assets\packages\System.CodeDom.4.5.0\ref\net461\System.CodeDom.xml" />
     <None Include="Assets\Fortress\Shader\Diffuse.shader" />
     <None Include="Assets\race-track-lake\readmore.txt" />
     <None Include="Assets\Fonts\Jupiter\LICENSE.txt" />
@@ -193,10 +194,13 @@
     <None Include="Assets\Military_Rifle_01_Free_v2\Docs\Military_Rifle_Free_Unity_Info.txt" />
     <None Include="Assets\BodyGuards\ReadMe.txt.txt" />
     <None Include="Assets\packages\System.Runtime.4.3.0\dotnet_library_license.txt" />
+    <None Include="Assets\packages\System.CodeDom.4.5.0\ref\netstandard2.0\System.CodeDom.xml" />
     <None Include="Assets\Mega Fantasy Props Pack\README.txt" />
+    <None Include="Assets\packages\System.CodeDom.4.5.0\useSharedDesignerContext.txt" />
     <None Include="Assets\Materials\UI-Default-No-Alpha.shader" />
     <None Include="Assets\packages\System.Data.Common.4.3.0\ThirdPartyNotices.txt" />
     <None Include="Assets\packages\System.Runtime.4.3.0\ThirdPartyNotices.txt" />
+    <None Include="Assets\packages\System.CodeDom.4.5.0\version.txt" />
     <None Include="Assets\Urban_Props\readme.txt" />
     <None Include="Assets\Fortress\Shader\TwoSided.shader" />
     <None Include="Assets\packages\System.Data.Common.4.3.0\dotnet_library_license.txt" />
@@ -443,6 +447,18 @@
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/Sergey/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="System.CodeDom">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/System.CodeDom.4.5.0/lib/net461/System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.CodeDom">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/System.CodeDom.4.5.0/lib/netstandard2.0/System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.CodeDom">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/System.CodeDom.4.5.0/ref/netstandard2.0/System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.CodeDom">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/System.CodeDom.4.5.0/ref/net461/System.CodeDom.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

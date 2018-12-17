@@ -369,6 +369,18 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="System.CodeDom">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/System.CodeDom.4.5.0/lib/net461/System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.CodeDom">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/System.CodeDom.4.5.0/lib/netstandard2.0/System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.CodeDom">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/System.CodeDom.4.5.0/ref/netstandard2.0/System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.CodeDom">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/System.CodeDom.4.5.0/ref/net461/System.CodeDom.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
     </Reference>

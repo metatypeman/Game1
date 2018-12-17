@@ -11,6 +11,7 @@ using MyNPCLib.SimpleWordsDict;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Windows.Speech;
@@ -293,7 +294,7 @@ public class ConcreteFirstPersonController : MonoBehaviour
             LogInstance.Log($"pre text = {text}");
 #endif
 
-            if(string.IsNullOrWhiteSpace(text))
+            if (string.IsNullOrWhiteSpace(text))
             {
                 return;
             }
@@ -303,7 +304,7 @@ public class ConcreteFirstPersonController : MonoBehaviour
                 text = text.Replace("bay point", "waypoint");
             }
 
-            if(text.Contains("continuum"))
+            if (text.Contains("continuum"))
             {
                 text = text.Replace("continuum", "continue");
             }
@@ -336,31 +337,33 @@ public class ConcreteFirstPersonController : MonoBehaviour
 
             DebugDictationText.text = text;
 
-            var result = mCGParser.Run(text);
+            Task.Run(() => {
+                var result = mCGParser.Run(text);
 #if DEBUG
-            LogInstance.Log($"result = {result}");
+                LogInstance.Log($"result = {result}");
 #endif
 
-            var ruleInstancesList = new List<RuleInstance>();
+                var ruleInstancesList = new List<RuleInstance>();
 
-            var items = result.Items;
+                var items = result.Items;
 
-            foreach (var graph in items)
-            {
-                var internalCG = ConvertorCGToInternal.Convert(graph, mEntityDictionary);
+                foreach (var graph in items)
+                {
+                    var internalCG = ConvertorCGToInternal.Convert(graph, mEntityDictionary);
 
-                ruleInstancesList.AddRange(ConvertorInternalCGToPersistLogicalData.ConvertConceptualGraph(internalCG, mEntityDictionary));
-            }
+                    ruleInstancesList.AddRange(ConvertorInternalCGToPersistLogicalData.ConvertConceptualGraph(internalCG, mEntityDictionary));
+                }
 
 #if DEBUG
-            LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
+                LogInstance.Log($"ruleInstancesList.Count = {ruleInstancesList.Count}");
 #endif
 
-            //var tstFact = CreateSimpleFact(mEntityDictionary);
+                //var tstFact = CreateSimpleFact(mEntityDictionary);
 
-            var soundPackage = new InputLogicalSoundPackage(new System.Numerics.Vector3(1, 0, 0), 60, new List<string>() { "human_speech" }, new PassiveListGCStorage(mEntityDictionary, ruleInstancesList));
+                var soundPackage = new InputLogicalSoundPackage(new System.Numerics.Vector3(1, 0, 0), 60, new List<string>() { "human_speech" }, new PassiveListGCStorage(mEntityDictionary, ruleInstancesList));
 
-            mLogicalSoundBus.PushSoundPackage(soundPackage);
+                mLogicalSoundBus.PushSoundPackage(soundPackage);
+            });
         }
         catch (Exception e)
         {
