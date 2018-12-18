@@ -351,6 +351,12 @@
     <Reference Include="System.Runtime">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/packages/System.Runtime.4.3.0/lib/net462/System.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="System.CodeDom">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/Plugins/x86_64/System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration.ConfigurationManager">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/Plugins/x86_64/System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.Advertisements">
       <HintPath>C:/Users/Sergey/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
     </Reference>
@@ -368,12 +374,6 @@
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-    </Reference>
-    <Reference Include="System.CodeDom">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/Plugins/x86_64/System.CodeDom.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Configuration.ConfigurationManager">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/Plugins/x86_64/System.Configuration.ConfigurationManager.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
