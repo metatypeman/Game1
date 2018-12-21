@@ -184,6 +184,7 @@
     <Compile Include="Assets\SpellHelperDialog.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
     <Compile Include="Assets\UserClientCommonHost.cs" />
+    <Compile Include="Assets\YardPlane.cs" />
     <None Include="Assets\Fortress\Shader\Diffuse.shader" />
     <None Include="Assets\race-track-lake\readmore.txt" />
     <None Include="Assets\Fonts\Jupiter\LICENSE.txt" />
