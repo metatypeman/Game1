@@ -161,6 +161,7 @@
     <Compile Include="Assets\Scripts\LeftHandWPLocator.cs" />
     <Compile Include="Assets\Scripts\LevelCommonHost.cs" />
     <Compile Include="Assets\Scripts\LevelCommonHostFactory.cs" />
+    <Compile Include="Assets\Scripts\LinkOfWayPoints.cs" />
     <Compile Include="Assets\Scripts\LogicalObjectsBus.cs" />
     <Compile Include="Assets\Scripts\LogProxyForDebug.cs" />
     <Compile Include="Assets\Scripts\PanelManager.cs" />

@@ -16,13 +16,24 @@ namespace Assets.Scripts
         {
         }
 
+        public List<GameObject> PlanesList = new List<GameObject>();
+
         public float Radius = 3;
+
+        private void Awake()
+        {
+            Debug.Log($"PlanesList.Count = {PlanesList.Count}");
+            foreach(var plane in PlanesList)
+            {
+                Debug.Log($"plane.name = {plane.name}");
+            }
+        }
 
         void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
 
-            Gizmos.DrawLine(transform.position, transform.position + transform.up * Radius);
+            Gizmos.DrawLine(transform.position, transform.position + transform.up * 3);
 
             Gizmos.DrawLine(transform.position, transform.position + transform.forward * Radius);
 

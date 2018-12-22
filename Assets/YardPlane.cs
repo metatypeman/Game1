@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class YardPlane : MonoBehaviour {
@@ -17,7 +16,7 @@ public class YardPlane : MonoBehaviour {
 
         var lX = leftPoint.x;
 
-        Gizmos.DrawLine(transform.position, rightPoint);
+        //Gizmos.DrawLine(transform.position, rightPoint);
 
         var scaleZ = transform.localScale.z / 2;
 
@@ -29,7 +28,7 @@ public class YardPlane : MonoBehaviour {
 
         var bZ = backPoint.z;
 
-        Gizmos.DrawLine(transform.position, forvardPoint);
+        //Gizmos.DrawLine(transform.position, forvardPoint);
 
         var scaleY = transform.localScale.y / 2;
 
@@ -41,7 +40,7 @@ public class YardPlane : MonoBehaviour {
 
         var dY = downPoint.y;
 
-        Gizmos.DrawLine(transform.position, upPoint);
+        //Gizmos.DrawLine(transform.position, upPoint);
 
         var ufrPoint = new Vector3(rX, uY, fZ);
         var ubrPoint = new Vector3(rX, uY, bZ);
@@ -52,6 +51,21 @@ public class YardPlane : MonoBehaviour {
         Gizmos.DrawLine(ufrPoint, uflPoint);
         Gizmos.DrawLine(ublPoint, uflPoint);
         Gizmos.DrawLine(ublPoint, ubrPoint);
+
+        var dfrPoint = new Vector3(rX, dY, fZ);
+        var dbrPoint = new Vector3(rX, dY, bZ);
+        var dflPoint = new Vector3(lX, dY, fZ);
+        var dblPoint = new Vector3(lX, dY, bZ);
+
+        Gizmos.DrawLine(dfrPoint, dbrPoint);
+        Gizmos.DrawLine(dfrPoint, dflPoint);
+        Gizmos.DrawLine(dblPoint, dflPoint);
+        Gizmos.DrawLine(dblPoint, dbrPoint);
+
+        Gizmos.DrawLine(dfrPoint, ufrPoint);
+        Gizmos.DrawLine(dbrPoint, ubrPoint);
+        Gizmos.DrawLine(dflPoint, uflPoint);
+        Gizmos.DrawLine(dblPoint, ublPoint);
     }
 
     // Use this for initialization
