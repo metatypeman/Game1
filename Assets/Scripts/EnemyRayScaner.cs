@@ -74,7 +74,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
         else
         {
             RayToScan(Head);
-        }   
+        }
 	}
 
     private void RayToScan(Transform targetTransform)

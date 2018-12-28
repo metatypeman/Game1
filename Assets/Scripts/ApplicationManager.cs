@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ApplicationManager : MonoBehaviour {
-	
-
+public class ApplicationManager : MonoBehaviour
+{
 	public void Quit () 
 	{
 		#if UNITY_EDITOR

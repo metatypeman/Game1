@@ -128,7 +128,7 @@ public class ConcreteFirstPersonController : MonoBehaviour
             Debug.LogErrorFormat("Dictation error: {0}; HResult = {1}.", error, hresult);
         };
 
-        m_DictationRecognizer.Start();
+        //m_DictationRecognizer.Start();
 
         mRifleInstance = Rifle.GetComponent<IHandThing>();
 

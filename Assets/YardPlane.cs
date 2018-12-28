@@ -70,7 +70,7 @@ public class YardPlane : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		
+		//this.
 	}
 	
 	// Update is called once per frame
