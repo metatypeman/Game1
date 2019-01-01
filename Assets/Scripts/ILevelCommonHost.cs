@@ -18,5 +18,6 @@ namespace Assets.Scripts
         BusOfCGStorages BusOfCGStorages { get; }
         HandThingsBus HandThingsBus { get; }
         LogicalSoundBus LogicalSoundBus { get; }
+        IHostNavigationRegistry HostNavigationRegistry { get; }
     }
 }

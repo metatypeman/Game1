@@ -75,6 +75,7 @@ namespace Assets.Scripts
 #endif
 
             var commonLevelHost = LevelCommonHostFactory.Get();
+            LevelCommonHost = commonLevelHost;
 
             mHostLogicalObjectStorage = new HostLogicalObjectStorage(commonLevelHost.EntityDictionary);
             commonLevelHost.BusOfCGStorages.AddStorage(mHostLogicalObjectStorage);
@@ -90,10 +91,13 @@ namespace Assets.Scripts
                 mHostLogicalObjectStorage["global position"] = position;
             }
 
+            OnStart();
             OnInitFacts();
 
             commonLevelHost.OldLogicalObjectsBus.RegisterObject(instanceId, mHostLogicalObjectStorage.EntityId);
         }
+
+        protected ILevelCommonHost LevelCommonHost { get; private set; }
 
         // Update is called once per frame
         void Update()
@@ -113,6 +117,10 @@ namespace Assets.Scripts
             {
                 mHostLogicalObjectStorage[propertyName] = value;
             }
+        }
+
+        protected virtual void OnStart()
+        {
         }
 
         protected virtual void OnInitFacts()

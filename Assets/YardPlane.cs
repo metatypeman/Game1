@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class YardPlane : MonoBehaviour {
+public class YardPlane : MonoBehaviour, IPlane
+{
     void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
@@ -70,11 +73,35 @@ public class YardPlane : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		//this.
-	}
-	
+        var commonLevelHost = LevelCommonHostFactory.Get();
+
+        CalculateZeroPoints();
+    }
+
+    private void CalculateZeroPoints()
+    {
+        mZeroFRPoint;
+        mZeroBRPoint;
+        mZeroFLPoint;
+        mZeroBLPoint;
+    }
+
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    private Vector3 mZeroFRPoint;
+    private Vector3 mZeroBRPoint;
+    private Vector3 mZeroFLPoint;
+    private Vector3 mZeroBLPoint;
+
+    public bool Contains(Vector3 position)
+    {
+#if DEBUG
+        Debug.Log($"position = {position}");
+#endif
+
+        throw new NotImplementedException();
+    }
 }

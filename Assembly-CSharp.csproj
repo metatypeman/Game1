@@ -136,6 +136,7 @@
     <Compile Include="Assets\Scripts\HumanoidBodyHost.cs" />
     <Compile Include="Assets\Scripts\IBaseDialog.cs" />
     <Compile Include="Assets\Scripts\IHandThing.cs" />
+    <Compile Include="Assets\Scripts\IHostNavigationRegistry.cs" />
     <Compile Include="Assets\Scripts\IInternalBodyHumanoidHost.cs" />
     <Compile Include="Assets\Scripts\IInternalHumanoid.cs" />
     <Compile Include="Assets\Scripts\IInternalHumanoidHostContext.cs" />
@@ -153,9 +154,11 @@
     <Compile Include="Assets\Scripts\InvocableInMainThreadObj.cs" />
     <Compile Include="Assets\Scripts\InvokingInMainThreadHelper.cs" />
     <Compile Include="Assets\Scripts\IObject.cs" />
+    <Compile Include="Assets\Scripts\IPlane.cs" />
     <Compile Include="Assets\Scripts\IRapidFireGun.cs" />
     <Compile Include="Assets\Scripts\IThing.cs" />
     <Compile Include="Assets\Scripts\IUserClientCommonHost.cs" />
+    <Compile Include="Assets\Scripts\IWayPoint.cs" />
     <Compile Include="Assets\Scripts\KeyToNPCCommandConverter.cs" />
     <Compile Include="Assets\Scripts\LeftHandLocator.cs" />
     <Compile Include="Assets\Scripts\LeftHandWPLocator.cs" />
@@ -164,6 +167,7 @@
     <Compile Include="Assets\Scripts\LinkOfWayPoints.cs" />
     <Compile Include="Assets\Scripts\LogicalObjectsBus.cs" />
     <Compile Include="Assets\Scripts\LogProxyForDebug.cs" />
+    <Compile Include="Assets\Scripts\NavigationRegistry.cs" />
     <Compile Include="Assets\Scripts\PanelManager.cs" />
     <Compile Include="Assets\Scripts\PassiveLogicalGameObjectOptions.cs" />
     <Compile Include="Assets\Scripts\PlainRect.cs" />

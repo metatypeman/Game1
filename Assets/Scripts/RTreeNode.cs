@@ -20,33 +20,38 @@ namespace Assets.Scripts
         public RTreeNode(Vector3 leftBottomPoint, Vector3 rightTopPoint, int level)
         {
 #if DEBUG
-            Debug.Log($"level = {level}");
-            Debug.Log($"leftBottomPoint = {leftBottomPoint}");
-            Debug.Log($"rightTopPoint = {rightTopPoint}");
+            //Debug.Log($"level = {level}");
+            //Debug.Log($"leftBottomPoint = {leftBottomPoint}");
+            //Debug.Log($"rightTopPoint = {rightTopPoint}");
 #endif
+
+            LeftBottomPoint = leftBottomPoint;
+            RightTopPoint = rightTopPoint;
 
             mPlainRect = new PlainRect(leftBottomPoint, rightTopPoint);
 
             //if(level > MAX_DEPH)
             //{
+            //    mIsFinal = true;
             //    return;
             //}
 
             mRect = new Vector3(rightTopPoint.x - leftBottomPoint.x, 0, rightTopPoint.z - leftBottomPoint.z);
 
 #if DEBUG
-            Debug.Log($"mRect = {mRect}");
+            //Debug.Log($"mRect = {mRect}");
 #endif
 
             if(mRect.x <= MIN_SIZE && mRect.z <= MIN_SIZE)
             {
+                mIsFinal = true;
                 return;
             }
 
             var n = level % 2;
 
 #if DEBUG
-            Debug.Log($"n = {n}");
+            //Debug.Log($"n = {n}");
 #endif
 
             if (n == 0)
@@ -61,13 +66,18 @@ namespace Assets.Scripts
 
         private PlainRect mPlainRect;
         private Vector3 mRect;
+        private bool mIsFinal;
+        public Vector3 LeftBottomPoint { get; private set; }
+        public Vector3 RightTopPoint { get; private set; }
+        public int Xn { get; set; }
+        public int Zn { get; set; }
 
         private void BornNewRectsByX(Vector3 leftBottomPoint, Vector3 rightTopPoint, int level)
         {
             var halfOfX = mRect.x / 2;
 
 #if DEBUG
-            Debug.Log($"halfOfX = {halfOfX}");
+            //Debug.Log($"halfOfX = {halfOfX}");
 #endif
 
             var leftBottomPoint1 = new Vector3(leftBottomPoint.x, 0, leftBottomPoint.z);
@@ -86,7 +96,7 @@ namespace Assets.Scripts
             var halfOfZ = mRect.z / 2;
 
 #if DEBUG
-            Debug.Log($"halfOfZ = {halfOfZ}");
+            //Debug.Log($"halfOfZ = {halfOfZ}");
 #endif
 
             var leftBottomPoint1 = new Vector3(leftBottomPoint.x, 0, leftBottomPoint.z);
@@ -108,6 +118,49 @@ namespace Assets.Scripts
             mPlainRect.DrawDebug();
             mChildRTreeNode1?.Draw();
             mChildRTreeNode2?.Draw();
+        }
+
+        public List<RTreeNode> GetFinalNodes()
+        {
+            if(mIsFinal)
+            {
+                return new List<RTreeNode>() { this };
+            }
+
+            var result = new List<RTreeNode>();
+            result.AddRange(mChildRTreeNode1.GetFinalNodes());
+            result.AddRange(mChildRTreeNode2.GetFinalNodes());
+            return result;
+        }
+         
+        public RTreeNode GetFinalNodeByPoint(Vector3 point)
+        {
+            if(mIsFinal)
+            {
+                return this;
+            }
+
+            if(mChildRTreeNode1.IsPointInNode(point))
+            {
+                return mChildRTreeNode1.GetFinalNodeByPoint(point);
+            }
+
+            return mChildRTreeNode2.GetFinalNodeByPoint(point);
+        }
+
+        public bool IsPointInNode(Vector3 point)
+        {
+            if(point.z >= LeftBottomPoint.z && point.z <= RightTopPoint.z && point.x >= LeftBottomPoint.x && point.x <= RightTopPoint.x)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void AddPlain(IPlane plane)
+        {
+            throw new NotImplementedException();
         }
     }
 }

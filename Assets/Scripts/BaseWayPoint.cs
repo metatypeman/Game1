@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class BaseWayPoint: BasePassiveLogicalGameObject
+    public class BaseWayPoint: BasePassiveLogicalGameObject, IWayPoint
     {
         protected BaseWayPoint()
             : base (new PassiveLogicalGameObjectOptions() {
@@ -19,15 +19,6 @@ namespace Assets.Scripts
         public List<GameObject> PlanesList = new List<GameObject>();
 
         public float Radius = 3;
-
-        private void Awake()
-        {
-            Debug.Log($"PlanesList.Count = {PlanesList.Count}");
-            foreach(var plane in PlanesList)
-            {
-                Debug.Log($"plane.name = {plane.name}");
-            }
-        }
 
         void OnDrawGizmos()
         {
@@ -61,6 +52,15 @@ namespace Assets.Scripts
 
             var localDirection = new Vector3(dx, dy, dz) * distance;
             return localDirection;
+        }
+
+        protected override void OnStart()
+        {
+            Debug.Log($"PlanesList.Count = {PlanesList.Count}");
+            foreach (var plane in PlanesList)
+            {
+                Debug.Log($"plane.name = {plane.name}");
+            }
         }
 
         protected override void OnInitFacts()

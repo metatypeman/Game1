@@ -16,7 +16,7 @@ namespace Assets.Scripts
             var logInstance = new LogProxyForDebug();
             LogInstance.SetLogProxy(logInstance);
 
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
 #endif
 
             mEntityDictionary = new EntityDictionary();
@@ -25,6 +25,17 @@ namespace Assets.Scripts
             mBusOfCGStorages = new BusOfCGStorages(mEntityDictionary);
             mHandThingsBus = new HandThingsBus();
             mLogicalSoundBus = new LogicalSoundBus();
+
+            var terrainObj = GameObject.Find("Terrain");
+
+            var terrain = terrainObj.GetComponent<Terrain>();
+            var terrainData = terrain.terrainData;
+
+            //LogInstance.Log($"terrainData.size = {terrainData.size}");
+
+            mRTreeNode = new RTreeNode(new Vector3(0, 0, 0), new Vector3(terrainData.size.x, 0, terrainData.size.z));
+
+            mHostNavigationRegistry = new NavigationRegistry(mRTreeNode);
         }
 
         private IEntityDictionary mEntityDictionary;
@@ -49,39 +60,21 @@ namespace Assets.Scripts
 
         public LogicalSoundBus LogicalSoundBus => mLogicalSoundBus;
 
+        private NavigationRegistry mHostNavigationRegistry;
+
+        public IHostNavigationRegistry HostNavigationRegistry => mHostNavigationRegistry;
+
         // Use this for initialization
         void Start()
-        {
-            var terrainObj = GameObject.Find("Terrain");
-
-            var scaleX = terrainObj.transform.lossyScale.x;
-
-            Debug.Log($"scaleX = {scaleX}");
-
-            var terrain = terrainObj.GetComponent<Terrain>();
-            var terrainData = terrain.terrainData;
-
-            Debug.Log($"terrainData.size = {terrainData.size}");
-
-            mRTreeNode = new RTreeNode(new Vector3(0, 0, 0), new Vector3(terrainData.size.x, 0, terrainData.size.z));
-
-            //mPlainRect = new PlainRect(new Vector3(0, 0, 0), new Vector3(terrainData.size.x, 0, terrainData.size.z));            
+        {            
         }
 
         private RTreeNode mRTreeNode;
-        //private PlainRect mPlainRect;
-
+       
         // Update is called once per frame
         void Update()
         {
-            //mPlainRect.DrawDebug();
             mRTreeNode.Draw();
-        }
-
-        void OnDrawGizmos()
-        {
-            var terrain = GameObject.Find("Terrain");
-
         }
     }
 }

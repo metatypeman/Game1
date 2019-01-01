@@ -1,0 +1,83 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+namespace Assets.Scripts
+{
+    public class NavigationRegistry: IHostNavigationRegistry
+    {
+        public NavigationRegistry(RTreeNode rTreeNode)
+        {
+            mRTreeNode = rTreeNode;
+
+            IndexRTreeNodes();
+        }
+
+        private RTreeNode mRTreeNode;
+        private List<IPlane> mPlanesList = new List<IPlane>();
+        private RTreeNode[,] mRTreeNodesDict;
+
+        private void IndexRTreeNodes()
+        {
+            var finalNodesList = mRTreeNode.GetFinalNodes();
+
+#if DEBUG
+            Debug.Log($"finalNodesList.Count = {finalNodesList.Count}");
+#endif
+
+            var groupedByZDict = finalNodesList.GroupBy(p => p.LeftBottomPoint.z).ToDictionary(p => p.Key, p => p.ToList());
+
+#if DEBUG
+            Debug.Log($"groupedByZDict.Count = {groupedByZDict.Count}");
+#endif
+
+            var maxZ = groupedByZDict.Count;
+            var maxX = groupedByZDict.First().Value.Count;
+
+#if DEBUG
+            Debug.Log($"maxZ = {maxZ} maxX = {maxX}");
+#endif
+
+            mRTreeNodesDict = new RTreeNode[maxZ, maxX];
+
+            var zN = 0;
+            
+            foreach (var groupedByZKVPItem in groupedByZDict)
+            {
+#if DEBUG
+                Debug.Log($"groupedByZKVPItem.Key = {groupedByZKVPItem.Key}");
+#endif
+
+                var groupedByXDict = groupedByZKVPItem.Value.ToDictionary(p => p.LeftBottomPoint.x, p => p);
+
+#if DEBUG
+                Debug.Log($"groupedByXDict.Count = {groupedByXDict.Count}");
+#endif
+                var xN = 0;
+
+                foreach (var groupedByXKVPItem in groupedByXDict)
+                {
+#if DEBUG
+                    Debug.Log($"groupedByXKVPItem.Key = {groupedByXKVPItem.Key} zN = {zN} xN = {xN}");
+#endif
+                    var value = groupedByXKVPItem.Value;
+                    value.Zn = zN;
+                    value.Xn = xN;
+                    mRTreeNodesDict[zN, xN] = value;
+
+                    xN++;
+                }
+
+                zN++;
+            }
+        }
+
+        public void RegPlane(IPlane plane)
+        {
+            mPlanesList.Add(plane);
+        }
+    }
+}

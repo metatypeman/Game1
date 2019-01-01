@@ -14,25 +14,25 @@ namespace Assets.Scripts
             mLeftBottomPoint = leftBottomPoint;
 
 #if DEBUG
-            Debug.Log($"mLeftBottomPoint = {mLeftBottomPoint}");
+            //Debug.Log($"mLeftBottomPoint = {mLeftBottomPoint}");
 #endif
 
             mLeftTopPoint = new Vector3(leftBottomPoint.x, 0, rightTopPoint.z);
 
 #if DEBUG
-            Debug.Log($"mLeftTopPoint = {mLeftTopPoint}");
+            //Debug.Log($"mLeftTopPoint = {mLeftTopPoint}");
 #endif
 
             mRightTopPoint = rightTopPoint;
 
 #if DEBUG
-            Debug.Log($"mRightTopPoint = {mRightTopPoint}");
+            //Debug.Log($"mRightTopPoint = {mRightTopPoint}");
 #endif
 
             mRightBottomPoint = new Vector3(rightTopPoint.x, 0, leftBottomPoint.z);
 
 #if DEBUG
-            Debug.Log($"mRightBottomPoint = {mRightBottomPoint}");
+            //Debug.Log($"mRightBottomPoint = {mRightBottomPoint}");
 #endif
         }
 
