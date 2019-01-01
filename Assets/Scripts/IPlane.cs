@@ -10,5 +10,9 @@ namespace Assets.Scripts
     public interface IPlane
     {
         bool Contains(Vector3 position);
+        Vector3 FRPoint { get; }
+        Vector3 BRPoint { get; }
+        Vector3 FLPoint { get; }
+        Vector3 BLPoint { get; }
     }
 }

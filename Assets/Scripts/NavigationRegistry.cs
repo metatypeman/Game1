@@ -78,6 +78,37 @@ namespace Assets.Scripts
         public void RegPlane(IPlane plane)
         {
             mPlanesList.Add(plane);
+
+#if DEBUG
+            Debug.Log($"plane.FRPoint = {plane.FRPoint}");
+            Debug.Log($"plane.BRPoint = {plane.BRPoint}");
+            Debug.Log($"plane.FLPoint = {plane.FLPoint}");
+            Debug.Log($"plane.BLPoint = {plane.BLPoint}");
+#endif
+
+            var frNode = mRTreeNode.GetFinalNodeByPoint(plane.FRPoint);
+
+#if DEBUG
+            Debug.Log($"frNode.Zn = {frNode.Zn} frNode.Xn = {frNode.Xn}");
+#endif
+
+            var brNode = mRTreeNode.GetFinalNodeByPoint(plane.BRPoint);
+
+#if DEBUG
+            Debug.Log($"brNode.Zn = {brNode.Zn} brNode.Xn = {brNode.Xn}");
+#endif
+
+            var flNode = mRTreeNode.GetFinalNodeByPoint(plane.FLPoint);
+
+#if DEBUG
+            Debug.Log($"flNode.Zn = {flNode.Zn} flNode.Xn = {flNode.Xn}");
+#endif
+
+            var blNode = mRTreeNode.GetFinalNodeByPoint(plane.BLPoint);
+
+#if DEBUG
+            Debug.Log($"blNode.Zn = {blNode.Zn} blNode.Xn = {blNode.Xn}");
+#endif
         }
     }
 }
