@@ -80,34 +80,34 @@ namespace Assets.Scripts
             mPlanesList.Add(plane);
 
 #if DEBUG
-            Debug.Log($"plane.FRPoint = {plane.FRPoint}");
-            Debug.Log($"plane.BRPoint = {plane.BRPoint}");
-            Debug.Log($"plane.FLPoint = {plane.FLPoint}");
-            Debug.Log($"plane.BLPoint = {plane.BLPoint}");
+            //Debug.Log($"plane.FRPoint = {plane.FRPoint}");
+            //Debug.Log($"plane.BRPoint = {plane.BRPoint}");
+            //Debug.Log($"plane.FLPoint = {plane.FLPoint}");
+            //Debug.Log($"plane.BLPoint = {plane.BLPoint}");
 #endif
 
             var frNode = mRTreeNode.GetFinalNodeByPoint(plane.FRPoint);
 
 #if DEBUG
-            Debug.Log($"frNode.Zn = {frNode.Zn} frNode.Xn = {frNode.Xn}");
+            //Debug.Log($"frNode.Zn = {frNode.Zn} frNode.Xn = {frNode.Xn}");
 #endif
 
             var brNode = mRTreeNode.GetFinalNodeByPoint(plane.BRPoint);
 
 #if DEBUG
-            Debug.Log($"brNode.Zn = {brNode.Zn} brNode.Xn = {brNode.Xn}");
+            //Debug.Log($"brNode.Zn = {brNode.Zn} brNode.Xn = {brNode.Xn}");
 #endif
 
             var flNode = mRTreeNode.GetFinalNodeByPoint(plane.FLPoint);
 
 #if DEBUG
-            Debug.Log($"flNode.Zn = {flNode.Zn} flNode.Xn = {flNode.Xn}");
+            //Debug.Log($"flNode.Zn = {flNode.Zn} flNode.Xn = {flNode.Xn}");
 #endif
 
             var blNode = mRTreeNode.GetFinalNodeByPoint(plane.BLPoint);
 
 #if DEBUG
-            Debug.Log($"blNode.Zn = {blNode.Zn} blNode.Xn = {blNode.Xn}");
+            //Debug.Log($"blNode.Zn = {blNode.Zn} blNode.Xn = {blNode.Xn}");
 #endif
 
             var zList = new List<int>() { frNode.Zn, brNode.Zn, flNode.Zn, blNode.Zn };
@@ -123,7 +123,7 @@ namespace Assets.Scripts
             var minX = xList.Min();
 
 #if DEBUG
-            Debug.Log($"maxZ = {maxZ} minZ = {minZ} maxX = {maxX} minX = {minX}");
+            //Debug.Log($"maxZ = {maxZ} minZ = {minZ} maxX = {maxX} minX = {minX}");
 #endif
 
             for(var z = minZ; z <= maxZ; z++)
@@ -131,12 +131,50 @@ namespace Assets.Scripts
                 for(var x = minX; x <= maxX; x++)
                 {
 #if DEBUG
-                    Debug.Log($"z = {z} x = {x}");
+                    //Debug.Log($"z = {z} x = {x}");
 #endif
 
-                    var plane = m
+                    var node = mRTreeNodesDict[z, x];
+
+                    node.AddPlane(plane);
                 }
             }
+        }
+
+        public IList<IPlane> GetPlanesByPoint(Vector3 position)
+        {
+#if DEBUG
+            //Debug.Log($"position = {position}");
+#endif
+
+            var node = mRTreeNode.GetFinalNodeByPoint(position);
+
+#if DEBUG
+            //Debug.Log($"node.Zn = {node.Zn} node.Xn = {node.Xn}");
+#endif
+
+            var planesList = node.PlanesList;
+
+#if DEBUG
+            //Debug.Log($"planesList.Count = {planesList.Count}");
+#endif
+
+            if(planesList.Count == 0)
+            {
+                return planesList;
+            }
+
+            var result = new List<IPlane>();
+
+            foreach(var plane in planesList)
+            {
+                if(plane.Contains(position))
+                {
+                    result.Add(plane);
+                }
+            }
+
+            return result;
         }
     }
 }

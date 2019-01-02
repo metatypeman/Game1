@@ -14,5 +14,6 @@ namespace Assets.Scripts
         Vector3 BRPoint { get; }
         Vector3 FLPoint { get; }
         Vector3 BLPoint { get; }
+        string Name { get; }
     }
 }

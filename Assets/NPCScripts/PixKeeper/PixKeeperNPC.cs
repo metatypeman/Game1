@@ -96,6 +96,18 @@ namespace Assets.NPCScripts.PixKeeper
             //Log("Begin");
             mInputKeyHelper.Update();
             mInvokingInMainThreadHelper.Update();
+
+#if DEBUG
+            //var commonLevelHost = LevelCommonHostFactory.Get();
+
+            //var planesList = commonLevelHost.HostNavigationRegistry.GetPlanesByPoint(transform.position);
+
+            //Log($"planesList.Count = {planesList.Count}");
+            //foreach(var plane in planesList)
+            //{
+            //    Log($"plane.Name = {plane.Name}");
+            //}
+#endif
         }
     }
 }

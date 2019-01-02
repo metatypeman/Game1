@@ -72,7 +72,8 @@ public class YardPlane : MonoBehaviour, IPlane
     }
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         var commonLevelHost = LevelCommonHostFactory.Get();
 
         CalculateZeroPoints();
@@ -133,7 +134,8 @@ public class YardPlane : MonoBehaviour, IPlane
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
 #if DEBUG
         Debug.DrawLine(FRPoint, BRPoint, Color.black);
         Debug.DrawLine(FRPoint, FLPoint, Color.black);
@@ -150,9 +152,27 @@ public class YardPlane : MonoBehaviour, IPlane
     public bool Contains(Vector3 position)
     {
 #if DEBUG
-        Debug.Log($"position = {position}");
+        //Debug.Log($"position = {position}");
 #endif
 
-        throw new NotImplementedException();
+        //var localPosition = transform.InverseTransformPoint(position);
+
+#if DEBUG
+        //Debug.Log($"name = {name}");
+        //Debug.Log($"localPosition = {localPosition}");
+        //Debug.Log($"transform.localScale = {transform.localScale}");
+#endif
+
+        var collider = GetComponent<Collider>();
+
+        var result = collider.bounds.Contains(position);
+
+#if DEBUG
+        //Debug.Log($"result = {result}");
+#endif
+
+        return result;
     }
+
+    public string Name => name;
 }

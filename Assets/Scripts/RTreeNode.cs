@@ -72,6 +72,9 @@ namespace Assets.Scripts
         public int Xn { get; set; }
         public int Zn { get; set; }
 
+        private readonly object mPlanesListLockObj = new object();
+        private List<IPlane> mPlanesList = new List<IPlane>();
+
         private void BornNewRectsByX(Vector3 leftBottomPoint, Vector3 rightTopPoint, int level)
         {
             var halfOfX = mRect.x / 2;
@@ -158,9 +161,28 @@ namespace Assets.Scripts
             return false;
         }
 
-        public void AddPlain(IPlane plane)
+        public void AddPlane(IPlane plane)
         {
-            throw new NotImplementedException();
+            lock(mPlanesListLockObj)
+            {
+                if(mPlanesList.Contains(plane))
+                {
+                    return;
+                }
+
+                mPlanesList.Add(plane);
+            }
+        }
+
+        public List<IPlane> PlanesList
+        {
+            get
+            {
+                lock(mPlanesListLockObj)
+                {
+                    return mPlanesList.ToList();
+                }
+            }
         }
     }
 }
