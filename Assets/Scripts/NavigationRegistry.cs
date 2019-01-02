@@ -109,6 +109,34 @@ namespace Assets.Scripts
 #if DEBUG
             Debug.Log($"blNode.Zn = {blNode.Zn} blNode.Xn = {blNode.Xn}");
 #endif
+
+            var zList = new List<int>() { frNode.Zn, brNode.Zn, flNode.Zn, blNode.Zn };
+            zList = zList.Distinct().ToList();
+
+            var xList = new List<int>() { frNode.Xn, brNode.Xn, flNode.Xn, blNode.Xn };
+            xList = xList.Distinct().ToList();
+
+            var maxZ = zList.Max();
+            var minZ = zList.Min();
+
+            var maxX = xList.Max();
+            var minX = xList.Min();
+
+#if DEBUG
+            Debug.Log($"maxZ = {maxZ} minZ = {minZ} maxX = {maxX} minX = {minX}");
+#endif
+
+            for(var z = minZ; z <= maxZ; z++)
+            {
+                for(var x = minX; x <= maxX; x++)
+                {
+#if DEBUG
+                    Debug.Log($"z = {z} x = {x}");
+#endif
+
+                    var plane = m
+                }
+            }
         }
     }
 }
