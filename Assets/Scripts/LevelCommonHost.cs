@@ -10,7 +10,7 @@ namespace Assets.Scripts
 {
     public class LevelCommonHost : MonoBehaviour, ILevelCommonHost
     {
-        public void Awake()
+        public LevelCommonHost()
         {
 #if UNITY_EDITOR
             var logInstance = new LogProxyForDebug();
@@ -26,6 +26,21 @@ namespace Assets.Scripts
             mHandThingsBus = new HandThingsBus();
             mLogicalSoundBus = new LogicalSoundBus();
 
+            //var terrainObj = GameObject.Find("Terrain");
+
+            //var terrain = terrainObj.GetComponent<Terrain>();
+            //var terrainData = terrain.terrainData;
+
+            //LogInstance.Log($"terrainData.size = {terrainData.size}");
+
+            //mRTreeNode = new RTreeNode(new Vector3(0, 0, 0), new Vector3(terrainData.size.x, 0, terrainData.size.z));
+
+            //mHostNavigationRegistry = new NavigationRegistry(mRTreeNode);
+            mHostNavigationRegistry = new NavigationRegistry();
+        }
+
+        public void Awake()
+        {
             var terrainObj = GameObject.Find("Terrain");
 
             var terrain = terrainObj.GetComponent<Terrain>();
@@ -35,7 +50,7 @@ namespace Assets.Scripts
 
             mRTreeNode = new RTreeNode(new Vector3(0, 0, 0), new Vector3(terrainData.size.x, 0, terrainData.size.z));
 
-            mHostNavigationRegistry = new NavigationRegistry(mRTreeNode);
+            mHostNavigationRegistry.RTreeNode = mRTreeNode;
         }
 
         private IEntityDictionary mEntityDictionary;
@@ -66,7 +81,8 @@ namespace Assets.Scripts
 
         // Use this for initialization
         void Start()
-        {            
+        {
+            mHostNavigationRegistry.PrepareAllInfo();
         }
 
         private RTreeNode mRTreeNode;

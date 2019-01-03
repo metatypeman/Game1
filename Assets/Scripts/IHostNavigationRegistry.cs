@@ -11,5 +11,7 @@ namespace Assets.Scripts
     {
         void RegPlane(IPlane plane);
         IList<IPlane> GetPlanesByPoint(Vector3 position);
+        void RegWayPoint(IWayPoint wayPoint);
+        void RegLinkOfWayPoints(ILinkOfWayPoints linkOfWayPoints);
     }
 }

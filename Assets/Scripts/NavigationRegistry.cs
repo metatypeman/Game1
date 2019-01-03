@@ -16,6 +16,24 @@ namespace Assets.Scripts
             IndexRTreeNodes();
         }
 
+        public NavigationRegistry()
+        {
+        }
+
+        public RTreeNode RTreeNode
+        {
+            set
+            {
+                if(value == mRTreeNode)
+                {
+                    return;
+                }
+
+                mRTreeNode = value;
+                IndexRTreeNodes();
+            }
+        }
+
         private RTreeNode mRTreeNode;
         private List<IPlane> mPlanesList = new List<IPlane>();
         private RTreeNode[,] mRTreeNodesDict;
@@ -78,67 +96,6 @@ namespace Assets.Scripts
         public void RegPlane(IPlane plane)
         {
             mPlanesList.Add(plane);
-
-#if DEBUG
-            //Debug.Log($"plane.FRPoint = {plane.FRPoint}");
-            //Debug.Log($"plane.BRPoint = {plane.BRPoint}");
-            //Debug.Log($"plane.FLPoint = {plane.FLPoint}");
-            //Debug.Log($"plane.BLPoint = {plane.BLPoint}");
-#endif
-
-            var frNode = mRTreeNode.GetFinalNodeByPoint(plane.FRPoint);
-
-#if DEBUG
-            //Debug.Log($"frNode.Zn = {frNode.Zn} frNode.Xn = {frNode.Xn}");
-#endif
-
-            var brNode = mRTreeNode.GetFinalNodeByPoint(plane.BRPoint);
-
-#if DEBUG
-            //Debug.Log($"brNode.Zn = {brNode.Zn} brNode.Xn = {brNode.Xn}");
-#endif
-
-            var flNode = mRTreeNode.GetFinalNodeByPoint(plane.FLPoint);
-
-#if DEBUG
-            //Debug.Log($"flNode.Zn = {flNode.Zn} flNode.Xn = {flNode.Xn}");
-#endif
-
-            var blNode = mRTreeNode.GetFinalNodeByPoint(plane.BLPoint);
-
-#if DEBUG
-            //Debug.Log($"blNode.Zn = {blNode.Zn} blNode.Xn = {blNode.Xn}");
-#endif
-
-            var zList = new List<int>() { frNode.Zn, brNode.Zn, flNode.Zn, blNode.Zn };
-            zList = zList.Distinct().ToList();
-
-            var xList = new List<int>() { frNode.Xn, brNode.Xn, flNode.Xn, blNode.Xn };
-            xList = xList.Distinct().ToList();
-
-            var maxZ = zList.Max();
-            var minZ = zList.Min();
-
-            var maxX = xList.Max();
-            var minX = xList.Min();
-
-#if DEBUG
-            //Debug.Log($"maxZ = {maxZ} minZ = {minZ} maxX = {maxX} minX = {minX}");
-#endif
-
-            for(var z = minZ; z <= maxZ; z++)
-            {
-                for(var x = minX; x <= maxX; x++)
-                {
-#if DEBUG
-                    //Debug.Log($"z = {z} x = {x}");
-#endif
-
-                    var node = mRTreeNodesDict[z, x];
-
-                    node.AddPlane(plane);
-                }
-            }
         }
 
         public IList<IPlane> GetPlanesByPoint(Vector3 position)
@@ -175,6 +132,93 @@ namespace Assets.Scripts
             }
 
             return result;
+        }
+
+        public void RegWayPoint(IWayPoint wayPoint)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void RegLinkOfWayPoints(ILinkOfWayPoints linkOfWayPoints)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void PrepareAllInfo()
+        {
+            PrepareAllPlanes();
+        }
+
+        public void PrepareAllPlanes()
+        {
+            if(mPlanesList.Count == 0)
+            {
+                return;
+            }
+
+            foreach(var plane in mPlanesList)
+            {
+#if DEBUG
+                //Debug.Log($"plane.FRPoint = {plane.FRPoint}");
+                //Debug.Log($"plane.BRPoint = {plane.BRPoint}");
+                //Debug.Log($"plane.FLPoint = {plane.FLPoint}");
+                //Debug.Log($"plane.BLPoint = {plane.BLPoint}");
+#endif
+
+                var frNode = mRTreeNode.GetFinalNodeByPoint(plane.FRPoint);
+
+#if DEBUG
+                //Debug.Log($"frNode.Zn = {frNode.Zn} frNode.Xn = {frNode.Xn}");
+#endif
+
+                var brNode = mRTreeNode.GetFinalNodeByPoint(plane.BRPoint);
+
+#if DEBUG
+                //Debug.Log($"brNode.Zn = {brNode.Zn} brNode.Xn = {brNode.Xn}");
+#endif
+
+                var flNode = mRTreeNode.GetFinalNodeByPoint(plane.FLPoint);
+
+#if DEBUG
+                //Debug.Log($"flNode.Zn = {flNode.Zn} flNode.Xn = {flNode.Xn}");
+#endif
+
+                var blNode = mRTreeNode.GetFinalNodeByPoint(plane.BLPoint);
+
+#if DEBUG
+                //Debug.Log($"blNode.Zn = {blNode.Zn} blNode.Xn = {blNode.Xn}");
+#endif
+
+                var zList = new List<int>() { frNode.Zn, brNode.Zn, flNode.Zn, blNode.Zn };
+                zList = zList.Distinct().ToList();
+
+                var xList = new List<int>() { frNode.Xn, brNode.Xn, flNode.Xn, blNode.Xn };
+                xList = xList.Distinct().ToList();
+
+                var maxZ = zList.Max();
+                var minZ = zList.Min();
+
+                var maxX = xList.Max();
+                var minX = xList.Min();
+
+#if DEBUG
+                //Debug.Log($"maxZ = {maxZ} minZ = {minZ} maxX = {maxX} minX = {minX}");
+#endif
+
+                for (var z = minZ; z <= maxZ; z++)
+                {
+                    for (var x = minX; x <= maxX; x++)
+                    {
+#if DEBUG
+                        //Debug.Log($"z = {z} x = {x}");
+#endif
+
+                        var node = mRTreeNodesDict[z, x];
+
+                        node.AddPlane(plane);
+                    }
+                }
+            }
         }
     }
 }

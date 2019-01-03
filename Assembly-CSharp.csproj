@@ -143,6 +143,7 @@
     <Compile Include="Assets\Scripts\IInvocableInMainThreadObj.cs" />
     <Compile Include="Assets\Scripts\IInvokingInMainThread.cs" />
     <Compile Include="Assets\Scripts\ILevelCommonHost.cs" />
+    <Compile Include="Assets\Scripts\ILinkOfWayPoints.cs" />
     <Compile Include="Assets\Scripts\INPCRayScaner.cs" />
     <Compile Include="Assets\Scripts\InputKeyHelper.cs" />
     <Compile Include="Assets\Scripts\InputMouseKeyHelper.cs" />

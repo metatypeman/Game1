@@ -54,6 +54,10 @@ namespace Assets.Scripts
             {
                 Debug.Log($"plane.name = {plane.name}");
             }
+
+            var commonLevelHost = LevelCommonHostFactory.Get();
+
+            commonLevelHost.HostNavigationRegistry.RegWayPoint(this);
         }
 
         protected override void OnInitFacts()

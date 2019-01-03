@@ -57,8 +57,7 @@ namespace Assets.Scripts
         public List<FactValueItem> FactValueItemsList = new List<FactValueItem>();
         public List<string> FactQueriesList = new List<string>();
 
-        // Use this for initialization
-        void Start()
+        void Awake()
         {
             mEntityLogger.Enabled = EnableLogging;
             mEntityLogger.Marker = Marker;
@@ -75,6 +74,12 @@ namespace Assets.Scripts
             OnInitFacts();
 
             commonLevelHost.OldLogicalObjectsBus.RegisterObject(gameObject.GetInstanceID(), mHostLogicalObjectStorage.EntityId);
+        }
+
+        // Use this for initialization
+        void Start()
+        {
+
         }
 
         private void InitFacts()

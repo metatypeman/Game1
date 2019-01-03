@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class LinkOfWayPoints : MonoBehaviour
+    public class LinkOfWayPoints : MonoBehaviour, ILinkOfWayPoints
     {
         public GameObject FirstPoint;
         public GameObject SecondPoint;
@@ -23,6 +23,12 @@ namespace Assets.Scripts
 
                 Gizmos.DrawLine(firstPoint, secondPoint);
             }
+        }
+
+        void Awake()
+        {
+            var commonLevelHost = LevelCommonHostFactory.Get();
+            commonLevelHost.HostNavigationRegistry.RegLinkOfWayPoints(this);
         }
     }
 }

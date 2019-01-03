@@ -71,14 +71,31 @@ public class YardPlane : MonoBehaviour, IPlane
         Gizmos.DrawLine(dblPoint, ublPoint);
     }
 
-    // Use this for initialization
-    void Start ()
+    public void Awake()
     {
+        Debug.Log("Awake");
+
         var commonLevelHost = LevelCommonHostFactory.Get();
 
         CalculateZeroPoints();
 
         commonLevelHost.HostNavigationRegistry.RegPlane(this);
+    }
+
+    // Use this for initialization
+    void Start ()
+    {
+        Debug.Log("Start");
+    }
+
+    void OnEnable()
+    {
+        Debug.Log("OnEnable");
+    }
+
+    void OnLevelWasLoaded()
+    {
+        Debug.Log("OnLevelWasLoaded");
     }
 
     private void CalculateZeroPoints()
