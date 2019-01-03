@@ -7,15 +7,8 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class BaseWayPoint: BasePassiveLogicalGameObject, IWayPoint
+    public class BaseWayPoint: LogicalGameObject, IWayPoint
     {
-        protected BaseWayPoint()
-            : base (new PassiveLogicalGameObjectOptions() {
-                ShowGlobalPosition = true
-            })
-        {
-        }
-
         public List<GameObject> PlanesList = new List<GameObject>();
 
         public float Radius = 3;

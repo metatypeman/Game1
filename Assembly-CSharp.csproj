@@ -119,7 +119,6 @@
     <Compile Include="Assets\Scripts\ActiveStateToggler.cs" />
     <Compile Include="Assets\Scripts\ApplicationManager.cs" />
     <Compile Include="Assets\Scripts\BaseDialog.cs" />
-    <Compile Include="Assets\Scripts\BasePassiveLogicalGameObject.cs" />
     <Compile Include="Assets\Scripts\BaseWayPoint.cs" />
     <Compile Include="Assets\Scripts\BehaviourFlagsOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\BlueWaypoint.cs" />
@@ -130,6 +129,7 @@
     <Compile Include="Assets\Scripts\EnemyIK.cs" />
     <Compile Include="Assets\Scripts\EnemyNPC.cs" />
     <Compile Include="Assets\Scripts\EnemyRayScaner.cs" />
+    <Compile Include="Assets\Scripts\FactValueItem.cs" />
     <Compile Include="Assets\Scripts\FarWaypoint.cs" />
     <Compile Include="Assets\Scripts\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\HandThingsBus.cs" />
@@ -165,11 +165,11 @@
     <Compile Include="Assets\Scripts\LevelCommonHost.cs" />
     <Compile Include="Assets\Scripts\LevelCommonHostFactory.cs" />
     <Compile Include="Assets\Scripts\LinkOfWayPoints.cs" />
+    <Compile Include="Assets\Scripts\LogicalGameObject.cs" />
     <Compile Include="Assets\Scripts\LogicalObjectsBus.cs" />
     <Compile Include="Assets\Scripts\LogProxyForDebug.cs" />
     <Compile Include="Assets\Scripts\NavigationRegistry.cs" />
     <Compile Include="Assets\Scripts\PanelManager.cs" />
-    <Compile Include="Assets\Scripts\PassiveLogicalGameObjectOptions.cs" />
     <Compile Include="Assets\Scripts\PlainRect.cs" />
     <Compile Include="Assets\Scripts\ProxyForStatesOfHumanoidBodyHost.cs" />
     <Compile Include="Assets\Scripts\RedWaypoint.cs" />

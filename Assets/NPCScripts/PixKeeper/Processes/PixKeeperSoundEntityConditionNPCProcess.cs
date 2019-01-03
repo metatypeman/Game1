@@ -23,17 +23,16 @@ namespace Assets.NPCScripts.PixKeeper.Processes
 
             localStorage.Append(logicalSoundInfo.Storage);
 
+            var queryStr = "{: name(?X,?Y) :}";
+
+            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, Context.EntityDictionary);
+            var query = queryStorage.MainRuleInstance;
+            var keyOfActionQuestionVar = Context.EntityDictionary.GetKey("?Y");
+
             var targetName = string.Empty;
 
             {
-                var queryStr = "{: name(?X,?Y) :}";
-
-                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, Context.EntityDictionary);
-                var query = queryStorage.MainRuleInstance;
-
                 var querySearchResultCGStorage = localStorage.Search(queryStorage);
-
-                var keyOfActionQuestionVar = Context.EntityDictionary.GetKey("?Y");
 
                 var actionExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
 

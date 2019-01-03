@@ -13,12 +13,10 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(LogicalGameObject))]
 [RequireComponent(typeof(EnemyRayScaner))]
 public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInternalHumanoid, ILogicalSoundBusListener/*, IInternalLogicalObject*/
 {
-    public bool EnableLogging = false;
-    public string Marker = $"#{Guid.NewGuid().ToString("D")}";
-
     private Rigidbody mRigidbody;
     private Animator mAnimator;
     private NavMeshAgent mNavMeshAgent;
@@ -203,8 +201,10 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     // Use this for initialization
     void Start ()
     {
-        mEntityLogger.Enabled = EnableLogging;
-        mEntityLogger.Marker = Marker;
+        mLogicalGameObject = GetComponent<LogicalGameObject>();
+
+        mEntityLogger.Enabled = mLogicalGameObject.EnableLogging;
+        mEntityLogger.Marker = mLogicalGameObject.Marker;
 
 #if DEBUG
         //Log("Begin");
@@ -220,14 +220,15 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         var tmpGameObject = gameObject;
         var instanceId = tmpGameObject.GetInstanceID();
 
-        mHostLogicalObjectStorage = new HostLogicalObjectStorage(commonLevelHost.EntityDictionary);
+        //mHostLogicalObjectStorage = new HostLogicalObjectStorage(commonLevelHost.EntityDictionary);
+        mHostLogicalObjectStorage = mLogicalGameObject.HostLogicalObjectStorage;
         mBusOfCGStorages.AddStorage(mHostLogicalObjectStorage);
 
         mSelfEntityId = mHostLogicalObjectStorage.EntityId;
 
         mOldLogicalObjectsBus.RegisterObject(instanceId, mSelfEntityId);
 
-        mHostLogicalObjectStorage["name"] = tmpGameObject.name;
+        //mHostLogicalObjectStorage["name"] = tmpGameObject.name;
         mHostLogicalObjectStorage.SetAccessPolicyToFact("alive", KindOfAccessPolicyToFact.ForVisible);
         mHostLogicalObjectStorage.SetAccessPolicyToFact("died", KindOfAccessPolicyToFact.ForVisible);
 
@@ -300,6 +301,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     }
 
     private EnemyRayScaner mEnemyRayScaner;
+    private LogicalGameObject mLogicalGameObject;
 
     public IList<IHostVisionObject> VisibleObjects
     {
@@ -823,8 +825,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     // Update is called once per frame
     void Update ()
     {
-        mEntityLogger.Enabled = EnableLogging;
-        mEntityLogger.Marker = Marker;
+        mEntityLogger.Enabled = mLogicalGameObject.EnableLogging;
+        mEntityLogger.Marker = mLogicalGameObject.Marker;
 
 #if DEBUG
         //Log("mNavMeshAgent.pathStatus = " + mNavMeshAgent.pathStatus + " mNavMeshAgent.isOnOffMeshLink = " + mNavMeshAgent.isOnOffMeshLink + " mNavMeshAgent.isStopped = " + mNavMeshAgent.isStopped + " mNavMeshAgent.nextPosition = " + mNavMeshAgent.nextPosition);

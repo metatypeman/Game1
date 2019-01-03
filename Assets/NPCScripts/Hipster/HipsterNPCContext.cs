@@ -16,8 +16,6 @@ namespace Assets.NPCScripts.Hipster
         public HipsterNPCContext(IEntityLogger entityLogger, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCHostContext npcHostContext)
             : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext)
         {
-            //SelfLogicalObject["name"] = "Tom";
-
             AddTypeOfProcess<HipsterBootNPCProcess>();
             //AddTypeOfProcess<HipsterKeyListenerNPCProcess>();
             AddTypeOfProcess<HipsterGoToPointNPCProcess>();

@@ -25,20 +25,20 @@ namespace Assets.Scripts
             var finalNodesList = mRTreeNode.GetFinalNodes();
 
 #if DEBUG
-            Debug.Log($"finalNodesList.Count = {finalNodesList.Count}");
+            //Debug.Log($"finalNodesList.Count = {finalNodesList.Count}");
 #endif
 
             var groupedByZDict = finalNodesList.GroupBy(p => p.LeftBottomPoint.z).ToDictionary(p => p.Key, p => p.ToList());
 
 #if DEBUG
-            Debug.Log($"groupedByZDict.Count = {groupedByZDict.Count}");
+            //Debug.Log($"groupedByZDict.Count = {groupedByZDict.Count}");
 #endif
 
             var maxZ = groupedByZDict.Count;
             var maxX = groupedByZDict.First().Value.Count;
 
 #if DEBUG
-            Debug.Log($"maxZ = {maxZ} maxX = {maxX}");
+            //Debug.Log($"maxZ = {maxZ} maxX = {maxX}");
 #endif
 
             mRTreeNodesDict = new RTreeNode[maxZ, maxX];
@@ -48,20 +48,20 @@ namespace Assets.Scripts
             foreach (var groupedByZKVPItem in groupedByZDict)
             {
 #if DEBUG
-                Debug.Log($"groupedByZKVPItem.Key = {groupedByZKVPItem.Key}");
+                //Debug.Log($"groupedByZKVPItem.Key = {groupedByZKVPItem.Key}");
 #endif
 
                 var groupedByXDict = groupedByZKVPItem.Value.ToDictionary(p => p.LeftBottomPoint.x, p => p);
 
 #if DEBUG
-                Debug.Log($"groupedByXDict.Count = {groupedByXDict.Count}");
+                //Debug.Log($"groupedByXDict.Count = {groupedByXDict.Count}");
 #endif
                 var xN = 0;
 
                 foreach (var groupedByXKVPItem in groupedByXDict)
                 {
 #if DEBUG
-                    Debug.Log($"groupedByXKVPItem.Key = {groupedByXKVPItem.Key} zN = {zN} xN = {xN}");
+                    //Debug.Log($"groupedByXKVPItem.Key = {groupedByXKVPItem.Key} zN = {zN} xN = {xN}");
 #endif
                     var value = groupedByXKVPItem.Value;
                     value.Zn = zN;

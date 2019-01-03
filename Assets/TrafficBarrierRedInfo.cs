@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrafficBarrierRedInfo : BasePassiveLogicalGameObject
+public class TrafficBarrierRedInfo : LogicalGameObject
 {
     protected override void OnInitFacts()
     {
