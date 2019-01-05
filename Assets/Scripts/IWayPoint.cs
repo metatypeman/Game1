@@ -8,5 +8,6 @@ namespace Assets.Scripts
 {
     public interface IWayPoint
     {
+        IList<IPlane> PlanesList { get; }
     }
 }

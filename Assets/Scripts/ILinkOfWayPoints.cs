@@ -8,5 +8,7 @@ namespace Assets.Scripts
 {
     public interface ILinkOfWayPoints
     {
+        IWayPoint FirstPoint { get; }
+        IWayPoint SecondPoint { get; }
     }
 }

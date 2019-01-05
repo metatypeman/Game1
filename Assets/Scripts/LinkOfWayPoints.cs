@@ -12,6 +12,41 @@ namespace Assets.Scripts
         public GameObject FirstPoint;
         public GameObject SecondPoint;
 
+        private IWayPoint mFirstPoint;
+        private IWayPoint mSecondPoint;
+
+        IWayPoint ILinkOfWayPoints.FirstPoint
+        {
+            get
+            {
+#if DEBUG
+                Debug.Log($"FirstPoint name = {name}");
+#endif
+                if(mFirstPoint == null)
+                {
+                    mFirstPoint = FirstPoint.GetComponent<IWayPoint>();
+                }
+
+                return mFirstPoint;
+            }
+        }
+
+        IWayPoint ILinkOfWayPoints.SecondPoint
+        {
+            get
+            {
+#if DEBUG
+                Debug.Log($"SecondPoint name = {name}");
+#endif
+                if(mSecondPoint == null)
+                {
+                    mSecondPoint = SecondPoint.GetComponent<IWayPoint>();
+                }
+
+                return mSecondPoint;
+            }
+        }
+
         void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
@@ -29,6 +64,16 @@ namespace Assets.Scripts
         {
             var commonLevelHost = LevelCommonHostFactory.Get();
             commonLevelHost.HostNavigationRegistry.RegLinkOfWayPoints(this);
+
+#if DEBUG
+            Debug.Log($"name = {name}");
+            Debug.Log($"FirstPoint?.name = {FirstPoint?.name}");
+            Debug.Log($"SecondPoint?.name = {SecondPoint?.name}");
+#endif
+#if DEBUG
+            Debug.Log($"(mFirstPoint == null) = {mFirstPoint == null}");
+            Debug.Log($"(mSecondPoint == null) = {mSecondPoint == null}");
+#endif
         }
     }
 }

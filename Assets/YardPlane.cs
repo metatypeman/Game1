@@ -165,6 +165,7 @@ public class YardPlane : MonoBehaviour, IPlane
     public Vector3 BRPoint { get; private set; }
     public Vector3 FLPoint { get; private set; }
     public Vector3 BLPoint { get; private set; }
+    public IList<IWayPoint> PointsList { get; set; } = new List<IWayPoint>();
 
     public bool Contains(Vector3 position)
     {

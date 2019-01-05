@@ -15,5 +15,6 @@ namespace Assets.Scripts
         Vector3 FLPoint { get; }
         Vector3 BLPoint { get; }
         string Name { get; }
+        IList<IWayPoint> PointsList { get; }
     }
 }

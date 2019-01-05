@@ -13,6 +13,16 @@ namespace Assets.Scripts
 
         public float Radius = 3;
 
+        private List<IPlane> mPlanesList = new List<IPlane>();
+
+        IList<IPlane> IWayPoint.PlanesList
+        {
+            get
+            {
+                return mPlanesList;
+            }
+        }
+
         void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
@@ -53,6 +63,8 @@ namespace Assets.Scripts
             foreach (var plane in PlanesList)
             {
                 Debug.Log($"plane.name = {plane.name}");
+
+                mPlanesList.Add(plane.GetComponent<IPlane>());
             }
 
             var commonLevelHost = LevelCommonHostFactory.Get();
