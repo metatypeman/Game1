@@ -143,5 +143,7 @@ namespace Assets.NPCScripts.Common
         }
 
         public event OnLogicalSoundAction OnLogicalSound;
+
+        public INavigationRegistry NavigationRegistry => mInternalBodyHumanoidHost.NavigationRegistry;
     }
 }

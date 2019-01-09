@@ -47,6 +47,14 @@ namespace Assets.Scripts
             }
         }
 
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+        }
+
         void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;

@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{7A8E2D87-BD4D-935C-C539-C3FF95D2C919}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -171,15 +172,20 @@
     <Compile Include="Assets\Scripts\LogProxyForDebug.cs" />
     <Compile Include="Assets\Scripts\NavigationRegistry.cs" />
     <Compile Include="Assets\Scripts\PanelManager.cs" />
+    <Compile Include="Assets\Scripts\PathsHelper.cs" />
     <Compile Include="Assets\Scripts\PlainRect.cs" />
+    <Compile Include="Assets\Scripts\PlanesConnectionInfo.cs" />
+    <Compile Include="Assets\Scripts\PointInfo.cs" />
     <Compile Include="Assets\Scripts\ProxyForStatesOfHumanoidBodyHost.cs" />
     <Compile Include="Assets\Scripts\RedWaypoint.cs" />
     <Compile Include="Assets\Scripts\ResizePanel.cs" />
     <Compile Include="Assets\Scripts\RightHandLocator.cs" />
     <Compile Include="Assets\Scripts\RightHandWPLocator.cs" />
+    <Compile Include="Assets\Scripts\Route.cs" />
     <Compile Include="Assets\Scripts\RTreeNode.cs" />
     <Compile Include="Assets\Scripts\ScrollDetailTexture.cs" />
     <Compile Include="Assets\Scripts\ShowSliderValue.cs" />
+    <Compile Include="Assets\Scripts\StepOfRoute.cs" />
     <Compile Include="Assets\Scripts\TestedBaseNPCProcess.cs" />
     <Compile Include="Assets\Scripts\TestedBlackBoard.cs" />
     <Compile Include="Assets\Scripts\TestedNPCContext.cs" />

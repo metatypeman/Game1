@@ -33,5 +33,7 @@ namespace Assets.Scripts
         Vector3 GlobalPosition { get; }
 
         event OnLogicalSoundAction OnLogicalSound;
+
+        INavigationRegistry NavigationRegistry { get; }
     }
 }

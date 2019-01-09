@@ -15,6 +15,22 @@ namespace Assets.Scripts
 
         private List<IPlane> mPlanesList = new List<IPlane>();
 
+        public System.Numerics.Vector3 Position
+        {
+            get
+            {
+                return VectorsConvertor.UnityToNumeric(transform.position);
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+        }
+
         IList<IPlane> IWayPoint.PlanesList
         {
             get

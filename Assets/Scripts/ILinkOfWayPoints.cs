@@ -10,5 +10,6 @@ namespace Assets.Scripts
     {
         IWayPoint FirstPoint { get; }
         IWayPoint SecondPoint { get; }
+        string Name { get; }
     }
 }
