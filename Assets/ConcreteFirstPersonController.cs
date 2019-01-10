@@ -68,15 +68,15 @@ public class ConcreteFirstPersonController : MonoBehaviour
         mInputKeyHelper.AddPressListener(KeyCode.C, OnCPressAction);
         mInputKeyHelper.AddPressListener(KeyCode.X, OnXPressAction);
 
-        mInputKeyHelper.AddPressListener(KeyCode.V, OnVPressAction);//Jonh
-        mInputKeyHelper.AddPressListener(KeyCode.B, OnBPressAction);//Jake
+        //mInputKeyHelper.AddPressListener(KeyCode.V, OnVPressAction);//Jonh
+        //mInputKeyHelper.AddPressListener(KeyCode.B, OnBPressAction);//Jake
 
-        mInputKeyHelper.AddPressListener(KeyCode.F, ProcessGoToRedWaypoint);
-        mInputKeyHelper.AddPressListener(KeyCode.G, ProcessGoToGreenWaypoint);
-        mInputKeyHelper.AddPressListener(KeyCode.H, ProcessGoToBlueWaypoint);
-        mInputKeyHelper.AddPressListener(KeyCode.J, ProcessGoToYellowWaypoint);
-        mInputKeyHelper.AddPressListener(KeyCode.K, ProcessStop);
-        mInputKeyHelper.AddPressListener(KeyCode.L, ProcessContinue);
+        //mInputKeyHelper.AddPressListener(KeyCode.F, ProcessGoToRedWaypoint);
+        //mInputKeyHelper.AddPressListener(KeyCode.G, ProcessGoToGreenWaypoint);
+        //mInputKeyHelper.AddPressListener(KeyCode.H, ProcessGoToBlueWaypoint);
+        //mInputKeyHelper.AddPressListener(KeyCode.J, ProcessGoToYellowWaypoint);
+        //mInputKeyHelper.AddPressListener(KeyCode.K, ProcessStop);
+        //mInputKeyHelper.AddPressListener(KeyCode.L, ProcessContinue);
 
         mInputMouseKeyHelper = new InputMouseKeyHelper(mUserClientCommonHost);
         mInputMouseKeyHelper.AddPressListener(0, OnFPressAction);

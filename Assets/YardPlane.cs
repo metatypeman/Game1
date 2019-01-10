@@ -75,6 +75,8 @@ public class YardPlane : MonoBehaviour, IPlane
     {
         Debug.Log("Awake");
 
+        mName = name;
+
         var commonLevelHost = LevelCommonHostFactory.Get();
 
         CalculateZeroPoints();
@@ -192,5 +194,6 @@ public class YardPlane : MonoBehaviour, IPlane
         return result;
     }
 
-    public string Name => name;
+    private string mName;
+    public string Name => mName;
 }

@@ -15,8 +15,8 @@ namespace Assets.NPCScripts.PixKeeper
             : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext)
         {
             //AddTypeOfProcess<PixKeeperBootNPCProcess>();
-            //AddTypeOfProcess<PixKeeperKeyListenerNPCProcess>();
-            AddTypeOfProcess<PixKeeperGoToPointNPCProcess>();
+            AddTypeOfProcess<PixKeeperKeyListenerNPCProcess>();
+            //AddTypeOfProcess<PixKeeperGoToPointNPCProcess>();
             AddTypeOfProcess<PixKeeperSoundEntityConditionNPCProcess>(new SoundEventProcessOptions()
             {
                 Kind = KindOfSoundEvent.EntityCondition

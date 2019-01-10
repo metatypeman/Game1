@@ -23,11 +23,12 @@ namespace Assets.Scripts
             }
         }
 
+        private string mName;
         public string Name
         {
             get
             {
-                return name;
+                return mName;
             }
         }
 
@@ -75,6 +76,8 @@ namespace Assets.Scripts
 
         protected override void OnStart()
         {
+            mName = name;
+
             Debug.Log($"PlanesList.Count = {PlanesList.Count}");
             foreach (var plane in PlanesList)
             {

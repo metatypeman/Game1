@@ -65,12 +65,12 @@ namespace Assets.NPCScripts.Hipster
             mUserClientCommonHost = UserClientCommonHostFactory.Get();
 
             mInputKeyHelper = new InputKeyHelper(mUserClientCommonHost);
-            mInputKeyHelper.AddPressListener(KeyCode.F, OnPressAction);
+            //mInputKeyHelper.AddPressListener(KeyCode.F, OnPressAction);
             mInputKeyHelper.AddPressListener(KeyCode.G, OnPressAction);
-            mInputKeyHelper.AddPressListener(KeyCode.H, OnPressAction);
-            mInputKeyHelper.AddPressListener(KeyCode.J, OnPressAction);
-            mInputKeyHelper.AddPressListener(KeyCode.K, OnPressAction);
-            mInputKeyHelper.AddPressListener(KeyCode.L, OnPressAction);      
+            //mInputKeyHelper.AddPressListener(KeyCode.H, OnPressAction);
+            //mInputKeyHelper.AddPressListener(KeyCode.J, OnPressAction);
+            //mInputKeyHelper.AddPressListener(KeyCode.K, OnPressAction);
+            //mInputKeyHelper.AddPressListener(KeyCode.L, OnPressAction);      
         }
 
         private void OnPressAction(KeyCode key)

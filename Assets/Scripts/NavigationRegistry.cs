@@ -17,9 +17,12 @@ namespace Assets.Scripts
             IndexRTreeNodes();
         }
 
-        public NavigationRegistry()
+        public NavigationRegistry(IInvokingInMainThread invokingInMainThread)
         {
+            mInvokingInMainThread = invokingInMainThread;
         }
+
+        private IInvokingInMainThread mInvokingInMainThread;
 
         public RTreeNode RTreeNode
         {
@@ -106,19 +109,19 @@ namespace Assets.Scripts
         public IList<IPlane> GetPlanesByPoint(Vector3 position)
         {
 #if DEBUG
-            //Debug.Log($"position = {position}");
+            Debug.Log($"position = {position}");
 #endif
 
             var node = mRTreeNode.GetFinalNodeByPoint(position);
 
 #if DEBUG
-            //Debug.Log($"node.Zn = {node.Zn} node.Xn = {node.Xn}");
+            Debug.Log($"node.Zn = {node.Zn} node.Xn = {node.Xn}");
 #endif
 
             var planesList = node.PlanesList;
 
 #if DEBUG
-            //Debug.Log($"planesList.Count = {planesList.Count}");
+            Debug.Log($"planesList.Count = {planesList.Count}");
 #endif
 
             if(planesList.Count == 0)
@@ -130,8 +133,16 @@ namespace Assets.Scripts
 
             foreach(var plane in planesList)
             {
-                if(plane.Contains(position))
+#if DEBUG
+                Debug.Log($"plane.Name = {plane.Name}");
+#endif
+
+                if (plane.Contains(position))
                 {
+#if DEBUG
+                    Debug.Log("Yess!!!!");
+#endif
+
                     result.Add(plane);
                 }
             }
@@ -518,7 +529,7 @@ namespace Assets.Scripts
 #endif
             }
 
-            mPathsDict = pathListForGrouping.GroupBy(p => p.FirstItem).ToDictionary(p => p.Key, p => p.GroupBy(x => x.LastItem).ToDictionary(x => x.Key, x => (IList<IList<IPlane>>)x));
+            mPathsDict = pathListForGrouping.GroupBy(p => p.FirstItem).ToDictionary(p => p.Key, p => p.GroupBy(x => x.LastItem).ToDictionary(x => x.Key, x => (IList<IList<IPlane>>)x.Select(y => y.StepItems).ToList()));
 
 #if DEBUG
             Debug.Log("End");
@@ -579,6 +590,15 @@ namespace Assets.Scripts
 
         public IRoute GetRouteForPosition(IPointInfo pointInfo)
         {
+            var invocable = new InvocableInMainThreadObj<IRoute>(() => {
+                return NGetRouteForPosition(pointInfo);
+            }, mInvokingInMainThread);
+
+            return invocable.Run();
+        }
+
+        private IRoute NGetRouteForPosition(IPointInfo pointInfo)
+        {
 #if DEBUG
             Debug.Log($"pointInfo = {pointInfo}");
 #endif
@@ -588,7 +608,7 @@ namespace Assets.Scripts
                 return NGetRouteForPositionOfFirstPartOfLink(pointInfo);
             }
 
-            return GetRouteForPosition(VectorsConvertor.NumericToUnity(pointInfo.Position.Value), VectorsConvertor.NumericToUnity(pointInfo.Route.TargetPosition));
+            return GetRouteForPosition(pointInfo.Position.Value, pointInfo.Route.TargetPosition);
         }
 
         private IRoute NGetRouteForPositionOfFirstPartOfLink(IPointInfo pointInfo)
@@ -736,7 +756,16 @@ namespace Assets.Scripts
             return result;
         }
 
-        public IRoute GetRouteForPosition(Vector3 startPosition, Vector3 targetPosition)
+        public IRoute GetRouteForPosition(System.Numerics.Vector3 startPosition, System.Numerics.Vector3 targetPosition)
+        {
+            var invocable = new InvocableInMainThreadObj<IRoute>(() => {
+                return NGetRouteForPosition(startPosition, targetPosition);
+            }, mInvokingInMainThread);
+
+            return invocable.Run();
+        }
+
+        private IRoute NGetRouteForPosition(System.Numerics.Vector3 startPosition, System.Numerics.Vector3 targetPosition)
         {
 #if DEBUG
             Debug.Log($"startPosition = {startPosition}");
@@ -744,7 +773,7 @@ namespace Assets.Scripts
 #endif
 
             var result = new Route();
-            result.TargetPosition = VectorsConvertor.UnityToNumeric(targetPosition);
+            result.TargetPosition = targetPosition;
 
             if (startPosition == targetPosition)
             {
@@ -752,7 +781,10 @@ namespace Assets.Scripts
                 return result;
             }
 
-            var initialPathsList = GetPathsListForPosition(startPosition, targetPosition);
+            var unityStartPosition = VectorsConvertor.NumericToUnity(startPosition);
+            var unityTargetPosition = VectorsConvertor.NumericToUnity(targetPosition);
+
+            var initialPathsList = GetPathsListForPosition(unityStartPosition, unityTargetPosition);
 
 #if DEBUG
             Debug.Log($"initialPathsList.Count = {initialPathsList.Count}");
@@ -788,7 +820,7 @@ namespace Assets.Scripts
                     Debug.Log($"firstItem.Name = {firstItem.Name}");
 #endif
 
-                    if (firstItem.Contains(targetPosition))
+                    if (firstItem.Contains(unityTargetPosition))
                     {
 #if DEBUG
                         Debug.Log("firstItem.Contains(targetPosition)");
@@ -813,7 +845,7 @@ namespace Assets.Scripts
                         pointInfo.IsFinal = true;
                         pointInfo.Route = result;
                         pointInfo.StepOfRoute = stepOfRoute;
-                        pointInfo.Position = VectorsConvertor.UnityToNumeric(targetPosition);
+                        pointInfo.Position = targetPosition;
                         pointInfo.Plane = firstItem;
 
                         result.NextPoints.Add(pointInfo);

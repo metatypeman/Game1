@@ -4,11 +4,12 @@ using MyNPCLib.LogicalHostEnvironment;
 using MyNPCLib.LogicalSoundModeling;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
-    public class LevelCommonHost : MonoBehaviour, ILevelCommonHost
+    public class LevelCommonHost : MonoBehaviour, ILevelCommonHost, IInvokingInMainThread
     {
         public LevelCommonHost()
         {
@@ -36,7 +37,7 @@ namespace Assets.Scripts
             //mRTreeNode = new RTreeNode(new Vector3(0, 0, 0), new Vector3(terrainData.size.x, 0, terrainData.size.z));
 
             //mHostNavigationRegistry = new NavigationRegistry(mRTreeNode);
-            mHostNavigationRegistry = new NavigationRegistry();
+            mHostNavigationRegistry = new NavigationRegistry(this);
         }
 
         public void Awake()
@@ -86,10 +87,46 @@ namespace Assets.Scripts
         }
 
         private RTreeNode mRTreeNode;
-       
+
+        private object mTmpQueueLockObj = new object();
+        private Queue<IInvocableInMainThreadObj> mTmpQueue = new Queue<IInvocableInMainThreadObj>();
+
+        private void ProcessInvocable()
+        {
+            List<IInvocableInMainThreadObj> invocableList = null;
+
+            lock (mTmpQueueLockObj)
+            {
+                if (mTmpQueue.Count > 0)
+                {
+                    invocableList = mTmpQueue.ToList();
+                    mTmpQueue.Clear();
+                }
+            }
+
+            if (invocableList == null)
+            {
+                return;
+            }
+
+            foreach (var invocable in invocableList)
+            {
+                invocable.Invoke();
+            }
+        }
+
+        public void SetInvocableObj(IInvocableInMainThreadObj invokableObj)
+        {
+            lock (mTmpQueueLockObj)
+            {
+                mTmpQueue.Enqueue(invokableObj);
+            }
+        }
+
         // Update is called once per frame
         void Update()
         {
+            ProcessInvocable();
             mRTreeNode.Draw();
         }
     }

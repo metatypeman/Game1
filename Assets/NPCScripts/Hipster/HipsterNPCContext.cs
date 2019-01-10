@@ -17,7 +17,7 @@ namespace Assets.NPCScripts.Hipster
             : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext)
         {
             AddTypeOfProcess<HipsterBootNPCProcess>();
-            //AddTypeOfProcess<HipsterKeyListenerNPCProcess>();
+            AddTypeOfProcess<HipsterKeyListenerNPCProcess>();
             AddTypeOfProcess<HipsterGoToPointNPCProcess>();
             AddTypeOfProcess<HipsterSoundEntityConditionNPCProcess>(new SoundEventProcessOptions() {
                 Kind = KindOfSoundEvent.EntityCondition

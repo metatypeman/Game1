@@ -26,6 +26,12 @@ namespace Assets.NPCScripts.Hipster.Processes
             Log($"key = {key}");
 #endif
 
+            switch (key)
+            {
+                case KeyCode.G:
+                    GoToFarWayPoint();
+                    break;
+            }
             //switch (key)
             //{
             //    case KeyCode.F:
@@ -54,6 +60,11 @@ namespace Assets.NPCScripts.Hipster.Processes
             //}
         }
 
+        private void GoToFarWayPoint()
+        {
+            NProcessGoToTargetWaypoint("Cube_1");
+        }
+
         private void ProcessGoToRedWaypoint()
         {
             ProcessGoToTargetWaypoint("RedWaypoint");
@@ -72,6 +83,33 @@ namespace Assets.NPCScripts.Hipster.Processes
         private void ProcessGoToYellowWaypoint()
         {
             ProcessGoToTargetWaypoint("YellowWaypoint");
+        }
+
+        private void NProcessGoToTargetWaypoint(string nameOfWaypoint)
+        {
+#if UNITY_EDITOR
+            Log($"nameOfWaypoint = {nameOfWaypoint}");
+#endif
+
+            var targetWayPoint = Context.GetLogicalObject("{: name='" + nameOfWaypoint + "'&class='place' :}");
+
+#if UNITY_EDITOR
+            Log($"(targetWayPoint == null) = {targetWayPoint == null}");
+#endif
+
+            if (targetWayPoint == null)
+            {
+                return;
+            }
+
+            var targetPosition = targetWayPoint.GetValue<System.Numerics.Vector3?>("global position");
+
+#if UNITY_EDITOR
+            Log($"targetPosition = {targetPosition}");
+#endif
+
+            var command = HipsterGoToPointNPCProcess.CreateCommand(targetPosition.Value);
+            Execute(command);
         }
 
         private void ProcessGoToTargetWaypoint(string nameOfWaypoint)
