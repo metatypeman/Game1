@@ -151,6 +151,9 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
     private HandThingsBus mHandThingsBus;
     private LogicalSoundBus mLogicalSoundBus;
+    
+    private INavigationRegistry mNavigationRegistry;
+    public INavigationRegistry NavigationRegistry => mNavigationRegistry;
 
     private readonly object mIsReadyLockObj = new object();
     private bool mIsReady;
@@ -216,6 +219,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mHandThingsBus = commonLevelHost.HandThingsBus;
         mLogicalSoundBus = commonLevelHost.LogicalSoundBus;
         mLogicalSoundBus.AddListener(this);
+        
+        mNavigationRegistry = commonLevelHost.HostNavigationRegistry;
 
         var tmpGameObject = gameObject;
         var instanceId = tmpGameObject.GetInstanceID();
