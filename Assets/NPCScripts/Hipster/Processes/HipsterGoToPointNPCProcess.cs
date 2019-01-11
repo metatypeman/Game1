@@ -40,6 +40,11 @@ namespace Assets.NPCScripts.Hipster.Processes
                 Log($"route = {route}");
 #endif
 
+                if(route.NextPoints.Count == 0)
+                {
+                    break;
+                }
+
                 var pointInfo = route.NextPoints.First();
 
 #if UNITY_EDITOR

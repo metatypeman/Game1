@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.NavigationSupport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,13 +26,55 @@ namespace Assets.NPCScripts.PixKeeper.Processes
             Log($"point = {point}");
 #endif
 
-            var moveCommand = new HumanoidHStateCommand();
-            moveCommand.State = HumanoidHState.Walk;
-            moveCommand.TargetPosition = point;
+            var startPosition = Context.SelfLogicalObject.GetValue<System.Numerics.Vector3?>("global position");
 
-            var tmpTask = ExecuteBody(moveCommand);
+#if UNITY_EDITOR
+            Log($"startPosition = {startPosition}");
+#endif
 
-            Wait(tmpTask);
+            var route = Context.GetRouteForPosition(startPosition.Value, point);
+
+            while (route.Status == StatusOfRoute.Processed)
+            {
+#if UNITY_EDITOR
+                Log($"route = {route}");
+#endif
+
+                if (route.NextPoints.Count == 0)
+                {
+                    break;
+                }
+
+                var pointInfo = route.NextPoints.First();
+
+#if UNITY_EDITOR
+                Log($"pointInfo = {pointInfo}");
+#endif
+
+                var moveCommand = new HumanoidHStateCommand();
+                moveCommand.State = HumanoidHState.Walk;
+                moveCommand.TargetPosition = pointInfo.Position;
+
+                var tmpTask = ExecuteBody(moveCommand);
+                Wait(tmpTask);
+
+#if UNITY_EDITOR
+                Log("End Moving");
+#endif
+                route = Context.GetRouteForPosition(pointInfo);
+
+#if UNITY_EDITOR
+                Log($"next route = {route}");
+#endif
+                //break;
+            }
+            //var moveCommand = new HumanoidHStateCommand();
+            //moveCommand.State = HumanoidHState.Walk;
+            //moveCommand.TargetPosition = point;
+
+            //var tmpTask = ExecuteBody(moveCommand);
+
+            //Wait(tmpTask);
 
 #if UNITY_EDITOR
             Log("End");

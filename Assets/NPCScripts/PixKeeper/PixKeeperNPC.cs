@@ -65,6 +65,8 @@ namespace Assets.NPCScripts.PixKeeper
             mUserClientCommonHost = UserClientCommonHostFactory.Get();
 
             mInputKeyHelper = new InputKeyHelper(mUserClientCommonHost);
+
+            //mInputKeyHelper.AddPressListener(KeyCode.G, OnPressAction);
         }
 
         private void InternalBodyHost_OnReady()
@@ -108,6 +110,13 @@ namespace Assets.NPCScripts.PixKeeper
             //    Log($"plane.Name = {plane.Name}");
             //}
 #endif
+        }
+
+        private void OnPressAction(KeyCode key)
+        {
+            var command = KeyToNPCCommandConverter.Convert(key);
+            Log($"command = {command}");
+            mNPCProcessesContext?.Send(command);
         }
     }
 }

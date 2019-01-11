@@ -16,5 +16,6 @@ namespace Assets.Scripts
         Vector3 BLPoint { get; }
         string Name { get; }
         IList<IWayPoint> PointsList { get; }
+        void CalculatePoints();
     }
 }

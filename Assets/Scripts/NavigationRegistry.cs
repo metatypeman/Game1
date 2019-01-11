@@ -229,6 +229,7 @@ namespace Assets.Scripts
                 //Debug.Log($"plane.FLPoint = {plane.FLPoint}");
                 //Debug.Log($"plane.BLPoint = {plane.BLPoint}");
 #endif
+                plane.CalculatePoints();
 
                 var frNode = mRTreeNode.GetFinalNodeByPoint(plane.FRPoint);
 
@@ -608,7 +609,7 @@ namespace Assets.Scripts
                 return NGetRouteForPositionOfFirstPartOfLink(pointInfo);
             }
 
-            return GetRouteForPosition(pointInfo.Position.Value, pointInfo.Route.TargetPosition);
+            return NGetRouteForPosition(pointInfo.Position.Value, pointInfo.Route.TargetPosition);
         }
 
         private IRoute NGetRouteForPositionOfFirstPartOfLink(IPointInfo pointInfo)

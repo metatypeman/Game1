@@ -2,8 +2,10 @@
 using MyNPCLib.Logical;
 using MyNPCLib.LogicalHostEnvironment;
 using MyNPCLib.LogicalSoundModeling;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -42,6 +44,10 @@ namespace Assets.Scripts
 
         public void Awake()
         {
+            //Application.logMessageReceived += (string condition, string stackTrace, LogType type) => {
+            //    File.AppendAllText("c:/Users/Sergey/Unity.log", $"------------- {condition} {stackTrace} {stackTrace}{Environment.NewLine}");
+            //};
+
             var terrainObj = GameObject.Find("Terrain");
 
             var terrain = terrainObj.GetComponent<Terrain>();

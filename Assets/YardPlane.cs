@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class YardPlane : MonoBehaviour, IPlane
@@ -82,6 +83,13 @@ public class YardPlane : MonoBehaviour, IPlane
         CalculateZeroPoints();
 
         commonLevelHost.HostNavigationRegistry.RegPlane(this);
+
+        mCollider = GetComponent<Collider>();
+    }
+
+    public void CalculatePoints()
+    {
+        mPointsCoordsList = PointsList.Select(p => VectorsConvertor.NumericToUnity(p.Position)).Distinct().ToList();
     }
 
     // Use this for initialization
@@ -168,6 +176,9 @@ public class YardPlane : MonoBehaviour, IPlane
     public Vector3 FLPoint { get; private set; }
     public Vector3 BLPoint { get; private set; }
     public IList<IWayPoint> PointsList { get; set; } = new List<IWayPoint>();
+    private List<Vector3> mPointsCoordsList;
+
+    private Collider mCollider;
 
     public bool Contains(Vector3 position)
     {
@@ -179,13 +190,16 @@ public class YardPlane : MonoBehaviour, IPlane
 
 #if DEBUG
         //Debug.Log($"name = {name}");
-        //Debug.Log($"localPosition = {localPosition}");
+        //Debug.Log($"mPointsCoordsList.Count = {mPointsCoordsList.Count}");
         //Debug.Log($"transform.localScale = {transform.localScale}");
 #endif
 
-        var collider = GetComponent<Collider>();
+        if(mPointsCoordsList.Any(p => p == position))
+        {
+            return true;
+        }
 
-        var result = collider.bounds.Contains(position);
+        var result = mCollider.bounds.Contains(position);
 
 #if DEBUG
         //Debug.Log($"result = {result}");
