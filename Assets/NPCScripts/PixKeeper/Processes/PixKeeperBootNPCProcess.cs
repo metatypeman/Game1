@@ -1,4 +1,5 @@
-﻿using MyNPCLib;
+﻿using Assets.NPCScripts.Common.Logic.Processes;
+using MyNPCLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace Assets.NPCScripts.PixKeeper.Processes
 {
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-    public class PixKeeperBootNPCProcess: PixKeeperBaseNPCProcess
+    public class PixKeeperBootNPCProcess: CommonBaseNPCProcess
     {
         protected override void Awake()
         {

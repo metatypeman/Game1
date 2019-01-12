@@ -1,4 +1,5 @@
-﻿using MyNPCLib;
+﻿using Assets.NPCScripts.Common.Logic.Processes;
+using MyNPCLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace Assets.NPCScripts.Hipster.Processes
 {
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-    public class HipsterBootNPCProcess : HipsterBaseNPCProcess
+    public class HipsterBootNPCProcess : CommonBaseNPCProcess
     {
         protected override void Awake()
         {

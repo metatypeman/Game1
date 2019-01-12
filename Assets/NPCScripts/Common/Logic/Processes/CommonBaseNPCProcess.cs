@@ -6,9 +6,9 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.NPCScripts.PixKeeper.Processes
+namespace Assets.NPCScripts.Common.Logic.Processes
 {
-    public abstract class PixKeeperBaseNPCProcess: BaseNPCProcessWithBlackBoard<PixKeeperBlackBoard>
+    public abstract class CommonBaseNPCProcess : BaseNPCProcessWithBlackBoard<CommonBlackBoard>
     {
         protected void GoToTargetWayPoint(string nameOfThisWaypoint, bool withWaiting = true)
         {

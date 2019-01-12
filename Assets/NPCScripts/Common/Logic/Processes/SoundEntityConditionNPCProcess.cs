@@ -8,10 +8,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.NPCScripts.PixKeeper.Processes
+namespace Assets.NPCScripts.Common.Logic.Processes
 {
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
-    public class PixKeeperSoundEntityConditionNPCProcess : PixKeeperBaseNPCProcess
+    public class SoundEntityConditionNPCProcess : CommonBaseNPCProcess
     {
         public void Main(LogicalSoundInfo logicalSoundInfo)
         {

@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.NPCScripts.Hipster
+namespace Assets.NPCScripts.Common.Logic
 {
-    public class HipsterBlackBoard : BaseBlackBoard, IObjectToString
+    public class CommonBlackBoard : BaseBlackBoard, IObjectToString
     {
         public HumanoidBodyCommand LastCommand { get; set; }
         public bool IsReadyForsoundCommandExecuting { get; set; }

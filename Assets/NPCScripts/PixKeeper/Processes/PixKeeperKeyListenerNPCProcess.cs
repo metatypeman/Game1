@@ -1,4 +1,5 @@
-﻿using Assets.Scripts;
+﻿using Assets.NPCScripts.Common.Logic.Processes;
+using Assets.Scripts;
 using MyNPCLib;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Assets.NPCScripts.PixKeeper.Processes
 {
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
     [NPCProcessName("key press")]
-    public class PixKeeperKeyListenerNPCProcess: PixKeeperBaseNPCProcess
+    public class PixKeeperKeyListenerNPCProcess: CommonBaseNPCProcess
     {
         public static NPCCommand CreateCommand(KeyCode key)
         {
@@ -63,7 +64,7 @@ namespace Assets.NPCScripts.PixKeeper.Processes
             Log($"targetPosition = {targetPosition}");
 #endif
 
-            var command = PixKeeperGoToPointNPCProcess.CreateCommand(targetPosition.Value);
+            var command = GoToPointNPCProcess.CreateCommand(targetPosition.Value);
             Execute(command);
         }
     }

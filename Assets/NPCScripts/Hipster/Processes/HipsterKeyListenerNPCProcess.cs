@@ -1,4 +1,5 @@
-﻿using MyNPCLib;
+﻿using Assets.NPCScripts.Common.Logic.Processes;
+using MyNPCLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Assets.NPCScripts.Hipster.Processes
 {
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
     [NPCProcessName("key press")]
-    public class HipsterKeyListenerNPCProcess: HipsterBaseNPCProcess
+    public class HipsterKeyListenerNPCProcess: CommonBaseNPCProcess
     {
         public static NPCCommand CreateCommand(KeyCode key)
         {
@@ -108,7 +109,7 @@ namespace Assets.NPCScripts.Hipster.Processes
             Log($"targetPosition = {targetPosition}");
 #endif
 
-            var command = HipsterGoToPointNPCProcess.CreateCommand(targetPosition.Value);
+            var command = GoToPointNPCProcess.CreateCommand(targetPosition.Value);
             Execute(command);
         }
 

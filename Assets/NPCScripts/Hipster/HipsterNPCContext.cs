@@ -1,4 +1,6 @@
-﻿using Assets.NPCScripts.Hipster.Processes;
+﻿using Assets.NPCScripts.Common.Logic;
+using Assets.NPCScripts.Common.Logic.Processes;
+using Assets.NPCScripts.Hipster.Processes;
 using MyNPCLib;
 using MyNPCLib.DebugHelperForPersistLogicalData;
 using MyNPCLib.LogicalSoundModeling;
@@ -11,28 +13,28 @@ using System.Threading.Tasks;
 
 namespace Assets.NPCScripts.Hipster
 {
-    public class HipsterNPCContext : BaseNPCContextWithBlackBoard<HipsterBlackBoard>
+    public class HipsterNPCContext : BaseNPCContextWithBlackBoard<CommonBlackBoard>
     {
         public HipsterNPCContext(IEntityLogger entityLogger, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCHostContext npcHostContext)
             : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext)
         {
             AddTypeOfProcess<HipsterBootNPCProcess>();
             AddTypeOfProcess<HipsterKeyListenerNPCProcess>();
-            AddTypeOfProcess<HipsterGoToPointNPCProcess>();
-            AddTypeOfProcess<HipsterSoundEntityConditionNPCProcess>(new SoundEventProcessOptions() {
+            AddTypeOfProcess<GoToPointNPCProcess>();
+            AddTypeOfProcess<SoundEntityConditionNPCProcess>(new SoundEventProcessOptions() {
                 Kind = KindOfSoundEvent.EntityCondition
             });
-            AddTypeOfProcess<HipsterSoundGoCommandNPCProcess>(new SoundEventProcessOptions()
+            AddTypeOfProcess<SoundGoCommandNPCProcess>(new SoundEventProcessOptions()
             {
                 Kind = KindOfSoundEvent.Command,
                 ActionName = "go"
             });
-            AddTypeOfProcess<HipsterSoundStopCommandNPCProcess>(new SoundEventProcessOptions()
+            AddTypeOfProcess<SoundStopCommandNPCProcess>(new SoundEventProcessOptions()
             {
                 Kind = KindOfSoundEvent.Command,
                 ActionName = "stop"
             });
-            AddTypeOfProcess<HipsterSoundContinueCommandNPCProcess>(new SoundEventProcessOptions()
+            AddTypeOfProcess<SoundContinueCommandNPCProcess>(new SoundEventProcessOptions()
             {
                 Kind = KindOfSoundEvent.Command,
                 ActionName = "continue"

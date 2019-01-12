@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.NPCScripts.PixKeeper.Processes
+namespace Assets.NPCScripts.Common.Logic.Processes
 {
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
     [NPCProcessName("go to point")]
-    public class PixKeeperGoToPointNPCProcess : PixKeeperBaseNPCProcess
+    public class GoToPointNPCProcess: CommonBaseNPCProcess
     {
         public static NPCCommand CreateCommand(System.Numerics.Vector3 point)
         {

@@ -9,10 +9,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.NPCScripts.Hipster.Processes
+namespace Assets.NPCScripts.Common.Logic.Processes
 {
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
-    public class HipsterSoundGoCommandNPCProcess: HipsterBaseNPCProcess
+    public class SoundGoCommandNPCProcess : CommonBaseNPCProcess
     {
         public void Main(LogicalSoundInfo logicalSoundInfo)
         {
@@ -20,7 +20,7 @@ namespace Assets.NPCScripts.Hipster.Processes
             Log($"logicalSoundInfo = {logicalSoundInfo}");
 #endif
 
-            if(!BlackBoard.IsReadyForsoundCommandExecuting)
+            if (!BlackBoard.IsReadyForsoundCommandExecuting)
             {
                 return;
             }

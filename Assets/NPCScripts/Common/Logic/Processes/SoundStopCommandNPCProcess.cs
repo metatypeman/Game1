@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.NPCScripts.Hipster.Processes
+namespace Assets.NPCScripts.Common.Logic.Processes
 {
     [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
-    public class HipsterSoundContinueCommandNPCProcess: HipsterBaseNPCProcess
+    public class SoundStopCommandNPCProcess : CommonBaseNPCProcess
     {
         public void Main(LogicalSoundInfo logicalSoundInfo)
         {
@@ -20,12 +20,8 @@ namespace Assets.NPCScripts.Hipster.Processes
 
             Log($"NEXT logicalSoundInfo = {logicalSoundInfo}");
 
-            var moveCommand = BlackBoard.LastCommand;
-
-            if (moveCommand == null)
-            {
-                return;
-            }
+            var moveCommand = new HumanoidHStateCommand();
+            moveCommand.State = HumanoidHState.Stop;
 
             ExecuteBody(moveCommand);
         }
