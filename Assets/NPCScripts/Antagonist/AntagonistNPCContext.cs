@@ -1,4 +1,5 @@
 ﻿using Assets.NPCScripts.Antagonist.Processes;
+using Assets.NPCScripts.Common.Logic;
 using MyNPCLib;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Assets.NPCScripts.Antagonist
 {
-    public class AntagonistNPCContext : BaseNPCContextWithBlackBoard<AntagonistBlackBoard>
+    public class AntagonistNPCContext : BaseNPCContextWithBlackBoard<CommonBlackBoard>
     {
         public AntagonistNPCContext(IEntityLogger entityLogger, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCHostContext npcHostContext)
             : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext)

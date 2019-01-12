@@ -1,4 +1,5 @@
-﻿using MyNPCLib;
+﻿using Assets.NPCScripts.Common.Logic.Processes;
+using MyNPCLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Assets.NPCScripts.Antagonist.Processes
 {
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
     [NPCProcessName("key press")]
-    public class AntagonistKeyListenerNPCProcess : AntagonistBaseNPCProcess
+    public class AntagonistKeyListenerNPCProcess : CommonBaseNPCProcess
     {
         public static NPCCommand CreateCommand(KeyCode key)
         {

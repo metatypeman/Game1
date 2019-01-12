@@ -1,4 +1,5 @@
-﻿using MyNPCLib;
+﻿using Assets.NPCScripts.Common.Logic.Processes;
+using MyNPCLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace Assets.NPCScripts.Antagonist.Processes
 {
     [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-    public class AntagonistBootNPCProcess : AntagonistBaseNPCProcess
+    public class AntagonistBootNPCProcess : CommonBaseNPCProcess
     {
         protected override void Awake()
         {
@@ -16,7 +17,7 @@ namespace Assets.NPCScripts.Antagonist.Processes
             Log("Begin :)");
 #endif
 
-            GoToTargetWayPoint("FarWaypoint");
+            //GoToTargetWayPoint("FarWaypoint");
         }
 
         private void Main()

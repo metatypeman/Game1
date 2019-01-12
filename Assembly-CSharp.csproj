@@ -76,10 +76,8 @@
     <Compile Include="Assets\MyThirdPersonCharacter.cs" />
     <Compile Include="Assets\MyThirdPersonUserControl.cs" />
     <Compile Include="Assets\NewBehaviourScript.cs" />
-    <Compile Include="Assets\NPCScripts\Antagonist\AntagonistBlackBoard.cs" />
     <Compile Include="Assets\NPCScripts\Antagonist\AntagonistNPC.cs" />
     <Compile Include="Assets\NPCScripts\Antagonist\AntagonistNPCContext.cs" />
-    <Compile Include="Assets\NPCScripts\Antagonist\Processes\AntagonistBaseNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Antagonist\Processes\AntagonistBootNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Antagonist\Processes\AntagonistKeyListenerNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\CommonBlackBoard.cs" />
