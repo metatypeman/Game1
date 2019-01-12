@@ -64,5 +64,13 @@ namespace Assets.NPCScripts.Common
 
             return null;
         }
+
+        public void Die()
+        {
+            if (mInternalHumanoidHostContext.RightHandThing != null)
+            {
+                mInternalHumanoidHostContext.RightHandThing.Release();
+            }
+        }
     }
 }

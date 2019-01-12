@@ -27,7 +27,55 @@ namespace Assets.NPCScripts.Antagonist.Processes
             Log($"key = {key}");
 #endif
 
+            switch (key)
+            {
+                case KeyCode.B:
+                    {
+                        var rifle = Context.GetLogicalObject("{: name='M4A1 Sopmod' :}");
 
+#if UNITY_EDITOR
+                        Log($"rifle !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! = {rifle}");
+#endif
+
+                        //var tmpB = Context.GetLogicalObject("{: name='TrafficBarrierHazards (1)' :}");
+
+                        //var tmpP = tmpB.GetValue<System.Numerics.Vector3?>("global position");
+
+#if UNITY_EDITOR
+                        //Log($"tmpP = {tmpP}");
+#endif
+
+                        if (rifle == null)
+                        {
+                            break;
+                        }
+
+                        var command = TakeFromSurfaceNPCProcess.CreateCommand(rifle);
+                        Execute(command);
+                    }
+                    break;
+
+                case KeyCode.L:
+                    {
+                        var command = SimpleAimNPCProcess.CreateCommand();
+                        Execute(command);
+                    }
+                    break;
+
+                case KeyCode.N:
+                    {
+                        var command = StartShootingNPCProcess.CreateCommand();
+                        Execute(command);
+                    }
+                    break;
+
+                case KeyCode.H:
+                    {
+                        var command = StopShootingNPCProcess.CreateCommand();
+                        Execute(command);
+                    }
+                    break;
+            }
         }
     }
 }

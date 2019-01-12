@@ -12,5 +12,6 @@ namespace Assets.Scripts
         bool SetToHandsOfHumanoid(IInternalHumanoid humanoid, IInternalHumanoidHostContext internalContext);
         bool SetAsAloneAndHide();
         bool ThrowOutToSurface();
+        void Release();
     }
 }

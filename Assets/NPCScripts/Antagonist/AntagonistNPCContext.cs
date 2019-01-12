@@ -1,5 +1,6 @@
 ﻿using Assets.NPCScripts.Antagonist.Processes;
 using Assets.NPCScripts.Common.Logic;
+using Assets.NPCScripts.Common.Logic.Processes;
 using MyNPCLib;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,10 @@ namespace Assets.NPCScripts.Antagonist
         {
             AddTypeOfProcess<AntagonistBootNPCProcess>();
             AddTypeOfProcess<AntagonistKeyListenerNPCProcess>();
+            AddTypeOfProcess<TakeFromSurfaceNPCProcess>();
+            AddTypeOfProcess<SimpleAimNPCProcess>();
+            AddTypeOfProcess<StartShootingNPCProcess>();
+            AddTypeOfProcess<StopShootingNPCProcess>();
         }
 
         public override void Bootstrap()

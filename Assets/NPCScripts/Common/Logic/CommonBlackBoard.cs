@@ -1,4 +1,5 @@
 ﻿using MyNPCLib;
+using MyNPCLib.Logical;
 using MyNPCLib.Parser.LogicalExpression;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Assets.NPCScripts.Common.Logic
         public HumanoidBodyCommand LastCommand { get; set; }
         public bool IsReadyForsoundCommandExecuting { get; set; }
         public string Name { get; set; }
+        public BaseAbstractLogicalObject EntityOfRifle { get; set; }
 
         public override void Bootstrap()
         {
@@ -58,6 +60,7 @@ namespace Assets.NPCScripts.Common.Logic
             var sb = new StringBuilder();
             sb.AppendLine($"{spaces}{nameof(IsReadyForsoundCommandExecuting)} = {IsReadyForsoundCommandExecuting}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
+            sb.AppendLine($"{spaces}{nameof(EntityOfRifle)} = {EntityOfRifle}");
             return sb.ToString();
         }
     }

@@ -65,6 +65,10 @@ namespace Assets.NPCScripts.Antagonist
             mUserClientCommonHost = UserClientCommonHostFactory.Get();
 
             mInputKeyHelper = new InputKeyHelper(mUserClientCommonHost);
+            mInputKeyHelper.AddPressListener(KeyCode.B, OnPressAction);
+            mInputKeyHelper.AddPressListener(KeyCode.L, OnPressAction);
+            mInputKeyHelper.AddPressListener(KeyCode.N, OnPressAction);
+            mInputKeyHelper.AddPressListener(KeyCode.H, OnPressAction);
         }
 
         private void InternalBodyHost_OnReady()
@@ -96,6 +100,13 @@ namespace Assets.NPCScripts.Antagonist
             //Log("Begin");
             mInputKeyHelper.Update();
             mInvokingInMainThreadHelper.Update();
+        }
+
+        private void OnPressAction(KeyCode key)
+        {
+            var command = KeyToNPCCommandConverter.Convert(key);
+            Log($"command = {command}");
+            mNPCProcessesContext?.Send(command);
         }
     }
 }

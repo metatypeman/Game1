@@ -83,10 +83,14 @@
     <Compile Include="Assets\NPCScripts\Common\Logic\CommonBlackBoard.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\CommonBaseNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\GoToPointNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SimpleAimNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SoundContinueCommandNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SoundEntityConditionNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SoundGoCommandNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SoundStopCommandNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\StartShootingNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\StopShootingNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\TakeFromSurfaceNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\NPCBodyHost.cs" />
     <Compile Include="Assets\NPCScripts\Common\NPCHandHost.cs" />
     <Compile Include="Assets\NPCScripts\Common\NPCHostContext.cs" />

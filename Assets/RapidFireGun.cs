@@ -487,6 +487,8 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         return true;
     }
 
+    private NPCThingProcess mCurrentContinueProcess;
+
     public INPCProcess Send(INPCCommand command)
     {
 #if UNITY_EDITOR
@@ -502,6 +504,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
             TurnState = TurnState.On;
 
             process.State = StateOfNPCProcess.RanToCompletion;
+            mCurrentContinueProcess = process;
             return process;
         }
 
@@ -510,6 +513,7 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
             TurnState = TurnState.Off;
 
             process.State = StateOfNPCProcess.RanToCompletion;
+            mCurrentContinueProcess = process;
             return process;
         }
 
@@ -550,5 +554,15 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
         }
 
         return null;
+    }
+
+    public void Release()
+    {
+        TurnState = TurnState.Off;
+
+        if(mCurrentContinueProcess != null)
+        {
+            mCurrentContinueProcess.Dispose();
+        }
     }
 }
