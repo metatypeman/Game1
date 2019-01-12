@@ -91,6 +91,7 @@
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\StartShootingNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\StopShootingNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\TakeFromSurfaceNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\TakeRifleFromBagPackNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\NPCBodyHost.cs" />
     <Compile Include="Assets\NPCScripts\Common\NPCHandHost.cs" />
     <Compile Include="Assets\NPCScripts\Common\NPCHostContext.cs" />

@@ -18,9 +18,11 @@ namespace Assets.NPCScripts.Antagonist
             AddTypeOfProcess<AntagonistBootNPCProcess>();
             AddTypeOfProcess<AntagonistKeyListenerNPCProcess>();
             AddTypeOfProcess<TakeFromSurfaceNPCProcess>();
+            AddTypeOfProcess<TakeRifleFromBagPackNPCProcess>();
             AddTypeOfProcess<SimpleAimNPCProcess>();
             AddTypeOfProcess<StartShootingNPCProcess>();
             AddTypeOfProcess<StopShootingNPCProcess>();
+            AddTypeOfProcess<GoToPointNPCProcess>();
         }
 
         public override void Bootstrap()

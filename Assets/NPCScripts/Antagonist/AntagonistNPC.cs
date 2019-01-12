@@ -1,6 +1,7 @@
 ﻿using Assets.NPCScripts.Common;
 using Assets.Scripts;
 using MyNPCLib;
+using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +53,8 @@ namespace Assets.NPCScripts.Antagonist
             }
         }
 
+        public GameObject Gun;
+
         void Start()
         {
             mInvokingInMainThreadHelper = new InvokingInMainThreadHelper();
@@ -90,6 +93,19 @@ namespace Assets.NPCScripts.Antagonist
 #endif
                 var hostContext = new NPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
                 mNPCProcessesContext = new AntagonistNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext);
+
+                if (Gun != null)
+                {
+                    var gunLogicalObject = Gun.GetComponent<RapidFireGun>();
+
+                    var entityId = gunLogicalObject.EntityId;
+
+#if DEBUG
+                    Log($"entityId = {entityId}");
+#endif
+
+                    mNPCProcessesContext.BlackBoard.EntityIdOfInitRifle = entityId;
+                }
 
                 mNPCProcessesContext.Bootstrap();
             });

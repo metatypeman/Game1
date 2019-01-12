@@ -113,6 +113,10 @@ public class RapidFireGun : MonoBehaviour, IRapidFireGun, IReadOnlyLogicalObject
 
         var entityId = mHostLogicalObjectStorage.EntityId;
 
+#if UNITY_EDITOR
+        Debug.Log($"entityId = {entityId}");
+#endif
+
         var tmpGameObject = gameObject;
         var instanceId = tmpGameObject.GetInstanceID();
 

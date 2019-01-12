@@ -414,6 +414,10 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
 
         var thing = mHandThingsBus.GetThing(targetState.EntityIdOfThing);
 
+#if DEBUG
+        Log($"(thing == null) = {thing == null}");
+#endif
+
         switch (kindOfThingsCommand)
         {
             case KindOfHumanoidThingsCommand.Take:

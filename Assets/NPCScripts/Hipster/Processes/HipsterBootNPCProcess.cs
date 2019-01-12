@@ -24,7 +24,8 @@ namespace Assets.NPCScripts.Hipster.Processes
         {
 #if UNITY_EDITOR
             Log("Begin");
-#endif    
+#endif
+
         }
     }
 }

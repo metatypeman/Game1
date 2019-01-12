@@ -63,7 +63,8 @@ namespace Assets.NPCScripts.Hipster.Processes
 
         private void GoToFarWayPoint()
         {
-            NProcessGoToTargetWaypoint("Cube_1");
+            //NProcessGoToTargetWaypoint("Cube_1");
+            NProcessGoToTargetWaypoint("WayPoint_av_1");
         }
 
         private void ProcessGoToRedWaypoint()
@@ -92,24 +93,7 @@ namespace Assets.NPCScripts.Hipster.Processes
             Log($"nameOfWaypoint = {nameOfWaypoint}");
 #endif
 
-            var targetWayPoint = Context.GetLogicalObject("{: name='" + nameOfWaypoint + "'&class='place' :}");
-
-#if UNITY_EDITOR
-            Log($"(targetWayPoint == null) = {targetWayPoint == null}");
-#endif
-
-            if (targetWayPoint == null)
-            {
-                return;
-            }
-
-            var targetPosition = targetWayPoint.GetValue<System.Numerics.Vector3?>("global position");
-
-#if UNITY_EDITOR
-            Log($"targetPosition = {targetPosition}");
-#endif
-
-            var command = GoToPointNPCProcess.CreateCommand(targetPosition.Value);
+            var command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
             Execute(command);
         }
 

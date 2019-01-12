@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Assets.NPCScripts.Antagonist.Processes
@@ -24,7 +25,51 @@ namespace Assets.NPCScripts.Antagonist.Processes
         {
 #if UNITY_EDITOR
             Log("Begin");
-#endif    
+#endif
+
+            var command = TakeRifleFromBagPackNPCProcess.CreateCommand();
+            var task = Execute(command);
+            Wait(task);
+
+            Wait(80000);
+
+#if UNITY_EDITOR
+            Log("TakeRifleFromBagPackNPCProcess");
+#endif
+
+            command = SimpleAimNPCProcess.CreateCommand();
+            task = Execute(command);
+            Wait(task);
+
+#if UNITY_EDITOR
+            Log("SimpleAimNPCProcess");
+#endif
+
+            command = StartShootingNPCProcess.CreateCommand();
+            Execute(command);
+
+            var nameOfWaypoint = "Cube_3";
+
+#if UNITY_EDITOR
+            Log("StartShootingNPCProcess");
+#endif
+
+            command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
+            task = Execute(command);
+            Wait(task);
+
+#if UNITY_EDITOR
+            Log("GoToPointNPCProcess");
+#endif
+            task.OnRanToCompletionChanged += (INPCProcess sender) =>
+            {
+                command = StopShootingNPCProcess.CreateCommand();
+                Execute(command);
+
+#if UNITY_EDITOR
+                Log("StopShootingNPCProcess");
+#endif
+            };
         }
     }
 }

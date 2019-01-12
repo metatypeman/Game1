@@ -12,12 +12,55 @@ namespace Assets.NPCScripts.Common.Logic.Processes
     [NPCProcessName("go to point")]
     public class GoToPointNPCProcess: CommonBaseNPCProcess
     {
+        private static string COMMAND_NAME = "go to point";
+
+        public static NPCCommand CreateCommand(string name)
+        {
+            var command = new NPCCommand();
+            command.Name = COMMAND_NAME;
+            command.AddParam(nameof(name), name);
+            return command;
+        }
+
         public static NPCCommand CreateCommand(System.Numerics.Vector3 point)
         {
             var command = new NPCCommand();
-            command.Name = "go to point";
+            command.Name = COMMAND_NAME;
             command.AddParam(nameof(point), point);
             return command;
+        }
+
+        private void Main(string name)
+        {
+#if UNITY_EDITOR
+            Log($"point = {name}");
+#endif
+
+            var targetWayPoint = Context.GetLogicalObject("{: name='" + name + "'&class='place' :}");
+
+#if UNITY_EDITOR
+            Log($"(targetWayPoint == null) = {targetWayPoint == null}");
+#endif
+
+            if (targetWayPoint == null)
+            {
+                return;
+            }
+
+            var targetPosition = targetWayPoint.GetValue<System.Numerics.Vector3?>("global position");
+
+#if UNITY_EDITOR
+            Log($"targetPosition = {targetPosition}");
+#endif
+
+            var command = CreateCommand(targetPosition.Value);
+            var task = Execute(command);
+
+            Wait(task);
+
+#if UNITY_EDITOR
+            Log("End");
+#endif
         }
 
         private void Main(System.Numerics.Vector3 point)

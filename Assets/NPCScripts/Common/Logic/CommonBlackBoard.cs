@@ -15,9 +15,14 @@ namespace Assets.NPCScripts.Common.Logic
         public bool IsReadyForsoundCommandExecuting { get; set; }
         public string Name { get; set; }
         public BaseAbstractLogicalObject EntityOfRifle { get; set; }
+        public ulong EntityIdOfInitRifle { get; set; }
 
         public override void Bootstrap()
         {
+#if DEBUG
+            Log("Begin");
+#endif
+
             var queryStr = "{: name(?X,?Y) :}";
 
             var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, Context.EntityDictionary);
@@ -40,6 +45,21 @@ namespace Assets.NPCScripts.Common.Logic
 #if DEBUG
             //LogInstance.Log($"Name = {Name}");
 #endif
+
+            if(EntityIdOfInitRifle > 0)
+            {
+#if DEBUG
+                Log($"EntityIdOfInitRifle = {EntityIdOfInitRifle}");
+#endif
+
+                var rifle = Context.GetLogicalObject(EntityIdOfInitRifle);
+
+#if DEBUG
+                Log($"(rifle == null) = {rifle == null}");
+#endif
+
+                EntityOfRifle = rifle;
+            }
         }
 
         public override string ToString()
@@ -61,6 +81,7 @@ namespace Assets.NPCScripts.Common.Logic
             sb.AppendLine($"{spaces}{nameof(IsReadyForsoundCommandExecuting)} = {IsReadyForsoundCommandExecuting}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(EntityOfRifle)} = {EntityOfRifle}");
+            sb.AppendLine($"{spaces}{nameof(EntityIdOfInitRifle)} = {EntityIdOfInitRifle}");
             return sb.ToString();
         }
     }
