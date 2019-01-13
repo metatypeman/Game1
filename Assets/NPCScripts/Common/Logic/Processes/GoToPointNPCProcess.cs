@@ -77,7 +77,7 @@ namespace Assets.NPCScripts.Common.Logic.Processes
 #if UNITY_EDITOR
             Log("CancelOfProcessChanged");
 #endif
-
+            mTask?.Cancel();
             //mTask.Dispose();//This is not cancel
 
             base.CancelOfProcessChanged();
@@ -108,9 +108,10 @@ namespace Assets.NPCScripts.Common.Logic.Processes
                 return;
             }
 
-            while (route.Status == StatusOfRoute.Processed)
+            while (route.Status == StatusOfRoute.Processed && InfinityCondition)
             {
 #if UNITY_EDITOR
+                Log($"InfinityCondition = {InfinityCondition}");
                 Log($"route = {route}");
 #endif
 

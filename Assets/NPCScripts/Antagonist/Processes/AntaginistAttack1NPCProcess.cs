@@ -41,7 +41,7 @@ namespace Assets.NPCScripts.Antagonist.Processes
 
             var nameOfWaypoint = "Cube_3";
 
-            while (true)
+            while (InfinityCondition)
             {
 #if UNITY_EDITOR
                 Log("---------------------------------------------------------------");
@@ -50,17 +50,18 @@ namespace Assets.NPCScripts.Antagonist.Processes
                 command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
                 task = Execute(command);
 
-                Wait(1000);
+                Wait(60000);
 
 #if UNITY_EDITOR
                 Log($"task.State = {task.State}");
 #endif
 
-                if (task.State != StateOfNPCProcess.Running)
-                {
-                    break;
-                }
+                //if (task.State == StateOfNPCProcess.Running)
+                //{
+                //    break;
+                //}
 
+                task.Cancel();
                 //task.Dispose();//This is not cancel
 
 #if UNITY_EDITOR
@@ -76,7 +77,7 @@ namespace Assets.NPCScripts.Antagonist.Processes
                 Log(".................................................");
 #endif
 
-                Wait(1000);
+                Wait(60000);
             }
         }
     }
