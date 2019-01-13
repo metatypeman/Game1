@@ -27,49 +27,42 @@ namespace Assets.NPCScripts.Antagonist.Processes
             Log("Begin");
 #endif
 
-            var command = TakeRifleFromBagPackNPCProcess.CreateCommand();
-            var task = Execute(command);
-            Wait(task);
+            Wait(10000);
 
-            Wait(100000);
-
-#if UNITY_EDITOR
-            Log("TakeRifleFromBagPackNPCProcess");
-#endif
-
-            command = SimpleAimNPCProcess.CreateCommand();
-            task = Execute(command);
-            Wait(task);
-
-#if UNITY_EDITOR
-            Log("SimpleAimNPCProcess");
-#endif
-
-            command = StartShootingNPCProcess.CreateCommand();
+            var command = AntaginistAttack1NPCProcess.CreateCommand();
             Execute(command);
 
-            var nameOfWaypoint = "Cube_3";
 
-#if UNITY_EDITOR
-            Log("StartShootingNPCProcess");
-#endif
 
-            command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
-            task = Execute(command);
-            Wait(task);
+            //#if UNITY_EDITOR
+            //            Log("SimpleAimNPCProcess");
+            //#endif
 
-#if UNITY_EDITOR
-            Log("GoToPointNPCProcess");
-#endif
-            task.OnRanToCompletionChanged += (INPCProcess sender) =>
-            {
-                command = StopShootingNPCProcess.CreateCommand();
-                Execute(command);
+            //            command = StartShootingNPCProcess.CreateCommand();
+            //            Execute(command);
 
-#if UNITY_EDITOR
-                Log("StopShootingNPCProcess");
-#endif
-            };
+            //            var nameOfWaypoint = "Cube_3";
+
+            //#if UNITY_EDITOR
+            //            Log("StartShootingNPCProcess");
+            //#endif
+
+            //            command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
+            //            task = Execute(command);
+            //            Wait(task);
+
+            //#if UNITY_EDITOR
+            //            Log("GoToPointNPCProcess");
+            //#endif
+            //            task.OnRanToCompletionChanged += (INPCProcess sender) =>
+            //            {
+            //                command = StopShootingNPCProcess.CreateCommand();
+            //                Execute(command);
+
+            //#if UNITY_EDITOR
+            //                Log("StopShootingNPCProcess");
+            //#endif
+            //            };
         }
     }
 }

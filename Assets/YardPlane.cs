@@ -74,7 +74,7 @@ public class YardPlane : MonoBehaviour, IPlane
 
     public void Awake()
     {
-        Debug.Log("Awake");
+        //Debug.Log("Awake");
 
         mName = name;
 
@@ -93,20 +93,10 @@ public class YardPlane : MonoBehaviour, IPlane
     }
 
     // Use this for initialization
-    void Start ()
-    {
-        Debug.Log("Start");
-    }
-
-    void OnEnable()
-    {
-        Debug.Log("OnEnable");
-    }
-
-    void OnLevelWasLoaded()
-    {
-        Debug.Log("OnLevelWasLoaded");
-    }
+    //void Start ()
+    //{
+    //    Debug.Log("Start");
+    //}
 
     private void CalculateZeroPoints()
     {

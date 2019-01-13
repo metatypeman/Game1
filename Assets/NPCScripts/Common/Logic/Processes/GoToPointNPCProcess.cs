@@ -44,6 +44,7 @@ namespace Assets.NPCScripts.Common.Logic.Processes
 
             if (targetWayPoint == null)
             {
+                State = StateOfNPCProcess.Faulted;
                 return;
             }
 
@@ -54,13 +55,32 @@ namespace Assets.NPCScripts.Common.Logic.Processes
 #endif
 
             var command = CreateCommand(targetPosition.Value);
-            var task = Execute(command);
-
+            var task = ExecuteAsChild(command);
+            mTask = task;
             Wait(task);
+
+#if UNITY_EDITOR
+            Log($"task.State = {task.State}");
+#endif
+
+            State = task.State;
 
 #if UNITY_EDITOR
             Log("End");
 #endif
+        }
+
+        private INPCProcess mTask;
+
+        protected override void CancelOfProcessChanged()
+        {
+#if UNITY_EDITOR
+            Log("CancelOfProcessChanged");
+#endif
+
+            //mTask.Dispose();//This is not cancel
+
+            base.CancelOfProcessChanged();
         }
 
         private void Main(System.Numerics.Vector3 point)
@@ -76,6 +96,17 @@ namespace Assets.NPCScripts.Common.Logic.Processes
 #endif
 
             var route = Context.GetRouteForPosition(startPosition.Value, point);
+
+            if(route.Status == StatusOfRoute.Impossible)
+            {
+                State = StateOfNPCProcess.Faulted;
+                return;
+            }
+
+            if(route.Status == StatusOfRoute.Finished)
+            {
+                return;
+            }
 
             while (route.Status == StatusOfRoute.Processed)
             {
