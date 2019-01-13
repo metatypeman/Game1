@@ -31,7 +31,7 @@ namespace Assets.NPCScripts.Antagonist.Processes
             var task = Execute(command);
             Wait(task);
 
-            Wait(80000);
+            Wait(100000);
 
 #if UNITY_EDITOR
             Log("TakeRifleFromBagPackNPCProcess");

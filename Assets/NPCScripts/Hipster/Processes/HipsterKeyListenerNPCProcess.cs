@@ -65,6 +65,7 @@ namespace Assets.NPCScripts.Hipster.Processes
         {
             //NProcessGoToTargetWaypoint("Cube_1");
             NProcessGoToTargetWaypoint("WayPoint_av_1");
+            //NProcessGoToTargetWaypoint("FarWaypoint");
         }
 
         private void ProcessGoToRedWaypoint()
