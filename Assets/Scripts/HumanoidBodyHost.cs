@@ -385,13 +385,13 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void NExecute(InternalTargetStateOfHumanoidController targetState)
     {
 #if DEBUG
-        //Log($"targetState = {targetState}");
+        Log($"targetState = {targetState}");
 #endif
 
         var newState = CreateTargetState(mStates, targetState);
 
 #if DEBUG
-        //Log($"newState = {newState}");
+        Log($"newState = {newState}");
 #endif
 
         if (newState.KindOfThingsCommand != KindOfHumanoidThingsCommand.Undefined && newState.EntityIdOfThing != 0)
@@ -618,13 +618,13 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
     private void ApplyTargetState(InternalStatesOfHumanoidController targetState)
     {
 #if DEBUG
-        //Log($"targetState = {targetState}");
+        Log($"targetState = {targetState}");
 #endif
 
         var targetBehaviourFlags = CreateBehaviourFlags(targetState);
 
 #if DEBUG
-        //Log($"targetBehaviourFlags = {targetBehaviourFlags}");
+        Log($"targetBehaviourFlags = {targetBehaviourFlags}");
 #endif
 
         mStates.Append(targetState);
@@ -638,7 +638,7 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         UpdateAnimator();
 
 #if DEBUG
-        //Log($"mStates = {mStates}");
+        Log($"mStates = {mStates}");
 #endif
 
         var hState = mStates.HState;

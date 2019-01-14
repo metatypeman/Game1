@@ -131,9 +131,11 @@ namespace Assets.NPCScripts.Common.Logic.Processes
                 moveCommand.TargetPosition = pointInfo.Position;
 
                 var tmpTask = ExecuteBody(moveCommand);
+                mTask = tmpTask;
                 Wait(tmpTask);
 
 #if UNITY_EDITOR
+                Log($"tmpTask.State = {tmpTask.State}");
                 Log("End Moving");
 #endif
                 route = Context.GetRouteForPosition(pointInfo);

@@ -44,9 +44,9 @@ namespace Assets.Scripts
 
         public void Awake()
         {
-            //Application.logMessageReceived += (string condition, string stackTrace, LogType type) => {
-            //    File.AppendAllText("c:/Users/Sergey/Unity.log", $"------------- {condition} {stackTrace} {stackTrace}{Environment.NewLine}");
-            //};
+            Application.logMessageReceived += (string condition, string stackTrace, LogType type) => {
+                File.AppendAllText("c:/Users/Sergey/Unity.log", $"------------- {condition} {stackTrace} {stackTrace}{Environment.NewLine}");
+            };
 
             var terrainObj = GameObject.Find("Terrain");
 
