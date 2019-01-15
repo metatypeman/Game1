@@ -84,6 +84,7 @@
     <Compile Include="Assets\NPCScripts\Common\Logic\CommonBlackBoard.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\CommonBaseNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\GoToPointNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\RotateNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SimpleAimNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SoundContinueCommandNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SoundEntityConditionNPCProcess.cs" />

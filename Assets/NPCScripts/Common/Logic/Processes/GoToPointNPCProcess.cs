@@ -56,6 +56,7 @@ namespace Assets.NPCScripts.Common.Logic.Processes
 
             var command = CreateCommand(targetPosition.Value);
             var task = ExecuteAsChild(command);
+            //var task = Execute(command);
             mTask = task;
             Wait(task);
 
@@ -63,7 +64,7 @@ namespace Assets.NPCScripts.Common.Logic.Processes
             Log($"task.State = {task.State}");
 #endif
 
-            State = task.State;
+            //State = task.State;
 
 #if UNITY_EDITOR
             Log("End");
@@ -97,9 +98,20 @@ namespace Assets.NPCScripts.Common.Logic.Processes
 
             var route = Context.GetRouteForPosition(startPosition.Value, point);
 
-            if(route.Status == StatusOfRoute.Impossible)
+#if UNITY_EDITOR
+            Log($"route (1) = {route}");
+#endif
+
+            if (route.Status == StatusOfRoute.Impossible)
             {
+                //var moveCommand = new HumanoidHStateCommand();
+                //moveCommand.State = HumanoidHState.Walk;
+                //moveCommand.TargetPosition = point;
                 State = StateOfNPCProcess.Faulted;
+                //var tmpTask = ExecuteBody(moveCommand);
+                //mTask = tmpTask;
+                //Wait(tmpTask);
+
                 return;
             }
 

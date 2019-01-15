@@ -78,7 +78,7 @@ namespace Assets.Scripts
         {
             mName = name;
 
-            Debug.Log($"PlanesList.Count = {PlanesList.Count}");
+            Debug.Log($"PlanesList.Count = {PlanesList.Count} name = {name}");
             foreach (var plane in PlanesList)
             {
                 Debug.Log($"plane.name = {plane.name}");

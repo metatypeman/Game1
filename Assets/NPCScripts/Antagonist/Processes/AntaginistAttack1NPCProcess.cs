@@ -41,8 +41,8 @@ namespace Assets.NPCScripts.Antagonist.Processes
 
             var nameOfWaypoint = "Cube_3";
 
-            //while (InfinityCondition)
-            //{
+            while (InfinityCondition)
+            {
 #if UNITY_EDITOR
                 Log("---------------------------------------------------------------");
 #endif
@@ -68,37 +68,45 @@ namespace Assets.NPCScripts.Antagonist.Processes
                 Log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 #endif
 
-            var moveCommand = new HumanoidHStateCommand();
-            moveCommand.State = HumanoidHState.Stop;
+                var moveCommand = new HumanoidHStateCommand();
+                moveCommand.State = HumanoidHState.Stop;
 
-            ExecuteBody(moveCommand);
+                ExecuteBody(moveCommand);
 
-            command = StartShootingNPCProcess.CreateCommand();
-            Execute(command);
-
-#if UNITY_EDITOR
-            Log(".................................................");
-#endif
-
-            Wait(30000);
-
-            command = StopShootingNPCProcess.CreateCommand();
-            Execute(command);
+                command = StartShootingNPCProcess.CreateCommand();
+                Execute(command);
 
 #if UNITY_EDITOR
-            Log("***********************************************************");
+                Log(".................................................");
 #endif
 
-            command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
-            task = Execute(command);
+                command = RotateNPCProcess.CreateCommand(30f);
+                task = Execute(command);
+                Wait(task);
+                Wait(5000);
+
+                command = RotateNPCProcess.CreateCommand(-60f);
+                task = Execute(command);
+                Wait(task);
+                Wait(5000);
+
+                command = StopShootingNPCProcess.CreateCommand();
+                Execute(command);
 
 #if UNITY_EDITOR
-            Log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                Log("***********************************************************");
 #endif
 
-            Wait(30000);
+                command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
+                task = Execute(command);
 
-            //}
+#if UNITY_EDITOR
+                Log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+#endif
+
+                Wait(30000);
+
+            }
         }
     }
 }

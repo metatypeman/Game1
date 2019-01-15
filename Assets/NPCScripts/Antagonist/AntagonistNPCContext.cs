@@ -24,6 +24,7 @@ namespace Assets.NPCScripts.Antagonist
             AddTypeOfProcess<StopShootingNPCProcess>();
             AddTypeOfProcess<GoToPointNPCProcess>();
             AddTypeOfProcess<AntaginistAttack1NPCProcess>();
+            AddTypeOfProcess<RotateNPCProcess>();
         }
 
         public override void Bootstrap()
