@@ -33,7 +33,7 @@ namespace Assets.NPCScripts.Common.Logic.Processes
         private void Main(string name)
         {
 #if UNITY_EDITOR
-            Log($"point = {name}");
+            Log($"name = {name} Id = {Id}");
 #endif
 
             var targetWayPoint = Context.GetLogicalObject("{: name='" + name + "'&class='place' :}");
@@ -58,10 +58,15 @@ namespace Assets.NPCScripts.Common.Logic.Processes
             var task = ExecuteAsChild(command);
             //var task = Execute(command);
             mTask = task;
+
+#if UNITY_EDITOR
+            Log($"targetPosition task.GetHashCode() (1) = {task.GetHashCode()}");
+#endif
+
             Wait(task);
 
 #if UNITY_EDITOR
-            Log($"task.State = {task.State}");
+            Log($"task.State (1)= {task.State} task.GetHashCode() (1) = {task.GetHashCode()}");
 #endif
 
             //State = task.State;
@@ -76,7 +81,7 @@ namespace Assets.NPCScripts.Common.Logic.Processes
         protected override void CancelOfProcessChanged()
         {
 #if UNITY_EDITOR
-            Log("CancelOfProcessChanged");
+            Log($"CancelOfProcessChanged mTask?.GetHashCode() = {mTask?.GetHashCode()}");
 #endif
             mTask?.Cancel();
             //mTask.Dispose();//This is not cancel
@@ -87,7 +92,7 @@ namespace Assets.NPCScripts.Common.Logic.Processes
         private void Main(System.Numerics.Vector3 point)
         {
 #if UNITY_EDITOR
-            Log($"point = {point}");
+            Log($"point = {point} Id = {Id}");
 #endif
 
             var startPosition = Context.SelfLogicalObject.GetValue<System.Numerics.Vector3?>("global position");
@@ -95,6 +100,11 @@ namespace Assets.NPCScripts.Common.Logic.Processes
 #if UNITY_EDITOR
             Log($"startPosition = {startPosition}");
 #endif
+
+            if(!startPosition.HasValue)
+            {
+                return;
+            }
 
             var route = Context.GetRouteForPosition(startPosition.Value, point);
 
@@ -124,12 +134,12 @@ namespace Assets.NPCScripts.Common.Logic.Processes
             {
 #if UNITY_EDITOR
                 Log($"InfinityCondition = {InfinityCondition}");
-                Log($"route = {route}");
+                Log($"route = {route} GetHashCode() = {GetHashCode()}");
 #endif
 
                 if (route.NextPoints.Count == 0)
                 {
-                    break;
+                    return;
                 }
 
                 var pointInfo = route.NextPoints.First();
@@ -140,20 +150,46 @@ namespace Assets.NPCScripts.Common.Logic.Processes
 
                 var moveCommand = new HumanoidHStateCommand();
                 moveCommand.State = HumanoidHState.Walk;
+                moveCommand.InitiatingProcessId = Id;
                 moveCommand.TargetPosition = pointInfo.Position;
 
-                var tmpTask = ExecuteBody(moveCommand);
-                mTask = tmpTask;
-                Wait(tmpTask);
+                var task = ExecuteBody(moveCommand);
+                mTask = task;
 
 #if UNITY_EDITOR
-                Log($"tmpTask.State = {tmpTask.State}");
+                Log($"targetPosition task.GetHashCode() (2) = {task.GetHashCode()}");
+#endif
+
+                Wait(task);
+
+#if UNITY_EDITOR
+                Log($"task.State (2) = {task.State} task.GetHashCode() (2) = {task.GetHashCode()}");
                 Log("End Moving");
 #endif
+
+                if (task.State != StateOfNPCProcess.RanToCompletion)
+                {
+                    State = task.State;
+
+#if UNITY_EDITOR
+                    Log("task.State != StateOfNPCProcess.RanToCompletion !!!!! TTRTTTTTT");
+#endif
+
+                    return;
+                }
+
+                //startPosition = Context.SelfLogicalObject.GetValue<System.Numerics.Vector3?>("global position");
+
+                //if (!startPosition.HasValue)
+                //{
+                //    return;
+                //}
+
+                //route = Context.GetRouteForPosition(startPosition.Value, point);
                 route = Context.GetRouteForPosition(pointInfo);
 
 #if UNITY_EDITOR
-                Log($"next route = {route}");
+                Log($"next route = {route}  GetHashCode() = {GetHashCode()}");
 #endif
                 //break;
             }

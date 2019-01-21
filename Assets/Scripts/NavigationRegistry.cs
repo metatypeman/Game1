@@ -336,13 +336,22 @@ namespace Assets.Scripts
 
         private IList<IList<IPlane>> GetPathsListByPlanes(IPlane startPlane, IPlane targePlane)
         {
+#if DEBUG
+            Debug.Log($"startPlane.Name = {startPlane.Name} targePlane.Name = {targePlane.Name}");
+#endif
+
             if (mPathsDict.ContainsKey(startPlane))
             {
+                if(startPlane == targePlane)
+                {
+                    return new List<IList<IPlane>> { new List<IPlane>() { startPlane } };
+                }
+
                 var targetDict = mPathsDict[startPlane];
 
                 if (targetDict.ContainsKey(targePlane))
                 {
-                    return targetDict[targePlane];
+                    return targetDict[targePlane].ToList();
                 }
             }
 
@@ -352,9 +361,9 @@ namespace Assets.Scripts
         private void CalculatePaths()
         {
 #if DEBUG
-            Debug.Log($"mPlanesList.Count = {mPlanesList.Count}");
-            Debug.Log($"mPointsList.Count = {mPointsList.Count}");
-            Debug.Log($"mLinksOfPointsList.Count = {mLinksOfPointsList.Count}");
+            //Debug.Log($"mPlanesList.Count = {mPlanesList.Count}");
+            //Debug.Log($"mPointsList.Count = {mPointsList.Count}");
+            //Debug.Log($"mLinksOfPointsList.Count = {mLinksOfPointsList.Count}");
 #endif
 
             mPlanesDict = new bool?[mPlanesList.Count, mPlanesList.Count];
@@ -370,7 +379,7 @@ namespace Assets.Scripts
                     var innerIndex = mIndexOfPlanesDict[innerPlane];
 
 #if DEBUG
-                    Debug.Log($"outerIndex = {outerIndex} innerIndex = {innerIndex}");
+                    //Debug.Log($"outerIndex = {outerIndex} innerIndex = {innerIndex}");
 #endif
 
                     if (outerIndex == innerIndex)
@@ -385,9 +394,9 @@ namespace Assets.Scripts
                     }
 
 #if DEBUG
-                    Debug.Log($"NEXT outerIndex = {outerIndex} innerIndex = {innerIndex}");
-                    Debug.Log($"outerPlane = {outerPlane}");
-                    Debug.Log($"innerPlane = {innerPlane}");
+                    //Debug.Log($"NEXT outerIndex = {outerIndex} innerIndex = {innerIndex}");
+                    //Debug.Log($"outerPlane = {outerPlane}");
+                    //Debug.Log($"innerPlane = {innerPlane}");
 #endif
 
                     var connectionsList1 = new List<PlanesConnectionInfo>();
@@ -398,7 +407,7 @@ namespace Assets.Scripts
                     foreach (var outerPoint in outerPlane.PointsList)
                     {
 #if DEBUG
-                        Debug.Log($"outerPoint = {outerPoint}");
+                        //Debug.Log($"outerPoint = {outerPoint}");
 #endif
 
                         if (pointsOfLinksOfPointsDict.ContainsKey(outerPoint))
@@ -412,7 +421,7 @@ namespace Assets.Scripts
                     var directCommonPointsList = outerPlane.PointsList.Intersect(innerPlane.PointsList).ToList();
 
 #if DEBUG
-                    Debug.Log($"directCommonPointsList.Count = {directCommonPointsList.Count}");
+                    //Debug.Log($"directCommonPointsList.Count = {directCommonPointsList.Count}");
 #endif
 
                     foreach (var directCommonPoint in directCommonPointsList)
@@ -428,7 +437,7 @@ namespace Assets.Scripts
                     foreach (var innerPoint in innerPlane.PointsList)
                     {
 #if DEBUG
-                        Debug.Log($"innerPoint = {innerPoint}");
+                        //Debug.Log($"innerPoint = {innerPoint}");
 #endif
 
                         if (pointsOfLinksOfPointsDict.ContainsKey(innerPoint))
@@ -440,11 +449,11 @@ namespace Assets.Scripts
                     var intersectedPointsList = outerPointsList.Intersect(innerPointsList).ToList();
 
 #if DEBUG
-                    Debug.Log($"intersectedPointsList.Count = {intersectedPointsList.Count}");
-                    foreach (var intersectedPoint in intersectedPointsList)
-                    {
-                        Debug.Log($"intersectedPoint = {intersectedPoint}");
-                    }
+                    //Debug.Log($"intersectedPointsList.Count = {intersectedPointsList.Count}");
+                    //foreach (var intersectedPoint in intersectedPointsList)
+                    //{
+                    //    Debug.Log($"intersectedPoint = {intersectedPoint}");
+                    //}
 #endif
 
                     var indirectCommonPointsList = intersectedPointsList.Except(directCommonPointsList).ToList();
@@ -486,13 +495,13 @@ namespace Assets.Scripts
             }
 
 #if DEBUG
-            for (var outerIndex = 0; outerIndex < mPlanesList.Count; outerIndex++)
-            {
-                for (var innerIndex = 0; innerIndex < mPlanesList.Count; innerIndex++)
-                {
-                    Debug.Log($"mPlanesDict[{outerIndex}, {innerIndex}] = {mPlanesDict[outerIndex, innerIndex]}");
-                }
-            }
+            //for (var outerIndex = 0; outerIndex < mPlanesList.Count; outerIndex++)
+            //{
+            //    for (var innerIndex = 0; innerIndex < mPlanesList.Count; innerIndex++)
+            //    {
+            //        Debug.Log($"mPlanesDict[{outerIndex}, {innerIndex}] = {mPlanesDict[outerIndex, innerIndex]}");
+            //    }
+            //}
 #endif
 
             for (var i = 0; i < mPlanesList.Count; i++)
@@ -500,14 +509,14 @@ namespace Assets.Scripts
                 var plane = mBackIndexOfPlanesDict[i];
 
 #if DEBUG
-                Debug.Log($"i = {i} plane = {plane}");
+                //Debug.Log($"i = {i} plane = {plane}");
 #endif
 
                 FillPaths(plane, new List<IPlane>(), ref listOfPaths);
             }
 
 #if DEBUG
-            Debug.Log($"listOfPaths.Count = {listOfPaths.Count}");
+            //Debug.Log($"listOfPaths.Count = {listOfPaths.Count}");
 #endif
 
             var pathListForGrouping = new List<PathGroupItem>();
@@ -525,15 +534,15 @@ namespace Assets.Scripts
                 pathListForGrouping.Add(itemForGrouping);
 
 #if DEBUG
-                var str = PathsHelper.DisplayPath(path);
-                Debug.Log(str);
+                //var str = PathsHelper.DisplayPath(path);
+                //Debug.Log(str);
 #endif
             }
 
             mPathsDict = pathListForGrouping.GroupBy(p => p.FirstItem).ToDictionary(p => p.Key, p => p.GroupBy(x => x.LastItem).ToDictionary(x => x.Key, x => (IList<IList<IPlane>>)x.Select(y => y.StepItems).ToList()));
 
 #if DEBUG
-            Debug.Log("End");
+            //Debug.Log("End");
 #endif
         }
 
@@ -547,7 +556,7 @@ namespace Assets.Scripts
         private void FillPaths(IPlane plane, List<IPlane> localPath, ref List<List<IPlane>> result)
         {
 #if DEBUG
-            Debug.Log($"plane = {plane}");
+            //Debug.Log($"plane = {plane}");
 #endif
 
             if (localPath.Contains(plane))
@@ -565,7 +574,7 @@ namespace Assets.Scripts
             var index = mIndexOfPlanesDict[plane];
 
 #if DEBUG
-            Debug.Log($"index = {index}");
+            //Debug.Log($"index = {index}");
 #endif
 
             for (var i = 0; i < mPlanesList.Count; i++)
@@ -573,7 +582,7 @@ namespace Assets.Scripts
                 var nextLink = mPlanesDict[index, i];
 
 #if DEBUG
-                Debug.Log($"nextLink = {nextLink}");
+                //Debug.Log($"nextLink = {nextLink}");
 #endif
 
                 if (nextLink == true)
@@ -581,7 +590,7 @@ namespace Assets.Scripts
                     var nextPlane = mBackIndexOfPlanesDict[i];
 
 #if DEBUG
-                    Debug.Log($"nextPlane = {nextPlane}");
+                    //Debug.Log($"nextPlane = {nextPlane}");
 #endif
 
                     FillPaths(nextPlane, localPath.ToList(), ref result);
@@ -636,8 +645,10 @@ namespace Assets.Scripts
 
             var nextPathsList = new List<IList<IPlane>>();
 
-            foreach (var path in stepOfRoute.PathsList)
+            foreach (var originPath in stepOfRoute.PathsList.ToList())
             {
+                var path = originPath.ToList();
+
 #if DEBUG
                 Debug.Log(PathsHelper.DisplayPath(path));
 #endif
@@ -801,19 +812,25 @@ namespace Assets.Scripts
 
             var stepOfRouteDicts = new Dictionary<IPlane, StepOfRoute>();
 
+            var hadPaths = false;
+
             foreach (var initialPathsItem in initialPathsList)
             {
-                var pathsList = initialPathsItem.PathsList;
+                var pathsList = initialPathsItem.PathsList.ToList();
 
 #if DEBUG
                 Debug.Log($"pathsList.Count = {pathsList.Count}");
 #endif
 
-                foreach (var path in pathsList)
+                foreach (var origPath in pathsList)
                 {
+                    var path = origPath.ToList();
+
 #if DEBUG
                     Debug.Log(PathsHelper.DisplayPath(path));
 #endif
+
+                    path = path.ToList();
 
                     var firstItem = path.First();
 
@@ -879,6 +896,8 @@ namespace Assets.Scripts
                         throw new NotSupportedException();
                     }
 
+                    hadPaths = true;
+
 #if DEBUG
                     Debug.Log($"connectionList.Count = {connectionList.Count}");
 #endif
@@ -889,6 +908,11 @@ namespace Assets.Scripts
                         Debug.Log($"connection = {connection}");
 #endif
 
+                        if(connection.WayPoint.Position == startPosition)
+                        {
+                            continue;
+                        }
+                        
                         StepOfRoute stepOfRoute = null;
 
                         if (connection.IsDirect)
@@ -950,6 +974,29 @@ namespace Assets.Scripts
 #endif
                     }
                 }
+            }
+
+            if (hadPaths && result.NextPoints.Count == 0)
+            {
+#if DEBUG
+                Debug.Log("hadPaths && result.NextPoints.Count == 0");
+#endif
+
+                var stepOfRoute = new StepOfRoute();
+                stepOfRoute.CurrentPlane = null;
+                result.NextSteps.Add(stepOfRoute);
+
+                //stepOfRoute.PathsList.Add(path);
+
+                var pointInfo = new PointInfo();
+                pointInfo.Route = result;
+                pointInfo.StepOfRoute = stepOfRoute;
+                pointInfo.Position = targetPosition;
+                pointInfo.WayPoint = null;
+                //pointInfo.Plane = nextItem;
+
+                result.NextPoints.Add(pointInfo);
+                stepOfRoute.TargetPoints.Add(pointInfo);
             }
 
             if (result.Status == StatusOfRoute.Unknown)
@@ -1018,12 +1065,6 @@ namespace Assets.Scripts
                 foreach (var targetPlane in planesListForTargetPosition)
                 {
                     var pathsList = GetPathsListByPlanes(startPlane, targetPlane);
-
-                    if (pathsList.Count == 0)
-                    {
-                        continue;
-                    }
-
 #if DEBUG
                     Debug.Log($"pathsList.Count = {pathsList.Count}");
                     foreach (var path in pathsList)
@@ -1032,10 +1073,15 @@ namespace Assets.Scripts
                     }
 #endif
 
+                    if (pathsList.Count == 0)
+                    {
+                        continue;
+                    }
+
                     var item = new PathInfo();
                     item.FirstItem = startPlane;
                     item.LastItem = targetPlane;
-                    item.PathsList = pathsList;
+                    item.PathsList = pathsList.ToList();
                     result.Add(item);
                 }
             }

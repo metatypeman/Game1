@@ -37,6 +37,11 @@ namespace Assets.NPCScripts.Antagonist.Processes
 
             command = SimpleAimNPCProcess.CreateCommand();
             task = Execute(command);
+
+#if UNITY_EDITOR
+            Log($"task.GetHashCode() (23) = {task.GetHashCode()}");
+#endif
+
             Wait(task);
 
             var nameOfWaypoint = "Cube_3";
@@ -50,7 +55,11 @@ namespace Assets.NPCScripts.Antagonist.Processes
                 command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
                 task = Execute(command);
 
-                Wait(10000);
+#if UNITY_EDITOR
+                Log($"task.GetHashCode() (45) = {task.GetHashCode()}");
+#endif
+
+                Wait(30000);
 
 #if UNITY_EDITOR
                 Log($"task.State = {task.State}");
@@ -80,14 +89,15 @@ namespace Assets.NPCScripts.Antagonist.Processes
                 Log(".................................................");
 #endif
 
-                command = RotateNPCProcess.CreateCommand(30f);
-                task = Execute(command);
-                Wait(task);
-                Wait(5000);
+                //command = RotateNPCProcess.CreateCommand(30f);
+                //task = Execute(command);
 
-                command = RotateNPCProcess.CreateCommand(-60f);
-                task = Execute(command);
-                Wait(task);
+                //Wait(task);
+                //Wait(5000);
+
+                //command = RotateNPCProcess.CreateCommand(-60f);
+                //task = Execute(command);
+                //Wait(task);
                 Wait(5000);
 
                 command = StopShootingNPCProcess.CreateCommand();
@@ -97,15 +107,15 @@ namespace Assets.NPCScripts.Antagonist.Processes
                 Log("***********************************************************");
 #endif
 
-                command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
-                task = Execute(command);
+                //command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
+                //task = Execute(command);
 
 #if UNITY_EDITOR
-                Log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+            Log($"task.State = {task.State}");
+            Log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 #endif
 
-                Wait(30000);
-
+                //Wait(30000);
             }
         }
     }
