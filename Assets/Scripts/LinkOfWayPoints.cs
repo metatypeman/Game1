@@ -20,7 +20,7 @@ namespace Assets.Scripts
             get
             {
 #if DEBUG
-                Debug.Log($"FirstPoint name = {name}");
+                //Debug.Log($"FirstPoint name = {name}");
 #endif
                 if(mFirstPoint == null)
                 {
@@ -36,7 +36,7 @@ namespace Assets.Scripts
             get
             {
 #if DEBUG
-                Debug.Log($"SecondPoint name = {name}");
+                //Debug.Log($"SecondPoint name = {name}");
 #endif
                 if(mSecondPoint == null)
                 {
@@ -74,13 +74,13 @@ namespace Assets.Scripts
             commonLevelHost.HostNavigationRegistry.RegLinkOfWayPoints(this);
 
 #if DEBUG
-            Debug.Log($"name = {name}");
-            Debug.Log($"FirstPoint?.name = {FirstPoint?.name}");
-            Debug.Log($"SecondPoint?.name = {SecondPoint?.name}");
+            //Debug.Log($"name = {name}");
+            //Debug.Log($"FirstPoint?.name = {FirstPoint?.name}");
+            //Debug.Log($"SecondPoint?.name = {SecondPoint?.name}");
 #endif
 #if DEBUG
-            Debug.Log($"(mFirstPoint == null) = {mFirstPoint == null}");
-            Debug.Log($"(mSecondPoint == null) = {mSecondPoint == null}");
+            //Debug.Log($"(mFirstPoint == null) = {mFirstPoint == null}");
+            //Debug.Log($"(mSecondPoint == null) = {mSecondPoint == null}");
 #endif
         }
     }

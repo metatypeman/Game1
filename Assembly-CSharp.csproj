@@ -83,6 +83,7 @@
     <Compile Include="Assets\NPCScripts\Antagonist\Processes\AntagonistKeyListenerNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\CommonBlackBoard.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\CommonBaseNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\GoToPointAndShootNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\GoToPointNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\RotateNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SimpleAimNPCProcess.cs" />

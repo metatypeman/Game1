@@ -17,7 +17,7 @@ namespace Assets.NPCScripts.PixKeeper.Processes
             Log("Begin :)");
 #endif
 
-            GoToTargetWayPoint("RedWaypoint");
+            //GoToTargetWayPoint("RedWaypoint");
         }
 
         private void Main()

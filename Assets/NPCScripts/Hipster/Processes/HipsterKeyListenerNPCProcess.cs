@@ -66,6 +66,7 @@ namespace Assets.NPCScripts.Hipster.Processes
             //NProcessGoToTargetWaypoint("Cube_1");
             NProcessGoToTargetWaypoint("WayPoint_av_1");
             //NProcessGoToTargetWaypoint("FarWaypoint");
+            NProcessGoToTargetWaypoint("Cube_1");
         }
 
         private void ProcessGoToRedWaypoint()
@@ -95,7 +96,8 @@ namespace Assets.NPCScripts.Hipster.Processes
 #endif
 
             var command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
-            Execute(command);
+            var task = Execute(command);
+            Wait(task);
         }
 
         private void ProcessGoToTargetWaypoint(string nameOfWaypoint)

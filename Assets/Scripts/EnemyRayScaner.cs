@@ -67,6 +67,14 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 	
 	// Update is called once per frame
 	void Update () {
+        lock(mIsDiedLockObj)
+        {
+            if(mIsDied)
+            {
+                return;
+            }
+        }
+
         if(Head == null)
         {
             RayToScan(transform);
@@ -170,6 +178,22 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
             {
                 return mVisibleObjects.ToList();
             }
+        }
+    }
+
+    private bool mIsDied;
+    private readonly object mIsDiedLockObj = new object();
+
+    public void Die()
+    {
+        lock(mIsDiedLockObj)
+        {
+            if(mIsDied)
+            {
+                return;
+            }
+
+            mIsDied = true;
         }
     }
 }

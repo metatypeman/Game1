@@ -30,7 +30,7 @@ namespace Assets.NPCScripts.PixKeeper.Processes
 
             switch (key)
             {
-                case KeyCode.G:
+                case KeyCode.J:
                     GoToFarWayPoint();
                     break;
             }
@@ -38,6 +38,36 @@ namespace Assets.NPCScripts.PixKeeper.Processes
 
         private void GoToFarWayPoint()
         {
+            var rifle = Context.GetLogicalObject("{: name='M4A1 Sopmod' :}");
+
+#if UNITY_EDITOR
+            Log($"rifle !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! = {rifle}");
+#endif
+
+            //var tmpB = Context.GetLogicalObject("{: name='TrafficBarrierHazards (1)' :}");
+
+            //var tmpP = tmpB.GetValue<System.Numerics.Vector3?>("global position");
+
+#if UNITY_EDITOR
+            //Log($"tmpP = {tmpP}");
+#endif
+
+            if (rifle == null)
+            {
+                return;
+            }
+
+            var command = TakeFromSurfaceNPCProcess.CreateCommand(rifle);
+            var task = Execute(command);
+            Wait(task);
+
+            command = SimpleAimNPCProcess.CreateCommand();
+            task = Execute(command);
+            Wait(task);
+
+            //NProcessGoToTargetWaypoint("Cube_2");
+            NProcessGoToTargetWaypoint("WayPoint_av_1");
+
             NProcessGoToTargetWaypoint("Cube_2");
         }
 
@@ -47,25 +77,31 @@ namespace Assets.NPCScripts.PixKeeper.Processes
             Log($"nameOfWaypoint = {nameOfWaypoint}");
 #endif
 
-            var targetWayPoint = Context.GetLogicalObject("{: name='" + nameOfWaypoint + "'&class='place' :}");
+            var command = GoToPointAndShootNPCProcess.CreateCommand(nameOfWaypoint);
+            var task = ExecuteAsChild(command);
+            //mTask = task;
+            Wait(task);
 
-#if UNITY_EDITOR
-            Log($"(targetWayPoint == null) = {targetWayPoint == null}");
-#endif
+            //            var targetWayPoint = Context.GetLogicalObject("{: name='" + nameOfWaypoint + "'&class='place' :}");
 
-            if (targetWayPoint == null)
-            {
-                return;
-            }
+            //#if UNITY_EDITOR
+            //            Log($"(targetWayPoint == null) = {targetWayPoint == null}");
+            //#endif
 
-            var targetPosition = targetWayPoint.GetValue<System.Numerics.Vector3?>("global position");
+            //            if (targetWayPoint == null)
+            //            {
+            //                return;
+            //            }
 
-#if UNITY_EDITOR
-            Log($"targetPosition = {targetPosition}");
-#endif
+            //            var targetPosition = targetWayPoint.GetValue<System.Numerics.Vector3?>("global position");
 
-            var command = GoToPointNPCProcess.CreateCommand(targetPosition.Value);
-            Execute(command);
+            //#if UNITY_EDITOR
+            //            Log($"targetPosition = {targetPosition}");
+            //#endif
+
+            //            var command = GoToPointNPCProcess.CreateCommand(targetPosition.Value);
+            //            var task = Execute(command);
+            //            Wait(task);
         }
     }
 }

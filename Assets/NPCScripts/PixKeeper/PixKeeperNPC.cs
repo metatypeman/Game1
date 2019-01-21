@@ -66,7 +66,7 @@ namespace Assets.NPCScripts.PixKeeper
 
             mInputKeyHelper = new InputKeyHelper(mUserClientCommonHost);
 
-            //mInputKeyHelper.AddPressListener(KeyCode.G, OnPressAction);
+            mInputKeyHelper.AddPressListener(KeyCode.J, OnPressAction);
         }
 
         private void InternalBodyHost_OnReady()

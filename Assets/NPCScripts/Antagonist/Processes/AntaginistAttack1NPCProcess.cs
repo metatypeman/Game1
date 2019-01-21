@@ -46,77 +46,44 @@ namespace Assets.NPCScripts.Antagonist.Processes
 
             var nameOfWaypoint = "Cube_3";
 
-            while (InfinityCondition)
-            {
+            RunAndShoot(nameOfWaypoint);
+
+            nameOfWaypoint = "Cube_2";
+
+            RunAndShoot(nameOfWaypoint);
+
+            nameOfWaypoint = "Cube_1";
+
+            RunAndShoot(nameOfWaypoint);
+
+            nameOfWaypoint = "WayPoint_av_1";
+
+            RunAndShoot(nameOfWaypoint);
+        }
+
+        private void RunAndShoot(string nameOfWaypoint)
+        {
 #if UNITY_EDITOR
-                Log("---------------------------------------------------------------");
+            Log($"nameOfWaypoint = {nameOfWaypoint}");
 #endif
 
-                command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
-                task = Execute(command);
+            var command = GoToPointAndShootNPCProcess.CreateCommand(nameOfWaypoint);
+            var task = ExecuteAsChild(command);
+            mTask = task;
+            Wait(task);
+        }
 
+        private INPCProcess mTask;
+
+        protected override void CancelOfProcessChanged()
+        {
 #if UNITY_EDITOR
-                Log($"task.GetHashCode() (45) = {task.GetHashCode()}");
+            Log($"CancelOfProcessChanged mTask?.GetHashCode() = {mTask?.GetHashCode()}");
 #endif
+            mTask?.Cancel();
+            //mTask.Dispose();//This is not cancel
 
-                Wait(30000);
-
-#if UNITY_EDITOR
-                Log($"task.State = {task.State}");
-#endif
-
-                //if (task.State == StateOfNPCProcess.Running)
-                //{
-                //    break;
-                //}
-
-                task.Cancel();
-                //task.Dispose();//This is not cancel
-
-#if UNITY_EDITOR
-                Log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-#endif
-
-                var moveCommand = new HumanoidHStateCommand();
-                moveCommand.State = HumanoidHState.Stop;
-
-                ExecuteBody(moveCommand);
-
-                command = StartShootingNPCProcess.CreateCommand();
-                Execute(command);
-
-#if UNITY_EDITOR
-                Log(".................................................");
-#endif
-
-                //command = RotateNPCProcess.CreateCommand(30f);
-                //task = Execute(command);
-
-                //Wait(task);
-                //Wait(5000);
-
-                //command = RotateNPCProcess.CreateCommand(-60f);
-                //task = Execute(command);
-                //Wait(task);
-                Wait(5000);
-
-                command = StopShootingNPCProcess.CreateCommand();
-                Execute(command);
-
-#if UNITY_EDITOR
-                Log("***********************************************************");
-#endif
-
-                //command = GoToPointNPCProcess.CreateCommand(nameOfWaypoint);
-                //task = Execute(command);
-
-#if UNITY_EDITOR
-            Log($"task.State = {task.State}");
-            Log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-#endif
-
-                //Wait(30000);
-            }
+            base.CancelOfProcessChanged();
         }
     }
 }

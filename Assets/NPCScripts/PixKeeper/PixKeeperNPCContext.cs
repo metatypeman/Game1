@@ -18,7 +18,14 @@ namespace Assets.NPCScripts.PixKeeper
         {
             //AddTypeOfProcess<PixKeeperBootNPCProcess>();
             AddTypeOfProcess<PixKeeperKeyListenerNPCProcess>();
+            AddTypeOfProcess<TakeFromSurfaceNPCProcess>();
+            AddTypeOfProcess<SimpleAimNPCProcess>();
+            AddTypeOfProcess<StartShootingNPCProcess>();
+            AddTypeOfProcess<StopShootingNPCProcess>();
             AddTypeOfProcess<GoToPointNPCProcess>();
+            
+            AddTypeOfProcess<RotateNPCProcess>();
+            AddTypeOfProcess<GoToPointAndShootNPCProcess>();
             AddTypeOfProcess<SoundEntityConditionNPCProcess>(new SoundEventProcessOptions()
             {
                 Kind = KindOfSoundEvent.EntityCondition
