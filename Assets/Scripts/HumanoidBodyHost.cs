@@ -234,8 +234,8 @@ public class HumanoidBodyHost : MonoBehaviour, IInternalBodyHumanoidHost, IInter
         mOldLogicalObjectsBus.RegisterObject(instanceId, mSelfEntityId);
 
         //mHostLogicalObjectStorage["name"] = tmpGameObject.name;
-        mHostLogicalObjectStorage.SetAccessPolicyToFact("alive", KindOfAccessPolicyToFact.ForVisible);
-        mHostLogicalObjectStorage.SetAccessPolicyToFact("died", KindOfAccessPolicyToFact.ForVisible);
+        //mHostLogicalObjectStorage.SetAccessPolicyToFact("alive", KindOfAccessPolicyToFact.ForVisible);
+        //mHostLogicalObjectStorage.SetAccessPolicyToFact("died", KindOfAccessPolicyToFact.ForVisible);
 
         mHostLogicalObjectStorage["alive"] = true;
         mHostLogicalObjectStorage["died"] = false;

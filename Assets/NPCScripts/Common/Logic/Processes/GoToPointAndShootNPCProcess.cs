@@ -25,6 +25,61 @@ namespace Assets.NPCScripts.Common.Logic.Processes
             Log($"name = {name}");
 #endif
 
+            //var shooting = false;
+            //var needShhoting = false;
+            //var iSee = false;
+
+            //INPCProcess shootingTask = null;
+            
+            //var targetObject = Context.GetLogicalObject("{: team='"+ BlackBoard.Team +"' :}");
+//            var targetObject = Context.GetLogicalObject("{: name='John' :}");
+
+//            var trigger = CreateTrigger(() => {
+//                if (BlackBoard.VisibleObjects.Any(p => p == targetObject))
+//                {
+//                    return true;
+//                }
+
+//                return false;
+//            }, 100);
+
+//            trigger.OnFire += () => {
+//#if UNITY_EDITOR
+//                Log("I see!!! needShhoting = {needShhoting} shooting = {shooting}");
+//#endif
+
+//                iSee = true;
+
+//                if(needShhoting)
+//                {
+//                    if(shooting)
+//                    {
+//                        shooting = false;
+//                        var command = StopShootingNPCProcess.CreateCommand();
+//                        ExecuteAsChild(command);
+//                    }
+//                }
+//            };
+
+//            trigger.OnResetCondition += ()=> {
+//#if UNITY_EDITOR
+//                Log($"I do not see!!! needShhoting = {needShhoting} shooting = {shooting}");
+//#endif
+
+//                iSee = false;
+
+//                if (needShhoting)
+//                {
+//                    if (!shooting)
+//                    {
+//                        shooting = true;
+//                        var command = StartShootingNPCProcess.CreateCommand();
+//                        Execute(command);
+                        
+//                    }
+//                }
+//            };
+
             while (InfinityCondition)
             {
 #if UNITY_EDITOR
@@ -65,8 +120,14 @@ namespace Assets.NPCScripts.Common.Logic.Processes
 
                 ExecuteBody(moveCommand);
 
-                command = StartShootingNPCProcess.CreateCommand();
-                Execute(command);
+                //needShhoting = true;
+
+                //if(!iSee)
+                //{
+                    //shooting = true;
+                    command = StartShootingNPCProcess.CreateCommand();
+                    Execute(command);
+                //}
 
 #if UNITY_EDITOR
                 Log(".................................................");
@@ -88,6 +149,9 @@ namespace Assets.NPCScripts.Common.Logic.Processes
 
                 command = StopShootingNPCProcess.CreateCommand();
                 ExecuteAsChild(command);
+
+                //needShhoting = false;
+                //shooting = false;
 
 #if UNITY_EDITOR
                 Log("***********************************************************");

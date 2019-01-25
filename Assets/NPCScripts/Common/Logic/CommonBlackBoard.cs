@@ -16,6 +16,8 @@ namespace Assets.NPCScripts.Common.Logic
         public string Name { get; set; }
         public BaseAbstractLogicalObject EntityOfRifle { get; set; }
         public ulong EntityIdOfInitRifle { get; set; }
+        public string Team { get; set; }
+        public bool IsShooting { get; set; }
 
         public override void Bootstrap()
         {
@@ -46,7 +48,26 @@ namespace Assets.NPCScripts.Common.Logic
             //LogInstance.Log($"Name = {Name}");
 #endif
 
-            if(EntityIdOfInitRifle > 0)
+            queryStr = "{: team(?X,?Y) :}";
+            queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, Context.EntityDictionary);
+            querySearchResultCGStorage = Context.MainCGStorage.Search(queryStorage);
+
+            actionExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
+
+#if DEBUG
+            LogInstance.Log($"actionExpression = {actionExpression}");
+#endif
+
+            if (actionExpression != null)
+            {
+                Team = actionExpression?.FoundExpression?.AsConcept.Name;
+            }
+
+#if DEBUG
+            LogInstance.Log($"Team = {Team}");
+#endif
+
+            if (EntityIdOfInitRifle > 0)
             {
 #if DEBUG
                 Log($"EntityIdOfInitRifle = {EntityIdOfInitRifle}");
@@ -82,6 +103,7 @@ namespace Assets.NPCScripts.Common.Logic
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.AppendLine($"{spaces}{nameof(EntityOfRifle)} = {EntityOfRifle}");
             sb.AppendLine($"{spaces}{nameof(EntityIdOfInitRifle)} = {EntityIdOfInitRifle}");
+            sb.AppendLine($"{spaces}{nameof(Team)} = {Team}");
             return sb.ToString();
         }
     }

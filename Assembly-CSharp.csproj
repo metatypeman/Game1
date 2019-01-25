@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{7A8E2D87-BD4D-935C-C539-C3FF95D2C919}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -65,9 +66,13 @@
     <Compile Include="Assets\Cube_2_WaypointInfo.cs" />
     <Compile Include="Assets\Cube_3_WaypointInfo.cs" />
     <Compile Include="Assets\Dead\Script\PlayGUI.cs" />
+    <Compile Include="Assets\DoCake.cs" />
+    <Compile Include="Assets\Editor_DoCake.cs" />
     <Compile Include="Assets\EthansHealthHelper.cs" />
     <Compile Include="Assets\GameInfoObject.cs" />
     <Compile Include="Assets\GateOfMilitaryBase.cs" />
+    <Compile Include="Assets\GnuClayComponents\NPC.cs" />
+    <Compile Include="Assets\GnuClayComponents\NPCEditor.cs" />
     <Compile Include="Assets\GreenWaypoint.cs" />
     <Compile Include="Assets\ISpellHelperDialog.cs" />
     <Compile Include="Assets\MyFirstPersonController.cs" />
@@ -78,14 +83,20 @@
     <Compile Include="Assets\NewBehaviourScript.cs" />
     <Compile Include="Assets\NPCScripts\Antagonist\AntagonistNPC.cs" />
     <Compile Include="Assets\NPCScripts\Antagonist\AntagonistNPCContext.cs" />
-    <Compile Include="Assets\NPCScripts\Antagonist\Processes\AntaginistAttack1NPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Antagonist\Processes\AntagonistAttack1NPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Antagonist\Processes\AntagonistBootNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Antagonist\Processes\AntagonistKeyListenerNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\CommonBlackBoard.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\Attack2NPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\CommonBaseNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\GoToPointAndShootNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\GoToPointNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\RotateNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SafetyShootingNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SearchAndShootNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SearchNearNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\ShootingNPCProcess.cs" />
+    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\ShootingWithRotationNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SimpleAimNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SoundContinueCommandNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SoundEntityConditionNPCProcess.cs" />

@@ -1,4 +1,5 @@
-﻿using Assets.NPCScripts.Common.Logic.Processes;
+﻿using Assets.NPCScripts.Antagonist.Processes;
+using Assets.NPCScripts.Common.Logic.Processes;
 using Assets.Scripts;
 using MyNPCLib;
 using System;
@@ -38,37 +39,41 @@ namespace Assets.NPCScripts.PixKeeper.Processes
 
         private void GoToFarWayPoint()
         {
-            var rifle = Context.GetLogicalObject("{: name='M4A1 Sopmod' :}");
+            //            var rifle = Context.GetLogicalObject("{: name='M4A1 Sopmod' :}");
 
-#if UNITY_EDITOR
-            Log($"rifle !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! = {rifle}");
-#endif
+            //#if UNITY_EDITOR
+            //            Log($"rifle !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! = {rifle}");
+            //#endif
 
-            //var tmpB = Context.GetLogicalObject("{: name='TrafficBarrierHazards (1)' :}");
+            //            //var tmpB = Context.GetLogicalObject("{: name='TrafficBarrierHazards (1)' :}");
 
-            //var tmpP = tmpB.GetValue<System.Numerics.Vector3?>("global position");
+            //            //var tmpP = tmpB.GetValue<System.Numerics.Vector3?>("global position");
 
-#if UNITY_EDITOR
-            //Log($"tmpP = {tmpP}");
-#endif
+            //#if UNITY_EDITOR
+            //            //Log($"tmpP = {tmpP}");
+            //#endif
 
-            if (rifle == null)
-            {
-                return;
-            }
+            //            if (rifle == null)
+            //            {
+            //                return;
+            //            }
 
-            var command = TakeFromSurfaceNPCProcess.CreateCommand(rifle);
-            var task = Execute(command);
-            Wait(task);
+            //            var command = TakeFromSurfaceNPCProcess.CreateCommand(rifle);
+            //            var task = Execute(command);
+            //            Wait(task);
 
-            command = SimpleAimNPCProcess.CreateCommand();
-            task = Execute(command);
-            Wait(task);
+            //            command = SimpleAimNPCProcess.CreateCommand();
+            //            task = Execute(command);
+            //            Wait(task);
 
             //NProcessGoToTargetWaypoint("Cube_2");
-            NProcessGoToTargetWaypoint("WayPoint_av_1");
+            //NProcessGoToTargetWaypoint("WayPoint_av_1");
 
-            NProcessGoToTargetWaypoint("Cube_2");
+            //NProcessGoToTargetWaypoint("Cube_2");
+
+            //var command = AntagonistAttack1NPCProcess.CreateCommand();
+            var command = Attack2NPCProcess.CreateCommand();
+            Execute(command);
         }
 
         private void NProcessGoToTargetWaypoint(string nameOfWaypoint)

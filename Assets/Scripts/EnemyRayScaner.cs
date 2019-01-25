@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 {
-    public int distance = 15;
+    //public int distance = 15;
     public Vector3 Offset = new Vector3(0, 1.6f, 0);
 
     public int HRaysCount = 6;
@@ -147,7 +147,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 
         var pos = transform.position + Offset;
 
-        if (Physics.Raycast(pos, globalDirection, out hit, distance))
+        if (Physics.Raycast(pos, globalDirection, out hit, Distance))
         {
 #if UNITY_EDITOR
             Debug.DrawLine(pos, hit.point, Color.blue);
@@ -162,7 +162,7 @@ public class EnemyRayScaner : MonoBehaviour, INPCRayScaner
 #if UNITY_EDITOR
         else
         {
-            Debug.DrawRay(pos, globalDirection * distance, Color.red);
+            Debug.DrawRay(pos, globalDirection * Distance, Color.red);
         }
 #endif
     }

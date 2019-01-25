@@ -100,6 +100,8 @@ namespace Assets.NPCScripts.Hipster
                 var hostContext = new NPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
                 mNPCProcessesContext = new HipsterNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext);
 
+                //mNPCProcessesContext.BlackBoard.Team = "West";
+
                 mNPCProcessesContext.Bootstrap();
             });
         }
@@ -109,6 +111,11 @@ namespace Assets.NPCScripts.Hipster
             //Log("Begin");
             mInputKeyHelper.Update();
             mInvokingInMainThreadHelper.Update();
+        }
+
+        void Stop()
+        {
+            mNPCProcessesContext?.Dispose();
         }
     }
 }

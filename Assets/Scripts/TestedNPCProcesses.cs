@@ -520,8 +520,8 @@ namespace Assets.Scripts
             return command;
         }
 
-        private static float DEFAULT_DELTA = 5f;
-        private static float DEFAULT_ANGLE = 90f;
+        private static readonly float DEFAULT_DELTA = 5f;
+        private static readonly float DEFAULT_ANGLE = 90f;
 
         private void Main(BaseAbstractLogicalObject entity)
         {
@@ -541,7 +541,7 @@ namespace Assets.Scripts
         {
 #if UNITY_EDITOR
             Log($"Begin entity = {angle}");
-            Log($"enemy = {entity}");
+            Log($"entity = {entity}");
             Log($"Id = {Id}");
             Log($"Rotate to Angle angle = {angle} Id = {Id}");
 #endif

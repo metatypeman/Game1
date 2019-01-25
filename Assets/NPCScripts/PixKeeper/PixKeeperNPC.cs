@@ -52,6 +52,8 @@ namespace Assets.NPCScripts.PixKeeper
             }
         }
 
+        public GameObject Gun;
+
         void Start()
         {
             mInvokingInMainThreadHelper = new InvokingInMainThreadHelper();
@@ -89,6 +91,22 @@ namespace Assets.NPCScripts.PixKeeper
                 var hostContext = new NPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
                 mNPCProcessesContext = new PixKeeperNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext);
 
+                if (Gun != null)
+                {
+                    var gunLogicalObject = Gun.GetComponent<RapidFireGun>();
+
+                    var entityId = gunLogicalObject.EntityId;
+
+#if DEBUG
+                    Log($"entityId = {entityId}");
+#endif
+
+                    mNPCProcessesContext.BlackBoard.EntityIdOfInitRifle = entityId;
+                    //mNPCProcessesContext.BlackBoard.Team = "Red";
+                }
+
+                //mNPCProcessesContext.BlackBoard.Team = "West";
+
                 mNPCProcessesContext.Bootstrap();
             });
         }
@@ -117,6 +135,11 @@ namespace Assets.NPCScripts.PixKeeper
             var command = KeyToNPCCommandConverter.Convert(key);
             Log($"command = {command}");
             mNPCProcessesContext?.Send(command);
+        }
+
+        void Stop()
+        {
+            mNPCProcessesContext?.Dispose();
         }
     }
 }

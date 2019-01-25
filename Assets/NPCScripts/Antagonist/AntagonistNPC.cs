@@ -72,6 +72,20 @@ namespace Assets.NPCScripts.Antagonist
             mInputKeyHelper.AddPressListener(KeyCode.L, OnPressAction);
             mInputKeyHelper.AddPressListener(KeyCode.N, OnPressAction);
             mInputKeyHelper.AddPressListener(KeyCode.H, OnPressAction);
+
+#if DEBUG
+            var localPath = UnityEngine.Windows.Directory.localFolder;
+
+            Debug.Log($"localPath = {localPath}");
+
+            var roamingFolder = UnityEngine.Windows.Directory.roamingFolder;
+
+            Debug.Log($"roamingFolder = {roamingFolder}");
+
+            var temporaryFolder = UnityEngine.Windows.Directory.temporaryFolder;
+
+            Debug.Log($"temporaryFolder = {temporaryFolder}");
+#endif
         }
 
         private void InternalBodyHost_OnReady()
@@ -105,6 +119,7 @@ namespace Assets.NPCScripts.Antagonist
 #endif
 
                     mNPCProcessesContext.BlackBoard.EntityIdOfInitRifle = entityId;
+                    //mNPCProcessesContext.BlackBoard.Team = "Red";
                 }
 
                 mNPCProcessesContext.Bootstrap();
@@ -123,6 +138,11 @@ namespace Assets.NPCScripts.Antagonist
             var command = KeyToNPCCommandConverter.Convert(key);
             Log($"command = {command}");
             mNPCProcessesContext?.Send(command);
+        }
+
+        void Stop()
+        {
+            mNPCProcessesContext?.Dispose();
         }
     }
 }

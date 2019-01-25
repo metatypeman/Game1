@@ -29,7 +29,7 @@ namespace Assets.NPCScripts.Antagonist.Processes
 
             Wait(10000);
 
-            var command = AntaginistAttack1NPCProcess.CreateCommand();
+            var command = AntagonistAttack1NPCProcess.CreateCommand();
             Execute(command);
 
 
