@@ -9,6 +9,9 @@ public class NPC : MonoBehaviour
     //[TextArea]
     public string App;
 
+    [HideInInspector]
+    public string AppPath;
+
     // Use this for initialization
     void Start()
     {
