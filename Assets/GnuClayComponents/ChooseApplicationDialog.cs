@@ -15,10 +15,16 @@ namespace Assets.GnuClayComponents
         {
             titleContent = new GUIContent("chose");
 
-            if (GUILayout.Button("Close"))
-            {
-                Close();
-            }
+            GUILayout.BeginVertical();
+
+
+
+            GUILayout.EndVertical();
+
+            //if (GUILayout.Button("Close"))
+            //{
+            //    Close();
+            //}
         }
 
         public void Open()
