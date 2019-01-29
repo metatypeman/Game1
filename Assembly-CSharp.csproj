@@ -185,6 +185,7 @@
     <Compile Include="Assets\Scripts\PlainRect.cs" />
     <Compile Include="Assets\Scripts\PlanesConnectionInfo.cs" />
     <Compile Include="Assets\Scripts\PointInfo.cs" />
+    <Compile Include="Assets\Scripts\ProjectTabEditor.cs" />
     <Compile Include="Assets\Scripts\ProxyForStatesOfHumanoidBodyHost.cs" />
     <Compile Include="Assets\Scripts\RedWaypoint.cs" />
     <Compile Include="Assets\Scripts\ResizePanel.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="Assets\Scripts\TestedNPCContext.cs" />
     <Compile Include="Assets\Scripts\TestedNPCProcesses.cs" />
     <Compile Include="Assets\Scripts\TiltWindow.cs" />
+    <Compile Include="Assets\Scripts\TmpObj.cs" />
     <Compile Include="Assets\Scripts\UserClientCommonHostFactory.cs" />
     <Compile Include="Assets\Scripts\UserClientMode.cs" />
     <Compile Include="Assets\Scripts\VectorsConvertor.cs" />
@@ -209,6 +211,7 @@
     <Compile Include="Assets\UserClientCommonHost.cs" />
     <Compile Include="Assets\YardPlane.cs" />
     <None Include="Assets\Fortress\Shader\Diffuse.shader" />
+    <None Include="Assets\NPCScripts\NewScripts\Apps\PixKeeper.gcapp.txt" />
     <None Include="Assets\race-track-lake\readmore.txt" />
     <None Include="Assets\Fonts\Jupiter\LICENSE.txt" />
     <None Include="Assets\Industrial Props\ReadMe.txt" />
@@ -216,6 +219,7 @@
     <None Include="Assets\Textures and Sprites\SF UI\Background\LICENSE.txt" />
     <None Include="Assets\Military_Rifle_01_Free_v2\Docs\Military_Rifle_Free_Unity_Info.txt" />
     <None Include="Assets\BodyGuards\ReadMe.txt.txt" />
+    <None Include="Assets\NPCScripts\NewScripts\Apps\Antagonist.gcapp.txt" />
     <None Include="Assets\packages\System.Runtime.4.3.0\dotnet_library_license.txt" />
     <None Include="Assets\Mega Fantasy Props Pack\README.txt" />
     <None Include="Assets\Materials\UI-Default-No-Alpha.shader" />
@@ -473,6 +477,9 @@
     </Reference>
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/Sergey/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.13/UnityEngine.StandardEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="GnuClay">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/GnuClay.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
