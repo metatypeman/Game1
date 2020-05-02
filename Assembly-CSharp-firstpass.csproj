@@ -459,6 +459,15 @@
     <Reference Include="System.Configuration.ConfigurationManager">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/Plugins/x86_64/System.Configuration.ConfigurationManager.dll</HintPath>
     </Reference>
+    <Reference Include="SymOntoClay.Core">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SymOntoClay.UnityAsset.Core">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.UnityAsset.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SymOntoClayCoreHelper">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClayCoreHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
@@ -467,12 +476,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Library/PackageCache/com.unity.analytics@3.3.5/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="SymOntoClay.Core">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="SymOntoClay.UnityAsset.Core">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.UnityAsset.Core.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.3f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

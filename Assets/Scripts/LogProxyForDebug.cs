@@ -14,7 +14,7 @@ namespace Assets.Scripts
             var result = LogHelper.BuildLogString(now, KindOfLogLevel.LOG.ToString(), tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
 
 #if UNITY_EDITOR
-            Debug.Log(result);
+            //Debug.Log(result);
 #endif
         }
 
@@ -27,7 +27,7 @@ namespace Assets.Scripts
             var result = LogHelper.BuildLogString(now, KindOfLogLevel.ERROR.ToString(), tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
 
 #if UNITY_EDITOR
-            Debug.LogError(result);
+            //Debug.LogError(result);
 #endif
         }
 
@@ -40,7 +40,7 @@ namespace Assets.Scripts
             var result = LogHelper.BuildLogString(now, KindOfLogLevel.WARNING.ToString(), tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
 
 #if UNITY_EDITOR
-            Debug.LogWarning(result);
+            //Debug.LogWarning(result);
 #endif
         }
 
@@ -48,7 +48,7 @@ namespace Assets.Scripts
         public void Raw(string message)
         {
 #if UNITY_EDITOR
-            Debug.Log(message);
+            //Debug.Log(message);
 #endif
         }
     }

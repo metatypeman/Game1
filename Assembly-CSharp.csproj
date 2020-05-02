@@ -209,7 +209,11 @@
     <Compile Include="Assets\Scripts\VectorsConvertor.cs" />
     <Compile Include="Assets\Scripts\YellowWaypoint.cs" />
     <Compile Include="Assets\SpellHelperDialog.cs" />
-    <Compile Include="Assets\SymOntoClay\Game.cs" />
+    <Compile Include="Assets\SymOntoClay\BipedNPC.cs" />
+    <Compile Include="Assets\SymOntoClay\FileHelper.cs" />
+    <Compile Include="Assets\SymOntoClay\PlatformLogger.cs" />
+    <Compile Include="Assets\SymOntoClay\World.cs" />
+    <Compile Include="Assets\SymOntoClayExamples\SymOntoClayNPC.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
     <Compile Include="Assets\UserClientCommonHost.cs" />
     <Compile Include="Assets\YardPlane.cs" />
@@ -217,6 +221,7 @@
     <None Include="Assets\Urban_Props\readme.txt" />
     <None Include="Assets\packages\System.Data.Common.4.3.0\dotnet_library_license.txt" />
     <None Include="Assets\NPCScripts\NewScripts\Apps\Antagonist.gcapp.txt" />
+    <None Include="Assets\NPCScripts\NewScripts\Dictionaries\Locator.txt" />
     <None Include="Assets\Textures and Sprites\SF UI\Background\LICENSE.txt" />
     <None Include="Assets\packages\System.Data.Common.4.3.0\ThirdPartyNotices.txt" />
     <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />
@@ -229,6 +234,7 @@
     <None Include="Assets\Fonts\Jupiter\LICENSE.txt" />
     <None Include="Assets\Industrial Props\ReadMe.txt" />
     <None Include="Assets\NPCScripts\NewScripts\Apps\PixKeeper.gcapp.txt" />
+    <None Include="Assets\NPCScripts\NewScripts\Modules\Locator.txt" />
     <None Include="Assets\Mega Fantasy Props Pack\README.txt" />
     <None Include="Assets\BodyGuards\ReadMe.txt.txt" />
     <None Include="Assets\Fortress\Shader\Diffuse.shader" />
@@ -502,6 +508,15 @@
     <Reference Include="System.Configuration.ConfigurationManager">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/Plugins/x86_64/System.Configuration.ConfigurationManager.dll</HintPath>
     </Reference>
+    <Reference Include="SymOntoClay.Core">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SymOntoClay.UnityAsset.Core">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.UnityAsset.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SymOntoClayCoreHelper">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClayCoreHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Library/PackageCache/com.unity.analytics@3.3.5/Unity.Analytics.Editor.dll</HintPath>
     </Reference>
@@ -510,12 +525,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Library/PackageCache/com.unity.analytics@3.3.5/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="SymOntoClay.Core">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="SymOntoClay.UnityAsset.Core">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.UnityAsset.Core.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.3f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

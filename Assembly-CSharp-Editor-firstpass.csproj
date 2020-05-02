@@ -359,6 +359,15 @@
     <Reference Include="System.Configuration.ConfigurationManager">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/Plugins/x86_64/System.Configuration.ConfigurationManager.dll</HintPath>
     </Reference>
+    <Reference Include="SymOntoClay.Core">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SymOntoClay.UnityAsset.Core">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.UnityAsset.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SymOntoClayCoreHelper">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClayCoreHelper.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.Advertisements">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
     </Reference>
@@ -373,12 +382,6 @@
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Library/PackageCache/com.unity.purchasing@2.0.6/Editor/UnityEditor.Purchasing.dll</HintPath>
-    </Reference>
-    <Reference Include="SymOntoClay.Core">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="SymOntoClay.UnityAsset.Core">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.UnityAsset.Core.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Library/PackageCache/com.unity.ext.nunit@1.0.0/net35/unity-custom/nunit.framework.dll</HintPath>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Assets
 {
@@ -22,9 +23,16 @@ namespace Assets
             _target = (DoCake)target;
         }
 
+        //public override VisualElement CreateInspectorGUI()
+        //{
+        //    return new Label("This is a Label in a Custom Editor");
+        //}
+
         // Here is where the magic begins! You can use any GUI command here (As far as i know)
         public override void OnInspectorGUI()
         {
+            //EditorGUI.
+
             GUILayout.BeginVertical();
             GUILayout.Label("The Cake Maker Script!", EditorStyles.boldLabel);
             _target.isDelicious = EditorGUILayout.Toggle("Is it Delicous Cake?", _target.isDelicious); // Our bool
