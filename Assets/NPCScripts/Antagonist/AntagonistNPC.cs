@@ -76,15 +76,15 @@ namespace Assets.NPCScripts.Antagonist
 #if DEBUG
             var localPath = UnityEngine.Windows.Directory.localFolder;
 
-            Debug.Log($"localPath = {localPath}");
+            //Debug.Log($"localPath = {localPath}");
 
             var roamingFolder = UnityEngine.Windows.Directory.roamingFolder;
 
-            Debug.Log($"roamingFolder = {roamingFolder}");
+            //Debug.Log($"roamingFolder = {roamingFolder}");
 
             var temporaryFolder = UnityEngine.Windows.Directory.temporaryFolder;
 
-            Debug.Log($"temporaryFolder = {temporaryFolder}");
+            //Debug.Log($"temporaryFolder = {temporaryFolder}");
 #endif
         }
 
