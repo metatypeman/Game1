@@ -74,15 +74,15 @@ namespace Assets.NPCScripts.Antagonist
             mInputKeyHelper.AddPressListener(KeyCode.H, OnPressAction);
 
 #if DEBUG
-            var localPath = UnityEngine.Windows.Directory.localFolder;
+            //var localPath = UnityEngine.Windows.Directory.localFolder;
 
             //Debug.Log($"localPath = {localPath}");
 
-            var roamingFolder = UnityEngine.Windows.Directory.roamingFolder;
+            //var roamingFolder = UnityEngine.Windows.Directory.roamingFolder;
 
             //Debug.Log($"roamingFolder = {roamingFolder}");
 
-            var temporaryFolder = UnityEngine.Windows.Directory.temporaryFolder;
+            //var temporaryFolder = UnityEngine.Windows.Directory.temporaryFolder;
 
             //Debug.Log($"temporaryFolder = {temporaryFolder}");
 #endif

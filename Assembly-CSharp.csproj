@@ -209,6 +209,9 @@
     <Compile Include="Assets\Scripts\VectorsConvertor.cs" />
     <Compile Include="Assets\Scripts\YellowWaypoint.cs" />
     <Compile Include="Assets\SpellHelperDialog.cs" />
+    <Compile Include="Assets\SymOntoClay\Editors\NPCFileImporterEditor.cs" />
+    <Compile Include="Assets\SymOntoClay\Helpers\FileHelper.cs" />
+    <Compile Include="Assets\SymOntoClay\Helpers\QuickLogger.cs" />
     <Compile Include="Assets\SymOntoClay\Importers\NPCFileImporter.cs" />
     <Compile Include="Assets\SymOntoClay\Scriptables\NPCFile.cs" />
     <Compile Include="Assets\SymOntoClay\World.cs" />
@@ -505,6 +508,9 @@
     <Reference Include="SymOntoClay.Core">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.Core.dll</HintPath>
     </Reference>
+    <Reference Include="SymOntoClay.CoreHelper">
+      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.CoreHelper.dll</HintPath>
+    </Reference>
     <Reference Include="SymOntoClay.UnityAsset.Core">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.UnityAsset.Core.dll</HintPath>
     </Reference>
@@ -516,9 +522,6 @@
     </Reference>
     <Reference Include="Unity.Analytics.StandardEvents">
       <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Library/PackageCache/com.unity.analytics@3.3.5/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="SymOntoClay.CoreHelper">
-      <HintPath>C:/Users/Sergey/Documents/GitHub/Game1/Assets/SymOntoClay/SymOntoClay.CoreHelper.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.3f1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

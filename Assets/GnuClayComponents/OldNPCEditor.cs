@@ -5,11 +5,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace Assets.GnuClayComponents
 {
+#if UNITY_EDITOR
     [CustomEditor(typeof(OldNPC))]
     public class OldNPCEditor : Editor
     {
@@ -65,4 +68,5 @@ namespace Assets.GnuClayComponents
             }
         }
     }
+#endif
 }

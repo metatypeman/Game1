@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Assets
 {
+#if UNITY_EDITOR
     [CustomEditor(typeof(DoCake))]
     public class Editor_DoCake : Editor
     {
@@ -61,4 +64,5 @@ namespace Assets
             }
         }
     }
+#endif
 }

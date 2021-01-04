@@ -18,25 +18,25 @@ public class OldNPC : MonoBehaviour
     {
         if(App != null)
         {
-            var path = AssetDatabase.GetAssetPath(App);
+//            var path = AssetDatabase.GetAssetPath(App);
 
-#if DEBUG
-            Debug.Log($"Start path = {path}");
-#endif
-            var localPath = Directory.GetParent(UnityEngine.Windows.Directory.localFolder).FullName;
+//#if DEBUG
+//            Debug.Log($"Start path = {path}");
+//#endif
+//            var localPath = Directory.GetParent(UnityEngine.Windows.Directory.localFolder).FullName;
 
-#if DEBUG
-            Debug.Log($"localPath = {localPath}");
-#endif
-            var fullPath = Path.Combine(localPath, path);
+//#if DEBUG
+//            Debug.Log($"localPath = {localPath}");
+//#endif
+//            var fullPath = Path.Combine(localPath, path);
 
-#if DEBUG
-            Debug.Log($"fullPath = {fullPath}");
-#endif
+//#if DEBUG
+//            Debug.Log($"fullPath = {fullPath}");
+//#endif
 
-            mEngine = new Engine(new EngineOptions() {
-                AppFileName = fullPath
-            });
+//            mEngine = new Engine(new EngineOptions() {
+//                AppFileName = fullPath
+//            });
         }
     }
 
