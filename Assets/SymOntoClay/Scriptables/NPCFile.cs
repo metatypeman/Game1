@@ -9,6 +9,7 @@ namespace SymOntoClay.Scriptables
 {
     public class NPCFile : ScriptableObject
     {
+        [HideInInspector]
         public string FullName;
     }
 }

@@ -1,9 +1,0 @@
-npc Example
-{
-    on Init =>
-    {
-	    "Begin" >> @>log;
-
-	    "End" >> @>log;
-    }
-}

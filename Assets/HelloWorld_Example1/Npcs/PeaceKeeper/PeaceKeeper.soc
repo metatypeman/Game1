@@ -1,0 +1,9 @@
+npc PeaceKeeper
+{
+    on Init =>
+    {
+		"Begin" >> @>log;
+
+	    "End" >> @>log;
+    }
+}

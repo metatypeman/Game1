@@ -20,7 +20,7 @@ namespace SymOntoClay.Editors
 
         public override void OnInspectorGUI()
         {
-            //EditorGUILayout.LabelField("Hi", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Describes behaviour and information of NPC.", EditorStyles.boldLabel);
         }
     }
 #endif
