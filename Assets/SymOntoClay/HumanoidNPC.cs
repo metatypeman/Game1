@@ -1,13 +1,9 @@
 ﻿using Assets.SymOntoClay;
-using SymOntoClay.Helpers;
+using SymOntoClay.CoreHelper.DebugHelpers;
 using SymOntoClay.Scriptables;
 using SymOntoClay.UnityAsset.Core;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace SymOntoClay
