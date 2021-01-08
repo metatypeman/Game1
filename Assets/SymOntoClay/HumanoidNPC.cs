@@ -1,4 +1,5 @@
-﻿using SymOntoClay.Helpers;
+﻿using Assets.SymOntoClay;
+using SymOntoClay.Helpers;
 using SymOntoClay.Scriptables;
 using SymOntoClay.UnityAsset.Core;
 using System;
@@ -54,7 +55,7 @@ namespace SymOntoClay
                 npcSettings.HostFile = hostFullFileName;
             }
 
-            npcSettings.HostListener = this;
+            npcSettings.HostListener = GetHostListener();
             //npcSettings.PlatformSupport = new TstPlatformSupport();
 
 #if DEBUG
@@ -64,6 +65,18 @@ namespace SymOntoClay
             QuickLogger.Log($"HumanoidNPC Awake npcSettings = {npcSettings}");
 
             _npc = WorldFactory.WorldInstance.GetHumanoidNPC(npcSettings);
+        }
+
+        private object GetHostListener()
+        {
+            var hostListener = GetComponent<IHostListener>();
+
+            if (hostListener == null)
+            {
+                return this;
+            }
+
+            return hostListener;
         }
 
         void Start()

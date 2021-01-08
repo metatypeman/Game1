@@ -45,6 +45,11 @@ namespace Assets.SymOntoClay.Editors
             }
 
             GUILayout.EndVertical();
+
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(_target);
+            }
         }
 
         private bool IsValidId(string id)
