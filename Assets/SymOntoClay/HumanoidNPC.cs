@@ -13,15 +13,36 @@ namespace SymOntoClay
     {
         public NPCFile NPCFile;
         public HostFile HostFile;
+        public string Id;
 
-        // Start is called before the first frame update
+        void OnValidate()
+        {
+            if (string.IsNullOrWhiteSpace(Id))
+            {
+                Id = $"#{Guid.NewGuid().ToString("D").Replace("-", string.Empty)}";
+            }
+        }
+
+        void Awake()
+        {
+#if DEBUG
+            Debug.Log("HumanoidNPC Awake");
+#endif
+        }
+
         void Start()
+        {
+#if DEBUG
+            Debug.Log("HumanoidNPC Start");
+#endif
+        }
+
+        void Update()
         {
 
         }
 
-        // Update is called once per frame
-        void Update()
+        void Stop()
         {
 
         }

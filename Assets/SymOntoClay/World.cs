@@ -1,6 +1,11 @@
-﻿using SymOntoClay.Scriptables;
+﻿using SymOntoClay.Helpers;
+using SymOntoClay.Scriptables;
+using SymOntoClay.UnityAsset.Core;
+using SymOntoClay.UnityAsset.Core.Internal.EndPoints.MainThread;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace SymOntoClay
@@ -10,17 +15,50 @@ namespace SymOntoClay
     {
         public WorldFile WorldFile;
 
-        // Start is called before the first frame update
+        void Awake()
+        {
+            _invokerInMainThread = new InvokerInMainThread();
+
+            var supportBasePath = Path.Combine(Environment.GetEnvironmentVariable("APPDATA"), Application.productName);
+
+            var logDir = Path.Combine(supportBasePath, "NpcLogs");
+
+            _world = WorldFactory.WorldInstance;
+
+            var worldFullFileName = Path.Combine(Application.dataPath, WorldFile.FullName);
+
+#if DEBUG
+            Debug.Log($"World Awake worldFullFileName = {worldFullFileName}");
+#endif
+
+            var settings = new WorldSettings();
+
+            QuickLogger.Log($"Application.supportBasePath = {supportBasePath}");
+
+#if DEBUG            
+            Debug.Log($"World Awake settings = {settings}");
+#endif
+        }
+
         void Start()
         {
-
+#if DEBUG
+            Debug.Log("World Start");
+#endif
         }
 
-        // Update is called once per frame
         void Update()
+        {
+            _invokerInMainThread.Update();
+        }
+
+        void Stop()
         {
 
         }
+
+        private IWorld _world;
+        private InvokerInMainThread _invokerInMainThread;
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using SymOntoClay;
 using SymOntoClay.Scriptables;
+using SymOntoClay.UnityAsset.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,38 @@ namespace Assets.SymOntoClay.Editors
             GUILayout.BeginVertical();
             _target.NPCFile = (NPCFile)EditorGUILayout.ObjectField("NPC File", _target.NPCFile, typeof(NPCFile), false);
             _target.HostFile = (HostFile)EditorGUILayout.ObjectField("Host File", _target.HostFile, typeof(HostFile), false);
+
+            var newIdValue = EditorGUILayout.TextField("Id", _target.Id);
+
+            if(_target.Id != newIdValue && IsValidId(newIdValue))
+            {
+                UniqueIdRegistry.RemoveId(_target.Id);
+                UniqueIdRegistry.AddId(newIdValue);
+
+                _target.Id = newIdValue;
+            }
+
             GUILayout.EndVertical();
+        }
+
+        private bool IsValidId(string id)
+        {
+            if(string.IsNullOrWhiteSpace(id))
+            {
+                return false;
+            }
+
+            if(!id.StartsWith("#"))
+            {
+                return false;
+            }
+
+            if(UniqueIdRegistry.ContainsId(id))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 #endif
