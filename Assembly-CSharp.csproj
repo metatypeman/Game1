@@ -209,6 +209,7 @@
     <Compile Include="Assets\Scripts\VectorsConvertor.cs" />
     <Compile Include="Assets\Scripts\YellowWaypoint.cs" />
     <Compile Include="Assets\SpellHelperDialog.cs" />
+    <Compile Include="Assets\SymOntoClay\Build\BuildProcessor.cs" />
     <Compile Include="Assets\SymOntoClay\Editors\HostFileImporterEditor.cs" />
     <Compile Include="Assets\SymOntoClay\Editors\HumanoidNPCEditor.cs" />
     <Compile Include="Assets\SymOntoClay\Editors\NPCFileImporterEditor.cs" />
