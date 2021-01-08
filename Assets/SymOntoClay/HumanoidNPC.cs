@@ -1,6 +1,9 @@
-﻿using SymOntoClay.Scriptables;
+﻿using SymOntoClay.Helpers;
+using SymOntoClay.Scriptables;
+using SymOntoClay.UnityAsset.Core;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,8 +29,41 @@ namespace SymOntoClay
         void Awake()
         {
 #if DEBUG
-            Debug.Log("HumanoidNPC Awake");
+            Debug.Log("HumanoidNPC Awake"); 
 #endif
+
+            var npcFullFileName = Path.Combine(Application.dataPath, NPCFile.FullName);
+
+#if DEBUG
+            Debug.Log($"HumanoidNPC Awake npcFullFileName = {npcFullFileName}");
+#endif
+
+            var npcSettings = new HumanoidNPCSettings();
+            npcSettings.Id = Id;
+
+            npcSettings.LogicFile = npcFullFileName;
+
+            if (HostFile != null)
+            {
+                var hostFullFileName = Path.Combine(Application.dataPath, HostFile.FullName);
+
+#if DEBUG
+                Debug.Log($"HumanoidNPC Awake hostFullFileName = {hostFullFileName}");
+#endif
+
+                npcSettings.HostFile = hostFullFileName;
+            }
+
+            npcSettings.HostListener = this;
+            //npcSettings.PlatformSupport = new TstPlatformSupport();
+
+#if DEBUG
+            Debug.Log($"HumanoidNPC Awake npcSettings = {npcSettings}");
+#endif
+
+            QuickLogger.Log($"HumanoidNPC Awake npcSettings = {npcSettings}");
+
+            _npc = WorldFactory.WorldInstance.GetHumanoidNPC(npcSettings);
         }
 
         void Start()
@@ -44,7 +80,9 @@ namespace SymOntoClay
 
         void Stop()
         {
-
+            _npc.Dispose();
         }
+
+        private IHumanoidNPC _npc;
     }
 }

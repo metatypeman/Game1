@@ -3,7 +3,7 @@ npc PeaceKeeper
     on Init =>
     {
 		"Begin" >> @>log;
-
+        "The Beatles!" >> @>log;
 	    "End" >> @>log;
     }
 }
