@@ -29,6 +29,7 @@ namespace SymOntoClay
             _world = WorldFactory.WorldInstance;
 
             _world.AddConvertor(new Vector3UnityAndSystemNumericConvertor());
+            _world.AddConvertor(new Vector3AndWayPointValueConvertor());
 
             var worldFullFileName = Path.Combine(Application.dataPath, WorldFile.FullName);
 

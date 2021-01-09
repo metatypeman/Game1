@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace SymOntoClay
 {
@@ -27,8 +28,10 @@ namespace SymOntoClay
         void Awake()
         {
 #if DEBUG
-            Debug.Log("HumanoidNPC Awake"); 
+            Debug.Log("HumanoidNPC Awake");
 #endif
+
+            _navMeshAgent = GetComponent<NavMeshAgent>();
 
             var npcFullFileName = Path.Combine(Application.dataPath, NPCFile.FullName);
 
@@ -93,14 +96,16 @@ namespace SymOntoClay
             _npc.Dispose();
         }
 
+        private NavMeshAgent _navMeshAgent;
+
         System.Numerics.Vector3 IPlatformSupport.ConvertFromRelativeToAbsolute(System.Numerics.Vector2 relativeCoordinates)
         {
             var angle = relativeCoordinates.X;
             var distance = relativeCoordinates.Y;
 
 #if DEBUG
-            Debug.Log($"HumanoidNPC ConvertFromRelativeToAbsolute angle = {angle}");
-            Debug.Log($"HumanoidNPC ConvertFromRelativeToAbsolute distance = {distance}");
+            //Debug.Log($"HumanoidNPC ConvertFromRelativeToAbsolute angle = {angle}");
+            //Debug.Log($"HumanoidNPC ConvertFromRelativeToAbsolute distance = {distance}");
 #endif
 
             var radAngle = angle * Mathf.Deg2Rad;
@@ -109,7 +114,7 @@ namespace SymOntoClay
             var localDirection = new Vector3(x * distance, 0f, y * distance);
 
 #if DEBUG
-            Debug.Log($"HumanoidNPC ConvertFromRelativeToAbsolute localDirection = {localDirection}");
+            //Debug.Log($"HumanoidNPC ConvertFromRelativeToAbsolute localDirection = {localDirection}");
 #endif
 
             var globalDirection = transform.TransformDirection(localDirection);
@@ -121,7 +126,7 @@ namespace SymOntoClay
 
         private IHumanoidNPC _npc;
 
-        [BipedEndpoint("Go", DeviceOfBiped.RightLeg, DeviceOfBiped.LeftLeg)]
+        [BipedEndpoint("Go", true, DeviceOfBiped.RightLeg, DeviceOfBiped.LeftLeg)]
         public void GoToImpl(CancellationToken cancellationToken,
             [EndpointParam("To", KindOfEndpointParam.Position)] Vector3 point,
             float speed = 12)
@@ -129,6 +134,8 @@ namespace SymOntoClay
 #if DEBUG
             Debug.Log($"HumanoidNPC GoToImpl point = {point}");
 #endif
+
+            _navMeshAgent.SetDestination(point);
         }
     }
 }
