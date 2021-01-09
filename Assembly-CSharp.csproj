@@ -226,6 +226,7 @@
     <Compile Include="Assets\SymOntoClay\Scriptables\WorldFile.cs" />
     <Compile Include="Assets\SymOntoClay\World.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
+    <Compile Include="Assets\TstNPCBehaviourScript.cs" />
     <Compile Include="Assets\UserClientCommonHost.cs" />
     <Compile Include="Assets\YardPlane.cs" />
     <None Include="Assets\packages\System.Runtime.4.3.0\ThirdPartyNotices.txt" />

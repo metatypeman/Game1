@@ -24,9 +24,6 @@ namespace Assets.SymOntoClay.Build
         /// <param name="report"></param>
         public void OnPostprocessBuild(BuildReport report)
         {
-            Debug.Log($"report.summary.outputPath = {report.summary.outputPath}");
-            Debug.Log($"Application.dataPath = {Application.dataPath}");
-
             BuildPipeLine.CopyFiles(Application.dataPath, report.summary.outputPath);
         }
     }
