@@ -4,6 +4,7 @@ npc PeaceKeeper
     {
 		"Begin" >> @>log;
         "The Beatles!" >> @>log;
+		@@host.`go`(to: #@[25, 30]);
 	    "End" >> @>log;
     }
 }

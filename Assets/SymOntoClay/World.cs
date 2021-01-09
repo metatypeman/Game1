@@ -1,4 +1,5 @@
-﻿using SymOntoClay.CoreHelper.DebugHelpers;
+﻿using Assets.SymOntoClay.Convertors;
+using SymOntoClay.CoreHelper.DebugHelpers;
 using SymOntoClay.Scriptables;
 using SymOntoClay.UnityAsset.Core;
 using SymOntoClay.UnityAsset.Core.Helpers;
@@ -26,6 +27,8 @@ namespace SymOntoClay
             var logDir = Path.Combine(supportBasePath, "NpcLogs");
 
             _world = WorldFactory.WorldInstance;
+
+            _world.AddConvertor(new Vector3UnityAndSystemNumericConvertor());
 
             var worldFullFileName = Path.Combine(Application.dataPath, WorldFile.FullName);
 

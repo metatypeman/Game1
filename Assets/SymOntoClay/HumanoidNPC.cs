@@ -4,12 +4,13 @@ using SymOntoClay.Scriptables;
 using SymOntoClay.UnityAsset.Core;
 using System;
 using System.IO;
+using System.Threading;
 using UnityEngine;
 
 namespace SymOntoClay
 {
     [AddComponentMenu("SymOntoClay/HumanoidNPC")]
-    public class HumanoidNPC : MonoBehaviour
+    public class HumanoidNPC : MonoBehaviour, IPlatformSupport
     {
         public NPCFile NPCFile;
         public HostFile HostFile;
@@ -52,7 +53,7 @@ namespace SymOntoClay
             }
 
             npcSettings.HostListener = GetHostListener();
-            //npcSettings.PlatformSupport = new TstPlatformSupport();
+            npcSettings.PlatformSupport = this;
 
 #if DEBUG
             Debug.Log($"HumanoidNPC Awake npcSettings = {npcSettings}");
@@ -92,6 +93,42 @@ namespace SymOntoClay
             _npc.Dispose();
         }
 
+        System.Numerics.Vector3 IPlatformSupport.ConvertFromRelativeToAbsolute(System.Numerics.Vector2 relativeCoordinates)
+        {
+            var angle = relativeCoordinates.X;
+            var distance = relativeCoordinates.Y;
+
+#if DEBUG
+            Debug.Log($"HumanoidNPC ConvertFromRelativeToAbsolute angle = {angle}");
+            Debug.Log($"HumanoidNPC ConvertFromRelativeToAbsolute distance = {distance}");
+#endif
+
+            var radAngle = angle * Mathf.Deg2Rad;
+            var x = Mathf.Sin(radAngle);
+            var y = Mathf.Cos(radAngle);
+            var localDirection = new Vector3(x * distance, 0f, y * distance);
+
+#if DEBUG
+            Debug.Log($"HumanoidNPC ConvertFromRelativeToAbsolute localDirection = {localDirection}");
+#endif
+
+            var globalDirection = transform.TransformDirection(localDirection);
+
+            var newPosition = globalDirection + transform.position;
+
+            return new System.Numerics.Vector3(newPosition.x, newPosition.y, newPosition.z);
+        }
+
         private IHumanoidNPC _npc;
+
+        [BipedEndpoint("Go", DeviceOfBiped.RightLeg, DeviceOfBiped.LeftLeg)]
+        public void GoToImpl(CancellationToken cancellationToken,
+            [EndpointParam("To", KindOfEndpointParam.Position)] Vector3 point,
+            float speed = 12)
+        {
+#if DEBUG
+            Debug.Log($"HumanoidNPC GoToImpl point = {point}");
+#endif
+        }
     }
 }
