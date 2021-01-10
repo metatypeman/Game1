@@ -2,6 +2,7 @@
 using SymOntoClay.CoreHelper.DebugHelpers;
 using SymOntoClay.Scriptables;
 using SymOntoClay.UnityAsset.Core;
+using SymOntoClay.UnityAsset.Core.Helpers;
 using System;
 using System.IO;
 using System.Threading;
@@ -32,6 +33,7 @@ namespace SymOntoClay
 #endif
 
             _navMeshAgent = GetComponent<NavMeshAgent>();
+            _animator = GetComponent<Animator>();
 
             var npcFullFileName = Path.Combine(Application.dataPath, NPCFile.FullName);
 
@@ -88,7 +90,36 @@ namespace SymOntoClay
 
         void Update()
         {
+            if(_isDead)
+            {
+                return;
+            }
 
+            if(_isWalking)
+            {
+                var nextPosition = _navMeshAgent.nextPosition;
+                if (_targetPosition.x == nextPosition.x && _targetPosition.z == nextPosition.z)
+                {
+                    _isWalking = false;
+                    _navMeshAgent.isStopped = true;
+                    _navMeshAgent.ResetPath();
+                    UpdateAnimator();
+
+                    lock (_lockObj)
+                    {
+                        lock(_walkingRepresentative)
+                        {
+                            _walkingRepresentative.IsFinished = true;
+                        }
+                        
+                        _walkingRepresentative = null;
+                    }
+
+#if DEBUG
+                    Debug.Log("HumanoidNPC Update Walking has been stoped.");
+#endif
+                }
+            }
         }
 
         void Stop()
@@ -97,6 +128,9 @@ namespace SymOntoClay
         }
 
         private NavMeshAgent _navMeshAgent;
+        private Animator _animator;
+
+        private object _lockObj = new object();
 
         System.Numerics.Vector3 IPlatformSupport.ConvertFromRelativeToAbsolute(System.Numerics.Vector2 relativeCoordinates)
         {
@@ -126,7 +160,24 @@ namespace SymOntoClay
 
         private IHumanoidNPC _npc;
 
-        [BipedEndpoint("Go", true, DeviceOfBiped.RightLeg, DeviceOfBiped.LeftLeg)]
+        private bool _hasRifle;
+        private bool _isWalking;
+        private bool _isAim;
+        private bool _isDead;
+
+        private ActionRepresentative _walkingRepresentative;
+
+        private Vector3 _targetPosition;
+
+        private void UpdateAnimator()
+        {
+            _animator.SetBool("hasRifle", _hasRifle);
+            _animator.SetBool("walk", _isWalking);
+            _animator.SetBool("isAim", _isAim);
+            _animator.SetBool("isDead", _isDead);
+        }
+
+        [BipedEndpoint("Go", DeviceOfBiped.RightLeg, DeviceOfBiped.LeftLeg)]
         public void GoToImpl(CancellationToken cancellationToken,
             [EndpointParam("To", KindOfEndpointParam.Position)] Vector3 point,
             float speed = 12)
@@ -135,7 +186,59 @@ namespace SymOntoClay
             Debug.Log($"HumanoidNPC GoToImpl point = {point}");
 #endif
 
-            _navMeshAgent.SetDestination(point);
+            var representative = new ActionRepresentative();
+
+            _npc.RunInMainThread(() => {
+                _targetPosition = point;
+                _navMeshAgent.SetDestination(point);
+                _isWalking = true;
+                UpdateAnimator();
+
+                lock(_lockObj)
+                {
+                    _walkingRepresentative = representative;
+                }
+            });
+
+#if DEBUG
+            Debug.Log($"HumanoidNPC GoToImpl Walking has been started.");
+#endif
+
+            while(true)
+            {
+                lock(representative)
+                {
+                    if(representative.IsFinished)
+                    {
+                        break;
+                    }
+
+                    if(cancellationToken.IsCancellationRequested)
+                    {
+                        _npc.RunInMainThread(() => {
+                            lock (_lockObj)
+                            {
+                                if (_walkingRepresentative == representative)
+                                {
+                                    _walkingRepresentative = null;
+                                    _navMeshAgent.ResetPath();
+                                    _navMeshAgent.isStopped = true;
+                                    _isWalking = false;
+                                    UpdateAnimator();
+                                }
+                            }
+                        });
+
+                        break;
+                    }
+                }
+
+                Thread.Sleep(1000);
+            }
+
+#if DEBUG
+            Debug.Log($"HumanoidNPC GoToImpl Walking has been stoped.");
+#endif
         }
     }
 }
