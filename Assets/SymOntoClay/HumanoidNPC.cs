@@ -34,6 +34,8 @@ namespace SymOntoClay
 
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _animator = GetComponent<Animator>();
+            _rigidbody = GetComponent<Rigidbody>();
+            _rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 
             var npcFullFileName = Path.Combine(Application.dataPath, NPCFile.FullName);
 
@@ -129,6 +131,7 @@ namespace SymOntoClay
 
         private NavMeshAgent _navMeshAgent;
         private Animator _animator;
+        private Rigidbody _rigidbody;
 
         private object _lockObj = new object();
 
