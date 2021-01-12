@@ -4,12 +4,13 @@ npc PeaceKeeper
     {
 		"Begin" >> @>log;
         "The Beatles!" >> @>log;
-		@@host.`go`(to: #@[-45, 20]);
-		@@host.`go`(to: #@[90, 10]);
-		@@host.`go`(to: #@[-20, 10]);
-		@@host.`go`(to: #@[-10, 10]);
-		@@host.`go`(to: #@[-20, 5]);
-		//@@host.`go`(to: #@[2, 10]);
+		@@host.`go`(to: #@[20, -45]);
+		@@host.`go`(to: #@[10, 90]);
+		@@host.`go`(to: #@[10, -20]);
+		@@host.`go`(to: #@[10, -10]);
+		@@host.`go`(to: #@[5, -20]);
+		@@host.`go`(to: #@[14, 2]);
+		@@host.`go`(to: #@[20, -90]);
 	    "End" >> @>log;
     }
 }

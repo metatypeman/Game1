@@ -1,5 +1,4 @@
-﻿using Assets.SymOntoClay;
-using SymOntoClay.CoreHelper.DebugHelpers;
+﻿using SymOntoClay.CoreHelper.DebugHelpers;
 using SymOntoClay.Scriptables;
 using SymOntoClay.UnityAsset.Core;
 using SymOntoClay.UnityAsset.Core.Helpers;
@@ -102,10 +101,7 @@ namespace SymOntoClay
                 var nextPosition = _navMeshAgent.nextPosition;
                 if (_targetPosition.x == nextPosition.x && _targetPosition.z == nextPosition.z)
                 {
-                    _isWalking = false;
-                    _navMeshAgent.isStopped = true;
-                    _navMeshAgent.ResetPath();
-                    UpdateAnimator();
+                    PerformStop();
 
                     lock (_lockObj)
                     {
@@ -135,10 +131,10 @@ namespace SymOntoClay
 
         private object _lockObj = new object();
 
-        System.Numerics.Vector3 IPlatformSupport.ConvertFromRelativeToAbsolute(System.Numerics.Vector2 relativeCoordinates)
+        System.Numerics.Vector3 IPlatformSupport.ConvertFromRelativeToAbsolute(SymOntoClay.Core.RelativeCoordinate relativeCoordinate)
         {
-            var angle = relativeCoordinates.X;
-            var distance = relativeCoordinates.Y;
+            var distance = relativeCoordinate.Distance;
+            var angle = relativeCoordinate.HorizontalAngle;
 
 #if DEBUG
             //Debug.Log($"HumanoidNPC ConvertFromRelativeToAbsolute angle = {angle}");
@@ -178,6 +174,13 @@ namespace SymOntoClay
             _animator.SetBool("walk", _isWalking);
             _animator.SetBool("isAim", _isAim);
             _animator.SetBool("isDead", _isDead);
+        }
+
+        private void PerformStop()
+        {
+            _navMeshAgent.ResetPath();
+            _isWalking = false;
+            UpdateAnimator();
         }
 
         [BipedEndpoint("Go", DeviceOfBiped.RightLeg, DeviceOfBiped.LeftLeg)]
@@ -224,10 +227,7 @@ namespace SymOntoClay
                                 if (_walkingRepresentative == representative)
                                 {
                                     _walkingRepresentative = null;
-                                    _navMeshAgent.ResetPath();
-                                    _navMeshAgent.isStopped = true;
-                                    _isWalking = false;
-                                    UpdateAnimator();
+                                    PerformStop();
                                 }
                             }
                         });
