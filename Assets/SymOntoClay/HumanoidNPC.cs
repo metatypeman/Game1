@@ -39,6 +39,8 @@ namespace SymOntoClay
             var npcFullFileName = Path.Combine(Application.dataPath, NPCFile.FullName);
 
 #if DEBUG
+            //_navMeshAgent.updateRotation = false;
+            //Debug.Log($"HumanoidNPC Awake _navMeshAgent.updateRotation = {_navMeshAgent.updateRotation}");
             Debug.Log($"HumanoidNPC Awake npcFullFileName = {npcFullFileName}");
 #endif
 

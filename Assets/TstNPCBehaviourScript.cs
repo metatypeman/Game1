@@ -11,6 +11,7 @@ public class TstNPCBehaviourScript : MonoBehaviour
     void Start()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        _navMeshAgent.updateRotation = false;
 
         var cube1 = GameObject.Find("Cube_1");
 
