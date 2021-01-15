@@ -21,7 +21,7 @@ namespace SymOntoClay
         {
             if (string.IsNullOrWhiteSpace(Id))
             {
-                Id = $"#{Guid.NewGuid().ToString("D").Replace("-", string.Empty)}";
+                Id = $"#{name}";
             }
         }
 
@@ -70,6 +70,8 @@ namespace SymOntoClay
             QuickLogger.Log($"HumanoidNPC Awake npcSettings = {npcSettings}");
 
             _npc = WorldFactory.WorldInstance.GetHumanoidNPC(npcSettings);
+
+            AddStopFact();
         }
 
         private object GetHostListener()
@@ -166,6 +168,8 @@ namespace SymOntoClay
         private bool _isAim;
         private bool _isDead;
 
+        private string _walkingFactId;
+
         private ActionRepresentative _walkingRepresentative;
 
         private Vector3 _targetPosition;
@@ -183,6 +187,27 @@ namespace SymOntoClay
             _navMeshAgent.ResetPath();
             _isWalking = false;
             UpdateAnimator();
+            AddStopFact();
+        }
+
+        private void AddStopFact()
+        {
+            _npc.RemoveFact(_walkingFactId);
+            _walkingFactId = _npc.InsertFact("act(self, stop)");
+
+#if DEBUG
+            Debug.Log($"HumanoidNPC AddStopFact _walkingFactId = {_walkingFactId}");
+#endif
+        }
+
+        private void AddWalkingFact()
+        {
+            _npc.RemoveFact(_walkingFactId);
+            _walkingFactId = _npc.InsertFact("act(self, walk)");
+
+#if DEBUG
+            Debug.Log($"HumanoidNPC AddWalkingFact _walkingFactId = {_walkingFactId}");
+#endif
         }
 
         [BipedEndpoint("Go", DeviceOfBiped.RightLeg, DeviceOfBiped.LeftLeg)]
@@ -193,6 +218,7 @@ namespace SymOntoClay
 #if DEBUG
             Debug.Log($"HumanoidNPC GoToImpl point = {point}");
 #endif
+            AddWalkingFact();
 
             var representative = new ActionRepresentative();
 
@@ -200,7 +226,7 @@ namespace SymOntoClay
                 _targetPosition = point;
                 _navMeshAgent.SetDestination(point);
                 _isWalking = true;
-                UpdateAnimator();
+                UpdateAnimator();               
 
                 lock(_lockObj)
                 {
