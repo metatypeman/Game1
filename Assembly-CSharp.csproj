@@ -70,6 +70,7 @@
     <Compile Include="Assets\DoCake.cs" />
     <Compile Include="Assets\Editor_DoCake.cs" />
     <Compile Include="Assets\EthansHealthHelper.cs" />
+    <Compile Include="Assets\ExamplesOfSymOntoClay\ExampleSymOntoClayHumanoidNPC.cs" />
     <Compile Include="Assets\GameInfoObject.cs" />
     <Compile Include="Assets\GateOfMilitaryBase.cs" />
     <Compile Include="Assets\GnuClayComponents\ChooseApplicationDialog.cs" />

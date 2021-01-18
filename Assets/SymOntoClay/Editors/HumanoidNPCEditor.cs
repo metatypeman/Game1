@@ -32,8 +32,7 @@ namespace Assets.SymOntoClay.Editors
         {
             GUILayout.BeginVertical();
             _target.NPCFile = (NPCFile)EditorGUILayout.ObjectField("NPC File", _target.NPCFile, typeof(NPCFile), false);
-            _target.HostFile = (HostFile)EditorGUILayout.ObjectField("Host File", _target.HostFile, typeof(HostFile), false);
-
+            
             var newIdValue = EditorGUILayout.TextField("Id", _target.Id);
 
             if(_target.Id != newIdValue && IsValidId(newIdValue))

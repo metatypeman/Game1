@@ -14,15 +14,47 @@ namespace SymOntoClay
     public class HumanoidNPC : MonoBehaviour, IPlatformSupport
     {
         public NPCFile NPCFile;
-        public HostFile HostFile;
         public string Id;
+
+        private string _oldName;
+        private string _idForFacts;
 
         void OnValidate()
         {
             if (string.IsNullOrWhiteSpace(Id))
             {
-                Id = $"#{name}";
+                Id = GetIdByName();
             }
+            else
+            {
+                var id = GetIdByName();
+
+                if (Id == GetIdByName(_oldName))
+                {
+                    Id = id;
+                }
+            }
+
+            if(Id.StartsWith("#`"))
+            {
+                _idForFacts = Id;
+            }
+            else
+            {
+                _idForFacts = $"{Id.Insert(1, "`")}`";
+            }           
+
+            _oldName = name;
+        }
+
+        private string GetIdByName()
+        {
+            return GetIdByName(name);
+        }
+
+        private string GetIdByName(string nameStr)
+        {
+            return $"#{nameStr}";
         }
 
         void Awake()
@@ -49,17 +81,6 @@ namespace SymOntoClay
 
             npcSettings.LogicFile = npcFullFileName;
 
-            if (HostFile != null)
-            {
-                var hostFullFileName = Path.Combine(Application.dataPath, HostFile.FullName);
-
-#if DEBUG
-                Debug.Log($"HumanoidNPC Awake hostFullFileName = {hostFullFileName}");
-#endif
-
-                npcSettings.HostFile = hostFullFileName;
-            }
-
             npcSettings.HostListener = GetHostListener();
             npcSettings.PlatformSupport = this;
 
@@ -71,7 +92,7 @@ namespace SymOntoClay
 
             _npc = WorldFactory.WorldInstance.GetHumanoidNPC(npcSettings);
 
-            AddStopFact();
+            
         }
 
         private object GetHostListener()
@@ -89,7 +110,13 @@ namespace SymOntoClay
         void Start()
         {
 #if DEBUG
-            Debug.Log("HumanoidNPC Start");
+            Debug.Log("HumanoidNPC Start Begin");
+#endif
+
+            AddStopFact();
+
+#if DEBUG
+            Debug.Log("HumanoidNPC Start End");
 #endif
         }
 
@@ -192,8 +219,13 @@ namespace SymOntoClay
 
         private void AddStopFact()
         {
-            _npc.RemoveFact(_walkingFactId);
-            _walkingFactId = _npc.InsertFact("act(self, stop)");
+#if DEBUG
+            var factStr = $"act({_idForFacts}, stop)";
+            Debug.Log($"HumanoidNPC AddStopFact factStr = '{factStr}'");
+#endif
+
+            //_npc.RemovePublicFact(_walkingFactId);
+            _walkingFactId = _npc.InsertPublicFact($"act({_idForFacts}, stop)");
 
 #if DEBUG
             Debug.Log($"HumanoidNPC AddStopFact _walkingFactId = {_walkingFactId}");
@@ -202,8 +234,13 @@ namespace SymOntoClay
 
         private void AddWalkingFact()
         {
-            _npc.RemoveFact(_walkingFactId);
-            _walkingFactId = _npc.InsertFact("act(self, walk)");
+#if DEBUG
+            var factStr = $"act({_idForFacts}, walk)";
+            Debug.Log($"HumanoidNPC AddWalkingFact factStr = '{factStr}'");
+#endif
+
+            //_npc.RemovePublicFact(_walkingFactId);
+            _walkingFactId = _npc.InsertPublicFact($"act({_idForFacts}, walk)");
 
 #if DEBUG
             Debug.Log($"HumanoidNPC AddWalkingFact _walkingFactId = {_walkingFactId}");

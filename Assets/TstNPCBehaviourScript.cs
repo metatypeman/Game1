@@ -10,6 +10,10 @@ public class TstNPCBehaviourScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+#if DEBUG
+        Debug.Log($"TstNPCBehaviourScript Start name = {name}");
+#endif
+
         _navMeshAgent = GetComponent<NavMeshAgent>();
         //_navMeshAgent.updateRotation = false;
 
