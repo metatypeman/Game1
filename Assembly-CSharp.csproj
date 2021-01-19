@@ -220,7 +220,8 @@
     <Compile Include="Assets\SymOntoClay\Editors\WorldFileImporterEditor.cs" />
     <Compile Include="Assets\SymOntoClay\Helpers\FileHelper.cs" />
     <Compile Include="Assets\SymOntoClay\HumanoidNPC.cs" />
-    <Compile Include="Assets\SymOntoClay\IHostListener.cs" />
+    <Compile Include="Assets\SymOntoClay\IUHostListener.cs" />
+    <Compile Include="Assets\SymOntoClay\IUHumanoidNPC.cs" />
     <Compile Include="Assets\SymOntoClay\Importers\HostFileImporter.cs" />
     <Compile Include="Assets\SymOntoClay\Importers\NPCFileImporter.cs" />
     <Compile Include="Assets\SymOntoClay\Importers\WorldFileImporter.cs" />
