@@ -28,20 +28,27 @@ namespace Assets.SymOntoClay.Editors
 
         //}
 
+        //bool showPosition = true;
+
         public override void OnInspectorGUI()
         {
             GUILayout.BeginVertical();
-            _target.NPCFile = (NPCFile)EditorGUILayout.ObjectField("NPC File", _target.NPCFile, typeof(NPCFile), false);
-            
-            var newIdValue = EditorGUILayout.TextField("Id", _target.Id);
+            //showPosition = EditorGUILayout.Foldout(showPosition, "Hi");
 
-            if(_target.Id != newIdValue && IsValidId(newIdValue))
-            {
-                UniqueIdRegistry.RemoveId(_target.Id);
-                UniqueIdRegistry.AddId(newIdValue);
+            //if(showPosition)
+            //{
+                _target.NPCFile = (NPCFile)EditorGUILayout.ObjectField("NPC File", _target.NPCFile, typeof(NPCFile), false);
 
-                _target.Id = newIdValue;
-            }
+                var newIdValue = EditorGUILayout.TextField("Id", _target.Id);
+
+                if (_target.Id != newIdValue && IsValidId(newIdValue))
+                {
+                    UniqueIdRegistry.RemoveId(_target.Id);
+                    UniqueIdRegistry.AddId(newIdValue);
+
+                    _target.Id = newIdValue;
+                }
+            //}
 
             GUILayout.EndVertical();
 

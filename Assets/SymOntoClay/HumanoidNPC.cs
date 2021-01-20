@@ -75,6 +75,7 @@ namespace SymOntoClay
 
             var npcSettings = new HumanoidNPCSettings();
             npcSettings.Id = Id;
+            npcSettings.InstanceId = GetInstanceID();
 
             npcSettings.LogicFile = npcFullFileName;
 
