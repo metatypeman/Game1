@@ -21,6 +21,17 @@ namespace SymOntoClay
 
         public string IdForFacts => _idForFacts;
 
+        public int HRaysCount = 6;
+        public int VRaysCount = 6;
+        public int RaysDistance = 20;
+        public int TotalRaysAngle = 120;
+        public int FocusRaysAngle = 30;
+
+        public bool IsImmortal;
+        public int Health = 100;
+        public bool IsResurrected;
+        public bool IsDead;
+
         void OnValidate()
         {
             if (string.IsNullOrWhiteSpace(Id))
