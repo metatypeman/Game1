@@ -72,7 +72,7 @@ namespace Assets.SymOntoClay.Editors
                 _target.IsImmortal = EditorGUILayout.Toggle("Is Immortal", _target.IsImmortal);
                 _target.Health = EditorGUILayout.IntField("Health", _target.Health);
                 _target.IsResurrected = EditorGUILayout.Toggle("Is Resurrected", _target.IsResurrected);
-                _target.IsDead = EditorGUILayout.Toggle("Is Dead", _target.IsDead);
+                _target.IsInitiallyDead = EditorGUILayout.Toggle("Is Initially Dead", _target.IsInitiallyDead);
             }
 
             GUILayout.EndVertical();

@@ -11,5 +11,6 @@ namespace SymOntoClay
     {
         IHumanoidNPC NPC { get; }
         string IdForFacts { get; }
+        void Die();
     }
 }

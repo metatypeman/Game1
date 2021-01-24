@@ -1,10 +1,12 @@
-﻿using SymOntoClay.CoreHelper.DebugHelpers;
+﻿using Assets.SymOntoClay.Data;
+using SymOntoClay.CoreHelper.DebugHelpers;
 using SymOntoClay.Scriptables;
 using SymOntoClay.UnityAsset.Core;
 using SymOntoClay.UnityAsset.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,13 +14,15 @@ using UnityEngine.AI;
 namespace SymOntoClay
 {
     [AddComponentMenu("SymOntoClay/HumanoidNPC")]
-    public class HumanoidNPC : MonoBehaviour, IPlatformSupport, IUHumanoidNPC
+    public class HumanoidNPC : MonoBehaviour, IPlatformSupport, IUHumanoidNPC, IVisionProvider
     {
         public NPCFile NPCFile;
         public string Id;
 
         private string _oldName;
         private string _idForFacts;
+
+        private bool _isDead;
 
         public string IdForFacts => _idForFacts;
 
@@ -32,7 +36,7 @@ namespace SymOntoClay
         public bool IsImmortal;
         public int Health = 100;
         public bool IsResurrected;
-        public bool IsDead;
+        public bool IsInitiallyDead;
 
         void OnValidate()
         {
@@ -94,6 +98,7 @@ namespace SymOntoClay
 
             npcSettings.HostListener = GetHostListener();
             npcSettings.PlatformSupport = this;
+            npcSettings.VisionProvider = this;
 
 #if DEBUG
             Debug.Log($"HumanoidNPC Awake npcSettings = {npcSettings}");
@@ -116,9 +121,112 @@ namespace SymOntoClay
             return hostListener;
         }
 
+        private Transform _targetHeadTransform;
+        private List<UVisibleItem> _rawVisibleItemsList = new List<UVisibleItem>();
+        private bool _isRawVisibleItemsListChanged;
+        private object _rawVisibleItemsListLockObj = new object();
+        private List<VisibleItem> _visibleItemsResultList = new List<VisibleItem>();
+
         void Start()
         {
             CalculateRaysAngles();
+
+            _targetHeadTransform = Head.transform;
+        }
+
+        void Update()
+        {
+            if (_isDead)
+            {
+                return;
+            }
+
+            var newRawVisibleItemsList = new List<UVisibleItem>();
+
+            foreach (var rayDirection in _rayDirectionsList)
+            {
+                var localDirection = rayDirection.Item1;
+
+                var globalDirection = _targetHeadTransform.TransformDirection(localDirection);
+
+                var hit = new RaycastHit();
+
+                var pos = _targetHeadTransform.position;
+
+                if (Physics.Raycast(pos, globalDirection, out hit, RaysDistance))
+                {
+#if UNITY_EDITOR
+                    Debug.DrawLine(pos, hit.point, Color.blue);
+#endif
+
+                    var hitTransform = hit.transform;
+
+                    var visibleItem = new UVisibleItem();
+                    visibleItem.InstanceId = hitTransform.gameObject.GetInstanceID();
+                    visibleItem.Position = hitTransform.position;
+                    visibleItem.Distance = hit.distance;
+                    visibleItem.IsInFocus = rayDirection.Item2;
+
+                    newRawVisibleItemsList.Add(visibleItem);
+                }
+#if UNITY_EDITOR
+                else
+                {
+                    Debug.DrawRay(pos, globalDirection * RaysDistance, Color.red);
+                }
+#endif
+            }
+
+            lock (_rawVisibleItemsListLockObj)
+            {
+                _rawVisibleItemsList = newRawVisibleItemsList;
+                _isRawVisibleItemsListChanged = true;
+            }
+        }
+
+        public IList<VisibleItem> GetCurrentVisibleItems()
+        {
+            List<UVisibleItem> rawVisibleItemsList;
+
+            lock (_rawVisibleItemsListLockObj)
+            {
+                if (!_isRawVisibleItemsListChanged)
+                {
+                    return _visibleItemsResultList;
+                }
+
+                _isRawVisibleItemsListChanged = false;
+
+                rawVisibleItemsList = _rawVisibleItemsList;
+            }
+
+            var result = new List<VisibleItem>();
+
+            var rawVisibleItemsDict = rawVisibleItemsList.GroupBy(p => p.InstanceId);
+
+            foreach (var rawVisibleItemsKVPItem in rawVisibleItemsDict)
+            {
+                var firstElem = rawVisibleItemsKVPItem.First();
+
+                var initPosition = firstElem.Position;
+
+                var item = new VisibleItem();
+                item.InstanceId = firstElem.InstanceId;
+                item.Position = new System.Numerics.Vector3(initPosition.x, initPosition.y, initPosition.z);
+                item.IsInFocus = rawVisibleItemsKVPItem.Any(p => p.IsInFocus);
+                item.MinDistance = rawVisibleItemsKVPItem.Min(p => p.Distance);
+
+                result.Add(item);
+            }
+
+            _visibleItemsResultList = result;
+
+            return result;
+        }
+
+        public void Die()
+        {
+            _isDead = true;
         }
 
         void Stop()
