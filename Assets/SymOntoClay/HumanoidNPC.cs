@@ -3,6 +3,7 @@ using SymOntoClay.Scriptables;
 using SymOntoClay.UnityAsset.Core;
 using SymOntoClay.UnityAsset.Core.Helpers;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using UnityEngine;
@@ -155,9 +156,75 @@ namespace SymOntoClay
 
         public IHumanoidNPC NPC => _npc;
 
+        private List<(Vector3, bool)> _rayDirectionsList;
+
         private void CalculateRaysAngles()
         {
+            _rayDirectionsList = new List<(Vector3, bool)>();
 
-        }
+            var anglesList = new List<(float, bool)>();
+
+            var halfOfTotalRaysAngle = TotalRaysAngle / 2;
+            var halfOfFocusRaysAngle = FocusRaysAngle / 2;
+
+            var currAngle = 0f;
+            var inFocus = true;
+
+            do
+            {
+                var radAngle = currAngle * Mathf.Deg2Rad;
+
+                anglesList.Add((radAngle, inFocus));
+
+                if (currAngle != 0)
+                {
+                    anglesList.Add((-1 * radAngle, inFocus));
+                }
+
+                if (currAngle >= halfOfTotalRaysAngle)
+                {
+                    break;
+                }
+
+                if (currAngle < halfOfFocusRaysAngle)
+                {
+                    currAngle += FocusRaysInterval;
+
+                    if (currAngle > halfOfFocusRaysAngle)
+                    {
+                        currAngle = halfOfFocusRaysAngle;
+                    }
+                }
+                else
+                {
+                    currAngle += TotalRaysInterval;
+                    inFocus = false;
+                }
+
+                if (currAngle > halfOfTotalRaysAngle)
+                {
+                    currAngle = halfOfTotalRaysAngle;
+                }
+            } while (true);
+
+            foreach(var vAngle in anglesList)
+            {
+                var inVFocus = vAngle.Item2;
+
+                var z = Mathf.Sin(vAngle.Item1);
+
+                foreach(var hAngle in anglesList)
+                {
+                    inFocus = hAngle.Item2 && inVFocus;
+
+                    var hAngleVal = hAngle.Item1;
+
+                    var x = Mathf.Sin(hAngleVal);
+                    var y = Mathf.Cos(hAngleVal);
+
+                    _rayDirectionsList.Add((new Vector3(x, z, y), inFocus));
+                }
+            }
+        }        
     }
 }
