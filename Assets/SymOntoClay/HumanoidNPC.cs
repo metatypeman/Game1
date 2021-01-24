@@ -21,11 +21,12 @@ namespace SymOntoClay
 
         public string IdForFacts => _idForFacts;
 
-        public int HRaysCount = 6;
-        public int VRaysCount = 6;
+        public GameObject Head;
         public int RaysDistance = 20;
         public int TotalRaysAngle = 120;
+        public int TotalRaysInterval = 30;
         public int FocusRaysAngle = 30;
+        public int FocusRaysInterval = 10;
 
         public bool IsImmortal;
         public int Health = 100;
@@ -114,6 +115,11 @@ namespace SymOntoClay
             return hostListener;
         }
 
+        void Start()
+        {
+            CalculateRaysAngles();
+        }
+
         void Stop()
         {
             _npc.Dispose();
@@ -148,5 +154,10 @@ namespace SymOntoClay
         private IHumanoidNPC _npc;
 
         public IHumanoidNPC NPC => _npc;
+
+        private void CalculateRaysAngles()
+        {
+
+        }
     }
 }

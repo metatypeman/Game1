@@ -20,6 +20,8 @@ namespace Assets.SymOntoClay.Editors
 
         private void OnEnable()
         {
+            _boldLabelStyle = new GUIStyle() { fontStyle = FontStyle.Bold };
+
             _target = (HumanoidNPC)target;
         }
 
@@ -29,6 +31,7 @@ namespace Assets.SymOntoClay.Editors
 
         private bool _showVisionPosition = true;
         private bool _showHealthPosition = true;
+        private GUIStyle _boldLabelStyle;
 
         public override void OnInspectorGUI()
         {
@@ -50,11 +53,14 @@ namespace Assets.SymOntoClay.Editors
 
             if(_showVisionPosition)
             {
-                _target.HRaysCount = EditorGUILayout.IntField("Horisontal rays count", _target.HRaysCount);
-                _target.VRaysCount = EditorGUILayout.IntField("Vertiacal rays count", _target.VRaysCount);
+                _target.Head = (GameObject)EditorGUILayout.ObjectField("Head", _target.Head, typeof(GameObject), true);
                 _target.RaysDistance = EditorGUILayout.IntField("Distance", _target.RaysDistance);
-                _target.TotalRaysAngle = EditorGUILayout.IntField("Total angle", _target.TotalRaysAngle);
-                _target.FocusRaysAngle = EditorGUILayout.IntField("Focus angle", _target.FocusRaysAngle);
+                GUILayout.Label("Field of view", _boldLabelStyle);
+                _target.TotalRaysAngle = EditorGUILayout.IntField("Angle", _target.TotalRaysAngle);
+                _target.TotalRaysInterval = EditorGUILayout.IntField("Angle between rays", _target.TotalRaysInterval);
+                GUILayout.Label("Field of focus", _boldLabelStyle);
+                _target.FocusRaysAngle = EditorGUILayout.IntField("Angle", _target.FocusRaysAngle);
+                _target.FocusRaysInterval = EditorGUILayout.IntField("Angle between rays", _target.FocusRaysInterval);
             }
 
             EditorGUILayout.EndFoldoutHeaderGroup();
