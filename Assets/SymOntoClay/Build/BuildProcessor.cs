@@ -10,7 +10,7 @@ using UnityEditor.Build.Reporting;
 #endif
 using UnityEngine;
 
-namespace Assets.SymOntoClay.Build
+namespace SymOntoClay.Build
 {
 #if UNITY_EDITOR
     public class BuildProcessor : IPostprocessBuildWithReport

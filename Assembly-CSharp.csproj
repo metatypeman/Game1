@@ -229,6 +229,7 @@
     <Compile Include="Assets\SymOntoClay\Scriptables\HostFile.cs" />
     <Compile Include="Assets\SymOntoClay\Scriptables\NPCFile.cs" />
     <Compile Include="Assets\SymOntoClay\Scriptables\WorldFile.cs" />
+    <Compile Include="Assets\SymOntoClay\Thing.cs" />
     <Compile Include="Assets\SymOntoClay\World.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
     <Compile Include="Assets\TstNPCBehaviourScript.cs" />

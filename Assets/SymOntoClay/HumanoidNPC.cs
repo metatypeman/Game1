@@ -85,14 +85,12 @@ namespace SymOntoClay
             var npcFullFileName = Path.Combine(Application.dataPath, NPCFile.FullName);
 
 #if DEBUG
-            //_navMeshAgent.updateRotation = false;
-            //Debug.Log($"HumanoidNPC Awake _navMeshAgent.updateRotation = {_navMeshAgent.updateRotation}");
             Debug.Log($"HumanoidNPC Awake npcFullFileName = {npcFullFileName}");
 #endif
 
             var npcSettings = new HumanoidNPCSettings();
             npcSettings.Id = Id;
-            npcSettings.InstanceId = GetInstanceID();
+            npcSettings.InstanceId = gameObject.GetInstanceID();
 
             npcSettings.LogicFile = npcFullFileName;
 
@@ -104,7 +102,7 @@ namespace SymOntoClay
             Debug.Log($"HumanoidNPC Awake npcSettings = {npcSettings}");
 #endif
 
-            QuickLogger.Log($"HumanoidNPC Awake npcSettings = {npcSettings}");
+            //QuickLogger.Log($"HumanoidNPC Awake npcSettings = {npcSettings}");
 
             _npc = WorldFactory.WorldInstance.GetHumanoidNPC(npcSettings);
         }
