@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.SymOntoClay.Editors
+namespace SymOntoClay.Editors
 {
 #if UNITY_EDITOR
     [CustomEditor(typeof(HumanoidNPC))]
@@ -37,7 +37,7 @@ namespace Assets.SymOntoClay.Editors
         {
             GUILayout.BeginVertical();
 
-            _target.NPCFile = (NPCFile)EditorGUILayout.ObjectField("NPC File", _target.NPCFile, typeof(NPCFile), false);
+            _target.NPCFile = (NPCFile)EditorGUILayout.ObjectField("App File", _target.NPCFile, typeof(NPCFile), false);
 
             var newIdValue = EditorGUILayout.TextField("Id", _target.Id);
 

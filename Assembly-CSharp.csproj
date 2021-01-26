@@ -217,6 +217,7 @@
     <Compile Include="Assets\SymOntoClay\Editors\HostFileImporterEditor.cs" />
     <Compile Include="Assets\SymOntoClay\Editors\HumanoidNPCEditor.cs" />
     <Compile Include="Assets\SymOntoClay\Editors\NPCFileImporterEditor.cs" />
+    <Compile Include="Assets\SymOntoClay\Editors\ThingEditor.cs" />
     <Compile Include="Assets\SymOntoClay\Editors\WorldEditor.cs" />
     <Compile Include="Assets\SymOntoClay\Editors\WorldFileImporterEditor.cs" />
     <Compile Include="Assets\SymOntoClay\Helpers\FileHelper.cs" />

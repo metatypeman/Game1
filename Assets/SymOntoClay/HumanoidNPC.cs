@@ -79,13 +79,13 @@ namespace SymOntoClay
         void Awake()
         {
 #if DEBUG
-            Debug.Log("HumanoidNPC Awake");
+            //Debug.Log("HumanoidNPC Awake");
 #endif
 
             var npcFullFileName = Path.Combine(Application.dataPath, NPCFile.FullName);
 
 #if DEBUG
-            Debug.Log($"HumanoidNPC Awake npcFullFileName = {npcFullFileName}");
+            //Debug.Log($"HumanoidNPC Awake npcFullFileName = {npcFullFileName}");
 #endif
 
             var npcSettings = new HumanoidNPCSettings();
@@ -99,7 +99,7 @@ namespace SymOntoClay
             npcSettings.VisionProvider = this;
 
 #if DEBUG
-            Debug.Log($"HumanoidNPC Awake npcSettings = {npcSettings}");
+            //Debug.Log($"HumanoidNPC Awake npcSettings = {npcSettings}");
 #endif
 
             //QuickLogger.Log($"HumanoidNPC Awake npcSettings = {npcSettings}");
@@ -154,7 +154,7 @@ namespace SymOntoClay
                 if (Physics.Raycast(pos, globalDirection, out hit, RaysDistance))
                 {
 #if UNITY_EDITOR
-                    Debug.DrawLine(pos, hit.point, Color.blue);
+                    //Debug.DrawLine(pos, hit.point, Color.blue);
 #endif
 
                     var hitTransform = hit.transform;
@@ -168,10 +168,10 @@ namespace SymOntoClay
                     newRawVisibleItemsList.Add(visibleItem);
                 }
 #if UNITY_EDITOR
-                else
-                {
-                    Debug.DrawRay(pos, globalDirection * RaysDistance, Color.red);
-                }
+                //else
+                //{
+                //    Debug.DrawRay(pos, globalDirection * RaysDistance, Color.red);
+                //}
 #endif
             }
 

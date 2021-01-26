@@ -70,13 +70,13 @@ namespace SymOntoClay
         void Awake()
         {
 #if DEBUG
-            Debug.Log("Thing Awake");
+            //Debug.Log("Thing Awake");
 #endif
 
             var fullFileName = Path.Combine(Application.dataPath, NPCFile.FullName);
 
 #if DEBUG
-            Debug.Log($"Thing Awake fullFileName = {fullFileName}");
+            //Debug.Log($"Thing Awake fullFileName = {fullFileName}");
 #endif
 
             var settings = new GameObjectSettings();
@@ -88,7 +88,7 @@ namespace SymOntoClay
             settings.HostListener = GetHostListener();
 
 #if DEBUG
-            Debug.Log($"Thing Awake settings = {settings}");
+            //Debug.Log($"Thing Awake settings = {settings}");
 #endif
 
             _thing = WorldFactory.WorldInstance.GetGameObject(settings);
