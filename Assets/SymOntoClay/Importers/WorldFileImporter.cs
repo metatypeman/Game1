@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.Experimental.AssetImporters;
+using UnityEditor.AssetImporters;
 #endif
 
 namespace SymOntoClay.Importers
