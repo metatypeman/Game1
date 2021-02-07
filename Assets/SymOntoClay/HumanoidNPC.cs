@@ -16,7 +16,7 @@ namespace SymOntoClay
     [AddComponentMenu("SymOntoClay/HumanoidNPC")]
     public class HumanoidNPC : MonoBehaviour, IPlatformSupport, IUHumanoidNPC, IVisionProvider
     {
-        public NPCFile NPCFile;
+        public SobjFile SobjFile;
         public string Id;
 
         private string _oldName;
@@ -82,7 +82,7 @@ namespace SymOntoClay
             //Debug.Log("HumanoidNPC Awake");
 #endif
 
-            var npcFullFileName = Path.Combine(Application.dataPath, NPCFile.FullName);
+            var npcFullFileName = Path.Combine(Application.dataPath, SobjFile.FullName);
 
 #if DEBUG
             //Debug.Log($"HumanoidNPC Awake npcFullFileName = {npcFullFileName}");

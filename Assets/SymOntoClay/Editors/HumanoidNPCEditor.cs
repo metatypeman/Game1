@@ -37,7 +37,7 @@ namespace SymOntoClay.Editors
         {
             GUILayout.BeginVertical();
 
-            _target.NPCFile = (NPCFile)EditorGUILayout.ObjectField("App File", _target.NPCFile, typeof(NPCFile), false);
+            _target.SobjFile = (SobjFile)EditorGUILayout.ObjectField("App File", _target.SobjFile, typeof(SobjFile), false);
 
             var newIdValue = EditorGUILayout.TextField("Id", _target.Id);
 

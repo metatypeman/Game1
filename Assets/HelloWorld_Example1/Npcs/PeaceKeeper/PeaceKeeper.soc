@@ -1,4 +1,4 @@
-npc PeaceKeeper
+app PeaceKeeper
 {
     on Init =>
     {
@@ -11,6 +11,11 @@ npc PeaceKeeper
 		@@host.`go`(to: #@[5, -20]);
 		@@host.`go`(to: #@[14, 2]);
 		@@host.`go`(to: #@[20, -90]);
+		@@host.`go`(to: #@[20]);
 	    "End" >> @>log;
     }
+	
+	on {: see(I, #`Metal Barrel Grey 2`) :} => {
+	     "L" >> @>log;
+	}
 }

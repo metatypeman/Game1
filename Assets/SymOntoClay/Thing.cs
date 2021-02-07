@@ -9,7 +9,7 @@ namespace SymOntoClay
     [AddComponentMenu("SymOntoClay/Thing")]
     public class Thing : MonoBehaviour
     {
-        public NPCFile NPCFile;
+        public SobjFile SobjFile;
         public string Id;
 
         private string _oldName;
@@ -73,7 +73,7 @@ namespace SymOntoClay
             //Debug.Log("Thing Awake");
 #endif
 
-            var fullFileName = Path.Combine(Application.dataPath, NPCFile.FullName);
+            var fullFileName = Path.Combine(Application.dataPath, SobjFile.FullName);
 
 #if DEBUG
             //Debug.Log($"Thing Awake fullFileName = {fullFileName}");

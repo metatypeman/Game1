@@ -122,7 +122,7 @@
     <Compile Include="Assets\RapidFireGun.cs" />
     <Compile Include="Assets\SymOntoClay\Convertors\Vector3AndWayPointValueConvertor.cs" />
     <Compile Include="Assets\NewBehaviourScript.cs" />
-    <Compile Include="Assets\SymOntoClay\Scriptables\NPCFile.cs" />
+    <Compile Include="Assets\SymOntoClay\Scriptables\SobjFile.cs" />
     <Compile Include="Assets\Scripts\ActiveStateToggler.cs" />
     <Compile Include="Assets\Cube_1_WaypointInfo.cs" />
     <Compile Include="Assets\Scripts\BaseWayPoint.cs" />
@@ -143,7 +143,6 @@
     <Compile Include="Assets\NPCScripts\PixKeeper\Processes\PixKeeperKeyListenerNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Antagonist\Processes\AntagonistAttack1NPCProcess.cs" />
     <Compile Include="Assets\Scripts\DragMe.cs" />
-    <Compile Include="Assets\SymOntoClay\Editors\HostFileImporterEditor.cs" />
     <Compile Include="Assets\Scripts\TestedNPCProcesses.cs" />
     <Compile Include="Assets\Scripts\LogicalObjectsBus.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\PauseMenu.cs" />
@@ -174,7 +173,7 @@
     <Compile Include="Assets\Scripts\InternalStatesOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\InputKeyHelper.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
-    <Compile Include="Assets\SymOntoClay\Importers\NPCFileImporter.cs" />
+    <Compile Include="Assets\SymOntoClay\Importers\SObjFileImporter.cs" />
     <Compile Include="Assets\NPCScripts\Hipster\Processes\HipsterBootNPCProcess.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\MenuSceneLoader.cs" />
     <Compile Include="Assets\Scripts\IInvokingInMainThread.cs" />
@@ -190,7 +189,7 @@
     <Compile Include="Assets\Scripts\KeyToNPCCommandConverter.cs" />
     <Compile Include="Assets\Scripts\IInternalHumanoid.cs" />
     <Compile Include="Assets\NPCScripts\PixKeeper\PixKeeperNPC.cs" />
-    <Compile Include="Assets\SymOntoClay\Editors\NPCFileImporterEditor.cs" />
+    <Compile Include="Assets\SymOntoClay\Editors\SobjFileImporterEditor.cs" />
     <Compile Include="Assets\MyThirdPersonUserControl.cs" />
     <Compile Include="Assets\Scripts\IInternalBodyHumanoidHost.cs" />
     <Compile Include="Assets\Scripts\BaseDialog.cs" />
@@ -218,11 +217,9 @@
     <Compile Include="Assets\Scripts\ChangeColor.cs" />
     <Compile Include="Assets\Scripts\LevelCommonHostFactory.cs" />
     <Compile Include="Assets\SymOntoClay\Scriptables\WorldFile.cs" />
-    <Compile Include="Assets\SymOntoClay\Scriptables\HostFile.cs" />
     <Compile Include="Assets\Editor_DoCake.cs" />
     <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SearchAndShootNPCProcess.cs" />
     <Compile Include="Assets\Scripts\IWayPoint.cs" />
-    <Compile Include="Assets\SymOntoClay\Importers\HostFileImporter.cs" />
     <Compile Include="Assets\Scripts\TiltWindow.cs" />
     <Compile Include="Assets\Scripts\LeftHandWPLocator.cs" />
     <Compile Include="Assets\MyHeadBob.cs" />
