@@ -15,7 +15,7 @@ app PeaceKeeper
 	    "End" >> @>log;
     }
 	
-	on {: see(I, #`Metal Barrel Grey 2`) :} => {
-	     "L" >> @>log;
+	on {: see(I, barrel) :} => {
+	     "L It is barrel!" >> @>log;
 	}
 }
