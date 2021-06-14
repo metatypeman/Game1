@@ -1,209 +1,209 @@
-﻿using MyNPCLib;
-using MyNPCLib.NavigationSupport;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using MyNPCLib;
+//using MyNPCLib.NavigationSupport;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
-namespace Assets.NPCScripts.Common.Logic.Processes
-{
-    [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
-    [NPCProcessName("go to point")]
-    public class GoToPointNPCProcess: CommonBaseNPCProcess
-    {
-        private static string COMMAND_NAME = "go to point";
+//namespace Assets.NPCScripts.Common.Logic.Processes
+//{
+//    [NPCProcessStartupMode(NPCProcessStartupMode.NewInstance)]
+//    [NPCProcessName("go to point")]
+//    public class GoToPointNPCProcess: CommonBaseNPCProcess
+//    {
+//        private static string COMMAND_NAME = "go to point";
 
-        public static NPCCommand CreateCommand(string name)
-        {
-            var command = new NPCCommand();
-            command.Name = COMMAND_NAME;
-            command.AddParam(nameof(name), name);
-            return command;
-        }
+//        public static NPCCommand CreateCommand(string name)
+//        {
+//            var command = new NPCCommand();
+//            command.Name = COMMAND_NAME;
+//            command.AddParam(nameof(name), name);
+//            return command;
+//        }
 
-        public static NPCCommand CreateCommand(System.Numerics.Vector3 point)
-        {
-            var command = new NPCCommand();
-            command.Name = COMMAND_NAME;
-            command.AddParam(nameof(point), point);
-            return command;
-        }
+//        public static NPCCommand CreateCommand(System.Numerics.Vector3 point)
+//        {
+//            var command = new NPCCommand();
+//            command.Name = COMMAND_NAME;
+//            command.AddParam(nameof(point), point);
+//            return command;
+//        }
 
-        private void Main(string name)
-        {
-#if UNITY_EDITOR
-            Log($"name = {name} Id = {Id}");
-#endif
+//        private void Main(string name)
+//        {
+//#if UNITY_EDITOR
+//            Log($"name = {name} Id = {Id}");
+//#endif
 
-            var targetWayPoint = Context.GetLogicalObject("{: name='" + name + "'&class='place' :}");
+//            var targetWayPoint = Context.GetLogicalObject("{: name='" + name + "'&class='place' :}");
 
-#if UNITY_EDITOR
-            Log($"(targetWayPoint == null) = {targetWayPoint == null}");
-#endif
+//#if UNITY_EDITOR
+//            Log($"(targetWayPoint == null) = {targetWayPoint == null}");
+//#endif
 
-            if (targetWayPoint == null)
-            {
-                State = StateOfNPCProcess.Faulted;
-                return;
-            }
+//            if (targetWayPoint == null)
+//            {
+//                State = StateOfNPCProcess.Faulted;
+//                return;
+//            }
 
-            var targetPosition = targetWayPoint.GetValue<System.Numerics.Vector3?>("global position");
+//            var targetPosition = targetWayPoint.GetValue<System.Numerics.Vector3?>("global position");
 
-#if UNITY_EDITOR
-            Log($"targetPosition = {targetPosition}");
-#endif
+//#if UNITY_EDITOR
+//            Log($"targetPosition = {targetPosition}");
+//#endif
 
-            var command = CreateCommand(targetPosition.Value);
-            var task = ExecuteAsChild(command);
-            //var task = Execute(command);
-            mTask = task;
+//            var command = CreateCommand(targetPosition.Value);
+//            var task = ExecuteAsChild(command);
+//            //var task = Execute(command);
+//            mTask = task;
 
-#if UNITY_EDITOR
-            Log($"targetPosition task.GetHashCode() (1) = {task.GetHashCode()}");
-#endif
+//#if UNITY_EDITOR
+//            Log($"targetPosition task.GetHashCode() (1) = {task.GetHashCode()}");
+//#endif
 
-            Wait(task);
+//            Wait(task);
 
-#if UNITY_EDITOR
-            Log($"task.State (1)= {task.State} task.GetHashCode() (1) = {task.GetHashCode()}");
-#endif
+//#if UNITY_EDITOR
+//            Log($"task.State (1)= {task.State} task.GetHashCode() (1) = {task.GetHashCode()}");
+//#endif
 
-            //State = task.State;
+//            //State = task.State;
 
-#if UNITY_EDITOR
-            Log("End");
-#endif
-        }
+//#if UNITY_EDITOR
+//            Log("End");
+//#endif
+//        }
 
-        private INPCProcess mTask;
+//        private INPCProcess mTask;
 
-        protected override void CancelOfProcessChanged()
-        {
-#if UNITY_EDITOR
-            Log($"CancelOfProcessChanged mTask?.GetHashCode() = {mTask?.GetHashCode()}");
-#endif
-            mTask?.Cancel();
-            //mTask.Dispose();//This is not cancel
+//        protected override void CancelOfProcessChanged()
+//        {
+//#if UNITY_EDITOR
+//            Log($"CancelOfProcessChanged mTask?.GetHashCode() = {mTask?.GetHashCode()}");
+//#endif
+//            mTask?.Cancel();
+//            //mTask.Dispose();//This is not cancel
 
-            base.CancelOfProcessChanged();
-        }
+//            base.CancelOfProcessChanged();
+//        }
 
-        private void Main(System.Numerics.Vector3 point)
-        {
-#if UNITY_EDITOR
-            Log($"point = {point} Id = {Id}");
-#endif
+//        private void Main(System.Numerics.Vector3 point)
+//        {
+//#if UNITY_EDITOR
+//            Log($"point = {point} Id = {Id}");
+//#endif
 
-            var startPosition = Context.SelfLogicalObject.GetValue<System.Numerics.Vector3?>("global position");
+//            var startPosition = Context.SelfLogicalObject.GetValue<System.Numerics.Vector3?>("global position");
 
-#if UNITY_EDITOR
-            Log($"startPosition = {startPosition}");
-#endif
+//#if UNITY_EDITOR
+//            Log($"startPosition = {startPosition}");
+//#endif
 
-            if(!startPosition.HasValue)
-            {
-                return;
-            }
+//            if(!startPosition.HasValue)
+//            {
+//                return;
+//            }
 
-            var route = Context.GetRouteForPosition(startPosition.Value, point);
+//            var route = Context.GetRouteForPosition(startPosition.Value, point);
 
-#if UNITY_EDITOR
-            Log($"route (1) = {route}");
-#endif
+//#if UNITY_EDITOR
+//            Log($"route (1) = {route}");
+//#endif
 
-            if (route.Status == StatusOfRoute.Impossible)
-            {
-                //var moveCommand = new HumanoidHStateCommand();
-                //moveCommand.State = HumanoidHState.Walk;
-                //moveCommand.TargetPosition = point;
-                State = StateOfNPCProcess.Faulted;
-                //var tmpTask = ExecuteBody(moveCommand);
-                //mTask = tmpTask;
-                //Wait(tmpTask);
+//            if (route.Status == StatusOfRoute.Impossible)
+//            {
+//                //var moveCommand = new HumanoidHStateCommand();
+//                //moveCommand.State = HumanoidHState.Walk;
+//                //moveCommand.TargetPosition = point;
+//                State = StateOfNPCProcess.Faulted;
+//                //var tmpTask = ExecuteBody(moveCommand);
+//                //mTask = tmpTask;
+//                //Wait(tmpTask);
 
-                return;
-            }
+//                return;
+//            }
 
-            if(route.Status == StatusOfRoute.Finished)
-            {
-                return;
-            }
+//            if(route.Status == StatusOfRoute.Finished)
+//            {
+//                return;
+//            }
 
-            while (route.Status == StatusOfRoute.Processed && InfinityCondition)
-            {
-#if UNITY_EDITOR
-                Log($"InfinityCondition = {InfinityCondition}");
-                Log($"route = {route} GetHashCode() = {GetHashCode()}");
-#endif
+//            while (route.Status == StatusOfRoute.Processed && InfinityCondition)
+//            {
+//#if UNITY_EDITOR
+//                Log($"InfinityCondition = {InfinityCondition}");
+//                Log($"route = {route} GetHashCode() = {GetHashCode()}");
+//#endif
 
-                if (route.NextPoints.Count == 0)
-                {
-                    return;
-                }
+//                if (route.NextPoints.Count == 0)
+//                {
+//                    return;
+//                }
 
-                var pointInfo = route.NextPoints.First();
+//                var pointInfo = route.NextPoints.First();
 
-#if UNITY_EDITOR
-                Log($"pointInfo = {pointInfo}");
-#endif
+//#if UNITY_EDITOR
+//                Log($"pointInfo = {pointInfo}");
+//#endif
 
-                var moveCommand = new HumanoidHStateCommand();
-                moveCommand.State = HumanoidHState.Walk;
-                moveCommand.InitiatingProcessId = Id;
-                moveCommand.TargetPosition = pointInfo.Position;
+//                var moveCommand = new HumanoidHStateCommand();
+//                moveCommand.State = HumanoidHState.Walk;
+//                moveCommand.InitiatingProcessId = Id;
+//                moveCommand.TargetPosition = pointInfo.Position;
 
-                var task = ExecuteBody(moveCommand);
-                mTask = task;
+//                var task = ExecuteBody(moveCommand);
+//                mTask = task;
 
-#if UNITY_EDITOR
-                Log($"targetPosition task.GetHashCode() (2) = {task.GetHashCode()}");
-#endif
+//#if UNITY_EDITOR
+//                Log($"targetPosition task.GetHashCode() (2) = {task.GetHashCode()}");
+//#endif
 
-                Wait(task);
+//                Wait(task);
 
-#if UNITY_EDITOR
-                Log($"task.State (2) = {task.State} task.GetHashCode() (2) = {task.GetHashCode()}");
-                Log("End Moving");
-#endif
+//#if UNITY_EDITOR
+//                Log($"task.State (2) = {task.State} task.GetHashCode() (2) = {task.GetHashCode()}");
+//                Log("End Moving");
+//#endif
 
-                if (task.State != StateOfNPCProcess.RanToCompletion)
-                {
-                    State = task.State;
+//                if (task.State != StateOfNPCProcess.RanToCompletion)
+//                {
+//                    State = task.State;
 
-#if UNITY_EDITOR
-                    Log("task.State != StateOfNPCProcess.RanToCompletion !!!!! TTRTTTTTT");
-#endif
+//#if UNITY_EDITOR
+//                    Log("task.State != StateOfNPCProcess.RanToCompletion !!!!! TTRTTTTTT");
+//#endif
 
-                    return;
-                }
+//                    return;
+//                }
 
-                //startPosition = Context.SelfLogicalObject.GetValue<System.Numerics.Vector3?>("global position");
+//                //startPosition = Context.SelfLogicalObject.GetValue<System.Numerics.Vector3?>("global position");
 
-                //if (!startPosition.HasValue)
-                //{
-                //    return;
-                //}
+//                //if (!startPosition.HasValue)
+//                //{
+//                //    return;
+//                //}
 
-                //route = Context.GetRouteForPosition(startPosition.Value, point);
-                route = Context.GetRouteForPosition(pointInfo);
+//                //route = Context.GetRouteForPosition(startPosition.Value, point);
+//                route = Context.GetRouteForPosition(pointInfo);
 
-#if UNITY_EDITOR
-                Log($"next route = {route}  GetHashCode() = {GetHashCode()}");
-#endif
-                //break;
-            }
-            //var moveCommand = new HumanoidHStateCommand();
-            //moveCommand.State = HumanoidHState.Walk;
-            //moveCommand.TargetPosition = point;
+//#if UNITY_EDITOR
+//                Log($"next route = {route}  GetHashCode() = {GetHashCode()}");
+//#endif
+//                //break;
+//            }
+//            //var moveCommand = new HumanoidHStateCommand();
+//            //moveCommand.State = HumanoidHState.Walk;
+//            //moveCommand.TargetPosition = point;
 
-            //var tmpTask = ExecuteBody(moveCommand);
+//            //var tmpTask = ExecuteBody(moveCommand);
 
-            //Wait(tmpTask);
+//            //Wait(tmpTask);
 
-#if UNITY_EDITOR
-            Log("End");
-#endif
-        }
-    }
-}
+//#if UNITY_EDITOR
+//            Log("End");
+//#endif
+//        }
+//    }
+//}

@@ -76,29 +76,29 @@ namespace Assets.Scripts
             return localDirection;
         }
 
-        protected override void OnStart()
-        {
-            mName = name;
+        //protected override void OnStart()
+        //{
+        //    mName = name;
 
-            //Debug.Log($"PlanesList.Count = {PlanesList.Count} name = {name}");
-            foreach (var plane in PlanesList)
-            {
-                //Debug.Log($"plane.name = {plane.name}");
+        //    //Debug.Log($"PlanesList.Count = {PlanesList.Count} name = {name}");
+        //    foreach (var plane in PlanesList)
+        //    {
+        //        //Debug.Log($"plane.name = {plane.name}");
 
-                mPlanesList.Add(plane.GetComponent<IPlane>());
-            }
+        //        mPlanesList.Add(plane.GetComponent<IPlane>());
+        //    }
 
-            var commonLevelHost = LevelCommonHostFactory.Get();
+        //    var commonLevelHost = LevelCommonHostFactory.Get();
 
-            commonLevelHost.HostNavigationRegistry.RegWayPoint(this);
-        }
+        //    commonLevelHost.HostNavigationRegistry.RegWayPoint(this);
+        //}
 
-        protected override void OnInitFacts()
-        {
-            base.OnInitFacts();
+        //protected override void OnInitFacts()
+        //{
+        //    base.OnInitFacts();
 
-            //this["class"] = "waypoint";
-            this["class"] = "place";
-        }
+        //    //this["class"] = "waypoint";
+        //    this["class"] = "place";
+        //}
     }
 }

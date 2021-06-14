@@ -78,11 +78,11 @@ public class YardPlane : MonoBehaviour, IPlane
 
         mName = name;
 
-        var commonLevelHost = LevelCommonHostFactory.Get();
+        //var commonLevelHost = LevelCommonHostFactory.Get();
 
         CalculateZeroPoints();
 
-        commonLevelHost.HostNavigationRegistry.RegPlane(this);
+        //commonLevelHost.HostNavigationRegistry.RegPlane(this);
 
         mCollider = GetComponent<Collider>();
     }

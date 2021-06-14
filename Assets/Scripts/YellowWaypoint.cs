@@ -8,11 +8,11 @@ namespace Assets.Scripts
 {
     public class YellowWaypoint : BaseWayPoint
     {
-        protected override void OnInitFacts()
-        {
-            base.OnInitFacts();
+        //protected override void OnInitFacts()
+        //{
+        //    base.OnInitFacts();
 
-            this["color"] = "yellow";
-        }
+        //    this["color"] = "yellow";
+        //}
     }
 }

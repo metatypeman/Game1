@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class GreenWaypoint : BaseWayPoint
 {
-    protected override void OnInitFacts()
-    {
-        base.OnInitFacts();
+    //protected override void OnInitFacts()
+    //{
+    //    base.OnInitFacts();
 
-        this["color"] = "green";
-    }
+    //    this["color"] = "green";
+    //}
 }

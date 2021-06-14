@@ -1,7 +1,7 @@
-﻿using Assets.NPCScripts.Common;
+﻿//using Assets.NPCScripts.Common;
 using Assets.Scripts;
-using MyNPCLib;
-using MyNPCLib.Logical;
+//using MyNPCLib;
+//using MyNPCLib.Logical;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,134 +15,134 @@ namespace Assets.NPCScripts.Antagonist
     [RequireComponent(typeof(EnemyRayScaner))]
     public class AntagonistNPC: MonoBehaviour
     {
-        private AntagonistNPCContext mNPCProcessesContext;
+        //private AntagonistNPCContext mNPCProcessesContext;
 
-        private InputKeyHelper mInputKeyHelper;
-        private IInternalBodyHumanoidHost mInternalBodyHumanoidHost;
-        private IUserClientCommonHost mUserClientCommonHost;
+        //private InputKeyHelper mInputKeyHelper;
+        //private IInternalBodyHumanoidHost mInternalBodyHumanoidHost;
+        //private IUserClientCommonHost mUserClientCommonHost;
 
-        private InvokingInMainThreadHelper mInvokingInMainThreadHelper;
+        //private InvokingInMainThreadHelper mInvokingInMainThreadHelper;
 
-        private readonly object mEntityLoggerLockObj = new object();
-        private IEntityLogger mEntityLogger;
+        //private readonly object mEntityLoggerLockObj = new object();
+        //private IEntityLogger mEntityLogger;
 
-        [MethodForLoggingSupport]
-        protected void Log(string message)
-        {
-            lock (mEntityLoggerLockObj)
-            {
-                mEntityLogger?.Log(message);
-            }
-        }
+        //[MethodForLoggingSupport]
+        //protected void Log(string message)
+        //{
+        //    lock (mEntityLoggerLockObj)
+        //    {
+        //        mEntityLogger?.Log(message);
+        //    }
+        //}
 
-        [MethodForLoggingSupport]
-        protected void Error(string message)
-        {
-            lock (mEntityLoggerLockObj)
-            {
-                mEntityLogger?.Error(message);
-            }
-        }
+        //[MethodForLoggingSupport]
+        //protected void Error(string message)
+        //{
+        //    lock (mEntityLoggerLockObj)
+        //    {
+        //        mEntityLogger?.Error(message);
+        //    }
+        //}
 
-        [MethodForLoggingSupport]
-        protected void Warning(string message)
-        {
-            lock (mEntityLoggerLockObj)
-            {
-                mEntityLogger?.Warning(message);
-            }
-        }
+        //[MethodForLoggingSupport]
+        //protected void Warning(string message)
+        //{
+        //    lock (mEntityLoggerLockObj)
+        //    {
+        //        mEntityLogger?.Warning(message);
+        //    }
+        //}
 
         public GameObject Gun;
 
-        void Start()
-        {
-            mInvokingInMainThreadHelper = new InvokingInMainThreadHelper();
+//        void Start()
+//        {
+//            mInvokingInMainThreadHelper = new InvokingInMainThreadHelper();
 
-            var internalBodyHost = GetComponent<IInternalBodyHumanoidHost>();
+//            var internalBodyHost = GetComponent<IInternalBodyHumanoidHost>();
 
-            mInternalBodyHumanoidHost = internalBodyHost;
+//            mInternalBodyHumanoidHost = internalBodyHost;
 
-            internalBodyHost.OnReady += InternalBodyHost_OnReady;
+//            internalBodyHost.OnReady += InternalBodyHost_OnReady;
 
-            mUserClientCommonHost = UserClientCommonHostFactory.Get();
+//            mUserClientCommonHost = UserClientCommonHostFactory.Get();
 
-            mInputKeyHelper = new InputKeyHelper(mUserClientCommonHost);
-            mInputKeyHelper.AddPressListener(KeyCode.B, OnPressAction);
-            mInputKeyHelper.AddPressListener(KeyCode.L, OnPressAction);
-            mInputKeyHelper.AddPressListener(KeyCode.N, OnPressAction);
-            mInputKeyHelper.AddPressListener(KeyCode.H, OnPressAction);
+//            mInputKeyHelper = new InputKeyHelper(mUserClientCommonHost);
+//            mInputKeyHelper.AddPressListener(KeyCode.B, OnPressAction);
+//            mInputKeyHelper.AddPressListener(KeyCode.L, OnPressAction);
+//            mInputKeyHelper.AddPressListener(KeyCode.N, OnPressAction);
+//            mInputKeyHelper.AddPressListener(KeyCode.H, OnPressAction);
 
-#if DEBUG
-            //var localPath = UnityEngine.Windows.Directory.localFolder;
+//#if DEBUG
+//            //var localPath = UnityEngine.Windows.Directory.localFolder;
 
-            //Debug.Log($"localPath = {localPath}");
+//            //Debug.Log($"localPath = {localPath}");
 
-            //var roamingFolder = UnityEngine.Windows.Directory.roamingFolder;
+//            //var roamingFolder = UnityEngine.Windows.Directory.roamingFolder;
 
-            //Debug.Log($"roamingFolder = {roamingFolder}");
+//            //Debug.Log($"roamingFolder = {roamingFolder}");
 
-            //var temporaryFolder = UnityEngine.Windows.Directory.temporaryFolder;
+//            //var temporaryFolder = UnityEngine.Windows.Directory.temporaryFolder;
 
-            //Debug.Log($"temporaryFolder = {temporaryFolder}");
-#endif
-        }
+//            //Debug.Log($"temporaryFolder = {temporaryFolder}");
+//#endif
+//        }
 
-        private void InternalBodyHost_OnReady()
-        {
-            CreateNPCHostContext();
-        }
+        //private void InternalBodyHost_OnReady()
+        //{
+        //    CreateNPCHostContext();
+        //}
 
-        private void CreateNPCHostContext()
-        {
-            lock (mEntityLoggerLockObj)
-            {
-                mEntityLogger = mInternalBodyHumanoidHost.EntityLogger;
-            }
+//        private void CreateNPCHostContext()
+//        {
+//            lock (mEntityLoggerLockObj)
+//            {
+//                mEntityLogger = mInternalBodyHumanoidHost.EntityLogger;
+//            }
 
-            mInvokingInMainThreadHelper.CallInMainUI(() => {
-                var commonLevelHost = LevelCommonHostFactory.Get();
-#if DEBUG
-                Log($"(commonLevelHost == null) = {commonLevelHost == null}");
-#endif
-                var hostContext = new NPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
-                mNPCProcessesContext = new AntagonistNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext);
+//            mInvokingInMainThreadHelper.CallInMainUI(() => {
+//                var commonLevelHost = LevelCommonHostFactory.Get();
+//#if DEBUG
+//                Log($"(commonLevelHost == null) = {commonLevelHost == null}");
+//#endif
+//                var hostContext = new NPCHostContext(mEntityLogger, mInternalBodyHumanoidHost);
+//                mNPCProcessesContext = new AntagonistNPCContext(mEntityLogger, commonLevelHost.EntityDictionary, commonLevelHost.NPCProcessInfoCache, hostContext);
 
-                if (Gun != null)
-                {
-                    var gunLogicalObject = Gun.GetComponent<RapidFireGun>();
+//                if (Gun != null)
+//                {
+//                    var gunLogicalObject = Gun.GetComponent<RapidFireGun>();
 
-                    var entityId = gunLogicalObject.EntityId;
+//                    var entityId = gunLogicalObject.EntityId;
 
-#if DEBUG
-                    Log($"entityId = {entityId}");
-#endif
+//#if DEBUG
+//                    Log($"entityId = {entityId}");
+//#endif
 
-                    mNPCProcessesContext.BlackBoard.EntityIdOfInitRifle = entityId;
-                    //mNPCProcessesContext.BlackBoard.Team = "Red";
-                }
+//                    mNPCProcessesContext.BlackBoard.EntityIdOfInitRifle = entityId;
+//                    //mNPCProcessesContext.BlackBoard.Team = "Red";
+//                }
 
-                mNPCProcessesContext.Bootstrap();
-            });
-        }
+//                mNPCProcessesContext.Bootstrap();
+//            });
+//        }
 
-        void Update()
-        {
-            //Log("Begin");
-            mInputKeyHelper.Update();
-            mInvokingInMainThreadHelper.Update();
-        }
+        //void Update()
+        //{
+        //    //Log("Begin");
+        //    mInputKeyHelper.Update();
+        //    mInvokingInMainThreadHelper.Update();
+        //}
 
-        private void OnPressAction(KeyCode key)
-        {
-            var command = KeyToNPCCommandConverter.Convert(key);
-            Log($"command = {command}");
-            mNPCProcessesContext?.Send(command);
-        }
+        //private void OnPressAction(KeyCode key)
+        //{
+        //    var command = KeyToNPCCommandConverter.Convert(key);
+        //    Log($"command = {command}");
+        //    mNPCProcessesContext?.Send(command);
+        //}
 
-        void Stop()
-        {
-            mNPCProcessesContext?.Dispose();
-        }
+        //void Stop()
+        //{
+        //    mNPCProcessesContext?.Dispose();
+        //}
     }
 }

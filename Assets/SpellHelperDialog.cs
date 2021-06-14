@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts;
-using MyNPCLib;
+//using MyNPCLib;
 using System;
 using System.Collections;
 using System.Collections.Generic;

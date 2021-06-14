@@ -1,150 +1,150 @@
-﻿using MyNPCLib;
-using MyNPCLib.CGStorage;
-using MyNPCLib.DebugHelperForPersistLogicalData;
-using MyNPCLib.LogicalSoundModeling;
-using MyNPCLib.Parser.LogicalExpression;
+﻿//using MyNPCLib;
+//using MyNPCLib.CGStorage;
+//using MyNPCLib.DebugHelperForPersistLogicalData;
+//using MyNPCLib.LogicalSoundModeling;
+//using MyNPCLib.Parser.LogicalExpression;
 
-namespace Assets.Scripts
-{
-    public class TestedNPCContext: BaseNPCContextWithBlackBoard<TestedBlackBoard>
-    {
-        public TestedNPCContext(IEntityLogger entityLogger, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCHostContext npcHostContext)
-            : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext)
-        {
-            AddTypeOfProcess<TestedBootNPCProcess>();
-            AddTypeOfProcess<TestedKeyListenerNPCProcess>();
-            AddTypeOfProcess<TestedGoToEnemyBaseNPCProcess>();
-            AddTypeOfProcess<TestedInspectingNPCProcess>();
-            AddTypeOfProcess<TestedRunAwayNPCProcess>();
-            AddTypeOfProcess<TestedRunAtOurBaseNPCProcess>();
-            AddTypeOfProcess<TestedSimpleAimNPCProcess>();
-            AddTypeOfProcess<TestedFireToEthanNPCProcess>();
-            AddTypeOfProcess<TestedRotateNPCProcess>();
-            AddTypeOfProcess<TestedRotateHeadNPCProcess>();
-            AddTypeOfProcess<TestedHeadToForvardNPCProcess>();
-            AddTypeOfProcess<TestedMoveNPCProcess>();
-            AddTypeOfProcess<TestedTakeFromSurfaceNPCProcess>();
-            AddTypeOfProcess<TestedHideRifleToBagPackNPCProcess>();
-            AddTypeOfProcess<TestedThrowOutToSurfaceRifleToSurfaceNPCProcess>();
-            AddTypeOfProcess<TestedStartShootingNPCProcess>();
-            AddTypeOfProcess<TestedStopShootingNPCProcess>();
-            AddTypeOfProcess<TestedSearchNearNPCProcess>();
-            AddTypeOfProcess<TSTGoToPointNPCProcess>();
-        }
+//namespace Assets.Scripts
+//{
+//    public class TestedNPCContext: BaseNPCContextWithBlackBoard<TestedBlackBoard>
+//    {
+//        //public TestedNPCContext(IEntityLogger entityLogger, IEntityDictionary entityDictionary, NPCProcessInfoCache npcProcessInfoCache, INPCHostContext npcHostContext)
+//        //    : base(entityLogger, entityDictionary, npcProcessInfoCache, npcHostContext)
+//        //{
+//        //    AddTypeOfProcess<TestedBootNPCProcess>();
+//        //    AddTypeOfProcess<TestedKeyListenerNPCProcess>();
+//        //    AddTypeOfProcess<TestedGoToEnemyBaseNPCProcess>();
+//        //    AddTypeOfProcess<TestedInspectingNPCProcess>();
+//        //    AddTypeOfProcess<TestedRunAwayNPCProcess>();
+//        //    AddTypeOfProcess<TestedRunAtOurBaseNPCProcess>();
+//        //    AddTypeOfProcess<TestedSimpleAimNPCProcess>();
+//        //    AddTypeOfProcess<TestedFireToEthanNPCProcess>();
+//        //    AddTypeOfProcess<TestedRotateNPCProcess>();
+//        //    AddTypeOfProcess<TestedRotateHeadNPCProcess>();
+//        //    AddTypeOfProcess<TestedHeadToForvardNPCProcess>();
+//        //    AddTypeOfProcess<TestedMoveNPCProcess>();
+//        //    AddTypeOfProcess<TestedTakeFromSurfaceNPCProcess>();
+//        //    AddTypeOfProcess<TestedHideRifleToBagPackNPCProcess>();
+//        //    AddTypeOfProcess<TestedThrowOutToSurfaceRifleToSurfaceNPCProcess>();
+//        //    AddTypeOfProcess<TestedStartShootingNPCProcess>();
+//        //    AddTypeOfProcess<TestedStopShootingNPCProcess>();
+//        //    AddTypeOfProcess<TestedSearchNearNPCProcess>();
+//        //    AddTypeOfProcess<TSTGoToPointNPCProcess>();
+//        //}
 
-        public override void Bootstrap()
-        {
-            Bootstrap<TestedBootNPCProcess>();
-        }
+//        public override void Bootstrap()
+//        {
+//            Bootstrap<TestedBootNPCProcess>();
+//        }
 
-        protected override void OnLogicalSound(OutputLogicalSoundPackage logicalSoundPackage)
-        {
-#if DEBUG
-            Log($"logicalSoundPackage = {logicalSoundPackage}");
-#endif
+//        protected override void OnLogicalSound(OutputLogicalSoundPackage logicalSoundPackage)
+//        {
+//#if DEBUG
+//            Log($"logicalSoundPackage = {logicalSoundPackage}");
+//#endif
 
-            GlobalCGStorage.Append(logicalSoundPackage.SoundFactsDataSource);
+//            GlobalCGStorage.Append(logicalSoundPackage.SoundFactsDataSource);
 
-            var actionName = string.Empty;
+//            var actionName = string.Empty;
 
-            {
-                var queryStr = "{: ?Z(?X,?Y)[: {: action :} :] :}";
+//            {
+//                var queryStr = "{: ?Z(?X,?Y)[: {: action :} :] :}";
 
-                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, EntityDictionary);
-                var query = queryStorage.MainRuleInstance;
+//                var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, EntityDictionary);
+//                var query = queryStorage.MainRuleInstance;
 
-#if DEBUG
-                {
-                    var debugStr = DebugHelperForRuleInstance.ToString(query);
+//#if DEBUG
+//                {
+//                    var debugStr = DebugHelperForRuleInstance.ToString(query);
 
-                    Log($"debugStr = {debugStr}");
-                }
-#endif
-                var querySearchResultCGStorage = MainCGStorage.Search(queryStorage);
+//                    Log($"debugStr = {debugStr}");
+//                }
+//#endif
+//                var querySearchResultCGStorage = MainCGStorage.Search(queryStorage);
 
-                var keyOfActionQuestionVar = EntityDictionary.GetKey("?Z");
+//                var keyOfActionQuestionVar = EntityDictionary.GetKey("?Z");
 
-#if DEBUG
-                Log($"keyOfActionQuestionVar = {keyOfActionQuestionVar}");
-#endif
+//#if DEBUG
+//                Log($"keyOfActionQuestionVar = {keyOfActionQuestionVar}");
+//#endif
 
-                var actionExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
+//                var actionExpression = querySearchResultCGStorage.GetResultOfVar(keyOfActionQuestionVar);
 
-#if DEBUG
-                LogInstance.Log($"actionExpression = {actionExpression}");
-#endif
-                if (actionExpression != null)
-                {
-                    actionName = actionExpression?.FoundExpression?.AsRelation.Name;
-                }
-            }
+//#if DEBUG
+//                LogInstance.Log($"actionExpression = {actionExpression}");
+//#endif
+//                if (actionExpression != null)
+//                {
+//                    actionName = actionExpression?.FoundExpression?.AsRelation.Name;
+//                }
+//            }
 
-#if DEBUG
-            Log($"!!!!!!!! :) actionName = {actionName}");
-#endif
+//#if DEBUG
+//            Log($"!!!!!!!! :) actionName = {actionName}");
+//#endif
 
-            if (string.IsNullOrWhiteSpace(actionName))
-            {
-                return;
-            }
+//            if (string.IsNullOrWhiteSpace(actionName))
+//            {
+//                return;
+//            }
 
-#if DEBUG
-            Log("NEXT");
-#endif
+//#if DEBUG
+//            Log("NEXT");
+//#endif
 
-            if(actionName == "go")
-            {
-                DispatchGo(actionName);
-                return;
-            }
+//            if(actionName == "go")
+//            {
+//                DispatchGo(actionName);
+//                return;
+//            }
 
-#if DEBUG
-            Log("Undefined action");
-#endif
-        }
+//#if DEBUG
+//            Log("Undefined action");
+//#endif
+//        }
 
-        private void DispatchGo(string actionName)
-        {
-#if DEBUG
-            Log($"actionName = {actionName}");
-#endif
+//        private void DispatchGo(string actionName)
+//        {
+//#if DEBUG
+//            Log($"actionName = {actionName}");
+//#endif
 
-            var queryStr = "{: direction(go,?X) :}";
+//            var queryStr = "{: direction(go,?X) :}";
 
-            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, EntityDictionary);
-            var query = queryStorage.MainRuleInstance;
+//            var queryStorage = RuleInstanceFactory.ConvertStringToQueryCGStorage(queryStr, EntityDictionary);
+//            var query = queryStorage.MainRuleInstance;
 
-#if DEBUG
-            {
-                var debugStr = DebugHelperForRuleInstance.ToString(query);
+//#if DEBUG
+//            {
+//                var debugStr = DebugHelperForRuleInstance.ToString(query);
 
-                Log($"debugStr (for going) = {debugStr}");
-            }
-#endif
-            var querySearchResultCGStorage = MainCGStorage.Search(queryStorage);
+//                Log($"debugStr (for going) = {debugStr}");
+//            }
+//#endif
+//            var querySearchResultCGStorage = MainCGStorage.Search(queryStorage);
 
-            var varNameOfDirection = "?X";
+//            var varNameOfDirection = "?X";
            
-            var targetValueOfDirection = querySearchResultCGStorage.GetResultOfVarAsVariant(varNameOfDirection);
+//            var targetValueOfDirection = querySearchResultCGStorage.GetResultOfVarAsVariant(varNameOfDirection);
 
-#if DEBUG
-            LogInstance.Log($"targetValueOfDirection = {targetValueOfDirection}");
-#endif
+//#if DEBUG
+//            LogInstance.Log($"targetValueOfDirection = {targetValueOfDirection}");
+//#endif
 
-            var targetObject = GetLogicalObject(targetValueOfDirection);
-            var targetPosition = targetObject.GetValue<System.Numerics.Vector3?>("global position");
+//            var targetObject = GetLogicalObject(targetValueOfDirection);
+//            var targetPosition = targetObject.GetValue<System.Numerics.Vector3?>("global position");
 
-#if DEBUG
-            Log($"targetPosition = {targetPosition}");
-#endif
+//#if DEBUG
+//            Log($"targetPosition = {targetPosition}");
+//#endif
 
-            var command = TSTGoToPointNPCProcess.CreateCommand(targetPosition.Value);
+//            var command = TSTGoToPointNPCProcess.CreateCommand(targetPosition.Value);
 
-#if DEBUG
-            Log($"command = {command}");
-#endif
+//#if DEBUG
+//            Log($"command = {command}");
+//#endif
 
-            Send(command);
-        }
-    }
-}
+//            Send(command);
+//        }
+//    }
+//}

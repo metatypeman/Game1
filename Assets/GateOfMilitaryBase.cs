@@ -1,4 +1,4 @@
-﻿using MyNPCLib;
+﻿//using MyNPCLib;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,7 +36,7 @@ public class GateOfMilitaryBase : MonoBehaviour {
 
     public void Open()
     {
-        LogInstance.Log("Begin");
+        //LogInstance.Log("Begin");
 
         mIsOpended = true;
         mIsProcessing = true;
@@ -44,7 +44,7 @@ public class GateOfMilitaryBase : MonoBehaviour {
 
     public void Close()
     {
-        LogInstance.Log("Begin");
+        //LogInstance.Log("Begin");
 
         mIsOpended = false;
         mIsProcessing = true;

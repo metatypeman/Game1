@@ -1,76 +1,76 @@
-﻿using Assets.Scripts;
-using MyNPCLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using Assets.Scripts;
+//using MyNPCLib;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
-namespace Assets.NPCScripts.Common
-{
-    public class NPCHandHost: INPCHandHost
-    {
-        public NPCHandHost(IEntityLogger entityLogger, IInternalHumanoidHostContext intenalHostContext)
-        {
-            mEntityLogger = entityLogger;
-            mInternalHumanoidHostContext = intenalHostContext;
-        }
+//namespace Assets.NPCScripts.Common
+//{
+//    public class NPCHandHost: INPCHandHost
+//    {
+//        public NPCHandHost(IEntityLogger entityLogger, IInternalHumanoidHostContext intenalHostContext)
+//        {
+//            mEntityLogger = entityLogger;
+//            mInternalHumanoidHostContext = intenalHostContext;
+//        }
 
-        private IEntityLogger mEntityLogger;
+//        private IEntityLogger mEntityLogger;
 
-        [MethodForLoggingSupport]
-        protected void Log(string message)
-        {
-            mEntityLogger?.Log(message);
-        }
+//        [MethodForLoggingSupport]
+//        protected void Log(string message)
+//        {
+//            mEntityLogger?.Log(message);
+//        }
 
-        [MethodForLoggingSupport]
-        protected void Error(string message)
-        {
-            mEntityLogger?.Error(message);
-        }
+//        [MethodForLoggingSupport]
+//        protected void Error(string message)
+//        {
+//            mEntityLogger?.Error(message);
+//        }
 
-        [MethodForLoggingSupport]
-        protected void Warning(string message)
-        {
-            mEntityLogger?.Warning(message);
-        }
+//        [MethodForLoggingSupport]
+//        protected void Warning(string message)
+//        {
+//            mEntityLogger?.Warning(message);
+//        }
 
-        private IInternalHumanoidHostContext mInternalHumanoidHostContext;
+//        private IInternalHumanoidHostContext mInternalHumanoidHostContext;
 
-        public INPCProcess Send(INPCCommand command)
-        {
-            //Log($"Begin command = {command}");
+//        public INPCProcess Send(INPCCommand command)
+//        {
+//            //Log($"Begin command = {command}");
 
-            if (mInternalHumanoidHostContext.RightHandThing != null)
-            {
-                return mInternalHumanoidHostContext.RightHandThing.Send(command);
-            }
+//            if (mInternalHumanoidHostContext.RightHandThing != null)
+//            {
+//                return mInternalHumanoidHostContext.RightHandThing.Send(command);
+//            }
 
-            var process = new NPCThingProcess(mEntityLogger);
-            process.State = StateOfNPCProcess.Faulted;
-            return process;
-        }
+//            var process = new NPCThingProcess(mEntityLogger);
+//            process.State = StateOfNPCProcess.Faulted;
+//            return process;
+//        }
 
-        public object Get(string propertyName)
-        {
-#if DEBUG
-            //Log($"propertyName = {propertyName}");
-#endif
-            if (mInternalHumanoidHostContext.RightHandThing != null)
-            {
-                return mInternalHumanoidHostContext.RightHandThing.Get(propertyName);
-            }
+//        public object Get(string propertyName)
+//        {
+//#if DEBUG
+//            //Log($"propertyName = {propertyName}");
+//#endif
+//            if (mInternalHumanoidHostContext.RightHandThing != null)
+//            {
+//                return mInternalHumanoidHostContext.RightHandThing.Get(propertyName);
+//            }
 
-            return null;
-        }
+//            return null;
+//        }
 
-        public void Die()
-        {
-            if (mInternalHumanoidHostContext.RightHandThing != null)
-            {
-                mInternalHumanoidHostContext.RightHandThing.Release();
-            }
-        }
-    }
-}
+//        public void Die()
+//        {
+//            if (mInternalHumanoidHostContext.RightHandThing != null)
+//            {
+//                mInternalHumanoidHostContext.RightHandThing.Release();
+//            }
+//        }
+//    }
+//}

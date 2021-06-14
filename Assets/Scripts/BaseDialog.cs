@@ -1,4 +1,4 @@
-﻿using MyNPCLib;
+﻿//using MyNPCLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +29,7 @@ namespace Assets.Scripts
 
         public void ShowDialog()
         {
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
             mCanvas.enabled = true;
             mUserClientCommonHost.AddWindow();
         }
@@ -42,7 +42,7 @@ namespace Assets.Scripts
 
         private void OnCloseClick()
         {
-            LogInstance.Log("Begin");
+            //LogInstance.Log("Begin");
             CloseDialog();
         }
     }

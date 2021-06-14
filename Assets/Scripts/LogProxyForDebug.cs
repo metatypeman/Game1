@@ -1,55 +1,55 @@
-﻿using MyNPCLib;
-using System;
-using UnityEngine;
+﻿//using MyNPCLib;
+//using System;
+//using UnityEngine;
 
-namespace Assets.Scripts
-{
-    public class LogProxyForDebug : ILogProxy
-    {
-        [MethodForLoggingSupport]
-        public void Log(string message)
-        {
-            var now = DateTime.Now;
-            var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
-            var result = LogHelper.BuildLogString(now, KindOfLogLevel.LOG.ToString(), tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
+//namespace Assets.Scripts
+//{
+//    public class LogProxyForDebug : ILogProxy
+//    {
+//        [MethodForLoggingSupport]
+//        public void Log(string message)
+//        {
+//            var now = DateTime.Now;
+//            var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
+//            var result = LogHelper.BuildLogString(now, KindOfLogLevel.LOG.ToString(), tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
 
-#if UNITY_EDITOR
-            //Debug.Log(result);
-#endif
-        }
+//#if UNITY_EDITOR
+//            //Debug.Log(result);
+//#endif
+//        }
 
-        [MethodForLoggingSupport]
-        public void Error(string message)
-        {
-            var now = DateTime.Now;
+//        [MethodForLoggingSupport]
+//        public void Error(string message)
+//        {
+//            var now = DateTime.Now;
 
-            var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
-            var result = LogHelper.BuildLogString(now, KindOfLogLevel.ERROR.ToString(), tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
+//            var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
+//            var result = LogHelper.BuildLogString(now, KindOfLogLevel.ERROR.ToString(), tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
 
-#if UNITY_EDITOR
-            //Debug.LogError(result);
-#endif
-        }
+//#if UNITY_EDITOR
+//            //Debug.LogError(result);
+//#endif
+//        }
 
-        [MethodForLoggingSupport]
-        public void Warning(string message)
-        {
-            var now = DateTime.Now;
+//        [MethodForLoggingSupport]
+//        public void Warning(string message)
+//        {
+//            var now = DateTime.Now;
 
-            var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
-            var result = LogHelper.BuildLogString(now, KindOfLogLevel.WARNING.ToString(), tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
+//            var tmpCallInfo = DiagnosticsHelper.GetNotLoggingSupportCallInfo();
+//            var result = LogHelper.BuildLogString(now, KindOfLogLevel.WARNING.ToString(), tmpCallInfo.FullClassName, tmpCallInfo.MethodName, message);
 
-#if UNITY_EDITOR
-            //Debug.LogWarning(result);
-#endif
-        }
+//#if UNITY_EDITOR
+//            //Debug.LogWarning(result);
+//#endif
+//        }
 
-        [MethodForLoggingSupport]
-        public void Raw(string message)
-        {
-#if UNITY_EDITOR
-            //Debug.Log(message);
-#endif
-        }
-    }
-}
+//        [MethodForLoggingSupport]
+//        public void Raw(string message)
+//        {
+//#if UNITY_EDITOR
+//            //Debug.Log(message);
+//#endif
+//        }
+//    }
+//}

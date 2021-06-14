@@ -1,14 +1,14 @@
-﻿using MyNPCLib.Logical;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using MyNPCLib.Logical;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
-namespace Assets.Scripts
-{
-    public interface INPCRayScaner
-    {
-        IList<IHostVisionObject> VisibleObjects { get; }
-    }
-}
+//namespace Assets.Scripts
+//{
+//    public interface INPCRayScaner
+//    {
+//        IList<IHostVisionObject> VisibleObjects { get; }
+//    }
+//}

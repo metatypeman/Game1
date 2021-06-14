@@ -1,70 +1,70 @@
-﻿using Assets.NPCScripts.Antagonist.Processes;
-using Assets.NPCScripts.Common.Logic.Processes;
-using MyNPCLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using Assets.NPCScripts.Antagonist.Processes;
+//using Assets.NPCScripts.Common.Logic.Processes;
+//using MyNPCLib;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
 
-namespace Assets.NPCScripts.PixKeeper.Processes
-{
-    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
-    public class PixKeeperBootNPCProcess: CommonBaseNPCProcess
-    {
-        protected override void Awake()
-        {
-#if UNITY_EDITOR
-            Log("Begin :)");
-#endif
+//namespace Assets.NPCScripts.PixKeeper.Processes
+//{
+//    [NPCProcessStartupMode(NPCProcessStartupMode.Singleton)]
+//    public class PixKeeperBootNPCProcess: CommonBaseNPCProcess
+//    {
+//        protected override void Awake()
+//        {
+//#if UNITY_EDITOR
+//            Log("Begin :)");
+//#endif
 
-            //GoToTargetWayPoint("RedWaypoint");
-        }
+//            //GoToTargetWayPoint("RedWaypoint");
+//        }
 
-        private void Main()
-        {
-#if UNITY_EDITOR
-            Log("Begin");
-#endif
+//        private void Main()
+//        {
+//#if UNITY_EDITOR
+//            Log("Begin");
+//#endif
 
-            //var rifle = Context.GetLogicalObject("{: name='M4A1 Sopmod' :}");
+//            //var rifle = Context.GetLogicalObject("{: name='M4A1 Sopmod' :}");
 
-#if UNITY_EDITOR
-            //Log($"rifle !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! = {rifle}");
-#endif
+//#if UNITY_EDITOR
+//            //Log($"rifle !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! = {rifle}");
+//#endif
 
-            //var tmpB = Context.GetLogicalObject("{: name='TrafficBarrierHazards (1)' :}");
+//            //var tmpB = Context.GetLogicalObject("{: name='TrafficBarrierHazards (1)' :}");
 
-            //var tmpP = tmpB.GetValue<System.Numerics.Vector3?>("global position");
+//            //var tmpP = tmpB.GetValue<System.Numerics.Vector3?>("global position");
 
-#if UNITY_EDITOR
-            //Log($"tmpP = {tmpP}");
-#endif
+//#if UNITY_EDITOR
+//            //Log($"tmpP = {tmpP}");
+//#endif
 
-            //if (rifle == null)
-            //{
-            //    return;
-            //}
+//            //if (rifle == null)
+//            //{
+//            //    return;
+//            //}
 
-            //var command = TakeFromSurfaceNPCProcess.CreateCommand(rifle);
-            //var task = Execute(command);
-            //Wait(task);
+//            //var command = TakeFromSurfaceNPCProcess.CreateCommand(rifle);
+//            //var task = Execute(command);
+//            //Wait(task);
 
-            //command = SimpleAimNPCProcess.CreateCommand();
-            //task = Execute(command);
-            //Wait(task);
+//            //command = SimpleAimNPCProcess.CreateCommand();
+//            //task = Execute(command);
+//            //Wait(task);
 
-            ////command = ShootingNPCProcess.CreateCommand();
-            //command = StartShootingNPCProcess.CreateCommand();
-            //task = Execute(command);
+//            ////command = ShootingNPCProcess.CreateCommand();
+//            //command = StartShootingNPCProcess.CreateCommand();
+//            //task = Execute(command);
 
-            //Wait(10000);
-            //task.Cancel();
+//            //Wait(10000);
+//            //task.Cancel();
 
-            //Wait(10000);
+//            //Wait(10000);
 
-            //var command = AntagonistAttack1NPCProcess.CreateCommand();
-            //Execute(command);
-        }
-    }
-}
+//            //var command = AntagonistAttack1NPCProcess.CreateCommand();
+//            //Execute(command);
+//        }
+//    }
+//}

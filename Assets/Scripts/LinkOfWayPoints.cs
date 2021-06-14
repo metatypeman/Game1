@@ -70,8 +70,8 @@ namespace Assets.Scripts
 
         void Awake()
         {
-            var commonLevelHost = LevelCommonHostFactory.Get();
-            commonLevelHost.HostNavigationRegistry.RegLinkOfWayPoints(this);
+            //var commonLevelHost = LevelCommonHostFactory.Get();
+            //commonLevelHost.HostNavigationRegistry.RegLinkOfWayPoints(this);
 
 #if DEBUG
             //Debug.Log($"name = {name}");
