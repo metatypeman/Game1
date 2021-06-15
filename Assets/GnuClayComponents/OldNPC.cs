@@ -3,7 +3,7 @@ using System.Collections;
 using Assets.Scripts;
 using UnityEditor;
 using System.IO;
-using GnuClay;
+//using GnuClay;
 
 [AddComponentMenu("GnuClay/NPC")]
 //[HelpURL("http://example.com/docs/MyComponent.html")]
@@ -11,7 +11,7 @@ public class OldNPC : MonoBehaviour
 {
     public TextAsset App;
 
-    private Engine mEngine;
+    //private Engine mEngine;
 
     // Use this for initialization
     void Start()

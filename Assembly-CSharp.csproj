@@ -56,66 +56,44 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SearchNearNPCProcess.cs" />
     <Compile Include="Assets\SpellHelperDialog.cs" />
-    <Compile Include="Assets\Scripts\ProxyForStatesOfHumanoidBodyHost.cs" />
-    <Compile Include="Assets\Scripts\INPCRayScaner.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
     <Compile Include="Assets\SymOntoClay\HumanoidNPC.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\RotateNPCProcess.cs" />
     <Compile Include="Assets\SymOntoClay\Convertors\Vector3UnityAndSystemNumericConvertor.cs" />
     <Compile Include="Assets\SymOntoClay\Build\BuildProcessor.cs" />
-    <Compile Include="Assets\NPCScripts\Common\NPCHostContext.cs" />
     <Compile Include="Assets\Scripts\ResizePanel.cs" />
     <Compile Include="Assets\Scripts\LinkOfWayPoints.cs" />
     <Compile Include="Assets\GateOfMilitaryBase.cs" />
     <Compile Include="Assets\MyThirdPersonCharacter.cs" />
     <Compile Include="Assets\SymOntoClay\Editors\ThingEditor.cs" />
     <Compile Include="Assets\MyFirstPersonController.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\CommonBlackBoard.cs" />
     <Compile Include="Assets\MyLerpControlledBob.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SimpleAimNPCProcess.cs" />
     <Compile Include="Assets\SymOntoClay\Editors\WorldFileImporterEditor.cs" />
     <Compile Include="Assets\Scripts\InputMouseKeyHelper.cs" />
     <Compile Include="Assets\Scripts\RedWaypoint.cs" />
     <Compile Include="Assets\GameInfoObject.cs" />
-    <Compile Include="Assets\NPCScripts\Antagonist\Processes\AntagonistKeyListenerNPCProcess.cs" />
-    <Compile Include="Assets\Scripts\GameObjectHelper.cs" />
     <Compile Include="Assets\SymOntoClay\IUHumanoidNPC.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\TakeRifleFromBagPackNPCProcess.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SafetyShootingNPCProcess.cs" />
     <Compile Include="Assets\Scripts\DragPanel.cs" />
     <Compile Include="Assets\Scripts\RightHandWPLocator.cs" />
     <Compile Include="Assets\SymOntoClay\Thing.cs" />
-    <Compile Include="Assets\Scripts\InternalTargetStateOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\FarWaypoint.cs" />
     <Compile Include="Assets\GreenWaypoint.cs" />
     <Compile Include="Assets\Scripts\InvocableInMainThreadObj.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\ShootingNPCProcess.cs" />
-    <Compile Include="Assets\Scripts\StepOfRoute.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\LevelReset.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\SceneAndURLLoader.cs" />
     <Compile Include="Assets\Scripts\IInvocableInMainThreadObj.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\Attack2NPCProcess.cs" />
-    <Compile Include="Assets\Scripts\IHostNavigationRegistry.cs" />
     <Compile Include="Assets\NPCScripts\PixKeeper\PixKeeperNPCContext.cs" />
     <Compile Include="Assets\UserClientCommonHost.cs" />
     <Compile Include="Assets\DoCake.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\TakeFromSurfaceNPCProcess.cs" />
     <Compile Include="Assets\Scripts\IBaseDialog.cs" />
     <Compile Include="Assets\SymOntoClay\IUHostListener.cs" />
-    <Compile Include="Assets\Scripts\InternalTargetStateOfHumanoidControllerConverter.cs" />
     <Compile Include="Assets\Scripts\LevelCommonHost.cs" />
     <Compile Include="Assets\SymOntoClay\World.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\GoToPointNPCProcess.cs" />
     <Compile Include="Assets\ISpellHelperDialog.cs" />
     <Compile Include="Assets\NPCScripts\Hipster\HipsterNPC.cs" />
-    <Compile Include="Assets\Scripts\InternalHumanoidHostContext.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
-    <Compile Include="Assets\Scripts\ILevelCommonHost.cs" />
     <Compile Include="Assets\NPCScripts\Hipster\HipsterNPCContext.cs" />
-    <Compile Include="Assets\Scripts\TestedBlackBoard.cs" />
     <Compile Include="Assets\Dead\Script\PlayGUI.cs" />
     <Compile Include="Assets\EthansHealthHelper.cs" />
     <Compile Include="Assets\GnuClayComponents\ChooseApplicationDialog.cs" />
@@ -130,24 +108,13 @@
     <Compile Include="Assets\Cube_1_WaypointInfo.cs" />
     <Compile Include="Assets\Scripts\BaseWayPoint.cs" />
     <Compile Include="Assets\Scripts\ILinkOfWayPoints.cs" />
-    <Compile Include="Assets\NPCScripts\Common\NPCHandHost.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\CommonBaseNPCProcess.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\ShootingWithRotationNPCProcess.cs" />
-    <Compile Include="Assets\NPCScripts\Antagonist\Processes\AntagonistBootNPCProcess.cs" />
-    <Compile Include="Assets\Scripts\InternalVisionItem.cs" />
-    <Compile Include="Assets\Scripts\IObject.cs" />
     <Compile Include="Assets\GnuClayComponents\OldNPC.cs" />
-    <Compile Include="Assets\NPCScripts\Antagonist\AntagonistNPCContext.cs" />
     <Compile Include="Assets\Cube_3_WaypointInfo.cs" />
-    <Compile Include="Assets\NPCScripts\Common\NPCBodyHost.cs" />
     <Compile Include="Assets\Scripts\BlueWaypoint.cs" />
     <Compile Include="Assets\Scripts\IPlane.cs" />
     <Compile Include="Assets\Scripts\IUserClientCommonHost.cs" />
     <Compile Include="Assets\NPCScripts\PixKeeper\Processes\PixKeeperKeyListenerNPCProcess.cs" />
-    <Compile Include="Assets\NPCScripts\Antagonist\Processes\AntagonistAttack1NPCProcess.cs" />
     <Compile Include="Assets\Scripts\DragMe.cs" />
-    <Compile Include="Assets\Scripts\TestedNPCProcesses.cs" />
-    <Compile Include="Assets\Scripts\LogicalObjectsBus.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\ShowSliderValue.cs" />
     <Compile Include="Assets\SymOntoClay\Importers\WorldFileImporter.cs" />
@@ -155,7 +122,6 @@
     <Compile Include="Assets\Scripts\ScrollDetailTexture.cs" />
     <Compile Include="Assets\NPCScripts\PixKeeper\Processes\PixKeeperBootNPCProcess.cs" />
     <Compile Include="Assets\SymOntoClay\Editors\WorldEditor.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SoundContinueCommandNPCProcess.cs" />
     <Compile Include="Assets\NPCScripts\Antagonist\AntagonistNPC.cs" />
     <Compile Include="Assets\SymOntoClay\Helpers\FileHelper.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\CameraSwitch.cs" />
@@ -165,63 +131,34 @@
     <Compile Include="Assets\Cube_2_WaypointInfo.cs" />
     <Compile Include="Assets\TstNPCBehaviourScript.cs" />
     <Compile Include="Assets\Scripts\DropMe.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SoundGoCommandNPCProcess.cs" />
-    <Compile Include="Assets\Scripts\HandThingsBus.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\StopShootingNPCProcess.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\StartShootingNPCProcess.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SoundStopCommandNPCProcess.cs" />
-    <Compile Include="Assets\Scripts\LogProxyForDebug.cs" />
     <Compile Include="Assets\Scripts\FactValueItem.cs" />
     <Compile Include="Assets\Scripts\YellowWaypoint.cs" />
-    <Compile Include="Assets\Scripts\InternalStatesOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\InputKeyHelper.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
     <Compile Include="Assets\SymOntoClay\Importers\SObjFileImporter.cs" />
     <Compile Include="Assets\NPCScripts\Hipster\Processes\HipsterBootNPCProcess.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\MenuSceneLoader.cs" />
     <Compile Include="Assets\Scripts\IInvokingInMainThread.cs" />
-    <Compile Include="Assets\Scripts\IHandThing.cs" />
-    <Compile Include="Assets\Scripts\PlanesConnectionInfo.cs" />
     <Compile Include="Assets\SymOntoClay\Editors\HumanoidNPCEditor.cs" />
     <Compile Include="Assets\ConcreteFirstPersonController.cs" />
     <Compile Include="Assets\YardPlane.cs" />
     <Compile Include="Assets\Scripts\LeftHandLocator.cs" />
     <Compile Include="Assets\Scripts\VectorsConvertor.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\GoToPointAndShootNPCProcess.cs" />
-    <Compile Include="Assets\Scripts\NavigationRegistry.cs" />
-    <Compile Include="Assets\Scripts\KeyToNPCCommandConverter.cs" />
-    <Compile Include="Assets\Scripts\IInternalHumanoid.cs" />
     <Compile Include="Assets\NPCScripts\PixKeeper\PixKeeperNPC.cs" />
     <Compile Include="Assets\SymOntoClay\Editors\SobjFileImporterEditor.cs" />
     <Compile Include="Assets\MyThirdPersonUserControl.cs" />
-    <Compile Include="Assets\Scripts\IInternalBodyHumanoidHost.cs" />
     <Compile Include="Assets\Scripts\BaseDialog.cs" />
     <Compile Include="Assets\Scripts\UserClientCommonHostFactory.cs" />
     <Compile Include="Assets\Scripts\EnemyNPC.cs" />
-    <Compile Include="Assets\Scripts\PlainRect.cs" />
-    <Compile Include="Assets\Scripts\TmpObj.cs" />
-    <Compile Include="Assets\Scripts\TestedBaseNPCProcess.cs" />
     <Compile Include="Assets\Scripts\RightHandLocator.cs" />
-    <Compile Include="Assets\Scripts\IThing.cs" />
     <Compile Include="Assets\Scripts\HumanoidBodyHost.cs" />
-    <Compile Include="Assets\Scripts\TestedNPCContext.cs" />
-    <Compile Include="Assets\Scripts\RTreeNode.cs" />
     <Compile Include="Assets\NPCScripts\Hipster\Processes\HipsterKeyListenerNPCProcess.cs" />
     <Compile Include="Assets\GnuClayComponents\OldNPCEditor.cs" />
-    <Compile Include="Assets\Scripts\ProjectTabEditor.cs" />
-    <Compile Include="Assets\Scripts\BehaviourFlagsOfHumanoidController.cs" />
     <Compile Include="Assets\Scripts\UserClientMode.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SoundEntityConditionNPCProcess.cs" />
     <Compile Include="Assets\Scripts\InvokingInMainThreadHelper.cs" />
-    <Compile Include="Assets\Scripts\Route.cs" />
-    <Compile Include="Assets\Scripts\PointInfo.cs" />
-    <Compile Include="Assets\Scripts\PathsHelper.cs" />
-    <Compile Include="Assets\Scripts\IInternalHumanoidHostContext.cs" />
     <Compile Include="Assets\Scripts\ChangeColor.cs" />
-    <Compile Include="Assets\Scripts\LevelCommonHostFactory.cs" />
     <Compile Include="Assets\SymOntoClay\Scriptables\WorldFile.cs" />
     <Compile Include="Assets\Editor_DoCake.cs" />
-    <Compile Include="Assets\NPCScripts\Common\Logic\Processes\SearchAndShootNPCProcess.cs" />
     <Compile Include="Assets\Scripts\IWayPoint.cs" />
     <Compile Include="Assets\Scripts\TiltWindow.cs" />
     <Compile Include="Assets\Scripts\LeftHandWPLocator.cs" />
@@ -232,17 +169,13 @@
      <None Include="Assets\packages\System.Runtime.4.3.0\ThirdPartyNotices.txt" />
      <None Include="Assets\Urban_Props\readme.txt" />
      <None Include="Assets\packages\System.Data.Common.4.3.0\dotnet_library_license.txt" />
-     <None Include="Assets\SharpEntropyForNS.dll" />
      <None Include="Assets\Textures and Sprites\SF UI\Background\LICENSE.txt" />
      <None Include="Assets\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll" />
      <None Include="Assets\packages\System.Data.Common.4.3.0\ThirdPartyNotices.txt" />
-     <None Include="Assets\OpenNLPForNS.dll" />
-     <None Include="Assets\MyNPCHostLib.dll" />
      <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />
      <None Include="Assets\SymOntoClay\SymOntoClay.UnityAsset.Core.dll" />
      <None Include="Assets\Materials\UI-Default-No-Alpha.shader" />
      <None Include="Assets\race-track-lake\readmore.txt" />
-     <None Include="Assets\TestedNPCLogic.dll" />
      <None Include="Assets\Fortress\Shader\TwoSided.shader" />
      <None Include="Assets\packages\NLog.4.5.9\lib\netstandard2.0\NLog.xml" />
      <None Include="Assets\SymOntoClay\SymOntoClay.Core.dll" />
@@ -251,9 +184,7 @@
      <None Include="Assets\Fonts\Jupiter\LICENSE.txt" />
      <None Include="Assets\Industrial Props\ReadMe.txt" />
      <None Include="Assets\packages\System.Data.Common.4.3.0\lib\netstandard1.2\System.Data.Common.dll" />
-     <None Include="Assets\GnuClay.dll" />
      <None Include="Assets\Mega Fantasy Props Pack\README.txt" />
-     <None Include="Assets\SharpWordNetForNS.dll" />
      <None Include="Assets\BodyGuards\ReadMe.txt.txt" />
      <None Include="Assets\packages\NLog.4.5.9\lib\netstandard2.0\NLog.dll" />
      <None Include="Assets\SymOntoClay\SymOntoClay.CoreHelper.dll" />
@@ -492,26 +423,11 @@
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>Library\PackageCache\com.unity.analytics@3.5.3\Unity.Analytics.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="SharpEntropyForNS">
-      <HintPath>Assets\SharpEntropyForNS.dll</HintPath>
-    </Reference>
-    <Reference Include="GnuClay">
-      <HintPath>Assets\GnuClay.dll</HintPath>
-    </Reference>
     <Reference Include="NLog">
       <HintPath>Assets\packages\NLog.4.5.9\lib\netstandard2.0\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="MyNPCHostLib">
-      <HintPath>Assets\MyNPCHostLib.dll</HintPath>
-    </Reference>
-    <Reference Include="TestedNPCLogic">
-      <HintPath>Assets\TestedNPCLogic.dll</HintPath>
-    </Reference>
     <Reference Include="SymOntoClay.Core">
       <HintPath>Assets\SymOntoClay\SymOntoClay.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpWordNetForNS">
-      <HintPath>Assets\SharpWordNetForNS.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>Library\PackageCache\com.unity.analytics@3.5.3\Unity.Analytics.Tracker.dll</HintPath>
@@ -521,9 +437,6 @@
     </Reference>
     <Reference Include="System.Runtime">
       <HintPath>Assets\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenNLPForNS">
-      <HintPath>Assets\OpenNLPForNS.dll</HintPath>
     </Reference>
     <Reference Include="SymOntoClay.UnityAsset.Core">
       <HintPath>Assets\SymOntoClay\SymOntoClay.UnityAsset.Core.dll</HintPath>

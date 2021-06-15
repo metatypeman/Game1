@@ -307,26 +307,11 @@
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>Library\PackageCache\com.unity.analytics@3.5.3\Unity.Analytics.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="SharpEntropyForNS">
-      <HintPath>Assets\SharpEntropyForNS.dll</HintPath>
-    </Reference>
-    <Reference Include="GnuClay">
-      <HintPath>Assets\GnuClay.dll</HintPath>
-    </Reference>
     <Reference Include="NLog">
       <HintPath>Assets\packages\NLog.4.5.9\lib\netstandard2.0\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="MyNPCHostLib">
-      <HintPath>Assets\MyNPCHostLib.dll</HintPath>
-    </Reference>
-    <Reference Include="TestedNPCLogic">
-      <HintPath>Assets\TestedNPCLogic.dll</HintPath>
-    </Reference>
     <Reference Include="SymOntoClay.Core">
       <HintPath>Assets\SymOntoClay\SymOntoClay.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpWordNetForNS">
-      <HintPath>Assets\SharpWordNetForNS.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>Library\PackageCache\com.unity.analytics@3.5.3\Unity.Analytics.Tracker.dll</HintPath>
@@ -336,9 +321,6 @@
     </Reference>
     <Reference Include="System.Runtime">
       <HintPath>Assets\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="OpenNLPForNS">
-      <HintPath>Assets\OpenNLPForNS.dll</HintPath>
     </Reference>
     <Reference Include="SymOntoClay.UnityAsset.Core">
       <HintPath>Assets\SymOntoClay\SymOntoClay.UnityAsset.Core.dll</HintPath>
