@@ -80,3 +80,4 @@ Received Import Request.
 Start importing Assets/Scripts/ActiveStateToggler.cs using Guid(a95e0a044abfc473394c6c61eb343e4a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8f3280b9dbe762440e80771fe15ac5df') in 0.037584 seconds
   Import took 0.042367 seconds .
 
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
