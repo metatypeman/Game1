@@ -295,6 +295,9 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Editor\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="SymOntoClay.CoreHelper">
+      <HintPath>Assets\SymOntoClay\SymOntoClay.CoreHelper.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Common">
       <HintPath>Assets\packages\System.Data.Common.4.3.0\lib\netstandard1.2\System.Data.Common.dll</HintPath>
     </Reference>
@@ -307,6 +310,9 @@
     <Reference Include="NLog">
       <HintPath>Assets\packages\NLog.4.5.9\lib\netstandard2.0\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="SymOntoClay.Core">
+      <HintPath>Assets\SymOntoClay\SymOntoClay.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>Library\PackageCache\com.unity.analytics@3.5.3\Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
@@ -315,6 +321,9 @@
     </Reference>
     <Reference Include="System.Runtime">
       <HintPath>Assets\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="SymOntoClay.UnityAsset.Core">
+      <HintPath>Assets\SymOntoClay\SymOntoClay.UnityAsset.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.CodeDom">
       <HintPath>Assets\Plugins\x86_64\System.CodeDom.dll</HintPath>

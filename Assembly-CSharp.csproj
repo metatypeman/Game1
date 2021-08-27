@@ -58,17 +58,24 @@
   <ItemGroup>
     <Compile Include="Assets\SpellHelperDialog.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
+    <Compile Include="Assets\SymOntoClay\HumanoidNPC.cs" />
+    <Compile Include="Assets\SymOntoClay\Convertors\Vector3UnityAndSystemNumericConvertor.cs" />
+    <Compile Include="Assets\SymOntoClay\Build\BuildProcessor.cs" />
     <Compile Include="Assets\Scripts\ResizePanel.cs" />
     <Compile Include="Assets\Scripts\LinkOfWayPoints.cs" />
     <Compile Include="Assets\GateOfMilitaryBase.cs" />
     <Compile Include="Assets\MyThirdPersonCharacter.cs" />
+    <Compile Include="Assets\SymOntoClay\Editors\ThingEditor.cs" />
     <Compile Include="Assets\MyFirstPersonController.cs" />
     <Compile Include="Assets\MyLerpControlledBob.cs" />
+    <Compile Include="Assets\SymOntoClay\Editors\WorldFileImporterEditor.cs" />
     <Compile Include="Assets\Scripts\InputMouseKeyHelper.cs" />
     <Compile Include="Assets\Scripts\RedWaypoint.cs" />
     <Compile Include="Assets\GameInfoObject.cs" />
+    <Compile Include="Assets\SymOntoClay\IUHumanoidNPC.cs" />
     <Compile Include="Assets\Scripts\DragPanel.cs" />
     <Compile Include="Assets\Scripts\RightHandWPLocator.cs" />
+    <Compile Include="Assets\SymOntoClay\Thing.cs" />
     <Compile Include="Assets\Scripts\FarWaypoint.cs" />
     <Compile Include="Assets\GreenWaypoint.cs" />
     <Compile Include="Assets\Scripts\InvocableInMainThreadObj.cs" />
@@ -80,7 +87,9 @@
     <Compile Include="Assets\UserClientCommonHost.cs" />
     <Compile Include="Assets\DoCake.cs" />
     <Compile Include="Assets\Scripts\IBaseDialog.cs" />
+    <Compile Include="Assets\SymOntoClay\IUHostListener.cs" />
     <Compile Include="Assets\Scripts\LevelCommonHost.cs" />
+    <Compile Include="Assets\SymOntoClay\World.cs" />
     <Compile Include="Assets\ISpellHelperDialog.cs" />
     <Compile Include="Assets\NPCScripts\Hipster\HipsterNPC.cs" />
     <Compile Include="Assets\TrafficBarrierRedInfo.cs" />
@@ -92,7 +101,9 @@
     <Compile Include="Assets\Scripts\IRapidFireGun.cs" />
     <Compile Include="Assets\Scripts\ApplicationManager.cs" />
     <Compile Include="Assets\RapidFireGun.cs" />
+    <Compile Include="Assets\SymOntoClay\Convertors\Vector3AndWayPointValueConvertor.cs" />
     <Compile Include="Assets\NewBehaviourScript.cs" />
+    <Compile Include="Assets\SymOntoClay\Scriptables\SobjFile.cs" />
     <Compile Include="Assets\Scripts\ActiveStateToggler.cs" />
     <Compile Include="Assets\Cube_1_WaypointInfo.cs" />
     <Compile Include="Assets\Scripts\BaseWayPoint.cs" />
@@ -106,11 +117,15 @@
     <Compile Include="Assets\Scripts\DragMe.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\ShowSliderValue.cs" />
+    <Compile Include="Assets\SymOntoClay\Importers\WorldFileImporter.cs" />
     <Compile Include="Assets\Scripts\EnemyRayScaner.cs" />
     <Compile Include="Assets\Scripts\ScrollDetailTexture.cs" />
     <Compile Include="Assets\NPCScripts\PixKeeper\Processes\PixKeeperBootNPCProcess.cs" />
+    <Compile Include="Assets\SymOntoClay\Editors\WorldEditor.cs" />
     <Compile Include="Assets\NPCScripts\Antagonist\AntagonistNPC.cs" />
+    <Compile Include="Assets\SymOntoClay\Helpers\FileHelper.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\CameraSwitch.cs" />
+    <Compile Include="Assets\SymOntoClay\Data\UVisibleItem.cs" />
     <Compile Include="Assets\Scripts\EnemyIK.cs" />
     <Compile Include="Assets\ExamplesOfSymOntoClay\ExampleSymOntoClayHumanoidNPC.cs" />
     <Compile Include="Assets\Cube_2_WaypointInfo.cs" />
@@ -120,14 +135,17 @@
     <Compile Include="Assets\Scripts\YellowWaypoint.cs" />
     <Compile Include="Assets\Scripts\InputKeyHelper.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
+    <Compile Include="Assets\SymOntoClay\Importers\SObjFileImporter.cs" />
     <Compile Include="Assets\NPCScripts\Hipster\Processes\HipsterBootNPCProcess.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\MenuSceneLoader.cs" />
     <Compile Include="Assets\Scripts\IInvokingInMainThread.cs" />
+    <Compile Include="Assets\SymOntoClay\Editors\HumanoidNPCEditor.cs" />
     <Compile Include="Assets\ConcreteFirstPersonController.cs" />
     <Compile Include="Assets\YardPlane.cs" />
     <Compile Include="Assets\Scripts\LeftHandLocator.cs" />
     <Compile Include="Assets\Scripts\VectorsConvertor.cs" />
     <Compile Include="Assets\NPCScripts\PixKeeper\PixKeeperNPC.cs" />
+    <Compile Include="Assets\SymOntoClay\Editors\SobjFileImporterEditor.cs" />
     <Compile Include="Assets\MyThirdPersonUserControl.cs" />
     <Compile Include="Assets\Scripts\BaseDialog.cs" />
     <Compile Include="Assets\Scripts\UserClientCommonHostFactory.cs" />
@@ -139,12 +157,14 @@
     <Compile Include="Assets\Scripts\UserClientMode.cs" />
     <Compile Include="Assets\Scripts\InvokingInMainThreadHelper.cs" />
     <Compile Include="Assets\Scripts\ChangeColor.cs" />
+    <Compile Include="Assets\SymOntoClay\Scriptables\WorldFile.cs" />
     <Compile Include="Assets\Editor_DoCake.cs" />
     <Compile Include="Assets\Scripts\IWayPoint.cs" />
     <Compile Include="Assets\Scripts\TiltWindow.cs" />
     <Compile Include="Assets\Scripts\LeftHandWPLocator.cs" />
     <Compile Include="Assets\MyHeadBob.cs" />
     <Compile Include="Assets\Scripts\LogicalGameObject.cs" />
+    <Compile Include="Assets\SymOntoClay\HeadLocator.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\packages\System.Runtime.4.3.0\ThirdPartyNotices.txt" />
@@ -154,10 +174,12 @@
      <None Include="Assets\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll" />
      <None Include="Assets\packages\System.Data.Common.4.3.0\ThirdPartyNotices.txt" />
      <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />
+     <None Include="Assets\SymOntoClay\SymOntoClay.UnityAsset.Core.dll" />
      <None Include="Assets\Materials\UI-Default-No-Alpha.shader" />
      <None Include="Assets\race-track-lake\readmore.txt" />
      <None Include="Assets\Fortress\Shader\TwoSided.shader" />
      <None Include="Assets\packages\NLog.4.5.9\lib\netstandard2.0\NLog.xml" />
+     <None Include="Assets\SymOntoClay\SymOntoClay.Core.dll" />
      <None Include="Assets\Military_Rifle_01_Free_v2\Docs\Military_Rifle_Free_Unity_Info.txt" />
      <None Include="Assets\packages\System.Runtime.4.3.0\dotnet_library_license.txt" />
      <None Include="Assets\Fonts\Jupiter\LICENSE.txt" />
@@ -166,6 +188,7 @@
      <None Include="Assets\Mega Fantasy Props Pack\README.txt" />
      <None Include="Assets\BodyGuards\ReadMe.txt.txt" />
      <None Include="Assets\packages\NLog.4.5.9\lib\netstandard2.0\NLog.dll" />
+     <None Include="Assets\SymOntoClay\SymOntoClay.CoreHelper.dll" />
      <None Include="Assets\Fortress\Shader\Diffuse.shader" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.2.3f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
@@ -389,6 +412,9 @@
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.2.3f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
+    <Reference Include="SymOntoClay.CoreHelper">
+      <HintPath>Assets\SymOntoClay\SymOntoClay.CoreHelper.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Common">
       <HintPath>Assets\packages\System.Data.Common.4.3.0\lib\netstandard1.2\System.Data.Common.dll</HintPath>
     </Reference>
@@ -401,6 +427,9 @@
     <Reference Include="NLog">
       <HintPath>Assets\packages\NLog.4.5.9\lib\netstandard2.0\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="SymOntoClay.Core">
+      <HintPath>Assets\SymOntoClay\SymOntoClay.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Analytics.Tracker">
       <HintPath>Library\PackageCache\com.unity.analytics@3.5.3\Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
@@ -409,6 +438,9 @@
     </Reference>
     <Reference Include="System.Runtime">
       <HintPath>Assets\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="SymOntoClay.UnityAsset.Core">
+      <HintPath>Assets\SymOntoClay\SymOntoClay.UnityAsset.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.CodeDom">
       <HintPath>Assets\Plugins\x86_64\System.CodeDom.dll</HintPath>
